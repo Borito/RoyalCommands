@@ -7,7 +7,7 @@ This plugin is not intended to replace Essentials or AdminCmd, etc. It is intend
 
 I am very much open for new command ideas.
 
-RoyalCommands is coded in Eclipse 7.0.1 with the follwing libraries:
+RoyalCommands is coded in Eclipse 3.7.1 with the follwing libraries:
 
  * bukkit-1.0.0-RC1-SNAPSHOT.jar (1054)
  * craftbukkit-1.0.0-SNAPSHOT.jar (1559)
