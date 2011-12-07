@@ -1,0 +1,40 @@
+name: RoyalCommands
+main: tk.royalcraf.royalcommands.RoyalCommands
+version: 0.0.1
+
+commands:
+  level:
+    description: Levels your experience up one level.
+    usage: /<command>
+
+  setlevel:
+    description: Sets your XP level to specified amount.
+    usage: /<command> [level] <player>
+
+  sci:
+    description: Selectively removes items from a player's inventory.
+    usage: /<command> [player] [ID]
+
+  speak:
+    description: Make another player talk.
+    usage: /<command> [player] [message]
+
+  facepalm:
+    description: Broadcasts your facepalm.
+    usage: /<command>
+
+  slap:
+    description: Broadcasts you slapping another player.
+    usage: /<command> [player]
+
+  harm:
+    description: Harms a player.
+    usage: /<command> [player] [damage]
+
+  starve:
+    description: Lowers a player's hunger.
+    usage: /<command> [player] [damage]
+
+  banned:
+    description: Returns if a player is banned.
+    usage: /<command> [player]
