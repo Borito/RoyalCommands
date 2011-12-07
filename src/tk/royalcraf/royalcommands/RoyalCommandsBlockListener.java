@@ -1,5 +1,5 @@
 package tk.royalcraf.royalcommands;
-
+/* Might use this later, for a different purpose
 import org.bukkit.ChatColor;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.SignChangeEvent;
@@ -11,7 +11,7 @@ public class RoyalCommandsBlockListener extends BlockListener {
 	public RoyalCommandsBlockListener(RoyalCommands instance) {
 		plugin = instance;
 	}
-
+	
 	public void onSignChange(SignChangeEvent event) {
 
 		String line0 = event.getLine(0);
@@ -24,5 +24,5 @@ public class RoyalCommandsBlockListener extends BlockListener {
 			event.setLine(3, ChatColor.DARK_GREEN + "YOU ARE TRUE!");
 		}
 	}
-
 }
+*/

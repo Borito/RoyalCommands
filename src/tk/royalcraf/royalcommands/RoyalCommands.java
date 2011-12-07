@@ -10,8 +10,10 @@ public class RoyalCommands extends JavaPlugin {
 
 	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(
 			this);
-	private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(
-			this);
+	// Saved for possible later use
+	// private final RoyalCommandsBlockListener blockListener = new
+	// RoyalCommandsBlockListener(
+	// this);
 
 	Logger log = Logger.getLogger("Minecraft");
 
@@ -21,8 +23,9 @@ public class RoyalCommands extends JavaPlugin {
 
 		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener,
 				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.SIGN_CHANGE, blockListener,
-				Event.Priority.Normal, this);
+		// Saved for possible later use
+		// pm.registerEvent(Event.Type.SIGN_CHANGE, blockListener,
+		// Event.Priority.Normal, this);
 
 		RoyalCommandsCommandExecutor cmdExec = new RoyalCommandsCommandExecutor(
 				this);
