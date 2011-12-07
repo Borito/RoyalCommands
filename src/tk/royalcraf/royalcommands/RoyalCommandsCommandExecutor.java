@@ -187,7 +187,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 								+ "You must input a numerical ID to remove.");
 						return false;
 					}
-					if (removeID <= 0 || removeID > 382 || removeID > 2266) {
+					if (removeID <= 0 || removeID > 2266) {
 						sender.sendMessage(ChatColor.RED
 								+ "You must specify a valid item ID.");
 						return true;
