@@ -84,7 +84,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 				if (!isAuthorized(sender, "rcmds.level")) {
 					sender.sendMessage(ChatColor.RED
 							+ "You don't have permission for that!");
-					log.warning("[RoyalCommands] " + sender.getName() + " was denied access to the command!");
+					log.warning("[RoyalCommands] " + sender.getName()
+							+ " was denied access to the command!");
 					return true;
 				} else {
 					player.setLevel(player.getLevel() + 1);
@@ -101,7 +102,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 				if (!isAuthorized(sender, "rcmds.setlevel")) {
 					sender.sendMessage(ChatColor.RED
 							+ "You don't have permission for that!");
-					log.warning("[RoyalCommands] " + sender.getName() + " was denied access to the command!");
+					log.warning("[RoyalCommands] " + sender.getName()
+							+ " was denied access to the command!");
 					return true;
 				} else {
 					if (args.length < 1) {
@@ -162,7 +164,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 			if (!isAuthorized(sender, "rcmds.sci")) {
 				sender.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
-				log.warning("[RoyalCommands] " + sender.getName() + " was denied access to the command!");
+				log.warning("[RoyalCommands] " + sender.getName()
+						+ " was denied access to the command!");
 				return true;
 			} else {
 				int errord = 0;
@@ -184,30 +187,36 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 								+ "You must input a numerical ID to remove.");
 						return false;
 					}
-					if (removeID <= 0 || removeID > 382 || removeID > 2256
-							&& removeID < 2266) {
+					if (removeID <= 0 || removeID > 382 || removeID > 2266) {
 						sender.sendMessage(ChatColor.RED
 								+ "You must specify a valid item ID.");
 						return true;
 					} else {
-						if (isAuthorized(victim, "rcmds.sci.exempt")) {
+						if (removeID < 2255 && removeID > 382) {
 							sender.sendMessage(ChatColor.RED
-									+ "You cannot alter that player's inventory.");
+									+ "You must specify a valid item ID.");
 							return true;
 						} else {
-							victim.getInventory().remove(removeID);
-							victim.sendMessage(ChatColor.RED
-									+ "You have just had all of your item ID "
-									+ ChatColor.BLUE + removeID + ChatColor.RED
-									+ " removed by " + ChatColor.RED
-									+ sender.getName() + ChatColor.BLUE + "!");
-							sender.sendMessage(ChatColor.BLUE
-									+ "You have just removed all of the item ID "
-									+ ChatColor.RED + removeID + ChatColor.BLUE
-									+ " from " + ChatColor.RED
-									+ victim.getName() + ChatColor.BLUE
-									+ "'s inventory.");
-							return true;
+							if (isAuthorized(victim, "rcmds.sci.exempt")) {
+								sender.sendMessage(ChatColor.RED
+										+ "You cannot alter that player's inventory.");
+								return true;
+							} else {
+								victim.getInventory().remove(removeID);
+								victim.sendMessage(ChatColor.RED
+										+ "You have just had all of your item ID "
+										+ ChatColor.BLUE + removeID
+										+ ChatColor.RED + " removed by "
+										+ ChatColor.RED + sender.getName()
+										+ ChatColor.BLUE + "!");
+								sender.sendMessage(ChatColor.BLUE
+										+ "You have just removed all of the item ID "
+										+ ChatColor.RED + removeID
+										+ ChatColor.BLUE + " from "
+										+ ChatColor.RED + victim.getName()
+										+ ChatColor.BLUE + "'s inventory.");
+								return true;
+							}
 						}
 					}
 				}
@@ -216,7 +225,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 			if (!isAuthorized(sender, "rcmds.speak")) {
 				sender.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
-				log.warning("[RoyalCommands] " + sender.getName() + " was denied access to the command!");
+				log.warning("[RoyalCommands] " + sender.getName()
+						+ " was denied access to the command!");
 				return true;
 			} else {
 				if (args.length < 2) {
@@ -264,7 +274,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 			if (!isAuthorized(sender, "rcmds.facepalm")) {
 				sender.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
-				log.warning("[RoyalCommands] " + sender.getName() + " was denied access to the command!");
+				log.warning("[RoyalCommands] " + sender.getName()
+						+ " was denied access to the command!");
 				return true;
 			} else {
 				Bukkit.getServer().broadcastMessage(
@@ -276,7 +287,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 			if (!isAuthorized(sender, "rcmds.slap")) {
 				sender.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
-				log.warning("[RoyalCommands] " + sender.getName() + " was denied access to the command!");
+				log.warning("[RoyalCommands] " + sender.getName()
+						+ " was denied access to the command!");
 				return true;
 			} else {
 				if (args.length < 1) {
@@ -306,7 +318,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 			if (!isAuthorized(sender, "rcmds.harm")) {
 				sender.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
-				log.warning("[RoyalCommands] " + sender.getName() + " was denied access to the command!");
+				log.warning("[RoyalCommands] " + sender.getName()
+						+ " was denied access to the command!");
 				return true;
 			} else {
 
@@ -354,7 +367,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 			if (!isAuthorized(sender, "rcmds.starve")) {
 				sender.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
-				log.warning("[RoyalCommands] " + sender.getName() + " was denied access to the command!");
+				log.warning("[RoyalCommands] " + sender.getName()
+						+ " was denied access to the command!");
 				return true;
 			} else {
 
@@ -403,7 +417,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 			if (!isAuthorized(sender, "rcmds.banned")) {
 				sender.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
-				log.warning("[RoyalCommands] " + sender.getName() + " was denied access to the command!");
+				log.warning("[RoyalCommands] " + sender.getName()
+						+ " was denied access to the command!");
 				return true;
 			} else {
 				if (args.length < 1) {
