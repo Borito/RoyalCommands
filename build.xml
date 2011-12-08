@@ -21,7 +21,7 @@
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}" classpath="lib"/>
+    <javac srcdir="${src}" destdir="${build}" classpath="lib/bukkit*"/>
   </target>
 
   <target name="dist" depends="compile"
