@@ -38,3 +38,7 @@ commands:
   banned:
     description: Returns if a player is banned.
     usage: /<command> [player]
+    
+  setarmor:
+    description: Set your armor to a certain type.
+    usage: /<command> [material]

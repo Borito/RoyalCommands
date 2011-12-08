@@ -3,11 +3,13 @@ package tk.royalcraf.royalcommands;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class RoyalCommandsCommandExecutor implements CommandExecutor {
 
@@ -436,6 +438,74 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 					sender.sendMessage(ChatColor.RED + dude.getName()
 							+ ChatColor.WHITE + " is banned.");
 					return true;
+				}
+			}
+		} else if (cmd.getName().equalsIgnoreCase("setarmor")) {
+			if (!isAuthorized(sender, "rcmds.setarmor")) {
+				sender.sendMessage(ChatColor.RED
+						+ "You don't have permission for that!");
+				log.warning("[RoyalCommands] " + sender.getName()
+						+ " was denied access to the command!");
+				return true;
+			} else {
+				if (args.length < 1) {
+					return false;
+				} else {
+					String set = args[0];
+
+					ItemStack[] diamond;
+					diamond = new ItemStack[4];
+					diamond[3] = new ItemStack(Material.DIAMOND_HELMET);
+					diamond[2] = new ItemStack(Material.DIAMOND_CHESTPLATE);
+					diamond[1] = new ItemStack(Material.DIAMOND_LEGGINGS);
+					diamond[0] = new ItemStack(Material.DIAMOND_BOOTS);
+
+					ItemStack[] gold;
+					gold = new ItemStack[4];
+					gold[3] = new ItemStack(Material.GOLD_HELMET);
+					gold[2] = new ItemStack(Material.GOLD_CHESTPLATE);
+					gold[1] = new ItemStack(Material.GOLD_LEGGINGS);
+					gold[0] = new ItemStack(Material.GOLD_BOOTS);
+
+					ItemStack[] iron;
+					iron = new ItemStack[4];
+					iron[3] = new ItemStack(Material.IRON_HELMET);
+					iron[2] = new ItemStack(Material.IRON_CHESTPLATE);
+					iron[1] = new ItemStack(Material.IRON_LEGGINGS);
+					iron[0] = new ItemStack(Material.IRON_BOOTS);
+
+					ItemStack[] leather;
+					leather = new ItemStack[4];
+					leather[3] = new ItemStack(Material.LEATHER_HELMET);
+					leather[2] = new ItemStack(Material.LEATHER_CHESTPLATE);
+					leather[1] = new ItemStack(Material.LEATHER_LEGGINGS);
+					leather[0] = new ItemStack(Material.LEATHER_BOOTS);
+
+					if (set.equalsIgnoreCase("diamond")) {
+						player.getInventory().setArmorContents(diamond);
+						sender.sendMessage(ChatColor.BLUE
+								+ "Your armor was set to " + set);
+						return true;
+					} else if (set.equalsIgnoreCase("gold")) {
+						player.getInventory().setArmorContents(gold);
+						sender.sendMessage(ChatColor.BLUE
+								+ "Your armor was set to " + set);
+						return true;
+					} else if (set.equalsIgnoreCase("iron")) {
+						player.getInventory().setArmorContents(iron);
+						sender.sendMessage(ChatColor.BLUE
+								+ "Your armor was set to " + set);
+						return true;
+					} else if (set.equalsIgnoreCase("leather")) {
+						player.getInventory().setArmorContents(leather);
+						sender.sendMessage(ChatColor.BLUE
+								+ "Your armor was set to " + set);
+						return true;
+					} else {
+						sender.sendMessage(ChatColor.RED
+								+ "The armor type must be diamond, gold, iron, or leather.");
+						return true;
+					}
 				}
 			}
 		}
