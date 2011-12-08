@@ -21,7 +21,7 @@
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}"/>
+    <javac srcdir="${src}" destdir="${build}" classpath="lib"/>
   </target>
 
   <target name="dist" depends="compile"
@@ -31,7 +31,7 @@
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
     <jar jarfile="${dist}/lib/RoyalCommands-${DSTAMP}.jar" basedir="${build}"/>
-    <jar jarfile="${artifacts}/${label}.jar" basedir="${build}"/>  
+    <jar jarfile="${artifacts}/${label}.jar" basedir="${build}" includes="plugin.yml, LICENSE, README.markdown"/>  
 </target>
 
   <target name="clean"
