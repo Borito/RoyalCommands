@@ -481,29 +481,41 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 					leather[1] = new ItemStack(Material.LEATHER_LEGGINGS);
 					leather[0] = new ItemStack(Material.LEATHER_BOOTS);
 
+					ItemStack[] none;
+					none = new ItemStack[4];
+					none[3] = new ItemStack(0);
+					none[2] = new ItemStack(0);
+					none[1] = new ItemStack(0);
+					none[0] = new ItemStack(0);
+
 					if (set.equalsIgnoreCase("diamond")) {
 						player.getInventory().setArmorContents(diamond);
 						sender.sendMessage(ChatColor.BLUE
-								+ "Your armor was set to " + set);
+								+ "Your armor was set to " + set + ".");
 						return true;
 					} else if (set.equalsIgnoreCase("gold")) {
 						player.getInventory().setArmorContents(gold);
 						sender.sendMessage(ChatColor.BLUE
-								+ "Your armor was set to " + set);
+								+ "Your armor was set to " + set + ".");
 						return true;
 					} else if (set.equalsIgnoreCase("iron")) {
 						player.getInventory().setArmorContents(iron);
 						sender.sendMessage(ChatColor.BLUE
-								+ "Your armor was set to " + set);
+								+ "Your armor was set to " + set + ".");
 						return true;
 					} else if (set.equalsIgnoreCase("leather")) {
 						player.getInventory().setArmorContents(leather);
 						sender.sendMessage(ChatColor.BLUE
-								+ "Your armor was set to " + set);
+								+ "Your armor was set to " + set + ".");
+						return true;
+					} else if (set.equalsIgnoreCase("none")) {
+						player.getInventory().setArmorContents(none);
+						sender.sendMessage(ChatColor.BLUE
+								+ "Your armor was cleared.");
 						return true;
 					} else {
 						sender.sendMessage(ChatColor.RED
-								+ "The armor type must be diamond, gold, iron, or leather.");
+								+ "The armor type must be diamond, gold, iron, leather, or none.");
 						return true;
 					}
 				}
