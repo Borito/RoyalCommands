@@ -1,4 +1,4 @@
 ## RoyalCommands v0.0.3 Config File
 
-# Whether to disable /getip command
-disabled_getip: false
+# Whether to disable /getip command (also disables /compareip)
+disable_getip: false
