@@ -11,8 +11,6 @@ RoyalCommands is coded in Eclipse 3.7.1 with the following libraries:
 
  * bukkit-1.0.0-RC1-SNAPSHOT.jar (1058)
 
-RoyalCommands has no config file, as I don't think it needs one. Feel free to contact me if you would like to see one implemented.
-
 ### Contact
 
  * Email: jkc.clemens@gmail.com
