@@ -19,9 +19,12 @@ import java.util.logging.Logger;
 
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RoyalCommands extends JavaPlugin {
+
+	protected FileConfiguration config;
 
 	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(
 			this);
@@ -30,9 +33,22 @@ public class RoyalCommands extends JavaPlugin {
 	// RoyalCommandsBlockListener(
 	// this);
 
+	private RoyalCommands plugin;
+
+	public RoyalCommands(RoyalCommands plugin) {
+		this.plugin = plugin;
+	}
+
 	Logger log = Logger.getLogger("Minecraft");
 
+	public void loadConfiguration() {
+		plugin.getConfig().options().copyDefaults(true);
+		plugin.saveConfig();
+	}
+
 	public void onEnable() {
+
+		loadConfiguration();
 
 		PluginManager pm = this.getServer().getPluginManager();
 
