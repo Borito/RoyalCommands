@@ -30,7 +30,7 @@
     <mkdir dir="${dist}/lib"/>
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/RoyalCommands-${DSTAMP}.jar" basedir="${build}"/>
+    <jar jarfile="${dist}/lib/${label}.jar" basedir="${build}"/>
     <jar jarfile="${artifacts}/${env.BUILD_NUMBER}/${label}.jar" basedir="${build}" includes="plugin.yml, LICENSE, README.markdown"/>  
 </target>
 
