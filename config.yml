@@ -1,0 +1,4 @@
+## RoyalCommands v0.0.3 Config File
+
+# Whether to disable /getip command
+disabled_getip: false
