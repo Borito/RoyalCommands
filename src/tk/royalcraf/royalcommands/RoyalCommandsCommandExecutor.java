@@ -313,7 +313,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 								+ "You may not slap that player.");
 						return true;
 					} else {
-						plugin.getServer().broadcastMessage(
+						Bukkit.getServer().broadcastMessage(
 								ChatColor.GOLD + sender.getName()
 										+ ChatColor.WHITE + " slaps "
 										+ ChatColor.RED + victim.getName()

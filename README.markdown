@@ -7,11 +7,9 @@ This plugin is not intended to replace Essentials or AdminCmd, etc. It is intend
 
 I am very much open for new command ideas.
 
-RoyalCommands is coded in Eclipse 3.7.1 with the follwing libraries:
+RoyalCommands is coded in Eclipse 3.7.1 with the following libraries:
 
- * bukkit-1.0.0-RC1-SNAPSHOT.jar (1054)
- * craftbukkit-1.0.0-SNAPSHOT.jar (1559)
- * PermissionsEx.jar (optional, I should think)
+ * bukkit-1.0.0-RC1-SNAPSHOT.jar (1058)
 
 RoyalCommands has no config file, as I don't think it needs one. Feel free to contact me if you would like to see one implemented.
 
@@ -28,3 +26,6 @@ compile Essentials for yourself, remove the following from Essentials.class (lin
 
 	LOGGER.log(Level.INFO, String.format("[PLAYER_COMMAND] %s: /%s %s ", ((Player)sender).getName(), commandLabel, EssentialsCommand.getFinalArg(args, 0)));
 
+### Bleeding Edge Builds
+
+Changes pushed to GitHub will be auto-compiled on [Jenkins](http://royalcraftci.no-ip.org:8080).
