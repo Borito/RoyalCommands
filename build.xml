@@ -17,11 +17,13 @@
     <mkdir dir="${build}"/>
     <mkdir dir="${artifacts}/${env.BUILD_NUMBER}"/>
   </target>
-
-  <target name="compile" depends="init"
-        description="compile the source " >
-    <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}" classpath="lib/bukkit-1.0.0-RL-SNAPSHOT.jar"/>
+  
+  <target name="compile" depends="init">
+    <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
+      <classpath>
+        <pathelement location="lib/bukkit-1.0.0-RL-SNAPSHOT.jar"/>
+      </classpath>
+    </javac>
   </target>
 
   <target name="dist" depends="compile">
