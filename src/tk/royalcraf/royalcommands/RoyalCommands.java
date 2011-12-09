@@ -55,12 +55,13 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("banned").setExecutor(cmdExec);
 		getCommand("setarmor").setExecutor(cmdExec);
 		getCommand("getip").setExecutor(cmdExec);
+		getCommand("rcmds").setExecutor(cmdExec);
 
-		log.info("[RoyalCommands] RoyalCommands v0.0.2 initiated.");
+		log.info("[RoyalCommands] RoyalCommands v0.0.3 initiated.");
 	}
 
 	public void onDisable() {
-		log.info("[RoyalCommands] RoyalCommands v0.0.2 disabled.");
+		log.info("[RoyalCommands] RoyalCommands v0.0.3 disabled.");
 	}
 
 }

@@ -1,6 +1,6 @@
 name: RoyalCommands
 main: tk.royalcraf.royalcommands.RoyalCommands
-version: 0.0.2
+version: 0.0.3
 
 commands:
   level:
@@ -40,10 +40,13 @@ commands:
     usage: /<command> [player]
     
   setarmor:
-    description: Set your armor to a certain type.
+    description: Sets your armor to a certain type.
     usage: /<command> [material]
     
   getip:
-    description: Get the IP of a user.
+    description: Gets the IP of a user.
     usage: /<command> [player]
     
+  rcmds:
+    description: Displays version of RoyalCommands.
+    usage: /<command>

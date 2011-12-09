@@ -539,6 +539,10 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 							+ victim.getAddress());
 				}
 			}
+		} else if (cmd.getName().equalsIgnoreCase("rmcds")) {
+			if (!isAuthorized(sender, "rcmds.rcmds")) {
+				sender.sendMessage(ChatColor.GREEN + "RoyalCommands " + ChatColor.BLUE + "v0.0.3");
+			}
 		}
 
 		return false;
