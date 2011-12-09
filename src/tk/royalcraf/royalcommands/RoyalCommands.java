@@ -54,6 +54,7 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("starve").setExecutor(cmdExec);
 		getCommand("banned").setExecutor(cmdExec);
 		getCommand("setarmor").setExecutor(cmdExec);
+		getCommand("getip").setExecutor(cmdExec);
 
 		log.info("[RoyalCommands] RoyalCommands v0.0.2 initiated.");
 	}

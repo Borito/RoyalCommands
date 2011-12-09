@@ -526,6 +526,19 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 					}
 				}
 			}
+		} else if (cmd.getName().equalsIgnoreCase("getip")) {
+			if (!isAuthorized(sender, "rcmds.getip")) {
+				sender.sendMessage("You don't have permission for that!");
+				return true;
+			} else {
+				if (args.length < 1) {
+					return false;
+				} else {
+					victim = (Player) plugin.getServer().getPlayer(args[0]);
+					sender.sendMessage(ChatColor.GRAY + victim.getName() + ": "
+							+ victim.getAddress());
+				}
+			}
 		}
 
 		return false;

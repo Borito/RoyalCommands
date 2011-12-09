@@ -42,3 +42,8 @@ commands:
   setarmor:
     description: Set your armor to a certain type.
     usage: /<command> [material]
+    
+  getip:
+    description: Get the IP of a user.
+    usage: /<command> [player]
+    
