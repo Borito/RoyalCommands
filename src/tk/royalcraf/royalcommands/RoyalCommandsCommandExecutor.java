@@ -136,6 +136,12 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 											+ "'s XP level was set to "
 											+ toLevel
 											+ "! They may need to relog to see the changes.");
+									victim.sendMessage(ChatColor.BLUE
+											+ "Your XP level was set to "
+											+ toLevel
+											+ " by "
+											+ sender.getName()
+											+ "! You may need to relog to see these changes.");
 								}
 							}
 						} else if (args.length < 2 && args.length != 0) {
