@@ -47,6 +47,10 @@ commands:
     description: Gets the IP of a user.
     usage: /<command> [player]
     
+  compareip:
+    description: Compare two users' IP addresses.
+    usage: /<command> [player1] [player2]
+    
   rcmds:
     description: Displays version of RoyalCommands.
     usage: /<command>

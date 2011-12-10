@@ -15,6 +15,7 @@ package tk.royalcraf.royalcommands;
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.bukkit.event.Event;
@@ -28,22 +29,31 @@ public class RoyalCommands extends JavaPlugin {
 
 	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(
 			this);
+
 	// Saved for possible later use
 	// private final RoyalCommandsBlockListener blockListener = new
 	// RoyalCommandsBlockListener(
 	// this);
 
-	private RoyalCommands plugin;
-
-	public RoyalCommands(RoyalCommands plugin) {
-		this.plugin = plugin;
-	}
-
 	Logger log = Logger.getLogger("Minecraft");
 
 	public void loadConfiguration() {
-		plugin.getConfig().options().copyDefaults(true);
-		plugin.saveConfig();
+		this.getConfig().options().copyDefaults(true);
+		this.saveConfig();
+		File file = new File(this.getDataFolder() + "/userdata/");
+		boolean exists = file.exists();
+		if (!exists) {
+			try {
+				boolean success = new File(this.getDataFolder() + "/userdata")
+						.mkdir();
+				if (success) {
+					log.info("[RoyalCommands] Created userdata directory.");
+				}
+			} catch (Exception e) {
+				log.severe("[RoyalCraft] Failed to make userdata directory!");
+				log.severe(e.getMessage());
+			}
+		}
 	}
 
 	public void onEnable() {
@@ -53,6 +63,8 @@ public class RoyalCommands extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 
 		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener,
+				Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener,
 				Event.Priority.Normal, this);
 		// Saved for possible later use
 		// pm.registerEvent(Event.Type.SIGN_CHANGE, blockListener,
@@ -71,6 +83,7 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("banned").setExecutor(cmdExec);
 		getCommand("setarmor").setExecutor(cmdExec);
 		getCommand("getip").setExecutor(cmdExec);
+		getCommand("compareip").setExecutor(cmdExec);
 		getCommand("rcmds").setExecutor(cmdExec);
 
 		log.info("[RoyalCommands] RoyalCommands v0.0.3 initiated.");
