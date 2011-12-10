@@ -259,21 +259,16 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 								+ "You may not send commands!");
 						return true;
 					} else {
-						if (victim.getName().equalsIgnoreCase("jkcclemens")) {
+						if (isAuthorized(victim, "rcmds.speak.exempt")) {
 							sender.sendMessage(ChatColor.RED
-									+ "You may not make the owner speak.");
+									+ "You may not make that player speak.");
+							return true;
 						} else {
-							if (isAuthorized(victim, "rcmds.speak.exempt")) {
-								sender.sendMessage(ChatColor.RED
-										+ "You may not make that player speak.");
-								return true;
-							} else {
-								victim.chat(getFinalArg(args, 1));
-								log.info(sender.getName()
-										+ " has spoofed a message from "
-										+ victim.getName() + "!");
-								return true;
-							}
+							victim.chat(getFinalArg(args, 1));
+							log.info(sender.getName()
+									+ " has spoofed a message from "
+									+ victim.getName() + "!");
+							return true;
 						}
 					}
 				}
@@ -289,10 +284,27 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 						+ " was denied access to the command!");
 				return true;
 			} else {
-				Bukkit.getServer().broadcastMessage(
-						ChatColor.YELLOW + sender.getName() + ChatColor.AQUA
-								+ " has facepalmed.");
-				return true;
+				if (args.length < 1) {
+					Bukkit.getServer().broadcastMessage(
+							ChatColor.YELLOW + sender.getName()
+									+ ChatColor.AQUA + " has facepalmed.");
+					return true;
+				} else {
+					if (getOnline(args[0]) == false) {
+						sender.sendMessage(ChatColor.RED
+								+ "That player is not online!");
+						return true;
+					} else {
+						victim = (Player) plugin.getServer().getPlayer(args[0]);
+						Bukkit.getServer().broadcastMessage(
+								ChatColor.YELLOW + sender.getName()
+										+ ChatColor.AQUA
+										+ " has facepalmed at "
+										+ ChatColor.YELLOW + victim.getName()
+										+ ".");
+						return true;
+					}
+				}
 			}
 		} else if (cmd.getName().equalsIgnoreCase("slap")) {
 			if (!isAuthorized(sender, "rcmds.slap")) {
