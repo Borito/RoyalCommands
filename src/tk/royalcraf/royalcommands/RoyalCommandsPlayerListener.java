@@ -3,6 +3,8 @@ package tk.royalcraf.royalcommands;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+//import java.net.InetAddress;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -42,8 +44,9 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 				out.write("name: " + event.getPlayer().getName() + "\n");
 				out.write("dispname: " + event.getPlayer().getDisplayName()
 						+ "\n");
-				
-				out.write("ip: " + event.getPlayer().getAddress().getAddress() + "\n");
+
+				out.write("ip: " + event.getPlayer().getAddress().getAddress()
+						+ "\n");
 				out.close();
 				log.info("[RoyalCommands] Userdata creation finished.");
 			} catch (Exception e) {
@@ -52,13 +55,23 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 				log.severe(e.getMessage());
 			}
 		} else {
-			log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
-			File p1confl = new File(plugin.getDataFolder()
-					+ "/userdata/" + event.getPlayer().getName() + ".yml");
+			log.info("[RoyalCommands] Updating the IP for "
+					+ event.getPlayer().getName() + ".");
+			File p1confl = new File(plugin.getDataFolder() + "/userdata/"
+					+ event.getPlayer().getName() + ".yml");
 			FileConfiguration p1conf = YamlConfiguration
 					.loadConfiguration(p1confl);
-			p1conf.set("ip", event.getPlayer().getAddress().getAddress());
+			String playerip = event.getPlayer().getAddress().getAddress()
+					.toString();
+			playerip = playerip.replace("/", "");
+			p1conf.set("ip", playerip);
 			p1conf.set("dispname", event.getPlayer().getDisplayName());
+			try {
+				p1conf.save(p1confl);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
