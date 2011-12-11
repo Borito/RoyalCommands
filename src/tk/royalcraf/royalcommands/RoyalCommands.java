@@ -13,6 +13,9 @@ package tk.royalcraf.royalcommands;
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+ This plugin was written by jkcclemens <jkc.clemens@gmail.com>.
+ If forked and not credited, alert him.
  */
 
 import java.io.File;
