@@ -26,4 +26,11 @@ compile Essentials for yourself, remove the following from Essentials.class (lin
 
 ### Bleeding Edge Builds
 
-Changes pushed to GitHub will be auto-compiled on [Jenkins](http://royalcraftci.no-ip.org:8080).
+Changes pushed to GitHub will be auto-compiled on [Jenkins](http://royalcraftci.no-ip.org).
+
+### About the developer
+
+My name is Kyle Clemens. I run a cracked [Minecraft server](http://royalcraf.tk) at royalcraf.tk, write (currently) two different plugins: RoyalCommands and RoyalMisc.
+RoyalMisc is only available on RoyalCraft.
+
+I currently attend school and hope to continue learning Java to better this plugin.
