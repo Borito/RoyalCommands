@@ -13,30 +13,38 @@ package tk.royalcraf.royalcommands;
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
+
  This plugin was written by jkcclemens <jkc.clemens@gmail.com>.
  If forked and not credited, alert him.
  */
 
 import java.io.File;
 import java.util.logging.Logger;
-
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RoyalCommands extends JavaPlugin {
 
+	public static Permission permission = null;
+
+	public Boolean setupPermissions() {
+		RegisteredServiceProvider<Permission> permissionProvider = getServer()
+				.getServicesManager().getRegistration(
+						net.milkbowl.vault.permission.Permission.class);
+		if (permissionProvider != null) {
+			permission = permissionProvider.getProvider();
+		}
+		return (permission != null);
+	}
+
 	protected FileConfiguration config;
 
 	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(
 			this);
-
-	// Saved for possible later use
-	// private final RoyalCommandsBlockListener blockListener = new
-	// RoyalCommandsBlockListener(
-	// this);
 
 	Logger log = Logger.getLogger("Minecraft");
 
@@ -69,9 +77,6 @@ public class RoyalCommands extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener,
 				Event.Priority.Normal, this);
-		// Saved for possible later use
-		// pm.registerEvent(Event.Type.SIGN_CHANGE, blockListener,
-		// Event.Priority.Normal, this);
 
 		RoyalCommandsCommandExecutor cmdExec = new RoyalCommandsCommandExecutor(
 				this);

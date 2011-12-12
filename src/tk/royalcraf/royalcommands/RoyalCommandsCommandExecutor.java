@@ -13,8 +13,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import tk.royalcraf.royalcommands.RoyalCommands;
 
 public class RoyalCommandsCommandExecutor implements CommandExecutor {
+
+	RoyalCommands plugin;
+
+	public RoyalCommandsCommandExecutor(RoyalCommands plugin) {
+		this.plugin = plugin;
+	}
 
 	Logger log = Logger.getLogger("Minecraft");
 
@@ -31,33 +38,32 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 		return bldr.toString();
 	}
 
-	public static boolean isAuthorized(final Player player, final String node) {
+	public boolean isAuthorized(final Player player, final String node) {
 		if (player.isOp()) {
 			return true;
-		} else if (player.hasPermission(node)) {
-			return true;
+		} else if (plugin.setupPermissions()) {
+			if (RoyalCommands.permission.has(player, node)) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
 	}
 
-	public static boolean isAuthorized(final CommandSender player,
-			final String node) {
+	public boolean isAuthorized(final CommandSender player, final String node) {
 		if (player.isOp()) {
 			return true;
-		} else if (player.hasPermission(node)) {
-			return true;
-		} else if (!player.hasPermission(node)) {
-			return false;
+		} else if (plugin.setupPermissions()) {
+			if (RoyalCommands.permission.has((Player) player, node)) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
-	}
-
-	private RoyalCommands plugin;
-
-	public RoyalCommandsCommandExecutor(RoyalCommands plugin) {
-		this.plugin = plugin;
 	}
 
 	public static boolean getOnline(final String person) {
