@@ -45,8 +45,9 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 				out.write("dispname: " + event.getPlayer().getDisplayName()
 						+ "\n");
 
-				out.write("ip: " + event.getPlayer().getAddress().getAddress()
-						+ "\n");
+				out.write("ip: "
+						+ event.getPlayer().getAddress().getAddress()
+								.toString().replace("/", "") + "\n");
 				out.close();
 				log.info("[RoyalCommands] Userdata creation finished.");
 			} catch (Exception e) {
