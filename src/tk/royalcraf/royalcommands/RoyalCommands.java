@@ -89,11 +89,11 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("compareip").setExecutor(cmdExec);
 		getCommand("rcmds").setExecutor(cmdExec);
 
-		log.info("[RoyalCommands] RoyalCommands v0.0.3 initiated.");
+		log.info("[RoyalCommands] RoyalCommands v0.0.35 initiated.");
 	}
 
 	public void onDisable() {
-		log.info("[RoyalCommands] RoyalCommands v0.0.3 disabled.");
+		log.info("[RoyalCommands] RoyalCommands v0.0.35 disabled.");
 	}
 
 }
