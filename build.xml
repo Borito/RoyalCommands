@@ -22,7 +22,7 @@
     <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
       <classpath>
         <pathelement location="lib/bukkit-1.0.0-R1-SNAPSHOT.jar"/>
-      	<pathelement location="Vault.jar"/>
+      	<pathelement location="lib/Vault.jar"/>
       </classpath>
     </javac>
   </target>
