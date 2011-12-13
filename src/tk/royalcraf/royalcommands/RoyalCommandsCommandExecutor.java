@@ -641,7 +641,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 			} else {
 				plugin.reloadConfig();
 				sender.sendMessage(ChatColor.GREEN + "RoyalCommands "
-						+ ChatColor.BLUE + "v0.0.35 reloaded.");
+						+ ChatColor.BLUE + "v0.0.4 reloaded.");
 				return true;
 			}
 		}
