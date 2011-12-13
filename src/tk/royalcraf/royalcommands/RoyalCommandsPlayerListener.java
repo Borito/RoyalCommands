@@ -4,9 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-//import java.net.InetAddress;
 import java.util.logging.Logger;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
