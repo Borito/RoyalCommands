@@ -61,7 +61,7 @@ public class RoyalCommands extends JavaPlugin {
 					log.info("[RoyalCommands] Created userdata directory.");
 				}
 			} catch (Exception e) {
-				log.severe("[RoyalCraft] Failed to make userdata directory!");
+				log.severe("[RoyalCommands] Failed to make userdata directory!");
 				log.severe(e.getMessage());
 			}
 		}
