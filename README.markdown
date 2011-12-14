@@ -20,7 +20,7 @@ RoyalCommands is coded in Eclipse 3.7.1 with the following libraries:
 
 Unless you can turn off [PLAYER_COMMAND] in the Essentials config, you will need to compile it for yourself to stop it from sending duplicate messages with this plugin.
 RoyalCommands sends its own [PLAYER_COMMAND] for every command sent to the server, and plugins that already do this will make duplicate entries. If you choose to
-compile Essentials for yourself, remove the following from Essentials.class (line 313 at time of writing):
+compile Essentials for yourself, remove the following from Essentials.java (line 313 at time of writing):
 
 	LOGGER.log(Level.INFO, String.format("[PLAYER_COMMAND] %s: /%s %s ", ((Player)sender).getName(), commandLabel, EssentialsCommand.getFinalArg(args, 0)));
 
