@@ -2,3 +2,4 @@
 
 # Whether to disable /getip command (also disables /compareip)
 disable_getip: false
+view_commands: true

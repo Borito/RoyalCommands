@@ -23,8 +23,10 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 
-		log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": "
-				+ event.getMessage());
+		if (plugin.getConfig().getBoolean("view_commands") == true) {
+			log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": "
+					+ event.getMessage());
+		}
 
 	}
 
