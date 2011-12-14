@@ -302,13 +302,19 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 						return true;
 					} else {
 						victim = (Player) plugin.getServer().getPlayer(args[0]);
-						Bukkit.getServer().broadcastMessage(
-								ChatColor.YELLOW + sender.getName()
-										+ ChatColor.AQUA
-										+ " has facepalmed at "
-										+ ChatColor.YELLOW + victim.getName()
-										+ ".");
-						return true;
+						if (isAuthorized(victim, "rcmds.facepalm.exempt")) {
+							sender.sendMessage(ChatColor.RED
+									+ "You cannot facepalm at that player!");
+							return true;
+						} else {
+							Bukkit.getServer().broadcastMessage(
+									ChatColor.YELLOW + sender.getName()
+											+ ChatColor.AQUA
+											+ " has facepalmed at "
+											+ ChatColor.YELLOW
+											+ victim.getName() + ".");
+							return true;
+						}
 					}
 				}
 			}
