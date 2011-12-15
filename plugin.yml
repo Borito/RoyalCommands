@@ -1,6 +1,6 @@
 name: RoyalCommands
 main: tk.royalcraf.royalcommands.RoyalCommands
-version: 0.0.4
+version: 0.0.5
 author: jkcclemens
 depend: [Vault]
 

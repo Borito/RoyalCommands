@@ -30,6 +30,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
+	
+	public String version = "0.0.5";
 
 	public Boolean setupPermissions() {
 		RegisteredServiceProvider<Permission> permissionProvider = getServer()
@@ -94,11 +96,11 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("compareip").setExecutor(cmdExec);
 		getCommand("rcmds").setExecutor(cmdExec);
 
-		log.info("[RoyalCommands] RoyalCommands v0.0.4 initiated.");
+		log.info("[RoyalCommands] RoyalCommands v" + this.version + " initiated.");
 	}
 
 	public void onDisable() {
-		log.info("[RoyalCommands] RoyalCommands v0.0.4 disabled.");
+		log.info("[RoyalCommands] RoyalCommands v" + this.version + " disabled.");
 	}
 
 }
