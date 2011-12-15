@@ -214,7 +214,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 									+ "You must specify a valid item ID.");
 							return true;
 						} else {
-							if (isAuthorized(victim, "rcmds.sci.exempt")) {
+							if (isAuthorized(victim, "rcmds.exempt.sci")) {
 								sender.sendMessage(ChatColor.RED
 										+ "You cannot alter that player's inventory.");
 								return true;
@@ -265,7 +265,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 								+ "You may not send commands!");
 						return true;
 					} else {
-						if (isAuthorized(victim, "rcmds.speak.exempt")) {
+						if (isAuthorized(victim, "rcmds.exempt.speak")) {
 							sender.sendMessage(ChatColor.RED
 									+ "You may not make that player speak.");
 							return true;
@@ -302,7 +302,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 						return true;
 					} else {
 						victim = (Player) plugin.getServer().getPlayer(args[0]);
-						if (isAuthorized(victim, "rcmds.facepalm.exempt")) {
+						if (isAuthorized(victim, "rcmds.exempt.facepalm")) {
 							sender.sendMessage(ChatColor.RED
 									+ "You cannot facepalm at that player!");
 							return true;
@@ -335,7 +335,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 					return true;
 				} else {
 					victim = (Player) plugin.getServer().getPlayer(args[0]);
-					if (isAuthorized(victim, "rcmds.slap.exempt")) {
+					if (isAuthorized(victim, "rcmds.exempt.slap")) {
 						sender.sendMessage(ChatColor.RED
 								+ "You may not slap that player.");
 						return true;
@@ -380,7 +380,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 						return true;
 					} else {
 						victim = (Player) plugin.getServer().getPlayer(args[0]);
-						if (isAuthorized(victim, "rcmds.harm.exempt")) {
+						if (isAuthorized(victim, "rcmds.exempt.harm")) {
 							sender.sendMessage(ChatColor.RED
 									+ "You may not harm that player.");
 							return true;
@@ -429,7 +429,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 						return true;
 					} else {
 						victim = (Player) plugin.getServer().getPlayer(args[0]);
-						if (isAuthorized(victim, "rcmds.starve.exempt")) {
+						if (isAuthorized(victim, "rcmds.exempt.starve")) {
 							sender.sendMessage(ChatColor.RED
 									+ "You may not starve that player.");
 							return true;
