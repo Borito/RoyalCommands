@@ -694,6 +694,8 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 				return true;
 			} else {
 				plugin.reloadConfig();
+				plugin.showcommands = plugin.getConfig().getBoolean(
+						"view_commands");
 				sender.sendMessage(ChatColor.GREEN + "RoyalCommands "
 						+ ChatColor.BLUE + "v" + plugin.version + " reloaded.");
 				return true;
