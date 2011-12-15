@@ -8,51 +8,130 @@ commands:
   level:
     description: Levels your experience up one level.
     usage: /<command>
+    permission: rcmds.level
 
   setlevel:
     description: Sets your XP level to specified amount.
     usage: /<command> [level] <player>
+    permission: rcmds.setlevel
 
   sci:
     description: Selectively removes items from a player's inventory.
     usage: /<command> [player] [ID]
+    permission: rcmds.sci
 
   speak:
     description: Make another player talk.
     usage: /<command> [player] [message]
+    permission: rcmds.speak
 
   facepalm:
     description: Broadcasts your facepalm.
     usage: /<command>
+    permission: rcmds.facepalm
 
   slap:
     description: Broadcasts you slapping another player.
     usage: /<command> [player]
+    permission: rcmds.slap
 
   harm:
     description: Harms a player.
     usage: /<command> [player] [damage]
+    permission: rcmds.harm
 
   starve:
     description: Lowers a player's hunger.
     usage: /<command> [player] [damage]
+    permission: rcmds.starve
 
   banned:
     description: Returns if a player is banned.
     usage: /<command> [player]
+    permission: rcmds.banned
     
   setarmor:
     description: Sets your armor to a certain type.
     usage: /<command> [material]
+    permission: rcmds.setarmor
     
   getip:
     description: Gets the IP of a user.
     usage: /<command> [player]
+    permission: rcmds.getip
     
   compareip:
     description: Compare two users' IP addresses.
     usage: /<command> [player1] [player2]
+    permission: rcmds.compareip
     
   rcmds:
     description: Displays version of RoyalCommands.
     usage: /<command>
+    permission: rcmds.rcmds
+    
+permissions:
+  rcmds.*:
+    description: Gives access to all RoyalCommands commands.
+    children:
+      rcmds.level: true
+      rcmds.setlevel: true
+      rcmds.sci: true
+      rcmds.speak: true
+      rcmds.facepalm: true
+      rcmds.slap: true
+      rcmds.harm: true
+      rcmds.starve: true
+      rcmds.banned: true
+      rcmds.setarmor: true
+      rcmds.getip: true
+      rcmds.compareip: true
+      rcmds.rcmds: true
+  rcmds.exempt:
+    description: Gives the exempt permission for every command.
+    children:
+      rcmds.sci.exempt: true
+      rcmds.speak.exempt: true
+      rcmds.facepalm.exempt: true
+      rcmds.slap.exempt: true
+      rcmds.harm.exempt: true
+      rcmds.starve.exempt: true
+  rcmds.level:
+    description: Allows you to level your XP up by 1
+    default: op
+  rcmds.setlevel:
+    description: Allows you to set your XP level
+    default: op
+  rcmds.sci:
+    description: Allows you to selectively clear inventories
+    default: op
+  rcmds.speak:
+    description: Allows you to spoof a message
+    default: op
+  rcmds.facepalm:
+    description: Allows you to facepalm
+    default: op
+  rcmds.slap:
+    description: Allows you to slap another player
+    default: op
+  rcmds.harm:
+    description: Allows you to damage another player
+    default: op
+  rcmds.starve:
+    description: Allows you to starve another player
+    default: op
+  rcmds.banned:
+    description: Allows you to check if a player is banned
+    default: op
+  rcmds.setarmor:
+    description: Allows you to set your armor
+    default: op
+  rcmds.getip:
+    description: Allows you to get the IP of another player
+    default: op
+  rcmds.compareip:
+    description: Allows you to compare to players' IPs
+    default: op
+  rcmds.rcmds:
+    description: Allows you to reload RoyalCommands' config
+    default: op
