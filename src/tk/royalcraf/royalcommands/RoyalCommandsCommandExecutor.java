@@ -66,7 +66,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 		}
 	}
 
-	public static boolean getOnline(final String person) {
+	public static boolean isOnline(final String person) {
 		Player player = Bukkit.getServer().getPlayer(person);
 
 		if (player == null) {
@@ -122,7 +122,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 					} else {
 						int toLevel = 0;
 						if (args.length == 2) {
-							if (getOnline(args[1]) == false) {
+							if (isOnline(args[1]) == false) {
 								sender.sendMessage(ChatColor.RED
 										+ "You must input a valid player!");
 							} else {
@@ -189,7 +189,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 				if (args.length < 2) {
 					return false;
 				}
-				if (getOnline(args[0]) == false) {
+				if (isOnline(args[0]) == false) {
 					sender.sendMessage(ChatColor.RED
 							+ "You must input an online player.");
 					errord = 1;
@@ -253,7 +253,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 				victim = (Player) plugin.getServer().getPlayer(args[0]);
 
 				int errord = 0;
-				if (getOnline(args[0]) == false) {
+				if (isOnline(args[0]) == false) {
 					sender.sendMessage(ChatColor.RED
 							+ "You must input an online player.");
 					errord = 1;
@@ -296,7 +296,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 									+ ChatColor.AQUA + " has facepalmed.");
 					return true;
 				} else {
-					if (getOnline(args[0]) == false) {
+					if (isOnline(args[0]) == false) {
 						sender.sendMessage(ChatColor.RED
 								+ "That player is not online!");
 						return true;
@@ -329,7 +329,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 				if (args.length < 1) {
 					return false;
 				}
-				if (getOnline(args[0]) == false) {
+				if (isOnline(args[0]) == false) {
 					sender.sendMessage(ChatColor.RED
 							+ "That person is not online!");
 					return true;
@@ -361,7 +361,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 				if (args.length < 2) {
 					return false;
 				}
-				if (getOnline(args[0]) == false) {
+				if (isOnline(args[0]) == false) {
 					sender.sendMessage(ChatColor.RED
 							+ "That person is not online!");
 					return true;
@@ -410,7 +410,7 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 				if (args.length < 2) {
 					return false;
 				}
-				if (getOnline(args[0]) == false) {
+				if (isOnline(args[0]) == false) {
 					sender.sendMessage(ChatColor.RED
 							+ "That person is not online!");
 					return true;
