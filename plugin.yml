@@ -52,6 +52,10 @@ commands:
   compareip:
     description: Compare two users' IP addresses.
     usage: /<command> [player1] [player2]
+  
+  ragequit:
+    description: Ragequits yourself.
+    usage: /<command> <player>
     
   rcmds:
     description: Displays version of RoyalCommands.
@@ -73,6 +77,7 @@ permissions:
       rcmds.setarmor: true
       rcmds.getip: true
       rcmds.compareip: true
+      rcmds.ragequit: true
       rcmds.rcmds: true
   rcmds.exempt:
     description: Gives the exempt permission for every command.
@@ -118,6 +123,9 @@ permissions:
     default: op
   rcmds.compareip:
     description: Allows you to compare to players' IPs
+    default: op
+  rcmds.ragequit:
+    description: Allows you to ragequit.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config

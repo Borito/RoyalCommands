@@ -700,6 +700,30 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 						+ ChatColor.BLUE + "v" + plugin.version + " reloaded.");
 				return true;
 			}
+		} else if (cmd.getName().equalsIgnoreCase("ragequit")) {
+			if (!isAuthorized(sender, "rcmds.ragequit")) {
+				sender.sendMessage(ChatColor.RED
+						+ "You don't have permission for that!");
+				return true;
+			} else {
+				if (args.length < 1) {
+					if (sender instanceof Player) {
+						plugin.getServer().broadcastMessage(
+								ChatColor.DARK_RED + sender.getName()
+										+ ChatColor.RED + " has ragequit!");
+						((Player) sender).kickPlayer(ChatColor.DARK_RED
+								+ "RAAAGGGEEEE!!!");
+						return true;
+					}
+				} else if (args.length == 1) {
+					victim = plugin.getServer().getPlayer(args[0]);
+					plugin.getServer().broadcastMessage(
+							ChatColor.DARK_RED + victim.getName()
+									+ ChatColor.RED + " has ragequit!");
+					victim.kickPlayer(ChatColor.DARK_RED + "RAAAGGGEEEE!!!");
+					return true;
+				}
+			}
 		}
 
 		return false;
