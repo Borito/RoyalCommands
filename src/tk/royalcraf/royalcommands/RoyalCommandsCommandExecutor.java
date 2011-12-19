@@ -730,6 +730,18 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 					}
 				}
 			}
+		} else if (cmd.getName().equalsIgnoreCase("quit")) {
+			if (!isAuthorized(sender, "rcmds.quit")) {
+				sender.sendMessage(ChatColor.RED
+						+ "You don't have permission for that!");
+				return true;
+			} else {
+				((Player) sender).kickPlayer("You have left the game.");
+				plugin.getServer().broadcastMessage(
+						ChatColor.YELLOW + sender.getName()
+								+ " has left the game.");
+				return true;
+			}
 		}
 
 		return false;
