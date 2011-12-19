@@ -61,6 +61,10 @@ commands:
     description: Makes yourself quit.
     usage: /<command>
     
+  rank:
+    description: Check the rank of the specified player (permissions).
+    usage: /<command> [player]
+    
   rcmds:
     description: Displays version of RoyalCommands.
     usage: /<command>
@@ -134,6 +138,9 @@ permissions:
     default: op
   rcmds.quit:
     description: Allows you to quit.
+    default: op
+  rcmds.rank:
+    description: Allows you to check the rank of a player.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config

@@ -742,9 +742,24 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 								+ " has left the game.");
 				return true;
 			}
+		} else if (cmd.getName().equalsIgnoreCase("rank")) {
+			if (!isAuthorized(sender, "rcmds.rank")) {
+				sender.sendMessage(ChatColor.RED
+						+ "You don't have permission for that!");
+				return true;
+			} else {
+				if (args.length < 1) {
+					return false;
+				} else {
+					victim = plugin.getServer().getPlayer(args[0]);
+					String rank = RoyalCommands.permission
+							.getPrimaryGroup(victim);
+					sender.sendMessage("The user " + victim.getName()
+							+ " has the group " + rank + ".");
+					return true;
+				}
+			}
 		}
-
 		return false;
-
 	}
 }
