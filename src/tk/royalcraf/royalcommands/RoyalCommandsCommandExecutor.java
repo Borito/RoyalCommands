@@ -716,12 +716,18 @@ public class RoyalCommandsCommandExecutor implements CommandExecutor {
 						return true;
 					}
 				} else if (args.length == 1) {
-					victim = plugin.getServer().getPlayer(args[0]);
-					plugin.getServer().broadcastMessage(
-							ChatColor.DARK_RED + victim.getName()
-									+ ChatColor.RED + " has ragequit!");
-					victim.kickPlayer(ChatColor.DARK_RED + "RAAAGGGEEEE!!!");
-					return true;
+					if (!isAuthorized(sender, "rcmds.ragequit.others")) {
+						sender.sendMessage(ChatColor.RED
+								+ "You don't have permission for that!");
+						return true;
+					} else {
+						victim = plugin.getServer().getPlayer(args[0]);
+						plugin.getServer().broadcastMessage(
+								ChatColor.DARK_RED + victim.getName()
+										+ ChatColor.RED + " has ragequit!");
+						victim.kickPlayer(ChatColor.DARK_RED + "RAAAGGGEEEE!!!");
+						return true;
+					}
 				}
 			}
 		}
