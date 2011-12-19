@@ -96,6 +96,7 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("getip").setExecutor(cmdExec);
 		getCommand("compareip").setExecutor(cmdExec);
 		getCommand("ragequit").setExecutor(cmdExec);
+		getCommand("quit").setExecutor(cmdExec);
 		getCommand("rcmds").setExecutor(cmdExec);
 
 		showcommands = this.getConfig().getBoolean("view_commands");

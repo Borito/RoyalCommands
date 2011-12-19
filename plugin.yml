@@ -54,8 +54,12 @@ commands:
     usage: /<command> [player1] [player2]
   
   ragequit:
-    description: Ragequits yourself.
+    description: Ragequits yourself or another player.
     usage: /<command> <player>
+    
+  quit:
+    description: Makes yourself quit.
+    usage: /<command>
     
   rcmds:
     description: Displays version of RoyalCommands.
@@ -78,6 +82,7 @@ permissions:
       rcmds.getip: true
       rcmds.compareip: true
       rcmds.ragequit: true
+      rcmds.quit: true
       rcmds.rcmds: true
   rcmds.exempt:
     description: Gives the exempt permission for every command.
@@ -126,6 +131,9 @@ permissions:
     default: op
   rcmds.ragequit:
     description: Allows you to ragequit.
+    default: op
+  rcmds.quit:
+    description: Allows you to quit.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
