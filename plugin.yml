@@ -90,8 +90,13 @@ commands:
     
   megastrike:
     description: Strikes lightning 15 times at the players cursor or at specified player.
-    usage: /<command> (player)
+    usage: /<command> <player>
     aliases: [mstrike, megasmite, msmite, ms]
+    
+  pext:
+    description: Extinguishes yourself or a player.
+    usage: /<command> <player>
+    aliases: [playerext, pex, splash]
     
   rcmds:
     description: Displays version of RoyalCommands.
@@ -181,6 +186,9 @@ permissions:
     default: op
   rcmds.megastrike:
     description: Allows you to call a mega-strike.
+    default: op
+  rcmds.pext:
+    description: Allows you to extinguish players.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config

@@ -41,6 +41,7 @@ import tk.royalcraf.rcommands.GetIP;
 import tk.royalcraf.rcommands.Harm;
 import tk.royalcraf.rcommands.Level;
 import tk.royalcraf.rcommands.MegaStrike;
+import tk.royalcraf.rcommands.Pext;
 import tk.royalcraf.rcommands.Quit;
 import tk.royalcraf.rcommands.RageQuit;
 import tk.royalcraf.rcommands.Rank;
@@ -189,6 +190,7 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("vtp").setExecutor(new Vtp(this));
 		getCommand("vtphere").setExecutor(new Vtphere(this));
 		getCommand("megastrike").setExecutor(new MegaStrike(this));
+		getCommand("pext").setExecutor(new Pext(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
