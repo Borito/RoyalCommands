@@ -31,24 +31,50 @@ public class MegaStrike implements CommandExecutor {
 				if (cs instanceof Player) {
 					p = (Player) cs;
 				}
-				BlockIterator b = new BlockIterator(p, 100);
-				if (!b.hasNext()) {
-					cs.sendMessage(ChatColor.RED + "Cannot megastrike there!");
-					return true;
+				if (args.length < 1) {
+					BlockIterator b = new BlockIterator(p, 100);
+					if (!b.hasNext()) {
+						cs.sendMessage(ChatColor.RED
+								+ "Cannot megastrike there!");
+						return true;
+					} else {
+						Block bb = b.next();
+						while (b.hasNext()) {
+							if (!(b.next().getTypeId() == 0)) {
+								bb = b.next();
+								break;
+							}
+						}
+						for (int i = 0; i < 15; i++) {
+							p.getWorld().strikeLightning(bb.getLocation());
+						}
+						return true;
+					}
 				} else {
-					Block bb = b.next();
-					while (b.hasNext()) {
-						if (!(b.next().getTypeId() == 0)) {
-							bb = b.next();
-							break;
+					if (!plugin.isAuthorized(cs, "rcmds.megastrike.others")) {
+						cs.sendMessage(ChatColor.RED
+								+ "You don't have permission for that!");
+						return true;
+					} else {
+						Player target = plugin.getServer().getPlayer(args[0]);
+						if (target != null) {
+							for (int i = 0; i < 15; i++) {
+								p.getWorld().strikeLightning(
+										target.getLocation());
+							}
+							cs.sendMessage(ChatColor.BLUE + "Megasmiting "
+									+ ChatColor.GRAY + target.getName()
+									+ ChatColor.BLUE + ".");
+							return true;
+						} else {
+							cs.sendMessage(ChatColor.RED
+									+ "That player does not exist!");
+							return true;
 						}
 					}
-					for (int i = 0; i < 10; i++) {
-						p.getWorld().strikeLightning(bb.getLocation());
-					}
-					return true;
 				}
 			}
+
 		}
 		return false;
 	}
