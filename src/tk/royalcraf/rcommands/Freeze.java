@@ -38,7 +38,7 @@ public class Freeze implements CommandExecutor {
 					return true;
 				}
 				if (plugin.isOnline(victim.getName())) {
-					if (!freezedb.containsKey(args[0])) {
+					if (!freezedb.containsKey(victim.getName())) {
 						freezedb.put(victim.getName(), true);
 						cs.sendMessage(ChatColor.BLUE + "You have frozen "
 								+ ChatColor.GRAY + victim.getName()
