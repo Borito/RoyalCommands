@@ -56,7 +56,7 @@ public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
 
-	public String version = "0.0.5";
+	public String version = "0.0.6";
 
 	public Boolean showcommands = null;
 	public Plugin[] plugins = Bukkit.getServer().getPluginManager()
