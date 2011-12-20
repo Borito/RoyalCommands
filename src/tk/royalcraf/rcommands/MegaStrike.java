@@ -1,6 +1,7 @@
 package tk.royalcraf.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,10 +32,22 @@ public class MegaStrike implements CommandExecutor {
 					p = (Player) cs;
 				}
 				BlockIterator b = new BlockIterator(p, 100);
-				for (int i = 0; i < 5; i++) {
-					p.getWorld().strikeLightning(b.next().getLocation());
+				if (!b.hasNext()) {
+					cs.sendMessage(ChatColor.RED + "Cannot megastrike there!");
+					return true;
+				} else {
+					Block bb = b.next();
+					while (b.hasNext()) {
+						if (!(b.next().getTypeId() == 0)) {
+							bb = b.next();
+							break;
+						}
+					}
+					for (int i = 0; i < 10; i++) {
+						p.getWorld().strikeLightning(bb.getLocation());
+					}
+					return true;
 				}
-				return true;
 			}
 		}
 		return false;
