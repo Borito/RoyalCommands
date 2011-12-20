@@ -77,9 +77,13 @@ commands:
     description: Teleports to anyone, regardless of being vanished or having teleport off.
     usage: /<command> [player]
     
+  vtphere:
+    description: Teleports anyone you, regardless of being vanished or having teleport off.
+    usage: /<command> [player]
+    
   megastrike:
-    description: Strikes lightning 5 times at the players cursor.
-    usage: /<command>
+    description: Strikes lightning 15 times at the players cursor or at specified player.
+    usage: /<command> (player)
     
   rcmds:
     description: Displays version of RoyalCommands.
