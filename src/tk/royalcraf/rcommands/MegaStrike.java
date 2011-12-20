@@ -58,13 +58,17 @@ public class MegaStrike implements CommandExecutor {
 					} else {
 						Player target = plugin.getServer().getPlayer(args[0]);
 						if (target != null) {
+							cs.sendMessage(ChatColor.BLUE + "Megasmiting "
+									+ ChatColor.GRAY + target.getName()
+									+ ChatColor.BLUE + ".");
+							target.sendMessage(ChatColor.RED
+									+ "You have been megasmited by "
+									+ ChatColor.GRAY + cs.getName()
+									+ ChatColor.RED + ".");
 							for (int i = 0; i < 15; i++) {
 								p.getWorld().strikeLightning(
 										target.getLocation());
 							}
-							cs.sendMessage(ChatColor.BLUE + "Megasmiting "
-									+ ChatColor.GRAY + target.getName()
-									+ ChatColor.BLUE + ".");
 							return true;
 						} else {
 							cs.sendMessage(ChatColor.RED
