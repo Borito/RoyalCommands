@@ -45,6 +45,7 @@ public class Vtp implements CommandExecutor {
 				} else {
 					cs.sendMessage(ChatColor.RED
 							+ "That player does not exist!");
+					return true;
 				}
 			}
 		}
