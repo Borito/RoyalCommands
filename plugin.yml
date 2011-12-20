@@ -77,6 +77,10 @@ commands:
     description: Teleports to anyone, regardless of being vanished or having teleport off.
     usage: /<command> [player]
     
+  megastrike:
+    description: Strikes lightning 5 times at the players cursor.
+    usage: /<command>
+    
   rcmds:
     description: Displays version of RoyalCommands.
     usage: /<command>
@@ -162,6 +166,9 @@ permissions:
     default: op
   rcmds.vtp:
     description: Allows you to override teleport.
+    default: op
+  rcmds.megastrike:
+    description: Allows you to call a mega-strike.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
