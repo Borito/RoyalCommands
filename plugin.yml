@@ -24,6 +24,7 @@ commands:
   facepalm:
     description: Broadcasts your facepalm.
     usage: /<command>
+    aliases: [fp, fpalm, facep]
 
   slap:
     description: Broadcasts you slapping another player.
@@ -44,18 +45,22 @@ commands:
   setarmor:
     description: Sets your armor to a certain type.
     usage: /<command> [material]
+    aliases: [armor, sarmor]
     
   getip:
     description: Gets the IP of a user.
     usage: /<command> [player]
+    aliases: [getaddr, gip]
     
   compareip:
     description: Compare two users' IP addresses.
     usage: /<command> [player1] [player2]
+    aliases: [compip, cip]
   
   ragequit:
     description: Ragequits yourself or another player.
     usage: /<command> <player>
+    aliases: [rage, rq]
     
   quit:
     description: Makes yourself quit.
@@ -68,10 +73,12 @@ commands:
   freeze:
     description: Freezes the player.
     usage: /<command> [player]
+    aliases: [fz, frz]
     
   fakeop:
     description: Fakes an "You are now op!" message.
     usage: /<command> [player]
+    aliases: [fop]
     
   vtp:
     description: Teleports to anyone, regardless of being vanished or having teleport off.
@@ -84,6 +91,7 @@ commands:
   megastrike:
     description: Strikes lightning 15 times at the players cursor or at specified player.
     usage: /<command> (player)
+    aliases: [mstrike, megasmite, msmite, ms]
     
   rcmds:
     description: Displays version of RoyalCommands.
