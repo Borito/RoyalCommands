@@ -32,10 +32,14 @@ public class Vtphere implements CommandExecutor {
 				if (victim != null) {
 					if (cs instanceof Player) {
 						Player player = (Player) cs;
-						victim.teleport(player.getLocation());
 						cs.sendMessage(ChatColor.BLUE + "Teleporting player "
 								+ ChatColor.GRAY + victim.getName()
-								+ ChatColor.BLUE + "to you.");
+								+ ChatColor.BLUE + " to you.");
+						victim.sendMessage(ChatColor.BLUE
+								+ "You are being teleported to "
+								+ ChatColor.GRAY + cs.getName()
+								+ ChatColor.BLUE + ".");
+						victim.teleport(player.getLocation());
 						return true;
 					} else {
 						cs.sendMessage(ChatColor.RED

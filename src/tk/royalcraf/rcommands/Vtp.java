@@ -32,10 +32,12 @@ public class Vtp implements CommandExecutor {
 				if (victim != null) {
 					if (cs instanceof Player) {
 						Player player = (Player) cs;
-						player.teleport(victim.getLocation());
 						cs.sendMessage(ChatColor.BLUE
 								+ "Teleporting you to player " + ChatColor.GRAY
 								+ victim.getName() + ChatColor.BLUE + ".");
+						victim.sendMessage(ChatColor.GRAY + cs.getName()
+								+ ChatColor.BLUE + " is teleporting to you.");
+						player.teleport(victim.getLocation());
 						return true;
 					} else {
 						cs.sendMessage(ChatColor.RED
@@ -51,5 +53,4 @@ public class Vtp implements CommandExecutor {
 		}
 		return false;
 	}
-
 }
