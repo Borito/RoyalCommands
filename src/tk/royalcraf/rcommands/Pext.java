@@ -42,6 +42,10 @@ public class Pext implements CommandExecutor {
 					}
 				} else {
 					if (!plugin.isAuthorized(cs, "rcmds.pext.others")) {
+						cs.sendMessage(ChatColor.RED
+								+ "You don't have permission for that!");
+						return true;
+					} else {
 						Player target = plugin.getServer().getPlayer(args[0]);
 						if (target != null) {
 							cs.sendMessage(ChatColor.BLUE
