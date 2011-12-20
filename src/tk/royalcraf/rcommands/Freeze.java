@@ -37,7 +37,7 @@ public class Freeze implements CommandExecutor {
 							+ "You can't freeze that player!");
 					return true;
 				}
-				if (plugin.isOnline(victim.getName())) {
+				if (victim != null) {
 					if (!freezedb.containsKey(victim.getName())) {
 						freezedb.put(victim.getName(), true);
 						cs.sendMessage(ChatColor.BLUE + "You have frozen "
@@ -55,6 +55,9 @@ public class Freeze implements CommandExecutor {
 								+ "You have been thawed!");
 						return true;
 					}
+				} else {
+					cs.sendMessage(ChatColor.RED + "That player is not online!");
+					return true;
 				}
 			}
 		}

@@ -21,11 +21,14 @@ public class Fakeop implements CommandExecutor {
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("fakeop")) {
 			if (!plugin.isAuthorized(cs, "rcmds.fakeop")) {
+				cs.sendMessage(ChatColor.RED
+						+ "You don't have permission for that!");
+			} else {
 				if (args.length < 1) {
 					return false;
 				} else {
 					Player victim = plugin.getServer().getPlayer(args[0]);
-					if (plugin.isOnline(victim.getName())) {
+					if (victim != null) {
 						victim.sendMessage(ChatColor.YELLOW + "You are now op!");
 						cs.sendMessage(ChatColor.BLUE + victim.getName()
 								+ " has been sent a fake op notice.");
