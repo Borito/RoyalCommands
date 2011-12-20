@@ -27,6 +27,7 @@ public class Freeze implements CommandExecutor {
 			if (!plugin.isAuthorized(cs, "rcmds.freeze")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
+				return true;
 			} else {
 				if (args.length < 1) {
 					return false;
