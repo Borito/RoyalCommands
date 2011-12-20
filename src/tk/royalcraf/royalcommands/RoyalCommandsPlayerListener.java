@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -34,6 +36,18 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerMove(PlayerMoveEvent event) {
+		if (Freeze.freezedb.containsKey(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+	}
+	
+	public void onBlockPlace(BlockPlaceEvent event) {
+		if (Freeze.freezedb.containsKey(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+	}
+	
+	public void onBlockBreak(BlockBreakEvent event) {
 		if (Freeze.freezedb.containsKey(event.getPlayer().getName())) {
 			event.setCancelled(true);
 		}

@@ -161,6 +161,10 @@ public class RoyalCommands extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener,
 				Event.Priority.High, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, playerListener,
+				Event.Priority.High, this);
+		pm.registerEvent(Event.Type.BLOCK_PLACE, playerListener,
+				Event.Priority.High, this);
 
 		getCommand("level").setExecutor(new Level(this));
 		getCommand("setlevel").setExecutor(new Setlevel(this));
