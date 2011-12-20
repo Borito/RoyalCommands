@@ -55,6 +55,8 @@ public class Pext implements CommandExecutor {
 									+ "You have been extinguished by "
 									+ ChatColor.GRAY + cs.getName()
 									+ ChatColor.BLUE + ".");
+							target.setFireTicks(0);
+							return true;
 						} else {
 							cs.sendMessage(ChatColor.RED
 									+ "That player does not exist!");
