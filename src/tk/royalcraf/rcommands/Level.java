@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import tk.royalcraf.royalcommands.RoyalCommands;
 
 public class Level implements CommandExecutor {
-
+	
 	RoyalCommands plugin;
 
 	public Level(RoyalCommands plugin) {

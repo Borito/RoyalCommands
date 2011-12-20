@@ -25,7 +25,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.command.CommandSender;
@@ -53,12 +53,14 @@ public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
 
-	public PluginDescriptionFile pdf;
-	public String version = pdf.getVersion();
+	public String version = "0.0.5";
+	
+			
 	public Boolean showcommands = null;
+	public Plugin[] plugins = Bukkit.getServer().getPluginManager()
+			.getPlugins();
 
 	// Permissions with Vault
-
 	public Boolean setupPermissions() {
 		RegisteredServiceProvider<Permission> permissionProvider = getServer()
 				.getServicesManager().getRegistration(
@@ -148,7 +150,6 @@ public class RoyalCommands extends JavaPlugin {
 	}
 
 	public void onEnable() {
-
 		loadConfiguration();
 
 		PluginManager pm = this.getServer().getPluginManager();
@@ -176,7 +177,6 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
-
 		log.info("[RoyalCommands] RoyalCommands v" + this.version
 				+ " initiated.");
 	}
