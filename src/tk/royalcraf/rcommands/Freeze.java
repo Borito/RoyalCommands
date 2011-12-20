@@ -32,12 +32,12 @@ public class Freeze implements CommandExecutor {
 					return false;
 				}
 				Player victim = plugin.getServer().getPlayer(args[0]);
-				if (plugin.isAuthorized(victim, "rcmds.exempt.freeze")) {
-					cs.sendMessage(ChatColor.RED
-							+ "You can't freeze that player!");
-					return true;
-				}
 				if (victim != null) {
+					if (plugin.isAuthorized(victim, "rcmds.exempt.freeze")) {
+						cs.sendMessage(ChatColor.RED
+								+ "You can't freeze that player!");
+						return true;
+					}
 					if (!freezedb.containsKey(victim.getName())) {
 						freezedb.put(victim.getName(), true);
 						cs.sendMessage(ChatColor.BLUE + "You have frozen "
