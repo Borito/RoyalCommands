@@ -73,6 +73,10 @@ commands:
     description: Fakes an "You are now op!" message.
     usage: /<command> [player]
     
+  vtp:
+    description: Teleports to anyone, regardless of being vanished or having teleport off.
+    usage: /<command> [player]
+    
   rcmds:
     description: Displays version of RoyalCommands.
     usage: /<command>
@@ -155,6 +159,9 @@ permissions:
     default: op
   rcmds.fakeop:
     description: Allows you to fake op.
+    default: op
+  rcmds.vtp:
+    description: Allows you to override teleport.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config

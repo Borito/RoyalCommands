@@ -50,6 +50,7 @@ import tk.royalcraf.rcommands.Setlevel;
 import tk.royalcraf.rcommands.Slap;
 import tk.royalcraf.rcommands.Speak;
 import tk.royalcraf.rcommands.Starve;
+import tk.royalcraf.rcommands.Vtp;
 
 public class RoyalCommands extends JavaPlugin {
 
@@ -183,6 +184,7 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("rank").setExecutor(new Rank(this));
 		getCommand("freeze").setExecutor(new Freeze(this));
 		getCommand("fakeop").setExecutor(new Fakeop(this));
+		getCommand("vtp").setExecutor(new Vtp(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
