@@ -52,6 +52,7 @@ import tk.royalcraf.rcommands.Slap;
 import tk.royalcraf.rcommands.Speak;
 import tk.royalcraf.rcommands.Starve;
 import tk.royalcraf.rcommands.Vtp;
+import tk.royalcraf.rcommands.Vtphere;
 
 public class RoyalCommands extends JavaPlugin {
 
@@ -186,6 +187,7 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("freeze").setExecutor(new Freeze(this));
 		getCommand("fakeop").setExecutor(new Fakeop(this));
 		getCommand("vtp").setExecutor(new Vtp(this));
+		getCommand("vtphere").setExecutor(new Vtphere(this));
 		getCommand("megastrike").setExecutor(new MegaStrike(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
