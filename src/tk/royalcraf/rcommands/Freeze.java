@@ -30,6 +30,12 @@ public class Freeze implements CommandExecutor {
 				if (args.length < 1) {
 					return false;
 				}
+				if (plugin.isAuthorized(plugin.getServer().getPlayer(args[0]),
+						"rcmds.exempt.freeze")) {
+					cs.sendMessage(ChatColor.RED
+							+ "You can't freeze that player!");
+					return true;
+				}
 				if (plugin.isOnline(args[0])) {
 					if (!freezedb.containsKey(args[0])) {
 						freezedb.put(args[0], true);
