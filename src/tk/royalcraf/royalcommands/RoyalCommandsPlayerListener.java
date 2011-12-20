@@ -10,6 +10,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerMoveEvent;
+
+import tk.royalcraf.rcommands.Freeze;
 
 public class RoyalCommandsPlayerListener extends PlayerListener {
 
@@ -30,6 +33,12 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 
 	}
 
+	public void onPlayerMove(PlayerMoveEvent event) {
+		if (Freeze.freezedb.containsKey(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+	}
+	
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		File datafile = new File(plugin.getDataFolder() + "/userdata/"
 				+ event.getPlayer().getName() + ".yml");

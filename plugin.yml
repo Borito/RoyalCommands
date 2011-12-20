@@ -65,6 +65,14 @@ commands:
     description: Check the rank of the specified player (permissions).
     usage: /<command> [player]
     
+  freeze:
+    description: Freezes the player.
+    usage: /<command> [player]
+    
+  fakeop:
+    description: Fakes an "You are now op!" message.
+    usage: /<command> [player]
+    
   rcmds:
     description: Displays version of RoyalCommands.
     usage: /<command>
@@ -141,6 +149,12 @@ permissions:
     default: op
   rcmds.rank:
     description: Allows you to check the rank of a player.
+    default: op
+  rcmds.freeze:
+    description: Allows you to freeze a player.
+    default: op
+  rcmds.fakeop:
+    description: Allows you to fake op.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config

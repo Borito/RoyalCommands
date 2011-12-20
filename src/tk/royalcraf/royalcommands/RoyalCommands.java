@@ -35,6 +35,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tk.royalcraf.rcommands.Banned;
 import tk.royalcraf.rcommands.CompareIP;
 import tk.royalcraf.rcommands.Facepalm;
+import tk.royalcraf.rcommands.Fakeop;
+import tk.royalcraf.rcommands.Freeze;
 import tk.royalcraf.rcommands.GetIP;
 import tk.royalcraf.rcommands.Harm;
 import tk.royalcraf.rcommands.Level;
@@ -54,8 +56,7 @@ public class RoyalCommands extends JavaPlugin {
 	public static Permission permission = null;
 
 	public String version = "0.0.5";
-	
-			
+
 	public Boolean showcommands = null;
 	public Plugin[] plugins = Bukkit.getServer().getPluginManager()
 			.getPlugins();
@@ -158,6 +159,8 @@ public class RoyalCommands extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener,
 				Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener,
+				Event.Priority.High, this);
 
 		getCommand("level").setExecutor(new Level(this));
 		getCommand("setlevel").setExecutor(new Setlevel(this));
@@ -174,6 +177,8 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("ragequit").setExecutor(new RageQuit(this));
 		getCommand("quit").setExecutor(new Quit(this));
 		getCommand("rank").setExecutor(new Rank(this));
+		getCommand("freeze").setExecutor(new Freeze(this));
+		getCommand("fakeop").setExecutor(new Fakeop(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
