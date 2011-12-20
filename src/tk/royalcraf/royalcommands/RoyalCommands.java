@@ -21,18 +21,43 @@ package tk.royalcraf.royalcommands;
 import java.io.File;
 import java.util.logging.Logger;
 import net.milkbowl.vault.permission.Permission;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import tk.royalcraf.rcommands.Banned;
+import tk.royalcraf.rcommands.CompareIP;
+import tk.royalcraf.rcommands.Facepalm;
+import tk.royalcraf.rcommands.GetIP;
+import tk.royalcraf.rcommands.Harm;
+import tk.royalcraf.rcommands.Level;
+import tk.royalcraf.rcommands.Quit;
+import tk.royalcraf.rcommands.RageQuit;
+import tk.royalcraf.rcommands.Rank;
+import tk.royalcraf.rcommands.Rcmds;
+import tk.royalcraf.rcommands.Sci;
+import tk.royalcraf.rcommands.Setarmor;
+import tk.royalcraf.rcommands.Setlevel;
+import tk.royalcraf.rcommands.Slap;
+import tk.royalcraf.rcommands.Speak;
+import tk.royalcraf.rcommands.Starve;
 
 public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
 
-	public String version = "0.0.5";
-	public boolean showcommands = false;
+	public PluginDescriptionFile pdf;
+	public String version = pdf.getVersion();
+	public Boolean showcommands = null;
+
+	// Permissions with Vault
 
 	public Boolean setupPermissions() {
 		RegisteredServiceProvider<Permission> permissionProvider = getServer()
@@ -49,7 +74,7 @@ public class RoyalCommands extends JavaPlugin {
 	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(
 			this);
 
-	Logger log = Logger.getLogger("Minecraft");
+	public Logger log = Logger.getLogger("Minecraft");
 
 	public void loadConfiguration() {
 		this.getConfig().options().copyDefaults(true);
@@ -70,6 +95,58 @@ public class RoyalCommands extends JavaPlugin {
 		}
 	}
 
+	// getFinalArg taken from EssentialsCommand.java - Essentials by
+	// EssentialsTeam
+	public String getFinalArg(final String[] args, final int start) {
+		final StringBuilder bldr = new StringBuilder();
+		for (int i = start; i < args.length; i++) {
+			if (i != start) {
+				bldr.append(" ");
+			}
+			bldr.append(args[i]);
+		}
+		return bldr.toString();
+	}
+
+	public boolean isAuthorized(final Player player, final String node) {
+		if (player.isOp()) {
+			return true;
+		} else if (this.setupPermissions()) {
+			if (RoyalCommands.permission.has(player, node)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isAuthorized(final CommandSender player, final String node) {
+		if (player.isOp()) {
+			return true;
+		} else if (this.setupPermissions()) {
+			if (RoyalCommands.permission.has((Player) player, node)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isOnline(final String person) {
+		Player player = Bukkit.getServer().getPlayer(person);
+
+		if (player == null) {
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
 	public void onEnable() {
 
 		loadConfiguration();
@@ -81,24 +158,22 @@ public class RoyalCommands extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener,
 				Event.Priority.Normal, this);
 
-		RoyalCommandsCommandExecutor cmdExec = new RoyalCommandsCommandExecutor(
-				this);
-		getCommand("level").setExecutor(cmdExec);
-		getCommand("setlevel").setExecutor(cmdExec);
-		getCommand("sci").setExecutor(cmdExec);
-		getCommand("speak").setExecutor(cmdExec);
-		getCommand("facepalm").setExecutor(cmdExec);
-		getCommand("slap").setExecutor(cmdExec);
-		getCommand("harm").setExecutor(cmdExec);
-		getCommand("starve").setExecutor(cmdExec);
-		getCommand("banned").setExecutor(cmdExec);
-		getCommand("setarmor").setExecutor(cmdExec);
-		getCommand("getip").setExecutor(cmdExec);
-		getCommand("compareip").setExecutor(cmdExec);
-		getCommand("ragequit").setExecutor(cmdExec);
-		getCommand("quit").setExecutor(cmdExec);
-		getCommand("rank").setExecutor(cmdExec);
-		getCommand("rcmds").setExecutor(cmdExec);
+		getCommand("level").setExecutor(new Level(this));
+		getCommand("setlevel").setExecutor(new Setlevel(this));
+		getCommand("sci").setExecutor(new Sci(this));
+		getCommand("speak").setExecutor(new Speak(this));
+		getCommand("facepalm").setExecutor(new Facepalm(this));
+		getCommand("slap").setExecutor(new Slap(this));
+		getCommand("harm").setExecutor(new Harm(this));
+		getCommand("starve").setExecutor(new Starve(this));
+		getCommand("banned").setExecutor(new Banned(this));
+		getCommand("setarmor").setExecutor(new Setarmor(this));
+		getCommand("getip").setExecutor(new GetIP(this));
+		getCommand("compareip").setExecutor(new CompareIP(this));
+		getCommand("ragequit").setExecutor(new RageQuit(this));
+		getCommand("quit").setExecutor(new Quit(this));
+		getCommand("rank").setExecutor(new Rank(this));
+		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
 
