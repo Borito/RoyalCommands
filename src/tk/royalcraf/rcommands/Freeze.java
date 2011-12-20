@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import tk.royalcraf.royalcommands.RoyalCommands;
 
@@ -30,33 +31,28 @@ public class Freeze implements CommandExecutor {
 				if (args.length < 1) {
 					return false;
 				}
-				if (plugin.isAuthorized(plugin.getServer().getPlayer(args[0]),
-						"rcmds.exempt.freeze")) {
+				Player victim = plugin.getServer().getPlayer(args[0]);
+				if (plugin.isAuthorized(victim, "rcmds.exempt.freeze")) {
 					cs.sendMessage(ChatColor.RED
 							+ "You can't freeze that player!");
 					return true;
 				}
-				if (plugin.isOnline(args[0])) {
+				if (plugin.isOnline(victim.getName())) {
 					if (!freezedb.containsKey(args[0])) {
-						freezedb.put(args[0], true);
+						freezedb.put(victim.getName(), true);
 						cs.sendMessage(ChatColor.BLUE + "You have frozen "
-								+ ChatColor.GRAY + args[0] + ChatColor.BLUE
-								+ "!");
-						plugin.getServer()
-								.getPlayer(args[0])
-								.sendMessage(
-										ChatColor.RED + "You have been frozen!");
+								+ ChatColor.GRAY + victim.getName()
+								+ ChatColor.BLUE + "!");
+						victim.sendMessage(ChatColor.RED
+								+ "You have been frozen!");
 						return true;
 					} else {
-						freezedb.remove(args[0]);
+						freezedb.remove(victim.getName());
 						cs.sendMessage(ChatColor.BLUE + "You have thawed "
-								+ ChatColor.GRAY + args[0] + ChatColor.BLUE
-								+ "!");
-						plugin.getServer()
-								.getPlayer(args[0])
-								.sendMessage(
-										ChatColor.BLUE
-												+ "You have been thawed!");
+								+ ChatColor.GRAY + victim.getName()
+								+ ChatColor.BLUE + "!");
+						victim.sendMessage(ChatColor.BLUE
+								+ "You have been thawed!");
 						return true;
 					}
 				}
