@@ -80,6 +80,8 @@ public class RoyalCommands extends JavaPlugin {
 
 	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(
 			this);
+	private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(
+			this);
 
 	public Logger log = Logger.getLogger("Minecraft");
 
@@ -165,9 +167,9 @@ public class RoyalCommands extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener,
 				Event.Priority.High, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, playerListener,
+		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener,
 				Event.Priority.High, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACE, playerListener,
+		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener,
 				Event.Priority.High, this);
 
 		getCommand("level").setExecutor(new Level(this));
