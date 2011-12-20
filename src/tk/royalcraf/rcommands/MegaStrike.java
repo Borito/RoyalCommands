@@ -32,7 +32,7 @@ public class MegaStrike implements CommandExecutor {
 					p = (Player) cs;
 				}
 				if (args.length < 1) {
-					BlockIterator b = new BlockIterator(p, 100);
+					BlockIterator b = new BlockIterator(p, 0);
 					if (!b.hasNext()) {
 						cs.sendMessage(ChatColor.RED
 								+ "Cannot megastrike there!");
