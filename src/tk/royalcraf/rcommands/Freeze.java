@@ -36,12 +36,21 @@ public class Freeze implements CommandExecutor {
 						cs.sendMessage(ChatColor.BLUE + "You have frozen "
 								+ ChatColor.GRAY + args[0] + ChatColor.BLUE
 								+ "!");
+						plugin.getServer()
+								.getPlayer(args[0])
+								.sendMessage(
+										ChatColor.RED + "You have been frozen!");
 						return true;
 					} else {
 						freezedb.remove(args[0]);
 						cs.sendMessage(ChatColor.BLUE + "You have thawed "
 								+ ChatColor.GRAY + args[0] + ChatColor.BLUE
 								+ "!");
+						plugin.getServer()
+								.getPlayer(args[0])
+								.sendMessage(
+										ChatColor.BLUE
+												+ "You have been thawed!");
 						return true;
 					}
 				}
