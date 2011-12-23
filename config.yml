@@ -1,5 +1,7 @@
-## RoyalCommands v0.0.5 Config File
+## RoyalCommands v0.0.6 Config File
 
-# Whether to disable /getip command (also disables /compareip)
 disable_getip: false
 view_commands: true
+default_ban_message: "&4Banhammered!"
+default_kick_message: "Kicked from server."
+default_stack_size: 64

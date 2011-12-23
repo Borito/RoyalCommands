@@ -28,6 +28,8 @@ public class GetIP implements CommandExecutor {
 			if (!plugin.isAuthorized(cs, "rcmds.getip")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
+				plugin.log.warning("[RoyalCommands] " + cs.getName()
+						+ " was denied access to the command!");
 				return true;
 			} else {
 				if (plugin.getConfig().getBoolean("disable_getip") == true) {
@@ -41,7 +43,7 @@ public class GetIP implements CommandExecutor {
 						OfflinePlayer oplayer = (OfflinePlayer) plugin
 								.getServer().getOfflinePlayer(args[0]);
 						File oplayerconfl = new File(plugin.getDataFolder()
-								+ "/userdata/" + oplayer.getName() + ".yml");
+								+ "/userdata/" + oplayer.getName().toLowerCase() + ".yml");
 						if (oplayerconfl.exists()) {
 							FileConfiguration oplayerconf = YamlConfiguration
 									.loadConfiguration(oplayerconfl);

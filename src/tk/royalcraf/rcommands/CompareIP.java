@@ -27,6 +27,8 @@ public class CompareIP implements CommandExecutor {
 			if (!plugin.isAuthorized(cs, "rcmds.compareip")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
+				plugin.log.warning("[RoyalCommands] " + cs.getName()
+						+ " was denied access to the command!");
 				return true;
 			} else {
 				if (plugin.getConfig().getBoolean("disable_getip") == true) {
@@ -45,9 +47,9 @@ public class CompareIP implements CommandExecutor {
 								.getOfflinePlayer(args[1]);
 
 						File p1confl = new File(plugin.getDataFolder()
-								+ "/userdata/" + player1.getName() + ".yml");
+								+ "/userdata/" + player1.getName().toLowerCase() + ".yml");
 						File p2confl = new File(plugin.getDataFolder()
-								+ "/userdata/" + player2.getName() + ".yml");
+								+ "/userdata/" + player2.getName().toLowerCase() + ".yml");
 						if (p1confl.exists()) {
 							if (p2confl.exists()) {
 								FileConfiguration p1conf = YamlConfiguration

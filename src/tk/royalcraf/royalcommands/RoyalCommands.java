@@ -25,45 +25,62 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import tk.royalcraf.rcommands.Ban;
 import tk.royalcraf.rcommands.Banned;
+import tk.royalcraf.rcommands.ClearInventory;
 import tk.royalcraf.rcommands.CompareIP;
+import tk.royalcraf.rcommands.DelHome;
 import tk.royalcraf.rcommands.Facepalm;
 import tk.royalcraf.rcommands.Fakeop;
+import tk.royalcraf.rcommands.FixChunk;
 import tk.royalcraf.rcommands.Freeze;
+import tk.royalcraf.rcommands.Gamemode;
 import tk.royalcraf.rcommands.GetIP;
+import tk.royalcraf.rcommands.Give;
 import tk.royalcraf.rcommands.Harm;
+import tk.royalcraf.rcommands.Home;
+import tk.royalcraf.rcommands.Item;
+import tk.royalcraf.rcommands.Kick;
 import tk.royalcraf.rcommands.Level;
+import tk.royalcraf.rcommands.ListHome;
 import tk.royalcraf.rcommands.MegaStrike;
+import tk.royalcraf.rcommands.Message;
+import tk.royalcraf.rcommands.Mute;
 import tk.royalcraf.rcommands.Pext;
 import tk.royalcraf.rcommands.Quit;
 import tk.royalcraf.rcommands.RageQuit;
 import tk.royalcraf.rcommands.Rank;
 import tk.royalcraf.rcommands.Rcmds;
+import tk.royalcraf.rcommands.Reply;
 import tk.royalcraf.rcommands.Sci;
+import tk.royalcraf.rcommands.SetHome;
 import tk.royalcraf.rcommands.Setarmor;
 import tk.royalcraf.rcommands.Setlevel;
 import tk.royalcraf.rcommands.Slap;
 import tk.royalcraf.rcommands.Speak;
 import tk.royalcraf.rcommands.Starve;
+import tk.royalcraf.rcommands.Time;
 import tk.royalcraf.rcommands.Vtp;
 import tk.royalcraf.rcommands.Vtphere;
+import tk.royalcraf.rcommands.Weather;
 
 public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
 
-	public String version = "0.0.6";
+	public String version = "0.0.7";
 
 	public Boolean showcommands = null;
-	public Plugin[] plugins = Bukkit.getServer().getPluginManager()
-			.getPlugins();
+	public Boolean disablegetip = null;
+	public String banMessage = null;
+	public String kickMessage = null;
+	public Integer defaultStack = null;
 
 	// Permissions with Vault
 	public Boolean setupPermissions() {
@@ -167,6 +184,12 @@ public class RoyalCommands extends JavaPlugin {
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener,
 				Event.Priority.High, this);
+		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener,
+				Event.Priority.High, this);
+		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener,
+				Event.Priority.High, this);
+		pm.registerEvent(Event.Type.PLAYER_GAME_MODE_CHANGE, playerListener,
+				Event.Priority.Low, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener,
 				Event.Priority.High, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener,
@@ -193,9 +216,31 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("vtphere").setExecutor(new Vtphere(this));
 		getCommand("megastrike").setExecutor(new MegaStrike(this));
 		getCommand("pext").setExecutor(new Pext(this));
+		getCommand("item").setExecutor(new Item(this));
+		getCommand("clearinventory").setExecutor(new ClearInventory(this));
+		getCommand("weather").setExecutor(new Weather(this));
+		getCommand("fixchunk").setExecutor(new FixChunk(this));
+		getCommand("give").setExecutor(new Give(this));
+		getCommand("message").setExecutor(new Message(this));
+		getCommand("reply").setExecutor(new Reply(this));
+		getCommand("gamemode").setExecutor(new Gamemode(this));
+		getCommand("mute").setExecutor(new Mute(this));
+		getCommand("ban").setExecutor(new Ban(this));
+		getCommand("kick").setExecutor(new Kick(this));
+		getCommand("time").setExecutor(new Time(this));
+		getCommand("home").setExecutor(new Home(this));
+		getCommand("sethome").setExecutor(new SetHome(this));
+		getCommand("delhome").setExecutor(new DelHome(this));
+		getCommand("listhome").setExecutor(new ListHome(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
+		disablegetip = this.getConfig().getBoolean("disable_getip");
+		banMessage = this.getConfig().getString("default_ban_message")
+				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+		kickMessage = this.getConfig().getString("default_kick_message")
+				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+		defaultStack = this.getConfig().getInt("default_stack_size");
 		log.info("[RoyalCommands] RoyalCommands v" + this.version
 				+ " initiated.");
 	}
