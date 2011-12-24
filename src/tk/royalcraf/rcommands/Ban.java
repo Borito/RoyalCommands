@@ -101,7 +101,7 @@ public class Ban implements CommandExecutor {
 									+ ChatColor.GRAY
 									+ plugin.getFinalArg(args, 1).replaceAll(
 											"(&([a-f0-9]))", "\u00A7$2")
-									+ ChatColor.RED + "by " + ChatColor.GRAY
+									+ ChatColor.RED + " by " + ChatColor.GRAY
 									+ cs.getName() + ".", "rcmds.see.ban");
 					if (t.isOnline()) {
 						Player t2 = plugin.getServer().getPlayer(args[0]);
