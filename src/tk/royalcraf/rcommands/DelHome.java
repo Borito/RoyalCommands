@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import tk.royalcraf.royalcommands.RoyalCommands;
 
@@ -31,9 +32,15 @@ public class DelHome implements CommandExecutor {
 						+ " was denied access to the command!");
 				return true;
 			}
-			if (args.length < 1) {
+			if (!(cs instanceof Player)) {
 				cs.sendMessage(ChatColor.RED
-						+ "Type \"" + ChatColor.GRAY + "/delhome home" + ChatColor.RED + "\" to delete your default home.");
+						+ "This command is only available to players!");
+				return true;
+			}
+			if (args.length < 1) {
+				cs.sendMessage(ChatColor.RED + "Type \"" + ChatColor.GRAY
+						+ "/delhome home" + ChatColor.RED
+						+ "\" to delete your default home.");
 				return true;
 			}
 			File pconfl = new File(plugin.getDataFolder() + "/userdata/"
