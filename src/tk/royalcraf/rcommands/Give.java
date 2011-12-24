@@ -114,7 +114,6 @@ public class Give implements CommandExecutor {
 						}
 					}
 				} else if (args.length == 3) {
-					Player p = (Player) cs;
 					Player target = plugin.getServer().getPlayer(args[0]);
 					if (target == null) {
 						cs.sendMessage(ChatColor.RED
@@ -179,7 +178,7 @@ public class Give implements CommandExecutor {
 							toInv = new ItemStack(Material.getMaterial(iblock)
 									.getId(), amount);
 						}
-						p.getInventory().addItem(toInv);
+						target.getInventory().addItem(toInv);
 						cs.sendMessage(ChatColor.BLUE
 								+ "Giving "
 								+ ChatColor.GRAY
@@ -190,7 +189,7 @@ public class Give implements CommandExecutor {
 								+ Material.getMaterial(iblock).toString()
 										.toLowerCase().replace("_", " ")
 								+ ChatColor.BLUE + " to " + ChatColor.GRAY
-								+ p.getName() + ChatColor.BLUE + ".");
+								+ target.getName() + ChatColor.BLUE + ".");
 						target.sendMessage(ChatColor.BLUE
 								+ "You have been given "
 								+ ChatColor.GRAY

@@ -91,7 +91,7 @@ commands:
     usage: /<command> [player]
     
   megastrike:
-    description: Strikes lightning 15 times at the players cursor or at specified player.
+    description: Strikes lightning 15 times at the player's cursor or at specified player.
     usage: /<command> (player)
     aliases: [mstrike, megasmite, msmite, ms]
     
@@ -176,7 +176,12 @@ commands:
     description: List your set homes.
     usage: /<command>
     aliases: [lshome, listhomes, lshomes]
-    
+  
+  strike:
+    description: Strikes lightning at the player's cursor or at specified player.
+    usage: /<command> (player)
+    aliases: [smite]
+        
   rcmds:
     description: Displays version of RoyalCommands.
     usage: /<command>

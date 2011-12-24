@@ -232,6 +232,7 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("sethome").setExecutor(new SetHome(this));
 		getCommand("delhome").setExecutor(new DelHome(this));
 		getCommand("listhome").setExecutor(new ListHome(this));
+		getCommand("strike").setExecutor(new MegaStrike(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
