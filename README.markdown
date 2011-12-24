@@ -10,6 +10,7 @@ I am very much open for new command ideas.
 RoyalCommands is coded in Eclipse 3.7.1 with the following libraries:
 
  * bukkit-1.0.0-RC2-SNAPSHOT.jar
+ * Vault.jar
 
 ### Contact
 
