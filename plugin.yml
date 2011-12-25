@@ -127,7 +127,7 @@ commands:
   message:
     description: Send a message to a player.
     usage: /<command> [player] [message]
-    aliases: [msg, m, send]
+    aliases: [msg, m, send, tell, whisper]
     
   reply:
     description: Reply to a message.
