@@ -10,7 +10,7 @@ RoyalCommands is coded in Eclipse 3.7.1 with the following libraries:
 
 ### Contact
 
- * Email: jkc.clemens@gmail.com
+ * Email: jkc.clemens@gmail.com / clemens.kyle@me.com / jkc.clemens@royaldev.org
  * Minecraft username: jkcclemens
 
 ### Caveats
