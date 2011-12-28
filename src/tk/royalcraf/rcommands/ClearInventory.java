@@ -20,7 +20,7 @@ public class ClearInventory implements CommandExecutor {
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("clearinventory")) {
-			if (!plugin.isAuthorized(cs, "rcmds.ci")) {
+			if (!plugin.isAuthorized(cs, "rcmds.clearinventory")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				return true;
@@ -37,7 +37,7 @@ public class ClearInventory implements CommandExecutor {
 						return true;
 					}
 				} else if (args.length == 1) {
-					if (!plugin.isAuthorized(cs, "rcmds.ci.others")) {
+					if (!plugin.isAuthorized(cs, "rcmds.clearinventory.others")) {
 						cs.sendMessage(ChatColor.RED
 								+ "You don't have permission for that!");
 						plugin.log.warning("[RoyalCommands] " + cs.getName()
