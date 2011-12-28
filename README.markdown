@@ -1,11 +1,7 @@
 RoyalCommands
 =============
 
-RoyalCommands is a set of EXTRA commands made for primary use on my server (RoyalCraft, royalcraf.tk), with many suggestions coming from my staff.
-
-This plugin is not intended to replace Essentials or AdminCmd, etc. It is intended to be used alongside them.
-
-I am very much open for new command ideas.
+RoyalCommands is a general plugin with lots of commands. Yeah, that's my description. Go look at the [BukkitDev](http://dev.bukkit.org/server-mods/royalcommands) if you want a better one.
 
 RoyalCommands is coded in Eclipse 3.7.1 with the following libraries:
 
