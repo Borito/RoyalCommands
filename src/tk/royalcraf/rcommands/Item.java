@@ -61,6 +61,11 @@ public class Item implements CommandExecutor {
 						}
 						if (iblock != 0) {
 							ItemStack toInv = null;
+							if (Material.getMaterial(iblock) == null) {
+								cs.sendMessage(ChatColor.RED
+										+ "Invalid item ID!");
+								return true;
+							}
 							if (data != null) {
 								int data2 = -1;
 								try {
@@ -141,6 +146,11 @@ public class Item implements CommandExecutor {
 						if (iblock != 0) {
 							ItemStack toInv = null;
 							if (data != null) {
+								if (Material.getMaterial(iblock) == null) {
+									cs.sendMessage(ChatColor.RED
+											+ "Invalid item ID!");
+									return true;
+								}
 								int data2 = -1;
 								try {
 									data2 = Integer.parseInt(data);
