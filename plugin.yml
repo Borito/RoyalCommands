@@ -102,7 +102,7 @@ commands:
     
   item:
     description: Add an item to your inventory.
-    usage: /<command> [item](:metadata) [amount]
+    usage: /<command> [item](:metadata) (amount)
     aliases: [i]
     
   clearinventory:
@@ -181,6 +181,11 @@ commands:
     description: Strikes lightning at the player's cursor or at specified player.
     usage: /<command> (player)
     aliases: [smite]
+    
+  jump:
+    description: Moves the player to the block they are looking at.
+    usage: /<command>
+    aliases: [j, tps, go]
         
   rcmds:
     description: Displays version of RoyalCommands.
