@@ -58,9 +58,9 @@ public class Ban implements CommandExecutor {
 							ChatColor.RED + "The player " + ChatColor.GRAY
 									+ t.getName() + ChatColor.RED
 									+ " has been banned for " + ChatColor.GRAY
-									+ plugin.banMessage + ChatColor.RED + "by "
-									+ ChatColor.GRAY + cs.getName() + ".",
-							"rcmds.see.ban");
+									+ plugin.banMessage + ChatColor.RED
+									+ " by " + ChatColor.GRAY + cs.getName()
+									+ ChatColor.RED + ".", "rcmds.see.ban");
 					if (t.isOnline()) {
 						Player t2 = plugin.getServer().getPlayer(args[0]);
 						t2.kickPlayer(plugin.banMessage);
