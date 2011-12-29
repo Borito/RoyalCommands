@@ -42,8 +42,24 @@ public class Time implements CommandExecutor {
 			try {
 				time = Integer.parseInt(args[0]);
 			} catch (Exception e) {
-				cs.sendMessage(ChatColor.RED + "The number entered is invalid!");
-				return true;
+				String times = args[0];
+				if (times.equalsIgnoreCase("day")) {
+					time = 0;
+				} else if (times.equalsIgnoreCase("midday")) {
+					time = 6000;
+				} else if (times.equalsIgnoreCase("sunset")) {
+					time = 12000;
+				} else if (times.equalsIgnoreCase("night")) {
+					time = 14000;
+				} else if (times.equalsIgnoreCase("midnight")) {
+					time = 18000;
+				} else if (times.equalsIgnoreCase("sunrise")) {
+					time = 23000;
+				} else {
+					cs.sendMessage(ChatColor.RED
+							+ "The number entered is invalid!");
+					return true;
+				}
 			}
 			try {
 				world = plugin.getServer().getWorld(args[1]);
@@ -63,5 +79,4 @@ public class Time implements CommandExecutor {
 		}
 		return false;
 	}
-
 }
