@@ -30,40 +30,40 @@ public class Message implements CommandExecutor {
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
+			}
+			if (args.length < 2) {
+				return false;
+			}
+			if (!(cs instanceof Player)) {
+				cs.sendMessage(ChatColor.RED
+						+ "This command is only available to players!");
+				return true;
+			}
+			Player t = plugin.getServer().getPlayer(args[0]);
+			String m = plugin.getFinalArg(args, 1).trim();
+			if (t == null || t.getName().trim() == "") {
+				cs.sendMessage(ChatColor.RED + "That player is not online!");
+				return true;
 			} else {
-				if (args.length < 2) {
-					return true;
-				} else {
-					if (!(cs instanceof Player)) {
-						cs.sendMessage(ChatColor.RED
-								+ "This command is only available to players!");
-						return true;
-					}
-					Player t = plugin.getServer().getPlayer(args[0]);
-					if (t == null) {
-						cs.sendMessage(ChatColor.RED
-								+ "That player is not online!");
-						return true;
-					} else {
-						if (!replydb.containsKey(t)) {
-							replydb.put(t, cs);
-						} else if (replydb.containsKey(t)) {
-							if (replydb.get(t) != cs) {
-								replydb.remove(t);
-								replydb.put(t, cs);
-							}
-						}
-						t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
-								+ cs.getName() + ChatColor.GRAY + " -> "
-								+ ChatColor.BLUE + "You" + ChatColor.GRAY
-								+ "] " + plugin.getFinalArg(args, 1));
-						cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
-								+ "You" + ChatColor.GRAY + " -> "
-								+ ChatColor.BLUE + t.getName() + ChatColor.GRAY
-								+ "] " + plugin.getFinalArg(args, 1));
-						return true;
+				if (!replydb.containsKey(t)) {
+					replydb.put(t, cs);
+				} else if (replydb.containsKey(t)) {
+					if (replydb.get(t) != cs) {
+						replydb.remove(t);
+						replydb.put(t, cs);
 					}
 				}
+				if (m == null || m == "") {
+					cs.sendMessage(ChatColor.RED + "You entered no message!");
+					return true;
+				}
+				t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
+						+ cs.getName() + ChatColor.GRAY + " -> "
+						+ ChatColor.BLUE + "You" + ChatColor.GRAY + "] " + m);
+				cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You"
+						+ ChatColor.GRAY + " -> " + ChatColor.BLUE
+						+ t.getName() + ChatColor.GRAY + "] " + m);
+				return true;
 			}
 		}
 		return false;
