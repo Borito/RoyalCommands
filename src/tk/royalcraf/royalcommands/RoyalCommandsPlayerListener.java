@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -40,7 +41,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 		}
 
 	}
-	
+
 	public void onGameModeChange(PlayerGameModeChangeEvent event) {
 		event.setCancelled(true);
 	}
@@ -54,6 +55,12 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerMove(PlayerMoveEvent event) {
+		if (Freeze.freezedb.containsKey(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+	}
+
+	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (Freeze.freezedb.containsKey(event.getPlayer().getName())) {
 			event.setCancelled(true);
 		}
@@ -99,12 +106,10 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 								.toString().replace("/", "") + "\n");
 				out.write("banreason: '" + "'\n");
 				/*
-				out.write("home:");
-				out.write("  set: false");
-				out.write("  x: 0");
-				out.write("  y: 0");
-				out.write("  z: 0");
-				*/
+				 * out.write("home:"); out.write("  set: false");
+				 * out.write("  x: 0"); out.write("  y: 0");
+				 * out.write("  z: 0");
+				 */
 				out.close();
 				log.info("[RoyalCommands] Userdata creation finished.");
 			} catch (Exception e) {
