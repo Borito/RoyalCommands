@@ -286,7 +286,8 @@ public class RoyalCommands extends JavaPlugin {
 		kickMessage = this.getConfig().getString("default_kick_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		defaultStack = this.getConfig().getInt("default_stack_size");
-		defaultWarn = this.getConfig().getString("default_warn_message");
+		defaultWarn = this.getConfig().getString("default_warn_message")
+				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		warnBan = this.getConfig().getInt("max_warns_before_ban");
 		log.info("[RoyalCommands] RoyalCommands v" + this.version
 				+ " initiated.");
