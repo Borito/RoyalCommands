@@ -170,7 +170,7 @@ commands:
   delhome:
     description: Deletes a home.
     usage: /<command> [home]
-    aliases: [dhome, rmhome]
+    aliases: [dhome, rmhome, deletehome, removehome]
     
   listhome:
     description: List your set homes.
@@ -186,6 +186,10 @@ commands:
     description: Moves the player to the block they are looking at.
     usage: /<command>
     aliases: [j, tps, go]
+    
+  warn:
+    description: Warns the specified player.
+    usage: /<command> [player] (message)
         
   rcmds:
     description: Displays version of RoyalCommands.

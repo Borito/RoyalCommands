@@ -23,26 +23,26 @@ public class Rcmds implements CommandExecutor {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				return true;
-			} else {
-				plugin.reloadConfig();
-				plugin.showcommands = plugin.getConfig().getBoolean(
-						"view_commands");
-				plugin.disablegetip = plugin.getConfig().getBoolean(
-						"disable_getip");
-				plugin.banMessage = plugin.getConfig()
-						.getString("default_ban_message")
-						.replaceAll("(&([a-f0-9]))", "\u00A7$2");
-				plugin.kickMessage = plugin.getConfig()
-						.getString("default_kick_message")
-						.replaceAll("(&([a-f0-9]))", "\u00A7$2");
-				plugin.defaultStack = plugin.getConfig().getInt(
-						"default_stack_size");
-				cs.sendMessage(ChatColor.GREEN + "RoyalCommands "
-						+ ChatColor.BLUE + "v" + plugin.version + " reloaded.");
-				return true;
 			}
+			plugin.reloadConfig();
+			plugin.showcommands = plugin.getConfig()
+					.getBoolean("view_commands");
+			plugin.disablegetip = plugin.getConfig()
+					.getBoolean("disable_getip");
+			plugin.banMessage = plugin.getConfig()
+					.getString("default_ban_message")
+					.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+			plugin.kickMessage = plugin.getConfig()
+					.getString("default_kick_message")
+					.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+			plugin.defaultStack = plugin.getConfig().getInt(
+					"default_stack_size");
+			plugin.defaultWarn = plugin.getConfig().getString(
+					"default_warn_message");
+			cs.sendMessage(ChatColor.GREEN + "RoyalCommands " + ChatColor.BLUE
+					+ "v" + plugin.version + " reloaded.");
+			return true;
 		}
 		return false;
 	}
-
 }
