@@ -18,10 +18,13 @@ package tk.royalcraf.royalcommands;
  If forked and not credited, alert him.
  */
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.logging.Logger;
 import net.milkbowl.vault.permission.Permission;
 
+import org.blockface.bukkitstats.CallHome;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -34,8 +37,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tk.royalcraf.rcommands.Ban;
 import tk.royalcraf.rcommands.Banned;
 import tk.royalcraf.rcommands.ClearInventory;
+import tk.royalcraf.rcommands.ClearWarns;
 import tk.royalcraf.rcommands.CompareIP;
 import tk.royalcraf.rcommands.DelHome;
+import tk.royalcraf.rcommands.DelWarp;
 import tk.royalcraf.rcommands.Facepalm;
 import tk.royalcraf.rcommands.Fakeop;
 import tk.royalcraf.rcommands.FixChunk;
@@ -61,6 +66,7 @@ import tk.royalcraf.rcommands.Rcmds;
 import tk.royalcraf.rcommands.Reply;
 import tk.royalcraf.rcommands.Sci;
 import tk.royalcraf.rcommands.SetHome;
+import tk.royalcraf.rcommands.SetWarp;
 import tk.royalcraf.rcommands.Setarmor;
 import tk.royalcraf.rcommands.Setlevel;
 import tk.royalcraf.rcommands.Slap;
@@ -70,19 +76,23 @@ import tk.royalcraf.rcommands.Strike;
 import tk.royalcraf.rcommands.Time;
 import tk.royalcraf.rcommands.Vtp;
 import tk.royalcraf.rcommands.Vtphere;
+import tk.royalcraf.rcommands.Warn;
+import tk.royalcraf.rcommands.Warp;
 import tk.royalcraf.rcommands.Weather;
 
 public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
 
-	public String version = "0.0.7";
+	public String version = "0.0.8";
 
 	public Boolean showcommands = null;
 	public Boolean disablegetip = null;
 	public String banMessage = null;
 	public String kickMessage = null;
+	public String defaultWarn = null;
 	public Integer defaultStack = null;
+	public Integer warnBan = null;
 
 	// Permissions with Vault
 	public Boolean setupPermissions() {
@@ -118,6 +128,28 @@ public class RoyalCommands extends JavaPlugin {
 				}
 			} catch (Exception e) {
 				log.severe("[RoyalCommands] Failed to make userdata directory!");
+				log.severe(e.getMessage());
+			}
+		}
+		File warps = new File(this.getDataFolder() + "/warps.yml");
+		if (!warps.exists()) {
+			try {
+				boolean success = new File(this.getDataFolder() + "/warps.yml")
+						.createNewFile();
+				if (success) {
+					try {
+						FileWriter fstream = new FileWriter(
+								this.getDataFolder() + "/warps.yml");
+						BufferedWriter out = new BufferedWriter(fstream);
+						out.write("warps:");
+						out.close();
+					} catch (Exception e) {
+						log.severe("[RoyalCommands] Could not write to warps file.");
+					}
+					log.info("[RoyalCommands] Created warps file.");
+				}
+			} catch (Exception e) {
+				log.severe("[RoyalCommands] Failed to make warps file!");
 				log.severe(e.getMessage());
 			}
 		}
@@ -177,6 +209,8 @@ public class RoyalCommands extends JavaPlugin {
 
 	public void onEnable() {
 		loadConfiguration();
+
+		CallHome.load(this);
 
 		PluginManager pm = this.getServer().getPluginManager();
 
@@ -238,6 +272,11 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("listhome").setExecutor(new ListHome(this));
 		getCommand("strike").setExecutor(new Strike(this));
 		getCommand("jump").setExecutor(new Jump(this));
+		getCommand("warn").setExecutor(new Warn(this));
+		getCommand("clearwarns").setExecutor(new ClearWarns(this));
+		getCommand("warp").setExecutor(new Warp(this));
+		getCommand("setwarp").setExecutor(new SetWarp(this));
+		getCommand("delwarp").setExecutor(new DelWarp(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
@@ -247,6 +286,8 @@ public class RoyalCommands extends JavaPlugin {
 		kickMessage = this.getConfig().getString("default_kick_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		defaultStack = this.getConfig().getInt("default_stack_size");
+		defaultWarn = this.getConfig().getString("default_warn_message");
+		warnBan = this.getConfig().getInt("max_warns_before_ban");
 		log.info("[RoyalCommands] RoyalCommands v" + this.version
 				+ " initiated.");
 	}

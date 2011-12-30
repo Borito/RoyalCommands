@@ -39,6 +39,7 @@ public class Rcmds implements CommandExecutor {
 					"default_stack_size");
 			plugin.defaultWarn = plugin.getConfig().getString(
 					"default_warn_message");
+			plugin.warnBan = plugin.getConfig().getInt("max_warns_before_ban");
 			cs.sendMessage(ChatColor.GREEN + "RoyalCommands " + ChatColor.BLUE
 					+ "v" + plugin.version + " reloaded.");
 			return true;

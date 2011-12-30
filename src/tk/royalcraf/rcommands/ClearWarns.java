@@ -1,0 +1,72 @@
+package tk.royalcraf.rcommands;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+
+import tk.royalcraf.royalcommands.RoyalCommands;
+
+public class ClearWarns implements CommandExecutor {
+
+	RoyalCommands plugin;
+
+	public ClearWarns(RoyalCommands plugin) {
+		this.plugin = plugin;
+	}
+
+	@Override
+	public boolean onCommand(CommandSender cs, Command cmd, String label,
+			String[] args) {
+		if (cmd.getName().equalsIgnoreCase("clearwarns")) {
+			if (!plugin.isAuthorized(cs, "rcmds.clearwarns")) {
+				cs.sendMessage(ChatColor.RED
+						+ "You don't have permission for that!");
+				plugin.log.warning("[RoyalCommands] " + cs.getName()
+						+ " was denied access to the command!");
+				return true;
+			}
+
+			if (args.length < 1) {
+				return false;
+			}
+			Player t = plugin.getServer().getPlayer(args[0].trim());
+			if (t == null) {
+				cs.sendMessage(ChatColor.RED + "That player is not online!");
+				return true;
+			}
+			File pconfl = new File(plugin.getDataFolder() + "/userdata/"
+					+ t.getName().toLowerCase() + ".yml");
+			if (pconfl.exists()) {
+				FileConfiguration pconf = YamlConfiguration
+						.loadConfiguration(pconfl);
+				if (pconf.get("warns") == null) {
+					cs.sendMessage(ChatColor.RED
+							+ "That player has no warnings!");
+					return true;
+				}
+				pconf.set("warns", null);
+				try {
+					pconf.save(pconfl);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				cs.sendMessage(ChatColor.BLUE + "The warnings on "
+						+ ChatColor.GRAY + t.getName() + ChatColor.BLUE
+						+ " have been cleared.");
+				t.sendMessage(ChatColor.BLUE
+						+ "Your warnings have been cleared by "
+						+ ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
+				return true;
+			}
+		}
+		return false;
+	}
+
+}

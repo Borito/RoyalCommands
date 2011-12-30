@@ -1,6 +1,7 @@
 name: RoyalCommands
 main: tk.royalcraf.royalcommands.RoyalCommands
-version: 0.0.7
+version: 0.0.8
+website: http://royaldev.org/
 author: jkcclemens
 depend: [Vault]
 
@@ -190,6 +191,25 @@ commands:
   warn:
     description: Warns the specified player.
     usage: /<command> [player] (message)
+    
+  clearwarns:
+    description: Clears the warnings on a player.
+    usage: /<command> [player]
+    aliases: [removewarns, clearwarnings, removewarnings, rmwarns, rmwarnings]
+    
+  warp:
+    description: Go to a warp point.
+    usage: /<command> [warp]
+    
+  setwarp:
+    description: Set a warp point.
+    usage: /<command> [warp]
+    aliases: [mkwarp, createwarp]
+    
+  delwarp:
+    description: Delete a warp point.
+    usage: /<command> [warp]
+    aliases: [dwarp, deletewarp, rmwarp, removewarp]
         
   rcmds:
     description: Displays version of RoyalCommands.

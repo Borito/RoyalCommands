@@ -6,3 +6,4 @@ default_ban_message: "&4Banhammered!"
 default_kick_message: "Kicked from server."
 default_warn_message: "You have been warned."
 default_stack_size: 64
+max_warns_before_ban: 3

@@ -42,6 +42,11 @@ public class Warn implements CommandExecutor {
 				return true;
 			}
 
+			if (plugin.isAuthorized(t, "rcmds.exempt.warn")) {
+				cs.sendMessage(ChatColor.RED + "You cannot warn that player!");
+				return true;
+			}
+
 			File pconfl = new File(plugin.getDataFolder() + "/userdata/"
 					+ t.getName().toLowerCase() + ".yml");
 			if (pconfl.exists()) {
@@ -88,6 +93,25 @@ public class Warn implements CommandExecutor {
 								+ " has been warned for " + ChatColor.GRAY
 								+ warnreason + ChatColor.RED + ".",
 						"rcmds.warn.see");
+				if (plugin.warnBan > 0) {
+					if ((numwarns + 1) >= plugin.warnBan) {
+						t.setBanned(true);
+						t.kickPlayer(ChatColor.DARK_RED
+								+ "You have been banned for reaching the max warn limit.");
+						plugin.getServer()
+								.broadcast(
+										ChatColor.RED
+												+ "The player "
+												+ ChatColor.GRAY
+												+ t.getName()
+												+ ChatColor.RED
+												+ " has been banned for "
+												+ ChatColor.DARK_RED
+												+ "You have been banned for reaching the max warn limit."
+												+ ChatColor.RED + ".",
+										"rcmds.see.ban");
+					}
+				}
 				return true;
 			} else {
 				cs.sendMessage(ChatColor.RED

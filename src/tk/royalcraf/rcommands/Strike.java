@@ -54,24 +54,26 @@ public class Strike implements CommandExecutor {
 						cs.sendMessage(ChatColor.RED
 								+ "You don't have permission for that!");
 						return true;
-					} else {
-						Player target = plugin.getServer().getPlayer(args[0]);
-						if (target != null) {
-							cs.sendMessage(ChatColor.BLUE + "smiting "
-									+ ChatColor.GRAY + target.getName()
-									+ ChatColor.BLUE + ".");
-							target.sendMessage(ChatColor.RED
-									+ "You have been smited by "
-									+ ChatColor.GRAY + cs.getName()
-									+ ChatColor.RED + ".");
-							p.getWorld().strikeLightning(target.getLocation());
-							return true;
-						} else {
-							cs.sendMessage(ChatColor.RED
-									+ "That player does not exist!");
-							return true;
-						}
 					}
+					Player target = plugin.getServer()
+							.getPlayer(args[0].trim());
+					if (target == null) {
+						cs.sendMessage(ChatColor.RED
+								+ "That player does not exist!");
+						return true;
+					}
+					if (plugin.isAuthorized(target, "rcmds.exempt.strike")) {
+						cs.sendMessage(ChatColor.RED
+								+ "You can't strike that player!");
+						return true;
+					}
+					cs.sendMessage(ChatColor.BLUE + "Smiting " + ChatColor.GRAY
+							+ target.getName() + ChatColor.BLUE + ".");
+					target.sendMessage(ChatColor.RED
+							+ "You have been smited by " + ChatColor.GRAY
+							+ cs.getName() + ChatColor.RED + ".");
+					p.getWorld().strikeLightning(target.getLocation());
+					return true;
 				}
 			}
 
