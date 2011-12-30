@@ -172,7 +172,9 @@ public class RoyalCommands extends JavaPlugin {
 		if (player.isOp()) {
 			return true;
 		} else if (this.setupPermissions()) {
-			if (RoyalCommands.permission.has(player, node)) {
+			if (RoyalCommands.permission.has(player, "rcmds.admin")) {
+				return true;
+			} else if (RoyalCommands.permission.has(player, node)) {
 				return true;
 			} else {
 				return false;
@@ -186,7 +188,9 @@ public class RoyalCommands extends JavaPlugin {
 		if (player.isOp()) {
 			return true;
 		} else if (this.setupPermissions()) {
-			if (RoyalCommands.permission.has((Player) player, node)) {
+			if (RoyalCommands.permission.has((Player) player, "rcmds.admin")) {
+				return true;
+			} else if (RoyalCommands.permission.has(player, node)) {
 				return true;
 			} else {
 				return false;
