@@ -63,6 +63,7 @@ import tk.royalcraf.rcommands.Quit;
 import tk.royalcraf.rcommands.RageQuit;
 import tk.royalcraf.rcommands.Rank;
 import tk.royalcraf.rcommands.Rcmds;
+import tk.royalcraf.rcommands.Repair;
 import tk.royalcraf.rcommands.Reply;
 import tk.royalcraf.rcommands.Sci;
 import tk.royalcraf.rcommands.SetHome;
@@ -74,6 +75,7 @@ import tk.royalcraf.rcommands.Speak;
 import tk.royalcraf.rcommands.Starve;
 import tk.royalcraf.rcommands.Strike;
 import tk.royalcraf.rcommands.Time;
+import tk.royalcraf.rcommands.Unban;
 import tk.royalcraf.rcommands.Vtp;
 import tk.royalcraf.rcommands.Vtphere;
 import tk.royalcraf.rcommands.Warn;
@@ -281,6 +283,8 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("warp").setExecutor(new Warp(this));
 		getCommand("setwarp").setExecutor(new SetWarp(this));
 		getCommand("delwarp").setExecutor(new DelWarp(this));
+		getCommand("repair").setExecutor(new Repair(this));
+		getCommand("unban").setExecutor(new Unban(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
