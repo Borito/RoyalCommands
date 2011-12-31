@@ -210,6 +210,16 @@ commands:
     description: Delete a warp point.
     usage: /<command> [warp]
     aliases: [dwarp, deletewarp, rmwarp, removewarp]
+    
+  repair:
+    description: Repairs the item in your hand.
+    usage: /<command>
+    aliases: [fix]
+    
+  unban:
+    description: Removes a ban from a player.
+    usage: /<command> [player]
+    aliases: [pardon]
         
   rcmds:
     description: Displays version of RoyalCommands.
