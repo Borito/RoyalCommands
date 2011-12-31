@@ -42,6 +42,13 @@ public class Ban implements CommandExecutor {
 							+ "You cannot ban that player!");
 					return true;
 				}
+				if (t.isOnline()) {
+					if (plugin.isAuthorized((Player) t, "rcmds.exempt.ban")) {
+						cs.sendMessage(ChatColor.RED
+								+ "You cannot ban that player!");
+					}
+					return true;
+				}
 				File pconfl = new File(plugin.getDataFolder() + "/userdata/"
 						+ t.getName().toLowerCase() + ".yml");
 				if (pconfl.exists()) {
@@ -76,6 +83,13 @@ public class Ban implements CommandExecutor {
 				if (t.isOp()) {
 					cs.sendMessage(ChatColor.RED
 							+ "You cannot ban that player!");
+					return true;
+				}
+				if (t.isOnline()) {
+					if (plugin.isAuthorized((Player) t, "rcmds.exempt.ban")) {
+						cs.sendMessage(ChatColor.RED
+								+ "You cannot ban that player!");
+					}
 					return true;
 				}
 				File pconfl = new File(plugin.getDataFolder() + "/userdata/"
