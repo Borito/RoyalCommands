@@ -21,7 +21,11 @@ package tk.royalcraf.royalcommands;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.net.URL;
 import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import net.milkbowl.vault.permission.Permission;
 
 import org.blockface.bukkitstats.CallHome;
@@ -33,6 +37,10 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import tk.royalcraf.rcommands.Ban;
 import tk.royalcraf.rcommands.Banned;
@@ -93,7 +101,8 @@ public class RoyalCommands extends JavaPlugin {
 	public static Permission permission = null;
 
 	public String version = "0.0.8";
-
+	public String newVersion = null;
+	
 	public Boolean showcommands = null;
 	public Boolean disablegetip = null;
 	public Boolean useWelcome = null;
@@ -181,6 +190,31 @@ public class RoyalCommands extends JavaPlugin {
 		return bldr.toString();
 	}
 
+	// updateCheck() from MilkBowl's Vault
+	public String updateCheck(String currentVersion) throws Exception {
+		String pluginUrlString = "http://dev.bukkit.org/server-mods/royalcommands/files.rss";
+		try {
+			URL url = new URL(pluginUrlString);
+			Document doc = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder()
+					.parse(url.openConnection().getInputStream());
+			doc.getDocumentElement().normalize();
+			NodeList nodes = doc.getElementsByTagName("item");
+			Node firstNode = nodes.item(0);
+			if (firstNode.getNodeType() == 1) {
+				Element firstElement = (Element) firstNode;
+				NodeList firstElementTagName = firstElement
+						.getElementsByTagName("title");
+				Element firstNameElement = (Element) firstElementTagName
+						.item(0);
+				NodeList firstNodes = firstNameElement.getChildNodes();
+				return firstNodes.item(0).getNodeValue();
+			}
+		} catch (Exception localException) {
+		}
+		return currentVersion;
+	}
+
 	public boolean isAuthorized(final Player player, final String node) {
 		if (player.isOp()) {
 			return true;
@@ -228,6 +262,24 @@ public class RoyalCommands extends JavaPlugin {
 		loadConfiguration();
 
 		CallHome.load(this);
+		// yet again, borrowed from MilkBowl
+        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    newVersion = updateCheck(version);
+                    String oldVersion = version;
+                    if (!newVersion.contains(oldVersion)) {
+                        log.warning(newVersion + " is out! You are running " + oldVersion);
+                        log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
+                    }
+                } catch (Exception e) {
+                    // ignore exceptions
+                }
+            }
+            
+        }, 0, 36000);
 
 		PluginManager pm = this.getServer().getPluginManager();
 
