@@ -100,7 +100,7 @@ public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
 
-	public String version = "0.0.8";
+	public String version = "0.0.9";
 	public String newVersion = null;
 	
 	public Boolean showcommands = null;
