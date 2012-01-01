@@ -1,15 +1,10 @@
 package tk.royalcraf.rcommands;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import tk.royalcraf.royalcommands.RoyalCommands;
@@ -35,97 +30,99 @@ public class Ban implements CommandExecutor {
 			}
 			if (args.length < 1) {
 				return false;
-			} else if (args.length == 1) {
-				OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-				if (t.isOp()) {
+			}
+			String banreason = null;
+			Player t = plugin.getServer().getPlayer(args[0].trim());
+			if (t != null) {
+				if (!plugin.getPConfExists((OfflinePlayer) t)) {
 					cs.sendMessage(ChatColor.RED
-							+ "You cannot ban that player!");
+							+ "That player does not exist!");
 					return true;
 				}
-				if (t.isOnline()) {
-					if (plugin.isAuthorized((Player) t, "rcmds.exempt.ban")) {
-						cs.sendMessage(ChatColor.RED
-								+ "You cannot ban that player!");
-					}
+				if (plugin.isAuthorized(t, "rcmds.exempt.ban")) {
+					cs.sendMessage(ChatColor.RED + "You can't ban that player!");
 					return true;
 				}
-				File pconfl = new File(plugin.getDataFolder() + "/userdata/"
-						+ t.getName().toLowerCase() + ".yml");
-				if (pconfl.exists()) {
-					FileConfiguration pconf = YamlConfiguration
-							.loadConfiguration(pconfl);
-					pconf.set("banreason", plugin.banMessage);
-					try {
-						pconf.save(pconfl);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					t.setBanned(true);
+				if (args.length == 1) {
+					banreason = plugin.banMessage;
+					plugin.setPValString((OfflinePlayer) t, banreason,
+							"banreason");
+					cs.sendMessage(ChatColor.BLUE + "You have banned "
+							+ ChatColor.RED + t.getName() + ChatColor.BLUE
+							+ ".");
 					plugin.getServer().broadcast(
 							ChatColor.RED + "The player " + ChatColor.GRAY
 									+ t.getName() + ChatColor.RED
 									+ " has been banned for " + ChatColor.GRAY
-									+ plugin.banMessage + ChatColor.RED
-									+ " by " + ChatColor.GRAY + cs.getName()
+									+ banreason + ChatColor.RED + " by "
+									+ ChatColor.GRAY + cs.getName()
 									+ ChatColor.RED + ".", "rcmds.see.ban");
-					if (t.isOnline()) {
-						Player t2 = plugin.getServer().getPlayer(args[0]);
-						t2.kickPlayer(plugin.banMessage);
-					}
-					return true;
-				} else {
-					cs.sendMessage(ChatColor.RED
-							+ "That player does not exist!");
-					return true;
-				}
-			} else if (args.length > 1) {
-				OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-				if (t.isOp()) {
-					cs.sendMessage(ChatColor.RED
-							+ "You cannot ban that player!");
-					return true;
-				}
-				if (t.isOnline()) {
-					if (plugin.isAuthorized((Player) t, "rcmds.exempt.ban")) {
-						cs.sendMessage(ChatColor.RED
-								+ "You cannot ban that player!");
-					}
-					return true;
-				}
-				File pconfl = new File(plugin.getDataFolder() + "/userdata/"
-						+ t.getName().toLowerCase() + ".yml");
-				if (pconfl.exists()) {
-					FileConfiguration pconf = YamlConfiguration
-							.loadConfiguration(pconfl);
-					pconf.set("banreason", plugin.getFinalArg(args, 1)
-							.replaceAll("(&([a-f0-9]))", "\u00A7$2"));
-					try {
-						pconf.save(pconfl);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 					t.setBanned(true);
-					plugin.getServer().broadcast(
-							ChatColor.RED
-									+ "The player "
-									+ ChatColor.GRAY
-									+ t.getName()
-									+ ChatColor.RED
-									+ " has been banned for "
-									+ ChatColor.GRAY
-									+ plugin.getFinalArg(args, 1).replaceAll(
-											"(&([a-f0-9]))", "\u00A7$2")
-									+ ChatColor.RED + " by " + ChatColor.GRAY
-									+ cs.getName() + ".", "rcmds.see.ban");
-					if (t.isOnline()) {
-						Player t2 = plugin.getServer().getPlayer(args[0]);
-						t2.kickPlayer(plugin.getFinalArg(args, 1).replaceAll(
-								"(&([a-f0-9]))", "\u00A7$2"));
-					}
+					t.kickPlayer(banreason);
 					return true;
-				} else {
+				}
+				if (args.length > 1) {
+					banreason = plugin.getFinalArg(args, 1).replaceAll(
+							"(&([a-f0-9]))", "\u00A7$2");
+					plugin.setPValString((OfflinePlayer) t, banreason,
+							"banreason");
+					cs.sendMessage(ChatColor.BLUE + "You have banned "
+							+ ChatColor.RED + t.getName() + ChatColor.BLUE
+							+ ".");
+					plugin.getServer().broadcast(
+							ChatColor.RED + "The player " + ChatColor.GRAY
+									+ t.getName() + ChatColor.RED
+									+ " has been banned for " + ChatColor.GRAY
+									+ banreason + ChatColor.RED + " by "
+									+ ChatColor.GRAY + cs.getName()
+									+ ChatColor.RED + ".", "rcmds.see.ban");
+					t.setBanned(true);
+					t.kickPlayer(banreason);
+					return true;
+				}
+			} else {
+				OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(
+						args[0].trim());
+				if (!plugin.getPConfExists(t2)) {
 					cs.sendMessage(ChatColor.RED
 							+ "That player does not exist!");
+					return true;
+				}
+				if (t2.isOp()) {
+					cs.sendMessage(ChatColor.RED + "You can't ban that player!");
+					return true;
+				}
+				if (args.length == 1) {
+					banreason = plugin.banMessage;
+					plugin.setPValString(t2, banreason, "banreason");
+					cs.sendMessage(ChatColor.BLUE + "You have banned "
+							+ ChatColor.RED + t2.getName() + ChatColor.BLUE
+							+ ".");
+					plugin.getServer().broadcast(
+							ChatColor.RED + "The player " + ChatColor.GRAY
+									+ t2.getName() + ChatColor.RED
+									+ " has been banned for " + ChatColor.GRAY
+									+ banreason + ChatColor.RED + " by "
+									+ ChatColor.GRAY + cs.getName()
+									+ ChatColor.RED + ".", "rcmds.see.ban");
+					t2.setBanned(true);
+					return true;
+				}
+				if (args.length > 1) {
+					banreason = plugin.getFinalArg(args, 1).replaceAll(
+							"(&([a-f0-9]))", "\u00A7$2");
+					plugin.setPValString(t2, banreason, "banreason");
+					cs.sendMessage(ChatColor.BLUE + "You have banned "
+							+ ChatColor.RED + t2.getName() + ChatColor.BLUE
+							+ ".");
+					plugin.getServer().broadcast(
+							ChatColor.RED + "The player " + ChatColor.GRAY
+									+ t2.getName() + ChatColor.RED
+									+ " has been banned for " + ChatColor.GRAY
+									+ banreason + ChatColor.RED + " by "
+									+ ChatColor.GRAY + cs.getName()
+									+ ChatColor.RED + ".", "rcmds.see.ban");
+					t2.setBanned(true);
 					return true;
 				}
 			}

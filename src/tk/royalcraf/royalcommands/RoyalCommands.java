@@ -21,17 +21,20 @@ package tk.royalcraf.royalcommands;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.logging.Logger;
 import net.milkbowl.vault.permission.Permission;
 
 import org.blockface.bukkitstats.CallHome;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import tk.royalcraf.rcommands.Ban;
@@ -43,12 +46,15 @@ import tk.royalcraf.rcommands.DelHome;
 import tk.royalcraf.rcommands.DelWarp;
 import tk.royalcraf.rcommands.Facepalm;
 import tk.royalcraf.rcommands.Fakeop;
+import tk.royalcraf.rcommands.Feed;
 import tk.royalcraf.rcommands.FixChunk;
 import tk.royalcraf.rcommands.Freeze;
 import tk.royalcraf.rcommands.Gamemode;
 import tk.royalcraf.rcommands.GetIP;
 import tk.royalcraf.rcommands.Give;
+import tk.royalcraf.rcommands.God;
 import tk.royalcraf.rcommands.Harm;
+import tk.royalcraf.rcommands.Heal;
 import tk.royalcraf.rcommands.Home;
 import tk.royalcraf.rcommands.Item;
 import tk.royalcraf.rcommands.Jump;
@@ -112,6 +118,8 @@ public class RoyalCommands extends JavaPlugin {
 	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(
 			this);
 	private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(
+			this);
+	private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(
 			this);
 
 	public Logger log = Logger.getLogger("Minecraft");
@@ -186,6 +194,56 @@ public class RoyalCommands extends JavaPlugin {
 		}
 	}
 
+	public void setPValString(OfflinePlayer t, String value, String path) {
+		File pconfl = new File(this.getDataFolder() + "/userdata/"
+				+ t.getName().toLowerCase() + ".yml");
+		if (pconfl.exists()) {
+			FileConfiguration pconf = YamlConfiguration
+					.loadConfiguration(pconfl);
+			pconf.set(path, value);
+			try {
+				pconf.save(pconfl);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void setPValBoolean(OfflinePlayer t, Boolean value, String path) {
+		File pconfl = new File(this.getDataFolder() + "/userdata/"
+				+ t.getName().toLowerCase() + ".yml");
+		if (pconfl.exists()) {
+			FileConfiguration pconf = YamlConfiguration
+					.loadConfiguration(pconfl);
+			pconf.set(path, value);
+			try {
+				pconf.save(pconfl);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public boolean getPValBoolean(OfflinePlayer t, String path) {
+		File pconfl = new File(this.getDataFolder() + "/userdata/"
+				+ t.getName().toLowerCase() + ".yml");
+		if (pconfl.exists()) {
+			FileConfiguration pconf = YamlConfiguration
+					.loadConfiguration(pconfl);
+			return pconf.getBoolean(path);
+		}
+		return false;
+	}
+
+	public boolean getPConfExists(OfflinePlayer t) {
+		File pconfl = new File(this.getDataFolder() + "/userdata/"
+				+ t.getName().toLowerCase() + ".yml");
+		if (pconfl.exists()) {
+			return true;
+		}
+		return false;
+	}
+
 	public boolean isAuthorized(final CommandSender player, final String node) {
 		if (player.isOp()) {
 			return true;
@@ -233,6 +291,12 @@ public class RoyalCommands extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener,
 				Event.Priority.High, this);
 		pm.registerEvent(Event.Type.PLAYER_GAME_MODE_CHANGE, playerListener,
+				Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.FOOD_LEVEL_CHANGE, entityListener,
+				Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener,
+				Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_TARGET, entityListener,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener,
 				Event.Priority.High, this);
@@ -285,6 +349,9 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("delwarp").setExecutor(new DelWarp(this));
 		getCommand("repair").setExecutor(new Repair(this));
 		getCommand("unban").setExecutor(new Unban(this));
+		getCommand("heal").setExecutor(new Heal(this));
+		getCommand("feed").setExecutor(new Feed(this));
+		getCommand("god").setExecutor(new God(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
