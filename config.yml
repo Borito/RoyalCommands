@@ -2,8 +2,10 @@
 
 disable_getip: false
 view_commands: true
+enable_welcome_message: true
 default_ban_message: "&4Banhammered!"
 default_kick_message: "Kicked from server."
 default_warn_message: "You have been warned."
+welcome_message: "&5Welcome {name} to the server!"
 default_stack_size: 64
 max_warns_before_ban: 3

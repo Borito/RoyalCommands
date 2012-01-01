@@ -21,24 +21,22 @@ package tk.royalcraf.royalcommands;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.logging.Logger;
 import net.milkbowl.vault.permission.Permission;
 
 import org.blockface.bukkitstats.CallHome;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import tk.royalcraf.rcommands.Ban;
 import tk.royalcraf.rcommands.Banned;
+import tk.royalcraf.rcommands.Banreason;
 import tk.royalcraf.rcommands.ClearInventory;
 import tk.royalcraf.rcommands.ClearWarns;
 import tk.royalcraf.rcommands.CompareIP;
@@ -73,10 +71,12 @@ import tk.royalcraf.rcommands.Repair;
 import tk.royalcraf.rcommands.Reply;
 import tk.royalcraf.rcommands.Sci;
 import tk.royalcraf.rcommands.SetHome;
+import tk.royalcraf.rcommands.SetSpawn;
 import tk.royalcraf.rcommands.SetWarp;
 import tk.royalcraf.rcommands.Setarmor;
 import tk.royalcraf.rcommands.Setlevel;
 import tk.royalcraf.rcommands.Slap;
+import tk.royalcraf.rcommands.Spawn;
 import tk.royalcraf.rcommands.Speak;
 import tk.royalcraf.rcommands.Starve;
 import tk.royalcraf.rcommands.Strike;
@@ -96,9 +96,11 @@ public class RoyalCommands extends JavaPlugin {
 
 	public Boolean showcommands = null;
 	public Boolean disablegetip = null;
+	public Boolean useWelcome = null;
 	public String banMessage = null;
 	public String kickMessage = null;
 	public String defaultWarn = null;
+	public String welcomeMessage = null;
 	public Integer defaultStack = null;
 	public Integer warnBan = null;
 
@@ -121,6 +123,7 @@ public class RoyalCommands extends JavaPlugin {
 			this);
 	private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(
 			this);
+	public final PConfManager pconfm = new PConfManager(this);
 
 	public Logger log = Logger.getLogger("Minecraft");
 
@@ -192,56 +195,6 @@ public class RoyalCommands extends JavaPlugin {
 		} else {
 			return false;
 		}
-	}
-
-	public void setPValString(OfflinePlayer t, String value, String path) {
-		File pconfl = new File(this.getDataFolder() + "/userdata/"
-				+ t.getName().toLowerCase() + ".yml");
-		if (pconfl.exists()) {
-			FileConfiguration pconf = YamlConfiguration
-					.loadConfiguration(pconfl);
-			pconf.set(path, value);
-			try {
-				pconf.save(pconfl);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void setPValBoolean(OfflinePlayer t, Boolean value, String path) {
-		File pconfl = new File(this.getDataFolder() + "/userdata/"
-				+ t.getName().toLowerCase() + ".yml");
-		if (pconfl.exists()) {
-			FileConfiguration pconf = YamlConfiguration
-					.loadConfiguration(pconfl);
-			pconf.set(path, value);
-			try {
-				pconf.save(pconfl);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public boolean getPValBoolean(OfflinePlayer t, String path) {
-		File pconfl = new File(this.getDataFolder() + "/userdata/"
-				+ t.getName().toLowerCase() + ".yml");
-		if (pconfl.exists()) {
-			FileConfiguration pconf = YamlConfiguration
-					.loadConfiguration(pconfl);
-			return pconf.getBoolean(path);
-		}
-		return false;
-	}
-
-	public boolean getPConfExists(OfflinePlayer t) {
-		File pconfl = new File(this.getDataFolder() + "/userdata/"
-				+ t.getName().toLowerCase() + ".yml");
-		if (pconfl.exists()) {
-			return true;
-		}
-		return false;
 	}
 
 	public boolean isAuthorized(final CommandSender player, final String node) {
@@ -352,16 +305,22 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("heal").setExecutor(new Heal(this));
 		getCommand("feed").setExecutor(new Feed(this));
 		getCommand("god").setExecutor(new God(this));
+		getCommand("banreason").setExecutor(new Banreason(this));
+		getCommand("setspawn").setExecutor(new SetSpawn(this));
+		getCommand("spawn").setExecutor(new Spawn(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
 		disablegetip = this.getConfig().getBoolean("disable_getip");
+		useWelcome = this.getConfig().getBoolean("enable_welcome_message");
 		banMessage = this.getConfig().getString("default_ban_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		kickMessage = this.getConfig().getString("default_kick_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		defaultStack = this.getConfig().getInt("default_stack_size");
 		defaultWarn = this.getConfig().getString("default_warn_message")
+				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+		welcomeMessage = this.getConfig().getString("welcome_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		warnBan = this.getConfig().getInt("max_warns_before_ban");
 		log.info("[RoyalCommands] RoyalCommands v" + this.version

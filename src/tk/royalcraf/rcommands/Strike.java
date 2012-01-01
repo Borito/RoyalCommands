@@ -72,7 +72,7 @@ public class Strike implements CommandExecutor {
 					target.sendMessage(ChatColor.RED
 							+ "You have been smited by " + ChatColor.GRAY
 							+ cs.getName() + ChatColor.RED + ".");
-					p.getWorld().strikeLightning(target.getLocation());
+					target.getWorld().strikeLightning(target.getLocation());
 					return true;
 				}
 			}

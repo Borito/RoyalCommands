@@ -20,9 +20,6 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import tk.royalcraf.rcommands.Freeze;
-import tk.royalcraf.rcommands.Mute;
-
 public class RoyalCommandsPlayerListener extends PlayerListener {
 
 	public static RoyalCommands plugin;
@@ -47,21 +44,23 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerChat(PlayerChatEvent event) {
-		if (Mute.mutedb.containsKey(event.getPlayer().getName())) {
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "muted")) {
 			event.setFormat("");
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
+			plugin.log.info("[RoyalCommands] " + event.getPlayer().getName()
+					+ " tried to speak, but has been muted.");
 		}
 	}
 
 	public void onPlayerMove(PlayerMoveEvent event) {
-		if (Freeze.freezedb.containsKey(event.getPlayer().getName())) {
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "frozen")) {
 			event.setCancelled(true);
 		}
 	}
 
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (Freeze.freezedb.containsKey(event.getPlayer().getName())) {
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "frozen")) {
 			event.setCancelled(true);
 		}
 	}
@@ -87,7 +86,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		File datafile = new File(plugin.getDataFolder() + "/userdata/"
-				+ event.getPlayer().getName() + ".yml");
+				+ event.getPlayer().getName().toLowerCase() + ".yml");
 		if (!datafile.exists()) {
 			log.info("[RoyalCommands] Creating userdata for user "
 					+ event.getPlayer().getName() + ".");
@@ -116,6 +115,17 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 				log.severe("[RoyalCommands] Could not create userdata for user "
 						+ event.getPlayer().getName() + "!");
 				log.severe(e.getMessage());
+				e.printStackTrace();
+			}
+			if (plugin.useWelcome) {
+				String welcomemessage = plugin.welcomeMessage;
+				welcomemessage = welcomemessage.replace("{name}", event
+						.getPlayer().getName());
+				welcomemessage = welcomemessage.replace("{dispname}", event
+						.getPlayer().getDisplayName());
+				welcomemessage = welcomemessage.replace("{world}", event
+						.getPlayer().getWorld().getName());
+				plugin.getServer().broadcastMessage(welcomemessage);
 			}
 		} else {
 			log.info("[RoyalCommands] Updating the IP for "

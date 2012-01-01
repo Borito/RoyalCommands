@@ -133,10 +133,10 @@ public class Give implements CommandExecutor {
 							+ "The amount was not a number!");
 					return true;
 				}
-				if (amount > 64) {
+				/*if (amount > 64) {
 					amount = 64;
-				}
-				if (amount < 0) {
+				}*/
+				if (amount < 1) {
 					amount = 1;
 				}
 				Integer iblock = null;

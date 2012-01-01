@@ -29,6 +29,8 @@ public class Rcmds implements CommandExecutor {
 					.getBoolean("view_commands");
 			plugin.disablegetip = plugin.getConfig()
 					.getBoolean("disable_getip");
+			plugin.useWelcome = plugin.getConfig().getBoolean(
+					"enable_welcome_message");
 			plugin.banMessage = plugin.getConfig()
 					.getString("default_ban_message")
 					.replaceAll("(&([a-f0-9]))", "\u00A7$2");
@@ -39,6 +41,9 @@ public class Rcmds implements CommandExecutor {
 					"default_stack_size");
 			plugin.defaultWarn = plugin.getConfig().getString(
 					"default_warn_message");
+			plugin.welcomeMessage = plugin.getConfig()
+					.getString("welcome_message")
+					.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 			plugin.warnBan = plugin.getConfig().getInt("max_warns_before_ban");
 			cs.sendMessage(ChatColor.GREEN + "RoyalCommands " + ChatColor.BLUE
 					+ "v" + plugin.version + " reloaded.");

@@ -176,7 +176,7 @@ commands:
   listhome:
     description: List your set homes.
     usage: /<command>
-    aliases: [lshome, listhomes, lshomes]
+    aliases: [lshome, listhomes, lshomes, homes]
   
   strike:
     description: Strikes lightning at the player's cursor or at specified player.
@@ -200,6 +200,7 @@ commands:
   warp:
     description: Go to a warp point.
     usage: /<command> [warp]
+    aliases: [warps]
     
   setwarp:
     description: Set a warp point.
@@ -220,6 +221,32 @@ commands:
     description: Removes a ban from a player.
     usage: /<command> [player]
     aliases: [pardon]
+    
+  heal:
+    description: Heals a player or the player himself.
+    usage: /<command> (player)
+  
+  feed:
+    description: Feeds a player or the player himself.
+    usage: /<command> (player)
+    
+  god:
+    description: Toggles godmode on a player or the player himself.
+    usage: /<command> (player)
+    aliases: [tgm, godmode]
+    
+  banreason:
+    description: Displays the reason why a user was banned.
+    usage: /<command> [player]
+    aliases: [br, banr, breason]
+    
+  setspawn:
+    description: Sets the spawn of the world the player is standing in.
+    usage: /<command>
+    
+  spawn:
+    description: Takes the player to the spawn of the world they are standing in.
+    usage: /<command>
         
   rcmds:
     description: Displays version of RoyalCommands.

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,12 +38,40 @@ public class ClearWarns implements CommandExecutor {
 				return false;
 			}
 			Player t = plugin.getServer().getPlayer(args[0].trim());
-			if (t == null) {
-				cs.sendMessage(ChatColor.RED + "That player is not online!");
-				return true;
+			if (t != null) {
+				File pconfl = new File(plugin.getDataFolder() + "/userdata/"
+						+ t.getName().toLowerCase() + ".yml");
+				if (pconfl.exists()) {
+					FileConfiguration pconf = YamlConfiguration
+							.loadConfiguration(pconfl);
+					if (pconf.get("warns") == null) {
+						cs.sendMessage(ChatColor.RED
+								+ "That player has no warnings!");
+						return true;
+					}
+					pconf.set("warns", null);
+					try {
+						pconf.save(pconfl);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					cs.sendMessage(ChatColor.BLUE + "The warnings on "
+							+ ChatColor.GRAY + t.getName() + ChatColor.BLUE
+							+ " have been cleared.");
+					t.sendMessage(ChatColor.BLUE
+							+ "Your warnings have been cleared by "
+							+ ChatColor.GRAY + cs.getName() + ChatColor.BLUE
+							+ ".");
+					return true;
+				} else {
+					cs.sendMessage(ChatColor.RED + "That user does not exist!");
+					return true;
+				}
 			}
+			OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(
+					args[0].trim());
 			File pconfl = new File(plugin.getDataFolder() + "/userdata/"
-					+ t.getName().toLowerCase() + ".yml");
+					+ t2.getName().toLowerCase() + ".yml");
 			if (pconfl.exists()) {
 				FileConfiguration pconf = YamlConfiguration
 						.loadConfiguration(pconfl);
@@ -58,11 +87,17 @@ public class ClearWarns implements CommandExecutor {
 					e.printStackTrace();
 				}
 				cs.sendMessage(ChatColor.BLUE + "The warnings on "
-						+ ChatColor.GRAY + t.getName() + ChatColor.BLUE
+						+ ChatColor.GRAY + t2.getName() + ChatColor.BLUE
 						+ " have been cleared.");
-				t.sendMessage(ChatColor.BLUE
-						+ "Your warnings have been cleared by "
-						+ ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
+				if (t2.isOnline()) {
+					((Player) t2).sendMessage(ChatColor.BLUE
+							+ "Your warnings have been cleared by "
+							+ ChatColor.GRAY + cs.getName() + ChatColor.BLUE
+							+ ".");
+				}
+				return true;
+			} else {
+				cs.sendMessage(ChatColor.RED + "That user does not exist!");
 				return true;
 			}
 		}

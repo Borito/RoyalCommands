@@ -1,13 +1,13 @@
 package tk.royalcraf.rcommands;
 
-import java.util.HashMap;
-
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import tk.royalcraf.royalcommands.PConfManager;
 import tk.royalcraf.royalcommands.RoyalCommands;
 
 public class Mute implements CommandExecutor {
@@ -17,8 +17,6 @@ public class Mute implements CommandExecutor {
 	public Mute(RoyalCommands plugin) {
 		this.plugin = plugin;
 	}
-
-	public static HashMap<String, Integer> mutedb = new HashMap<String, Integer>();
 
 	@Override
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
@@ -33,20 +31,40 @@ public class Mute implements CommandExecutor {
 			}
 			if (args.length < 1) {
 				return false;
-			} else if (args.length < 2) {
-				Player t = plugin.getServer().getPlayer(args[0]);
+			}
+			if (args.length == 1) {
+				Player t = plugin.getServer().getPlayer(args[0].trim());
 				if (t == null) {
-					cs.sendMessage(ChatColor.RED
-							+ "That player does not exist!");
-					return true;
+					OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(
+							args[0].trim());
+					if (t2.isOp()) {
+						cs.sendMessage(ChatColor.RED
+								+ "You cannot mute that player!");
+						return true;
+					}
+					if (PConfManager.getPValBoolean(t2, "muted")) {
+						PConfManager.setPValBoolean(t2, false, "muted");
+						cs.sendMessage(ChatColor.BLUE + "You have unmuted "
+								+ ChatColor.GRAY + t2.getName()
+								+ ChatColor.BLUE + ".");
+						return true;
+					} else {
+						PConfManager.setPValBoolean(t2, true, "muted");
+						cs.sendMessage(ChatColor.BLUE + "You have muted "
+								+ ChatColor.GRAY + t2.getName()
+								+ ChatColor.BLUE + ".");
+						return true;
+					}
+
 				}
 				if (plugin.isAuthorized(t, "rcmds.exempt.mute")) {
 					cs.sendMessage(ChatColor.RED
 							+ "You cannot mute that player!");
 					return true;
 				}
-				if (mutedb.containsKey(t.getName())) {
-					mutedb.remove(t.getName());
+				if (PConfManager.getPValBoolean((OfflinePlayer) t, "muted")) {
+					PConfManager.setPValBoolean((OfflinePlayer) t, false,
+							"muted");
 					t.sendMessage(ChatColor.BLUE + "You have been unmuted by "
 							+ ChatColor.GRAY + cs.getName() + ChatColor.BLUE
 							+ ".");
@@ -55,7 +73,8 @@ public class Mute implements CommandExecutor {
 							+ ".");
 					return true;
 				} else {
-					mutedb.put(t.getName(), 0);
+					PConfManager.setPValBoolean((OfflinePlayer) t, true,
+							"muted");
 					t.sendMessage(ChatColor.RED + "You have been muted by "
 							+ ChatColor.GRAY + cs.getName() + ChatColor.RED
 							+ ".");
@@ -64,24 +83,7 @@ public class Mute implements CommandExecutor {
 							+ ".");
 					return true;
 				}
-			} /*
-			 * else if (args.length < 3) { Player t =
-			 * plugin.getServer().getPlayer(args[0]); int time = 0; try { time =
-			 * Integer.parseInt(args[1]); } catch (Exception e) {
-			 * cs.sendMessage(ChatColor.RED +
-			 * "The time specified was invalid!"); return true; } if (t == null)
-			 * { cs.sendMessage(ChatColor.RED + "That player does not exist!");
-			 * return true; } if (mutedb.containsKey(t)) { mutedb.remove(t);
-			 * t.sendMessage(ChatColor.BLUE + "You have been unmuted by " +
-			 * ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
-			 * cs.sendMessage(ChatColor.BLUE + "You have unmuted " +
-			 * ChatColor.GRAY + t.getName() + ChatColor.BLUE + "."); return
-			 * true; } else { mutedb.put(t, time); t.sendMessage(ChatColor.RED +
-			 * "You have been muted by " + ChatColor.GRAY + cs.getName() +
-			 * ChatColor.RED + "."); cs.sendMessage(ChatColor.BLUE +
-			 * "You have muted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE
-			 * + "."); return true; } }
-			 */
+			}
 		}
 		return false;
 	}

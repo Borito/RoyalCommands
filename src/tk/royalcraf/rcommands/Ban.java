@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import tk.royalcraf.royalcommands.PConfManager;
 import tk.royalcraf.royalcommands.RoyalCommands;
 
 public class Ban implements CommandExecutor {
@@ -34,7 +35,7 @@ public class Ban implements CommandExecutor {
 			String banreason = null;
 			Player t = plugin.getServer().getPlayer(args[0].trim());
 			if (t != null) {
-				if (!plugin.getPConfExists((OfflinePlayer) t)) {
+				if (!PConfManager.getPConfExists((OfflinePlayer) t)) {
 					cs.sendMessage(ChatColor.RED
 							+ "That player does not exist!");
 					return true;
@@ -45,7 +46,7 @@ public class Ban implements CommandExecutor {
 				}
 				if (args.length == 1) {
 					banreason = plugin.banMessage;
-					plugin.setPValString((OfflinePlayer) t, banreason,
+					PConfManager.setPValString((OfflinePlayer) t, banreason,
 							"banreason");
 					cs.sendMessage(ChatColor.BLUE + "You have banned "
 							+ ChatColor.RED + t.getName() + ChatColor.BLUE
@@ -64,7 +65,7 @@ public class Ban implements CommandExecutor {
 				if (args.length > 1) {
 					banreason = plugin.getFinalArg(args, 1).replaceAll(
 							"(&([a-f0-9]))", "\u00A7$2");
-					plugin.setPValString((OfflinePlayer) t, banreason,
+					PConfManager.setPValString((OfflinePlayer) t, banreason,
 							"banreason");
 					cs.sendMessage(ChatColor.BLUE + "You have banned "
 							+ ChatColor.RED + t.getName() + ChatColor.BLUE
@@ -83,7 +84,7 @@ public class Ban implements CommandExecutor {
 			} else {
 				OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(
 						args[0].trim());
-				if (!plugin.getPConfExists(t2)) {
+				if (!PConfManager.getPConfExists(t2)) {
 					cs.sendMessage(ChatColor.RED
 							+ "That player does not exist!");
 					return true;
@@ -94,7 +95,7 @@ public class Ban implements CommandExecutor {
 				}
 				if (args.length == 1) {
 					banreason = plugin.banMessage;
-					plugin.setPValString(t2, banreason, "banreason");
+					PConfManager.setPValString(t2, banreason, "banreason");
 					cs.sendMessage(ChatColor.BLUE + "You have banned "
 							+ ChatColor.RED + t2.getName() + ChatColor.BLUE
 							+ ".");
@@ -111,7 +112,7 @@ public class Ban implements CommandExecutor {
 				if (args.length > 1) {
 					banreason = plugin.getFinalArg(args, 1).replaceAll(
 							"(&([a-f0-9]))", "\u00A7$2");
-					plugin.setPValString(t2, banreason, "banreason");
+					PConfManager.setPValString(t2, banreason, "banreason");
 					cs.sendMessage(ChatColor.BLUE + "You have banned "
 							+ ChatColor.RED + t2.getName() + ChatColor.BLUE
 							+ ".");
