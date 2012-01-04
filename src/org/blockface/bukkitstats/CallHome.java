@@ -100,7 +100,7 @@ class CallTask implements Runnable {
 		authors = authors.trim();
 
 		String url = String
-				.format("http://bukkitstats.randomappdev.com/ping.aspx?snam=%s&sprt=%s&shsh=%s&sver=%s&spcnt=%s&pnam=%s&pmcla=%s&paut=%s&pweb=%s&pver=%s",
+				.format("http://pluginstats.randomappdev.com/ping.aspx?snam=%s&sprt=%s&shsh=%s&sver=%s&spcnt=%s&pnam=%s&pmcla=%s&paut=%s&pweb=%s&pver=%s",
 						URLEncoder
 								.encode(plugin.getServer().getName(), "UTF-8"),
 						plugin.getServer().getPort(), hash, URLEncoder.encode(
