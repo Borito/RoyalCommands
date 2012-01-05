@@ -52,7 +52,8 @@ public class Facepalm implements CommandExecutor {
 											+ ChatColor.AQUA
 											+ " has facepalmed at "
 											+ ChatColor.YELLOW
-											+ victim.getName() + ".");
+											+ victim.getName() + ChatColor.AQUA
+											+ ".");
 							return true;
 						}
 					}
