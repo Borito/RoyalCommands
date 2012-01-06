@@ -30,6 +30,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import tk.royalcraf.royalcommands.RoyalCommands;
+
 import java.io.File;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -82,12 +84,10 @@ public class CallHome {
 }
 
 class CallTask implements Runnable {
-	private String hash;
 	private Plugin plugin;
 
 	public CallTask(Plugin plugin, String hash) {
 		this.plugin = plugin;
-		this.hash = hash;
 	}
 
 	private void postUrl() throws Exception {
@@ -100,19 +100,29 @@ class CallTask implements Runnable {
 		authors = authors.trim();
 
 		String url = String
-				.format("http://pluginstats.randomappdev.com/ping.aspx?snam=%s&sprt=%s&shsh=%s&sver=%s&spcnt=%s&pnam=%s&pmcla=%s&paut=%s&pweb=%s&pver=%s",
-						URLEncoder
-								.encode(plugin.getServer().getName(), "UTF-8"),
-						plugin.getServer().getPort(), hash, URLEncoder.encode(
-								Bukkit.getVersion(), "UTF-8"), plugin
-								.getServer().getOnlinePlayers().length,
-						URLEncoder.encode(plugin.getDescription().getName(),
-								"UTF-8"), URLEncoder.encode(plugin
-								.getDescription().getMain(), "UTF-8"),
-						URLEncoder.encode(authors, "UTF-8"), URLEncoder.encode(
-								plugin.getDescription().getWebsite(), "UTF-8"),
-						URLEncoder.encode(plugin.getDescription().getVersion(),
-								"UTF-8"));
+				.format("http://pluginstats.randomappdev.com/ping.php?snam=%s&sprt=%s&shsh=%s&sver=%s&spcnt=%s&pnam=%s&pmcla=%s&paut=%s&pweb=%s&pver=%s",
+						new Object[] {
+								URLEncoder.encode(this.plugin.getServer()
+										.getServerName(), "UTF-8"),
+								Integer.valueOf(this.plugin.getServer()
+										.getPort()),
+								RoyalCommands.gUid,
+								URLEncoder.encode(Bukkit.getVersion(), "UTF-8"),
+								Integer.valueOf(this.plugin.getServer()
+										.getOnlinePlayers().length),
+								URLEncoder.encode(this.plugin.getDescription()
+										.getName(), "UTF-8"),
+								URLEncoder.encode(this.plugin.getDescription()
+										.getMain(), "UTF-8"),
+								URLEncoder.encode(authors, "UTF-8"),
+								URLEncoder.encode(
+										this.plugin.getDescription()
+												.getWebsite().toLowerCase()
+												.replace("http://", "")
+												.replace("https://", ""),
+										"UTF-8"),
+								URLEncoder.encode(this.plugin.getDescription()
+										.getVersion(), "UTF-8") });
 
 		new URL(url).openConnection().getInputStream();
 
