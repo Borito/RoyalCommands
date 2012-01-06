@@ -30,6 +30,7 @@ public class Mute implements CommandExecutor {
 				return true;
 			}
 			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
 			if (args.length == 1) {

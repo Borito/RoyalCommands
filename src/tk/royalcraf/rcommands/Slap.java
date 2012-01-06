@@ -1,6 +1,5 @@
 package tk.royalcraf.rcommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,30 +26,30 @@ public class Slap implements CommandExecutor {
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
-			} else {
-				if (args.length < 1) {
-					return false;
-				}
-				Player victim = null;
-				if (plugin.isOnline(args[0]) == false) {
-					cs.sendMessage(ChatColor.RED + "That person is not online!");
-					return true;
-				} else {
-					victim = (Player) plugin.getServer().getPlayer(args[0]);
-					if (plugin.isAuthorized(victim, "rcmds.exempt.slap")) {
-						cs.sendMessage(ChatColor.RED
-								+ "You may not slap that player.");
-						return true;
-					} else {
-						Bukkit.getServer().broadcastMessage(
-								ChatColor.GOLD + cs.getName() + ChatColor.WHITE
-										+ " slaps " + ChatColor.RED
-										+ victim.getName() + ChatColor.WHITE
-										+ "!");
-						return true;
-					}
-				}
 			}
+			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
+				return false;
+			}
+			Player victim = null;
+			victim = plugin.getServer().getPlayer(args[0]);
+			if (plugin.isVanished(victim)) {
+				cs.sendMessage(ChatColor.RED + "That player does not exist!");
+				return true;
+			}
+			if (victim == null) {
+				cs.sendMessage(ChatColor.RED + "That person is not online!");
+				return true;
+			}
+			if (plugin.isAuthorized(victim, "rcmds.exempt.slap")) {
+				cs.sendMessage(ChatColor.RED + "You may not slap that player.");
+				return true;
+			}
+			plugin.getServer().broadcastMessage(
+					ChatColor.GOLD + cs.getName() + ChatColor.WHITE + " slaps "
+							+ ChatColor.RED + victim.getName()
+							+ ChatColor.WHITE + "!");
+			return true;
 		}
 		return false;
 	}

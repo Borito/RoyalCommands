@@ -28,11 +28,16 @@ public class Kick implements CommandExecutor {
 				return true;
 			}
 			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
 			Player t = plugin.getServer().getPlayer(args[0]);
 			if (t == null) {
 				cs.sendMessage(ChatColor.RED + "That player is not online!");
+				return true;
+			}
+			if (plugin.isVanished(t)) {
+				cs.sendMessage(ChatColor.RED + "That player does not exist!");
 				return true;
 			}
 			if (plugin.isAuthorized(t, "rcmds.exempt.kick")) {

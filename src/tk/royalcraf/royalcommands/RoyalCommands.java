@@ -22,6 +22,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.net.URL;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -42,7 +43,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import tk.royalcraf.rcommands.Back;
 import tk.royalcraf.rcommands.Ban;
+import tk.royalcraf.rcommands.BanIP;
 import tk.royalcraf.rcommands.Banned;
 import tk.royalcraf.rcommands.Banreason;
 import tk.royalcraf.rcommands.ClearInventory;
@@ -66,9 +69,12 @@ import tk.royalcraf.rcommands.Item;
 import tk.royalcraf.rcommands.Jump;
 import tk.royalcraf.rcommands.Kick;
 import tk.royalcraf.rcommands.Level;
+import tk.royalcraf.rcommands.List;
 import tk.royalcraf.rcommands.ListHome;
+import tk.royalcraf.rcommands.ListWarns;
 import tk.royalcraf.rcommands.MegaStrike;
 import tk.royalcraf.rcommands.Message;
+import tk.royalcraf.rcommands.More;
 import tk.royalcraf.rcommands.Mute;
 import tk.royalcraf.rcommands.Pext;
 import tk.royalcraf.rcommands.Quit;
@@ -88,28 +94,37 @@ import tk.royalcraf.rcommands.Spawn;
 import tk.royalcraf.rcommands.Speak;
 import tk.royalcraf.rcommands.Starve;
 import tk.royalcraf.rcommands.Strike;
+import tk.royalcraf.rcommands.Teleport;
+import tk.royalcraf.rcommands.TeleportHere;
+import tk.royalcraf.rcommands.TeleportRequest;
 import tk.royalcraf.rcommands.Time;
+import tk.royalcraf.rcommands.TpAccept;
+import tk.royalcraf.rcommands.TpDeny;
 import tk.royalcraf.rcommands.Unban;
+import tk.royalcraf.rcommands.UnbanIP;
 import tk.royalcraf.rcommands.Vtp;
 import tk.royalcraf.rcommands.Vtphere;
 import tk.royalcraf.rcommands.Warn;
 import tk.royalcraf.rcommands.Warp;
 import tk.royalcraf.rcommands.Weather;
+import to.joe.vanish.VanishPlugin;
 
 public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
 
-	public String version = "0.0.9";
+	public String version = "0.1.0";
 	public String newVersion = null;
-	
+
 	public Boolean showcommands = null;
 	public Boolean disablegetip = null;
 	public Boolean useWelcome = null;
+	public Boolean buildPerm = null;
 	public String banMessage = null;
 	public String kickMessage = null;
 	public String defaultWarn = null;
 	public String welcomeMessage = null;
+	public static String gUid = null;
 	public Integer defaultStack = null;
 	public Integer warnBan = null;
 
@@ -136,7 +151,23 @@ public class RoyalCommands extends JavaPlugin {
 
 	public Logger log = Logger.getLogger("Minecraft");
 
+	public VanishPlugin vp = null;
+
+	public boolean isVanished(Player p) {
+		if (vp == null) {
+			vp = (VanishPlugin) Bukkit.getServer().getPluginManager()
+					.getPlugin("VanishNoPacket");
+			return false;
+		} else if (vp.isVanished(p.getName())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public void loadConfiguration() {
+		this.getConfig().addDefault("guid_do_not_change",
+				UUID.randomUUID().toString());
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
 		File file = new File(this.getDataFolder() + "/userdata/");
@@ -249,13 +280,23 @@ public class RoyalCommands extends JavaPlugin {
 
 	public boolean isOnline(final String person) {
 		Player player = Bukkit.getServer().getPlayer(person);
-
 		if (player == null) {
+			return false;
+		} else if (vp.isVanished(player.getName())) {
 			return false;
 		} else {
 			return true;
 		}
+	}
 
+	public boolean isOnline(final Player person) {
+		if (person == null) {
+			return false;
+		} else if (vp.isVanished(person.getName())) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public void onEnable() {
@@ -263,23 +304,28 @@ public class RoyalCommands extends JavaPlugin {
 
 		CallHome.load(this);
 		// yet again, borrowed from MilkBowl
-        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+		this.getServer().getScheduler()
+				.scheduleAsyncRepeatingTask(this, new Runnable() {
+					@Override
+					public void run() {
+						try {
+							newVersion = updateCheck(version);
+							String oldVersion = version;
+							if (!newVersion.contains(oldVersion)) {
+								log.warning(newVersion
+										+ " is out! You are running "
+										+ oldVersion);
+								log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
+							}
+						} catch (Exception e) {
+							// ignore exceptions
+						}
+					}
 
-            @Override
-            public void run() {
-                try {
-                    newVersion = updateCheck(version);
-                    String oldVersion = version;
-                    if (!newVersion.contains(oldVersion)) {
-                        log.warning(newVersion + " is out! You are running " + oldVersion);
-                        log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
-                    }
-                } catch (Exception e) {
-                    // ignore exceptions
-                }
-            }
-            
-        }, 0, 36000);
+				}, 0, 36000);
+
+		vp = (VanishPlugin) Bukkit.getServer().getPluginManager()
+				.getPlugin("VanishNoPacket");
 
 		PluginManager pm = this.getServer().getPluginManager();
 
@@ -360,11 +406,23 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("banreason").setExecutor(new Banreason(this));
 		getCommand("setspawn").setExecutor(new SetSpawn(this));
 		getCommand("spawn").setExecutor(new Spawn(this));
+		getCommand("banip").setExecutor(new BanIP(this));
+		getCommand("unbanip").setExecutor(new UnbanIP(this));
+		getCommand("list").setExecutor(new List(this));
+		getCommand("back").setExecutor(new Back(this));
+		getCommand("teleport").setExecutor(new Teleport(this));
+		getCommand("teleporthere").setExecutor(new TeleportHere(this));
+		getCommand("teleportrequest").setExecutor(new TeleportRequest(this));
+		getCommand("tpaccept").setExecutor(new TpAccept(this));
+		getCommand("tpdeny").setExecutor(new TpDeny(this));
+		getCommand("listwarns").setExecutor(new ListWarns(this));
+		getCommand("more").setExecutor(new More(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
 		disablegetip = this.getConfig().getBoolean("disable_getip");
 		useWelcome = this.getConfig().getBoolean("enable_welcome_message");
+		buildPerm = this.getConfig().getBoolean("use_build_perm");
 		banMessage = this.getConfig().getString("default_ban_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		kickMessage = this.getConfig().getString("default_kick_message")
@@ -374,6 +432,7 @@ public class RoyalCommands extends JavaPlugin {
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		welcomeMessage = this.getConfig().getString("welcome_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+		gUid = this.getConfig().getString("guid_do_not_change");
 		warnBan = this.getConfig().getInt("max_warns_before_ban");
 		log.info("[RoyalCommands] RoyalCommands v" + this.version
 				+ " initiated.");

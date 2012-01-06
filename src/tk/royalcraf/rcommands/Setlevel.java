@@ -39,16 +39,22 @@ public class Setlevel implements CommandExecutor {
 				return true;
 			}
 			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
 			int toLevel = 0;
 			if (args.length == 2) {
-				if (plugin.isOnline(args[1]) == false) {
+				victim = plugin.getServer().getPlayer(args[1].trim());
+				if (victim == null) {
 					cs.sendMessage(ChatColor.RED
 							+ "You must input a valid player!");
 					return true;
 				}
-				victim = plugin.getServer().getPlayer(args[1].trim());
+				if (plugin.isVanished(victim)) {
+					cs.sendMessage(ChatColor.RED
+							+ "That player does not exist!");
+					return true;
+				}
 				try {
 					toLevel = Integer.parseInt(args[0]);
 				} catch (NumberFormatException e) {
@@ -62,11 +68,13 @@ public class Setlevel implements CommandExecutor {
 					return true;
 				}
 				victim.setLevel(toLevel);
-				cs.sendMessage(ChatColor.BLUE + victim.getName()
-						+ "'s XP level was set to " + toLevel
+				cs.sendMessage(ChatColor.GRAY + victim.getName()
+						+ ChatColor.BLUE + "'s XP level was set to "
+						+ ChatColor.GRAY + toLevel + ChatColor.BLUE
 						+ "! They may need to relog to see the changes.");
 				victim.sendMessage(ChatColor.BLUE + "Your XP level was set to "
-						+ toLevel + " by " + cs.getName()
+						+ ChatColor.GRAY + toLevel + ChatColor.BLUE + " by "
+						+ ChatColor.GRAY + cs.getName() + ChatColor.BLUE
 						+ "! You may need to relog to see these changes.");
 				return true;
 			}
@@ -85,7 +93,7 @@ public class Setlevel implements CommandExecutor {
 				}
 				player.setLevel(toLevel);
 				cs.sendMessage(ChatColor.BLUE + "Your XP level was set to "
-						+ toLevel
+						+ ChatColor.GRAY + toLevel + ChatColor.BLUE
 						+ "! You may need to relog to see the changes.");
 				return true;
 			}

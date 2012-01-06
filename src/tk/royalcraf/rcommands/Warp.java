@@ -97,6 +97,7 @@ public class Warp implements CommandExecutor {
 					warpYaw, warpPitch);
 			p.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY
 					+ args[0] + ChatColor.BLUE + ".\"");
+			Back.backdb.put(p, p.getLocation());
 			p.teleport(warpLoc);
 			return true;
 

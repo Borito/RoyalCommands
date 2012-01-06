@@ -25,18 +25,24 @@ public class Rank implements CommandExecutor {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				return true;
-			} else {
-				if (args.length < 1) {
-					return false;
-				} else {
-					Player victim = plugin.getServer().getPlayer(args[0]);
-					String rank = RoyalCommands.permission
-							.getPrimaryGroup(victim);
-					cs.sendMessage("The user " + victim.getName()
-							+ " has the group " + rank + ".");
-					return true;
-				}
 			}
+			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
+				return false;
+			}
+			Player victim = plugin.getServer().getPlayer(args[0]);
+			if (victim == null) {
+				cs.sendMessage(ChatColor.RED + "That player does not exist!");
+				return true;
+			}
+			if (plugin.isVanished(victim)) {
+				cs.sendMessage(ChatColor.RED + "That player does not exist!");
+				return true;
+			}
+			String rank = RoyalCommands.permission.getPrimaryGroup(victim);
+			cs.sendMessage("The user " + victim.getName() + " has the group "
+					+ rank + ".");
+			return true;
 		}
 		return false;
 	}

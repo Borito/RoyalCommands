@@ -1,6 +1,6 @@
 name: RoyalCommands
 main: tk.royalcraf.royalcommands.RoyalCommands
-version: 0.0.9
+version: 0.1.0
 website: http://royaldev.org/
 author: jkcclemens
 depend: [Vault]
@@ -214,7 +214,7 @@ commands:
     
   repair:
     description: Repairs the item in your hand.
-    usage: /<command>
+    usage: /<command> (all)
     aliases: [fix]
     
   unban:
@@ -246,6 +246,58 @@ commands:
     
   spawn:
     description: Takes the player to the spawn of the world they are standing in.
+    usage: /<command>
+    
+  banip:
+    description: Bans an IP address or a player's IP.
+    usage: /<command> (player/IP)
+    
+  unbanip:
+    description: Unbans an IP address or a player's IP.
+    usage: /<command> (player/IP)
+    aliases: [pardonip]
+    
+  list:
+    description: Lists the players online and the maximum amount.
+    usage: /<command>
+    aliases: [who, players, online, listplayers, playing]
+    
+  back:
+    description: Takes you to your previous location.
+    usage: /<command>
+    
+  teleport:
+    description: Teleports you to a player.
+    usage: /<command> [player]
+    aliases: [tp]
+    
+  teleporthere:
+    description: Teleports a player to you.
+    usage: /<command> [player]
+    aliases: [tphere, tph]
+    
+  teleportrequest:
+    description: Sends a teleport request to a player.
+    usage: /<command> [player]
+    aliases: [tpr, tpa, tprequest, teleportr]
+    
+  tpaccept:
+    description: Accepts a teleport request.
+    usage: /<command>
+    aliases: [tpac, tpyes]
+    
+  tpdeny:
+    description: Denies a teleport request.
+    usage: /<command>
+    aliases: [tpad, tpno]
+    
+  listwarns:
+    description: Lists the warnings a player has.
+    usage: /<command>
+    aliases: [warns, lswarns, lwarns, lwarn, lswarn, listwarn]
+  
+  more:
+    description: Gives more of the item in hand.
     usage: /<command>
         
   rcmds:

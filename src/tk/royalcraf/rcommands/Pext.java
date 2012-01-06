@@ -26,46 +26,46 @@ public class Pext implements CommandExecutor {
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
-			} else {
-				if (args.length < 1) {
-					Player p = null;
-					if (cs instanceof Player) {
-						p = (Player) cs;
-					} else {
-						cs.sendMessage(ChatColor.RED
-								+ "You must be a player to use this command!");
-						return true;
-					}
-					if (p != null) {
-						cs.sendMessage(ChatColor.BLUE
-								+ "You have been extinguished.");
-						p.setFireTicks(0);
-						return true;
-					}
-				} else {
-					if (!plugin.isAuthorized(cs, "rcmds.pext.others")) {
-						cs.sendMessage(ChatColor.RED
-								+ "You don't have permission for that!");
-						return true;
-					} else {
-						Player target = plugin.getServer().getPlayer(args[0]);
-						if (target != null) {
-							cs.sendMessage(ChatColor.BLUE
-									+ "You have extinguished " + ChatColor.GRAY
-									+ target.getName() + ChatColor.BLUE + ".");
-							target.sendMessage(ChatColor.BLUE
-									+ "You have been extinguished by "
-									+ ChatColor.GRAY + cs.getName()
-									+ ChatColor.BLUE + ".");
-							target.setFireTicks(0);
-							return true;
-						} else {
-							cs.sendMessage(ChatColor.RED
-									+ "That player does not exist!");
-							return true;
-						}
-					}
+			}
+			if (args.length < 1) {
+				Player p = null;
+				if (!(cs instanceof Player)) {
+					cs.sendMessage(ChatColor.RED
+							+ "You must be a player to use this command!");
+					return true;
 				}
+				p = (Player) cs;
+				if (p != null) {
+					cs.sendMessage(ChatColor.BLUE
+							+ "You have been extinguished.");
+					p.setFireTicks(0);
+					return true;
+				}
+			} else {
+				if (!plugin.isAuthorized(cs, "rcmds.pext.others")) {
+					cs.sendMessage(ChatColor.RED
+							+ "You don't have permission for that!");
+					return true;
+				}
+				Player target = plugin.getServer().getPlayer(args[0]);
+				if (target == null) {
+					cs.sendMessage(ChatColor.RED
+							+ "That player does not exist!");
+					return true;
+				}
+				if (plugin.isVanished(target)) {
+					cs.sendMessage(ChatColor.RED
+							+ "That player does not exist!");
+					return true;
+				}
+				cs.sendMessage(ChatColor.BLUE + "You have extinguished "
+						+ ChatColor.GRAY + target.getName() + ChatColor.BLUE
+						+ ".");
+				target.sendMessage(ChatColor.BLUE
+						+ "You have been extinguished by " + ChatColor.GRAY
+						+ cs.getName() + ChatColor.BLUE + ".");
+				target.setFireTicks(0);
+				return true;
 			}
 		}
 		return false;

@@ -9,19 +9,19 @@ import org.bukkit.command.CommandSender;
 import tk.royalcraf.royalcommands.PConfManager;
 import tk.royalcraf.royalcommands.RoyalCommands;
 
-public class Banreason implements CommandExecutor {
+public class UnbanIP implements CommandExecutor {
 
 	RoyalCommands plugin;
 
-	public Banreason(RoyalCommands plugin) {
+	public UnbanIP(RoyalCommands plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
-		if (cmd.getName().equalsIgnoreCase("banreason")) {
-			if (!plugin.isAuthorized(cs, "rcmds.banreason")) {
+		if (cmd.getName().equalsIgnoreCase("unbanip")) {
+			if (!plugin.isAuthorized(cs, "rcmds.unbanip")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
@@ -32,21 +32,21 @@ public class Banreason implements CommandExecutor {
 				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
-			OfflinePlayer t = plugin.getServer().getOfflinePlayer(
+			OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(
 					args[0].trim());
-			if (!PConfManager.getPConfExists(t)) {
-				cs.sendMessage(ChatColor.RED + "That player does not exist!");
+			if (!PConfManager.getPConfExists(t2)) {
+				plugin.getServer().unbanIP(args[0].trim());
+				cs.sendMessage(ChatColor.BLUE + "Unbanned IP address: "
+						+ ChatColor.GRAY + args[0].trim() + ChatColor.BLUE
+						+ ".");
 				return true;
 			}
-			if (!t.isBanned()) {
-				cs.sendMessage(ChatColor.RED + "That player is not banned!");
+			if (args.length > 0) {
+				cs.sendMessage(ChatColor.BLUE + "You have pardoned that IP.");
+				plugin.getServer()
+						.unbanIP(PConfManager.getPValString(t2, "ip"));
 				return true;
 			}
-			String banreason = PConfManager.getPValString(t, "banreason");
-			cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY
-					+ t.getName() + ChatColor.BLUE + " was banned for: "
-					+ ChatColor.GRAY + banreason + ChatColor.BLUE + ".");
-			return true;
 		}
 		return false;
 	}

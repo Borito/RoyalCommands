@@ -28,6 +28,7 @@ public class Banned implements CommandExecutor {
 				return true;
 			} else {
 				if (args.length < 1) {
+					cs.sendMessage(cmd.getDescription());
 					return false;
 				}
 				OfflinePlayer dude = null;

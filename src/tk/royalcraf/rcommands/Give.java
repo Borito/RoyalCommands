@@ -38,6 +38,11 @@ public class Give implements CommandExecutor {
 					cs.sendMessage(ChatColor.RED + "That player is not online!");
 					return true;
 				}
+				if (plugin.isVanished(target)) {
+					cs.sendMessage(ChatColor.RED
+							+ "That player does not exist!");
+					return true;
+				}
 				String called = args[1];
 				String data = null;
 				if (called.contains(":")) {
@@ -133,9 +138,9 @@ public class Give implements CommandExecutor {
 							+ "The amount was not a number!");
 					return true;
 				}
-				/*if (amount > 64) {
-					amount = 64;
-				}*/
+				/*
+				 * if (amount > 64) { amount = 64; }
+				 */
 				if (amount < 1) {
 					amount = 1;
 				}

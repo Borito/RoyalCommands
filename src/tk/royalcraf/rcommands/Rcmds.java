@@ -31,6 +31,7 @@ public class Rcmds implements CommandExecutor {
 					.getBoolean("disable_getip");
 			plugin.useWelcome = plugin.getConfig().getBoolean(
 					"enable_welcome_message");
+			plugin.buildPerm = plugin.getConfig().getBoolean("use_build_perm");
 			plugin.banMessage = plugin.getConfig()
 					.getString("default_ban_message")
 					.replaceAll("(&([a-f0-9]))", "\u00A7$2");

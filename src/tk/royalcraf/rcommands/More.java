@@ -5,38 +5,46 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import tk.royalcraf.royalcommands.RoyalCommands;
 
-public class Level implements CommandExecutor {
+public class More implements CommandExecutor {
 
 	RoyalCommands plugin;
 
-	public Level(RoyalCommands plugin) {
+	public More(RoyalCommands plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
-		if (cmd.getName().equalsIgnoreCase("level")) {
-			if (!(cs instanceof Player)) {
-				cs.sendMessage(ChatColor.RED
-						+ "This command can only be used by players!");
-			}
-			if (!plugin.isAuthorized(cs, "rcmds.level")) {
+		if (cmd.getName().equalsIgnoreCase("more")) {
+			if (!plugin.isAuthorized(cs, "rcmds.more")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
 			}
-			Player player = (Player) cs;
-			player.setLevel(player.getLevel() + 1);
+			if (!(cs instanceof Player)) {
+				cs.sendMessage(ChatColor.RED
+						+ "This command is only available to players!");
+				return true;
+			}
+			Player p = (Player) cs;
+			ItemStack hand = p.getItemInHand();
+			if (hand.getTypeId() == 0) {
+				cs.sendMessage(ChatColor.RED + "You can't spawn air!");
+				return true;
+			}
+			hand.setAmount(64);
 			cs.sendMessage(ChatColor.BLUE
-					+ "XP level raised by one! You may need to relog to see the changes.");
+					+ "You have given more of the item in hand.");
 			return true;
 		}
 		return false;
 	}
+
 }

@@ -98,6 +98,7 @@ public class Home implements CommandExecutor {
 			} else {
 				p.sendMessage(ChatColor.BLUE + "Going home.");
 			}
+			Back.backdb.put(p, p.getLocation());
 			p.teleport(homeLoc);
 			return true;
 

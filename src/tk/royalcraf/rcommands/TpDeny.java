@@ -8,33 +8,34 @@ import org.bukkit.entity.Player;
 
 import tk.royalcraf.royalcommands.RoyalCommands;
 
-public class Level implements CommandExecutor {
+public class TpDeny implements CommandExecutor {
 
 	RoyalCommands plugin;
 
-	public Level(RoyalCommands plugin) {
+	public TpDeny(RoyalCommands plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
-		if (cmd.getName().equalsIgnoreCase("level")) {
-			if (!(cs instanceof Player)) {
-				cs.sendMessage(ChatColor.RED
-						+ "This command can only be used by players!");
-			}
-			if (!plugin.isAuthorized(cs, "rcmds.level")) {
+		if (cmd.getName().equalsIgnoreCase("tpdeny")) {
+			if (!plugin.isAuthorized(cs, "rcmds.tpdeny")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
 			}
-			Player player = (Player) cs;
-			player.setLevel(player.getLevel() + 1);
-			cs.sendMessage(ChatColor.BLUE
-					+ "XP level raised by one! You may need to relog to see the changes.");
+			if (TeleportRequest.tprdb.containsKey((Player) cs)) {
+				Player t = (Player) TeleportRequest.tprdb.get((Player) cs);
+				cs.sendMessage(ChatColor.BLUE + "Teleport request denied.");
+				t.sendMessage(ChatColor.BLUE
+						+ "Your teleport request was denied.");
+				TeleportRequest.tprdb.remove((Player) cs);
+				return true;
+			}
+			cs.sendMessage(ChatColor.RED + "You have no requests pending.");
 			return true;
 		}
 		return false;

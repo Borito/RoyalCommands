@@ -10,19 +10,19 @@ import org.bukkit.entity.Player;
 import tk.royalcraf.royalcommands.PConfManager;
 import tk.royalcraf.royalcommands.RoyalCommands;
 
-public class Ban implements CommandExecutor {
+public class BanIP implements CommandExecutor {
 
 	RoyalCommands plugin;
 
-	public Ban(RoyalCommands plugin) {
+	public BanIP(RoyalCommands plugin) {
 		this.plugin = plugin;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
-		if (cmd.getName().equalsIgnoreCase("ban")) {
-			if (!plugin.isAuthorized(cs, "rcmds.ban")) {
+		if (cmd.getName().equalsIgnoreCase("banip")) {
+			if (!plugin.isAuthorized(cs, "rcmds.banip")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
@@ -32,6 +32,9 @@ public class Ban implements CommandExecutor {
 			if (args.length < 1) {
 				cs.sendMessage(cmd.getDescription());
 				return false;
+			}
+			if (args[0].contains(".")) {
+
 			}
 			String banreason = null;
 			Player t = plugin.getServer().getPlayer(args[0].trim());
@@ -58,8 +61,10 @@ public class Ban implements CommandExecutor {
 									+ " has been banned for " + ChatColor.GRAY
 									+ banreason + ChatColor.RED + " by "
 									+ ChatColor.GRAY + cs.getName()
-									+ ChatColor.RED + ".", "rcmds.see.ban");
-					t.setBanned(true);
+									+ ChatColor.RED + ".", "rcmds.see.ipban");
+					plugin.getServer()
+							.banIP(PConfManager.getPValString(
+									(OfflinePlayer) t, "ip"));
 					t.kickPlayer(banreason);
 					return true;
 				}
@@ -68,17 +73,20 @@ public class Ban implements CommandExecutor {
 							"(&([a-f0-9]))", "\u00A7$2");
 					PConfManager.setPValString((OfflinePlayer) t, banreason,
 							"banreason");
-					cs.sendMessage(ChatColor.BLUE + "You have banned "
+					cs.sendMessage(ChatColor.BLUE + "You have IP banned "
 							+ ChatColor.RED + t.getName() + ChatColor.BLUE
 							+ ".");
 					plugin.getServer().broadcast(
 							ChatColor.RED + "The player " + ChatColor.GRAY
 									+ t.getName() + ChatColor.RED
-									+ " has been banned for " + ChatColor.GRAY
-									+ banreason + ChatColor.RED + " by "
-									+ ChatColor.GRAY + cs.getName()
-									+ ChatColor.RED + ".", "rcmds.see.ban");
-					t.setBanned(true);
+									+ " has been IP banned for "
+									+ ChatColor.GRAY + banreason
+									+ ChatColor.RED + " by " + ChatColor.GRAY
+									+ cs.getName() + ChatColor.RED + ".",
+							"rcmds.see.ipban");
+					plugin.getServer()
+							.banIP(PConfManager.getPValString(
+									(OfflinePlayer) t, "ip"));
 					t.kickPlayer(banreason);
 					return true;
 				}
@@ -86,8 +94,10 @@ public class Ban implements CommandExecutor {
 				OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(
 						args[0].trim());
 				if (!PConfManager.getPConfExists(t2)) {
-					cs.sendMessage(ChatColor.RED
-							+ "That player does not exist!");
+					plugin.getServer().banIP(args[0].trim());
+					cs.sendMessage(ChatColor.BLUE + "Banned IP address: "
+							+ ChatColor.GRAY + args[0].trim() + ChatColor.BLUE
+							+ ".");
 					return true;
 				}
 				if (t2.isOp()) {
@@ -97,34 +107,38 @@ public class Ban implements CommandExecutor {
 				if (args.length == 1) {
 					banreason = plugin.banMessage;
 					PConfManager.setPValString(t2, banreason, "banreason");
-					cs.sendMessage(ChatColor.BLUE + "You have banned "
+					cs.sendMessage(ChatColor.BLUE + "You have IP banned "
 							+ ChatColor.RED + t2.getName() + ChatColor.BLUE
 							+ ".");
 					plugin.getServer().broadcast(
 							ChatColor.RED + "The player " + ChatColor.GRAY
 									+ t2.getName() + ChatColor.RED
-									+ " has been banned for " + ChatColor.GRAY
-									+ banreason + ChatColor.RED + " by "
-									+ ChatColor.GRAY + cs.getName()
-									+ ChatColor.RED + ".", "rcmds.see.ban");
-					t2.setBanned(true);
+									+ " has been IP banned for "
+									+ ChatColor.GRAY + banreason
+									+ ChatColor.RED + " by " + ChatColor.GRAY
+									+ cs.getName() + ChatColor.RED + ".",
+							"rcmds.see.ipban");
+					plugin.getServer().banIP(
+							PConfManager.getPValString(t2, "ip"));
 					return true;
 				}
 				if (args.length > 1) {
 					banreason = plugin.getFinalArg(args, 1).replaceAll(
 							"(&([a-f0-9]))", "\u00A7$2");
 					PConfManager.setPValString(t2, banreason, "banreason");
-					cs.sendMessage(ChatColor.BLUE + "You have banned "
+					cs.sendMessage(ChatColor.BLUE + "You have IP banned "
 							+ ChatColor.RED + t2.getName() + ChatColor.BLUE
 							+ ".");
 					plugin.getServer().broadcast(
 							ChatColor.RED + "The player " + ChatColor.GRAY
 									+ t2.getName() + ChatColor.RED
-									+ " has been banned for " + ChatColor.GRAY
-									+ banreason + ChatColor.RED + " by "
-									+ ChatColor.GRAY + cs.getName()
-									+ ChatColor.RED + ".", "rcmds.see.ban");
-					t2.setBanned(true);
+									+ " has been IP banned for "
+									+ ChatColor.GRAY + banreason
+									+ ChatColor.RED + " by " + ChatColor.GRAY
+									+ cs.getName() + ChatColor.RED + ".",
+							"rcmds.see.ipban");
+					plugin.getServer().banIP(
+							PConfManager.getPValString(t2, "ip"));
 					return true;
 				}
 			}

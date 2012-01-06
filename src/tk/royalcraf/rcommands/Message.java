@@ -44,27 +44,30 @@ public class Message implements CommandExecutor {
 			if (t == null || t.getName().trim() == "") {
 				cs.sendMessage(ChatColor.RED + "That player is not online!");
 				return true;
-			} else {
-				if (!replydb.containsKey(t)) {
-					replydb.put(t, cs);
-				} else if (replydb.containsKey(t)) {
-					if (replydb.get(t) != cs) {
-						replydb.remove(t);
-						replydb.put(t, cs);
-					}
-				}
-				if (m == null || m == "") {
-					cs.sendMessage(ChatColor.RED + "You entered no message!");
-					return true;
-				}
-				t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
-						+ cs.getName() + ChatColor.GRAY + " -> "
-						+ ChatColor.BLUE + "You" + ChatColor.GRAY + "] " + m);
-				cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You"
-						+ ChatColor.GRAY + " -> " + ChatColor.BLUE
-						+ t.getName() + ChatColor.GRAY + "] " + m);
+			}
+			if (plugin.isVanished(t)) {
+				cs.sendMessage(ChatColor.RED + "That player does not exist!");
 				return true;
 			}
+			if (!replydb.containsKey(t)) {
+				replydb.put(t, cs);
+			} else if (replydb.containsKey(t)) {
+				if (replydb.get(t) != cs) {
+					replydb.remove(t);
+					replydb.put(t, cs);
+				}
+			}
+			if (m == null || m == "") {
+				cs.sendMessage(ChatColor.RED + "You entered no message!");
+				return true;
+			}
+			t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName()
+					+ ChatColor.GRAY + " -> " + ChatColor.BLUE + "You"
+					+ ChatColor.GRAY + "] " + m);
+			cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You"
+					+ ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName()
+					+ ChatColor.GRAY + "] " + m);
+			return true;
 		}
 		return false;
 	}

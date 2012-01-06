@@ -30,6 +30,7 @@ public class Freeze implements CommandExecutor {
 				return true;
 			}
 			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
 			Player victim = plugin.getServer().getPlayer(args[0]);

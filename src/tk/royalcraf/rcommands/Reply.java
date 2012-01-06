@@ -28,6 +28,7 @@ public class Reply implements CommandExecutor {
 				return true;
 			} else {
 				if (args.length < 1) {
+					cs.sendMessage(cmd.getDescription());
 					return false;
 				} else {
 					if (!(cs instanceof Player)) {

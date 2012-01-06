@@ -35,6 +35,7 @@ public class ClearWarns implements CommandExecutor {
 			}
 
 			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
 			Player t = plugin.getServer().getPlayer(args[0].trim());

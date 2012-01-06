@@ -25,23 +25,24 @@ public class Fakeop implements CommandExecutor {
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
-			} else {
-				if (args.length < 1) {
-					return false;
-				} else {
-					Player victim = plugin.getServer().getPlayer(args[0]);
-					if (victim != null) {
-						victim.sendMessage(ChatColor.YELLOW + "You are now op!");
-						cs.sendMessage(ChatColor.BLUE + victim.getName()
-								+ " has been sent a fake op notice.");
-						return true;
-					} else {
-						cs.sendMessage(ChatColor.RED
-								+ "That player is not online!");
-						return true;
-					}
-				}
 			}
+			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
+				return false;
+			}
+			Player victim = plugin.getServer().getPlayer(args[0]);
+			if (victim == null) {
+				cs.sendMessage(ChatColor.RED + "That player is not online!");
+				return true;
+			}
+			if (plugin.isVanished(victim)) {
+				cs.sendMessage(ChatColor.RED + "That player does not exist!");
+				return true;
+			}
+			victim.sendMessage(ChatColor.YELLOW + "You are now op!");
+			cs.sendMessage(ChatColor.BLUE + victim.getName()
+					+ " has been sent a fake op notice.");
+			return true;
 		}
 		return false;
 	}

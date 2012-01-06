@@ -34,6 +34,7 @@ public class Time implements CommandExecutor {
 				return true;
 			}
 			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
 			Player p = (Player) cs;

@@ -34,6 +34,7 @@ public class SetWarp implements CommandExecutor {
 			}
 
 			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
 

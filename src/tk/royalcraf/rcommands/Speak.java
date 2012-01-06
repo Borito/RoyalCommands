@@ -26,41 +26,40 @@ public class Speak implements CommandExecutor {
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
-			} else {
-				if (args.length < 2) {
-					return false;
-				}
+			}
+			if (args.length < 2) {
+				return false;
+			}
 
-				Player victim = null;
+			Player victim = null;
 
-				victim = (Player) plugin.getServer().getPlayer(args[0]);
+			victim = plugin.getServer().getPlayer(args[0]);
 
-				int errord = 0;
-				if (plugin.isOnline(args[0]) == false) {
-					cs.sendMessage(ChatColor.RED
-							+ "You must input an online player.");
-					errord = 1;
+			int errord = 0;
+			if (victim == null) {
+				cs.sendMessage(ChatColor.RED
+						+ "You must input an online player.");
+				errord = 1;
+				return true;
+			}
+			if (plugin.isVanished(victim)) {
+				cs.sendMessage(ChatColor.RED + "That player does not exist!");
+				return true;
+			}
+			if (errord == 0) {
+				if (args[1].startsWith("/")) {
+					cs.sendMessage(ChatColor.RED + "You may not send commands!");
 					return true;
 				}
-				if (errord == 0) {
-					if (args[1].startsWith("/")) {
-						cs.sendMessage(ChatColor.RED
-								+ "You may not send commands!");
-						return true;
-					} else {
-						if (plugin.isAuthorized(victim, "rcmds.exempt.speak")) {
-							cs.sendMessage(ChatColor.RED
-									+ "You may not make that player speak.");
-							return true;
-						} else {
-							victim.chat(plugin.getFinalArg(args, 1));
-							plugin.log.info(cs.getName()
-									+ " has spoofed a message from "
-									+ victim.getName() + "!");
-							return true;
-						}
-					}
+				if (plugin.isAuthorized(victim, "rcmds.exempt.speak")) {
+					cs.sendMessage(ChatColor.RED
+							+ "You may not make that player speak.");
+					return true;
 				}
+				victim.chat(plugin.getFinalArg(args, 1));
+				plugin.log.info(cs.getName() + " has spoofed a message from "
+						+ victim.getName() + "!");
+				return true;
 			}
 		}
 		return false;

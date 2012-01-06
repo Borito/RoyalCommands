@@ -17,11 +17,21 @@ public class RoyalCommandsBlockListener extends BlockListener {
 		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "frozen")) {
 			event.setCancelled(true);
 		}
+		if (plugin.buildPerm) {
+			if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) {
+				event.setCancelled(true);
+			}
+		}
 	}
 
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "frozen")) {
 			event.setCancelled(true);
+		}
+		if (plugin.buildPerm) {
+			if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) {
+				event.setCancelled(true);
+			}
 		}
 	}
 

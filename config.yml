@@ -3,6 +3,7 @@
 disable_getip: false
 view_commands: true
 enable_welcome_message: true
+use_build_perm: false
 default_ban_message: "&4Banhammered!"
 default_kick_message: "Kicked from server."
 default_warn_message: "You have been warned."

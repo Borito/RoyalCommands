@@ -24,30 +24,39 @@ public class RageQuit implements CommandExecutor {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				return true;
-			} else {
-				if (args.length < 1) {
-					if (cs instanceof Player) {
-						plugin.getServer().broadcastMessage(
-								ChatColor.DARK_RED + cs.getName()
-										+ ChatColor.RED + " has ragequit!");
-						((Player) cs).kickPlayer(ChatColor.DARK_RED
-								+ "RAAAGGGEEEE!!!");
-						return true;
-					}
-				} else if (args.length == 1) {
-					if (!plugin.isAuthorized(cs, "rcmds.ragequit.others")) {
-						cs.sendMessage(ChatColor.RED
-								+ "You don't have permission for that!");
-						return true;
-					} else {
-						Player victim = plugin.getServer().getPlayer(args[0]);
-						plugin.getServer().broadcastMessage(
-								ChatColor.DARK_RED + victim.getName()
-										+ ChatColor.RED + " has ragequit!");
-						victim.kickPlayer(ChatColor.DARK_RED + "RAAAGGGEEEE!!!");
-						return true;
-					}
+			}
+			if (args.length < 1) {
+				if (cs instanceof Player) {
+					plugin.getServer().broadcastMessage(
+							ChatColor.DARK_RED + cs.getName() + ChatColor.RED
+									+ " has ragequit!");
+					((Player) cs).kickPlayer(ChatColor.DARK_RED
+							+ "RAAAGGGEEEE!!!");
+					return true;
 				}
+			}
+			if (args.length == 1) {
+				if (!plugin.isAuthorized(cs, "rcmds.ragequit.others")) {
+					cs.sendMessage(ChatColor.RED
+							+ "You don't have permission for that!");
+					return true;
+				}
+				Player victim = plugin.getServer().getPlayer(args[0]);
+				if (victim == null) {
+					cs.sendMessage(ChatColor.RED
+							+ "That player does not exist!");
+					return true;
+				}
+				if (plugin.isVanished(victim)) {
+					cs.sendMessage(ChatColor.RED
+							+ "That player does not exist!");
+					return true;
+				}
+				plugin.getServer().broadcastMessage(
+						ChatColor.DARK_RED + victim.getName() + ChatColor.RED
+								+ " has ragequit!");
+				victim.kickPlayer(ChatColor.DARK_RED + "RAAAGGGEEEE!!!");
+				return true;
 			}
 		}
 		return false;

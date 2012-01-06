@@ -31,32 +31,30 @@ public class GetIP implements CommandExecutor {
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
+			}
+			if (plugin.getConfig().getBoolean("disable_getip") == true) {
+				cs.sendMessage(ChatColor.RED
+						+ "/getip and /compareip have been disabled.");
+				return true;
+			}
+			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
+				return false;
+			}
+			OfflinePlayer oplayer = (OfflinePlayer) plugin.getServer()
+					.getOfflinePlayer(args[0]);
+			File oplayerconfl = new File(plugin.getDataFolder() + "/userdata/"
+					+ oplayer.getName().toLowerCase() + ".yml");
+			if (oplayerconfl.exists()) {
+				FileConfiguration oplayerconf = YamlConfiguration
+						.loadConfiguration(oplayerconfl);
+				cs.sendMessage(ChatColor.GRAY + oplayer.getName() + ": "
+						+ oplayerconf.getString("ip"));
+				return true;
 			} else {
-				if (plugin.getConfig().getBoolean("disable_getip") == true) {
-					cs.sendMessage(ChatColor.RED
-							+ "/getip and /compareip have been disabled.");
-					return true;
-				} else {
-					if (args.length < 1) {
-						return false;
-					} else {
-						OfflinePlayer oplayer = (OfflinePlayer) plugin
-								.getServer().getOfflinePlayer(args[0]);
-						File oplayerconfl = new File(plugin.getDataFolder()
-								+ "/userdata/" + oplayer.getName().toLowerCase() + ".yml");
-						if (oplayerconfl.exists()) {
-							FileConfiguration oplayerconf = YamlConfiguration
-									.loadConfiguration(oplayerconfl);
-							cs.sendMessage(ChatColor.GRAY + oplayer.getName()
-									+ ": " + oplayerconf.getString("ip"));
-							return true;
-						} else {
-							cs.sendMessage(ChatColor.RED + "The player "
-									+ oplayer.getName() + " does not exist.");
-							return true;
-						}
-					}
-				}
+				cs.sendMessage(ChatColor.RED + "The player "
+						+ oplayer.getName() + " does not exist.");
+				return true;
 			}
 		}
 		return false;

@@ -63,8 +63,13 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "frozen")) {
 			event.setCancelled(true);
 		}
+		if (plugin.buildPerm) {
+			if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) {
+				event.setCancelled(true);
+			}
+		}
 	}
-
+	
 	public void onPlayerLogin(PlayerLoginEvent event) {
 		if (event.getPlayer().isBanned()) {
 			String kickMessage = plugin.banMessage;

@@ -38,6 +38,7 @@ public class DelWarp implements CommandExecutor {
 				return true;
 			}
 			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
 			File pconfl = new File(plugin.getDataFolder() + "/warps.yml");

@@ -27,38 +27,32 @@ public class Facepalm implements CommandExecutor {
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
-			} else {
-				Player victim = null;
-				if (args.length < 1) {
-					Bukkit.getServer().broadcastMessage(
-							ChatColor.YELLOW + cs.getName() + ChatColor.AQUA
-									+ " has facepalmed.");
-					return true;
-				} else {
-					if (plugin.isOnline(args[0]) == false) {
-						cs.sendMessage(ChatColor.RED
-								+ "That player is not online!");
-						return true;
-					} else {
-						victim = (Player) plugin.getServer().getPlayer(args[0]);
-						if (plugin
-								.isAuthorized(victim, "rcmds.exempt.facepalm")) {
-							cs.sendMessage(ChatColor.RED
-									+ "You cannot facepalm at that player!");
-							return true;
-						} else {
-							Bukkit.getServer().broadcastMessage(
-									ChatColor.YELLOW + cs.getName()
-											+ ChatColor.AQUA
-											+ " has facepalmed at "
-											+ ChatColor.YELLOW
-											+ victim.getName() + ChatColor.AQUA
-											+ ".");
-							return true;
-						}
-					}
-				}
 			}
+			if (args.length < 1) {
+				plugin.getServer().broadcastMessage(
+						ChatColor.YELLOW + cs.getName() + ChatColor.AQUA
+								+ " has facepalmed.");
+				return true;
+			}
+			Player victim = plugin.getServer().getPlayer(args[0]);
+			if (victim == null) {
+				cs.sendMessage(ChatColor.RED + "That player is not online!");
+				return true;
+			}
+			if (plugin.isVanished(victim)) {
+				cs.sendMessage(ChatColor.RED + "That player does not exist!");
+				return true;
+			}
+			if (plugin.isAuthorized(victim, "rcmds.exempt.facepalm")) {
+				cs.sendMessage(ChatColor.RED
+						+ "You cannot facepalm at that player!");
+				return true;
+			}
+			Bukkit.getServer().broadcastMessage(
+					ChatColor.YELLOW + cs.getName() + ChatColor.AQUA
+							+ " has facepalmed at " + ChatColor.YELLOW
+							+ victim.getName() + ChatColor.AQUA + ".");
+			return true;
 		}
 		return false;
 	}

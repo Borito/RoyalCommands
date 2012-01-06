@@ -17,71 +17,71 @@ public class Sci implements CommandExecutor {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label,
+	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("sci")) {
 
 			Player victim = null;
 
-			if (!plugin.isAuthorized(sender, "rcmds.sci")) {
-				sender.sendMessage(ChatColor.RED
+			if (!plugin.isAuthorized(cs, "rcmds.sci")) {
+				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
-				plugin.log.warning("[RoyalCommands] " + sender.getName()
+				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
-			} else {
-				int errord = 0;
-				if (args.length < 2) {
-					return false;
+			}
+			int errord = 0;
+			if (args.length < 2) {
+				cs.sendMessage(cmd.getDescription());
+				return false;
+			}
+			if (errord == 0) {
+				int removeID = 0;
+				victim = (Player) plugin.getServer().getPlayer(args[0]);
+				if (plugin.isVanished(victim)) {
+					cs.sendMessage(ChatColor.RED
+							+ "That player does not exist!");
+					return true;
 				}
-				if (plugin.isOnline(args[0]) == false) {
-					sender.sendMessage(ChatColor.RED
+				if (victim == null) {
+					cs.sendMessage(ChatColor.RED
 							+ "You must input an online player.");
 					errord = 1;
 				}
-				if (errord == 0) {
-					int removeID = 0;
-					victim = (Player) plugin.getServer().getPlayer(args[0]);
-					try {
-						removeID = Integer.parseInt(args[1]);
-					} catch (NumberFormatException e) {
-						sender.sendMessage(ChatColor.RED
-								+ "You must input a numerical ID to remove.");
-						return false;
-					}
-					if (removeID <= 0 || removeID > 2266) {
-						sender.sendMessage(ChatColor.RED
-								+ "You must specify a valid item ID.");
-						return true;
-					} else {
-						if (removeID < 2255 && removeID > 382) {
-							sender.sendMessage(ChatColor.RED
-									+ "You must specify a valid item ID.");
-							return true;
-						} else {
-							if (plugin.isAuthorized(victim, "rcmds.exempt.sci")) {
-								sender.sendMessage(ChatColor.RED
-										+ "You cannot alter that player's inventory.");
-								return true;
-							} else {
-								victim.getInventory().remove(removeID);
-								victim.sendMessage(ChatColor.RED
-										+ "You have just had all of your item ID "
-										+ ChatColor.BLUE + removeID
-										+ ChatColor.RED + " removed by "
-										+ ChatColor.RED + sender.getName()
-										+ ChatColor.BLUE + "!");
-								sender.sendMessage(ChatColor.BLUE
-										+ "You have just removed all of the item ID "
-										+ ChatColor.RED + removeID
-										+ ChatColor.BLUE + " from "
-										+ ChatColor.RED + victim.getName()
-										+ ChatColor.BLUE + "'s inventory.");
-								return true;
-							}
-						}
-					}
+				try {
+					removeID = Integer.parseInt(args[1]);
+				} catch (NumberFormatException e) {
+					cs.sendMessage(ChatColor.RED
+							+ "You must input a numerical ID to remove.");
+					return false;
 				}
+				if (removeID <= 0 || removeID > 2266) {
+					cs.sendMessage(ChatColor.RED
+							+ "You must specify a valid item ID.");
+					return true;
+				}
+				if (removeID < 2255 && removeID > 382) {
+					cs.sendMessage(ChatColor.RED
+							+ "You must specify a valid item ID.");
+					return true;
+				}
+				if (plugin.isAuthorized(victim, "rcmds.exempt.sci")) {
+					cs.sendMessage(ChatColor.RED
+							+ "You cannot alter that player's inventory.");
+					return true;
+				}
+				victim.getInventory().remove(removeID);
+				victim.sendMessage(ChatColor.RED
+						+ "You have just had all of your item ID "
+						+ ChatColor.BLUE + removeID + ChatColor.RED
+						+ " removed by " + ChatColor.RED + cs.getName()
+						+ ChatColor.BLUE + "!");
+				cs.sendMessage(ChatColor.BLUE
+						+ "You have just removed all of the item ID "
+						+ ChatColor.RED + removeID + ChatColor.BLUE + " from "
+						+ ChatColor.RED + victim.getName() + ChatColor.BLUE
+						+ "'s inventory.");
+				return true;
 			}
 		}
 		return false;
