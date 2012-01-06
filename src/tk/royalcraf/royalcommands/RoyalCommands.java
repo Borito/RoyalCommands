@@ -97,6 +97,7 @@ import tk.royalcraf.rcommands.Strike;
 import tk.royalcraf.rcommands.Teleport;
 import tk.royalcraf.rcommands.TeleportHere;
 import tk.royalcraf.rcommands.TeleportRequest;
+import tk.royalcraf.rcommands.TeleportRequestHere;
 import tk.royalcraf.rcommands.Time;
 import tk.royalcraf.rcommands.TpAccept;
 import tk.royalcraf.rcommands.TpDeny;
@@ -113,7 +114,7 @@ public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
 
-	public String version = "0.1.0";
+	public String version = "0.1.1";
 	public String newVersion = null;
 
 	public Boolean showcommands = null;
@@ -417,6 +418,8 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("tpdeny").setExecutor(new TpDeny(this));
 		getCommand("listwarns").setExecutor(new ListWarns(this));
 		getCommand("more").setExecutor(new More(this));
+		getCommand("teleportrequesthere").setExecutor(
+				new TeleportRequestHere(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");

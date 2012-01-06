@@ -1,5 +1,7 @@
 package tk.royalcraf.rcommands;
 
+import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,28 +10,25 @@ import org.bukkit.entity.Player;
 
 import tk.royalcraf.royalcommands.RoyalCommands;
 
-public class Teleport implements CommandExecutor {
+public class TeleportRequestHere implements CommandExecutor {
 
 	RoyalCommands plugin;
 
-	public Teleport(RoyalCommands plugin) {
+	public TeleportRequestHere(RoyalCommands plugin) {
 		this.plugin = plugin;
 	}
+	
+	public static HashMap<Player, CommandSender> tprhdb = new HashMap<Player, CommandSender>();
 
 	@Override
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
-		if (cmd.getName().equalsIgnoreCase("teleport")) {
-			if (!plugin.isAuthorized(cs, "rcmds.tp")) {
+		if (cmd.getName().equalsIgnoreCase("teleportrequesthere")) {
+			if (!plugin.isAuthorized(cs, "rcmds.tprhere")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
-				return true;
-			}
-			if (!(cs instanceof Player)) {
-				cs.sendMessage(ChatColor.RED
-						+ "This command is only available to players!");
 				return true;
 			}
 			if (args.length < 1) {
@@ -50,11 +49,14 @@ public class Teleport implements CommandExecutor {
 						+ "You may not teleport with that player.");
 				return true;
 			}
-			Player p = (Player) cs;
-			Back.backdb.put(p, p.getLocation());
-			p.sendMessage(ChatColor.BLUE + "Teleporting you to "
-					+ ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-			p.teleport(t.getLocation());
+			TeleportRequest.tprdb.put(t, cs);
+			cs.sendMessage(ChatColor.BLUE + "Sent request to " + ChatColor.GRAY
+					+ t.getName() + ChatColor.BLUE + ".");
+			t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE
+					+ " has requested you to teleport to them.");
+			t.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY
+					+ "/tpaccept" + ChatColor.BLUE + " or " + ChatColor.GRAY
+					+ "/tpdeny" + ChatColor.BLUE + ".");
 			return true;
 		}
 		return false;

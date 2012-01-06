@@ -44,6 +44,11 @@ public class TeleportRequest implements CommandExecutor {
 				cs.sendMessage(ChatColor.RED + "That player does not exist!");
 				return true;
 			}
+			if (plugin.isAuthorized(t, "rcmds.exempt.teleport")) {
+				cs.sendMessage(ChatColor.RED
+						+ "You may not teleport with that player.");
+				return true;
+			}
 			tprdb.put(t, cs);
 			cs.sendMessage(ChatColor.BLUE + "Sent request to " + ChatColor.GRAY
 					+ t.getName() + ChatColor.BLUE + ".");

@@ -1,6 +1,6 @@
 name: RoyalCommands
 main: tk.royalcraf.royalcommands.RoyalCommands
-version: 0.1.0
+version: 0.1.1
 website: http://royaldev.org/
 author: jkcclemens
 depend: [Vault]
@@ -299,6 +299,11 @@ commands:
   more:
     description: Gives more of the item in hand.
     usage: /<command>
+    
+  teleportrequesthere:
+    description: Sends a teleport here request to a player.
+    usage: /<command> [player]
+    aliases: [tprh, tpahere, tpah, teleportrhere, tphrequest, tphererequest]
         
   rcmds:
     description: Displays version of RoyalCommands.

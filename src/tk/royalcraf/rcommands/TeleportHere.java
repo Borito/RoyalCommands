@@ -45,6 +45,11 @@ public class TeleportHere implements CommandExecutor {
 				cs.sendMessage(ChatColor.RED + "That player does not exist!");
 				return true;
 			}
+			if (plugin.isAuthorized(t, "rcmds.exempt.teleport")) {
+				cs.sendMessage(ChatColor.RED
+						+ "You may not teleport with that player.");
+				return true;
+			}
 			Player p = (Player) cs;
 			Back.backdb.put(t, t.getLocation());
 			p.sendMessage(ChatColor.BLUE + "Teleporting " + ChatColor.GRAY
