@@ -35,6 +35,14 @@ public class TpAccept implements CommandExecutor {
 				t.teleport(((Player) cs).getLocation());
 				return true;
 			}
+			if (TeleportRequestHere.tprhdb.containsKey((Player) cs)) {
+				Player t = (Player) TeleportRequestHere.tprhdb.get((Player) cs);
+				cs.sendMessage(ChatColor.BLUE + "Teleport request accepted.");
+				t.sendMessage(ChatColor.BLUE
+						+ "Your teleport request was accepted.");
+				((Player) cs).teleport(t.getLocation());
+				return true;
+			}
 			cs.sendMessage(ChatColor.RED + "You have no requests pending.");
 			return true;
 		}

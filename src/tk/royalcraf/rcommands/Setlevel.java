@@ -20,6 +20,13 @@ public class Setlevel implements CommandExecutor {
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("setlevel")) {
+			if (!plugin.isAuthorized(cs, "rcmds.setlevel")) {
+				cs.sendMessage(ChatColor.RED
+						+ "You don't have permission for that!");
+				plugin.log.warning("[RoyalCommands] " + cs.getName()
+						+ " was denied access to the command!");
+				return true;
+			}
 			Player player = null;
 			Player victim = null;
 			if (cs instanceof Player) {
@@ -29,13 +36,6 @@ public class Setlevel implements CommandExecutor {
 			if (player == null) {
 				cs.sendMessage(ChatColor.RED
 						+ "This command can only be used by players!");
-				return true;
-			}
-			if (!plugin.isAuthorized(cs, "rcmds.setlevel")) {
-				cs.sendMessage(ChatColor.RED
-						+ "You don't have permission for that!");
-				plugin.log.warning("[RoyalCommands] " + cs.getName()
-						+ " was denied access to the command!");
 				return true;
 			}
 			if (args.length < 1) {

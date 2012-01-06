@@ -23,6 +23,8 @@ public class RageQuit implements CommandExecutor {
 			if (!plugin.isAuthorized(cs, "rcmds.ragequit")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
+				plugin.log.warning("[RoyalCommands] " + cs.getName()
+						+ " was denied access to the command!");
 				return true;
 			}
 			if (args.length < 1) {

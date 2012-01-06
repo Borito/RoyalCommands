@@ -25,6 +25,7 @@ public class Fakeop implements CommandExecutor {
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
+				return true;
 			}
 			if (args.length < 1) {
 				cs.sendMessage(cmd.getDescription());

@@ -27,29 +27,25 @@ public class Gamemode implements CommandExecutor {
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
-			} else {
-				if (!(cs instanceof Player)) {
-					cs.sendMessage(ChatColor.RED
-							+ "This command is only available to players!");
-					return true;
-				} else {
-					Player p = (Player) cs;
-					if (p.getGameMode() == GameMode.CREATIVE) {
-						p.setGameMode(GameMode.SURVIVAL);
-						p.sendMessage(ChatColor.BLUE
-								+ "Your game mode has been set to "
-								+ ChatColor.GRAY + "survival" + ChatColor.BLUE
-								+ ".");
-						return true;
-					} else if (p.getGameMode() == GameMode.SURVIVAL) {
-						p.setGameMode(GameMode.CREATIVE);
-						p.sendMessage(ChatColor.BLUE
-								+ "Your game mode has been set to "
-								+ ChatColor.GRAY + "creative" + ChatColor.BLUE
-								+ ".");
-						return true;
-					}
-				}
+			}
+			if (!(cs instanceof Player)) {
+				cs.sendMessage(ChatColor.RED
+						+ "This command is only available to players!");
+				return true;
+			}
+			Player p = (Player) cs;
+			if (p.getGameMode() == GameMode.CREATIVE) {
+				p.setGameMode(GameMode.SURVIVAL);
+				p.sendMessage(ChatColor.BLUE
+						+ "Your game mode has been set to " + ChatColor.GRAY
+						+ "survival" + ChatColor.BLUE + ".");
+				return true;
+			} else if (p.getGameMode() == GameMode.SURVIVAL) {
+				p.setGameMode(GameMode.CREATIVE);
+				p.sendMessage(ChatColor.BLUE
+						+ "Your game mode has been set to " + ChatColor.GRAY
+						+ "creative" + ChatColor.BLUE + ".");
+				return true;
 			}
 		}
 		return false;

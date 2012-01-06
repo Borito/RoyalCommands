@@ -27,22 +27,20 @@ public class FixChunk implements CommandExecutor {
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
 				return true;
-			} else {
-				if (!(cs instanceof Player)) {
-					cs.sendMessage(ChatColor.RED
-							+ "This command is only available to players!");
-					return true;
-				} else {
-					Player p = (Player) cs;
-					Chunk c = p.getLocation().getChunk();
-					p.getLocation();
-					p.getWorld().unloadChunk(c);
-					p.getWorld().loadChunk(c);
-					cs.sendMessage(ChatColor.BLUE
-							+ "The chunk you're standing in has been reloaded!");
-					return true;
-				}
 			}
+			if (!(cs instanceof Player)) {
+				cs.sendMessage(ChatColor.RED
+						+ "This command is only available to players!");
+				return true;
+			}
+			Player p = (Player) cs;
+			Chunk c = p.getLocation().getChunk();
+			p.getLocation();
+			p.getWorld().unloadChunk(c);
+			p.getWorld().loadChunk(c);
+			cs.sendMessage(ChatColor.BLUE
+					+ "The chunk you're standing in has been reloaded!");
+			return true;
 		}
 		return false;
 	}

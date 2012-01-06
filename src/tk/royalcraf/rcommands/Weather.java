@@ -26,6 +26,7 @@ public class Weather implements CommandExecutor {
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
 						+ " was denied access to the command!");
+				return true;
 			}
 			if (args.length < 1) {
 				cs.sendMessage(cmd.getDescription());
@@ -33,7 +34,11 @@ public class Weather implements CommandExecutor {
 			}
 
 			if (!(cs instanceof Player)) {
-			} else if (args.length < 2) {
+				cs.sendMessage(ChatColor.RED
+						+ "This command is only available to players!");
+				return true;
+			}
+			if (args.length < 2) {
 				Player p = (Player) cs;
 				String conds = args[0];
 				World world = p.getWorld();

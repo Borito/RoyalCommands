@@ -23,15 +23,14 @@ public class Quit implements CommandExecutor {
 			if (!plugin.isAuthorized(cs, "rcmds.quit")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
-				return true;
-			} else {
-				((Player) cs).kickPlayer("You have left the game.");
-				plugin.getServer()
-						.broadcastMessage(
-								ChatColor.YELLOW + cs.getName()
-										+ " has left the game.");
+				plugin.log.warning("[RoyalCommands] " + cs.getName()
+						+ " was denied access to the command!");
 				return true;
 			}
+			((Player) cs).kickPlayer("You have left the game.");
+			plugin.getServer().broadcastMessage(
+					ChatColor.YELLOW + cs.getName() + " has left the game.");
+			return true;
 		}
 		return false;
 	}
