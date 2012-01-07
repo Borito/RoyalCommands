@@ -36,7 +36,6 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 			log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": "
 					+ event.getMessage());
 		}
-
 	}
 
 	public void onGameModeChange(PlayerGameModeChangeEvent event) {
@@ -44,7 +43,8 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerChat(PlayerChatEvent event) {
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "muted")) {
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"muted")) {
 			event.setFormat("");
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
@@ -54,13 +54,15 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerMove(PlayerMoveEvent event) {
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "frozen")) {
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"frozen")) {
 			event.setCancelled(true);
 		}
 	}
 
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "frozen")) {
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"frozen")) {
 			event.setCancelled(true);
 		}
 		if (plugin.buildPerm) {
@@ -69,7 +71,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 			}
 		}
 	}
-	
+
 	public void onPlayerLogin(PlayerLoginEvent event) {
 		if (event.getPlayer().isBanned()) {
 			String kickMessage = plugin.banMessage;
