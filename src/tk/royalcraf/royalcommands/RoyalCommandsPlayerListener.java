@@ -38,7 +38,8 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
 				"muted")) {
 			for (String command : plugin.muteCmds) {
-				if (event.getMessage().toLowerCase().startsWith(command)) {
+				if (event.getMessage().substring(0, command.length())
+						.equalsIgnoreCase(command)) {
 					event.getPlayer().sendMessage(
 							ChatColor.RED + "You are muted.");
 					log.info("[RoyalCommands] " + event.getPlayer().getName()
