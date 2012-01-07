@@ -32,6 +32,7 @@ public class TpAccept implements CommandExecutor {
 				cs.sendMessage(ChatColor.BLUE + "Teleport request accepted.");
 				t.sendMessage(ChatColor.BLUE
 						+ "Your teleport request was accepted.");
+				Back.backdb.put(t, t.getLocation());
 				t.teleport(((Player) cs).getLocation());
 				return true;
 			}
@@ -40,6 +41,7 @@ public class TpAccept implements CommandExecutor {
 				cs.sendMessage(ChatColor.BLUE + "Teleport request accepted.");
 				t.sendMessage(ChatColor.BLUE
 						+ "Your teleport request was accepted.");
+				Back.backdb.put(((Player) cs), ((Player) cs).getLocation());
 				((Player) cs).teleport(t.getLocation());
 				return true;
 			}

@@ -17,7 +17,7 @@ public class TeleportRequestHere implements CommandExecutor {
 	public TeleportRequestHere(RoyalCommands plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	public static HashMap<Player, CommandSender> tprhdb = new HashMap<Player, CommandSender>();
 
 	@Override
@@ -49,7 +49,7 @@ public class TeleportRequestHere implements CommandExecutor {
 						+ "You may not teleport with that player.");
 				return true;
 			}
-			TeleportRequest.tprdb.put(t, cs);
+			tprhdb.put(t, cs);
 			cs.sendMessage(ChatColor.BLUE + "Sent request to " + ChatColor.GRAY
 					+ t.getName() + ChatColor.BLUE + ".");
 			t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE
