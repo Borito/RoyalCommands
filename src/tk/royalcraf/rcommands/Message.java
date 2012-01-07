@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import tk.royalcraf.royalcommands.PConfManager;
 import tk.royalcraf.royalcommands.RoyalCommands;
 
 public class Message implements CommandExecutor {
@@ -67,6 +68,16 @@ public class Message implements CommandExecutor {
 			cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You"
 					+ ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName()
 					+ ChatColor.GRAY + "] " + m);
+			for (int i = 0; i < plugin.getServer().getOnlinePlayers().length; i++) {
+				if (PConfManager.getPValBoolean(plugin.getServer()
+						.getOnlinePlayers()[i], "spy")) {
+					plugin.getServer().getOnlinePlayers()[i]
+							.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
+									+ cs.getName() + ChatColor.GRAY + " -> "
+									+ ChatColor.BLUE + t.getName()
+									+ ChatColor.GRAY + "] " + m);
+				}
+			}
 			return true;
 		}
 		return false;

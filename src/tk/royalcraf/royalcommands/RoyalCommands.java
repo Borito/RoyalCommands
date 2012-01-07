@@ -92,6 +92,7 @@ import tk.royalcraf.rcommands.Setlevel;
 import tk.royalcraf.rcommands.Slap;
 import tk.royalcraf.rcommands.Spawn;
 import tk.royalcraf.rcommands.Speak;
+import tk.royalcraf.rcommands.Spy;
 import tk.royalcraf.rcommands.Starve;
 import tk.royalcraf.rcommands.Strike;
 import tk.royalcraf.rcommands.Teleport;
@@ -420,6 +421,7 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("more").setExecutor(new More(this));
 		getCommand("teleportrequesthere").setExecutor(
 				new TeleportRequestHere(this));
+		getCommand("spy").setExecutor(new Spy(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");

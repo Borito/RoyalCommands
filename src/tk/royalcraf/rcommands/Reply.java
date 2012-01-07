@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import tk.royalcraf.royalcommands.PConfManager;
 import tk.royalcraf.royalcommands.RoyalCommands;
 
 public class Reply implements CommandExecutor {
@@ -49,13 +50,33 @@ public class Reply implements CommandExecutor {
 							}
 							p.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
 									+ "You" + ChatColor.GRAY + " -> "
-									+ ChatColor.BLUE + t.getName() + ChatColor.GRAY
-									+ "] " + plugin.getFinalArg(args, 0));
-							t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
-									+ p.getName() + ChatColor.GRAY + " -> "
-									+ ChatColor.BLUE + "You"
+									+ ChatColor.BLUE + t.getName()
 									+ ChatColor.GRAY + "] "
 									+ plugin.getFinalArg(args, 0));
+							t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
+									+ p.getName() + ChatColor.GRAY + " -> "
+									+ ChatColor.BLUE + "You" + ChatColor.GRAY
+									+ "] " + plugin.getFinalArg(args, 0));
+							for (int i = 0; i < plugin.getServer()
+									.getOnlinePlayers().length; i++) {
+								if (PConfManager.getPValBoolean(plugin
+										.getServer().getOnlinePlayers()[i],
+										"spy")) {
+									plugin.getServer().getOnlinePlayers()[i]
+											.sendMessage(ChatColor.GRAY
+													+ "["
+													+ ChatColor.BLUE
+													+ cs.getName()
+													+ ChatColor.GRAY
+													+ " -> "
+													+ ChatColor.BLUE
+													+ t.getName()
+													+ ChatColor.GRAY
+													+ "] "
+													+ plugin.getFinalArg(args,
+															0));
+								}
+							}
 							return true;
 						} else {
 							cs.sendMessage(ChatColor.RED

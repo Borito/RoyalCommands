@@ -304,6 +304,11 @@ commands:
     description: Sends a teleport here request to a player.
     usage: /<command> [player]
     aliases: [tprh, tpahere, tpah, teleportrhere, tphrequest, tphererequest]
+    
+  spy:
+    description: Allows the player to spy on private messages.
+    usage: /<command>
+    aliases: [msgspy, socialspy]
         
   rcmds:
     description: Displays version of RoyalCommands.
