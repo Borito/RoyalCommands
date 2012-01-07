@@ -22,6 +22,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -118,6 +119,7 @@ public class RoyalCommands extends JavaPlugin {
 	public String version = "0.1.1";
 	public String newVersion = null;
 
+	public java.util.List<String> muteCmds = new ArrayList<String>();
 	public Boolean showcommands = null;
 	public Boolean disablegetip = null;
 	public Boolean useWelcome = null;
@@ -439,6 +441,7 @@ public class RoyalCommands extends JavaPlugin {
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		gUid = this.getConfig().getString("guid_do_not_change");
 		warnBan = this.getConfig().getInt("max_warns_before_ban");
+		muteCmds = this.getConfig().getStringList("mute_blocked_commands");
 		log.info("[RoyalCommands] RoyalCommands v" + this.version
 				+ " initiated.");
 	}

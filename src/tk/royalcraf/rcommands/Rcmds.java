@@ -48,6 +48,7 @@ public class Rcmds implements CommandExecutor {
 					.getString("welcome_message")
 					.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 			plugin.warnBan = plugin.getConfig().getInt("max_warns_before_ban");
+			plugin.muteCmds = plugin.getConfig().getStringList("mute_blocked_commands");
 			cs.sendMessage(ChatColor.GREEN + "RoyalCommands " + ChatColor.BLUE
 					+ "v" + plugin.version + " reloaded.");
 			return true;

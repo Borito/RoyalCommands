@@ -31,10 +31,21 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 	Logger log = Logger.getLogger("Minecraft");
 
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-
 		if (plugin.showcommands) {
 			log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": "
 					+ event.getMessage());
+		}
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"muted")) {
+			for (String command : plugin.muteCmds) {
+				if (event.getMessage().toLowerCase().startsWith(command)) {
+					event.getPlayer().sendMessage(
+							ChatColor.RED + "You are muted.");
+					log.info("[RoyalCommands] " + event.getPlayer().getName()
+							+ " tried to use that command, but is muted.");
+					event.setCancelled(true);
+				}
+			}
 		}
 	}
 

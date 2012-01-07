@@ -10,3 +10,4 @@ default_warn_message: "You have been warned."
 welcome_message: "&5Welcome {name} to the server!"
 default_stack_size: 64
 max_warns_before_ban: 3
+mute_blocked_commands: ["/me", "/tc", "/nc"]
