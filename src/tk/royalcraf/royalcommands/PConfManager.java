@@ -56,6 +56,17 @@ public class PConfManager {
 		}
 		return false;
 	}
+	
+	public static Object getPVal(OfflinePlayer t, String path) {
+		File pconfl = new File(plugin.getDataFolder() + "/userdata/"
+				+ t.getName().toLowerCase() + ".yml");
+		if (pconfl.exists()) {
+			FileConfiguration pconf = YamlConfiguration
+					.loadConfiguration(pconfl);
+			return pconf.get(path);
+		}
+		return false;
+	}
 
 	public static String getPValString(OfflinePlayer t, String path) {
 		File pconfl = new File(plugin.getDataFolder() + "/userdata/"
