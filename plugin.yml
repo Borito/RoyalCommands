@@ -303,7 +303,7 @@ commands:
   teleportrequesthere:
     description: Sends a teleport here request to a player.
     usage: /<command> [player]
-    aliases: [tprh, tpahere, tpah, teleportrhere, tphrequest, tphererequest]
+    aliases: [tprh, tpahere, tpah, teleportrhere, tphrequest, tphererequest, tprhere]
     
   spy:
     description: Allows the player to spy on private messages.
@@ -326,7 +326,7 @@ commands:
     aliases: [as, pt, powertool]
     
   onehitkill:
-    description: Makes all attacks kill anything.
+    description: Makes all attacks kill anything (not dragons).
     usage: /<command>
     aliases: [ohk, instakill, ik]
     
