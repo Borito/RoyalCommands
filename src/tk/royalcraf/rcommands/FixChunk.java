@@ -35,7 +35,6 @@ public class FixChunk implements CommandExecutor {
 			}
 			Player p = (Player) cs;
 			Chunk c = p.getLocation().getChunk();
-			p.getLocation();
 			p.getWorld().unloadChunk(c);
 			p.getWorld().loadChunk(c);
 			cs.sendMessage(ChatColor.BLUE
