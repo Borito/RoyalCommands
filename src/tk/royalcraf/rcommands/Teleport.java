@@ -20,7 +20,7 @@ public class Teleport implements CommandExecutor {
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("teleport")) {
-			if (!plugin.isAuthorized(cs, "rcmds.tp")) {
+			if (!plugin.isAuthorized(cs, "rcmds.teleport")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()
@@ -37,11 +37,7 @@ public class Teleport implements CommandExecutor {
 				return false;
 			}
 			Player t = plugin.getServer().getPlayer(args[0].trim());
-			if (t == null) {
-				cs.sendMessage(ChatColor.RED + "That player does not exist!");
-				return true;
-			}
-			if (plugin.isVanished(t)) {
+			if (t == null || plugin.isVanished(t)) {
 				cs.sendMessage(ChatColor.RED + "That player does not exist!");
 				return true;
 			}

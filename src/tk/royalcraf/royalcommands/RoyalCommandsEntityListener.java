@@ -1,14 +1,20 @@
 package tk.royalcraf.royalcommands;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+
+import tk.royalcraf.rcommands.Back;
 
 public class RoyalCommandsEntityListener extends EntityListener {
 
@@ -16,6 +22,18 @@ public class RoyalCommandsEntityListener extends EntityListener {
 
 	public RoyalCommandsEntityListener(RoyalCommands instance) {
 		plugin = instance;
+	}
+
+	public void onEntityDeath(EntityDeathEvent ent) {
+		if (ent instanceof PlayerDeathEvent) {
+			PlayerDeathEvent e = (PlayerDeathEvent) ent;
+			if (!(e.getEntity() instanceof Player)) return;
+			Player p = (Player) e.getEntity();
+			Location pLoc = p.getLocation();
+			Back.backdb.put(p, pLoc);
+			p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back"
+					+ ChatColor.BLUE + " to go back to where you died.");
+		}
 	}
 
 	public void onEntityDamage(EntityDamageEvent event) {

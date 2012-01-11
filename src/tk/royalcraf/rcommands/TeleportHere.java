@@ -20,7 +20,7 @@ public class TeleportHere implements CommandExecutor {
 	public boolean onCommand(CommandSender cs, Command cmd, String label,
 			String[] args) {
 		if (cmd.getName().equalsIgnoreCase("teleporthere")) {
-			if (!plugin.isAuthorized(cs, "rcmds.tphere")) {
+			if (!plugin.isAuthorized(cs, "rcmds.teleporthere")) {
 				cs.sendMessage(ChatColor.RED
 						+ "You don't have permission for that!");
 				plugin.log.warning("[RoyalCommands] " + cs.getName()

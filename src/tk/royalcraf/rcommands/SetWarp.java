@@ -33,20 +33,17 @@ public class SetWarp implements CommandExecutor {
 				return true;
 			}
 
-			if (args.length < 1) {
-				cs.sendMessage(cmd.getDescription());
-				return false;
-			}
-
-			Player p = null;
-
 			if (!(cs instanceof Player)) {
 				cs.sendMessage(ChatColor.RED
 						+ "This command is only available to players!");
 				return true;
-			} else {
-				p = (Player) cs;
 			}
+
+			if (args.length < 1) {
+				cs.sendMessage(cmd.getDescription());
+				return false;
+			}
+			Player p = (Player) cs;
 
 			double locX = p.getLocation().getX();
 			double locY = p.getLocation().getY();
@@ -55,7 +52,8 @@ public class SetWarp implements CommandExecutor {
 			Float locPitch = p.getLocation().getPitch();
 			String locW = p.getWorld().getName();
 
-			File pconfl = new File(plugin.getDataFolder() + "/warps.yml");
+			File pconfl = new File(plugin.getDataFolder() + File.separator
+					+ "warps.yml");
 			if (pconfl.exists()) {
 				FileConfiguration pconf = YamlConfiguration
 						.loadConfiguration(pconfl);

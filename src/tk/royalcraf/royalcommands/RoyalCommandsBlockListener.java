@@ -14,7 +14,12 @@ public class RoyalCommandsBlockListener extends BlockListener {
 	}
 
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "frozen")) {
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"frozen")) {
+			event.setCancelled(true);
+		}
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"jailed")) {
 			event.setCancelled(true);
 		}
 		if (plugin.buildPerm) {
@@ -25,7 +30,12 @@ public class RoyalCommandsBlockListener extends BlockListener {
 	}
 
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(), "frozen")) {
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"frozen")) {
+			event.setCancelled(true);
+		}
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"jailed")) {
 			event.setCancelled(true);
 		}
 		if (plugin.buildPerm) {

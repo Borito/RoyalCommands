@@ -35,15 +35,13 @@ public class Warp implements CommandExecutor {
 				return true;
 			}
 
-			Player p = null;
-
 			if (!(cs instanceof Player)) {
 				cs.sendMessage(ChatColor.RED
 						+ "This command is only available to players!");
 				return true;
-			} else {
-				p = (Player) cs;
 			}
+			
+			Player p = (Player) cs;
 
 			boolean warpSet = false;
 			Double warpX = null;

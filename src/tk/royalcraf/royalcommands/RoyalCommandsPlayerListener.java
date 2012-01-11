@@ -54,6 +54,11 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 				}
 			}
 		}
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"jailed")) {
+			event.getPlayer().sendMessage(ChatColor.RED + "You are jailed.");
+			event.setCancelled(true);
+		}
 	}
 
 	public void onGameModeChange(PlayerGameModeChangeEvent event) {
@@ -89,6 +94,10 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+				"jailed")) {
+			event.setCancelled(true);
+		}
 		Action act = event.getAction();
 		if (act.equals(Action.LEFT_CLICK_AIR)
 				|| act.equals(Action.RIGHT_CLICK_AIR)
