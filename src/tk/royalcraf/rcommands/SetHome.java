@@ -60,8 +60,9 @@ public class SetHome implements CommandExecutor {
 			Float locPitch = p.getLocation().getPitch();
 			String locW = p.getWorld().getName();
 
-			File pconfl = new File(plugin.getDataFolder() + "/userdata/"
-					+ cs.getName().toLowerCase() + ".yml");
+			File pconfl = new File(plugin.getDataFolder() + File.separator
+					+ "userdata" + File.separator + cs.getName().toLowerCase()
+					+ ".yml");
 			if (pconfl.exists()) {
 				FileConfiguration pconf = YamlConfiguration
 						.loadConfiguration(pconfl);
