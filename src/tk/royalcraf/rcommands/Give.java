@@ -30,6 +30,7 @@ public class Give implements CommandExecutor {
 				return true;
 			}
 			if (args.length < 2) {
+				cs.sendMessage(cmd.getName());
 				return false;
 			}
 			if (args.length < 3) {
