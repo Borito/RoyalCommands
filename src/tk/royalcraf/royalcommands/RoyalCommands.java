@@ -71,6 +71,7 @@ import tk.royalcraf.rcommands.Harm;
 import tk.royalcraf.rcommands.Heal;
 import tk.royalcraf.rcommands.Home;
 import tk.royalcraf.rcommands.Item;
+import tk.royalcraf.rcommands.Jail;
 import tk.royalcraf.rcommands.Jump;
 import tk.royalcraf.rcommands.Kick;
 import tk.royalcraf.rcommands.KickAll;
@@ -92,6 +93,7 @@ import tk.royalcraf.rcommands.Repair;
 import tk.royalcraf.rcommands.Reply;
 import tk.royalcraf.rcommands.Sci;
 import tk.royalcraf.rcommands.SetHome;
+import tk.royalcraf.rcommands.SetJail;
 import tk.royalcraf.rcommands.SetSpawn;
 import tk.royalcraf.rcommands.SetWarp;
 import tk.royalcraf.rcommands.Setarmor;
@@ -258,9 +260,7 @@ public class RoyalCommands extends JavaPlugin {
 	}
 
 	public boolean isAuthorized(final Player player, final String node) {
-		if (player.isOp()) {
-			return true;
-		} else if (this.setupPermissions()) {
+		if (this.setupPermissions()) {
 			if (RoyalCommands.permission.has(player, "rcmds.admin")) {
 				return true;
 			} else if (RoyalCommands.permission.has(player, node)) {
@@ -274,9 +274,7 @@ public class RoyalCommands extends JavaPlugin {
 	}
 
 	public boolean isAuthorized(final CommandSender player, final String node) {
-		if (player.isOp()) {
-			return true;
-		} else if (this.setupPermissions()) {
+		if (this.setupPermissions()) {
 			if (RoyalCommands.permission.has((Player) player, "rcmds.admin")) {
 				return true;
 			} else if (RoyalCommands.permission.has(player, node)) {
@@ -355,6 +353,8 @@ public class RoyalCommands extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener,
 				Event.Priority.High, this);
 		pm.registerEvent(Event.Type.PLAYER_GAME_MODE_CHANGE, playerListener,
+				Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.FOOD_LEVEL_CHANGE, entityListener,
 				Event.Priority.Normal, this);
@@ -440,6 +440,8 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("burn").setExecutor(new Burn(this));
 		getCommand("kickall").setExecutor(new KickAll(this));
 		getCommand("world").setExecutor(new CmdWorld(this));
+		getCommand("jail").setExecutor(new Jail(this));
+		getCommand("setjail").setExecutor(new SetJail(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
