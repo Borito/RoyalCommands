@@ -71,11 +71,16 @@ public class Message implements CommandExecutor {
 			for (int i = 0; i < plugin.getServer().getOnlinePlayers().length; i++) {
 				if (PConfManager.getPValBoolean(plugin.getServer()
 						.getOnlinePlayers()[i], "spy")) {
-					plugin.getServer().getOnlinePlayers()[i]
-							.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
-									+ cs.getName() + ChatColor.GRAY + " -> "
-									+ ChatColor.BLUE + t.getName()
-									+ ChatColor.GRAY + "] " + m);
+					if (t != plugin.getServer().getOnlinePlayers()[i]
+							|| (Player) cs != plugin.getServer()
+									.getOnlinePlayers()[i]) {
+						plugin.getServer().getOnlinePlayers()[i]
+								.sendMessage(ChatColor.GRAY + "["
+										+ ChatColor.BLUE + cs.getName()
+										+ ChatColor.GRAY + " -> "
+										+ ChatColor.BLUE + t.getName()
+										+ ChatColor.GRAY + "] " + m);
+					}
 				}
 			}
 			return true;
