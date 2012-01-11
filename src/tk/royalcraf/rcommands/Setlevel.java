@@ -27,21 +27,20 @@ public class Setlevel implements CommandExecutor {
 						+ " was denied access to the command!");
 				return true;
 			}
-			Player player = null;
 			Player victim = null;
-			if (cs instanceof Player) {
-				player = (Player) cs;
-			}
 
-			if (player == null) {
-				cs.sendMessage(ChatColor.RED
-						+ "This command can only be used by players!");
-				return true;
-			}
 			if (args.length < 1) {
 				cs.sendMessage(cmd.getDescription());
 				return false;
 			}
+			if (args.length == 1) {
+				if (!(cs instanceof Player)) {
+					cs.sendMessage(ChatColor.RED
+							+ "This command can only be used by players!");
+					return true;
+				}
+			}
+			Player player = (Player) cs;
 			int toLevel = 0;
 			if (args.length == 2) {
 				victim = plugin.getServer().getPlayer(args[1].trim());
