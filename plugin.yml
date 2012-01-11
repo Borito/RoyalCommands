@@ -309,9 +309,44 @@ commands:
     description: Allows the player to spy on private messages.
     usage: /<command>
     aliases: [msgspy, socialspy]
+    
+  spawnmob:
+    description: Spawns mobs where the player is looking.
+    usage: /<command> [mob] (amount)
+    aliases: [sm, mobspawn]
+    
+  afk:
+    description: Marks the player as away from keyboard.
+    usage: /<command>
+    aliases: [away]
+    
+  assign:
+    description: Assigns a command to a certain block.
+    usage: /<command> [command]
+    aliases: [as, pt, powertool]
+    
+  onehitkill:
+    description: Makes all attacks kill anything.
+    usage: /<command>
+    aliases: [ohk, instakill, ik]
+    
+  burn:
+    description: Sets a player on fire for a set amount of time.
+    usage: /<command> [player] (seconds)
+    aliases: [ignite, enflame]
+    
+  kickall:
+    description: Kicks everyone from the server except the command issuer.
+    usage: /<command> (reason)
+    aliases: [ka, kickeveryone]
+    
+  world:
+    description: Teleports the player to the specified world.
+    usage: /<command> [world]
+    aliases: [goto, gotoworld, tpworld, worldtp, teleportworld, worldteleport, tpw]
         
   rcmds:
-    description: Displays version of RoyalCommands.
+    description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
     
 permissions:
