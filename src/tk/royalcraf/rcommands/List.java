@@ -45,8 +45,7 @@ public class List implements CommandExecutor {
 				if (hid > 0) {
 					cs.sendMessage(ChatColor.BLUE + "There are currently "
 							+ ChatColor.GRAY + (p.length - hid) + "/" + hid
-							+ ChatColor.BLUE + " out of a maximum of "
-							+ ChatColor.GRAY
+							+ ChatColor.BLUE + " out of " + ChatColor.GRAY
 							+ plugin.getServer().getMaxPlayers()
 							+ ChatColor.BLUE + " players online.");
 				} else {
