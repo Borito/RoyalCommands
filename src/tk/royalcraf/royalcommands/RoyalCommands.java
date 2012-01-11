@@ -44,13 +44,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import tk.royalcraf.rcommands.Afk;
+import tk.royalcraf.rcommands.Assign;
 import tk.royalcraf.rcommands.Back;
 import tk.royalcraf.rcommands.Ban;
 import tk.royalcraf.rcommands.BanIP;
 import tk.royalcraf.rcommands.Banned;
 import tk.royalcraf.rcommands.Banreason;
+import tk.royalcraf.rcommands.Burn;
 import tk.royalcraf.rcommands.ClearInventory;
 import tk.royalcraf.rcommands.ClearWarns;
+import tk.royalcraf.rcommands.CmdWorld;
 import tk.royalcraf.rcommands.CompareIP;
 import tk.royalcraf.rcommands.DelHome;
 import tk.royalcraf.rcommands.DelWarp;
@@ -69,6 +73,7 @@ import tk.royalcraf.rcommands.Home;
 import tk.royalcraf.rcommands.Item;
 import tk.royalcraf.rcommands.Jump;
 import tk.royalcraf.rcommands.Kick;
+import tk.royalcraf.rcommands.KickAll;
 import tk.royalcraf.rcommands.Level;
 import tk.royalcraf.rcommands.List;
 import tk.royalcraf.rcommands.ListHome;
@@ -77,6 +82,7 @@ import tk.royalcraf.rcommands.MegaStrike;
 import tk.royalcraf.rcommands.Message;
 import tk.royalcraf.rcommands.More;
 import tk.royalcraf.rcommands.Mute;
+import tk.royalcraf.rcommands.OneHitKill;
 import tk.royalcraf.rcommands.Pext;
 import tk.royalcraf.rcommands.Quit;
 import tk.royalcraf.rcommands.RageQuit;
@@ -92,6 +98,7 @@ import tk.royalcraf.rcommands.Setarmor;
 import tk.royalcraf.rcommands.Setlevel;
 import tk.royalcraf.rcommands.Slap;
 import tk.royalcraf.rcommands.Spawn;
+import tk.royalcraf.rcommands.SpawnMob;
 import tk.royalcraf.rcommands.Speak;
 import tk.royalcraf.rcommands.Spy;
 import tk.royalcraf.rcommands.Starve;
@@ -116,7 +123,7 @@ public class RoyalCommands extends JavaPlugin {
 
 	public static Permission permission = null;
 
-	public String version = "0.1.1";
+	public String version = null;
 	public String newVersion = null;
 
 	public java.util.List<String> muteCmds = new ArrayList<String>();
@@ -306,6 +313,8 @@ public class RoyalCommands extends JavaPlugin {
 	public void onEnable() {
 		loadConfiguration();
 
+		version = this.getDescription().getVersion();
+
 		CallHome.load(this);
 		// yet again, borrowed from MilkBowl
 		this.getServer().getScheduler()
@@ -424,6 +433,13 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("teleportrequesthere").setExecutor(
 				new TeleportRequestHere(this));
 		getCommand("spy").setExecutor(new Spy(this));
+		getCommand("spawnmob").setExecutor(new SpawnMob(this));
+		getCommand("afk").setExecutor(new Afk(this));
+		getCommand("assign").setExecutor(new Assign(this));
+		getCommand("onehitkill").setExecutor(new OneHitKill(this));
+		getCommand("burn").setExecutor(new Burn(this));
+		getCommand("kickall").setExecutor(new KickAll(this));
+		getCommand("world").setExecutor(new CmdWorld(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
