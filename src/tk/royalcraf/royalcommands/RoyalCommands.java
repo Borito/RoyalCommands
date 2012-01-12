@@ -38,7 +38,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -134,6 +133,7 @@ public class RoyalCommands extends JavaPlugin {
 	public Boolean disablegetip = null;
 	public Boolean useWelcome = null;
 	public Boolean buildPerm = null;
+    public Boolean backDeath = null;
 	public String banMessage = null;
 	public String kickMessage = null;
 	public String defaultWarn = null;
@@ -142,7 +142,11 @@ public class RoyalCommands extends JavaPlugin {
 	public Integer defaultStack = null;
 	public Integer warnBan = null;
 
-	// Permissions with Vault
+    public RoyalCommands() {
+        pconfm = new PConfManager(this);
+    }
+
+    // Permissions with Vault
 	public Boolean setupPermissions() {
 		RegisteredServiceProvider<Permission> permissionProvider = getServer()
 				.getServicesManager().getRegistration(
@@ -153,15 +157,13 @@ public class RoyalCommands extends JavaPlugin {
 		return (permission != null);
 	}
 
-	protected FileConfiguration config;
-
 	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(
 			this);
 	private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(
 			this);
 	private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(
 			this);
-	public final PConfManager pconfm = new PConfManager(this);
+	public final PConfManager pconfm;
 
 	public Logger log = Logger.getLogger("Minecraft");
 
@@ -172,11 +174,7 @@ public class RoyalCommands extends JavaPlugin {
 			vp = (VanishPlugin) Bukkit.getServer().getPluginManager()
 					.getPlugin("VanishNoPacket");
 			return false;
-		} else if (vp.isVanished(p.getName())) {
-			return true;
-		} else {
-			return false;
-		}
+		} else return vp.isVanished(p.getName());
 	}
 
 	public void loadConfiguration() {
@@ -255,65 +253,20 @@ public class RoyalCommands extends JavaPlugin {
 				NodeList firstNodes = firstNameElement.getChildNodes();
 				return firstNodes.item(0).getNodeValue();
 			}
-		} catch (Exception localException) {
+		} catch (Exception ignored) {
 		}
 		return currentVersion;
 	}
 
 	public boolean isAuthorized(final Player player, final String node) {
-		if (player instanceof ConsoleCommandSender) {
-			return true;
-		} else if (this.setupPermissions()) {
-			if (RoyalCommands.permission.has(player, "rcmds.admin")) {
-				return true;
-			} else if (RoyalCommands.permission.has(player, node)) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+        return player instanceof ConsoleCommandSender || this.setupPermissions() && (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
 	}
 
 	public boolean isAuthorized(final CommandSender player, final String node) {
-		if (player instanceof ConsoleCommandSender) {
-			return true;
-		} else if (this.setupPermissions()) {
-			if (RoyalCommands.permission.has((Player) player, "rcmds.admin")) {
-				return true;
-			} else if (RoyalCommands.permission.has(player, node)) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+        return player instanceof ConsoleCommandSender || this.setupPermissions() && (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
 	}
 
-	public boolean isOnline(final String person) {
-		Player player = Bukkit.getServer().getPlayer(person);
-		if (player == null) {
-			return false;
-		} else if (vp.isVanished(player.getName())) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	public boolean isOnline(final Player person) {
-		if (person == null) {
-			return false;
-		} else if (vp.isVanished(person.getName())) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	public void onEnable() {
+    public void onEnable() {
 		loadConfiguration();
 
 		version = this.getDescription().getVersion();
@@ -453,6 +406,7 @@ public class RoyalCommands extends JavaPlugin {
 		disablegetip = this.getConfig().getBoolean("disable_getip");
 		useWelcome = this.getConfig().getBoolean("enable_welcome_message");
 		buildPerm = this.getConfig().getBoolean("use_build_perm");
+        backDeath = this.getConfig().getBoolean("back_on_death");
 		banMessage = this.getConfig().getString("default_ban_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		kickMessage = this.getConfig().getString("default_kick_message")
