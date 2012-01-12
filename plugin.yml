@@ -647,16 +647,16 @@ permissions:
     
   rcmds.see.ban:
     description: See ban messages.
-    default: false
+    default: op
   rcmds.see.kick:
     description: See kick messages.
-    default: false
+    default: op
   rcmds.see.warn:
     description: See warn messages.
-    default: false
+    default: op
   rcmds.see.unban:
     description: See unban messages.
-    default: false
+    default: op
     
   rcmds.notarget:
     description: Disables the mobs' ability to target the player.
