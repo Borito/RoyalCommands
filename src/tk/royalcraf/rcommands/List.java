@@ -41,8 +41,7 @@ public class List implements CommandExecutor {
 					hid++;
 				}
 			}
-			if (!(cs instanceof Player)
-					|| plugin.isAuthorized(cs, "rcmds.seehidden")) {
+			if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
 				if (hid > 0) {
 					cs.sendMessage(ChatColor.BLUE + "There are currently "
 							+ ChatColor.GRAY + (p.length - hid) + "/" + hid

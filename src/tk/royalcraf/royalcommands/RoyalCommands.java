@@ -37,6 +37,7 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.w3c.dom.Document;
@@ -260,7 +261,9 @@ public class RoyalCommands extends JavaPlugin {
 	}
 
 	public boolean isAuthorized(final Player player, final String node) {
-		if (this.setupPermissions()) {
+		if (player instanceof ConsoleCommandSender) {
+			return true;
+		} else if (this.setupPermissions()) {
 			if (RoyalCommands.permission.has(player, "rcmds.admin")) {
 				return true;
 			} else if (RoyalCommands.permission.has(player, node)) {
@@ -274,7 +277,9 @@ public class RoyalCommands extends JavaPlugin {
 	}
 
 	public boolean isAuthorized(final CommandSender player, final String node) {
-		if (this.setupPermissions()) {
+		if (player instanceof ConsoleCommandSender) {
+			return true;
+		} else if (this.setupPermissions()) {
 			if (RoyalCommands.permission.has((Player) player, "rcmds.admin")) {
 				return true;
 			} else if (RoyalCommands.permission.has(player, node)) {
