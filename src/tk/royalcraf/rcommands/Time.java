@@ -52,12 +52,12 @@ public class Time implements CommandExecutor {
                         time = 23000;
                     } else {
                         cs.sendMessage(ChatColor.RED
-                                + "The number entered is invalid!");
+                                + "The time entered was invalid!");
                         return true;
                     }
                 }
                 if (time < 0) {
-                    cs.sendMessage(ChatColor.RED + "That time entered was invalid!");
+                    cs.sendMessage(ChatColor.RED + "The time entered was invalid!");
                     return true;
                 }
                 if (args.length == 1) {
@@ -102,12 +102,12 @@ public class Time implements CommandExecutor {
                     time = 23000;
                 } else {
                     cs.sendMessage(ChatColor.RED
-                            + "The number entered is invalid!");
+                            + "The time entered was invalid!");
                     return true;
                 }
             }
             if (time < 0) {
-                cs.sendMessage(ChatColor.RED + "That time entered was invalid!");
+                cs.sendMessage(ChatColor.RED + "The time entered was invalid!");
                 return true;
             }
             try {
