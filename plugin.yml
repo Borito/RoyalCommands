@@ -358,6 +358,10 @@ commands:
   less:
     description: Sets the amount of the item in hand to one.
     usage: /<command>
+
+  spawner:
+    description: Sets the type of a mob spawner.
+    usage: /<command> [mob]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -583,6 +587,9 @@ permissions:
   rcmds.less:
     description: Allows you to get one of the item in hand.
     default: op
+  rcmds.spawner:
+    description: Allows you to change the type of a mob spawner.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -634,6 +641,9 @@ permissions:
     default: false
   rcmds.exempt.jail:
     description: Makes the player immune to /jail.
+    default: false
+  rcmds.exempt.gamemode:
+    description: Makes the player immune to /gamemode.
     default: false
     
   rcmds.clearinventory.others:
