@@ -327,6 +327,7 @@ public class RoyalCommands extends JavaPlugin {
 		getCommand("jail").setExecutor(new Jail(this));
 		getCommand("setjail").setExecutor(new SetJail(this));
         getCommand("less").setExecutor(new Less(this));
+        getCommand("spawner").setExecutor(new Spawner(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
