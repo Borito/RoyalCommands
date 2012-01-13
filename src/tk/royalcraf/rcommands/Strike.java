@@ -28,12 +28,12 @@ public class Strike implements CommandExecutor {
                         + " was denied access to the command!");
                 return true;
             }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
-                return true;
+            if (!(cs instanceof Player) && args.length < 1) {
+                cs.sendMessage(cmd.getDescription());
+                return false;
             }
-            Player p = (Player) cs;
             if (args.length < 1) {
+                Player p = (Player) cs;
                 BlockIterator b = new BlockIterator(p, 0);
                 if (!b.hasNext()) {
                     cs.sendMessage(ChatColor.RED + "Cannot strike there!");

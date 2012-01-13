@@ -27,26 +27,47 @@ public class Gamemode implements CommandExecutor {
                         + " was denied access to the command!");
                 return true;
             }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
-                return true;
+            if (!(cs instanceof Player) && args.length < 1) {
+                cs.sendMessage(cmd.getDescription());
+                return false;
             }
-            Player p = (Player) cs;
-            if (p.getGameMode() == GameMode.CREATIVE) {
-                p.setGameMode(GameMode.SURVIVAL);
-                p.sendMessage(ChatColor.BLUE
-                        + "Your game mode has been set to " + ChatColor.GRAY
-                        + "survival" + ChatColor.BLUE + ".");
-                return true;
-            } else if (p.getGameMode() == GameMode.SURVIVAL) {
-                p.setGameMode(GameMode.CREATIVE);
-                p.sendMessage(ChatColor.BLUE
-                        + "Your game mode has been set to " + ChatColor.GRAY
-                        + "creative" + ChatColor.BLUE + ".");
-                return true;
+            if (args.length < 1) {
+                Player p = (Player) cs;
+                if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                    p.setGameMode(GameMode.SURVIVAL);
+                    p.sendMessage(ChatColor.BLUE
+                            + "Your game mode has been set to " + ChatColor.GRAY
+                            + "survival" + ChatColor.BLUE + ".");
+                    return true;
+                } else if (p.getGameMode().equals(GameMode.SURVIVAL)) {
+                    p.setGameMode(GameMode.CREATIVE);
+                    p.sendMessage(ChatColor.BLUE
+                            + "Your game mode has been set to " + ChatColor.GRAY
+                            + "creative" + ChatColor.BLUE + ".");
+                    return true;
+                }
+            }
+            if (args.length > 0) {
+                Player t = plugin.getServer().getPlayer(args[0].trim());
+                if (t == null) {
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
+                if (t.getGameMode().equals(GameMode.CREATIVE)) {
+                    t.setGameMode(GameMode.SURVIVAL);
+                    cs.sendMessage(ChatColor.BLUE + "You have changed " + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + "survival" + ChatColor.BLUE + ".");
+                    t.sendMessage(ChatColor.BLUE + "Your game mode has been changed to " + ChatColor.GRAY + "survival" + ChatColor.BLUE + ".");
+                    return true;
+                }
+                if (t.getGameMode().equals(GameMode.SURVIVAL)) {
+                    t.setGameMode(GameMode.CREATIVE);
+                    cs.sendMessage(ChatColor.BLUE + "You have changed " + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + "creative" + ChatColor.BLUE + ".");
+                    t.sendMessage(ChatColor.BLUE + "Your game mode has been changed to " + ChatColor.GRAY + "creative" + ChatColor.BLUE + ".");
+                    return true;
+                }
             }
         }
+
         return false;
     }
 
