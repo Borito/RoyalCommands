@@ -57,18 +57,14 @@ public class RoyalCommandsEntityListener extends EntityListener {
     public void onEntityTarget(EntityTargetEvent event) {
         if (event.getTarget() instanceof Player) {
             Player p = (Player) event.getTarget();
-            if (plugin.isAuthorized(p, "rcmds.notarget")) {
-                event.setCancelled(true);
-            }
+            if (plugin.isAuthorized(p, "rcmds.notarget")) event.setCancelled(true);
         }
     }
 
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
-            if (PConfManager.getPValBoolean(p, "godmode")) {
-                event.setFoodLevel(20);
-            }
+            if (PConfManager.getPValBoolean(p, "godmode")) event.setFoodLevel(20);
         }
     }
 

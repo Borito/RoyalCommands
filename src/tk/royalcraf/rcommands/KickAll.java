@@ -26,7 +26,7 @@ public class KickAll implements CommandExecutor {
                         + " was denied access to the command!");
                 return true;
             }
-            String kickreason = "/kickall issued.";
+            String kickreason = plugin.kickMessage;
             if (args.length > 1) {
                 kickreason = plugin.getFinalArg(args, 0);
             }

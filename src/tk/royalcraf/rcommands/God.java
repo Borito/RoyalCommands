@@ -54,8 +54,8 @@ public class God implements CommandExecutor {
                 }
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if (t != null) {
-                    if (!PConfManager.getPValBoolean((OfflinePlayer) t, "godmode")) {
-                        if (!PConfManager.getPConfExists((OfflinePlayer) t)) {
+                    if (!PConfManager.getPValBoolean(t, "godmode")) {
+                        if (!PConfManager.getPConfExists(t)) {
                             cs.sendMessage(ChatColor.RED
                                     + "That player doesn't exist!");
                             return true;
@@ -70,7 +70,7 @@ public class God implements CommandExecutor {
                                 + "You have enabled godmode for "
                                 + ChatColor.GRAY + t.getName() + ChatColor.BLUE
                                 + ".");
-                        PConfManager.setPValBoolean((OfflinePlayer) t, true,
+                        PConfManager.setPValBoolean(t, true,
                                 "godmode");
                         return true;
                     } else {
@@ -83,7 +83,7 @@ public class God implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE
                             + "You have disabled godmode for " + ChatColor.GRAY
                             + t.getName() + ChatColor.BLUE + ".");
-                    PConfManager.setPValBoolean((OfflinePlayer) t, false, "godmode");
+                    PConfManager.setPValBoolean(t, false, "godmode");
                     return true;
                 }
             }

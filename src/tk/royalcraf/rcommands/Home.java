@@ -33,7 +33,7 @@ public class Home implements CommandExecutor {
                 return true;
             }
 
-            Player p = null;
+            Player p;
 
             if (!(cs instanceof Player)) {
                 cs.sendMessage(ChatColor.RED
@@ -43,7 +43,7 @@ public class Home implements CommandExecutor {
                 p = (Player) cs;
             }
 
-            boolean homeSet = false;
+            boolean homeSet;
             Double homeX = null;
             Double homeY = null;
             Double homeZ = null;
