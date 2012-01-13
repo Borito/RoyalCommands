@@ -53,6 +53,10 @@ public class Gamemode implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
+                if (plugin.isAuthorized(t, "rcmds.exempt.gamemode")) {
+                    cs.sendMessage(ChatColor.RED + "You cannot change that player's gamemode.");
+                    return true;
+                }
                 if (t.getGameMode().equals(GameMode.CREATIVE)) {
                     t.setGameMode(GameMode.SURVIVAL);
                     cs.sendMessage(ChatColor.BLUE + "You have changed " + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + "survival" + ChatColor.BLUE + ".");
