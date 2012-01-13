@@ -40,7 +40,7 @@ public class More implements CommandExecutor {
             }
             hand.setAmount(64);
             cs.sendMessage(ChatColor.BLUE
-                    + "You have given more of the item in hand.");
+                    + "You have been given more of the item in hand.");
             return true;
         }
         return false;
