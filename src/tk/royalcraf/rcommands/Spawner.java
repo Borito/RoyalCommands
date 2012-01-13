@@ -1,7 +1,6 @@
 package tk.royalcraf.rcommands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
@@ -54,10 +53,6 @@ public class Spawner implements CommandExecutor {
             }
             if (bb == null) {
                 cs.sendMessage(ChatColor.RED + "No block found!");
-                return true;
-            }
-            if (bb.getType() != Material.MOB_SPAWNER) {
-                cs.sendMessage(ChatColor.RED + "That's not a mob spawner!");
                 return true;
             }
             if (!(bb.getState() instanceof CreatureSpawner)) {
