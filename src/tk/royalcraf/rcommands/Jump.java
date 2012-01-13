@@ -7,8 +7,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
 import tk.royalcraf.royalcommands.RoyalCommands;
+import tk.royalcraf.royalcommands.Utils;
 
 public class Jump implements CommandExecutor {
 
@@ -34,24 +34,16 @@ public class Jump implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            BlockIterator b = new BlockIterator(p, 0);
-            if (!b.hasNext()) {
-                cs.sendMessage(ChatColor.RED + "Cannot jump there!");
+            Block bb = Utils.getTarget(p);
+            if (bb == null) {
+                cs.sendMessage(ChatColor.RED + "Can't jump there!");
                 return true;
-            } else {
-                Block bb = b.next();
-                while (b.hasNext()) {
-                    if (!(b.next().getTypeId() == 0)) {
-                        bb = b.next();
-                        break;
-                    }
-                }
-                Location bLoc = new Location(p.getWorld(), bb.getLocation().getX(), bb.getLocation().getY() + 1, bb.getLocation().getZ(), p.getLocation().getYaw(), p.getLocation().getPitch());
-                Back.backdb.put(p, p.getLocation());
-                p.teleport(bLoc);
-                return true;
-
             }
+            Location bLoc = new Location(p.getWorld(), bb.getLocation().getX(), bb.getLocation().getY() + 1, bb.getLocation().getZ(), p.getLocation().getYaw(), p.getLocation().getPitch());
+            Back.backdb.put(p, p.getLocation());
+            p.teleport(bLoc);
+            return true;
+
         }
         return false;
     }
