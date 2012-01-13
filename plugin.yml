@@ -576,6 +576,9 @@ permissions:
   rcmds.setjail:
     description: Allows you to set jails.
     default: op
+  rcmds.less:
+    description: Allows you to get one of the item in hand.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -660,4 +663,8 @@ permissions:
     
   rcmds.notarget:
     description: Disables the mobs' ability to target the player.
+    default: false
+
+  rcmds.admin:
+    description: Gives every permission.
     default: false
