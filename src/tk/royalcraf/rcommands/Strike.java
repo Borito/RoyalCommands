@@ -6,8 +6,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
 import tk.royalcraf.royalcommands.RoyalCommands;
+import tk.royalcraf.royalcommands.Utils;
 
 public class Strike implements CommandExecutor {
 
@@ -34,17 +34,10 @@ public class Strike implements CommandExecutor {
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
-                BlockIterator b = new BlockIterator(p, 0);
-                if (!b.hasNext()) {
-                    cs.sendMessage(ChatColor.RED + "Cannot strike there!");
+                Block bb = Utils.getTarget(p);
+                if (bb == null) {
+                    cs.sendMessage(ChatColor.RED + "Can't strike there!");
                     return true;
-                }
-                Block bb = b.next();
-                while (b.hasNext()) {
-                    if (!(b.next().getTypeId() == 0)) {
-                        bb = b.next();
-                        break;
-                    }
                 }
                 p.getWorld().strikeLightning(bb.getLocation());
                 return true;
