@@ -39,7 +39,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 			log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": "
 					+ event.getMessage());
 		}
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"muted")) {
 			for (String command : plugin.muteCmds) {
 				if (event.getMessage().toLowerCase()
@@ -54,24 +54,20 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 				}
 			}
 		}
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"jailed")) {
 			event.getPlayer().sendMessage(ChatColor.RED + "You are jailed.");
 			event.setCancelled(true);
 		}
 	}
 
-	public void onGameModeChange(PlayerGameModeChangeEvent event) {
-		event.setCancelled(true);
-	}
-
-	public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(PlayerChatEvent event) {
 		if (Afk.afkdb.containsKey(event.getPlayer())) {
 			plugin.getServer().broadcastMessage(
 					event.getPlayer().getName() + " is no longer AFK.");
 			Afk.afkdb.remove(event.getPlayer());
 		}
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"muted")) {
 			event.setFormat("");
 			event.setCancelled(true);
@@ -87,14 +83,14 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 					event.getPlayer().getName() + " is no longer AFK.");
 			Afk.afkdb.remove(event.getPlayer());
 		}
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"frozen")) {
 			event.setCancelled(true);
 		}
 	}
 
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"jailed")) {
 			event.setCancelled(true);
 		}
@@ -108,14 +104,14 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 				int idn = id.getTypeId();
 				if (idn != 0) {
 					String cmd = PConfManager.getPValString(
-							(OfflinePlayer) event.getPlayer(), "assign." + idn);
+                            event.getPlayer(), "assign." + idn);
 					if (cmd != null) {
 						event.getPlayer().performCommand(cmd.trim());
 					}
 				}
 			}
 		}
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"frozen")) {
 			event.setCancelled(true);
 		}
@@ -128,8 +124,8 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 
 	public void onPlayerLogin(PlayerLoginEvent event) {
 		if (event.getPlayer().isBanned()) {
-			String kickMessage = plugin.banMessage;
-			OfflinePlayer oplayer = (OfflinePlayer) plugin.getServer()
+			String kickMessage;
+			OfflinePlayer oplayer = plugin.getServer()
 					.getOfflinePlayer(event.getPlayer().getName());
 			File oplayerconfl = new File(plugin.getDataFolder()
 					+ File.separator + "userdata" + File.separator

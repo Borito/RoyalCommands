@@ -69,11 +69,11 @@ public class Setlevel implements CommandExecutor {
                 cs.sendMessage(ChatColor.GRAY + victim.getName()
                         + ChatColor.BLUE + "'s XP level was set to "
                         + ChatColor.GRAY + toLevel + ChatColor.BLUE
-                        + "! They may need to relog to see the changes.");
+                        + "!");
                 victim.sendMessage(ChatColor.BLUE + "Your XP level was set to "
                         + ChatColor.GRAY + toLevel + ChatColor.BLUE + " by "
                         + ChatColor.GRAY + cs.getName() + ChatColor.BLUE
-                        + "! You may need to relog to see these changes.");
+                        + "!");
                 return true;
             }
             if (args.length < 2 && args.length != 0) {
@@ -92,7 +92,7 @@ public class Setlevel implements CommandExecutor {
                 player.setLevel(toLevel);
                 cs.sendMessage(ChatColor.BLUE + "Your XP level was set to "
                         + ChatColor.GRAY + toLevel + ChatColor.BLUE
-                        + "! You may need to relog to see the changes.");
+                        + "!");
                 return true;
             }
         }

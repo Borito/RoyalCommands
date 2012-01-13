@@ -1,6 +1,5 @@
 package tk.royalcraf.royalcommands;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -14,11 +13,11 @@ public class RoyalCommandsBlockListener extends BlockListener {
 	}
 
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"frozen")) {
 			event.setCancelled(true);
 		}
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"jailed")) {
 			event.setCancelled(true);
 		}
@@ -30,11 +29,11 @@ public class RoyalCommandsBlockListener extends BlockListener {
 	}
 
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"frozen")) {
 			event.setCancelled(true);
 		}
-		if (PConfManager.getPValBoolean((OfflinePlayer) event.getPlayer(),
+		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"jailed")) {
 			event.setCancelled(true);
 		}
