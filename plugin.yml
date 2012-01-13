@@ -137,7 +137,7 @@ commands:
     
   gamemode:
     description: Toggles your gamemode.
-    usage: /<command>
+    usage: /<command> (player)
     aliases: [gm, gamem, gmode]
     
   ban:
@@ -327,7 +327,7 @@ commands:
     
   onehitkill:
     description: Makes all attacks kill anything (not dragons).
-    usage: /<command>
+    usage: /<command> (player)
     aliases: [ohk, instakill, ik]
     
   burn:
@@ -354,6 +354,10 @@ commands:
     description: Sets the location of a jail.
     usage: /<command> [name]
     aliases: [sjail]
+
+  less:
+    description: Sets the amount of the item in hand to one.
+    usage: /<command>
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
