@@ -227,15 +227,15 @@ public class RoyalCommands extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener,
-				Event.Priority.Normal, this);
+				Event.Priority.Lowest, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener,
 				Event.Priority.High, this);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener,
-				Event.Priority.High, this);
+				Event.Priority.Low, this);
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener,
-				Event.Priority.High, this);
+				Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener,
-				Event.Priority.High, this);
+				Event.Priority.Lowest, this);
 		pm.registerEvent(Event.Type.PLAYER_GAME_MODE_CHANGE, playerListener,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener,
@@ -247,9 +247,9 @@ public class RoyalCommands extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_TARGET, entityListener,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener,
-				Event.Priority.High, this);
+				Event.Priority.Lowest, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener,
-				Event.Priority.High, this);
+				Event.Priority.Lowest, this);
 
 		getCommand("level").setExecutor(new Level(this));
 		getCommand("setlevel").setExecutor(new Setlevel(this));
