@@ -65,7 +65,7 @@ public class Give implements CommandExecutor {
                     }
                 }
                 if (iblock != 0) {
-                    if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item")) {
+                    if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed." + iblock.toString())) {
                         cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
                         plugin.log.warning("[RoyalCommands] " + cs.getName()
                                 + " was denied access to the command!");
@@ -165,7 +165,7 @@ public class Give implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You cannot spawn air!");
                     return true;
                 }
-                if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item")) {
+                if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed." + iblock.toString())) {
                     cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
                     plugin.log.warning("[RoyalCommands] " + cs.getName()
                             + " was denied access to the command!");
