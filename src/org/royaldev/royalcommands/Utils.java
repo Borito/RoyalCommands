@@ -13,8 +13,7 @@ public class Utils {
     public static final Set<Integer> AIR_MATERIALS = new HashSet<Integer>();
     public static final HashSet<Byte> AIR_MATERIALS_TARGET = new HashSet<Byte>();
 
-    static
-    {
+    static {
         AIR_MATERIALS.add(Material.AIR.getId());
         AIR_MATERIALS.add(Material.SAPLING.getId());
         AIR_MATERIALS.add(Material.POWERED_RAIL.getId());
@@ -51,12 +50,11 @@ public class Utils {
         AIR_MATERIALS.add(Material.WATER_LILY.getId());
         AIR_MATERIALS.add(Material.SNOW.getId());
 
-        for (Integer integer : AIR_MATERIALS)
-        {
+        for (Integer integer : AIR_MATERIALS) {
             AIR_MATERIALS_TARGET.add(integer.byteValue());
         }
-        AIR_MATERIALS_TARGET.add((byte)Material.WATER.getId());
-        AIR_MATERIALS_TARGET.add((byte)Material.STATIONARY_WATER.getId());
+        AIR_MATERIALS_TARGET.add((byte) Material.WATER.getId());
+        AIR_MATERIALS_TARGET.add((byte) Material.STATIONARY_WATER.getId());
     }
 
     public static Block getTarget(Player p) {
