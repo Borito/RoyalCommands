@@ -38,6 +38,8 @@ public class Rcmds implements CommandExecutor {
             plugin.banMessage = plugin.getConfig()
                     .getString("default_ban_message")
                     .replaceAll("(&([a-f0-9]))", "\u00A7$2");
+            plugin.noBuildMessage = plugin.getConfig().getString("no_build_message")
+                    .replaceAll("(&([a-f0-9]))", "\u00A7$2");
             plugin.kickMessage = plugin.getConfig()
                     .getString("default_kick_message")
                     .replaceAll("(&([a-f0-9]))", "\u00A7$2");

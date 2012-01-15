@@ -64,6 +64,7 @@ public class RoyalCommands extends JavaPlugin {
 	public String kickMessage = null;
 	public String defaultWarn = null;
 	public String welcomeMessage = null;
+    public String noBuildMessage = null;
 	public static String gUid = null;
 	public Integer defaultStack = null;
 	public Integer warnBan = null;
@@ -340,7 +341,9 @@ public class RoyalCommands extends JavaPlugin {
 		buildPerm = this.getConfig().getBoolean("use_build_perm");
         backDeath = this.getConfig().getBoolean("back_on_death");
         motdLogin = this.getConfig().getBoolean("motd_on_login");
-		banMessage = this.getConfig().getString("default_ban_message")
+        banMessage = this.getConfig().getString("default_ban_message")
+                .replaceAll("(&([a-f0-9]))", "\u00A7$2");
+		noBuildMessage = this.getConfig().getString("no_build_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		kickMessage = this.getConfig().getString("default_kick_message")
 				.replaceAll("(&([a-f0-9]))", "\u00A7$2");
