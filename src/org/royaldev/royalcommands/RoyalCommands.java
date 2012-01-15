@@ -333,6 +333,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("motd").setExecutor(new Motd(this));
         getCommand("deljail").setExecutor(new DelJail(this));
         getCommand("force").setExecutor(new Force(this));
+        getCommand("ping").setExecutor(new CmdPing(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");

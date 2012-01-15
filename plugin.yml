@@ -622,6 +622,9 @@ permissions:
   rcmds.force:
     description: Allows you to run a command as another player.
     default: op
+  rcmds.ping:
+    description: Allows you to use /ping.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
