@@ -76,7 +76,7 @@ public class Motd implements CommandExecutor {
             cs.sendMessage(s);
         }
     }
-    
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("motd")) {
