@@ -1,6 +1,8 @@
 RoyalCommands
 =============
 
+![RoyalCommands](http://dev.bukkit.org/media/images/36/432/royalcommands_5.png)
+
 RoyalCommands is a general plugin with lots of commands. Yeah, that's my description. Go look at the [BukkitDev](http://dev.bukkit.org/server-mods/royalcommands) if you want a better one.
 
 RoyalCommands is coded in Eclipse 3.7.1 with the following libraries:
