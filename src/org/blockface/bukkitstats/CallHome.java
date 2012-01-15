@@ -29,8 +29,7 @@ package org.blockface.bukkitstats;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-
-import tk.royalcraf.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.RoyalCommands;
 
 import java.io.File;
 import java.net.URL;
@@ -55,7 +54,7 @@ public class CallHome {
 		plugin.getServer()
 				.getScheduler()
 				.scheduleAsyncRepeatingTask(plugin,
-						new CallTask(plugin, config.getString("hash")), 10L,
+						new CallTask(plugin), 10L,
 						20L * 60L * 60);
 		System.out
 				.println("["
@@ -86,7 +85,7 @@ public class CallHome {
 class CallTask implements Runnable {
 	private Plugin plugin;
 
-	public CallTask(Plugin plugin, String hash) {
+	public CallTask(Plugin plugin) {
 		this.plugin = plugin;
 	}
 
@@ -101,28 +100,27 @@ class CallTask implements Runnable {
 
 		String url = String
 				.format("http://pluginstats.randomappdev.com/ping.php?snam=%s&sprt=%s&shsh=%s&sver=%s&spcnt=%s&pnam=%s&pmcla=%s&paut=%s&pweb=%s&pver=%s",
-						new Object[] {
-								URLEncoder.encode(this.plugin.getServer()
-										.getServerName(), "UTF-8"),
-								Integer.valueOf(this.plugin.getServer()
-										.getPort()),
-								RoyalCommands.gUid,
-								URLEncoder.encode(Bukkit.getVersion(), "UTF-8"),
-								Integer.valueOf(this.plugin.getServer()
-										.getOnlinePlayers().length),
-								URLEncoder.encode(this.plugin.getDescription()
-										.getName(), "UTF-8"),
-								URLEncoder.encode(this.plugin.getDescription()
-										.getMain(), "UTF-8"),
-								URLEncoder.encode(authors, "UTF-8"),
-								URLEncoder.encode(
-										this.plugin.getDescription()
-												.getWebsite().toLowerCase()
-												.replace("http://", "")
-												.replace("https://", ""),
-										"UTF-8"),
-								URLEncoder.encode(this.plugin.getDescription()
-										.getVersion(), "UTF-8") });
+                        URLEncoder.encode(this.plugin.getServer()
+                                .getServerName(), "UTF-8"),
+                        this.plugin.getServer()
+                                .getPort(),
+                        RoyalCommands.gUid,
+                        URLEncoder.encode(Bukkit.getVersion(), "UTF-8"),
+                        this.plugin.getServer()
+                                .getOnlinePlayers().length,
+                        URLEncoder.encode(this.plugin.getDescription()
+                                .getName(), "UTF-8"),
+                        URLEncoder.encode(this.plugin.getDescription()
+                                .getMain(), "UTF-8"),
+                        URLEncoder.encode(authors, "UTF-8"),
+                        URLEncoder.encode(
+                                this.plugin.getDescription()
+                                        .getWebsite().toLowerCase()
+                                        .replace("http://", "")
+                                        .replace("https://", ""),
+                                "UTF-8"),
+                        URLEncoder.encode(this.plugin.getDescription()
+                                .getVersion(), "UTF-8"));
 
 		new URL(url).openConnection().getInputStream();
 

@@ -1,5 +1,5 @@
 name: RoyalCommands
-main: tk.royalcraf.royalcommands.RoyalCommands
+main: org.royaldev.royalcommands.RoyalCommands
 version: 0.1.3
 website: http://royaldev.org/
 author: jkcclemens
@@ -128,7 +128,7 @@ commands:
   message:
     description: Send a message to a player.
     usage: /<command> [player] [message]
-    aliases: [msg, m, send, tell, whisper]
+    aliases: [msg, send, tell, whisper]
     
   reply:
     description: Reply to a message.
@@ -199,7 +199,7 @@ commands:
     
   warp:
     description: Go to a warp point.
-    usage: /<command> [warp]
+    usage: /<command> [warp] (player)
     aliases: [warps]
     
   setwarp:
@@ -362,6 +362,21 @@ commands:
   spawner:
     description: Sets the type of a mob spawner.
     usage: /<command> [mob]
+
+  tp2p:
+    description: Teleports one player to another.
+    usage: /<command> [player] [player]
+    aliases: [teleportplayertoplayer, teleportplayer2player, tpptp, tpp2p, teleportp2p, teleportptop]
+
+  motd:
+    description: Shows the message of the day.
+    usage: /<command>
+    aliases: [messageoftheday]
+
+  deljail:
+    description: Removes a jail.
+    usage: /<command> [jail]
+    aliases: [deletejail, rmjail, removejail, destroyjail]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -590,6 +605,15 @@ permissions:
   rcmds.spawner:
     description: Allows you to change the type of a mob spawner.
     default: op
+  rcmds.tp2p:
+    description: Allows you to teleport players to each other.
+    default: op
+  rcmds.motd:
+    description: Allows you to see the message of the day.
+    default: op
+  rcmds.deljail:
+    description: Allows you to delete a jail.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -642,8 +666,18 @@ permissions:
   rcmds.exempt.jail:
     description: Makes the player immune to /jail.
     default: false
+  rcmds.exempt.tp2p:
+    description: Makes the player immune to /tp2p.
+    default: false
+  rcmds.exempt.warp:
+    description: Makes the player immune to /warp.
+    default: false
   rcmds.exempt.gamemode:
     description: Makes the player immune to /gamemode.
+    default: false
+
+  rcmds.allowed.item:
+    description: Allows the player to spawn prohibited items.
     default: false
     
   rcmds.clearinventory.others:

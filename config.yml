@@ -1,14 +1,32 @@
-## RoyalCommands v0.0.7 Config File
+## RoyalCommands v0.1.4 Config File
 
+# Disable /getip and /compareip?
 disable_getip: false
+# Whether to show commands in console
 view_commands: true
+# Enable the welcome message?
 enable_welcome_message: true
+# Use the rcmds.build perm?
 use_build_perm: false
+# Enable /back on death?
 back_on_death: true
+# Show /motd on login?
+motd_on_login: true
+# The default ban message for /ban
 default_ban_message: "&4Banhammered!"
+# The default kick message for /kick
 default_kick_message: "Kicked from server."
+# The default warn message for /warn
 default_warn_message: "You have been warned."
+# The message to be displayed if enable_welcome_message is true
 welcome_message: "&5Welcome {name} to the server!"
+# The default stack size for /i and /give
 default_stack_size: 64
+# The number of warns until a ban is issued, 0 to disable
 max_warns_before_ban: 3
+# Commands to block when muted
 mute_blocked_commands: ["/me", "/tc", "/nc"]
+# Items that cannot be spawned without rcmds.allowed.item
+blocked_spawn_items: [7, 49, 383]
+# The message of the day
+motd: ["&dWelcome to {servername}, {dispname}!", "&fThere are &8{players}&f players online:", "{playerlist}", "You are in the world &8{world}&f."]
