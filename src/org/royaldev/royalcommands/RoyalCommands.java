@@ -331,6 +331,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("tp2p").setExecutor(new Tp2p(this));
         getCommand("motd").setExecutor(new Motd(this));
         getCommand("deljail").setExecutor(new DelJail(this));
+        getCommand("force").setExecutor(new Force(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");

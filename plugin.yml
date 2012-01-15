@@ -377,6 +377,11 @@ commands:
     description: Removes a jail.
     usage: /<command> [jail]
     aliases: [deletejail, rmjail, removejail, destroyjail]
+
+  force:
+    description: Forces a player to run a command.
+    usage: /<command> [command]
+    aliases: [sudo, run]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -614,6 +619,9 @@ permissions:
   rcmds.deljail:
     description: Allows you to delete a jail.
     default: op
+  rcmds.force:
+    description: Allows you to run a command as another player.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -671,6 +679,9 @@ permissions:
     default: false
   rcmds.exempt.warp:
     description: Makes the player immune to /warp.
+    default: false
+  rcmds.exempt.force:
+    description: Makes the player immune to /force.
     default: false
   rcmds.exempt.gamemode:
     description: Makes the player immune to /gamemode.
