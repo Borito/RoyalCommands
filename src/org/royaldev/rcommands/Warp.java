@@ -34,7 +34,7 @@ public class Warp implements CommandExecutor {
                 return true;
             }
 
-            if (!(cs instanceof Player && args.length < 2)) {
+            if (!(cs instanceof Player) && args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
@@ -71,26 +71,26 @@ public class Warp implements CommandExecutor {
                     return true;
                 }
                 warpSet = pconf.getBoolean("warps." + args[0] + ".set");
-                if (warpSet) {
-                    warpX = pconf.getDouble("warps." + args[0] + ".x");
-                    warpY = pconf.getDouble("warps." + args[0] + ".y");
-                    warpZ = pconf.getDouble("warps." + args[0] + ".z");
-                    warpYaw = Float.parseFloat(pconf.getString("warps."
-                            + args[0] + ".yaw"));
-                    warpPitch = Float.parseFloat(pconf.getString("warps."
-                            + args[0] + ".pitch"));
-                    warpW = plugin.getServer().getWorld(
-                            pconf.getString("warps." + args[0] + ".w"));
-                } else {
+                if (!warpSet) {
                     cs.sendMessage(ChatColor.RED + "That warp does not exist.");
                     return true;
                 }
+                warpX = pconf.getDouble("warps." + args[0] + ".x");
+                warpY = pconf.getDouble("warps." + args[0] + ".y");
+                warpZ = pconf.getDouble("warps." + args[0] + ".z");
+                warpYaw = Float.parseFloat(pconf.getString("warps."
+                        + args[0] + ".yaw"));
+                warpPitch = Float.parseFloat(pconf.getString("warps."
+                        + args[0] + ".pitch"));
+                warpW = plugin.getServer().getWorld(
+                        pconf.getString("warps." + args[0] + ".w"));
             } else {
-                cs.sendMessage(ChatColor.RED + "");
+                cs.sendMessage(ChatColor.RED + "There are no warps!");
                 return true;
             }
             if (warpW == null) {
                 cs.sendMessage(ChatColor.RED + "World doesn't exist!");
+                return true;
             }
             Location warpLoc = new Location(warpW, warpX, warpY, warpZ,
                     warpYaw, warpPitch);
@@ -102,7 +102,14 @@ public class Warp implements CommandExecutor {
                 return true;
             }
             if (args.length > 1) {
-                Player t = plugin.getServer().getPlayer(args[0].trim());
+                if (!plugin.isAuthorized(cs, "rcmds.warp.others")) {
+                    cs.sendMessage(ChatColor.RED
+                            + "You don't have permission for that!");
+                    plugin.log.warning("[RoyalCommands] " + cs.getName()
+                            + " was denied access to the command!");
+                    return true;
+                }
+                Player t = plugin.getServer().getPlayer(args[1].trim());
                 if (t == null || plugin.isVanished(t)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
