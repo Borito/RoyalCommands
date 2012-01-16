@@ -142,6 +142,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
         }
     }
 
+    @Override
     public void onPlayerJoin(PlayerJoinEvent event) {
         File datafile = new File(plugin.getDataFolder() + File.separator
                 + "userdata" + File.separator
