@@ -13,6 +13,7 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Jail implements CommandExecutor {
@@ -22,6 +23,8 @@ public class Jail implements CommandExecutor {
     public Jail(RoyalCommands instance) {
         this.plugin = instance;
     }
+    
+    public HashMap<Player, Location> jaildb = new HashMap<Player, Location>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label,
@@ -74,6 +77,7 @@ public class Jail implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "You have released "
                             + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     t.sendMessage(ChatColor.BLUE + "You have been released.");
+                    t.teleport(jaildb.get(t));
                     return true;
                 }
                 cs.sendMessage(cmd.getDescription());
@@ -135,6 +139,7 @@ public class Jail implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "You have released "
                         + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.BLUE + "You have been released.");
+                t.teleport(jaildb.get(t));
                 return true;
             } else {
                 if (jailW == null) {
@@ -144,6 +149,7 @@ public class Jail implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "You have jailed "
                         + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.RED + "You have been jailed.");
+                jaildb.put(t, t.getLocation());
                 t.teleport(jailLoc);
                 return true;
             }
