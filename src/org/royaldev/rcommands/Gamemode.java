@@ -59,13 +59,13 @@ public class Gamemode implements CommandExecutor {
                 }
                 if (t.getGameMode().equals(GameMode.CREATIVE)) {
                     t.setGameMode(GameMode.SURVIVAL);
-                    cs.sendMessage(ChatColor.BLUE + "You have changed " + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + "survival" + ChatColor.BLUE + ".");
+                    cs.sendMessage(ChatColor.BLUE + "You have changed " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + "survival" + ChatColor.BLUE + ".");
                     t.sendMessage(ChatColor.BLUE + "Your game mode has been changed to " + ChatColor.GRAY + "survival" + ChatColor.BLUE + ".");
                     return true;
                 }
                 if (t.getGameMode().equals(GameMode.SURVIVAL)) {
                     t.setGameMode(GameMode.CREATIVE);
-                    cs.sendMessage(ChatColor.BLUE + "You have changed " + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + "creative" + ChatColor.BLUE + ".");
+                    cs.sendMessage(ChatColor.BLUE + "You have changed " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + "creative" + ChatColor.BLUE + ".");
                     t.sendMessage(ChatColor.BLUE + "Your game mode has been changed to " + ChatColor.GRAY + "creative" + ChatColor.BLUE + ".");
                     return true;
                 }
