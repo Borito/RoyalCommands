@@ -181,7 +181,7 @@ commands:
   strike:
     description: Strikes lightning at the player's cursor or at specified player.
     usage: /<command> (player)
-    aliases: [smite]
+    aliases: [smite, lightning]
     
   jump:
     description: Moves the player to the block they are looking at.
@@ -714,6 +714,8 @@ permissions:
   rcmds.god.others:
     description: Allows the player to /god other players.
     default: op
+  rcmds.warp.others:
+    description: Allows the player to /warp other players.
     
   rcmds.see.ban:
     description: See ban messages.
