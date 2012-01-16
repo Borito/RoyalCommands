@@ -380,7 +380,7 @@ commands:
 
   force:
     description: Forces a player to run a command.
-    usage: /<command> [command]
+    usage: /<command> [player] [command]
     aliases: [sudo, run]
 
   ping:
