@@ -382,6 +382,11 @@ commands:
     description: Forces a player to run a command.
     usage: /<command> [command]
     aliases: [sudo, run]
+
+  ping:
+    description: Pings the server.
+    usage: /<command>
+    aliases: [pong]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
