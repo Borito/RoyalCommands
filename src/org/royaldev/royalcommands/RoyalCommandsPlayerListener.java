@@ -110,7 +110,6 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 		}
 		if (plugin.buildPerm) {
 			if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) {
-                event.getPlayer().sendMessage(plugin.noBuildMessage);
 				event.setCancelled(true);
 			}
 		}
