@@ -27,6 +27,7 @@ public class Speak implements CommandExecutor {
                 return true;
             }
             if (args.length < 2) {
+                cs.sendMessage(cmd.getDescription());
                 return false;
             }
 
@@ -34,32 +35,23 @@ public class Speak implements CommandExecutor {
 
             victim = plugin.getServer().getPlayer(args[0]);
 
-            int errord = 0;
-            if (victim == null) {
-                cs.sendMessage(ChatColor.RED
-                        + "You must input an online player.");
-                errord = 1;
-                return true;
-            }
-            if (plugin.isVanished(victim)) {
+            if (victim == null || plugin.isVanished(victim)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (errord == 0) {
-                if (args[1].startsWith("/")) {
-                    cs.sendMessage(ChatColor.RED + "You may not send commands!");
-                    return true;
-                }
-                if (plugin.isAuthorized(victim, "rcmds.exempt.speak")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You may not make that player speak.");
-                    return true;
-                }
-                victim.chat(plugin.getFinalArg(args, 1));
-                plugin.log.info(cs.getName() + " has spoofed a message from "
-                        + victim.getName() + "!");
+            if (args[1].startsWith("/")) {
+                cs.sendMessage(ChatColor.RED + "You may not send commands!");
                 return true;
             }
+            if (plugin.isAuthorized(victim, "rcmds.exempt.speak")) {
+                cs.sendMessage(ChatColor.RED
+                        + "You may not make that player speak.");
+                return true;
+            }
+            victim.chat(plugin.getFinalArg(args, 1));
+            plugin.log.info(cs.getName() + " has spoofed a message from "
+                    + victim.getName() + "!");
+            return true;
         }
         return false;
     }
