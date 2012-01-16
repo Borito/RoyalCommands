@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.ArrayList;
+
 public class Assign implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -41,7 +43,7 @@ public class Assign implements CommandExecutor {
                             + "You can't remove commands from air!");
                     return true;
                 }
-                PConfManager.setPValString(p, null, "assign."
+                PConfManager.setPValStringList(p, null, "assign."
                         + hand.getTypeId());
                 p.sendMessage(ChatColor.BLUE
                         + "All commands removed from that item.");
@@ -54,11 +56,23 @@ public class Assign implements CommandExecutor {
                         + "You can't assign commands to air!");
                 return true;
             }
-            PConfManager.setPValString(p,
-                    plugin.getFinalArg(args, 0), "assign." + hand.getTypeId());
-            p.sendMessage(ChatColor.BLUE + "Added command " + ChatColor.GRAY
-                    + "/" + plugin.getFinalArg(args, 0) + ChatColor.BLUE
-                    + " to that item.");
+            java.util.List<String> cmds = PConfManager.getPValStringList(p, "assign." + hand.getTypeId());
+            if (cmds == null) {
+                cmds = new ArrayList<String>();
+                cmds.add(plugin.getFinalArg(args, 0));
+            } else {
+                cmds.add(plugin.getFinalArg(args, 0));
+            }
+            PConfManager.setPValStringList(p, cmds, "assign." + hand.getTypeId());
+            if (plugin.getFinalArg(args, 0).toLowerCase().startsWith("c:")) {
+                p.sendMessage(ChatColor.BLUE + "Added message " + ChatColor.GRAY
+                        + plugin.getFinalArg(args, 0).substring(2) + ChatColor.BLUE
+                        + " to that item.");
+            } else {
+                p.sendMessage(ChatColor.BLUE + "Added command " + ChatColor.GRAY
+                        + "/" + plugin.getFinalArg(args, 0) + ChatColor.BLUE
+                        + " to that item.");
+            }
             return true;
         }
         return false;
