@@ -23,7 +23,7 @@ public class Jail implements CommandExecutor {
     public Jail(RoyalCommands instance) {
         this.plugin = instance;
     }
-    
+
     public HashMap<Player, Location> jaildb = new HashMap<Player, Location>();
 
     @Override
@@ -77,6 +77,11 @@ public class Jail implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "You have released "
                             + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     t.sendMessage(ChatColor.BLUE + "You have been released.");
+                    if (jaildb.get(t).getWorld() == null) {
+                        t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
+                        t.teleport(t.getWorld().getSpawnLocation());
+                        return true;
+                    }
                     t.teleport(jaildb.get(t));
                     return true;
                 }
@@ -139,6 +144,11 @@ public class Jail implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "You have released "
                         + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.BLUE + "You have been released.");
+                if (jaildb.get(t).getWorld() == null) {
+                    t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
+                    t.teleport(t.getWorld().getSpawnLocation());
+                    return true;
+                }
                 t.teleport(jaildb.get(t));
                 return true;
             } else {
