@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -202,7 +203,6 @@ public class RoyalCommandsPlayerListener implements Listener {
                     .toString();
             playerip = playerip.replace("/", "");
             p1conf.set("ip", playerip);
-            p1conf.set("dispname", event.getPlayer().getDisplayName());
             try {
                 p1conf.save(p1confl);
             } catch (IOException e) {
@@ -212,5 +212,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (plugin.motdLogin) {
             Motd.showMotd(event.getPlayer());
         }
+        Player p = event.getPlayer();
+        p.setDisplayName(PConfManager.getPValString(p, "dispname").trim());
     }
 }

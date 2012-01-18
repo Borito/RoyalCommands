@@ -311,6 +311,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("ping").setExecutor(new CmdPing(this));
         getCommand("invsee").setExecutor(new CmdInvsee(this));
         getCommand("realname").setExecutor(new CmdRealName(this));
+        getCommand("nick").setExecutor(new Nick(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");
