@@ -387,6 +387,16 @@ commands:
     description: Pings the server.
     usage: /<command>
     aliases: [pong]
+
+  realname:
+    description: Displays the real name of a player.
+    usage: /<command> [player]
+    aliases: [rn]
+
+  invsee:
+    description: Allows you to see the inventory or a player.
+    usage: /<command> [player]
+    aliases: [invs]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
