@@ -34,7 +34,7 @@ public class List implements CommandExecutor {
                     if (ps.equals("")) {
                         ps = ps.concat(aP.getName());
                     } else {
-                        ps = ps.concat(", " + aP.getName());
+                        ps = ps.concat(", " + aP.getDisplayName() + ChatColor.WHITE);
                     }
                 } else {
                     hid++;
@@ -58,10 +58,10 @@ public class List implements CommandExecutor {
                     if (plugin.isVanished(aP)) {
                         if (ps.equals("")) {
                             ps = ps.concat(ChatColor.GRAY + "[HIDDEN]"
-                                    + ChatColor.WHITE + aP.getName());
+                                    + ChatColor.WHITE + aP.getDisplayName() + ChatColor.WHITE);
                         } else {
                             ps = ps.concat(", " + ChatColor.GRAY + "[HIDDEN]"
-                                    + ChatColor.WHITE + aP.getName());
+                                    + ChatColor.WHITE + aP.getDisplayName() + ChatColor.WHITE);
                         }
                     }
                 }
