@@ -397,6 +397,11 @@ commands:
     description: Allows you to see the inventory or a player.
     usage: /<command> [player]
     aliases: [invs]
+
+  nick:
+    description: Sets the display name of a player.
+    usage: /<command> (player) (nick)
+    aliases: [dispname, name]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -640,6 +645,15 @@ permissions:
   rcmds.ping:
     description: Allows you to use /ping.
     default: op
+  rcmds.invsee:
+    description: Allows you see another player's inventory.
+    default: op
+  rcmds.realname:
+    description: Allows you to see a player's real name.
+    default: op
+  rcmds.nick:
+    description: Allows you to set a player's display name.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -704,6 +718,9 @@ permissions:
   rcmds.exempt.gamemode:
     description: Makes the player immune to /gamemode.
     default: false
+  rcmds.exempt.nick:
+    description: Makes the player immune to /nick.
+    default: false
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -726,6 +743,10 @@ permissions:
     default: op
   rcmds.warp.others:
     description: Allows the player to /warp other players.
+    default: op
+  rcmds.nick.others:
+    description: Allows the player to /nick other players.
+    default: op
     
   rcmds.see.ban:
     description: See ban messages.
