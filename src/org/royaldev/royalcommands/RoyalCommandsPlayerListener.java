@@ -4,6 +4,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
@@ -18,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class RoyalCommandsPlayerListener extends PlayerListener {
+public class RoyalCommandsPlayerListener implements Listener {
 
     public static RoyalCommands plugin;
 
@@ -28,6 +31,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
 
     Logger log = Logger.getLogger("Minecraft");
 
+    @EventHandler(event = PlayerCommandPreprocessEvent.class, priority = EventPriority.NORMAL)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (plugin.showcommands) {
             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": "
@@ -55,6 +59,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
         }
     }
 
+    @EventHandler(event = PlayerChatEvent.class, priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
         if (Afk.afkdb.containsKey(event.getPlayer())) {
             plugin.getServer().broadcastMessage(
@@ -71,6 +76,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
         }
     }
 
+    @EventHandler(event = PlayerMoveEvent.class, priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (Afk.afkdb.containsKey(event.getPlayer())) {
             plugin.getServer().broadcastMessage(
@@ -83,6 +89,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
         }
     }
 
+    @EventHandler(event = PlayerInteractEvent.class, priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (PConfManager.getPValBoolean(event.getPlayer(),
                 "jailed")) {
@@ -122,6 +129,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
         }
     }
 
+    @EventHandler(event = PlayerLoginEvent.class, priority = EventPriority.HIGHEST)
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (event.getPlayer().isBanned()) {
             String kickMessage;
@@ -142,7 +150,7 @@ public class RoyalCommandsPlayerListener extends PlayerListener {
         }
     }
 
-    @Override
+    @EventHandler(event = PlayerJoinEvent.class, priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         File datafile = new File(plugin.getDataFolder() + File.separator
                 + "userdata" + File.separator

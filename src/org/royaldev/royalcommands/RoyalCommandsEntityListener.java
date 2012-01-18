@@ -5,10 +5,13 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.royaldev.rcommands.Back;
 
-public class RoyalCommandsEntityListener extends EntityListener {
+public class RoyalCommandsEntityListener implements Listener {
 
     public static RoyalCommands plugin;
 
@@ -16,6 +19,7 @@ public class RoyalCommandsEntityListener extends EntityListener {
         plugin = instance;
     }
 
+    @EventHandler(event = EntityDeathEvent.class, priority = EventPriority.NORMAL)
     public void onEntityDeath(EntityDeathEvent ent) {
         if (ent instanceof PlayerDeathEvent) {
             if (plugin.backDeath) {
@@ -30,6 +34,7 @@ public class RoyalCommandsEntityListener extends EntityListener {
         }
     }
 
+    @EventHandler(event = EntityDamageEvent.class, priority = EventPriority.NORMAL)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
@@ -54,6 +59,7 @@ public class RoyalCommandsEntityListener extends EntityListener {
         }
     }
 
+    @EventHandler(event = EntityTargetEvent.class, priority = EventPriority.NORMAL)
     public void onEntityTarget(EntityTargetEvent event) {
         if (event.getTarget() instanceof Player) {
             Player p = (Player) event.getTarget();
@@ -61,6 +67,7 @@ public class RoyalCommandsEntityListener extends EntityListener {
         }
     }
 
+    @EventHandler(event = FoodLevelChangeEvent.class, priority = EventPriority.NORMAL)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();

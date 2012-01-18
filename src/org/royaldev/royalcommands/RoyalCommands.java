@@ -1,5 +1,4 @@
 package org.royaldev.royalcommands;
-
 /*
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -24,7 +23,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -225,32 +223,9 @@ public class RoyalCommands extends JavaPlugin {
 
 		PluginManager pm = this.getServer().getPluginManager();
 
-		pm.registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener,
-				Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener,
-				Event.Priority.High, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener,
-				Event.Priority.Low, this);
-		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener,
-				Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener,
-				Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.PLAYER_GAME_MODE_CHANGE, playerListener,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.FOOD_LEVEL_CHANGE, entityListener,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_TARGET, entityListener,
-				Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener,
-				Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener,
-				Event.Priority.Lowest, this);
+        pm.registerEvents(playerListener, this);
+		pm.registerEvents(entityListener, this);
+        pm.registerEvents(blockListener, this);
 
 		getCommand("level").setExecutor(new Level(this));
 		getCommand("setlevel").setExecutor(new Setlevel(this));
@@ -334,6 +309,8 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("deljail").setExecutor(new DelJail(this));
         getCommand("force").setExecutor(new Force(this));
         getCommand("ping").setExecutor(new CmdPing(this));
+        getCommand("invsee").setExecutor(new CmdInvsee(this));
+        getCommand("realname").setExecutor(new CmdRealName(this));
 		getCommand("rcmds").setExecutor(new Rcmds(this));
 
 		showcommands = this.getConfig().getBoolean("view_commands");

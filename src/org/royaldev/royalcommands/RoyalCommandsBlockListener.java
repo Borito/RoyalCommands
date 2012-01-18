@@ -1,10 +1,12 @@
 package org.royaldev.royalcommands;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-public class RoyalCommandsBlockListener extends BlockListener {
+public class RoyalCommandsBlockListener implements Listener {
 
 	public static RoyalCommands plugin;
 
@@ -12,6 +14,7 @@ public class RoyalCommandsBlockListener extends BlockListener {
 		plugin = instance;
 	}
 
+    @EventHandler(event = BlockPlaceEvent.class, priority = EventPriority.NORMAL)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"frozen")) {
@@ -29,6 +32,7 @@ public class RoyalCommandsBlockListener extends BlockListener {
 		}
 	}
 
+    @EventHandler(event = BlockBreakEvent.class, priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (PConfManager.getPValBoolean(event.getPlayer(),
 				"frozen")) {
