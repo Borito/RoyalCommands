@@ -46,7 +46,7 @@ public class Assign implements CommandExecutor {
                 PConfManager.setPValStringList(p, null, "assign."
                         + hand.getTypeId());
                 p.sendMessage(ChatColor.BLUE
-                        + "All commands removed from that item.");
+                        + "All commands removed from " + ChatColor.GRAY + hand.getType().toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
                 return true;
             }
             Player p = (Player) cs;
