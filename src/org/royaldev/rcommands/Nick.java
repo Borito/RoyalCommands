@@ -33,7 +33,7 @@ public class Nick implements CommandExecutor {
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
-                String newname = p.getName().replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                String newname = p.getName();
                 p.setDisplayName(newname);
                 PConfManager.setPValString(p, p.getName(), "dispname");
                 p.sendMessage(ChatColor.BLUE + "Your name has been reset to " + ChatColor.GRAY + newname + ChatColor.BLUE + ".");
@@ -57,7 +57,7 @@ public class Nick implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You cannot change that player's nick!");
                     return true;
                 }
-                String newname = t.getName().replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                String newname = t.getName();
                 t.setDisplayName(newname);
                 PConfManager.setPValString(t, newname, "dispname");
                 t.sendMessage(ChatColor.BLUE + "Your name has been reset to " + ChatColor.GRAY + newname + ChatColor.BLUE + ".");
@@ -82,7 +82,7 @@ public class Nick implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You cannot change that player's nick!");
                     return true;
                 }
-                String newname = plugin.getFinalArg(args, 1).trim().replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                String newname = plugin.getFinalArg(args, 1).trim();
                 t.setDisplayName(newname);
                 PConfManager.setPValString(t, newname, "dispname");
                 t.sendMessage(ChatColor.BLUE + "Your display name has been changed to " + ChatColor.GRAY + newname + ChatColor.BLUE + ".");
