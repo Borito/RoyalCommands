@@ -15,9 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.rcommands.Afk;
 import org.royaldev.rcommands.Motd;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -151,7 +149,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(event = PlayerJoinEvent.class, priority = EventPriority.LOWEST)
+    @EventHandler(event = PlayerJoinEvent.class, priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         File datafile = new File(plugin.getDataFolder() + File.separator
                 + "userdata" + File.separator
@@ -160,25 +158,16 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[RoyalCommands] Creating userdata for user "
                     + event.getPlayer().getName() + ".");
             try {
-                datafile.createNewFile();
-                FileWriter fstream = new FileWriter(plugin.getDataFolder()
-                        + "/userdata/"
-                        + event.getPlayer().getName().toLowerCase() + ".yml");
-                BufferedWriter out = new BufferedWriter(fstream);
-                out.write("name: '" + event.getPlayer().getName() + "'\n");
-                out.write("dispname: '" + event.getPlayer().getDisplayName()
-                        + "'\n");
-
-                out.write("ip: "
-                        + event.getPlayer().getAddress().getAddress()
-                        .toString().replace("/", "") + "\n");
-                out.write("banreason: '" + "'\n");
-                out.close();
+                FileConfiguration out = YamlConfiguration.loadConfiguration(datafile);
+                out.set("name", event.getPlayer().getName());
+                out.set("dispname", event.getPlayer().getDisplayName());
+                out.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
+                out.set("banreason", "");
+                out.save(datafile);
                 log.info("[RoyalCommands] Userdata creation finished.");
             } catch (Exception e) {
                 log.severe("[RoyalCommands] Could not create userdata for user "
                         + event.getPlayer().getName() + "!");
-                log.severe(e.getMessage());
                 e.printStackTrace();
             }
             if (plugin.useWelcome) {
