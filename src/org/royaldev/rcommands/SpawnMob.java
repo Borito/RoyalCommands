@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class SpawnMob implements CommandExecutor {
@@ -24,10 +24,8 @@ public class SpawnMob implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("spawnmob")) {
             if (!plugin.isAuthorized(cs, "rcmds.spawnmob")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (!(cs instanceof Player)) {
@@ -39,18 +37,7 @@ public class SpawnMob implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            BlockIterator b = new BlockIterator(p, 0);
-            if (!b.hasNext()) {
-                cs.sendMessage(ChatColor.RED + "Cannot spawn mobs there!");
-                return true;
-            }
-            Block bb = b.next();
-            while (b.hasNext()) {
-                if (!(b.next().getTypeId() == 0)) {
-                    bb = b.next();
-                    break;
-                }
-            }
+            Block bb = RUtils.getTarget(p);
             CreatureType c;
             Location l = bb.getLocation();
             l.setY(l.getY() + 1);
@@ -72,17 +59,18 @@ public class SpawnMob implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Invalid amount specified!");
                     return true;
                 }
+                if (i > plugin.spawnmobLimit) {
+                    cs.sendMessage(ChatColor.RED + "The amount specified was larger than the allowed amount.");
+                    cs.sendMessage(ChatColor.RED + "Settings amount to " + ChatColor.GRAY + plugin.spawnmobLimit + ChatColor.RED + ".");
+                    i = plugin.spawnmobLimit;
+                }
                 for (int a = 0; a < i; a++) {
                     p.getWorld().spawnCreature(l, c);
                 }
-                cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + i
-                        + ChatColor.BLUE + " of " + ChatColor.GRAY
-                        + c.getName().toLowerCase() + ChatColor.BLUE + ".");
+                cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + i + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + "1"
-                    + ChatColor.BLUE + " of " + ChatColor.GRAY
-                    + c.getName().toLowerCase() + ChatColor.BLUE + ".");
+            cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + "1" + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
             p.getWorld().spawnCreature(l, c);
             return true;
         }
