@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.Utils;
+import org.royaldev.royalcommands.RUtils;
 
 public class Strike implements CommandExecutor {
 
@@ -34,7 +34,7 @@ public class Strike implements CommandExecutor {
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
-                Block bb = Utils.getTarget(p);
+                Block bb = RUtils.getTarget(p);
                 if (bb == null) {
                     cs.sendMessage(ChatColor.RED + "Can't strike there!");
                     return true;
