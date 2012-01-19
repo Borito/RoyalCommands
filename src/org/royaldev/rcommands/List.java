@@ -30,11 +30,15 @@ public class List implements CommandExecutor {
             String ps = "";
             int hid = 0;
             for (Player aP : p) {
+                String name = aP.getDisplayName() + ChatColor.WHITE;
                 if (!plugin.isVanished(aP)) {
+                    if (Afk.afkdb.containsKey(aP)) {
+                        name = ChatColor.GRAY + "[AFK]" + name;
+                    }
                     if (ps.equals("")) {
-                        ps = ps.concat(aP.getName());
+                        ps = ps.concat(name);
                     } else {
-                        ps = ps.concat(", " + aP.getDisplayName() + ChatColor.WHITE);
+                        ps = ps.concat(", " + name);
                     }
                 } else {
                     hid++;
@@ -55,13 +59,13 @@ public class List implements CommandExecutor {
                             + ChatColor.BLUE + " players online.");
                 }
                 for (Player aP : p) {
+                    String name = aP.getDisplayName() + ChatColor.WHITE;
                     if (plugin.isVanished(aP)) {
+                        name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
                         if (ps.equals("")) {
-                            ps = ps.concat(ChatColor.GRAY + "[HIDDEN]"
-                                    + ChatColor.WHITE + aP.getDisplayName() + ChatColor.WHITE);
+                            ps = ps.concat(name);
                         } else {
-                            ps = ps.concat(", " + ChatColor.GRAY + "[HIDDEN]"
-                                    + ChatColor.WHITE + aP.getDisplayName() + ChatColor.WHITE);
+                            ps = ps.concat(", " + name);
                         }
                     }
                 }
