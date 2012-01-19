@@ -18,7 +18,7 @@ RoyalCommands is coded in IntelliJ with the following libraries:
 
 ### Bleeding Edge Builds
 
-Changes pushed to GitHub will be auto-compiled on [Jenkins](http://royalcraftci.no-ip.org).
+Changes pushed to GitHub will be auto-compiled on [Jenkins](http://ci.royaldev.org).
 
 ### About the developer
 
