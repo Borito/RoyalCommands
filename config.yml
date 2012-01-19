@@ -26,6 +26,8 @@ welcome_message: "&5Welcome {name} to the server!"
 default_stack_size: 64
 # The number of warns until a ban is issued, 0 to disable
 max_warns_before_ban: 3
+# The maximum number of mobs allowed by /spawnmob
+spawnmob_limit: 15
 # Commands to block when muted
 mute_blocked_commands: ["/me", "/tc", "/nc"]
 # Items that cannot be spawned without rcmds.allowed.item
