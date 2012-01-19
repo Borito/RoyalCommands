@@ -24,10 +24,8 @@ public class Afk implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("afk")) {
             if (!plugin.isAuthorized(cs, "rcmds.afk")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (!(cs instanceof Player)) {
@@ -36,16 +34,18 @@ public class Afk implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
+            if (plugin.isVanished(p)) {
+                cs.sendMessage(ChatColor.RED + "You are vanished! The cloak of illusion would be lost if you went AFK!");
+                return true;
+            }
             if (!afkdb.containsKey(p) || !afkdb.get(p)) {
                 afkdb.put(p, true);
-                plugin.getServer().broadcastMessage(
-                        p.getName() + " is now AFK.");
+                plugin.getServer().broadcastMessage(p.getName() + " is now AFK.");
                 return true;
             }
             if (afkdb.containsKey(p) && afkdb.get(p)) {
                 afkdb.remove(p);
-                plugin.getServer().broadcastMessage(
-                        p.getName() + " is no longer AFK.");
+                plugin.getServer().broadcastMessage(p.getName() + " is no longer AFK.");
                 return true;
             }
         }
