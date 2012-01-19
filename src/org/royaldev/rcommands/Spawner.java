@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.Utils;
+import org.royaldev.royalcommands.RUtils;
 
 public class Spawner implements CommandExecutor {
 
@@ -38,7 +38,7 @@ public class Spawner implements CommandExecutor {
                 return false;
             }
             Player p = (Player) cs;
-            Block bb = Utils.getTarget(p);
+            Block bb = RUtils.getTarget(p);
             if (bb == null) {
                 cs.sendMessage(ChatColor.RED + "No block found!");
                 return true;
