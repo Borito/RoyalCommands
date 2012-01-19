@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Utils {
+public class RUtils {
 
     // Borrowed list of materials from Essentials
     public static final Set<Integer> AIR_MATERIALS = new HashSet<Integer>();
