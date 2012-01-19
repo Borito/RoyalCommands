@@ -82,12 +82,9 @@ public class RoyalCommands extends JavaPlugin {
 		return (permission != null);
 	}
 
-	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(
-			this);
-	private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(
-			this);
-	private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(
-			this);
+	private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
+	private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
+	private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
 	public final PConfManager pconfm;
 
 	public Logger log = Logger.getLogger("Minecraft");
