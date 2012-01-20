@@ -147,6 +147,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             event.setKickMessage(kickMessage);
             event.disallow(Result.KICK_BANNED, kickMessage);
         }
+        Player p = event.getPlayer();
+        p.setDisplayName(PConfManager.getPValString(p, "dispname").trim());
     }
 
     @EventHandler(event = PlayerJoinEvent.class, priority = EventPriority.HIGHEST)
@@ -201,7 +203,5 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (plugin.motdLogin) {
             Motd.showMotd(event.getPlayer());
         }
-        Player p = event.getPlayer();
-        p.setDisplayName(PConfManager.getPValString(p, "dispname").trim());
     }
 }
