@@ -2,6 +2,7 @@ package org.royaldev.royalcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.EnderDragonPart;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -45,6 +46,12 @@ public class RoyalCommandsEntityListener implements Listener {
                 if (PConfManager.getPValBoolean(p, "ohk")) {
                     if (ed instanceof LivingEntity) {
                         LivingEntity le = (LivingEntity) ed;
+                        int leh = le.getMaxHealth();
+                        le.damage(leh + 1);
+                    }
+                    if (ed instanceof EnderDragonPart) {
+                        EnderDragonPart ldp = (EnderDragonPart) ed;
+                        LivingEntity le = ldp.getParent();
                         int leh = le.getMaxHealth();
                         le.damage(leh + 1);
                     }
