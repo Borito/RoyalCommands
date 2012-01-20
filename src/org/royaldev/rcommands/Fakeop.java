@@ -20,10 +20,8 @@ public class Fakeop implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("fakeop")) {
             if (!plugin.isAuthorized(cs, "rcmds.fakeop")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (args.length < 1) {
@@ -40,8 +38,7 @@ public class Fakeop implements CommandExecutor {
                 return true;
             }
             victim.sendMessage(ChatColor.YELLOW + "You are now op!");
-            cs.sendMessage(ChatColor.BLUE + victim.getName()
-                    + " has been sent a fake op notice.");
+            cs.sendMessage(ChatColor.BLUE + victim.getName() + " has been sent a fake op notice.");
             return true;
         }
         return false;

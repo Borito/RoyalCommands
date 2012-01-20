@@ -20,10 +20,8 @@ public class Force implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("force")) {
             if (!plugin.isAuthorized(cs, "rcmds.force")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (args.length < 2) {

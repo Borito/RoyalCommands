@@ -61,7 +61,7 @@ public class SpawnMob implements CommandExecutor {
                 }
                 if (i > plugin.spawnmobLimit) {
                     cs.sendMessage(ChatColor.RED + "The amount specified was larger than the allowed amount.");
-                    cs.sendMessage(ChatColor.RED + "Settings amount to " + ChatColor.GRAY + plugin.spawnmobLimit + ChatColor.RED + ".");
+                    cs.sendMessage(ChatColor.RED + "Setting amount to " + ChatColor.GRAY + plugin.spawnmobLimit + ChatColor.RED + ".");
                     i = plugin.spawnmobLimit;
                 }
                 for (int a = 0; a < i; a++) {

@@ -5,11 +5,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.io.File;
 
 public class GetIP implements CommandExecutor {
 
@@ -25,15 +22,12 @@ public class GetIP implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("getip")) {
 
             if (!plugin.isAuthorized(cs, "rcmds.getip")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (plugin.getConfig().getBoolean("disable_getip")) {
-                cs.sendMessage(ChatColor.RED
-                        + "/getip and /compareip have been disabled.");
+                cs.sendMessage(ChatColor.RED + "/getip and /compareip have been disabled.");
                 return true;
             }
             if (args.length < 1) {
@@ -41,17 +35,11 @@ public class GetIP implements CommandExecutor {
                 return false;
             }
             OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(args[0].trim());
-            File oplayerconfl = new File(plugin.getDataFolder() + "/userdata/"
-                    + oplayer.getName().toLowerCase() + ".yml");
-            if (oplayerconfl.exists()) {
-                FileConfiguration oplayerconf = YamlConfiguration
-                        .loadConfiguration(oplayerconfl);
-                cs.sendMessage(ChatColor.GRAY + oplayer.getName() + ": "
-                        + oplayerconf.getString("ip"));
+            if (PConfManager.getPConfExists(oplayer)) {
+                cs.sendMessage(ChatColor.GRAY + oplayer.getName() + ": " + PConfManager.getPValString(oplayer, "ip"));
                 return true;
             } else {
-                cs.sendMessage(ChatColor.RED + "The player "
-                        + oplayer.getName() + " does not exist.");
+                cs.sendMessage(ChatColor.RED + "The player " + oplayer.getName() + " does not exist.");
                 return true;
             }
         }

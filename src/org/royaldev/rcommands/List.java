@@ -33,7 +33,7 @@ public class List implements CommandExecutor {
                 String name = aP.getDisplayName() + ChatColor.WHITE;
                 if (!plugin.isVanished(aP)) {
                     if (Afk.afkdb.containsKey(aP)) {
-                        name = ChatColor.GRAY + "[AFK]" + name;
+                        name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                     }
                     if (ps.equals("")) {
                         ps = ps.concat(name);

@@ -24,10 +24,8 @@ public class Freeze implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("freeze")) {
             if (!plugin.isAuthorized(cs, "rcmds.freeze")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (args.length < 1) {
@@ -37,51 +35,37 @@ public class Freeze implements CommandExecutor {
             Player victim = plugin.getServer().getPlayer(args[0]);
             if (victim != null) {
                 if (plugin.isAuthorized(victim, "rcmds.exempt.freeze")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You can't freeze that player!");
+                    cs.sendMessage(ChatColor.RED + "You can't freeze that player!");
                     return true;
                 }
                 if (!PConfManager.getPValBoolean(victim, "frozen")) {
-                    setPValBoolean(victim, true,
-                            "frozen");
-                    cs.sendMessage(ChatColor.BLUE + "You have frozen "
-                            + ChatColor.GRAY + victim.getName()
-                            + ChatColor.BLUE + "!");
+                    setPValBoolean(victim, true, "frozen");
+                    cs.sendMessage(ChatColor.BLUE + "You have frozen " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + "!");
                     victim.sendMessage(ChatColor.RED + "You have been frozen!");
                     return true;
                 } else {
-                    setPValBoolean(victim, false,
-                            "frozen");
-                    cs.sendMessage(ChatColor.BLUE + "You have thawed "
-                            + ChatColor.GRAY + victim.getName()
-                            + ChatColor.BLUE + "!");
+                    setPValBoolean(victim, false, "frozen");
+                    cs.sendMessage(ChatColor.BLUE + "You have thawed " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + "!");
                     victim.sendMessage(ChatColor.BLUE + "You have been thawed!");
                     return true;
                 }
             } else {
-                OfflinePlayer victim2 = plugin.getServer().getOfflinePlayer(
-                        args[0].trim());
+                OfflinePlayer victim2 = plugin.getServer().getOfflinePlayer(args[0].trim());
                 if (victim2.isOp()) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You can't freeze that player!");
+                    cs.sendMessage(ChatColor.RED + "You can't freeze that player!");
                     return true;
                 }
                 if (!PConfManager.getPConfExists(victim2)) {
-                    cs.sendMessage(ChatColor.RED
-                            + "That player does not exist!");
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
                 if (!PConfManager.getPValBoolean(victim2, "frozen")) {
                     setPValBoolean(victim2, true, "frozen");
-                    cs.sendMessage(ChatColor.BLUE + "You have frozen "
-                            + ChatColor.GRAY + victim2.getName()
-                            + ChatColor.BLUE + "!");
+                    cs.sendMessage(ChatColor.BLUE + "You have frozen " + ChatColor.GRAY + victim2.getName() + ChatColor.BLUE + "!");
                     return true;
                 } else {
                     setPValBoolean(victim2, false, "frozen");
-                    cs.sendMessage(ChatColor.BLUE + "You have thawed "
-                            + ChatColor.GRAY + victim2.getName()
-                            + ChatColor.BLUE + "!");
+                    cs.sendMessage(ChatColor.BLUE + "You have thawed " + ChatColor.GRAY + victim2.getName() + ChatColor.BLUE + "!");
                     return true;
                 }
             }

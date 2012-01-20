@@ -31,14 +31,8 @@ public class Reply implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
-                return true;
-            }
-            Player p = (Player) cs;
-            if (Message.replydb.containsKey(p)) {
-                Player t = (Player) Message.replydb.get(p);
+            if (Message.replydb.containsKey(cs)) {
+                CommandSender t = Message.replydb.get(cs);
                 if (!Message.replydb.containsKey(t)) {
                     Message.replydb.put(t, cs);
                 } else if (Message.replydb.containsKey(t)) {
@@ -47,23 +41,16 @@ public class Reply implements CommandExecutor {
                         Message.replydb.put(t, cs);
                     }
                 }
-                p.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
-                        + "You" + ChatColor.GRAY + " -> "
-                        + ChatColor.BLUE + t.getName()
-                        + ChatColor.GRAY + "] "
-                        + plugin.getFinalArg(args, 0));
-                t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE
-                        + p.getName() + ChatColor.GRAY + " -> "
-                        + ChatColor.BLUE + "You" + ChatColor.GRAY
-                        + "] " + plugin.getFinalArg(args, 0));
-                for (int i = 0; i < plugin.getServer()
-                        .getOnlinePlayers().length; i++) {
-                    if (PConfManager.getPValBoolean(plugin
-                            .getServer().getOnlinePlayers()[i],
-                            "spy")) {
-                        if (t != plugin.getServer().getOnlinePlayers()[i] || (Player) cs != plugin.getServer().getOnlinePlayers()[i]) {
-                            plugin.getServer().getOnlinePlayers()[i].sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName() + ChatColor.GRAY + "] " + plugin.getFinalArg(args, 0));
+                String m = plugin.getFinalArg(args, 0).trim();
+                cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You" + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName() + ChatColor.GRAY + "] " + m);
+                t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + "You" + ChatColor.GRAY + "] " + m);
+                Player[] ps = plugin.getServer().getOnlinePlayers();
+                for (Player p1 : ps) {
+                    if (PConfManager.getPValBoolean(p1, "spy")) {
+                        if (t == p1 || cs == p1) {
+                            continue;
                         }
+                        p1.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName() + ChatColor.GRAY + "] " + m);
                     }
                 }
                 return true;

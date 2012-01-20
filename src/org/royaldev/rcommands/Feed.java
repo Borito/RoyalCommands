@@ -20,16 +20,13 @@ public class Feed implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("feed")) {
             if (!plugin.isAuthorized(cs, "rcmds.feed")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (args.length < 1) {
                 if (!(cs instanceof Player)) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You can't feed the console!");
+                    cs.sendMessage(ChatColor.RED + "You can't feed the console!");
                     return true;
                 }
                 Player t = (Player) cs;
@@ -46,10 +43,8 @@ public class Feed implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "You have fed " + ChatColor.GRAY
-                    + t.getName() + ChatColor.BLUE + ".");
-            t.sendMessage(ChatColor.BLUE + "You have been fed by "
-                    + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + "!");
+            cs.sendMessage(ChatColor.BLUE + "You have fed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            t.sendMessage(ChatColor.BLUE + "You have been fed by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + "!");
             t.setFoodLevel(20);
             return true;
         }

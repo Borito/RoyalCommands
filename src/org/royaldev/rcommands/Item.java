@@ -63,8 +63,7 @@ public class Item implements CommandExecutor {
                 if (iblock != 0) {
                     if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
                         cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
-                        plugin.log.warning("[RoyalCommands] " + cs.getName()
-                                + " was denied access to the command!");
+                        plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                         return true;
                     }
                     ItemStack toInv;

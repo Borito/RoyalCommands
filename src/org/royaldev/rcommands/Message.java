@@ -18,7 +18,7 @@ public class Message implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    public static HashMap<Player, CommandSender> replydb = new HashMap<Player, CommandSender>();
+    public static HashMap<CommandSender, CommandSender> replydb = new HashMap<CommandSender, CommandSender>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label,
@@ -33,11 +33,6 @@ public class Message implements CommandExecutor {
             }
             if (args.length < 2) {
                 return false;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
-                return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             String m = plugin.getFinalArg(args, 1).trim();
@@ -67,19 +62,13 @@ public class Message implements CommandExecutor {
             cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You"
                     + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName()
                     + ChatColor.GRAY + "] " + m);
-            for (int i = 0; i < plugin.getServer().getOnlinePlayers().length; i++) {
-                if (PConfManager.getPValBoolean(plugin.getServer()
-                        .getOnlinePlayers()[i], "spy")) {
-                    if (t != plugin.getServer().getOnlinePlayers()[i]
-                            || cs != plugin.getServer()
-                            .getOnlinePlayers()[i]) {
-                        plugin.getServer().getOnlinePlayers()[i]
-                                .sendMessage(ChatColor.GRAY + "["
-                                        + ChatColor.BLUE + cs.getName()
-                                        + ChatColor.GRAY + " -> "
-                                        + ChatColor.BLUE + t.getName()
-                                        + ChatColor.GRAY + "] " + m);
+            Player[] ps = plugin.getServer().getOnlinePlayers();
+            for (Player p1 : ps) {
+                if (PConfManager.getPValBoolean(p1, "spy")) {
+                    if (t == p1 || cs == p1) {
+                        continue;
                     }
+                    p1.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName() + ChatColor.GRAY + "] " + m);
                 }
             }
             return true;

@@ -21,16 +21,12 @@ public class Facepalm implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("facepalm")) {
             if (!plugin.isAuthorized(cs, "rcmds.facepalm")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (args.length < 1) {
-                plugin.getServer().broadcastMessage(
-                        ChatColor.YELLOW + cs.getName() + ChatColor.AQUA
-                                + " has facepalmed.");
+                plugin.getServer().broadcastMessage(ChatColor.YELLOW + cs.getName() + ChatColor.AQUA + " has facepalmed.");
                 return true;
             }
             Player victim = plugin.getServer().getPlayer(args[0]);
@@ -43,14 +39,10 @@ public class Facepalm implements CommandExecutor {
                 return true;
             }
             if (plugin.isAuthorized(victim, "rcmds.exempt.facepalm")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You cannot facepalm at that player!");
+                cs.sendMessage(ChatColor.RED + "You cannot facepalm at that player!");
                 return true;
             }
-            Bukkit.getServer().broadcastMessage(
-                    ChatColor.YELLOW + cs.getName() + ChatColor.AQUA
-                            + " has facepalmed at " + ChatColor.YELLOW
-                            + victim.getName() + ChatColor.AQUA + ".");
+            Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + cs.getName() + ChatColor.AQUA + " has facepalmed at " + ChatColor.YELLOW + victim.getName() + ChatColor.AQUA + ".");
             return true;
         }
         return false;

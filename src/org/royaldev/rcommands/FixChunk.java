@@ -21,10 +21,8 @@ public class FixChunk implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("fixchunk")) {
             if (!plugin.isAuthorized(cs, "rcmds.fixchunk")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (!(cs instanceof Player)) {

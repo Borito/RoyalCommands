@@ -22,10 +22,8 @@ public class Give implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("give")) {
             if (!plugin.isAuthorized(cs, "rcmds.give")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (args.length < 2) {
@@ -39,8 +37,7 @@ public class Give implements CommandExecutor {
                     return true;
                 }
                 if (plugin.isVanished(target)) {
-                    cs.sendMessage(ChatColor.RED
-                            + "That player does not exist!");
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
                 String called = args[1];
@@ -55,20 +52,16 @@ public class Give implements CommandExecutor {
                     iblock = Integer.parseInt(called);
                 } catch (Exception e) {
                     try {
-                        iblock = Material.getMaterial(
-                                called.trim().replace(" ", "_").toUpperCase())
-                                .getId();
+                        iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
                     } catch (Exception e2) {
-                        cs.sendMessage(ChatColor.RED
-                                + "That block does not exist!");
+                        cs.sendMessage(ChatColor.RED + "That block does not exist!");
                         return true;
                     }
                 }
                 if (iblock != 0) {
                     if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
                         cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
-                        plugin.log.warning("[RoyalCommands] " + cs.getName()
-                                + " was denied access to the command!");
+                        plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                         return true;
                     }
                     ItemStack toInv;
@@ -81,20 +74,16 @@ public class Give implements CommandExecutor {
                         try {
                             data2 = Integer.parseInt(data);
                         } catch (Exception e) {
-                            cs.sendMessage(ChatColor.RED
-                                    + "The metadata was invalid!");
+                            cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
                             return true;
                         }
                         if (data2 < 0) {
-                            cs.sendMessage(ChatColor.RED
-                                    + "The metadata was invalid!");
+                            cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
                             return true;
                         }
-                        toInv = new ItemStack(Material.getMaterial(iblock)
-                                .getId(), plugin.defaultStack, (short) data2);
+                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), plugin.defaultStack, (short) data2);
                     } else {
-                        toInv = new ItemStack(Material.getMaterial(iblock)
-                                .getId(), plugin.defaultStack);
+                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), plugin.defaultStack);
                     }
                     target.getInventory().addItem(toInv);
                     cs.sendMessage(ChatColor.BLUE
@@ -152,12 +141,9 @@ public class Give implements CommandExecutor {
                     iblock = Integer.parseInt(called);
                 } catch (Exception e) {
                     try {
-                        iblock = Material.getMaterial(
-                                called.trim().replace(" ", "_").toUpperCase())
-                                .getId();
+                        iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
                     } catch (Exception e2) {
-                        cs.sendMessage(ChatColor.RED
-                                + "That block does not exist!");
+                        cs.sendMessage(ChatColor.RED + "That block does not exist!");
                         return true;
                     }
                 }
@@ -167,8 +153,7 @@ public class Give implements CommandExecutor {
                 }
                 if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
                     cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
-                    plugin.log.warning("[RoyalCommands] " + cs.getName()
-                            + " was denied access to the command!");
+                    plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                     return true;
                 }
                 ItemStack toInv;
@@ -181,21 +166,17 @@ public class Give implements CommandExecutor {
                     try {
                         data2 = Integer.parseInt(data);
                     } catch (Exception e) {
-                        cs.sendMessage(ChatColor.RED
-                                + "The metadata was invalid!");
+                        cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
                         return true;
                     }
                     if (data2 < 0) {
-                        cs.sendMessage(ChatColor.RED
-                                + "The metadata was invalid!");
+                        cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
                         return true;
                     } else {
-                        toInv = new ItemStack(Material.getMaterial(iblock)
-                                .getId(), amount, (short) data2);
+                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount, (short) data2);
                     }
                 } else {
-                    toInv = new ItemStack(Material.getMaterial(iblock).getId(),
-                            amount);
+                    toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount);
                 }
                 target.getInventory().addItem(toInv);
                 cs.sendMessage(ChatColor.BLUE

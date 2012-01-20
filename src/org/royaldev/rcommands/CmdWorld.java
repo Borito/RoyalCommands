@@ -23,15 +23,12 @@ public class CmdWorld implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("world")) {
             if (!plugin.isAuthorized(cs, "rcmds.world")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -41,8 +38,7 @@ public class CmdWorld implements CommandExecutor {
                     if (worlds.equals("")) {
                         worlds = worlds.concat(ChatColor.GRAY + w.getName());
                     } else {
-                        worlds = worlds.concat(ChatColor.WHITE + ", "
-                                + ChatColor.GRAY + w.getName());
+                        worlds = worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + w.getName());
                     }
                 }
                 cs.sendMessage(ChatColor.BLUE + "Worlds: " + worlds);
@@ -57,16 +53,14 @@ public class CmdWorld implements CommandExecutor {
                     if (worlds.equals("")) {
                         worlds = worlds.concat(ChatColor.GRAY + w2.getName());
                     } else {
-                        worlds = worlds.concat(ChatColor.WHITE + ", "
-                                + ChatColor.GRAY + w2.getName());
+                        worlds = worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + w2.getName());
                     }
                 }
                 cs.sendMessage(ChatColor.BLUE + "Worlds: " + worlds);
                 return true;
             }
             Player p = (Player) cs;
-            p.sendMessage(ChatColor.BLUE + "Teleporting you to world "
-                    + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
+            p.sendMessage(ChatColor.BLUE + "Teleporting you to world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
             p.teleport(w.getSpawnLocation());
             return true;
         }
