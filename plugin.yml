@@ -402,6 +402,11 @@ commands:
     description: Sets the display name of a player.
     usage: /<command> (player) (nick)
     aliases: [dispname, name]
+
+  ingot2block:
+    description: Makes raw materials into blocks.
+    usage: /<command> (hand|all)
+    aliases: [i2b, itb]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -653,6 +658,9 @@ permissions:
     default: op
   rcmds.nick:
     description: Allows you to set a player's display name.
+    default: op
+  rcmds.ingot2block:
+    description: Allows you to make raw materials into blocks.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config

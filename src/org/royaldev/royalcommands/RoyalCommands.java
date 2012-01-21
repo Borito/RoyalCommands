@@ -89,7 +89,7 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     public final PConfManager pconfm;
 
-    public Logger log = Logger.getLogger("Minecraft");
+    public static Logger log = Logger.getLogger("Minecraft");
 
     public VanishPlugin vp = null;
 
@@ -300,6 +300,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("invsee").setExecutor(new CmdInvsee(this));
         getCommand("realname").setExecutor(new CmdRealName(this));
         getCommand("nick").setExecutor(new Nick(this));
+        getCommand("ingot2block").setExecutor(new Ingot2Block(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         showcommands = this.getConfig().getBoolean("view_commands");
