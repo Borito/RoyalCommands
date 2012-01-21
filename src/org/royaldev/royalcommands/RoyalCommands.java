@@ -26,12 +26,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.rcommands.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import to.joe.vanish.VanishPlugin;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedWriter;
@@ -91,13 +91,13 @@ public class RoyalCommands extends JavaPlugin {
 
     public static Logger log = Logger.getLogger("Minecraft");
 
-    public VanishPlugin vp = null;
+    VanishPlugin vp = null;
 
     public boolean isVanished(Player p) {
         if (vp == null) {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
             return false;
-        } else return vp.isVanished(p.getName());
+        } else return vp.getManager().isVanished(p.getName());
     }
 
     public void loadConfiguration() {
