@@ -1,11 +1,14 @@
 package org.royaldev.royalcommands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class RUtils {
 
@@ -63,6 +66,12 @@ public class RUtils {
             return null;
         }
         return bb;
+    }
+
+    public static void dispNoPerms(CommandSender cs) {
+        cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+        RoyalCommands.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+        return;
     }
 
 }
