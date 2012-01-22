@@ -16,7 +16,6 @@ import org.royaldev.rcommands.Afk;
 import org.royaldev.rcommands.Motd;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -33,26 +32,18 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(event = PlayerCommandPreprocessEvent.class, priority = EventPriority.NORMAL)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (plugin.showcommands) {
-            log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": "
-                    + event.getMessage());
+            log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
         }
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "muted")) {
+        if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
             for (String command : plugin.muteCmds) {
-                if (event.getMessage().toLowerCase()
-                        .startsWith(command.toLowerCase() + " ")
-                        || event.getMessage().equalsIgnoreCase(
-                        command.toLowerCase())) {
-                    event.getPlayer().sendMessage(
-                            ChatColor.RED + "You are muted.");
-                    log.info("[RoyalCommands] " + event.getPlayer().getName()
-                            + " tried to use that command, but is muted.");
+                if (event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())) {
+                    event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
+                    log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to use that command, but is muted.");
                     event.setCancelled(true);
                 }
             }
         }
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "jailed")) {
+        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) {
             event.getPlayer().sendMessage(ChatColor.RED + "You are jailed.");
             event.setCancelled(true);
         }
@@ -61,44 +52,35 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(event = PlayerChatEvent.class, priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
         if (Afk.afkdb.containsKey(event.getPlayer())) {
-            plugin.getServer().broadcastMessage(
-                    event.getPlayer().getName() + " is no longer AFK.");
+            plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             Afk.afkdb.remove(event.getPlayer());
         }
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "muted")) {
+        if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
             event.setFormat("");
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
-            plugin.log.info("[RoyalCommands] " + event.getPlayer().getName()
-                    + " tried to speak, but has been muted.");
+            plugin.log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to speak, but has been muted.");
         }
     }
 
     @EventHandler(event = PlayerMoveEvent.class, priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (Afk.afkdb.containsKey(event.getPlayer())) {
-            plugin.getServer().broadcastMessage(
-                    event.getPlayer().getName() + " is no longer AFK.");
+            plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             Afk.afkdb.remove(event.getPlayer());
         }
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "frozen")) {
+        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(event = PlayerInteractEvent.class, priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "jailed")) {
+        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) {
             event.setCancelled(true);
         }
         Action act = event.getAction();
-        if (act.equals(Action.LEFT_CLICK_AIR)
-                || act.equals(Action.RIGHT_CLICK_AIR)
-                || act.equals(Action.LEFT_CLICK_BLOCK)
-                || act.equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (act.equals(Action.LEFT_CLICK_AIR) || act.equals(Action.RIGHT_CLICK_AIR) || act.equals(Action.LEFT_CLICK_BLOCK) || act.equals(Action.RIGHT_CLICK_BLOCK)) {
             ItemStack id = event.getItem();
             if (id != null) {
                 int idn = id.getTypeId();
@@ -117,8 +99,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 }
             }
         }
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "frozen")) {
+        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) {
             event.setCancelled(true);
         }
         if (plugin.buildPerm) {
@@ -128,18 +109,14 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(event = PlayerLoginEvent.class, priority = EventPriority.HIGHEST)
+    @EventHandler(event = PlayerLoginEvent.class, priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (event.getPlayer().isBanned()) {
             String kickMessage;
-            OfflinePlayer oplayer = plugin.getServer()
-                    .getOfflinePlayer(event.getPlayer().getName());
-            File oplayerconfl = new File(plugin.getDataFolder()
-                    + File.separator + "userdata" + File.separator
-                    + oplayer.getName() + ".yml");
+            OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(event.getPlayer().getName());
+            File oplayerconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + oplayer.getName() + ".yml");
             if (oplayerconfl.exists()) {
-                FileConfiguration oplayerconf = YamlConfiguration
-                        .loadConfiguration(oplayerconfl);
+                FileConfiguration oplayerconf = YamlConfiguration.loadConfiguration(oplayerconfl);
                 kickMessage = oplayerconf.getString("banreason");
             } else {
                 kickMessage = plugin.banMessage;
@@ -148,57 +125,50 @@ public class RoyalCommandsPlayerListener implements Listener {
             event.disallow(Result.KICK_BANNED, kickMessage);
         }
         Player p = event.getPlayer();
-        p.setDisplayName(PConfManager.getPValString(p, "dispname").trim());
+        String dispname = PConfManager.getPValString(p, "dispname").trim();
+        if (dispname == null || dispname.equals("")) {
+            dispname = p.getName().trim();
+        }
+        p.setDisplayName(dispname);
     }
 
     @EventHandler(event = PlayerJoinEvent.class, priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        File datafile = new File(plugin.getDataFolder() + File.separator
-                + "userdata" + File.separator
-                + event.getPlayer().getName().toLowerCase() + ".yml");
+        File datafile = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + event.getPlayer().getName().toLowerCase() + ".yml");
         if (!datafile.exists()) {
-            log.info("[RoyalCommands] Creating userdata for user "
-                    + event.getPlayer().getName() + ".");
+            log.info("[RoyalCommands] Creating userdata for user " + event.getPlayer().getName() + ".");
             try {
                 FileConfiguration out = YamlConfiguration.loadConfiguration(datafile);
                 out.set("name", event.getPlayer().getName());
-                out.set("dispname", event.getPlayer().getDisplayName());
+                String dispname = event.getPlayer().getDisplayName();
+                if (dispname == null || dispname.equals("")) {
+                    dispname = event.getPlayer().getName();
+                }
+                out.set("dispname", dispname);
                 out.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
                 out.set("banreason", "");
                 out.save(datafile);
                 log.info("[RoyalCommands] Userdata creation finished.");
             } catch (Exception e) {
-                log.severe("[RoyalCommands] Could not create userdata for user "
-                        + event.getPlayer().getName() + "!");
+                log.severe("[RoyalCommands] Could not create userdata for user " + event.getPlayer().getName() + "!");
                 e.printStackTrace();
             }
             if (plugin.useWelcome) {
                 String welcomemessage = plugin.welcomeMessage;
-                welcomemessage = welcomemessage.replace("{name}", event
-                        .getPlayer().getName());
-                welcomemessage = welcomemessage.replace("{dispname}", event
-                        .getPlayer().getDisplayName());
-                welcomemessage = welcomemessage.replace("{world}", event
-                        .getPlayer().getWorld().getName());
+                welcomemessage = welcomemessage.replace("{name}", event.getPlayer().getName());
+                String dispname = event.getPlayer().getDisplayName();
+                if (dispname == null || dispname.equals("")) {
+                    dispname = event.getPlayer().getName();
+                }
+                welcomemessage = welcomemessage.replace("{dispname}", dispname);
+                welcomemessage = welcomemessage.replace("{world}", event.getPlayer().getWorld().getName());
                 plugin.getServer().broadcastMessage(welcomemessage);
             }
         } else {
-            log.info("[RoyalCommands] Updating the IP for "
-                    + event.getPlayer().getName() + ".");
-            File p1confl = new File(plugin.getDataFolder() + File.separator
-                    + "userdata" + File.separator
-                    + event.getPlayer().getName().toLowerCase() + ".yml");
-            FileConfiguration p1conf = YamlConfiguration
-                    .loadConfiguration(p1confl);
-            String playerip = event.getPlayer().getAddress().getAddress()
-                    .toString();
+            log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
+            String playerip = event.getPlayer().getAddress().getAddress().toString();
             playerip = playerip.replace("/", "");
-            p1conf.set("ip", playerip);
-            try {
-                p1conf.save(p1confl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            PConfManager.setPValString(event.getPlayer(), playerip, "ip");
         }
         if (plugin.motdLogin) {
             Motd.showMotd(event.getPlayer());

@@ -29,8 +29,7 @@ public class RoyalCommandsEntityListener implements Listener {
                 Player p = (Player) e.getEntity();
                 Location pLoc = p.getLocation();
                 Back.backdb.put(p, pLoc);
-                p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back"
-                        + ChatColor.BLUE + " to go back to where you died.");
+                p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
             }
         }
     }
