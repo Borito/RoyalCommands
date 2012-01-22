@@ -89,7 +89,7 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     public final PConfManager pconfm;
 
-    public static Logger log = Logger.getLogger("Minecraft");
+    public Logger log = Logger.getLogger("Minecraft");
 
     VanishPlugin vp = null;
 
@@ -188,25 +188,22 @@ public class RoyalCommands extends JavaPlugin {
 
         CallHome.load(this);
         // yet again, borrowed from MilkBowl
-        this.getServer().getScheduler()
-                .scheduleAsyncRepeatingTask(this, new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            newVersion = updateCheck(version);
-                            String oldVersion = version;
-                            if (!newVersion.contains(oldVersion)) {
-                                log.warning(newVersion
-                                        + " is out! You are running "
-                                        + oldVersion);
-                                log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
-                            }
-                        } catch (Exception ignored) {
-                            // ignore exceptions
-                        }
+        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    newVersion = updateCheck(version);
+                    String oldVersion = version;
+                    if (!newVersion.contains(oldVersion)) {
+                        log.warning(newVersion + " is out! You are running " + oldVersion);
+                        log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
                     }
+                } catch (Exception ignored) {
+                    // ignore exceptions
+                }
+            }
 
-                }, 0, 36000);
+        }, 0, 36000);
 
         vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
 
@@ -301,6 +298,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("realname").setExecutor(new CmdRealName(this));
         getCommand("nick").setExecutor(new Nick(this));
         getCommand("ingot2block").setExecutor(new Ingot2Block(this));
+        getCommand("near").setExecutor(new CmdNear(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         showcommands = this.getConfig().getBoolean("view_commands");

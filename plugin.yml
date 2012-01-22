@@ -407,6 +407,11 @@ commands:
     description: Makes raw materials into blocks.
     usage: /<command> (hand|all)
     aliases: [i2b, itb]
+
+  near:
+    description: Gets nearby players.
+    usage: /<command> (radius)
+    aliases: [nearby, nearmy. close]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -661,6 +666,9 @@ permissions:
     default: op
   rcmds.ingot2block:
     description: Allows you to make raw materials into blocks.
+    default: op
+  rcmds.near:
+    description: Allows you to see nearby players.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
