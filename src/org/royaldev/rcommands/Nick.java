@@ -79,8 +79,16 @@ public class Nick implements CommandExecutor {
                     return true;
                 }
                 if (plugin.isAuthorized(t, "rcmds.exempt.nick")) {
-                    cs.sendMessage(ChatColor.RED + "You cannot change that player's nick!");
-                    return true;
+                    if (cs instanceof Player) {
+                        Player p = (Player) cs;
+                        if (t != p) {
+                            cs.sendMessage(ChatColor.RED + "You cannot change that player's nick!");
+                            return true;
+                        }
+                    } else {
+                        cs.sendMessage(ChatColor.RED + "You cannot change that player's nick!");
+                        return true;
+                    }
                 }
                 String newname = plugin.getFinalArg(args, 1).trim();
                 t.setDisplayName(newname);
