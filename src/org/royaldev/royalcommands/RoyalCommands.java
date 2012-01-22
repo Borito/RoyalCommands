@@ -17,7 +17,6 @@ package org.royaldev.royalcommands;
  If forked and not credited, alert him.
  */
 
-import com.smilingdevil.devilstats.api.DevilStats;
 import net.milkbowl.vault.permission.Permission;
 import org.blockface.bukkitstats.CallHome;
 import org.bukkit.Bukkit;
