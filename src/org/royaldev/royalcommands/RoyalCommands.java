@@ -17,6 +17,7 @@ package org.royaldev.royalcommands;
  If forked and not credited, alert him.
  */
 
+import com.smilingdevil.devilstats.api.DevilStats;
 import net.milkbowl.vault.permission.Permission;
 import org.blockface.bukkitstats.CallHome;
 import org.bukkit.Bukkit;
@@ -37,6 +38,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -89,7 +91,7 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     public final PConfManager pconfm;
 
-    public Logger log = Logger.getLogger("Minecraft");
+    public static Logger log = Logger.getLogger("Minecraft");
 
     VanishPlugin vp = null;
 
@@ -185,6 +187,18 @@ public class RoyalCommands extends JavaPlugin {
         loadConfiguration();
 
         version = this.getDescription().getVersion();
+
+        // DevilStats ftw
+        log.info("[RoyalCommands] Pinging DevilStats with startup.");
+        String apikey = "ang4zg8weflxg74yq0abvwg1lvmypqhmr237v6f1z4er50tice1jnjk0rcyag5v1";
+        String action = "startup";
+        String url = String.format("http://stats.smilingdevil.com:80/api?action=%s&api_key=%s", action, apikey);
+        try {
+            new URL(url).openConnection().getInputStream();
+            log.info("[RoyalCommands] Ping to DevilStats was executed successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         CallHome.load(this);
         // yet again, borrowed from MilkBowl
@@ -326,6 +340,9 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void onDisable() {
+
+        // DevilStats ftw
+
         log.info("[RoyalCommands] RoyalCommands v" + this.version + " disabled.");
     }
 
