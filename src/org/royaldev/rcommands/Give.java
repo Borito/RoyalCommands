@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class Give implements CommandExecutor {
@@ -22,8 +23,7 @@ public class Give implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("give")) {
             if (!plugin.isAuthorized(cs, "rcmds.give")) {
-                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (args.length < 2) {

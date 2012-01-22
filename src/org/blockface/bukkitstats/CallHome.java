@@ -38,68 +38,68 @@ import java.util.UUID;
 
 public class CallHome {
 
-	private static final File file = new File("plugins/stats/config.yml");
-	private static final YamlConfiguration config = YamlConfiguration
-			.loadConfiguration(file);
+    private static final File file = new File("plugins/stats/config.yml");
+    private static final YamlConfiguration config = YamlConfiguration
+            .loadConfiguration(file);
 
-	public static void load(Plugin plugin) {
-		if (!verifyConfig()) {
-			return;
-		}
+    public static void load(Plugin plugin) {
+        if (!verifyConfig()) {
+            return;
+        }
 
-		if (config.getBoolean("opt-out")) {
-			return;
-		}
+        if (config.getBoolean("opt-out")) {
+            return;
+        }
 
-		plugin.getServer()
-				.getScheduler()
-				.scheduleAsyncRepeatingTask(plugin,
-						new CallTask(plugin), 10L,
-						20L * 60L * 60);
-		System.out
-				.println("["
-						+ plugin.getDescription().getName()
-						+ "] Stats are being kept for this plugin. To opt-out for any reason, check plugins/stats.");
-	}
+        plugin.getServer()
+                .getScheduler()
+                .scheduleAsyncRepeatingTask(plugin,
+                        new CallTask(plugin), 10L,
+                        20L * 60L * 60);
+        System.out
+                .println("["
+                        + plugin.getDescription().getName()
+                        + "] Stats are being kept for this plugin. To opt-out for any reason, check plugins/stats.");
+    }
 
-	private static Boolean verifyConfig() {
-		config.addDefault("opt-out", false);
-		config.addDefault("hash", UUID.randomUUID().toString());
+    private static Boolean verifyConfig() {
+        config.addDefault("opt-out", false);
+        config.addDefault("hash", UUID.randomUUID().toString());
 
-		if (!file.exists() || config.get("hash", null) == null) {
-			System.out
-					.println("BukkitStats is initializing for the first time. To opt-out check plugins/stats");
-			try {
-				config.options().copyDefaults(true);
-				config.save(file);
-			} catch (Exception ex) {
-				System.out.println("BukkitStats failed to save.");
-				ex.printStackTrace();
-			}
-			return false;
-		}
-		return true;
-	}
+        if (!file.exists() || config.get("hash", null) == null) {
+            System.out
+                    .println("BukkitStats is initializing for the first time. To opt-out check plugins/stats");
+            try {
+                config.options().copyDefaults(true);
+                config.save(file);
+            } catch (Exception ex) {
+                System.out.println("BukkitStats failed to save.");
+                ex.printStackTrace();
+            }
+            return false;
+        }
+        return true;
+    }
 }
 
 class CallTask implements Runnable {
-	private Plugin plugin;
+    private Plugin plugin;
 
-	public CallTask(Plugin plugin) {
-		this.plugin = plugin;
-	}
+    public CallTask(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
-	private void postUrl() throws Exception {
+    private void postUrl() throws Exception {
 
-		String authors = "";
+        String authors = "";
 
-		for (String auth : plugin.getDescription().getAuthors()) {
-			authors = authors + " " + auth;
-		}
-		authors = authors.trim();
+        for (String auth : plugin.getDescription().getAuthors()) {
+            authors = authors + " " + auth;
+        }
+        authors = authors.trim();
 
-		String url = String
-				.format("http://pluginstats.randomappdev.com/ping.php?snam=%s&sprt=%s&shsh=%s&sver=%s&spcnt=%s&pnam=%s&pmcla=%s&paut=%s&pweb=%s&pver=%s",
+        String url = String
+                .format("http://pluginstats.randomappdev.com/ping.php?snam=%s&sprt=%s&shsh=%s&sver=%s&spcnt=%s&pnam=%s&pmcla=%s&paut=%s&pweb=%s&pver=%s",
                         URLEncoder.encode(this.plugin.getServer()
                                 .getServerName(), "UTF-8"),
                         this.plugin.getServer()
@@ -122,16 +122,16 @@ class CallTask implements Runnable {
                         URLEncoder.encode(this.plugin.getDescription()
                                 .getVersion(), "UTF-8"));
 
-		new URL(url).openConnection().getInputStream();
+        new URL(url).openConnection().getInputStream();
 
-	}
+    }
 
-	public void run() {
-		try {
-			postUrl();
-		} catch (Exception ignored) {
-			System.out.println("Could not call home.");
-			ignored.printStackTrace();
-		}
-	}
+    public void run() {
+        try {
+            postUrl();
+        } catch (Exception ignored) {
+            System.out.println("Could not call home.");
+            ignored.printStackTrace();
+        }
+    }
 }

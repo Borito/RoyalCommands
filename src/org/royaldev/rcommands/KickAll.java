@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class KickAll implements CommandExecutor {
@@ -20,11 +21,7 @@ public class KickAll implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("kickall")) {
             if (!plugin.isAuthorized(cs, "rcmds.kickall")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
-                return true;
+                RUtils.dispNoPerms(cs);
             }
             String kickreason = plugin.kickMessage;
             if (args.length > 0) {

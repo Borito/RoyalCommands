@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.List;
@@ -23,8 +24,7 @@ public class CmdWorld implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("world")) {
             if (!plugin.isAuthorized(cs, "rcmds.world")) {
-                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player)) {

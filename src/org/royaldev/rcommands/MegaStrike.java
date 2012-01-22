@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class MegaStrike implements CommandExecutor {
@@ -22,10 +23,7 @@ public class MegaStrike implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("megastrike")) {
             if (!plugin.isAuthorized(cs, "rcmds.megastrike")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             Player p = null;

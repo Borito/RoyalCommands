@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class GetIP implements CommandExecutor {
@@ -22,8 +23,7 @@ public class GetIP implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("getip")) {
 
             if (!plugin.isAuthorized(cs, "rcmds.getip")) {
-                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (plugin.getConfig().getBoolean("disable_getip")) {

@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdRealName implements CommandExecutor {
@@ -20,8 +21,7 @@ public class CmdRealName implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("realname")) {
             if (!plugin.isAuthorized(cs, "rcmds.realname")) {
-                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (args.length < 1) {

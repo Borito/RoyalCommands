@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.io.File;
@@ -25,10 +26,7 @@ public class ListHome implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("listhome")) {
             if (!plugin.isAuthorized(cs, "rcmds.listhome")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player)) {

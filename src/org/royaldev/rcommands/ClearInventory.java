@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class ClearInventory implements CommandExecutor {
@@ -39,10 +40,7 @@ public class ClearInventory implements CommandExecutor {
         }
         if (args.length == 1) {
             if (!plugin.isAuthorized(cs, "rcmds.clearinventory.others")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             Player target = plugin.getServer().getPlayer(args[0].trim());

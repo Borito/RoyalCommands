@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class Level implements CommandExecutor {
@@ -24,16 +25,16 @@ public class Level implements CommandExecutor {
                         + "This command can only be used by players!");
             }
             if (!plugin.isAuthorized(cs, "rcmds.level")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
+                return true;
+            }
+            if (!(cs instanceof Player)) {
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
             Player player = (Player) cs;
             player.setLevel(player.getLevel() + 1);
-            cs.sendMessage(ChatColor.BLUE
-                    + "XP level raised by one! You may need to relog to see the changes.");
+            cs.sendMessage(ChatColor.BLUE + "XP level raised by one!");
             return true;
         }
         return false;

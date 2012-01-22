@@ -22,10 +22,7 @@ public class Strike implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("strike")) {
             if (!plugin.isAuthorized(cs, "rcmds.strike")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player) && args.length < 1) {

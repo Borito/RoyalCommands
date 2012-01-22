@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class Gamemode implements CommandExecutor {
@@ -21,10 +22,7 @@ public class Gamemode implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("gamemode")) {
             if (!plugin.isAuthorized(cs, "rcmds.gamemode")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player) && args.length < 1) {

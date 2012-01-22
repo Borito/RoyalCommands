@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class Spy implements CommandExecutor {
@@ -21,10 +22,7 @@ public class Spy implements CommandExecutor {
                              String[] args) {
         if (cmd.getName().equalsIgnoreCase("spy")) {
             if (!plugin.isAuthorized(cs, "rcmds.spy")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName()
-                        + " was denied access to the command!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player)) {
