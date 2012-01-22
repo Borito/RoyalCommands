@@ -18,6 +18,28 @@ public class Ingot2Block implements CommandExecutor {
         this.plugin = instance;
     }
 
+    public void i2b(Player p, ItemStack hand, Material ingot, Material block) {
+        int remainder = hand.getAmount() % 9;
+        int amount = hand.getAmount() - remainder;
+        int blocks = amount / 9;
+        ItemStack blocka = new ItemStack(block, blocks);
+        ItemStack ingots = new ItemStack(ingot, amount);
+        p.getInventory().removeItem(ingots);
+        p.getInventory().addItem(blocka);
+        p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
+    }
+
+    public void i2b(Player p, ItemStack hand, Material ingot, Material block, short data) {
+        int remainder = hand.getAmount() % 9;
+        int amount = hand.getAmount() - remainder;
+        int blocks = amount / 9;
+        ItemStack blocka = new ItemStack(block, blocks);
+        ItemStack ingots = new ItemStack(ingot, amount, data);
+        p.getInventory().removeItem(ingots);
+        p.getInventory().addItem(blocka);
+        p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
+    }
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ingot2block")) {
@@ -35,43 +57,12 @@ public class Ingot2Block implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "Your hand is empty!");
                 return true;
             }
-            if (hand.getType() == Material.IRON_INGOT) {
-                int remainder = hand.getAmount() % 9;
-                int amount = hand.getAmount() - remainder;
-                int blocks = amount / 9;
-                ItemStack block = new ItemStack(Material.IRON_BLOCK, blocks);
-                ItemStack ingots = new ItemStack(Material.IRON_INGOT, amount);
-                p.getInventory().removeItem(ingots);
-                p.getInventory().addItem(block);
-                cs.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
-            } else if (hand.getType() == Material.GOLD_INGOT) {
-                int remainder = hand.getAmount() % 9;
-                int amount = hand.getAmount() - remainder;
-                int blocks = amount / 9;
-                ItemStack block = new ItemStack(Material.GOLD_BLOCK, blocks);
-                ItemStack ingots = new ItemStack(Material.GOLD_INGOT, amount);
-                p.getInventory().removeItem(ingots);
-                p.getInventory().addItem(block);
-                cs.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
-            } else if (hand.getType() == Material.DIAMOND) {
-                int remainder = hand.getAmount() % 9;
-                int amount = hand.getAmount() - remainder;
-                int blocks = amount / 9;
-                ItemStack block = new ItemStack(Material.DIAMOND_BLOCK, blocks);
-                ItemStack ingots = new ItemStack(Material.DIAMOND, amount);
-                p.getInventory().removeItem(ingots);
-                p.getInventory().addItem(block);
-                cs.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
-            } else if (hand.getType() == Material.INK_SACK && hand.getDurability() == 4) {
-                int remainder = hand.getAmount() % 9;
-                int amount = hand.getAmount() - remainder;
-                int blocks = amount / 9;
-                ItemStack block = new ItemStack(Material.LAPIS_BLOCK, blocks);
-                ItemStack ingots = new ItemStack(Material.INK_SACK, amount, (short) 4);
-                p.getInventory().removeItem(ingots);
-                p.getInventory().addItem(block);
-                cs.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
-            } else {
+            if (hand.getType() == Material.IRON_INGOT)i2b(p, hand, Material.IRON_INGOT, Material.IRON_BLOCK);
+            else if (hand.getType() == Material.GOLD_INGOT)i2b(p, hand, Material.GOLD_INGOT, Material.GOLD_BLOCK);
+            else if (hand.getType() == Material.DIAMOND)i2b(p, hand, Material.DIAMOND, Material.DIAMOND_BLOCK);
+            else if (hand.getType() == Material.INK_SACK && hand.getDurability() == 4)i2b(p, hand, Material.INK_SACK, Material.LAPIS_BLOCK, (short) 4);
+            else if (hand.getType() == Material.GOLD_NUGGET) i2b(p, hand, Material.GOLD_NUGGET, Material.GOLD_INGOT);
+            else {
                 cs.sendMessage(ChatColor.RED + "That cannot be made into blocks!");
                 return true;
             }
