@@ -336,6 +336,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("nick").setExecutor(new Nick(this));
         getCommand("ingot2block").setExecutor(new Ingot2Block(this));
         getCommand("near").setExecutor(new CmdNear(this));
+        getCommand("kill").setExecutor(new CmdKill(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
