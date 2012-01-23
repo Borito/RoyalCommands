@@ -30,7 +30,7 @@ public class Ingot2Block implements CommandExecutor {
         HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
         if (!left.isEmpty()) {
             for (ItemStack s : left.values()) {
-                p.getWorld().dropItem(p.getLocation(), s);
+                p.getWorld().dropItemNaturally(p.getLocation(), s);
             }
         }
         p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
@@ -46,7 +46,7 @@ public class Ingot2Block implements CommandExecutor {
         HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
         if (!left.isEmpty()) {
             for (ItemStack s : left.values()) {
-                p.getWorld().dropItem(p.getLocation(), s);
+                p.getWorld().dropItemNaturally(p.getLocation(), s);
             }
         }
         p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");

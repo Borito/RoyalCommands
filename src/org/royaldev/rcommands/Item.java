@@ -96,7 +96,7 @@ public class Item implements CommandExecutor {
                     HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);
                     if (!left.isEmpty() && plugin.dropExtras) {
                         for (ItemStack item : left.values()) {
-                            p.getWorld().dropItem(p.getLocation(), item);
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
                     }
                     cs.sendMessage(ChatColor.BLUE
@@ -189,7 +189,7 @@ public class Item implements CommandExecutor {
                     HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);
                     if (!left.isEmpty() && plugin.dropExtras) {
                         for (ItemStack item : left.values()) {
-                            p.getWorld().dropItem(p.getLocation(), item);
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
                     }
                     cs.sendMessage(ChatColor.BLUE
