@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.HashMap;
+
 public class Ingot2Block implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -25,7 +27,12 @@ public class Ingot2Block implements CommandExecutor {
         ItemStack blocka = new ItemStack(block, blocks);
         ItemStack ingots = new ItemStack(ingot, amount);
         p.getInventory().removeItem(ingots);
-        p.getInventory().addItem(blocka);
+        HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
+        if (!left.isEmpty()) {
+            for (ItemStack s : left.values()) {
+                p.getWorld().dropItem(p.getLocation(), s);
+            }
+        }
         p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
     }
 
@@ -36,7 +43,12 @@ public class Ingot2Block implements CommandExecutor {
         ItemStack blocka = new ItemStack(block, blocks);
         ItemStack ingots = new ItemStack(ingot, amount, data);
         p.getInventory().removeItem(ingots);
-        p.getInventory().addItem(blocka);
+        HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
+        if (!left.isEmpty()) {
+            for (ItemStack s : left.values()) {
+                p.getWorld().dropItem(p.getLocation(), s);
+            }
+        }
         p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
     }
 
@@ -57,10 +69,11 @@ public class Ingot2Block implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "Your hand is empty!");
                 return true;
             }
-            if (hand.getType() == Material.IRON_INGOT)i2b(p, hand, Material.IRON_INGOT, Material.IRON_BLOCK);
-            else if (hand.getType() == Material.GOLD_INGOT)i2b(p, hand, Material.GOLD_INGOT, Material.GOLD_BLOCK);
-            else if (hand.getType() == Material.DIAMOND)i2b(p, hand, Material.DIAMOND, Material.DIAMOND_BLOCK);
-            else if (hand.getType() == Material.INK_SACK && hand.getDurability() == 4)i2b(p, hand, Material.INK_SACK, Material.LAPIS_BLOCK, (short) 4);
+            if (hand.getType() == Material.IRON_INGOT) i2b(p, hand, Material.IRON_INGOT, Material.IRON_BLOCK);
+            else if (hand.getType() == Material.GOLD_INGOT) i2b(p, hand, Material.GOLD_INGOT, Material.GOLD_BLOCK);
+            else if (hand.getType() == Material.DIAMOND) i2b(p, hand, Material.DIAMOND, Material.DIAMOND_BLOCK);
+            else if (hand.getType() == Material.INK_SACK && hand.getDurability() == 4)
+                i2b(p, hand, Material.INK_SACK, Material.LAPIS_BLOCK, (short) 4);
             else if (hand.getType() == Material.GOLD_NUGGET) i2b(p, hand, Material.GOLD_NUGGET, Material.GOLD_INGOT);
             else {
                 cs.sendMessage(ChatColor.RED + "That cannot be made into blocks!");
