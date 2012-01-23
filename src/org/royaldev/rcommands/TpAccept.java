@@ -39,7 +39,7 @@ public class TpAccept implements CommandExecutor {
                 t.sendMessage(ChatColor.BLUE
                         + "Your teleport request was accepted.");
                 Back.backdb.put(((Player) cs), ((Player) cs).getLocation());
-                ((Player) cs).teleport(t.getLocation());
+                t.teleport(((Player) cs).getLocation());
                 return true;
             }
             cs.sendMessage(ChatColor.RED + "You have no requests pending.");

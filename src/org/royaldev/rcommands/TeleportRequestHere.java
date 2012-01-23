@@ -42,8 +42,7 @@ public class TeleportRequestHere implements CommandExecutor {
                 return true;
             }
             if (plugin.isAuthorized(t, "rcmds.exempt.teleport")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You may not teleport with that player.");
+                cs.sendMessage(ChatColor.RED + "You may not teleport with that player.");
                 return true;
             }
             tprhdb.put(t, cs);
