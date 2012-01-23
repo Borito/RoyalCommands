@@ -1,4 +1,4 @@
-## RoyalCommands v0.1.5 Config File
+## RoyalCommands v0.1.6 Config File
 
 # Disable /getip and /compareip?
 disable_getip: false
@@ -12,6 +12,8 @@ use_build_perm: false
 back_on_death: true
 # Show /motd on login?
 motd_on_login: true
+# Drop items that don't fit in inventory on /i or /give?
+drop_extras: false
 # Message to be shown if player does not have rcmds.build
 no_build_message: "&cYou don't have permission to build!"
 # The default ban message for /ban

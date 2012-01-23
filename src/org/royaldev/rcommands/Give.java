@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.HashMap;
+
 public class Give implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -85,7 +87,12 @@ public class Give implements CommandExecutor {
                     } else {
                         toInv = new ItemStack(Material.getMaterial(iblock).getId(), plugin.defaultStack);
                     }
-                    target.getInventory().addItem(toInv);
+                    HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
+                    if (!left.isEmpty() && plugin.dropExtras) {
+                        for (ItemStack item : left.values()) {
+                            target.getWorld().dropItem(target.getLocation(), item);
+                        }
+                    }
                     cs.sendMessage(ChatColor.BLUE
                             + "Giving "
                             + ChatColor.GRAY
@@ -178,7 +185,12 @@ public class Give implements CommandExecutor {
                 } else {
                     toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount);
                 }
-                target.getInventory().addItem(toInv);
+                HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
+                if (!left.isEmpty() && plugin.dropExtras) {
+                    for (ItemStack item : left.values()) {
+                        target.getWorld().dropItem(target.getLocation(), item);
+                    }
+                }
                 cs.sendMessage(ChatColor.BLUE
                         + "Giving "
                         + ChatColor.GRAY

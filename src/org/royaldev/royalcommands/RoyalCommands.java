@@ -17,7 +17,6 @@ package org.royaldev.royalcommands;
  If forked and not credited, alert him.
  */
 
-import com.smilingdevil.devilstats.api.APIKey;
 import com.smilingdevil.devilstats.api.DevilStats;
 import net.milkbowl.vault.permission.Permission;
 import org.blockface.bukkitstats.CallHome;
@@ -61,6 +60,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean buildPerm = null;
     public Boolean backDeath = null;
     public Boolean motdLogin = null;
+    public Boolean dropExtras = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -93,8 +93,6 @@ public class RoyalCommands extends JavaPlugin {
 
     public Logger log = Logger.getLogger("Minecraft");
 
-    DevilStats stats = new DevilStats(new APIKey("ang4zg8weflxg74yq0abvwg1lvmypqhmr237v6f1z4er50tice1jnjk0rcyag5v1"));
-
     VanishPlugin vp = null;
 
     public boolean isVanished(Player p) {
@@ -102,6 +100,31 @@ public class RoyalCommands extends JavaPlugin {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
             return false;
         } else return vp.getManager().isVanished(p.getName());
+    }
+
+    public void reloadConfigVals() {
+        showcommands = this.getConfig().getBoolean("view_commands");
+        disablegetip = this.getConfig().getBoolean("disable_getip");
+        useWelcome = this.getConfig().getBoolean("enable_welcome_message");
+        buildPerm = this.getConfig().getBoolean("use_build_perm");
+        backDeath = this.getConfig().getBoolean("back_on_death");
+        motdLogin = this.getConfig().getBoolean("motd_on_login");
+        dropExtras = this.getConfig().getBoolean("drop_extras");
+
+        banMessage = this.getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
+        noBuildMessage = this.getConfig().getString("no_build_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
+        kickMessage = this.getConfig().getString("default_kick_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
+        defaultWarn = this.getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
+        welcomeMessage = this.getConfig().getString("welcome_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
+        gUid = this.getConfig().getString("guid_do_not_change");
+
+        defaultStack = this.getConfig().getInt("default_stack_size");
+        warnBan = this.getConfig().getInt("max_warns_before_ban");
+        spawnmobLimit = this.getConfig().getInt("spawnmob_limit");
+
+        muteCmds = this.getConfig().getStringList("mute_blocked_commands");
+        blockedItems = this.getConfig().getStringList("blocked_spawn_items");
+        motd = this.getConfig().getStringList("motd");
     }
 
     public void loadConfiguration() {
@@ -185,13 +208,20 @@ public class RoyalCommands extends JavaPlugin {
         return player instanceof ConsoleCommandSender || this.setupPermissions() && (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
+    DevilStats stats;
+
     public void onEnable() {
         loadConfiguration();
 
-        version = this.getDescription().getVersion();
-
         // DevilStats ftw
-        stats.sendData(DevilStats.ActionType.STARTUP);
+        try {
+            stats = new DevilStats(this);
+            stats.sendStartup();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        version = this.getDescription().getVersion();
 
         CallHome.load(this);
         // yet again, borrowed from MilkBowl
@@ -308,34 +338,16 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("near").setExecutor(new CmdNear(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
-        showcommands = this.getConfig().getBoolean("view_commands");
-        disablegetip = this.getConfig().getBoolean("disable_getip");
-        useWelcome = this.getConfig().getBoolean("enable_welcome_message");
-        buildPerm = this.getConfig().getBoolean("use_build_perm");
-        backDeath = this.getConfig().getBoolean("back_on_death");
-        motdLogin = this.getConfig().getBoolean("motd_on_login");
+        reloadConfigVals();
 
-        banMessage = this.getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        noBuildMessage = this.getConfig().getString("no_build_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        kickMessage = this.getConfig().getString("default_kick_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        defaultWarn = this.getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        welcomeMessage = this.getConfig().getString("welcome_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        gUid = this.getConfig().getString("guid_do_not_change");
-
-        defaultStack = this.getConfig().getInt("default_stack_size");
-        warnBan = this.getConfig().getInt("max_warns_before_ban");
-        spawnmobLimit = this.getConfig().getInt("spawnmob_limit");
-
-        muteCmds = this.getConfig().getStringList("mute_blocked_commands");
-        blockedItems = this.getConfig().getStringList("blocked_spawn_items");
-        motd = this.getConfig().getStringList("motd");
         log.info("[RoyalCommands] RoyalCommands v" + this.version + " initiated.");
     }
 
     public void onDisable() {
 
-        // DevilStats ftw
-        stats.sendData(DevilStats.ActionType.SHUTDOWN);
+        if (stats != null) {
+            stats.sendShutdown();
+        }
 
         log.info("[RoyalCommands] RoyalCommands v" + this.version + " disabled.");
     }
