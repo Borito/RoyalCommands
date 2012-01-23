@@ -411,7 +411,12 @@ commands:
   near:
     description: Gets nearby players.
     usage: /<command> (radius)
-    aliases: [nearby, nearmy. close]
+    aliases: [nearby, nearme, close]
+
+  kill:
+    description: Kills another player.
+    usage: /<command> [player]
+    aliases: [murder]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -669,6 +674,9 @@ permissions:
     default: op
   rcmds.near:
     description: Allows you to see nearby players.
+    default: op
+  rcmds.kill:
+    description: Allows you to kill other players.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
