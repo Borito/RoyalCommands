@@ -22,6 +22,7 @@ public class CmdKill implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("kill")) {
             if (!plugin.isAuthorized(cs, "rcmds.kill")) {
                 RUtils.dispNoPerms(cs);
+                return true;
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
