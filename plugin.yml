@@ -107,7 +107,7 @@ commands:
     aliases: [i]
     
   clearinventory:
-    description: Clear you inventory.
+    description: Clears your inventory.
     usage: /<command> (user)
     aliases: [ci, clearinv]
     
@@ -116,7 +116,7 @@ commands:
     usage: /<command> [conditions] (seconds)
     
   fixchunk:
-    description: Fixes a voided chunk by reloading it.
+    description: Fixes a voided chunk (world holes) by reloading it.
     usage: /<command>
     aliases: [fc, fixc, cfix]
     
@@ -417,6 +417,21 @@ commands:
     description: Kills another player.
     usage: /<command> [player]
     aliases: [murder]
+
+  suicide:
+    description: Kills yourself.
+    usage: /<command>
+    aliases: [enditall]
+
+  killall:
+    description: Kills everyone on the server but yourself.
+    usage: /<command>
+    aliases: [kall]
+
+  muteall:
+    description: Mutes everyone on the server.
+    usage: /<command>
+    aliases: [silenceall]
         
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -678,6 +693,15 @@ permissions:
   rcmds.kill:
     description: Allows you to kill other players.
     default: op
+  rcmds.suicide:
+    description: Allows you to kill yourself.
+    default: op
+  rcmds.killall:
+    description: Allows you to kill all players on the server.
+    default: op
+  rcmds.muteall:
+    description: Allows you to mute all players on the server.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -744,6 +768,9 @@ permissions:
     default: false
   rcmds.exempt.nick:
     description: Makes the player immune to /nick.
+    default: false
+  rcmds.exempt.kill:
+    description: Makes the player immune to /kill.
     default: false
 
   rcmds.allowed.item:
