@@ -1,120 +1,63 @@
 package com.smilingdevil.devilstats.api;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * @author devil
- */
-@SuppressWarnings("unused")
 public class DevilStats {
-    @SuppressWarnings("serial")
-    public class SendPluginInformationException extends Exception {
-        public SendPluginInformationException(String ex) {
-            super(ex);
-        }
-    }
 
-    @SuppressWarnings("serial")
-    public class NotMainClassException extends Exception {
-        public NotMainClassException() {
-            super("You are not accessing DevilStats from your main class. Please use your main class instead!");
-        }
-    }
+    @SuppressWarnings("unused")
+    private JavaPlugin plugin;
+    private HashMap<String, String> values = new HashMap<String, String>();
 
-    private String version = null;
-    private String name = null;
-    private String author = null;
-
-    private enum ActionType {
-        STARTUP, SHUTDOWN, JUST_CHECKING
-    }
-
-    private enum DataType {
-        COUNT, AUTHOR, STATUS
-    }
-
-    public DevilStats(JavaPlugin given) throws DevilStats.NotMainClassException {
-        if (given == null) {
-            throw new DevilStats.NotMainClassException();
+    /**
+     *
+     * @param plugin Reference to the parent class
+     * @throws Exception In the case that the parent class didn't give a value
+     * or a null value
+     */
+    public DevilStats(JavaPlugin plugin) throws Exception {
+        if (plugin != null) {
+            this.plugin = plugin;
+            values.put("name", plugin.getDescription().getName());
+            ArrayList<String> authors = plugin.getDescription().getAuthors();
+            values.put("author", authors.get(0));
+            values.put("version", plugin.getDescription().getVersion());
         } else {
-            name = given.getDescription().getName();
-            version = given.getDescription().getVersion();
-            ArrayList<String> authors = given.getDescription().getAuthors();
-            author = authors.get(0);
-            Logger log = Logger.getLogger("Minecraft");
-            log.log(Level.INFO, "[DevilStats] Successfully hooked into " + name + " version " + version);
+            throw new Exception("Missing required value (JavaPlugin plugin)");
         }
     }
 
-    public void sendStartup() {
-        sendData(DevilStats.ActionType.STARTUP);
+    protected void log(String s) {
+        Logger log = Logger.getLogger("Minecraft");
+        log.log(Level.INFO, "[DevilStats] "+s);
     }
 
-    public void sendShutdown() {
-        sendData(DevilStats.ActionType.SHUTDOWN);
+    private String genURL(String action) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("http://stats.smilingdevil.com/api?").append("action=").append(action).append("&name=").append(values.get("name")).append("&version=").append(values.get("version")).append("&author=").append(values.get("author"));
+        return sb.toString();
     }
 
-    public void checkConnection() {
-        sendData(DevilStats.ActionType.JUST_CHECKING);
+    public void startup() {
+        String url = genURL("startup");
+        DevilThread thread = new DevilThread(url, this);
+        new Thread(thread).start();
     }
 
-    public String getCount() {
-        return getData(DevilStats.DataType.COUNT);
+    public void shutdown() {
+        String url = genURL("shutdown");
+        DevilThread thread = new DevilThread(url, this);
+        new Thread(thread).start();
     }
 
-    public String getAuthor() {
-        return getData(DevilStats.DataType.AUTHOR);
+    public String getPlugin() {
+        return values.get("name");
     }
 
-    public String getStatus() {
-        return getData(DevilStats.DataType.STATUS);
-    }
-
-    private String getData(DevilStats.DataType type) {
-        String action;
-        action = type.name().toLowerCase();
-        try {
-            URL url = new URL("http://stats.smilingdevil.com/api?action=" + action + "&version=" + version + "&author=" + author + "&name=" + name);
-            URLConnection con = url.openConnection();
-            return con.toString();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private boolean sendData(DevilStats.ActionType type) {
-        try {
-            // Get action type
-            String action;
-            action = type.name().toLowerCase();
-            // Define URL for stats with action type
-            URL url = new URL("http://stats.smilingdevil.com/api?action="
-                    + action + "&version=" + version + "&author=" + author
-                    + "&name=" + name);
-            // Open connection with server
-            URLConnection con = url.openConnection();
-            // Get contents of page
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    url.openStream()));
-            // Store contents of page
-            String returned = in.readLine();
-            if (returned != null && returned.equals("SUCCESS")) {
-                return true; // We're all good
-            } else {
-                // Something went wrong, wasn't successful / was null
-                throw new DevilStats.SendPluginInformationException(
-                        "An error occured while sending information: " + con);
-            }
-        } catch (Exception e) {
-            return false;
-        }
+    public String getVersion() {
+        return values.get("version");
     }
 }

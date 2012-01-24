@@ -216,7 +216,7 @@ public class RoyalCommands extends JavaPlugin {
         // DevilStats ftw
         try {
             stats = new DevilStats(this);
-            stats.sendStartup();
+            stats.startup();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -337,6 +337,9 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("ingot2block").setExecutor(new Ingot2Block(this));
         getCommand("near").setExecutor(new CmdNear(this));
         getCommand("kill").setExecutor(new CmdKill(this));
+        getCommand("suicide").setExecutor(new Suicide(this));
+        getCommand("killall").setExecutor(new KillAll(this));
+        getCommand("muteall").setExecutor(new MuteAll(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
@@ -347,7 +350,7 @@ public class RoyalCommands extends JavaPlugin {
     public void onDisable() {
 
         if (stats != null) {
-            stats.sendShutdown();
+            stats.shutdown();
         }
 
         log.info("[RoyalCommands] RoyalCommands v" + this.version + " disabled.");
