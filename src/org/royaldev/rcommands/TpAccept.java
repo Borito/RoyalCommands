@@ -24,22 +24,25 @@ public class TpAccept implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
+            if (!(cs instanceof Player)) {
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                return true;
+            }
+            Player p = (Player) cs;
             if (TeleportRequest.tprdb.containsKey(cs)) {
                 Player t = (Player) TeleportRequest.tprdb.get(cs);
                 cs.sendMessage(ChatColor.BLUE + "Teleport request accepted.");
-                t.sendMessage(ChatColor.BLUE
-                        + "Your teleport request was accepted.");
+                t.sendMessage(ChatColor.BLUE + "Your teleport request was accepted.");
                 Back.backdb.put(t, t.getLocation());
-                t.teleport(((Player) cs).getLocation());
+                t.teleport(p.getLocation());
                 return true;
             }
             if (TeleportRequestHere.tprhdb.containsKey(cs)) {
                 Player t = (Player) TeleportRequestHere.tprhdb.get(cs);
                 cs.sendMessage(ChatColor.BLUE + "Teleport request accepted.");
-                t.sendMessage(ChatColor.BLUE
-                        + "Your teleport request was accepted.");
+                t.sendMessage(ChatColor.BLUE + "Your teleport request was accepted.");
                 Back.backdb.put(((Player) cs), ((Player) cs).getLocation());
-                t.teleport(((Player) cs).getLocation());
+                p.teleport(t.getLocation());
                 return true;
             }
             cs.sendMessage(ChatColor.RED + "You have no requests pending.");
