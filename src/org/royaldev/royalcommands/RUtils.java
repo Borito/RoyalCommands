@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class RUtils {
 
     static Logger log = Logger.getLogger("Minecraft");
-    
+
     // Borrowed list of materials from Essentials
     public static final Set<Integer> AIR_MATERIALS = new HashSet<Integer>();
     public static final HashSet<Byte> AIR_MATERIALS_TARGET = new HashSet<Byte>();
@@ -73,7 +73,6 @@ public class RUtils {
     public static void dispNoPerms(CommandSender cs) {
         cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
         log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
-        return;
     }
 
 }
