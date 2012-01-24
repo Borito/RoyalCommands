@@ -19,8 +19,7 @@ public class Mute implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("mute")) {
             if (!plugin.isAuthorized(cs, "rcmds.mute")) {
                 RUtils.dispNoPerms(cs);
@@ -33,24 +32,18 @@ public class Mute implements CommandExecutor {
             if (args.length == 1) {
                 Player t = plugin.getServer().getPlayer(args[0].trim());
                 if (t == null) {
-                    OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(
-                            args[0].trim());
+                    OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
                     if (t2.isOp()) {
-                        cs.sendMessage(ChatColor.RED
-                                + "You cannot mute that player!");
+                        cs.sendMessage(ChatColor.RED + "You cannot mute that player!");
                         return true;
                     }
                     if (PConfManager.getPValBoolean(t2, "muted")) {
                         PConfManager.setPValBoolean(t2, false, "muted");
-                        cs.sendMessage(ChatColor.BLUE + "You have unmuted "
-                                + ChatColor.GRAY + t2.getName()
-                                + ChatColor.BLUE + ".");
+                        cs.sendMessage(ChatColor.BLUE + "You have unmuted " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
                         return true;
                     } else {
                         PConfManager.setPValBoolean(t2, true, "muted");
-                        cs.sendMessage(ChatColor.BLUE + "You have muted "
-                                + ChatColor.GRAY + t2.getName()
-                                + ChatColor.BLUE + ".");
+                        cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
                         return true;
                     }
 
@@ -61,24 +54,14 @@ public class Mute implements CommandExecutor {
                     return true;
                 }
                 if (PConfManager.getPValBoolean(t, "muted")) {
-                    PConfManager.setPValBoolean(t, false,
-                            "muted");
-                    t.sendMessage(ChatColor.BLUE + "You have been unmuted by "
-                            + ChatColor.GRAY + cs.getName() + ChatColor.BLUE
-                            + ".");
-                    cs.sendMessage(ChatColor.BLUE + "You have unmuted "
-                            + ChatColor.GRAY + t.getName() + ChatColor.BLUE
-                            + ".");
+                    PConfManager.setPValBoolean(t, false, "muted");
+                    t.sendMessage(ChatColor.BLUE + "You have been unmuted by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
+                    cs.sendMessage(ChatColor.BLUE + "You have unmuted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     return true;
                 } else {
-                    PConfManager.setPValBoolean(t, true,
-                            "muted");
-                    t.sendMessage(ChatColor.RED + "You have been muted by "
-                            + ChatColor.GRAY + cs.getName() + ChatColor.RED
-                            + ".");
-                    cs.sendMessage(ChatColor.BLUE + "You have muted "
-                            + ChatColor.GRAY + t.getName() + ChatColor.BLUE
-                            + ".");
+                    PConfManager.setPValBoolean(t, true, "muted");
+                    t.sendMessage(ChatColor.RED + "You have been muted by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
+                    cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     return true;
                 }
             }
