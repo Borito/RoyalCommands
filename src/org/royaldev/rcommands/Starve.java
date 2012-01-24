@@ -58,10 +58,8 @@ public class Starve implements CommandExecutor {
             }
             int starveLevel = victim.getFoodLevel() - toStarve;
             victim.setFoodLevel(starveLevel);
-            victim.sendMessage(ChatColor.RED + "You have just been starved by "
-                    + ChatColor.BLUE + cs.getName() + ChatColor.RED + "!");
-            cs.sendMessage(ChatColor.BLUE + "You just starved " + ChatColor.RED
-                    + victim.getName() + ChatColor.BLUE + "!");
+            victim.sendMessage(ChatColor.RED + "You have just been starved by "+ ChatColor.BLUE + cs.getName() + ChatColor.RED + "!");
+            cs.sendMessage(ChatColor.BLUE + "You just starved " + ChatColor.RED+ victim.getName() + ChatColor.BLUE + "!");
             return true;
         }
         return false;
