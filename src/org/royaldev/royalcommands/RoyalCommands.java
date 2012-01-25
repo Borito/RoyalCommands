@@ -19,7 +19,6 @@ package org.royaldev.royalcommands;
 
 import com.smilingdevil.devilstats.api.DevilStats;
 import net.milkbowl.vault.permission.Permission;
-import org.blockface.bukkitstats.CallHome;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -225,7 +224,6 @@ public class RoyalCommands extends JavaPlugin {
 
         version = this.getDescription().getVersion();
 
-        CallHome.load(this);
         // yet again, borrowed from MilkBowl
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
             @Override
