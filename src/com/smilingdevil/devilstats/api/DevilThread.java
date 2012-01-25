@@ -4,11 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
  * @author SmilingDevil
  */
 public class DevilThread implements Runnable {
@@ -27,12 +24,15 @@ public class DevilThread implements Runnable {
         try {
             URL url = new URL(_url);
             URLConnection conn = url.openConnection();
+            // Open input stream
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     conn.getInputStream()));
             String inputLine;
 
             if ((inputLine = in.readLine()) != null)
+                // Handle result
                 parseResults(inputLine);
+            // Close
             in.close();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -41,10 +41,21 @@ public class DevilThread implements Runnable {
 
     private void parseResults(String result) {
         if (result.equals("SUCCESS")) {
-            hook.log("Successfully logged startup for " + hook.getPlugin()
-                    + " version " + hook.getVersion());
+            // Success
+            hook.log("Successfully logged startup for " + hook.values.get("name") + " version " + hook.values.get("version"));
+        } else if (result.equals("MISSING_INFO")) {
+            // We're missing something
+            hook.log("We seem to be missing some info from your plugin.yml!");
+            hook.log("DEBUG VALUES - ");
+            hook.log("Author: " + hook.values.get("author"));
+            hook.log("Plugin: " + hook.values.get("name"));
+            hook.log("Version: " + hook.values.get("version"));
+            hook.log("PLEASE report this log to SmilingDevil in #devilstats in irc.esper.net");
         } else {
-            System.out.println(result);
+            // How did you even get here?
+            // Other unhandled errors, possibly HTTP errors?
+            hook.log("DevilStats couldn't handle the returned value from the server.");
+            hook.log("Value: " + result);
         }
     }
 }

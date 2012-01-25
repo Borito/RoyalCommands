@@ -1,25 +1,26 @@
 package com.smilingdevil.devilstats.api;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class DevilStats {
 
     @SuppressWarnings("unused")
     private JavaPlugin plugin;
-    private HashMap<String, String> values = new HashMap<String, String>();
+    protected HashMap<String, String> values = new HashMap<String, String>();
 
     /**
-     *
      * @param plugin Reference to the parent class
-     * @throws Exception In the case that the parent class didn't give a value
-     * or a null value
+     * @throws Exception In the case that the parent class didn't give a value or a
+     *                   null value
      */
     public DevilStats(JavaPlugin plugin) throws Exception {
         if (plugin != null) {
+            // Valid plugin
             this.plugin = plugin;
             values.put("name", plugin.getDescription().getName());
             ArrayList<String> authors = plugin.getDescription().getAuthors();
@@ -30,14 +31,25 @@ public class DevilStats {
         }
     }
 
+    /**
+     * Logs a string to the console
+     *
+     * @param s String to log
+     */
     protected void log(String s) {
         Logger log = Logger.getLogger("Minecraft");
-        log.log(Level.INFO, "[DevilStats] "+s);
+        log.log(Level.INFO, "[DevilStats] " + s);
     }
 
+    /**
+     * Generate a URL for internal use only.
+     *
+     * @param action Action to input to the URL
+     * @return Returns the URL
+     */
     private String genURL(String action) {
         StringBuilder sb = new StringBuilder();
-        sb.append("http://stats.smilingdevil.com/api?").append("action=").append(action).append("&name=").append(values.get("name")).append("&version=").append(values.get("version")).append("&author=").append(values.get("author"));
+        sb.append("http://stats.smilingdevil.com/api?").append("action=").append(action).append("&plugin=").append(values.get("name")).append("&version=").append(values.get("version")).append("&author=").append(values.get("author"));
         return sb.toString();
     }
 
@@ -53,11 +65,15 @@ public class DevilStats {
         new Thread(thread).start();
     }
 
-    public String getPlugin() {
-        return values.get("name");
+    public void getCount() {
+        String url = genURL("get-count");
+        DevilThread thread = new DevilThread(url, this);
+        new Thread(thread).start();
     }
 
-    public String getVersion() {
-        return values.get("version");
+    public void getRank() {
+        String url = genURL("get-rank");
+        DevilThread thread = new DevilThread(url, this);
+        new Thread(thread).start();
     }
 }
