@@ -50,7 +50,7 @@ public class CmdKit implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That kit does not exist!");
                 return true;
             }
-            if (plugin.kitPerms && !p.hasPermission("rcmds.kit." + kitname)) {
+            if (plugin.kitPerms && !plugin.isAuthorized(cs, "rcmds.kit." + kitname)) {
                 cs.sendMessage(ChatColor.RED + "You don't have permission for that kit!");
                 return true;
             }
