@@ -61,6 +61,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean backDeath = null;
     public Boolean motdLogin = null;
     public Boolean dropExtras = null;
+    public Boolean kitPerms = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -110,6 +111,7 @@ public class RoyalCommands extends JavaPlugin {
         backDeath = this.getConfig().getBoolean("back_on_death");
         motdLogin = this.getConfig().getBoolean("motd_on_login");
         dropExtras = this.getConfig().getBoolean("drop_extras");
+        kitPerms = this.getConfig().getBoolean("use_exclusive_kit_perms");
 
         banMessage = this.getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         noBuildMessage = this.getConfig().getString("no_build_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
@@ -340,6 +342,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("suicide").setExecutor(new Suicide(this));
         getCommand("killall").setExecutor(new KillAll(this));
         getCommand("muteall").setExecutor(new MuteAll(this));
+        getCommand("kit").setExecutor(new CmdKit(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();

@@ -432,7 +432,12 @@ commands:
     description: Mutes everyone on the server.
     usage: /<command>
     aliases: [silenceall]
-        
+
+  kit:
+    description: Gives you a kit defined in the config.
+    usage: /<command> [kit-name]
+    aliases: [kits]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>

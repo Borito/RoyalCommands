@@ -36,3 +36,12 @@ mute_blocked_commands: ["/me", "/tc", "/nc"]
 blocked_spawn_items: [7, 49, 383]
 # The message of the day
 motd: ["&dWelcome to {servername}, {dispname}!", "&fThere are &8{players}&f players online:", "{playerlist}", "You are in the world &8{world}&f."]
+## Kits
+# Use rcmds.kit.[kit-name] (true) or just rcmds.kit (false)
+use_exclusive_kit_perms: false
+# Define kits here - only use ID numbers, not names & you MUST use amounts (5:1 is one of wood)
+kits:
+  # The kit "default" has 10 wood, 5 stone, 25 dirt, and 64 cobblestone. <item>:<amount>
+  default: ["5:10", "1:5", "3:25", "4:64"]
+  # The kit "wool" has 64 red wool and 35 black wool <item>:<amount>:<data>
+  wool: ["35:64:14", "35:64:15"]
