@@ -34,8 +34,7 @@ public class Home implements CommandExecutor {
             Player p;
 
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             } else {
                 p = (Player) cs;
@@ -49,11 +48,9 @@ public class Home implements CommandExecutor {
             Float homePitch = null;
             World homeW = null;
 
-            File pconfl = new File(plugin.getDataFolder() + "/userdata/"
-                    + cs.getName().toLowerCase() + ".yml");
+            File pconfl = new File(plugin.getDataFolder() + "/userdata/" + cs.getName().toLowerCase() + ".yml");
             if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration
-                        .loadConfiguration(pconfl);
+                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 if (args.length > 0) {
                     homeSet = pconf.getBoolean("home." + args[0] + ".set");
                 } else {
@@ -64,37 +61,28 @@ public class Home implements CommandExecutor {
                         homeX = pconf.getDouble("home." + args[0] + ".x");
                         homeY = pconf.getDouble("home." + args[0] + ".y");
                         homeZ = pconf.getDouble("home." + args[0] + ".z");
-                        homeYaw = Float.parseFloat(pconf.getString("home."
-                                + args[0] + ".yaw"));
-                        homePitch = Float.parseFloat(pconf.getString("home."
-                                + args[0] + ".pitch"));
-                        homeW = plugin.getServer().getWorld(
-                                pconf.getString("home." + args[0] + ".w"));
+                        homeYaw = Float.parseFloat(pconf.getString("home." + args[0] + ".yaw"));
+                        homePitch = Float.parseFloat(pconf.getString("home." + args[0] + ".pitch"));
+                        homeW = plugin.getServer().getWorld(pconf.getString("home." + args[0] + ".w"));
                     } else {
                         homeX = pconf.getDouble("home.home.x");
                         homeY = pconf.getDouble("home.home.y");
                         homeZ = pconf.getDouble("home.home.z");
-                        homeYaw = Float.parseFloat(pconf
-                                .getString("home.home.yaw"));
-                        homePitch = Float.parseFloat(pconf
-                                .getString("home.home.pitch"));
-                        homeW = plugin.getServer().getWorld(
-                                pconf.getString("home.home.w"));
+                        homeYaw = Float.parseFloat(pconf.getString("home.home.yaw"));
+                        homePitch = Float.parseFloat(pconf.getString("home.home.pitch"));
+                        homeW = plugin.getServer().getWorld(pconf.getString("home.home.w"));
                     }
                 } else {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have that home set!");
+                    cs.sendMessage(ChatColor.RED + "You don't have that home set!");
                     return true;
                 }
             }
             if (homeW == null) {
                 cs.sendMessage(ChatColor.RED + "World doesn't exist!");
             }
-            Location homeLoc = new Location(homeW, homeX, homeY, homeZ,
-                    homeYaw, homePitch);
+            Location homeLoc = new Location(homeW, homeX, homeY, homeZ, homeYaw, homePitch);
             if (args.length > 0) {
-                p.sendMessage(ChatColor.BLUE + "Going to home \""
-                        + ChatColor.GRAY + args[0] + ChatColor.BLUE + ".\"");
+                p.sendMessage(ChatColor.BLUE + "Going to home \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + ".\"");
             } else {
                 p.sendMessage(ChatColor.BLUE + "Going home.");
             }
