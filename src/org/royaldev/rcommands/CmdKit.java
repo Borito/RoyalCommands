@@ -52,6 +52,7 @@ public class CmdKit implements CommandExecutor {
             }
             if (plugin.kitPerms && !plugin.isAuthorized(cs, "rcmds.kit." + kitname)) {
                 cs.sendMessage(ChatColor.RED + "You don't have permission for that kit!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (kits.size() < 1) {
