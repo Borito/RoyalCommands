@@ -14,7 +14,7 @@ public class RoyalCommandsBlockListener implements Listener {
         plugin = instance;
     }
 
-    @EventHandler(event = BlockPlaceEvent.class, priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (PConfManager.getPValBoolean(event.getPlayer(),
                 "frozen")) {
@@ -32,7 +32,7 @@ public class RoyalCommandsBlockListener implements Listener {
         }
     }
 
-    @EventHandler(event = BlockBreakEvent.class, priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(BlockBreakEvent event) {
         if (PConfManager.getPValBoolean(event.getPlayer(),
                 "frozen")) {

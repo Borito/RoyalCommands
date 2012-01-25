@@ -20,7 +20,7 @@ public class RoyalCommandsEntityListener implements Listener {
         plugin = instance;
     }
 
-    @EventHandler(event = EntityDeathEvent.class, priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDeath(EntityDeathEvent ent) {
         if (ent instanceof PlayerDeathEvent) {
             if (plugin.backDeath) {
@@ -34,7 +34,7 @@ public class RoyalCommandsEntityListener implements Listener {
         }
     }
 
-    @EventHandler(event = EntityDamageEvent.class, priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
@@ -65,7 +65,7 @@ public class RoyalCommandsEntityListener implements Listener {
         }
     }
 
-    @EventHandler(event = EntityTargetEvent.class, priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityTarget(EntityTargetEvent event) {
         if (event.getTarget() instanceof Player) {
             Player p = (Player) event.getTarget();
@@ -73,7 +73,7 @@ public class RoyalCommandsEntityListener implements Listener {
         }
     }
 
-    @EventHandler(event = FoodLevelChangeEvent.class, priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();

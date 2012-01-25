@@ -29,7 +29,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     Logger log = Logger.getLogger("Minecraft");
 
-    @EventHandler(event = PlayerCommandPreprocessEvent.class, priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (plugin.showcommands) {
             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
@@ -49,7 +49,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(event = PlayerChatEvent.class, priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
         if (Afk.afkdb.containsKey(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
@@ -63,7 +63,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(event = PlayerMoveEvent.class, priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (Afk.afkdb.containsKey(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
@@ -74,7 +74,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(event = PlayerInteractEvent.class, priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) {
             event.setCancelled(true);
@@ -109,7 +109,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(event = PlayerLoginEvent.class, priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (event.getPlayer().isBanned()) {
             String kickMessage;
@@ -132,7 +132,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         p.setDisplayName(dispname);
     }
 
-    @EventHandler(event = PlayerJoinEvent.class, priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         File datafile = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + event.getPlayer().getName().toLowerCase() + ".yml");
         if (!datafile.exists()) {
