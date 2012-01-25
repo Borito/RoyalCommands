@@ -707,6 +707,9 @@ permissions:
   rcmds.muteall:
     description: Allows you to mute all players on the server.
     default: op
+  rcmds.kit:
+    description: Allows you to spawn kits.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
