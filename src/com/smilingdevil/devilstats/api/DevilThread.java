@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
+ *
  * @author SmilingDevil
  */
 public class DevilThread implements Runnable {
@@ -13,12 +14,23 @@ public class DevilThread implements Runnable {
     String _url = "";
     DevilStats hook;
 
+    /**
+     * Handles the HTTP connection to the webserver
+     *
+     * @param url
+     *            Generated url to connect to
+     * @param hook
+     *            Hook to main class
+     */
     public DevilThread(String url, DevilStats hook) {
         this._url = url;
         this.hook = hook;
 
     }
 
+    /**
+     * Main method
+     */
     @Override
     public void run() {
         try {
@@ -39,12 +51,23 @@ public class DevilThread implements Runnable {
         }
     }
 
+    /**
+     * Parses result of the query to the stats server
+     *
+     * @param result
+     *            Result of the query
+     */
     private void parseResults(String result) {
+        // Check for success
         if (result.equals("SUCCESS")) {
-            // Success
-            hook.log("Successfully logged startup for " + hook.values.get("name") + " version " + hook.values.get("version"));
+            if (hook.showHookedMessage) {
+                // Success
+                hook.log("Successfully logged startup for " + hook.getPlugin()
+                        + " version " + hook.getVersion());
+            }
+            // Check for missing information
         } else if (result.equals("MISSING_INFO")) {
-            // We're missing something
+            // We're missing something, let's log it
             hook.log("We seem to be missing some info from your plugin.yml!");
             hook.log("DEBUG VALUES - ");
             hook.log("Author: " + hook.values.get("author"));
@@ -52,7 +75,6 @@ public class DevilThread implements Runnable {
             hook.log("Version: " + hook.values.get("version"));
             hook.log("PLEASE report this log to SmilingDevil in #devilstats in irc.esper.net");
         } else {
-            // How did you even get here?
             // Other unhandled errors, possibly HTTP errors?
             hook.log("DevilStats couldn't handle the returned value from the server.");
             hook.log("Value: " + result);
