@@ -17,7 +17,7 @@ commands:
 
   sci:
     description: Selectively removes items from a player's inventory.
-    usage: /<command> [player] [ID]
+    usage: /<command> [player] [item] (amount)
 
   speak:
     description: Make another player talk.
