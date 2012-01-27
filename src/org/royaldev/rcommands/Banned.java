@@ -33,12 +33,10 @@ public class Banned implements CommandExecutor {
                         args[0]);
                 boolean banned = dude.isBanned();
                 if (!banned) {
-                    cs.sendMessage(ChatColor.GREEN + dude.getName()
-                            + ChatColor.WHITE + " is not banned.");
+                    cs.sendMessage(ChatColor.GREEN + dude.getName() + ChatColor.WHITE + " is not banned.");
                     return true;
                 } else {
-                    cs.sendMessage(ChatColor.RED + dude.getName()
-                            + ChatColor.WHITE + " is banned.");
+                    cs.sendMessage(ChatColor.RED + dude.getName() + ChatColor.WHITE + " is banned.");
                     return true;
                 }
             }

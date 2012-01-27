@@ -57,11 +57,8 @@ public class ClearInventory implements CommandExecutor {
                         + "You cannot alter that player's inventory!");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE
-                    + "You have cleared the inventory of " + ChatColor.GRAY
-                    + target.getName() + ChatColor.BLUE + ".");
-            target.sendMessage(ChatColor.RED
-                    + "Your inventory has been cleared.");
+            cs.sendMessage(ChatColor.BLUE + "You have cleared the inventory of " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
+            target.sendMessage(ChatColor.RED + "Your inventory has been cleared.");
             target.getInventory().clear();
         }
         return false;

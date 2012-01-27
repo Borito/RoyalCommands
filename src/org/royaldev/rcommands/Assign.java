@@ -29,29 +29,24 @@ public class Assign implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
                 ItemStack hand = p.getItemInHand();
                 if (hand == null || hand.getTypeId() == 0) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You can't remove commands from air!");
+                    cs.sendMessage(ChatColor.RED + "You can't remove commands from air!");
                     return true;
                 }
-                PConfManager.setPValStringList(p, null, "assign."
-                        + hand.getTypeId());
-                p.sendMessage(ChatColor.BLUE
-                        + "All commands removed from " + ChatColor.GRAY + hand.getType().toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+                PConfManager.setPValStringList(p, null, "assign." + hand.getTypeId());
+                p.sendMessage(ChatColor.BLUE + "All commands removed from " + ChatColor.GRAY + hand.getType().toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
                 return true;
             }
             Player p = (Player) cs;
             ItemStack hand = p.getItemInHand();
             if (hand == null || hand.getTypeId() == 0) {
-                cs.sendMessage(ChatColor.RED
-                        + "You can't assign commands to air!");
+                cs.sendMessage(ChatColor.RED + "You can't assign commands to air!");
                 return true;
             }
             java.util.List<String> cmds = PConfManager.getPValStringList(p, "assign." + hand.getTypeId());
@@ -63,13 +58,9 @@ public class Assign implements CommandExecutor {
             }
             PConfManager.setPValStringList(p, cmds, "assign." + hand.getTypeId());
             if (plugin.getFinalArg(args, 0).toLowerCase().startsWith("c:")) {
-                p.sendMessage(ChatColor.BLUE + "Added message " + ChatColor.GRAY
-                        + plugin.getFinalArg(args, 0).substring(2) + ChatColor.BLUE
-                        + " to that item.");
+                p.sendMessage(ChatColor.BLUE + "Added message " + ChatColor.GRAY + plugin.getFinalArg(args, 0).substring(2) + ChatColor.BLUE + " to that item.");
             } else {
-                p.sendMessage(ChatColor.BLUE + "Added command " + ChatColor.GRAY
-                        + "/" + plugin.getFinalArg(args, 0) + ChatColor.BLUE
-                        + " to that item.");
+                p.sendMessage(ChatColor.BLUE + "Added command " + ChatColor.GRAY + "/" + plugin.getFinalArg(args, 0) + ChatColor.BLUE + " to that item.");
             }
             return true;
         }

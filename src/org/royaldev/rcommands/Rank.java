@@ -17,10 +17,8 @@ public class Rank implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("rank")) {
-
             if (!plugin.isAuthorized(cs, "rcmds.rank")) {
                 RUtils.dispNoPerms(cs);
                 return true;
@@ -30,17 +28,12 @@ public class Rank implements CommandExecutor {
                 return false;
             }
             Player victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                return true;
-            }
-            if (plugin.isVanished(victim)) {
+            if (victim == null || plugin.isVanished(victim)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
             String rank = RoyalCommands.permission.getPrimaryGroup(victim);
-            cs.sendMessage("The user " + victim.getName() + " has the group "
-                    + rank + ".");
+            cs.sendMessage("The user " + victim.getName() + " has the group " + rank + ".");
             return true;
         }
         return false;

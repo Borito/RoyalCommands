@@ -29,8 +29,7 @@ public class Afk implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;

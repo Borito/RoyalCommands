@@ -53,8 +53,7 @@ public class Reply implements CommandExecutor {
                 }
                 return true;
             } else {
-                cs.sendMessage(ChatColor.RED
-                        + "You have no one to reply to!");
+                cs.sendMessage(ChatColor.RED + "You have no one to reply to!");
                 return true;
             }
         }

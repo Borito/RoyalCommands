@@ -23,8 +23,7 @@ public class ClearWarns implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("clearwarns")) {
             if (!plugin.isAuthorized(cs, "rcmds.clearwarns")) {
                 RUtils.dispNoPerms(cs);
@@ -37,14 +36,11 @@ public class ClearWarns implements CommandExecutor {
             }
             Player t = plugin.getServer().getPlayer(args[0].trim());
             if (t != null) {
-                File pconfl = new File(plugin.getDataFolder() + "/userdata/"
-                        + t.getName().toLowerCase() + ".yml");
+                File pconfl = new File(plugin.getDataFolder() + "/userdata/" + t.getName().toLowerCase() + ".yml");
                 if (pconfl.exists()) {
-                    FileConfiguration pconf = YamlConfiguration
-                            .loadConfiguration(pconfl);
+                    FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                     if (pconf.get("warns") == null) {
-                        cs.sendMessage(ChatColor.RED
-                                + "That player has no warnings!");
+                        cs.sendMessage(ChatColor.RED + "That player has no warnings!");
                         return true;
                     }
                     pconf.set("warns", null);
@@ -53,29 +49,20 @@ public class ClearWarns implements CommandExecutor {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    cs.sendMessage(ChatColor.BLUE + "The warnings on "
-                            + ChatColor.GRAY + t.getName() + ChatColor.BLUE
-                            + " have been cleared.");
-                    t.sendMessage(ChatColor.BLUE
-                            + "Your warnings have been cleared by "
-                            + ChatColor.GRAY + cs.getName() + ChatColor.BLUE
-                            + ".");
+                    cs.sendMessage(ChatColor.BLUE + "The warnings on " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " have been cleared.");
+                    t.sendMessage(ChatColor.BLUE + "Your warnings have been cleared by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
                     return true;
                 } else {
                     cs.sendMessage(ChatColor.RED + "That user does not exist!");
                     return true;
                 }
             }
-            OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(
-                    args[0].trim());
-            File pconfl = new File(plugin.getDataFolder() + "/userdata/"
-                    + t2.getName().toLowerCase() + ".yml");
+            OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
+            File pconfl = new File(plugin.getDataFolder() + "/userdata/" + t2.getName().toLowerCase() + ".yml");
             if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration
-                        .loadConfiguration(pconfl);
+                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 if (pconf.get("warns") == null) {
-                    cs.sendMessage(ChatColor.RED
-                            + "That player has no warnings!");
+                    cs.sendMessage(ChatColor.RED + "That player has no warnings!");
                     return true;
                 }
                 pconf.set("warns", null);
@@ -84,14 +71,9 @@ public class ClearWarns implements CommandExecutor {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                cs.sendMessage(ChatColor.BLUE + "The warnings on "
-                        + ChatColor.GRAY + t2.getName() + ChatColor.BLUE
-                        + " have been cleared.");
+                cs.sendMessage(ChatColor.BLUE + "The warnings on " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + " have been cleared.");
                 if (t2.isOnline()) {
-                    ((Player) t2).sendMessage(ChatColor.BLUE
-                            + "Your warnings have been cleared by "
-                            + ChatColor.GRAY + cs.getName() + ChatColor.BLUE
-                            + ".");
+                    ((Player) t2).sendMessage(ChatColor.BLUE + "Your warnings have been cleared by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
                 }
                 return true;
             } else {

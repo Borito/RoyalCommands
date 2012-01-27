@@ -29,8 +29,7 @@ public class Banreason implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer t = plugin.getServer().getOfflinePlayer(
-                    args[0].trim());
+            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0].trim());
             if (!PConfManager.getPConfExists(t)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
@@ -40,9 +39,7 @@ public class Banreason implements CommandExecutor {
                 return true;
             }
             String banreason = PConfManager.getPValString(t, "banreason");
-            cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY
-                    + t.getName() + ChatColor.BLUE + " was banned for: "
-                    + ChatColor.GRAY + banreason + ChatColor.BLUE + ".");
+            cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " was banned for: " + ChatColor.GRAY + banreason + ChatColor.BLUE + ".");
             return true;
         }
         return false;
