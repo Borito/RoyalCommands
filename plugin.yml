@@ -830,6 +830,13 @@ permissions:
   rcmds.see.unban:
     description: See unban messages.
     default: op
+
+  rcmds.sign.warp:
+    description: Allows the player to create warp signs.
+    default: op
+  rcmds.sign.use.warp:
+    description: Allows the player to use warp signs.
+    default: op
     
   rcmds.notarget:
     description: Disables the mobs' ability to target the player.

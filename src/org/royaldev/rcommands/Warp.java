@@ -23,6 +23,40 @@ public class Warp implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    public static Location pWarp(Player p, RoyalCommands plugin, String name) {
+        boolean warpSet;
+        Double warpX;
+        Double warpY;
+        Double warpZ;
+        Float warpYaw;
+        Float warpPitch;
+        World warpW;
+
+        File pconfl = new File(plugin.getDataFolder() + "/warps.yml");
+        if (pconfl.exists()) {
+            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+            warpSet = pconf.getBoolean("warps." + name + ".set");
+            if (!warpSet) {
+                p.sendMessage(ChatColor.RED + "That warp does not exist.");
+                return null;
+            }
+            warpX = pconf.getDouble("warps." + name + ".x");
+            warpY = pconf.getDouble("warps." + name + ".y");
+            warpZ = pconf.getDouble("warps." + name + ".z");
+            warpYaw = Float.parseFloat(pconf.getString("warps." + name + ".yaw"));
+            warpPitch = Float.parseFloat(pconf.getString("warps." + name + ".pitch"));
+            warpW = plugin.getServer().getWorld(pconf.getString("warps." + name + ".w"));
+        } else {
+            p.sendMessage(ChatColor.RED + "There are no warps!");
+            return null;
+        }
+        if (warpW == null) {
+            p.sendMessage(ChatColor.RED + "World doesn't exist!");
+            return null;
+        }
+        return new Location(warpW, warpX, warpY, warpZ, warpYaw, warpPitch);
+    }
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("warp")) {
@@ -38,84 +72,57 @@ public class Warp implements CommandExecutor {
 
             Player p = (Player) cs;
 
-            boolean warpSet;
-            Double warpX;
-            Double warpY;
-            Double warpZ;
-            Float warpYaw;
-            Float warpPitch;
-            World warpW;
-
-            File pconfl = new File(plugin.getDataFolder() + "/warps.yml");
-            if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                if (args.length < 1) {
-                    if (pconf.get("warps") == null) {
-                        cs.sendMessage(ChatColor.RED + "There are no warps!");
+            if (args.length < 1) {
+                File pconfl = new File(plugin.getDataFolder() + "/warps.yml");
+                if (pconfl.exists()) {
+                    FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+                    if (args.length < 1) {
+                        if (pconf.get("warps") == null) {
+                            cs.sendMessage(ChatColor.RED + "There are no warps!");
+                            return true;
+                        }
+                        final Map<String, Object> opts = pconf.getConfigurationSection("warps").getValues(false);
+                        if (opts.keySet().isEmpty()) {
+                            cs.sendMessage(ChatColor.RED + "There are no warps!");
+                            return true;
+                        }
+                        String warps = opts.keySet().toString();
+                        warps = warps.substring(1, warps.length() - 1);
+                        cs.sendMessage(ChatColor.BLUE + "Warps:");
+                        cs.sendMessage(warps);
                         return true;
                     }
-                    final Map<String, Object> opts = pconf.getConfigurationSection("warps").getValues(false);
-                    if (opts.keySet().isEmpty()) {
-                        cs.sendMessage(ChatColor.RED + "There are no warps!");
-                        return true;
-                    }
-                    String warps = opts.keySet().toString();
-                    warps = warps.substring(1, warps.length() - 1);
-                    cs.sendMessage(ChatColor.BLUE + "Warps:");
-                    cs.sendMessage(warps);
                     return true;
                 }
-                String name = args[0].toLowerCase();
-                warpSet = pconf.getBoolean("warps." + name + ".set");
-                if (!warpSet) {
-                    cs.sendMessage(ChatColor.RED + "That warp does not exist.");
-                    return true;
-                }
-                warpX = pconf.getDouble("warps." + name + ".x");
-                warpY = pconf.getDouble("warps." + name + ".y");
-                warpZ = pconf.getDouble("warps." + name + ".z");
-                warpYaw = Float.parseFloat(pconf.getString("warps." + name + ".yaw"));
-                warpPitch = Float.parseFloat(pconf.getString("warps." + name + ".pitch"));
-                warpW = plugin.getServer().getWorld(pconf.getString("warps." + name + ".w"));
-            } else {
-                cs.sendMessage(ChatColor.RED + "There are no warps!");
-                return true;
             }
-            if (warpW == null) {
-                cs.sendMessage(ChatColor.RED + "World doesn't exist!");
-                return true;
-            }
-            Location warpLoc = new Location(warpW, warpX, warpY, warpZ,
-                    warpYaw, warpPitch);
             if (args.length == 1) {
                 p.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
                 Back.backdb.put(p, p.getLocation());
+                Location warpLoc = pWarp(p, plugin, args[0].toLowerCase());
+                if (warpLoc == null) {
+                    return true;
+                }
                 p.teleport(warpLoc);
                 return true;
             }
             if (args.length > 1) {
                 if (!plugin.isAuthorized(cs, "rcmds.warp.others")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that!");
-                    plugin.log.warning("[RoyalCommands] " + cs.getName()
-                            + " was denied access to the command!");
-                    return true;
+
                 }
-                Player t = plugin.getServer().getPlayer(args[1].trim());
+                Player t = plugin.getServer().getPlayer(args[1]);
                 if (t == null || plugin.isVanished(t)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (plugin.isAuthorized(t, "rcmds.exempt.warp")) {
-                    cs.sendMessage(ChatColor.RED + "Cannot warp that player!");
+                p.sendMessage(ChatColor.BLUE + "Warping " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
+                Back.backdb.put(t, t.getLocation());
+                Location warpLoc = pWarp(t, plugin, args[0].toLowerCase());
+                if (warpLoc == null) {
                     return true;
                 }
-                p.sendMessage(ChatColor.BLUE + "Sending " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
-                Back.backdb.put(t, t.getLocation());
                 t.teleport(warpLoc);
                 return true;
             }
-
         }
         return false;
     }

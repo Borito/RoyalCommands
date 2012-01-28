@@ -1,7 +1,9 @@
 package org.royaldev.royalcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -9,11 +11,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.rcommands.Afk;
+import org.royaldev.rcommands.Back;
 import org.royaldev.rcommands.Motd;
+import org.royaldev.rcommands.Warp;
 
 import java.io.File;
 import java.util.List;
@@ -107,6 +112,42 @@ public class RoyalCommandsPlayerListener implements Listener {
                 event.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler()
+    public void onInt(PlayerInteractEvent e) {
+        if (!(e.getClickedBlock().getState() instanceof Sign)) return;
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        Sign s = (Sign) e.getClickedBlock().getState();
+        Player p = e.getPlayer();
+        if (!plugin.isAuthorized(p, "rcmds.sign.use.warp")) {
+            RUtils.dispNoPerms(p);
+            return;
+        }
+        if (!s.getLine(0).equalsIgnoreCase("[warp]") && s.getLine(1).isEmpty()) return;
+        Location warpLoc = Warp.pWarp(p, plugin, s.getLine(1).toLowerCase());
+        if (warpLoc == null) {
+            return;
+        }
+        Back.backdb.put(p, p.getLocation());
+        p.teleport(warpLoc);
+    }
+
+    @EventHandler()
+    public void onSignChange(SignChangeEvent e) {
+        Player p = e.getPlayer();
+        if (!plugin.isAuthorized(p, "rcmds.sign.warp")) {
+            RUtils.dispNoPerms(p);
+            return;
+        }
+        if (!e.getLine(0).equalsIgnoreCase("[warp]") && e.getLine(1).isEmpty()) return;
+        Location warpLoc = Warp.pWarp(p, plugin, e.getLine(1).toLowerCase());
+        if (warpLoc == null) {
+            e.setLine(0, ChatColor.RED + e.getLine(0));
+            return;
+        }
+        e.setLine(0, ChatColor.BLUE + e.getLine(0));
+        p.sendMessage(ChatColor.BLUE + "Warp sign created successfully.");
     }
 
     @EventHandler(priority = EventPriority.HIGH)
