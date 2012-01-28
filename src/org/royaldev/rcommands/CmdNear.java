@@ -30,7 +30,8 @@ public class CmdNear implements CommandExecutor {
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
-                java.util.List<Entity> ents = p.getNearbyEntities(100.0, 100.0, 100.0);
+                double radius = plugin.defaultNear;
+                java.util.List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
                 int amount = 0;
                 for (Entity e : ents) {
                     if (!(e instanceof Player)) continue;
@@ -59,8 +60,8 @@ public class CmdNear implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That was not a valid number!");
                     return true;
                 }
-                radius = radius / 2;
-                if (radius > 1000) {
+                //radius = radius / 2;
+                if (radius > plugin.maxNear) {
                     p.sendMessage(ChatColor.RED + "That radius was too large!");
                     return true;
                 }
