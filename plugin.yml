@@ -834,8 +834,21 @@ permissions:
   rcmds.sign.warp:
     description: Allows the player to create warp signs.
     default: op
+  rcmds.sign.time:
+    descripiton: Allows the player to create time signs.
+    default: op
+  rcmds.sign.disposal:
+    description: Allows the player to create disposal signs.
+    default: op
+
   rcmds.sign.use.warp:
     description: Allows the player to use warp signs.
+    default: op
+  rcmds.sign.use.time:
+    description: Allows the player to use time signs.
+    default: op
+  rcmds.sign.use.disposal:
+    description: Allows the player to use disposal signs.
     default: op
     
   rcmds.notarget:

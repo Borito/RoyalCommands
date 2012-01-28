@@ -1,9 +1,13 @@
 package org.royaldev.royalcommands;
 
+import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.PlayerInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -69,6 +73,18 @@ public class RUtils {
         }
         return bb;
     }
+
+    public static void showEmptyChest(Player player) {
+        try {
+            final EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
+            final CraftInventoryPlayer inv = new CraftInventoryPlayer(new PlayerInventory(((CraftPlayer) player).getHandle()));
+            inv.clear();
+            entityPlayer.a(inv.getInventory());
+        } catch (Exception e) {
+            //ignored
+        }
+    }
+
 
     public static void dispNoPerms(CommandSender cs) {
         cs.sendMessage(ChatColor.RED + "You don't have permission for that!");

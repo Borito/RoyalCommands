@@ -15,10 +15,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.inventory.ItemStack;
-import org.royaldev.rcommands.Afk;
-import org.royaldev.rcommands.Back;
-import org.royaldev.rcommands.Motd;
-import org.royaldev.rcommands.Warp;
+import org.royaldev.rcommands.*;
 
 import java.io.File;
 import java.util.List;
@@ -119,35 +116,97 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!(e.getClickedBlock().getState() instanceof Sign)) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Sign s = (Sign) e.getClickedBlock().getState();
+        if (e.getPlayer() == null) return;
         Player p = e.getPlayer();
-        if (!plugin.isAuthorized(p, "rcmds.sign.use.warp")) {
-            RUtils.dispNoPerms(p);
-            return;
+        String line1 = ChatColor.stripColor(s.getLine(0));
+        String line2 = ChatColor.stripColor(s.getLine(1));
+        //Warp signs
+        if (line1.equalsIgnoreCase("[warp]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.use.warp")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+            if (line2.isEmpty()) {
+                s.setLine(0, ChatColor.RED + line1);
+                p.sendMessage(ChatColor.RED + "No warp specified.");
+                return;
+            }
+            Location warpLoc = Warp.pWarp(p, plugin, line2.toLowerCase());
+            if (warpLoc == null) {
+                return;
+            }
+            Back.backdb.put(p, p.getLocation());
+            p.teleport(warpLoc);
         }
-        if (!s.getLine(0).equalsIgnoreCase("[warp]") && s.getLine(1).isEmpty()) return;
-        Location warpLoc = Warp.pWarp(p, plugin, s.getLine(1).toLowerCase());
-        if (warpLoc == null) {
-            return;
+        //Time signs
+        if (line1.equalsIgnoreCase(ChatColor.stripColor("[time]"))) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.use.time")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+            if (line2.isEmpty() || (Time.getValidTime(line2) == null)) {
+                s.setLine(0, ChatColor.RED + line1);
+                p.sendMessage(ChatColor.RED + "Invalid time specified!");
+                return;
+            }
+            long time = Time.getValidTime(line2);
+            p.getWorld().setTime(time);
         }
-        Back.backdb.put(p, p.getLocation());
-        p.teleport(warpLoc);
+        if (line1.equalsIgnoreCase(ChatColor.stripColor("[disposal]"))) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.disposal.time")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+            RUtils.showEmptyChest(p);
+        }
     }
 
     @EventHandler()
     public void onSignChange(SignChangeEvent e) {
+        if (e.getPlayer() == null) return;
         Player p = e.getPlayer();
-        if (!plugin.isAuthorized(p, "rcmds.sign.warp")) {
-            RUtils.dispNoPerms(p);
-            return;
+        //Warp signs
+        if (e.getLine(0).equalsIgnoreCase("[warp]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.warp")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+            if (e.getLine(1).isEmpty()) {
+                e.setLine(0, ChatColor.RED + e.getLine(0));
+                p.sendMessage(ChatColor.RED + "No warp specified.");
+                return;
+            }
+            Location warpLoc = Warp.pWarp(p, plugin, e.getLine(1).toLowerCase());
+            if (warpLoc == null) {
+                e.setLine(0, ChatColor.RED + e.getLine(0));
+                return;
+            }
+            e.setLine(0, ChatColor.BLUE + e.getLine(0));
+            p.sendMessage(ChatColor.BLUE + "Warp sign created successfully.");
         }
-        if (!e.getLine(0).equalsIgnoreCase("[warp]") && e.getLine(1).isEmpty()) return;
-        Location warpLoc = Warp.pWarp(p, plugin, e.getLine(1).toLowerCase());
-        if (warpLoc == null) {
-            e.setLine(0, ChatColor.RED + e.getLine(0));
-            return;
+        //Time signs
+        if (e.getLine(0).equalsIgnoreCase("[time]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.time")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+            if (e.getLine(1).isEmpty() || (Time.getValidTime(e.getLine(1)) == null)) {
+                e.setLine(0, ChatColor.RED + e.getLine(0));
+                p.sendMessage(ChatColor.RED + "Invalid time specified!");
+                return;
+            }
+            e.setLine(0, ChatColor.BLUE + e.getLine(0));
+            p.sendMessage(ChatColor.BLUE + "Time sign created successfully!");
         }
-        e.setLine(0, ChatColor.BLUE + e.getLine(0));
-        p.sendMessage(ChatColor.BLUE + "Warp sign created successfully.");
+        //Disposal signs
+        if (e.getLine(0).equalsIgnoreCase("[disposal]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.disposal")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+            e.setLine(0, ChatColor.BLUE + e.getLine(0));
+            p.sendMessage(ChatColor.BLUE + "Disposal sign created successfully!");
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)

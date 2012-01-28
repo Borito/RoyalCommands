@@ -61,7 +61,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean motdLogin = null;
     public Boolean dropExtras = null;
     public Boolean kitPerms = null;
-
+    
     public String banMessage = null;
     public String kickMessage = null;
     public String defaultWarn = null;
