@@ -18,6 +18,30 @@ public class Time implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    public static Long getValidTime(String time) {
+        Integer vtime;
+        try {
+            vtime = Integer.parseInt(time);
+        } catch (Exception e) {
+            if (time.equalsIgnoreCase("day")) {
+                vtime = 0;
+            } else if (time.equalsIgnoreCase("midday")) {
+                vtime = 6000;
+            } else if (time.equalsIgnoreCase("sunset")) {
+                vtime = 12000;
+            } else if (time.equalsIgnoreCase("night")) {
+                vtime = 14000;
+            } else if (time.equalsIgnoreCase("midnight")) {
+                vtime = 18000;
+            } else if (time.equalsIgnoreCase("sunrise")) {
+                vtime = 23000;
+            } else {
+                return null;
+            }
+        }
+        return (long) vtime;
+    }
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label,
                              String[] args) {
@@ -31,29 +55,11 @@ public class Time implements CommandExecutor {
                     cs.sendMessage(cmd.getDescription());
                     return false;
                 }
-                Integer time;
-                try {
-                    time = Integer.parseInt(args[0]);
-                } catch (Exception e) {
-                    String times = args[0];
-                    if (times.equalsIgnoreCase("day")) {
-                        time = 0;
-                    } else if (times.equalsIgnoreCase("midday")) {
-                        time = 6000;
-                    } else if (times.equalsIgnoreCase("sunset")) {
-                        time = 12000;
-                    } else if (times.equalsIgnoreCase("night")) {
-                        time = 14000;
-                    } else if (times.equalsIgnoreCase("midnight")) {
-                        time = 18000;
-                    } else if (times.equalsIgnoreCase("sunrise")) {
-                        time = 23000;
-                    } else {
-                        cs.sendMessage(ChatColor.RED
-                                + "The time entered was invalid!");
-                        return true;
-                    }
+                if (getValidTime(args[0]) == null) {
+                    cs.sendMessage(ChatColor.RED + "Invalid time specified!");
+                    return true;
                 }
+                long time = getValidTime(args[0]);
                 if (time < 0) {
                     cs.sendMessage(ChatColor.RED + "The time entered was invalid!");
                     return true;
@@ -80,30 +86,12 @@ public class Time implements CommandExecutor {
                 return false;
             }
             Player p = (Player) cs;
-            Integer time;
             World world;
-            try {
-                time = Integer.parseInt(args[0]);
-            } catch (Exception e) {
-                String times = args[0];
-                if (times.equalsIgnoreCase("day")) {
-                    time = 0;
-                } else if (times.equalsIgnoreCase("midday")) {
-                    time = 6000;
-                } else if (times.equalsIgnoreCase("sunset")) {
-                    time = 12000;
-                } else if (times.equalsIgnoreCase("night")) {
-                    time = 14000;
-                } else if (times.equalsIgnoreCase("midnight")) {
-                    time = 18000;
-                } else if (times.equalsIgnoreCase("sunrise")) {
-                    time = 23000;
-                } else {
-                    cs.sendMessage(ChatColor.RED
-                            + "The time entered was invalid!");
-                    return true;
-                }
+            if (getValidTime(args[0]) == null) {
+                cs.sendMessage(ChatColor.RED + "Invalid time specified!");
+                return true;
             }
+            long time = getValidTime(args[0]);
             if (time < 0) {
                 cs.sendMessage(ChatColor.RED + "The time entered was invalid!");
                 return true;
