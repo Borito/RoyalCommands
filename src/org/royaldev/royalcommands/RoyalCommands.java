@@ -73,6 +73,9 @@ public class RoyalCommands extends JavaPlugin {
     public Integer warnBan = null;
     public Integer spawnmobLimit = null;
 
+    public Double maxNear = null;
+    public Double defaultNear = null;
+
     public RoyalCommands() {
         pconfm = new PConfManager(this);
     }
@@ -123,6 +126,9 @@ public class RoyalCommands extends JavaPlugin {
         warnBan = this.getConfig().getInt("max_warns_before_ban");
         spawnmobLimit = this.getConfig().getInt("spawnmob_limit");
 
+        maxNear = this.getConfig().getDouble("max_near_radius");
+        defaultNear = this.getConfig().getDouble("default_near_radius");
+
         muteCmds = this.getConfig().getStringList("mute_blocked_commands");
         blockedItems = this.getConfig().getStringList("blocked_spawn_items");
         motd = this.getConfig().getStringList("motd");
@@ -132,11 +138,11 @@ public class RoyalCommands extends JavaPlugin {
         this.getConfig().addDefault("guid_do_not_change", UUID.randomUUID().toString());
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
-        File file = new File(this.getDataFolder() + "/userdata/");
+        File file = new File(this.getDataFolder() + File.separator + "userdata" + File.separator);
         boolean exists = file.exists();
         if (!exists) {
             try {
-                boolean success = new File(this.getDataFolder() + "/userdata").mkdir();
+                boolean success = new File(this.getDataFolder() + File.separator + "userdata").mkdir();
                 if (success) {
                     log.info("[RoyalCommands] Created userdata directory.");
                 }
@@ -145,13 +151,27 @@ public class RoyalCommands extends JavaPlugin {
                 log.severe(e.getMessage());
             }
         }
-        File warps = new File(this.getDataFolder() + "/warps.yml");
+        File rules = new File(this.getDataFolder() + File.separator + "rules.txt");
+        if (!rules.exists()) {
+            try {
+                boolean success = new File(this.getDataFolder() + File.separator + "rules.txt").createNewFile();
+                if (success) {
+                    //ignore
+                } else {
+                    log.severe("[RoyalCommands] Could not create rules.txt!");
+                }
+            } catch (Exception e) {
+                log.severe("[RoyalCommands] Could not create rules.txt!");
+                e.printStackTrace();
+            }
+        }
+        File warps = new File(this.getDataFolder() + File.separator + "warps.yml");
         if (!warps.exists()) {
             try {
-                boolean success = new File(this.getDataFolder() + "/warps.yml").createNewFile();
+                boolean success = new File(this.getDataFolder() + File.separator + "warps.yml").createNewFile();
                 if (success) {
                     try {
-                        FileWriter fstream = new FileWriter(this.getDataFolder() + "/warps.yml");
+                        FileWriter fstream = new FileWriter(this.getDataFolder() + File.separator + "warps.yml");
                         BufferedWriter out = new BufferedWriter(fstream);
                         out.write("warps:");
                         out.close();
@@ -341,6 +361,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("killall").setExecutor(new KillAll(this));
         getCommand("muteall").setExecutor(new MuteAll(this));
         getCommand("kit").setExecutor(new CmdKit(this));
+        getCommand("rules").setExecutor(new CmdRules(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();

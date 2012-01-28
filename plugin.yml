@@ -17,7 +17,7 @@ commands:
 
   sci:
     description: Selectively removes items from a player's inventory.
-    usage: /<command> [player] [item] (amount)
+    usage: /<command> [player] [item] amount)
 
   speak:
     description: Make another player talk.
@@ -438,6 +438,11 @@ commands:
     usage: /<command> [kit-name]
     aliases: [kits]
 
+  rules:
+    description: Displays server rules.
+    usage: /<command>
+    aliases: [rule]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -541,6 +546,9 @@ permissions:
     default: op
   rcmds.sethome:
     description: Allows you to set a home.
+    default: op
+  rcmds.sethome.multi:
+    description: Allows you to set multiple homes.
     default: op
   rcmds.delhome:
     description: Allows you to delete a home.
@@ -709,6 +717,9 @@ permissions:
     default: op
   rcmds.kit:
     description: Allows you to spawn kits.
+    default: op
+  rcmds.rules:
+    description: Allows you to see server rules.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
