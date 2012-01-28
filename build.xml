@@ -24,6 +24,7 @@
                 <pathelement location="lib/bukkit-1.1-R1-SNAPSHOT.jar"/>
                 <pathelement location="lib/Vault.jar"/>
                 <pathelement location="lib/VanishNoPacket.jar"/>
+                <pathelement location="lib/craftbukkit-1.1-R2-SNAPSHOT.jar"/>
             </classpath>
         </javac>
     </target>
