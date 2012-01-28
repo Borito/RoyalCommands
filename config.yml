@@ -30,6 +30,10 @@ default_stack_size: 64
 max_warns_before_ban: 3
 # The maximum number of mobs allowed by /spawnmob
 spawnmob_limit: 15
+# Maximum /near radius (2000 is recommended, large numbers like /near 1000000 crash servers)
+max_near_radius: 2000
+# Default /near radius - when /near is run without a radius
+default_near_radius: 50
 # Commands to block when muted
 mute_blocked_commands: ["/me", "/tc", "/nc"]
 # Items that cannot be spawned without rcmds.allowed.item
