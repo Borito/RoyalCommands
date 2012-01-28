@@ -48,26 +48,27 @@ public class SetWarp implements CommandExecutor {
             Float locYaw = p.getLocation().getYaw();
             Float locPitch = p.getLocation().getPitch();
             String locW = p.getWorld().getName();
+            String name = args[0].toLowerCase();
 
             File pconfl = new File(plugin.getDataFolder() + File.separator
                     + "warps.yml");
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration
                         .loadConfiguration(pconfl);
-                pconf.set("warps." + args[0] + ".set", true);
-                pconf.set("warps." + args[0] + ".x", locX);
-                pconf.set("warps." + args[0] + ".y", locY);
-                pconf.set("warps." + args[0] + ".z", locZ);
-                pconf.set("warps." + args[0] + ".pitch", locPitch.toString());
-                pconf.set("warps." + args[0] + ".yaw", locYaw.toString());
-                pconf.set("warps." + args[0] + ".w", locW);
+                pconf.set("warps." + name + ".set", true);
+                pconf.set("warps." + name + ".x", locX);
+                pconf.set("warps." + name + ".y", locY);
+                pconf.set("warps." + name + ".z", locZ);
+                pconf.set("warps." + name + ".pitch", locPitch.toString());
+                pconf.set("warps." + name + ".yaw", locYaw.toString());
+                pconf.set("warps." + name + ".w", locW);
                 try {
                     pconf.save(pconfl);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 p.sendMessage(ChatColor.BLUE + "Warp \"" + ChatColor.GRAY
-                        + args[0] + ChatColor.BLUE + "\" set.");
+                        + name + ChatColor.BLUE + "\" set.");
                 return true;
             }
         }

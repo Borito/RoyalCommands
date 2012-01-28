@@ -24,8 +24,7 @@ public class Warp implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("warp")) {
             if (!plugin.isAuthorized(cs, "rcmds.warp")) {
                 RUtils.dispNoPerms(cs);
@@ -49,15 +48,13 @@ public class Warp implements CommandExecutor {
 
             File pconfl = new File(plugin.getDataFolder() + "/warps.yml");
             if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration
-                        .loadConfiguration(pconfl);
+                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 if (args.length < 1) {
                     if (pconf.get("warps") == null) {
                         cs.sendMessage(ChatColor.RED + "There are no warps!");
                         return true;
                     }
-                    final Map<String, Object> opts = pconf
-                            .getConfigurationSection("warps").getValues(false);
+                    final Map<String, Object> opts = pconf.getConfigurationSection("warps").getValues(false);
                     if (opts.keySet().isEmpty()) {
                         cs.sendMessage(ChatColor.RED + "There are no warps!");
                         return true;
@@ -68,20 +65,18 @@ public class Warp implements CommandExecutor {
                     cs.sendMessage(warps);
                     return true;
                 }
-                warpSet = pconf.getBoolean("warps." + args[0] + ".set");
+                String name = args[0].toLowerCase();
+                warpSet = pconf.getBoolean("warps." + name + ".set");
                 if (!warpSet) {
                     cs.sendMessage(ChatColor.RED + "That warp does not exist.");
                     return true;
                 }
-                warpX = pconf.getDouble("warps." + args[0] + ".x");
-                warpY = pconf.getDouble("warps." + args[0] + ".y");
-                warpZ = pconf.getDouble("warps." + args[0] + ".z");
-                warpYaw = Float.parseFloat(pconf.getString("warps."
-                        + args[0] + ".yaw"));
-                warpPitch = Float.parseFloat(pconf.getString("warps."
-                        + args[0] + ".pitch"));
-                warpW = plugin.getServer().getWorld(
-                        pconf.getString("warps." + args[0] + ".w"));
+                warpX = pconf.getDouble("warps." + name + ".x");
+                warpY = pconf.getDouble("warps." + name + ".y");
+                warpZ = pconf.getDouble("warps." + name + ".z");
+                warpYaw = Float.parseFloat(pconf.getString("warps." + name + ".yaw"));
+                warpPitch = Float.parseFloat(pconf.getString("warps." + name + ".pitch"));
+                warpW = plugin.getServer().getWorld(pconf.getString("warps." + name + ".w"));
             } else {
                 cs.sendMessage(ChatColor.RED + "There are no warps!");
                 return true;
@@ -93,8 +88,7 @@ public class Warp implements CommandExecutor {
             Location warpLoc = new Location(warpW, warpX, warpY, warpZ,
                     warpYaw, warpPitch);
             if (args.length == 1) {
-                p.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY
-                        + args[0] + ChatColor.BLUE + ".\"");
+                p.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
                 Back.backdb.put(p, p.getLocation());
                 p.teleport(warpLoc);
                 return true;
@@ -116,7 +110,7 @@ public class Warp implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Cannot warp that player!");
                     return true;
                 }
-                p.sendMessage(ChatColor.BLUE + "Sending " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to warp \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + ".\"");
+                p.sendMessage(ChatColor.BLUE + "Sending " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
                 Back.backdb.put(t, t.getLocation());
                 t.teleport(warpLoc);
                 return true;
