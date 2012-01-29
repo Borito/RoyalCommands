@@ -81,7 +81,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.isCancelled()) return;
+        //if (event.isCancelled()) return; <- breaks everything
         if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) {
             event.setCancelled(true);
         }
@@ -91,8 +91,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             if (id != null) {
                 int idn = id.getTypeId();
                 if (idn != 0) {
-                    List<String> cmds = PConfManager.getPValStringList(
-                            event.getPlayer(), "assign." + idn);
+                    List<String> cmds = PConfManager.getPValStringList(event.getPlayer(), "assign." + idn);
                     if (cmds != null) {
                         for (String s : cmds) {
                             if (s.toLowerCase().trim().startsWith("c:")) {
