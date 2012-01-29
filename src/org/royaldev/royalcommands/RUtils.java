@@ -85,10 +85,26 @@ public class RUtils {
         }
     }
 
+    public static boolean chargePlayer(CommandSender cs, double amount) {
+        if (RoyalCommands.economy == null) {
+            cs.sendMessage(ChatColor.RED + "No economy! Continuing without charging.");
+            return true;
+        }
+        if (!RoyalCommands.economy.hasAccount(cs.getName())) {
+            cs.sendMessage(ChatColor.RED + "You don't have a bank account!");
+            return false;
+        }
+        if (RoyalCommands.economy.getBalance(cs.getName()) < amount) {
+            cs.sendMessage(ChatColor.RED + "You don't have enough money!");
+            return false;
+        }
+        RoyalCommands.economy.withdrawPlayer(cs.getName(), amount);
+        return true;
+    }
 
     public static void dispNoPerms(CommandSender cs) {
         cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
-        log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+        log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
     }
 
 }

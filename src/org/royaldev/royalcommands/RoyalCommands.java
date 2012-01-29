@@ -18,6 +18,7 @@ package org.royaldev.royalcommands;
  */
 
 import com.smilingdevil.devilstats.api.DevilStats;
+import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -45,6 +46,7 @@ import java.util.logging.Logger;
 public class RoyalCommands extends JavaPlugin {
 
     public static Permission permission = null;
+    public static Economy economy = null;
 
     public String version = null;
     public String newVersion = null;
@@ -61,7 +63,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean motdLogin = null;
     public Boolean dropExtras = null;
     public Boolean kitPerms = null;
-    
+
     public String banMessage = null;
     public String kickMessage = null;
     public String defaultWarn = null;
@@ -87,6 +89,15 @@ public class RoyalCommands extends JavaPlugin {
             permission = permissionProvider.getProvider();
         }
         return (permission != null);
+    }
+
+    private Boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            economy = economyProvider.getProvider();
+        }
+
+        return (economy != null);
     }
 
     private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
@@ -241,6 +252,8 @@ public class RoyalCommands extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        setupEconomy();
 
         version = this.getDescription().getVersion();
 
