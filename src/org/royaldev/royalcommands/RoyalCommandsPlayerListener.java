@@ -33,6 +33,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        if (event.isCancelled()) return;
         if (plugin.showcommands) {
             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
         }
@@ -53,6 +54,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
+        if (event.isCancelled()) return;
         if (Afk.afkdb.containsKey(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             Afk.afkdb.remove(event.getPlayer());
@@ -67,6 +69,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event) {
+        if (event.isCancelled()) return;
         if (Afk.afkdb.containsKey(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             Afk.afkdb.remove(event.getPlayer());
@@ -78,6 +81,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.isCancelled()) return;
         if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) {
             event.setCancelled(true);
         }
@@ -113,6 +117,8 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler()
     public void onInt(PlayerInteractEvent e) {
+        if (e.isCancelled()) return;
+        if (e.getClickedBlock() == null) return;
         if (!(e.getClickedBlock().getState() instanceof Sign)) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Sign s = (Sign) e.getClickedBlock().getState();
@@ -153,7 +159,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             p.getWorld().setTime(time);
         }
         if (line1.equalsIgnoreCase(ChatColor.stripColor("[disposal]"))) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.disposal.time")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.use.disposal")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -163,6 +169,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler()
     public void onSignChange(SignChangeEvent e) {
+        if (e.isCancelled()) return;
         if (e.getPlayer() == null) return;
         Player p = e.getPlayer();
         //Warp signs
