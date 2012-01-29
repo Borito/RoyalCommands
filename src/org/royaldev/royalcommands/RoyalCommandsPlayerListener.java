@@ -44,7 +44,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             }
             return amount;
         }
-        return null;
+        return (double) -1;
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -161,7 +161,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 p.sendMessage(ChatColor.RED + "The cost is invalid!");
                 s.setLine(0, ChatColor.RED + line1);
                 return;
-            } else {
+            } else if (charge >= 0) {
                 s.setLine(2, ChatColor.DARK_GREEN + line3);
                 RUtils.chargePlayer(p, charge);
             }
@@ -191,7 +191,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 p.sendMessage(ChatColor.RED + "The cost is invalid!");
                 s.setLine(0, ChatColor.RED + line1);
                 return;
-            } else {
+            } else if (charge >= 0) {
                 s.setLine(2, ChatColor.DARK_GREEN + line3);
                 RUtils.chargePlayer(p, charge);
             }
@@ -212,7 +212,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 p.sendMessage(ChatColor.RED + "The cost is invalid!");
                 s.setLine(0, ChatColor.RED + line1);
                 return;
-            } else {
+            } else if (charge >= 0) {
                 s.setLine(1, ChatColor.DARK_GREEN + line2);
                 RUtils.chargePlayer(p, charge);
             }
@@ -232,7 +232,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 p.sendMessage(ChatColor.RED + "The cost is invalid!");
                 s.setLine(0, ChatColor.RED + line1);
                 return;
-            } else {
+            } else if (charge >= 0) {
                 s.setLine(1, ChatColor.DARK_GREEN + line2);
                 RUtils.chargePlayer(p, charge);
             }
@@ -268,7 +268,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 p.sendMessage(ChatColor.RED + "The cost is invalid!");
                 e.setLine(0, ChatColor.RED + line1);
                 return;
-            } else {
+            } else if (charge >= 0) {
                 e.setLine(2, ChatColor.DARK_GREEN + line3);
             }
 
@@ -297,7 +297,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 p.sendMessage(ChatColor.RED + "The cost is invalid!");
                 e.setLine(0, ChatColor.RED + line1);
                 return;
-            } else {
+            } else if (charge >= 0) {
                 e.setLine(2, ChatColor.DARK_GREEN + line3);
             }
 
@@ -317,7 +317,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 p.sendMessage(ChatColor.RED + "The cost is invalid!");
                 e.setLine(0, ChatColor.RED + line1);
                 return;
-            } else {
+            } else if (charge >= 0) {
                 e.setLine(1, ChatColor.DARK_GREEN + line2);
             }
 
@@ -337,7 +337,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 p.sendMessage(ChatColor.RED + "The cost is invalid!");
                 e.setLine(0, ChatColor.RED + line1);
                 return;
-            } else {
+            } else if (charge >= 0) {
                 e.setLine(1, ChatColor.DARK_GREEN + line2);
             }
 

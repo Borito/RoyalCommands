@@ -99,6 +99,7 @@ public class RUtils {
             return false;
         }
         RoyalCommands.economy.withdrawPlayer(cs.getName(), amount);
+        cs.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + amount + ChatColor.BLUE + " removed from your account.");
         return true;
     }
 
