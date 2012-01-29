@@ -28,26 +28,49 @@ public class ListWarns implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            File pconfl = new File(plugin.getDataFolder() + "/userdata/"
-                    + cs.getName().toLowerCase() + ".yml");
-            if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration
-                        .loadConfiguration(pconfl);
-                if (pconf.get("warns") == null) {
-                    cs.sendMessage(ChatColor.RED + "You have no warnings!");
+            if (args.length < 1) {
+                File pconfl = new File(plugin.getDataFolder() + "/userdata/" + cs.getName().toLowerCase() + ".yml");
+                if (pconfl.exists()) {
+                    FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+                    if (pconf.get("warns") == null) {
+                        cs.sendMessage(ChatColor.RED + "You have no warnings!");
+                        return true;
+                    }
+                    final Map<String, Object> opts = pconf.getConfigurationSection("warns").getValues(true);
+                    if (opts.values().isEmpty()) {
+                        cs.sendMessage(ChatColor.RED + "You have no warnings!");
+                        return true;
+                    }
+                    String homes = opts.values().toString();
+                    homes = homes.substring(1, homes.length() - 1);
+                    cs.sendMessage(ChatColor.RED + "Warnings:");
+                    cs.sendMessage(homes.replaceAll("(&([a-f0-9]))", "\u00A7$2"));
                     return true;
                 }
-                final Map<String, Object> opts = pconf.getConfigurationSection(
-                        "warns").getValues(true);
-                if (opts.values().isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + "You have no warnings!");
+            }
+            if (args.length > 0) {
+                if (!plugin.isAuthorized(cs, "rcmds.listwarns.others")) {
+                    RUtils.dispNoPerms(cs);
                     return true;
                 }
-                String homes = opts.values().toString();
-                homes = homes.substring(1, homes.length() - 1);
-                cs.sendMessage(ChatColor.RED + "Warnings:");
-                cs.sendMessage(homes.replaceAll("(&([a-f0-9]))", "\u00A7$2"));
-                return true;
+                File pconfl = new File(plugin.getDataFolder() + "/userdata/" + args[0].toLowerCase() + ".yml");
+                if (pconfl.exists()) {
+                    FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+                    if (pconf.get("warns") == null) {
+                        cs.sendMessage(ChatColor.RED + "That user has no warnings!");
+                        return true;
+                    }
+                    final Map<String, Object> opts = pconf.getConfigurationSection("warns").getValues(true);
+                    if (opts.values().isEmpty()) {
+                        cs.sendMessage(ChatColor.RED + "That user has no warnings!");
+                        return true;
+                    }
+                    String homes = opts.values().toString();
+                    homes = homes.substring(1, homes.length() - 1);
+                    cs.sendMessage(ChatColor.RED + "User's warnings:");
+                    cs.sendMessage(homes.replaceAll("(&([a-f0-9]))", "\u00A7$2"));
+                    return true;
+                }
             }
         }
         return false;

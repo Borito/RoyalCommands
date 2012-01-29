@@ -817,6 +817,8 @@ permissions:
   rcmds.nick.others:
     description: Allows the player to /nick other players.
     default: op
+  rcmds.listwarns.others:
+    description: Allows the player to /listwarns other players.
     
   rcmds.see.ban:
     description: See ban messages.
