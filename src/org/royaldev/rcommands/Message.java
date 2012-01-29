@@ -38,7 +38,7 @@ public class Message implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player is not online!");
                 return true;
             }
-            if (plugin.isVanished(t)) {
+            if (plugin.isVanished(t) && (cs instanceof Player)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
