@@ -30,12 +30,12 @@ public class Slap implements CommandExecutor {
             }
             Player victim;
             victim = plugin.getServer().getPlayer(args[0]);
-            if (plugin.isVanished(victim)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                return true;
-            }
             if (victim == null) {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
+                return true;
+            }
+            if (plugin.isVanished(victim)) {
+                cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
             if (plugin.isAuthorized(victim, "rcmds.exempt.slap")) {
