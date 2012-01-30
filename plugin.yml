@@ -838,7 +838,7 @@ permissions:
     description: Allows the player to create warp signs.
     default: op
   rcmds.sign.time:
-    descripiton: Allows the player to create time signs.
+    description: Allows the player to create time signs.
     default: op
   rcmds.sign.disposal:
     description: Allows the player to create disposal signs.
@@ -861,3 +861,199 @@ permissions:
   rcmds.admin:
     description: Gives every permission.
     default: false
+
+  rcmds.see.*:
+    description: Gives every see permission.
+    default: false
+    children:
+      rcmds.see.ban: true
+      rcmds.see.kick: true
+      rcmds.see.warn: true
+      rcmds.see.unban: true
+
+  rcmds.sign.*:
+    description: Gives every sign permission.
+    default: false
+    children:
+      rcmds.sign.warp: true
+      rcmds.sign.time: true
+      rcmds.sign.disposal: true
+
+      rcmds.sign.use.warp: true
+      rcmds.sign.use.time: true
+      rcmds.sign.use.disposal: true
+
+    
+  rcmds.exempt.*:
+    description: Gives every exempt permission.
+    default: false
+    children:
+      rcmds.exempt.speak: true
+        rcmds.exempt.sci: true
+        rcmds.exempt.harm: true
+        rcmds.exempt.starve: true
+        rcmds.exempt.slap: true
+        rcmds.exempt.facepalm: true
+        rcmds.exempt.ragequit: true
+        rcmds.exempt.freeze: true
+        rcmds.exempt.kick: true
+        rcmds.exempt.ban: true
+        rcmds.exempt.mute: true
+        rcmds.exempt.warn: true
+        rcmds.exempt.strike: true
+        rcmds.exempt.teleport: true
+        rcmds.exempt.burn: true
+        rcmds.exempt.jail: true
+        rcmds.exempt.tp2p: true
+        rcmds.exempt.warp: true
+        rcmds.exempt.force: true
+        rcmds.exempt.gamemode: true
+        rcmds.exempt.nick: true
+        rcmds.exempt.kill: true
+
+  rcmds.*:
+    description: Gives every permission.
+    default: false
+    children:
+      rcmds.level: true
+      rcmds.setlevel: true
+      rcmds.sci: true
+      rcmds.speak: true
+      rcmds.facepalm: true
+      rcmds.slap: true
+      rcmds.harm: true
+      rcmds.starve: true
+      rcmds.banned: true
+      rcmds.setarmor: true
+      rcmds.getip: true
+      rcmds.compareip: true
+      rcmds.ragequit: true
+      rcmds.quit: true
+      rcmds.rank: true
+      rcmds.freeze: true
+      rcmds.fakeop: true
+      rcmds.vtp: true
+      rcmds.megastrike: true
+      rcmds.pext: true
+      rcmds.item: true
+      rcmds.fixchunk: true
+      rcmds.weather: true
+      rcmds.clearinventory: true
+      rcmds.give: true
+      rcmds.message: true
+      rcmds.reply: true
+      rcmds.gamemode: true
+      rcmds.mute: true
+      rcmds.ban: true
+      rcmds.time: true
+      rcmds.home: true
+      rcmds.sethome: true
+      rcmds.sethome.multi: true
+      rcmds.delhome: true
+      rcmds.listhome: true
+      rcmds.strike: true
+      rcmds.jump: true
+      rcmds.warn: true
+      rcmds.clearwarns: true
+      rcmds.warp: true
+      rcmds.setwarp: true
+      rcmds.delwarp: true
+      rcmds.repair: true
+      rcmds.heal: true
+      rcmds.unban: true
+      rcmds.feed: true
+      rcmds.banreason: true
+      rcmds.setspawn: true
+      rcmds.god: true
+      rcmds.spawn: true
+      rcmds.banip: true
+      rcmds.unbanip: true
+      rcmds.list: true
+      rcmds.back: true
+      rcmds.teleport: true
+      rcmds.teleporthere: true
+      rcmds.teleportrequest: true
+      rcmds.teleportrequesthere: true
+      rcmds.tpaccept: true
+      rcmds.tpdeny: true
+      rcmds.listwarns: true
+      rcmds.more: true
+      rcmds.spy: true
+      rcmds.spawnmob: true
+      rcmds.afk: true
+      rcmds.assign: true
+      rcmds.onehitkill: true
+      rcmds.burn: true
+      rcmds.kickall: true
+      rcmds.world: true
+      rcmds.jail: true
+      rcmds.setjail: true
+      rcmds.less: true
+      rcmds.spawner: true
+      rcmds.tp2p: true
+      rcmds.motd: true
+      rcmds.deljail: true
+      rcmds.force: true
+      rcmds.ping: true
+      rcmds.invsee: true
+      rcmds.realname: true
+      rcmds.nick: true
+      rcmds.ingot2block: true
+      rcmds.near: true
+      rcmds.kill: true
+      rcmds.suicide: true
+      rcmds.killall: true
+      rcmds.muteall: true
+      rcmds.kit: true
+      rcmds.rules: true
+      rcmds.rcmds: true
+        
+      rcmds.exempt.speak: true
+      rcmds.exempt.sci: true
+      rcmds.exempt.harm: true
+      rcmds.exempt.starve: true
+      rcmds.exempt.slap: true
+      rcmds.exempt.facepalm: true
+      rcmds.exempt.ragequit: true
+      rcmds.exempt.freeze: true
+      rcmds.exempt.kick: true
+      rcmds.exempt.ban: true
+      rcmds.exempt.mute: true
+      rcmds.exempt.warn: true
+      rcmds.exempt.strike: true
+      rcmds.exempt.teleport: true
+      rcmds.exempt.burn: true
+      rcmds.exempt.jail: true
+      rcmds.exempt.tp2p: true
+      rcmds.exempt.warp: true
+      rcmds.exempt.force: true
+      rcmds.exempt.gamemode: true
+      rcmds.exempt.nick: true
+      rcmds.exempt.kill: true
+      
+      rcmds.allowed.item: true
+        
+      rcmds.clearinventory.others: true
+      rcmds.megastrike.others: true
+      rcmds.pext.others: true
+      rcmds.strike.others: true
+      rcmds.god.others: true
+      rcmds.warp.others: true
+      rcmds.nick.others: true
+      rcmds.listwarns.others: true
+        
+      rcmds.see.ban: true
+      rcmds.see.kick: true
+      rcmds.see.warn: true
+      rcmds.see.unban: true
+      
+      rcmds.sign.warp: true
+      rcmds.sign.time: true
+      rcmds.sign.disposal: true
+      
+      rcmds.sign.use.warp: true
+      rcmds.sign.use.time: true
+      rcmds.sign.use.disposal: true
+        
+      rcmds.notarget: true
+      
