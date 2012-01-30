@@ -142,7 +142,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         String line1 = ChatColor.stripColor(s.getLine(0));
         String line2 = ChatColor.stripColor(s.getLine(1));
         String line3 = ChatColor.stripColor(s.getLine(2));
-        //String line4 = ChatColor.stripColor(s.getLine(3));
+        String line4 = ChatColor.stripColor(s.getLine(3));
 
         //Warp signs
         if (line1.equalsIgnoreCase("[warp]")) {
@@ -239,6 +239,40 @@ public class RoyalCommandsPlayerListener implements Listener {
 
             p.setHealth(20);
         }
+
+        //Weather signs
+        if (line1.equalsIgnoreCase("[weather]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.use.weather")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+            Weather.changeWeather(p, line2.trim());
+        }
+
+        //Give signs
+        if (line1.equalsIgnoreCase("[give]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.use.give")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+            int amount;
+            try {
+                amount = Integer.parseInt(line3);
+            } catch (Exception ex) {
+                p.sendMessage(ChatColor.RED + "The amount was not a valid number!");
+                return;
+            }
+            Double charge = getCharge(line4);
+            if (charge == null) {
+                p.sendMessage(ChatColor.RED + "The cost is invalid!");
+                s.setLine(0, ChatColor.RED + line1);
+                return;
+            } else if (charge >= 0) {
+                s.setLine(3, ChatColor.DARK_GREEN + line4);
+                RUtils.chargePlayer(p, charge);
+            }
+            Give.giveItemStandalone(p, plugin, line2, amount);
+        }
     }
 
     @EventHandler()
@@ -249,7 +283,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         String line1 = ChatColor.stripColor(e.getLine(0));
         String line2 = ChatColor.stripColor(e.getLine(1));
         String line3 = ChatColor.stripColor(e.getLine(2));
-        //String line4 = ChatColor.stripColor(s.getLine(3));
+        String line4 = ChatColor.stripColor(e.getLine(3));
 
         //Warp signs
         if (line1.equalsIgnoreCase("[warp]")) {
@@ -343,6 +377,64 @@ public class RoyalCommandsPlayerListener implements Listener {
 
             e.setLine(0, ChatColor.BLUE + line1);
             p.sendMessage(ChatColor.BLUE + "Heal sign created successfully!");
+        }
+
+        //Weather signs
+        if (line1.equalsIgnoreCase("[weather]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.weather")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+
+            Double charge = getCharge(line3);
+            if (charge == null) {
+                p.sendMessage(ChatColor.RED + "The cost is invalid!");
+                e.setLine(0, ChatColor.RED + line1);
+                return;
+            } else if (charge >= 0) {
+                e.setLine(2, ChatColor.DARK_GREEN + line3);
+            }
+
+            boolean valid = Weather.validWeather(line2.trim());
+            if (!valid) {
+                p.sendMessage(ChatColor.RED + "Invalid weather condition!");
+                e.setLine(0, ChatColor.RED + line1);
+                return;
+            }
+            e.setLine(0, ChatColor.BLUE + line1);
+            p.sendMessage(ChatColor.BLUE + "Weather sign created successfully!");
+        }
+
+        //Give signs
+        if (line1.equalsIgnoreCase("[give]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.give")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+
+            Double charge = getCharge(line4);
+            if (charge == null) {
+                p.sendMessage(ChatColor.RED + "The cost is invalid!");
+                e.setLine(0, ChatColor.RED + line1);
+                return;
+            } else if (charge >= 0) {
+                e.setLine(3, ChatColor.DARK_GREEN + line4);
+            }
+
+            boolean valid = Give.validItem(line2.trim());
+            if (!valid) {
+                p.sendMessage(ChatColor.RED + "That item is invalid!");
+                e.setLine(0, ChatColor.RED + line1);
+                return;
+            }
+            try {
+                Integer.parseInt(line3);
+            } catch (Exception ex) {
+                p.sendMessage(ChatColor.RED + "The amount was not a valid number!");
+                return;
+            }
+            e.setLine(0, ChatColor.BLUE + line1);
+            p.sendMessage(ChatColor.BLUE + "Give sign created successfully!");
         }
     }
 

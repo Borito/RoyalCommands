@@ -20,6 +20,89 @@ public class Give implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    public static boolean validItem(String itemname) {
+        try {
+            Integer.parseInt(itemname);
+        } catch (Exception e) {
+            try {
+                Material.getMaterial(itemname.trim().replace(" ", "_").toUpperCase()).getId();
+            } catch (Exception e2) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean giveItemStandalone(Player target, RoyalCommands plugin, String itemname, int amount) {
+        if (target == null) {
+            return false;
+        }
+        String called = itemname;
+        String data = null;
+        if (called.contains(":")) {
+            String[] calleds = called.split(":");
+            called = calleds[0].trim();
+            data = calleds[1].trim();
+        }
+        Integer iblock;
+        try {
+            iblock = Integer.parseInt(called);
+        } catch (Exception e) {
+            try {
+                iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
+            } catch (Exception e2) {
+                target.sendMessage(ChatColor.RED + "That block does not exist!");
+                return false;
+            }
+        }
+        if (amount < 1) {
+            amount = 1;
+        }
+        if (iblock == 0) {
+            target.sendMessage(ChatColor.RED + "You cannot spawn air!");
+            return false;
+        }
+        ItemStack toInv;
+        if (data != null) {
+            if (Material.getMaterial(iblock) == null) {
+                target.sendMessage(ChatColor.RED + "Invalid item ID!");
+                return false;
+            }
+            int data2;
+            try {
+                data2 = Integer.parseInt(data);
+            } catch (Exception e) {
+                target.sendMessage(ChatColor.RED + "The metadata was invalid!");
+                return false;
+            }
+            if (data2 < 0) {
+                target.sendMessage(ChatColor.RED + "The metadata was invalid!");
+                return false;
+            }
+            toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount, (short) data2);
+        } else {
+            toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount);
+        }
+        target.sendMessage(ChatColor.BLUE
+                + "Giving "
+                + ChatColor.GRAY
+                + amount
+                + ChatColor.BLUE
+                + " of "
+                + ChatColor.GRAY
+                + Material.getMaterial(iblock).toString()
+                .toLowerCase().replace("_", " ")
+                + ChatColor.BLUE + " to " + ChatColor.GRAY
+                + target.getName() + ChatColor.BLUE + ".");
+        HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
+        if (!left.isEmpty() && plugin.dropExtras) {
+            for (ItemStack item : left.values()) {
+                target.getWorld().dropItemNaturally(target.getLocation(), item);
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label,
                              String[] args) {

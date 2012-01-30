@@ -4,6 +4,7 @@ version: 0.1.6
 website: http://royaldev.org/
 author: jkcclemens
 depend: [Vault]
+softdepend: [VanishNoPacket]
 
 commands:
   level:
