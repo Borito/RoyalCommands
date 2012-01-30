@@ -843,6 +843,12 @@ permissions:
   rcmds.sign.disposal:
     description: Allows the player to create disposal signs.
     default: op
+  rcmds.sign.weather:
+    description: Allows the player to create weather signs.
+    default: op
+  rcmds.sign.give:
+    description: Allows the player to create give signs.
+    default: op
 
   rcmds.sign.use.warp:
     description: Allows the player to use warp signs.
@@ -852,6 +858,12 @@ permissions:
     default: op
   rcmds.sign.use.disposal:
     description: Allows the player to use disposal signs.
+    default: op
+  rcmds.sign.use.weather:
+    description: Allows the player to use weather signs.
+    default: op
+  rcmds.sign.use.give:
+    description: Allows the player to use give signs.
     default: op
     
   rcmds.notarget:
@@ -1050,10 +1062,14 @@ permissions:
       rcmds.sign.warp: true
       rcmds.sign.time: true
       rcmds.sign.disposal: true
+      rcmds.sign.weather: true
+      rcmds.sign.give: true
       
       rcmds.sign.use.warp: true
       rcmds.sign.use.time: true
       rcmds.sign.use.disposal: true
+      rcmds.sign.use.weather: true
+      rcmds.sign.use.give: true
         
       rcmds.notarget: true
       
