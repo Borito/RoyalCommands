@@ -444,6 +444,11 @@ commands:
     usage: /<command>
     aliases: [rule]
 
+  broadcast:
+    description: Broadcasts a message to the server.
+    usage: /<command> [message]
+    aliases: [bc, broadc, bcast]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -722,6 +727,9 @@ permissions:
   rcmds.rules:
     description: Allows you to see server rules.
     default: op
+  rcmds.broadcast:
+    description: Allows you to broadcast messages to the server.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -896,10 +904,24 @@ permissions:
       rcmds.sign.warp: true
       rcmds.sign.time: true
       rcmds.sign.disposal: true
+      rcmds.sign.give: true
+      rcmds.sign.command: true
 
       rcmds.sign.use.warp: true
       rcmds.sign.use.time: true
       rcmds.sign.use.disposal: true
+      rcmds.sign.use.give: true
+      rcmds.sign.use.command: true
+
+  rcmds.sign.use.*:
+    description: Gives every sign use permisison.
+    default: false
+    children:
+      rcmds.sign.use.warp: true
+      rcmds.sign.use.time: true
+      rcmds.sign.use.disposal: true
+      rcmds.sign.use.give: true
+      rcmds.sign.use.command: true
 
     
   rcmds.exempt.*:
@@ -1024,6 +1046,7 @@ permissions:
       rcmds.muteall: true
       rcmds.kit: true
       rcmds.rules: true
+      rcmds.broadcast: true
       rcmds.rcmds: true
         
       rcmds.exempt.speak: true
@@ -1070,12 +1093,14 @@ permissions:
       rcmds.sign.disposal: true
       rcmds.sign.weather: true
       rcmds.sign.give: true
+      rcmds.sign.command: true
       
       rcmds.sign.use.warp: true
       rcmds.sign.use.time: true
       rcmds.sign.use.disposal: true
       rcmds.sign.use.weather: true
       rcmds.sign.use.give: true
+      rcmds.sign.use.command: true
         
       rcmds.notarget: true
       

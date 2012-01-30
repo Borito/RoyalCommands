@@ -69,6 +69,7 @@ public class RoyalCommands extends JavaPlugin {
     public String defaultWarn = null;
     public String welcomeMessage = null;
     public String noBuildMessage = null;
+    public String bcastFormat = null;
     public static String gUid = null;
 
     public Integer defaultStack = null;
@@ -131,6 +132,7 @@ public class RoyalCommands extends JavaPlugin {
         kickMessage = this.getConfig().getString("default_kick_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         defaultWarn = this.getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         welcomeMessage = this.getConfig().getString("welcome_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
+        bcastFormat = this.getConfig().getString("bcast_format").replaceAll("(&([a-f0-9]))", "\u00A7$2");;
         gUid = this.getConfig().getString("guid_do_not_change");
 
         defaultStack = this.getConfig().getInt("default_stack_size");
@@ -375,6 +377,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("muteall").setExecutor(new MuteAll(this));
         getCommand("kit").setExecutor(new CmdKit(this));
         getCommand("rules").setExecutor(new CmdRules(this));
+        getCommand("broadcast").setExecutor(new CmdBroadcast(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
