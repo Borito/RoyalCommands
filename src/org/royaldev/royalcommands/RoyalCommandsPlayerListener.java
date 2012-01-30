@@ -163,7 +163,8 @@ public class RoyalCommandsPlayerListener implements Listener {
                 return;
             } else if (charge >= 0) {
                 s.setLine(2, ChatColor.DARK_GREEN + line3);
-                RUtils.chargePlayer(p, charge);
+                boolean did = RUtils.chargePlayer(p, charge);
+                if (!did) return;
             }
 
             Location warpLoc = Warp.pWarp(p, plugin, line2.toLowerCase());
@@ -193,7 +194,8 @@ public class RoyalCommandsPlayerListener implements Listener {
                 return;
             } else if (charge >= 0) {
                 s.setLine(2, ChatColor.DARK_GREEN + line3);
-                RUtils.chargePlayer(p, charge);
+                boolean did = RUtils.chargePlayer(p, charge);
+                if (!did) return;
             }
 
             long time = Time.getValidTime(line2);
@@ -214,7 +216,8 @@ public class RoyalCommandsPlayerListener implements Listener {
                 return;
             } else if (charge >= 0) {
                 s.setLine(1, ChatColor.DARK_GREEN + line2);
-                RUtils.chargePlayer(p, charge);
+                boolean did = RUtils.chargePlayer(p, charge);
+                if (!did) return;
             }
 
             RUtils.showEmptyChest(p);
@@ -234,7 +237,8 @@ public class RoyalCommandsPlayerListener implements Listener {
                 return;
             } else if (charge >= 0) {
                 s.setLine(1, ChatColor.DARK_GREEN + line2);
-                RUtils.chargePlayer(p, charge);
+                boolean did = RUtils.chargePlayer(p, charge);
+                if (!did) return;
             }
 
             p.setHealth(20);
@@ -245,6 +249,16 @@ public class RoyalCommandsPlayerListener implements Listener {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.weather")) {
                 RUtils.dispNoPerms(p);
                 return;
+            }
+            Double charge = getCharge(line3);
+            if (charge == null) {
+                p.sendMessage(ChatColor.RED + "The cost is invalid!");
+                s.setLine(0, ChatColor.RED + line1);
+                return;
+            } else if (charge >= 0) {
+                s.setLine(2, ChatColor.DARK_GREEN + line3);
+                boolean did = RUtils.chargePlayer(p, charge);
+                if (!did) return;
             }
             Weather.changeWeather(p, line2.trim());
         }
@@ -269,14 +283,15 @@ public class RoyalCommandsPlayerListener implements Listener {
                 return;
             } else if (charge >= 0) {
                 s.setLine(3, ChatColor.DARK_GREEN + line4);
-                RUtils.chargePlayer(p, charge);
+                boolean did = RUtils.chargePlayer(p, charge);
+                if (!did) return;
             }
             Give.giveItemStandalone(p, plugin, line2, amount);
         }
-        
+
         //Command signs
         if (line1.equalsIgnoreCase("[commands]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.command")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.use.command")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -288,7 +303,8 @@ public class RoyalCommandsPlayerListener implements Listener {
                 return;
             } else if (charge >= 0) {
                 s.setLine(2, ChatColor.DARK_GREEN + line3);
-                RUtils.chargePlayer(p, charge);
+                boolean did = RUtils.chargePlayer(p, charge);
+                if (!did) return;
             }
             if (line2.isEmpty()) {
                 s.setLine(0, ChatColor.RED + line1);
@@ -460,7 +476,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.setLine(0, ChatColor.BLUE + line1);
             p.sendMessage(ChatColor.BLUE + "Give sign created successfully!");
         }
-        
+
         //Command signs
         if (line1.equalsIgnoreCase("[commands]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.command")) {
