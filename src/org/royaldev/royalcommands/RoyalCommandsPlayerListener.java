@@ -273,6 +273,30 @@ public class RoyalCommandsPlayerListener implements Listener {
             }
             Give.giveItemStandalone(p, plugin, line2, amount);
         }
+        
+        //Command signs
+        if (line1.equalsIgnoreCase("[commands]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.command")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+
+            Double charge = getCharge(line3);
+            if (charge == null) {
+                p.sendMessage(ChatColor.RED + "The cost is invalid!");
+                s.setLine(0, ChatColor.RED + line1);
+                return;
+            } else if (charge >= 0) {
+                s.setLine(2, ChatColor.DARK_GREEN + line3);
+                RUtils.chargePlayer(p, charge);
+            }
+            if (line2.isEmpty()) {
+                s.setLine(0, ChatColor.RED + line1);
+                p.sendMessage(ChatColor.RED + "No command specified!");
+                return;
+            }
+            p.performCommand(line2.trim());
+        }
     }
 
     @EventHandler()
@@ -435,6 +459,30 @@ public class RoyalCommandsPlayerListener implements Listener {
             }
             e.setLine(0, ChatColor.BLUE + line1);
             p.sendMessage(ChatColor.BLUE + "Give sign created successfully!");
+        }
+        
+        //Command signs
+        if (line1.equalsIgnoreCase("[commands]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.command")) {
+                RUtils.dispNoPerms(p);
+                return;
+            }
+
+            Double charge = getCharge(line3);
+            if (charge == null) {
+                p.sendMessage(ChatColor.RED + "The cost is invalid!");
+                e.setLine(0, ChatColor.RED + line1);
+                return;
+            } else if (charge >= 0) {
+                e.setLine(2, ChatColor.DARK_GREEN + line3);
+            }
+            if (line2.isEmpty()) {
+                e.setLine(0, ChatColor.RED + line1);
+                p.sendMessage(ChatColor.RED + "No command specified!");
+                return;
+            }
+            p.sendMessage(ChatColor.BLUE + "Command sign created successfully.");
+            e.setLine(0, ChatColor.BLUE + line1);
         }
     }
 
