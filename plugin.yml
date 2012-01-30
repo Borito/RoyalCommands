@@ -849,6 +849,9 @@ permissions:
   rcmds.sign.give:
     description: Allows the player to create give signs.
     default: op
+  rcmds.sign.command:
+    description: Allows the player to create command signs.
+    default: op
 
   rcmds.sign.use.warp:
     description: Allows the player to use warp signs.
@@ -864,6 +867,9 @@ permissions:
     default: op
   rcmds.sign.use.give:
     description: Allows the player to use give signs.
+    default: op
+  rcmds.sign.use.command:
+    description: Allows the player to use command signs.
     default: op
     
   rcmds.notarget:

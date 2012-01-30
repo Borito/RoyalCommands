@@ -290,7 +290,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
 
         //Command signs
-        if (line1.equalsIgnoreCase("[commands]")) {
+        if (line1.equalsIgnoreCase("[command]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.command")) {
                 RUtils.dispNoPerms(p);
                 return;
@@ -478,7 +478,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
 
         //Command signs
-        if (line1.equalsIgnoreCase("[commands]")) {
+        if (line1.equalsIgnoreCase("[command]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.command")) {
                 RUtils.dispNoPerms(p);
                 return;
