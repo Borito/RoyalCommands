@@ -797,6 +797,9 @@ permissions:
   rcmds.exempt.nick:
     description: Makes the player immune to /nick.
     default: false
+  rcmds.exempt.feed:
+    description: Makes the player immune to /feed.
+    default: false
   rcmds.exempt.kill:
     description: Makes the player immune to /kill.
     default: false
@@ -879,6 +882,18 @@ permissions:
   rcmds.sign.use.command:
     description: Allows the player to use command signs.
     default: op
+
+  rcmds.setarmor.none:
+    description: Allows the player to set no armor.
+    default: op
+  rcmds.setarmor.diamond:
+    description: Allows the player to set diamond armor.
+    default: op
+  rcmds.setarmor.gold:
+    description: Allows the player to set gold armor.
+    default: op
+  rcmds.setarmor.iron:
+    description: Allows the player to set iron armor.
     
   rcmds.notarget:
     description: Disables the mobs' ability to target the player.
@@ -928,6 +943,7 @@ permissions:
     description: Gives every exempt permission.
     default: false
     children:
+      rcmds.exempt.feed: true
       rcmds.exempt.speak: true
       rcmds.exempt.sci: true
       rcmds.exempt.harm: true
@@ -950,6 +966,15 @@ permissions:
       rcmds.exempt.gamemode: true
       rcmds.exempt.nick: true
       rcmds.exempt.kill: true
+
+  rcmds.setarmor.*:
+    description: Allows the player to set every armor.
+    default: false
+    children:
+      rcmds.setarmor.none: true
+      rcmds.setarmor.diamond: true
+      rcmds.setarmor.gold: true
+      rcmds.setarmor.iron: true
 
   rcmds.*:
     description: Gives every permission.
@@ -1070,6 +1095,7 @@ permissions:
       rcmds.exempt.force: true
       rcmds.exempt.gamemode: true
       rcmds.exempt.nick: true
+      rcmds.exempt.feed: true
       rcmds.exempt.kill: true
       
       rcmds.allowed.item: true
@@ -1101,6 +1127,11 @@ permissions:
       rcmds.sign.use.weather: true
       rcmds.sign.use.give: true
       rcmds.sign.use.command: true
+
+      rcmds.setarmor.none: true
+      rcmds.setarmor.diamond: true
+      rcmds.setarmor.gold: true
+      rcmds.setarmor.iron: true
         
       rcmds.notarget: true
       
