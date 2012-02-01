@@ -28,7 +28,11 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
-import org.royaldev.rcommands.*;
+import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
+import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
+import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
+import org.royaldev.royalcommands.listeners.SignListener;
+import org.royaldev.royalcommands.rcommands.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -104,6 +108,7 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
     private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
+    private final SignListener signListener = new SignListener(this);
     public final PConfManager pconfm;
 
     public Logger log = Logger.getLogger("Minecraft");
@@ -132,7 +137,7 @@ public class RoyalCommands extends JavaPlugin {
         kickMessage = this.getConfig().getString("default_kick_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         defaultWarn = this.getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         welcomeMessage = this.getConfig().getString("welcome_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        bcastFormat = this.getConfig().getString("bcast_format").replaceAll("(&([a-f0-9]))", "\u00A7$2");;
+        bcastFormat = this.getConfig().getString("bcast_format").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         gUid = this.getConfig().getString("guid_do_not_change");
 
         defaultStack = this.getConfig().getInt("default_stack_size");
@@ -284,6 +289,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(playerListener, this);
         pm.registerEvents(entityListener, this);
         pm.registerEvents(blockListener, this);
+        pm.registerEvents(signListener, this);
 
         getCommand("level").setExecutor(new Level(this));
         getCommand("setlevel").setExecutor(new Setlevel(this));
