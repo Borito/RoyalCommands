@@ -17,8 +17,7 @@ public class Vtphere implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("vtphere")) {
             if (!plugin.isAuthorized(cs, "rcmds.vtphere")) {
                 RUtils.dispNoPerms(cs);
@@ -33,21 +32,12 @@ public class Vtphere implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (plugin.isVanished(victim)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                return true;
-            }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command cannot be used in console.");
+                cs.sendMessage(ChatColor.RED + "This command cannot be used in console.");
                 return true;
             }
             Player player = (Player) cs;
-            cs.sendMessage(ChatColor.BLUE + "Teleporting player "
-                    + ChatColor.GRAY + victim.getName() + ChatColor.BLUE
-                    + " to you.");
-            victim.sendMessage(ChatColor.BLUE + "You are being teleported to "
-                    + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(ChatColor.BLUE + "Teleporting player " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + " to you.");
             Back.backdb.put(victim, victim.getLocation());
             victim.teleport(player.getLocation());
             return true;
