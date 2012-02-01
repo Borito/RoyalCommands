@@ -1,6 +1,6 @@
 name: RoyalCommands
 main: org.royaldev.royalcommands.RoyalCommands
-version: 0.1.6
+version: 0.1.7
 website: http://royaldev.org/
 author: jkcclemens
 depend: [Vault]
