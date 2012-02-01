@@ -62,7 +62,7 @@ public class DevilThread implements Runnable {
         if (result.equals("SUCCESS")) {
             if (hook.showHookedMessage) {
                 // Success
-                hook.log("Successfully logged startup for " + hook.getPlugin()
+                hook.log("Successfully logged " + hook.getPlugin()
                         + " version " + hook.getVersion());
             }
             // Check for missing information
