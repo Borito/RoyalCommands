@@ -449,6 +449,11 @@ commands:
     usage: /<command> [message]
     aliases: [bc, broadc, bcast]
 
+  hug:
+    description: Broadcasts a hug to the server.
+    usage: /<command>
+    aliases: [embrace]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -729,6 +734,9 @@ permissions:
     default: op
   rcmds.broadcast:
     description: Allows you to broadcast messages to the server.
+    default: op
+  rcmds.hug:
+    description: Allows you to hug other players.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
@@ -1072,6 +1080,7 @@ permissions:
       rcmds.kit: true
       rcmds.rules: true
       rcmds.broadcast: true
+      rcmds.hug: true
       rcmds.rcmds: true
         
       rcmds.exempt.speak: true
