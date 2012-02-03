@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.Afk;
+import org.royaldev.royalcommands.rcommands.Back;
 import org.royaldev.royalcommands.rcommands.Motd;
 
 import java.io.File;
@@ -178,6 +179,10 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
         if (plugin.motdLogin) {
             Motd.showMotd(event.getPlayer());
+        }
+        if (plugin.sendToSpawn) {
+            if (plugin.sstBack) Back.backdb.put(event.getPlayer(), event.getPlayer().getLocation());
+            event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
         }
     }
 }
