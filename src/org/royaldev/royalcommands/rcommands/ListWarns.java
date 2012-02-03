@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -29,6 +30,10 @@ public class ListWarns implements CommandExecutor {
                 return true;
             }
             if (args.length < 1) {
+                if (!(cs instanceof Player)) {
+                    cs.sendMessage(cmd.getDescription());
+                    return false;
+                }
                 File pconfl = new File(plugin.getDataFolder() + "/userdata/" + cs.getName().toLowerCase() + ".yml");
                 if (pconfl.exists()) {
                     FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
