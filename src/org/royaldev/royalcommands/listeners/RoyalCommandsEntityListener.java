@@ -71,7 +71,8 @@ public class RoyalCommandsEntityListener implements Listener {
     public void onEntityTarget(EntityTargetEvent event) {
         if (event.getTarget() instanceof Player) {
             Player p = (Player) event.getTarget();
-            if (plugin.isAuthorized(p, "rcmds.notarget")) event.setCancelled(true);
+            if (plugin.isAuthorized(p, "rcmds.notarget") && !plugin.isAuthorized(p, "rcmds.exempt.notarget"))
+                event.setCancelled(true);
         }
     }
 

@@ -811,6 +811,9 @@ permissions:
   rcmds.exempt.kill:
     description: Makes the player immune to /kill.
     default: false
+  rcmds.exempt.notarget:
+    description: Makes the player visible to mobs.
+    default: false
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -951,6 +954,7 @@ permissions:
     description: Gives every exempt permission.
     default: false
     children:
+      rcmds.exempt.notarget: true
       rcmds.exempt.feed: true
       rcmds.exempt.speak: true
       rcmds.exempt.sci: true
