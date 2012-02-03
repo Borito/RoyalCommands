@@ -36,10 +36,11 @@ public class CmdExplode implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            if (args.length > 1) {
+            if (args.length < 1) {
                 Player p = (Player) cs;
                 Location l = RUtils.getTarget(p).getLocation();
                 p.getWorld().createExplosion(l, 4);
+                return true;
             }
             if (args.length > 0) {
                 Player t = plugin.getServer().getPlayer(args[0].trim());
