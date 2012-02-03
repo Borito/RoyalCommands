@@ -32,22 +32,29 @@ public class CmdExplode implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 1) {
+            if (args.length < 1 && !(cs instanceof Player)) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player t = plugin.getServer().getPlayer(args[0].trim());
-            if (t == null || plugin.isVanished(t)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+            if (args.length > 1) {
+                Player p = (Player) cs;
+                Location l = RUtils.getTarget(p).getLocation();
+                p.getWorld().createExplosion(l, 4);
+            }
+            if (args.length > 0) {
+                Player t = plugin.getServer().getPlayer(args[0].trim());
+                if (t == null || plugin.isVanished(t)) {
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
+                if (plugin.isAuthorized(t, "rcmds.exempt.explode")) {
+                    cs.sendMessage(ChatColor.RED + "You may not explode that player!");
+                    return true;
+                }
+                explodePlayer(t);
+                cs.sendMessage(ChatColor.BLUE + "You have exploded " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + "!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.explode")) {
-                cs.sendMessage(ChatColor.RED + "You may not explode that player!");
-                return true;
-            }
-            explodePlayer(t);
-            cs.sendMessage(ChatColor.BLUE + "You have exploded " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + "!");
-            return true;
         }
         return false;
     }

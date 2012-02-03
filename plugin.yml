@@ -455,7 +455,7 @@ commands:
     aliases: [embrace]
 
   explode:
-    description: Explodes the specified player.
+    description: Explodes where the player is looking or the specified player.
     usage: /<command> [player]
     aliases: [destroy, end]
 
