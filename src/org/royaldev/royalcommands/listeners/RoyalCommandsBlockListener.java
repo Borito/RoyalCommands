@@ -18,38 +18,22 @@ public class RoyalCommandsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "frozen")) {
-            event.setCancelled(true);
-        }
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "jailed")) {
-            event.setCancelled(true);
-        }
-        if (plugin.buildPerm) {
-            if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) {
-                event.getPlayer().sendMessage(plugin.noBuildMessage);
-                event.setCancelled(true);
-            }
-        }
+        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
+        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) event.setCancelled(true);
+        if (!plugin.buildPerm) return;
+        if (plugin.isAuthorized(event.getPlayer(), "rcmds.build")) return;
+        event.getPlayer().sendMessage(plugin.noBuildMessage);
+        event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "frozen")) {
-            event.setCancelled(true);
-        }
-        if (PConfManager.getPValBoolean(event.getPlayer(),
-                "jailed")) {
-            event.setCancelled(true);
-        }
-        if (plugin.buildPerm) {
-            if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) {
-                event.getPlayer().sendMessage(plugin.noBuildMessage);
-                event.setCancelled(true);
-            }
-        }
+        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
+        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) event.setCancelled(true);
+        if (!plugin.buildPerm) return;
+        if (plugin.isAuthorized(event.getPlayer(), "rcmds.build")) return;
+        event.getPlayer().sendMessage(plugin.noBuildMessage);
+        event.setCancelled(true);
     }
 
 }

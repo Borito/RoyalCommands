@@ -24,64 +24,55 @@ public class RoyalCommandsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDeath(EntityDeathEvent ent) {
-        if (ent instanceof PlayerDeathEvent) {
-            if (plugin.backDeath) {
-                PlayerDeathEvent e = (PlayerDeathEvent) ent;
-                if (!(e.getEntity() instanceof Player)) return;
-                Player p = (Player) e.getEntity();
-                Location pLoc = p.getLocation();
-                Back.backdb.put(p, pLoc);
-                p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
-            }
-        }
+        if (!(ent instanceof PlayerDeathEvent)) return;
+        if (!plugin.backDeath) return;
+        PlayerDeathEvent e = (PlayerDeathEvent) ent;
+        if (!(e.getEntity() instanceof Player)) return;
+        Player p = (Player) e.getEntity();
+        Location pLoc = p.getLocation();
+        Back.backdb.put(p, pLoc);
+        p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (event instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
-            Entity e = ev.getDamager();
-            Entity ed = ev.getEntity();
-            if (e instanceof Player) {
-                Player p = (Player) e;
-                if (PConfManager.getPValBoolean(p, "ohk")) {
-                    if (ed instanceof LivingEntity) {
-                        LivingEntity le = (LivingEntity) ed;
-                        int leh = le.getMaxHealth();
-                        le.damage(leh + 1);
-                    }
-                    if (ed instanceof EnderDragonPart) {
-                        EnderDragonPart ldp = (EnderDragonPart) ed;
-                        LivingEntity le = ldp.getParent();
-                        int leh = le.getMaxHealth();
-                        le.damage(leh + 1);
-                    }
-                }
-            }
+        if (!(event instanceof EntityDamageByEntityEvent)) return;
+        EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
+        Entity e = ev.getDamager();
+        Entity ed = ev.getEntity();
+        if (!(e instanceof Player)) return;
+        Player p = (Player) e;
+        if (!PConfManager.getPValBoolean(p, "ohk")) return;
+        if (ed instanceof LivingEntity) {
+            LivingEntity le = (LivingEntity) ed;
+            int leh = le.getMaxHealth();
+            le.damage(leh + 1);
         }
-        if (event.getEntity() instanceof Player) {
-            Player p = (Player) event.getEntity();
-            if (PConfManager.getPValBoolean(p, "godmode")) {
-                event.setCancelled(true);
-            }
+        if (ed instanceof EnderDragonPart) {
+            EnderDragonPart ldp = (EnderDragonPart) ed;
+            LivingEntity le = ldp.getParent();
+            int leh = le.getMaxHealth();
+            le.damage(leh + 1);
+        }
+        if (ed instanceof Player) {
+            Player p2 = (Player) event.getEntity();
+            if (PConfManager.getPValBoolean(p2, "godmode")) event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityTarget(EntityTargetEvent event) {
-        if (event.getTarget() instanceof Player) {
-            Player p = (Player) event.getTarget();
-            if (plugin.isAuthorized(p, "rcmds.notarget") && !plugin.isAuthorized(p, "rcmds.exempt.notarget"))
-                event.setCancelled(true);
-        }
+        if (!(event.getTarget() instanceof Player)) return;
+        Player p = (Player) event.getTarget();
+        if (plugin.isAuthorized(p, "rcmds.notarget") && !plugin.isAuthorized(p, "rcmds.exempt.notarget"))
+            event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player p = (Player) event.getEntity();
-            if (PConfManager.getPValBoolean(p, "godmode")) event.setFoodLevel(20);
-        }
+        if (!(event.getEntity() instanceof Player)) return;
+        Player p = (Player) event.getEntity();
+        if (PConfManager.getPValBoolean(p, "godmode")) event.setFoodLevel(20);
     }
 
 }

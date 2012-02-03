@@ -1,9 +1,7 @@
 package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -11,14 +9,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.PConfManager;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.rcommands.*;
+import org.royaldev.royalcommands.rcommands.Afk;
+import org.royaldev.royalcommands.rcommands.Motd;
 
 import java.io.File;
 import java.util.List;
@@ -42,13 +39,14 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
             for (String command : plugin.muteCmds) {
-                if (event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())) {
-                    event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
-                    log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to use that command, but is muted.");
-                    event.setCancelled(true);
-                }
+                if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
+                    continue;
+                event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
+                log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to use that command, but is muted.");
+                event.setCancelled(true);
             }
         }
+
         if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) {
             event.getPlayer().sendMessage(ChatColor.RED + "You are jailed.");
             event.setCancelled(true);
