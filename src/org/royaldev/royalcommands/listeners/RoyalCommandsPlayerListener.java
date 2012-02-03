@@ -181,7 +181,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             Motd.showMotd(event.getPlayer());
         }
         if (plugin.sendToSpawn) {
-            if (plugin.sstBack) Back.backdb.put(event.getPlayer(), event.getPlayer().getLocation());
+            if (plugin.stsBack) Back.backdb.put(event.getPlayer(), event.getPlayer().getLocation());
             event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
         }
     }
