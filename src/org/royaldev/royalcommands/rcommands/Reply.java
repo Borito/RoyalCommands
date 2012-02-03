@@ -18,8 +18,7 @@ public class Reply implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("reply")) {
             if (!plugin.isAuthorized(cs, "rcmds.reply")) {
                 RUtils.dispNoPerms(cs);
@@ -38,6 +37,10 @@ public class Reply implements CommandExecutor {
                         Message.replydb.remove(t);
                         Message.replydb.put(t, cs);
                     }
+                }
+                if ((t instanceof Player) && !((Player) t).isOnline()) {
+                    cs.sendMessage(ChatColor.RED + "That player is offline!");
+                    return true;
                 }
                 String m = plugin.getFinalArg(args, 0).trim();
                 cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You" + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName() + ChatColor.GRAY + "] " + m);
