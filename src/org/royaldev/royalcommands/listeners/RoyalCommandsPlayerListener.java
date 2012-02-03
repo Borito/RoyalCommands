@@ -171,6 +171,9 @@ public class RoyalCommandsPlayerListener implements Listener {
                 welcomemessage = welcomemessage.replace("{world}", event.getPlayer().getWorld().getName());
                 plugin.getServer().broadcastMessage(welcomemessage);
             }
+            if (plugin.stsNew) {
+                event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
+            }
         } else {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
             String playerip = event.getPlayer().getAddress().getAddress().toString();

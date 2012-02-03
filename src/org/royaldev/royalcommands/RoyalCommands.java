@@ -70,6 +70,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean explodeFire = null;
     public Boolean sendToSpawn = null;
     public Boolean stsBack = null;
+    public Boolean stsNew = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -140,6 +141,7 @@ public class RoyalCommands extends JavaPlugin {
         explodeFire = this.getConfig().getBoolean("explode_fire");
         sendToSpawn = this.getConfig().getBoolean("send_to_spawn");
         stsBack = this.getConfig().getBoolean("sts_back");
+        stsNew = this.getConfig().getBoolean("send_to_spawn_new");
 
 
         banMessage = this.getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
