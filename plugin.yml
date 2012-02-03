@@ -294,7 +294,7 @@ commands:
     
   listwarns:
     description: Lists the warnings a player has.
-    usage: /<command>
+    usage: /<command> (player)
     aliases: [warns, lswarns, lwarns, lwarn, lswarn, listwarn]
   
   more:
@@ -453,6 +453,11 @@ commands:
     description: Broadcasts a hug to the server.
     usage: /<command>
     aliases: [embrace]
+
+  explode:
+    description: Explodes the specified player.
+    usage: /<command> [player]
+    aliases: [destroy, end]
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -738,6 +743,8 @@ permissions:
   rcmds.hug:
     description: Allows you to hug other players.
     default: op
+  rcmds.explode:
+    description: Allows you to explode other players.
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -812,8 +819,10 @@ permissions:
     description: Makes the player immune to /kill.
     default: false
   rcmds.exempt.notarget:
-    description: Makes the player visible to mobs.
+    description: Makes the player visible to mobs if they have rcmds.notarget.
     default: false
+  rcmds.exempt.explode:
+    description: Makes the player immune to /explode.
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -978,6 +987,8 @@ permissions:
       rcmds.exempt.gamemode: true
       rcmds.exempt.nick: true
       rcmds.exempt.kill: true
+      rcmds.exempt.explode: true
+      rcmds.exempt.notarget: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -1085,6 +1096,7 @@ permissions:
       rcmds.rules: true
       rcmds.broadcast: true
       rcmds.hug: true
+      rcmds.explode: true
       rcmds.rcmds: true
         
       rcmds.exempt.speak: true
@@ -1110,6 +1122,8 @@ permissions:
       rcmds.exempt.nick: true
       rcmds.exempt.feed: true
       rcmds.exempt.kill: true
+      rcmds.exempt.explode: true
+      rcmds.exempt.notarget: true
       
       rcmds.allowed.item: true
         

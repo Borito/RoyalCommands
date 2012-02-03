@@ -385,6 +385,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("rules").setExecutor(new CmdRules(this));
         getCommand("broadcast").setExecutor(new CmdBroadcast(this));
         getCommand("hug").setExecutor(new CmdHug(this));
+        getCommand("explode").setExecutor(new CmdExplode(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
