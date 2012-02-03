@@ -67,6 +67,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean motdLogin = null;
     public Boolean dropExtras = null;
     public Boolean kitPerms = null;
+    public Boolean explodeFire = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -82,6 +83,9 @@ public class RoyalCommands extends JavaPlugin {
 
     public Double maxNear = null;
     public Double defaultNear = null;
+
+    public Float explodePower = null;
+    public Float maxExplodePower = null;
 
     public RoyalCommands() {
         pconfm = new PConfManager(this);
@@ -131,6 +135,8 @@ public class RoyalCommands extends JavaPlugin {
         motdLogin = this.getConfig().getBoolean("motd_on_login");
         dropExtras = this.getConfig().getBoolean("drop_extras");
         kitPerms = this.getConfig().getBoolean("use_exclusive_kit_perms");
+        explodeFire = this.getConfig().getBoolean("explode_fire");
+
 
         banMessage = this.getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         noBuildMessage = this.getConfig().getString("no_build_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
@@ -146,6 +152,9 @@ public class RoyalCommands extends JavaPlugin {
 
         maxNear = this.getConfig().getDouble("max_near_radius");
         defaultNear = this.getConfig().getDouble("default_near_radius");
+
+        explodePower = (float) this.getConfig().getDouble("explode_power");
+        maxExplodePower = (float) this.getConfig().getDouble("max_explode_power");
 
         muteCmds = this.getConfig().getStringList("mute_blocked_commands");
         blockedItems = this.getConfig().getStringList("blocked_spawn_items");

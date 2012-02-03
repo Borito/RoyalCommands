@@ -22,7 +22,14 @@ public class CmdExplode implements CommandExecutor {
         if (p == null) return;
         Location l = p.getLocation();
         World w = p.getWorld();
-        w.createExplosion(l, 4);
+        w.createExplosion(l, plugin.explodePower, plugin.explodeFire);
+    }
+
+    public void explodePlayer(Player p, float power) {
+        if (p == null) return;
+        Location l = p.getLocation();
+        World w = p.getWorld();
+        w.createExplosion(l, power, plugin.explodeFire);
     }
 
     @Override
@@ -39,8 +46,36 @@ public class CmdExplode implements CommandExecutor {
             if (args.length < 1) {
                 Player p = (Player) cs;
                 Location l = RUtils.getTarget(p).getLocation();
-                p.getWorld().createExplosion(l, 4);
+                p.getWorld().createExplosion(l, plugin.explodePower, plugin.explodeFire);
                 return true;
+            }
+            if (args.length == 2) {
+                if (args[1].trim().equalsIgnoreCase("power")) {
+                    if (!(cs instanceof Player)) {
+                        cs.sendMessage(cmd.getDescription());
+                        return false;
+                    }
+                    Player p = (Player) cs;
+                    Float power;
+                    try {
+                        power = Float.parseFloat(args[0]);
+                    } catch (Exception e) {
+                        cs.sendMessage(ChatColor.RED + "That wasn't a valid power!");
+                        return true;
+                    }
+                    if (power == null) {
+                        cs.sendMessage(ChatColor.RED + "That wasn't a valid power!");
+                        return true;
+                    }
+                    if (power > plugin.maxExplodePower) {
+                        cs.sendMessage(ChatColor.RED + "The specified power was higher than the server limit.");
+                        cs.sendMessage(ChatColor.RED + "Setting power to " + ChatColor.GRAY + plugin.maxExplodePower + ChatColor.RED + ".");
+                        power = plugin.maxExplodePower;
+                    }
+                    Location l = RUtils.getTarget(p).getLocation();
+                    p.getWorld().createExplosion(l, power, plugin.explodeFire);
+                    return true;
+                }
             }
             if (args.length > 0) {
                 Player t = plugin.getServer().getPlayer(args[0].trim());
@@ -52,7 +87,40 @@ public class CmdExplode implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You may not explode that player!");
                     return true;
                 }
-                explodePlayer(t);
+                if (args.length == 2) {
+                    if (args[1].trim().equalsIgnoreCase("power")) {
+                        if (!(cs instanceof Player)) {
+                            cs.sendMessage(cmd.getDescription());
+                            return false;
+                        }
+                        Player p = (Player) cs;
+                        Float power;
+                        try {
+                            power = Float.parseFloat(args[0]);
+                        } catch (Exception e) {
+                            cs.sendMessage(ChatColor.RED + "That wasn't a valid power!");
+                            return true;
+                        }
+                        if (power == null) {
+                            cs.sendMessage(ChatColor.RED + "That wasn't a valid power!");
+                            return true;
+                        }
+                        Location l = RUtils.getTarget(p).getLocation();
+                        p.getWorld().createExplosion(l, power, plugin.explodeFire);
+                        return true;
+                    }
+                    Float power = null;
+                    try {
+                        power = Float.parseFloat(args[1]);
+                    } catch (Exception e) {
+                        explodePlayer(t);
+                    } finally {
+                        if (power != null) explodePlayer(t, power);
+                        else explodePlayer(t);
+                    }
+                } else {
+                    explodePlayer(t);
+                }
                 cs.sendMessage(ChatColor.BLUE + "You have exploded " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + "!");
                 return true;
             }

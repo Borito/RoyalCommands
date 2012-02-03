@@ -456,7 +456,7 @@ commands:
 
   explode:
     description: Explodes where the player is looking or the specified player.
-    usage: /<command> [player]
+    usage: /<command> [player] (power)
     aliases: [destroy, end]
 
   rcmds:

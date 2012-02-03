@@ -14,6 +14,8 @@ back_on_death: true
 motd_on_login: true
 # Drop items that don't fit in inventory on /i or /give?
 drop_extras: false
+# Should /explode create fire around the explosion?
+explode_fire: false
 # Message to be shown if player does not have rcmds.build
 no_build_message: "&cYou don't have permission to build!"
 # The default ban message for /ban
@@ -36,6 +38,10 @@ spawnmob_limit: 15
 max_near_radius: 2000
 # Default /near radius - when /near is run without a radius
 default_near_radius: 50
+# The power for /explode - 4 is creeper
+explode_power: 4
+# Maximum explode power (~50 is recommended)
+max_explode_power: 10
 # Commands to block when muted
 mute_blocked_commands: ["/me", "/tc", "/nc"]
 # Items that cannot be spawned without rcmds.allowed.item
