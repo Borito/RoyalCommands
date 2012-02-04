@@ -35,7 +35,7 @@ public class RoyalCommandsEntityListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onEntityDamage(EntityDamageEvent event) {
+    public void oneHitKill(EntityDamageEvent event) {
         if (!(event instanceof EntityDamageByEntityEvent)) return;
         EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
         Entity e = ev.getDamager();
@@ -54,10 +54,16 @@ public class RoyalCommandsEntityListener implements Listener {
             int leh = le.getMaxHealth();
             le.damage(leh + 1);
         }
-        if (ed instanceof Player) {
-            Player p2 = (Player) event.getEntity();
-            if (PConfManager.getPValBoolean(p2, "godmode")) event.setCancelled(true);
-        }
+    }
+    
+    @EventHandler()
+    public void godMode(EntityDamageEvent e) {
+        if (!(e instanceof EntityDamageByEntityEvent)) return;
+        EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) e;
+        Entity ent = ev.getEntity();
+        if (!(ent instanceof Player)) return;
+        Player p = (Player) ent;
+        if (PConfManager.getPValBoolean(p, "godmode")) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
