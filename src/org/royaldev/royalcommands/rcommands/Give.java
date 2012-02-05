@@ -21,14 +21,38 @@ public class Give implements CommandExecutor {
     }
 
     public static boolean validItem(String itemname) {
+        String called = itemname;
+        String data = null;
+        if (called.contains(":")) {
+            String[] calleds = called.split(":");
+            called = calleds[0].trim();
+            data = calleds[1].trim();
+        }
+        Integer iblock;
         try {
-            Integer.parseInt(itemname);
+            iblock = Integer.parseInt(called);
         } catch (Exception e) {
             try {
-                Material.getMaterial(itemname.trim().replace(" ", "_").toUpperCase()).getId();
+                iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
             } catch (Exception e2) {
                 return false;
             }
+        }
+        if (data != null) {
+            if (Material.getMaterial(iblock) == null) {
+                return false;
+            }
+            int data2;
+            try {
+                data2 = Integer.parseInt(data);
+            } catch (Exception e) {
+                return false;
+            }
+            if (data2 < 0) {
+                return false;
+            }
+        } else {
+            return true;
         }
         return true;
     }
