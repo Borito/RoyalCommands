@@ -45,14 +45,12 @@ public class RoyalCommandsEntityListener implements Listener {
         if (!PConfManager.getPValBoolean(p, "ohk")) return;
         if (ed instanceof LivingEntity) {
             LivingEntity le = (LivingEntity) ed;
-            int leh = le.getMaxHealth();
-            le.damage(leh + 1);
+            le.setHealth(0);
         }
         if (ed instanceof EnderDragonPart) {
             EnderDragonPart ldp = (EnderDragonPart) ed;
             LivingEntity le = ldp.getParent();
-            int leh = le.getMaxHealth();
-            le.damage(leh + 1);
+            le.setHealth(0);
         }
     }
     
