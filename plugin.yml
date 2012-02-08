@@ -459,6 +459,16 @@ commands:
     usage: /<command> [player] (power)
     aliases: [destroy, end]
 
+  ride:
+    description: Mounts the player on another player.
+    usage: /<command> [player]
+    aliases: [mount, eject]
+
+  whobanned:
+    description: Displays who banned the specified player.
+    usage: /<command> [player]
+    aliases: [whoban, wbanned, banwho, bannedwho, wb]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
