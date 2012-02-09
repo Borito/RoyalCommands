@@ -42,6 +42,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -184,10 +185,21 @@ public class RoyalCommands extends JavaPlugin {
         if (!rules.exists()) {
             try {
                 boolean success = new File(this.getDataFolder() + File.separator + "rules.txt").createNewFile();
-                if (success) {
-                    //ignore
-                } else {
+                if (!success) {
                     log.severe("[RoyalCommands] Could not create rules.txt!");
+                } else {
+                    try {
+                        BufferedWriter out = new BufferedWriter(new FileWriter(this.getDataFolder() + File.separator + "rules.txt"));
+                        out.write("###");
+                        out.write("1. Be kind");
+                        out.write("2. Be courteous");
+                        out.write("3. Be respectful");
+                        out.write("###");
+                        out.write("4. Be cool");
+                        out.close();
+                    } catch (IOException e) {
+                        //ignore
+                    }
                 }
             } catch (Exception e) {
                 log.severe("[RoyalCommands] Could not create rules.txt!");
