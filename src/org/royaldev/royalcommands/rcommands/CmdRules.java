@@ -10,6 +10,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 public class CmdRules implements CommandExecutor {
 
@@ -31,12 +32,37 @@ public class CmdRules implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "The rules.txt file was not found! Tell an admin.");
                 return true;
             }
+            int tpage;
+            if (args.length < 1) {
+                tpage = 1;
+            } else {
+                try {
+                    tpage = Integer.valueOf(args[0].trim());
+                } catch (Exception e) {
+                    cs.sendMessage(ChatColor.RED + "The page number was invalid!");
+                    return true;
+                }
+            }
+            int pages = 0;
             try {
                 BufferedReader br = new BufferedReader(new FileReader(rulesf));
                 String line;
+                java.util.List<String> rules = new ArrayList<String>();
                 while ((line = br.readLine()) != null) {
                     line = line.trim().replaceAll("(&([a-f0-9]))", "\u00A7$2");
-                    cs.sendMessage(line);
+                    rules.add(line);
+                    if (line.trim().equals("###")) pages++;
+                }
+                cs.sendMessage(ChatColor.GOLD + "Page " + ChatColor.GRAY + tpage + ChatColor.GOLD + " of " + ChatColor.GRAY + pages + ChatColor.GOLD + ".");
+                int cpage = 0;
+                for (String s : rules) {
+                    if (s.trim().equals("###")) {
+                        cpage++;
+                        s = "";
+                    }
+                    if (cpage == tpage && !s.equals("")) {
+                        cs.sendMessage(s);
+                    }
                 }
             } catch (Exception e) {
                 cs.sendMessage(ChatColor.RED + "The rules.txt file was not found! Tell an admin.");
