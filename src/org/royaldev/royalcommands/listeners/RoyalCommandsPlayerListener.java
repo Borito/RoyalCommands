@@ -139,6 +139,15 @@ public class RoyalCommandsPlayerListener implements Listener {
         p.setDisplayName(dispname);
     }
 
+    @EventHandler()
+    public void onPJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        if (!plugin.newVersion.contains(plugin.version) && plugin.isAuthorized(p, "rcmds.updates")) {
+            String newV = plugin.newVersion.split("RoyalCommands")[1].trim();
+            p.sendMessage(ChatColor.BLUE + "RoyalCommands " + ChatColor.GRAY + newV + ChatColor.BLUE + " is out! You are running " + ChatColor.GRAY + "v" + plugin.version + ChatColor.BLUE + ".");
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         File datafile = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + event.getPlayer().getName().toLowerCase() + ".yml");
