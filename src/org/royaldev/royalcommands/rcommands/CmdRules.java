@@ -53,7 +53,15 @@ public class CmdRules implements CommandExecutor {
                     rules.add(line);
                     if (line.trim().equals("###")) pages++;
                 }
-                cs.sendMessage(ChatColor.GOLD + "Page " + ChatColor.GRAY + tpage + ChatColor.GOLD + " of " + ChatColor.GRAY + pages + ChatColor.GOLD + ".");
+                if (tpage > pages || tpage < 1) {
+                    cs.sendMessage(ChatColor.RED + "No such page!");
+                    return true;
+                }
+                if (tpage == pages) {
+                    cs.sendMessage(ChatColor.GOLD + "Page " + ChatColor.GRAY + tpage + ChatColor.GOLD + " of " + ChatColor.GRAY + pages + ChatColor.GOLD + ".");
+                } else {
+                    cs.sendMessage(ChatColor.GOLD + "Page " + ChatColor.GRAY + tpage + ChatColor.GOLD + " of " + ChatColor.GRAY + pages + ChatColor.GOLD + ". " + ChatColor.GRAY + "/" + cmd.getName() + " " + (tpage + 1) + ChatColor.GOLD + " for next page.");
+                }
                 int cpage = 0;
                 for (String s : rules) {
                     if (s.trim().equals("###")) {
