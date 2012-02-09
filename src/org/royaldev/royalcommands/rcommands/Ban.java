@@ -73,7 +73,7 @@ public class Ban implements CommandExecutor {
                 if (args.length == 1) {
                     banreason = plugin.banMessage;
                     PConfManager.setPValString(t2, banreason, "banreason");
-                    PConfManager.setPValString(t, cs.getName(), "banner");
+                    PConfManager.setPValString(t2, cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t2.getName() + ChatColor.BLUE + ".");
                     plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
                     t2.setBanned(true);
@@ -82,7 +82,7 @@ public class Ban implements CommandExecutor {
                 if (args.length > 1) {
                     banreason = plugin.getFinalArg(args, 1).replaceAll("(&([a-f0-9]))", "\u00A7$2");
                     PConfManager.setPValString(t2, banreason, "banreason");
-                    PConfManager.setPValString(t, cs.getName(), "banner");
+                    PConfManager.setPValString(t2, cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t2.getName() + ChatColor.BLUE + ".");
                     plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
                     t2.setBanned(true);
