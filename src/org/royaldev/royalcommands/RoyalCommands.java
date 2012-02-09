@@ -44,7 +44,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 public class RoyalCommands extends JavaPlugin {
@@ -78,7 +77,6 @@ public class RoyalCommands extends JavaPlugin {
     public String welcomeMessage = null;
     public String noBuildMessage = null;
     public String bcastFormat = null;
-    public static String gUid = null;
 
     public Integer defaultStack = null;
     public Integer warnBan = null;
@@ -150,7 +148,6 @@ public class RoyalCommands extends JavaPlugin {
         defaultWarn = this.getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         welcomeMessage = this.getConfig().getString("welcome_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         bcastFormat = this.getConfig().getString("bcast_format").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        gUid = this.getConfig().getString("guid_do_not_change");
 
         defaultStack = this.getConfig().getInt("default_stack_size");
         warnBan = this.getConfig().getInt("max_warns_before_ban");
@@ -168,7 +165,6 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void loadConfiguration() {
-        this.getConfig().addDefault("guid_do_not_change", UUID.randomUUID().toString());
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
         File file = new File(this.getDataFolder() + File.separator + "userdata" + File.separator);
