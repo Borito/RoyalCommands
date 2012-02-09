@@ -22,25 +22,20 @@ public class ListHome implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("listhome")) {
             if (!plugin.isAuthorized(cs, "rcmds.listhome")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
-            File pconfl = new File(plugin.getDataFolder() + "/userdata/"
-                    + cs.getName().toLowerCase() + ".yml");
+            File pconfl = new File(plugin.getDataFolder() + "/userdata/" + cs.getName().toLowerCase() + ".yml");
             if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration
-                        .loadConfiguration(pconfl);
-                final Map<String, Object> opts = pconf.getConfigurationSection(
-                        "home").getValues(false);
+                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+                final Map<String, Object> opts = pconf.getConfigurationSection("home").getValues(false);
                 if (opts.keySet().isEmpty()) {
                     cs.sendMessage(ChatColor.RED + "You have no homes!");
                     return true;
