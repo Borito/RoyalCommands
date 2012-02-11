@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -23,22 +24,19 @@ public class Home implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("home")) {
             if (!plugin.isAuthorized(cs, "rcmds.home")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
 
-            Player p;
-
             if (!(cs instanceof Player)) {
                 cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
-            } else {
-                p = (Player) cs;
             }
+
+            Player p = (Player) cs;
 
             boolean homeSet;
             Double homeX = null;
@@ -47,23 +45,34 @@ public class Home implements CommandExecutor {
             Float homeYaw = null;
             Float homePitch = null;
             World homeW = null;
+            String name = args[0];
 
-            File pconfl = new File(plugin.getDataFolder() + "/userdata/" + cs.getName().toLowerCase() + ".yml");
+            File pconfl;
+            if (name.contains(":")) {
+                if (!PConfManager.getPConfExists(name.split(":")[0])) {
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
+                pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + name.split(":")[0].toLowerCase() + ".yml");
+                name = name.split(":")[1];
+            } else {
+                pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
+            }
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 if (args.length > 0) {
-                    homeSet = pconf.getBoolean("home." + args[0] + ".set");
+                    homeSet = pconf.getBoolean("home." + name + ".set");
                 } else {
                     homeSet = pconf.getBoolean("home.home.set");
                 }
                 if (homeSet) {
                     if (args.length > 0) {
-                        homeX = pconf.getDouble("home." + args[0] + ".x");
-                        homeY = pconf.getDouble("home." + args[0] + ".y");
-                        homeZ = pconf.getDouble("home." + args[0] + ".z");
-                        homeYaw = Float.parseFloat(pconf.getString("home." + args[0] + ".yaw"));
-                        homePitch = Float.parseFloat(pconf.getString("home." + args[0] + ".pitch"));
-                        homeW = plugin.getServer().getWorld(pconf.getString("home." + args[0] + ".w"));
+                        homeX = pconf.getDouble("home." + name + ".x");
+                        homeY = pconf.getDouble("home." + name + ".y");
+                        homeZ = pconf.getDouble("home." + name + ".z");
+                        homeYaw = Float.parseFloat(pconf.getString("home." + name + ".yaw"));
+                        homePitch = Float.parseFloat(pconf.getString("home." + name + ".pitch"));
+                        homeW = plugin.getServer().getWorld(pconf.getString("home." + name + ".w"));
                     } else {
                         homeX = pconf.getDouble("home.home.x");
                         homeY = pconf.getDouble("home.home.y");
@@ -82,7 +91,7 @@ public class Home implements CommandExecutor {
             }
             Location homeLoc = new Location(homeW, homeX, homeY, homeZ, homeYaw, homePitch);
             if (args.length > 0) {
-                p.sendMessage(ChatColor.BLUE + "Going to home \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + ".\"");
+                p.sendMessage(ChatColor.BLUE + "Going to home \"" + ChatColor.GRAY + name + ChatColor.BLUE + ".\"");
             } else {
                 p.sendMessage(ChatColor.BLUE + "Going home.");
             }

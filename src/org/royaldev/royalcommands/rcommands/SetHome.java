@@ -22,8 +22,7 @@ public class SetHome implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("sethome")) {
             if (!plugin.isAuthorized(cs, "rcmds.sethome")) {
                 RUtils.dispNoPerms(cs);
@@ -32,23 +31,17 @@ public class SetHome implements CommandExecutor {
 
             if (args.length > 0) {
                 if (!plugin.isAuthorized(cs, "rcmds.sethome.multi")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for multiple homes!");
-                    plugin.log.warning("[RoyalCommands] " + cs.getName()
-                            + " was denied access to the command!");
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for multiple homes!");
+                    plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                     return true;
                 }
             }
 
-            Player p;
-
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
-            } else {
-                p = (Player) cs;
             }
+            Player p = (Player) cs;
 
             double locX = p.getLocation().getX();
             double locY = p.getLocation().getY();
@@ -56,21 +49,24 @@ public class SetHome implements CommandExecutor {
             Float locYaw = p.getLocation().getYaw();
             Float locPitch = p.getLocation().getPitch();
             String locW = p.getWorld().getName();
+            String name = args[0];
 
-            File pconfl = new File(plugin.getDataFolder() + File.separator
-                    + "userdata" + File.separator + cs.getName().toLowerCase()
-                    + ".yml");
+            if (name.contains(":")) {
+                cs.sendMessage(ChatColor.RED + "The name of your home cannot contain \":\"!");
+                return true;
+            }
+
+            File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
             if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration
-                        .loadConfiguration(pconfl);
+                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 if (args.length > 0) {
-                    pconf.set("home." + args[0] + ".set", true);
-                    pconf.set("home." + args[0] + ".x", locX);
-                    pconf.set("home." + args[0] + ".y", locY);
-                    pconf.set("home." + args[0] + ".z", locZ);
-                    pconf.set("home." + args[0] + ".pitch", locPitch.toString());
-                    pconf.set("home." + args[0] + ".yaw", locYaw.toString());
-                    pconf.set("home." + args[0] + ".w", locW);
+                    pconf.set("home." + name + ".set", true);
+                    pconf.set("home." + name + ".x", locX);
+                    pconf.set("home." + name + ".y", locY);
+                    pconf.set("home." + name + ".z", locZ);
+                    pconf.set("home." + name + ".pitch", locPitch.toString());
+                    pconf.set("home." + name + ".yaw", locYaw.toString());
+                    pconf.set("home." + name + ".w", locW);
                 } else {
                     pconf.set("home.home.set", true);
                     pconf.set("home.home.x", locX);
@@ -86,8 +82,7 @@ public class SetHome implements CommandExecutor {
                     e.printStackTrace();
                 }
                 if (args.length > 0) {
-                    p.sendMessage(ChatColor.BLUE + "Home \"" + ChatColor.GRAY
-                            + args[0] + ChatColor.BLUE + "\" set.");
+                    p.sendMessage(ChatColor.BLUE + "Home \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");
                 } else {
                     p.sendMessage(ChatColor.BLUE + "Home set.");
                 }
