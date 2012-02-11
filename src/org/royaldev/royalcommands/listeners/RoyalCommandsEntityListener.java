@@ -58,9 +58,7 @@ public class RoyalCommandsEntityListener implements Listener {
 
     @EventHandler()
     public void godMode(EntityDamageEvent e) {
-        if (!(e instanceof EntityDamageByEntityEvent)) return;
-        EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) e;
-        Entity ent = ev.getEntity();
+        Entity ent = e.getEntity();
         if (!(ent instanceof Player)) return;
         Player p = (Player) ent;
         if (PConfManager.getPValBoolean(p, "godmode")) e.setCancelled(true);
