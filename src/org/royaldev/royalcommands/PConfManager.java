@@ -97,4 +97,9 @@ public class PConfManager {
         return pconfl.exists();
     }
 
+    public static boolean getPConfExists(String name) {
+        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + name.toLowerCase() + ".yml");
+        return pconfl.exists();
+    }
+    
 }
