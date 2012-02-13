@@ -191,11 +191,13 @@ public class RoyalCommands extends JavaPlugin {
                     try {
                         BufferedWriter out = new BufferedWriter(new FileWriter(this.getDataFolder() + File.separator + "rules.txt"));
                         out.write("###");
-                        out.write("1. Be kind");
-                        out.write("2. Be courteous");
-                        out.write("3. Be respectful");
+                        out.write("&2Page 1:");
+                        out.write("  1. Be kind");
+                        out.write("  2. Be courteous");
+                        out.write("  3. Be respectful");
                         out.write("###");
-                        out.write("4. Be cool");
+                        out.write("&2Page 2:");
+                        out.write("  4. Be cool");
                         out.close();
                     } catch (IOException e) {
                         //ignore
@@ -410,8 +412,9 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("hug").setExecutor(new CmdHug(this));
         getCommand("explode").setExecutor(new CmdExplode(this));
         getCommand("ride").setExecutor(new CmdRide(this));
-        getCommand("rcmds").setExecutor(new Rcmds(this));
         getCommand("whobanned").setExecutor(new CmdWhoBanned(this));
+        getCommand("tppos").setExecutor(new CmdTppos(this));
+        getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
 
