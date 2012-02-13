@@ -24,7 +24,7 @@ public class CmdTppos implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (args.length < 3) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
@@ -38,7 +38,7 @@ public class CmdTppos implements CommandExecutor {
             Player p = (Player) cs;
             Location pLoc;
             World w;
-            if (args.length > 2) {
+            if (args.length > 3) {
                 w = plugin.getServer().getWorld(args[3]);
                 if (w == null) {
                     cs.sendMessage(ChatColor.RED + "That world does not exist!");
@@ -51,6 +51,7 @@ public class CmdTppos implements CommandExecutor {
             }
             cs.sendMessage(ChatColor.BLUE + "Teleporting you to x: " + ChatColor.GRAY + x + ChatColor.BLUE + ", y: " + ChatColor.GRAY + y + ChatColor.BLUE + ", z: " + ChatColor.GRAY + z + ChatColor.BLUE + " in world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
             p.teleport(pLoc);
+            return true;
         }
         return false;
     }
