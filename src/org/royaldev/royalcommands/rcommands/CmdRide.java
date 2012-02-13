@@ -43,6 +43,10 @@ public class CmdRide implements CommandExecutor {
                     p.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
+                if (plugin.isAuthorized(t, "rcmds.exempt.ride")) {
+                    cs.sendMessage(ChatColor.RED + "You cannot ride that player!");
+                    return true;
+                }
                 t.setPassenger(p);
                 return true;
             }
