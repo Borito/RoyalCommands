@@ -469,9 +469,15 @@ commands:
     usage: /<command> [player]
     aliases: [whoban, wbanned, banwho, bannedwho, wb]
 
+  tppos:
+    description: Teleports you to a specific coordinate point.
+    usage: /<command> [x] [y] [z] (world)
+    aliases: [tpos, teleportposition, tpcoords, tpp, tpc, teleportcoordinates, teleportpos, tpposition, tposition]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
+    aliases: [royalcommands]
     
 permissions:
   rcmds.level:
@@ -755,6 +761,16 @@ permissions:
     default: op
   rcmds.explode:
     description: Allows you to explode other players.
+    default: op
+  rcmds.ride:
+    description: Allows you to ride on other players.
+    default: op
+  rcmds.whobanned:
+    description: Allows you to who banned a player.
+    default: op
+  rcmds.tppos:
+    description: Allows you to teleport to a coordinate point.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -833,6 +849,10 @@ permissions:
     default: false
   rcmds.exempt.explode:
     description: Makes the player immune to /explode.
+    default: false
+  rcmds.exempt.ride:
+    description: Makes the player immune to /ride.
+    default: false
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -1107,6 +1127,9 @@ permissions:
       rcmds.broadcast: true
       rcmds.hug: true
       rcmds.explode: true
+      rcmds.ride: true
+      rcmds.whobanned: true
+      rcmds.tppos: true
       rcmds.rcmds: true
         
       rcmds.exempt.speak: true
@@ -1133,6 +1156,7 @@ permissions:
       rcmds.exempt.feed: true
       rcmds.exempt.kill: true
       rcmds.exempt.explode: true
+      rcmds.exempt.ride: true
       rcmds.exempt.notarget: true
       
       rcmds.allowed.item: true
