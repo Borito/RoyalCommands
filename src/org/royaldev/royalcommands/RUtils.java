@@ -108,4 +108,20 @@ public class RUtils {
         log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
     }
 
+    public static Double getDouble(String number) {
+        try {
+            return Double.valueOf(number);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Integer getInt(String number) {
+        try {
+            return Integer.valueOf(number);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }
