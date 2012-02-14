@@ -55,6 +55,7 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[warp]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.warp")) {
                 RUtils.dispNoPerms(p);
+                s.setLine(0, "");
                 return;
             }
             if (line2.isEmpty()) {
@@ -86,6 +87,7 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase(ChatColor.stripColor("[time]"))) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.time")) {
                 RUtils.dispNoPerms(p);
+                s.setLine(0, "");
                 return;
             }
             if (line2.isEmpty() || (Time.getValidTime(line2) == null)) {
@@ -113,6 +115,7 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[disposal]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.disposal")) {
                 RUtils.dispNoPerms(p);
+                s.setLine(0, "");
                 return;
             }
 
@@ -134,6 +137,7 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[heal]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.heal")) {
                 RUtils.dispNoPerms(p);
+                s.setLine(0, "");
                 return;
             }
 
@@ -155,6 +159,7 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[weather]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.weather")) {
                 RUtils.dispNoPerms(p);
+                s.setLine(0, "");
                 return;
             }
             Double charge = getCharge(line3);
@@ -174,6 +179,7 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[give]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.give")) {
                 RUtils.dispNoPerms(p);
+                s.setLine(0, "");
                 return;
             }
             int amount;
@@ -200,6 +206,7 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[command]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.command")) {
                 RUtils.dispNoPerms(p);
+                s.setLine(0, "");
                 return;
             }
 
