@@ -49,7 +49,10 @@ public class SetHome implements CommandExecutor {
             Float locYaw = p.getLocation().getYaw();
             Float locPitch = p.getLocation().getPitch();
             String locW = p.getWorld().getName();
-            String name = args[0];
+            String name = "";
+            if (args.length > 0) {
+                name = args[0];
+            }
 
             if (name.contains(":")) {
                 cs.sendMessage(ChatColor.RED + "The name of your home cannot contain \":\"!");
