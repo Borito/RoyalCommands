@@ -20,8 +20,12 @@ public class CmdTppos implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("tppos")) {
-            if (!(cs instanceof Player)) {
+            if (!plugin.isAuthorized(cs, "rcmds.tppos")) {
                 RUtils.dispNoPerms(cs);
+                return true;
+            }
+            if (!(cs instanceof Player)) {
+                cs.sendMessage(ChatColor.RED + "This message is only available to players!");
                 return true;
             }
             if (args.length < 3) {
