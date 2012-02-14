@@ -936,6 +936,9 @@ permissions:
   rcmds.setarmor.none:
     description: Allows the player to set no armor.
     default: op
+  rcmds.setarmor.chain:
+    description: Allows the player to set chainmail armor.
+    default: op
   rcmds.setarmor.diamond:
     description: Allows the player to set diamond armor.
     default: op
@@ -1025,6 +1028,7 @@ permissions:
     default: false
     children:
       rcmds.setarmor.none: true
+      rcmds.setarmor.chain: true
       rcmds.setarmor.diamond: true
       rcmds.setarmor.gold: true
       rcmds.setarmor.iron: true
@@ -1190,6 +1194,7 @@ permissions:
       rcmds.sign.use.command: true
 
       rcmds.setarmor.none: true
+      rcmds.setarmor.chain: true
       rcmds.setarmor.diamond: true
       rcmds.setarmor.gold: true
       rcmds.setarmor.iron: true
