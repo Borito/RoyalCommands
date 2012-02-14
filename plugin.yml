@@ -853,6 +853,9 @@ permissions:
   rcmds.exempt.ride:
     description: Makes the player immune to /ride.
     default: false
+  rcmds.exempt.home:
+    description: Makes it so no other players can access the player's houses.
+    default: false
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -1026,6 +1029,7 @@ permissions:
       rcmds.exempt.kill: true
       rcmds.exempt.explode: true
       rcmds.exempt.notarget: true
+      rcmds.exempt.home: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -1166,6 +1170,7 @@ permissions:
       rcmds.exempt.explode: true
       rcmds.exempt.ride: true
       rcmds.exempt.notarget: true
+      rcmds.exempt.home: true
       
       rcmds.allowed.item: true
         

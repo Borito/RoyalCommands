@@ -2,6 +2,7 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -52,6 +53,11 @@ public class Home implements CommandExecutor {
             if (name.contains(":") && plugin.isAuthorized(cs, "rcmds.home.others")) {
                 if (!PConfManager.getPConfExists(name.split(":")[0])) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
+                OfflinePlayer op = plugin.getServer().getOfflinePlayer(name.split(":")[0]);
+                if (op.isOp() || (op.isOnline() && plugin.isAuthorized((Player) op, "rcmds.exempt.home"))) {
+                    cs.sendMessage(ChatColor.RED + "You cannot go to that player's house!");
                     return true;
                 }
                 pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + name.split(":")[0].toLowerCase() + ".yml");
