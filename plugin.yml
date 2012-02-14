@@ -176,7 +176,7 @@ commands:
     
   listhome:
     description: List your set homes.
-    usage: /<command>
+    usage: /<command> (player)
     aliases: [lshome, listhomes, lshomes, homes]
   
   strike:
@@ -856,6 +856,9 @@ permissions:
   rcmds.exempt.home:
     description: Makes it so no other players can access the player's houses.
     default: false
+  rcmds.exempt.listhome:
+    description: Makes the player immune to /listhome.
+    default: false
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -1030,6 +1033,7 @@ permissions:
       rcmds.exempt.explode: true
       rcmds.exempt.notarget: true
       rcmds.exempt.home: true
+      rcmds.exempt.listhome: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.

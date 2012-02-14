@@ -1,12 +1,14 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -28,16 +30,31 @@ public class ListHome implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
-                return true;
+            if (!(cs instanceof Player) && args.length < 1) {
+                cs.sendMessage(cmd.getDescription());
+                return false;
             }
-            File pconfl = new File(plugin.getDataFolder() + "/userdata/" + cs.getName().toLowerCase() + ".yml");
+            File pconfl;
+            if (args.length < 1) {
+                pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
+            } else {
+                if (!PConfManager.getPConfExists(args[0].trim())) {
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
+                OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0].trim());
+                if (op.isOp() || (op.isOnline() && plugin.isAuthorized((Player) op, "rcmds.exempt.listhome"))) {
+                    cs.sendMessage(ChatColor.RED + "You can't list that player's homes!");
+                    return true;
+                }
+                pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + args[0].trim() + ".yml");
+            }
+
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 final Map<String, Object> opts = pconf.getConfigurationSection("home").getValues(false);
                 if (opts.keySet().isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + "You have no homes!");
+                    cs.sendMessage(ChatColor.RED + "No homes found!");
                     return true;
                 }
                 String homes = opts.keySet().toString();
