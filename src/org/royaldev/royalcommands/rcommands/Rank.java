@@ -33,7 +33,7 @@ public class Rank implements CommandExecutor {
                 return true;
             }
             String rank = RoyalCommands.permission.getPrimaryGroup(victim);
-            cs.sendMessage("The user " + victim.getName() + " has the group " + rank + ".");
+            cs.sendMessage(ChatColor.BLUE + "The user " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + " has the group " + ChatColor.GRAY + rank + ChatColor.BLUE + ".");
             return true;
         }
         return false;
