@@ -46,9 +46,7 @@ public class Home implements CommandExecutor {
             Float homePitch = null;
             World homeW = null;
             String name = "";
-            if (args.length > 0) {
-                name = args[0];
-            }
+            if (args.length > 0) name = args[0];
 
             File pconfl;
             if (name.contains(":")) {
