@@ -881,6 +881,10 @@ permissions:
     default: op
   rcmds.listwarns.others:
     description: Allows the player to /listwarns other players.
+    default: op
+  rcmds.home.others:
+    description: Allows the player to go to other player's homes.
+    default: op
     
   rcmds.see.ban:
     description: See ban messages.
@@ -1173,6 +1177,7 @@ permissions:
       rcmds.warp.others: true
       rcmds.nick.others: true
       rcmds.listwarns.others: true
+      rcmds.home.others: true
         
       rcmds.see.ban: true
       rcmds.see.kick: true
