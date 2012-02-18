@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -34,12 +35,12 @@ public class Warn implements CommandExecutor {
                 return false;
             }
 
-            Player t = plugin.getServer().getPlayer(args[0].trim());
-            if (t == null) {
+            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0].trim());
+            if (!PConfManager.getPConfExists(t)) {
                 cs.sendMessage(ChatColor.RED + "That user does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.warn")) {
+            if (t.isOnline() && plugin.isAuthorized((Player) t, "rcmds.exempt.warn")) {
                 cs.sendMessage(ChatColor.RED + "You cannot warn that player!");
                 return true;
             }
@@ -78,12 +79,16 @@ public class Warn implements CommandExecutor {
                 }
             }
             cs.sendMessage(ChatColor.BLUE + "You have warned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            t.sendMessage(ChatColor.RED + "You have been warned by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for " + ChatColor.GRAY + warnreason + ChatColor.RED + ".");
+            if (t.isOnline()) {
+                ((Player) t).sendMessage(ChatColor.RED + "You have been warned by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for " + ChatColor.GRAY + warnreason + ChatColor.RED + ".");
+            }
             plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been warned for " + ChatColor.GRAY + warnreason + ChatColor.RED + ".", "rcmds.see.warn");
             if (plugin.warnBan > 0) {
                 if ((numwarns + 1) >= plugin.warnBan) {
                     t.setBanned(true);
-                    t.kickPlayer(ChatColor.DARK_RED + "You have been banned for reaching the max warn limit.");
+                    if (t.isOnline()) {
+                        ((Player) t).kickPlayer(ChatColor.DARK_RED + "You have been banned for reaching the max warn limit.");
+                    }
                     plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.DARK_RED + "You have been banned for reaching the max warn limit." + ChatColor.RED + ".", "rcmds.see.ban");
                 }
             }
