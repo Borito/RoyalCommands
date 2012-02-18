@@ -20,6 +20,7 @@ import org.royaldev.royalcommands.rcommands.Motd;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -76,11 +77,13 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (PConfManager.getPVal(e.getPlayer(), "ignoredby") == null) return;
         Set<Player> recpts = e.getRecipients();
         ArrayList<String> ignores = (ArrayList<String>) PConfManager.getPValStringList(e.getPlayer(), "ignoredby");
+        Set<Player> ignore = new HashSet<Player>();
         for (Player p : recpts) {
             for (String ignoree : ignores) {
-                if (p.getName().equalsIgnoreCase(ignoree.toLowerCase())) e.getRecipients().remove(p);
+                if (p.getName().equalsIgnoreCase(ignoree.toLowerCase())) ignore.add(p);
             }
         }
+        e.getRecipients().removeAll(ignore);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
