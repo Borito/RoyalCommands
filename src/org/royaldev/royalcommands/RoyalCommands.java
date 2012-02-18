@@ -414,6 +414,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("ride").setExecutor(new CmdRide(this));
         getCommand("whobanned").setExecutor(new CmdWhoBanned(this));
         getCommand("tppos").setExecutor(new CmdTppos(this));
+        getCommand("ignore").setExecutor(new CmdIgnore(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();

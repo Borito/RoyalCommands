@@ -18,7 +18,7 @@ commands:
 
   sci:
     description: Selectively removes items from a player's inventory.
-    usage: /<command> [player] [item] amount)
+    usage: /<command> [player] [item] (amount)
 
   speak:
     description: Make another player talk.
@@ -474,6 +474,11 @@ commands:
     usage: /<command> [x] [y] [z] (world)
     aliases: [tpos, teleportposition, tpcoords, tpp, tpc, teleportcoordinates, teleportpos, tpposition, tposition]
 
+  ignore:
+    description: Ignores when a player chats.
+    usage: /<command> (player)
+    aliases: [forget]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -771,6 +776,9 @@ permissions:
   rcmds.tppos:
     description: Allows you to teleport to a coordinate point.
     default: op
+  rcmds.ignore:
+    description: Allows you to ignore other players.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config
     default: op
@@ -858,6 +866,9 @@ permissions:
     default: false
   rcmds.exempt.listhome:
     description: Makes the player immune to /listhome.
+    default: false
+  rcmds.exempt.ignore:
+    description: Makes the player immune to /ignore.
     default: false
 
   rcmds.allowed.item:
@@ -1034,6 +1045,7 @@ permissions:
       rcmds.exempt.notarget: true
       rcmds.exempt.home: true
       rcmds.exempt.listhome: true
+      rcmds.exempt.ignore: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -1146,35 +1158,10 @@ permissions:
       rcmds.ride: true
       rcmds.whobanned: true
       rcmds.tppos: true
+      rcmds.ignore: true
       rcmds.rcmds: true
         
-      rcmds.exempt.speak: true
-      rcmds.exempt.sci: true
-      rcmds.exempt.harm: true
-      rcmds.exempt.starve: true
-      rcmds.exempt.slap: true
-      rcmds.exempt.facepalm: true
-      rcmds.exempt.ragequit: true
-      rcmds.exempt.freeze: true
-      rcmds.exempt.kick: true
-      rcmds.exempt.ban: true
-      rcmds.exempt.mute: true
-      rcmds.exempt.warn: true
-      rcmds.exempt.strike: true
-      rcmds.exempt.teleport: true
-      rcmds.exempt.burn: true
-      rcmds.exempt.jail: true
-      rcmds.exempt.tp2p: true
-      rcmds.exempt.warp: true
-      rcmds.exempt.force: true
-      rcmds.exempt.gamemode: true
-      rcmds.exempt.nick: true
-      rcmds.exempt.feed: true
-      rcmds.exempt.kill: true
-      rcmds.exempt.explode: true
-      rcmds.exempt.ride: true
-      rcmds.exempt.notarget: true
-      rcmds.exempt.home: true
+      rcmds.exempt.*: true
       
       rcmds.allowed.item: true
         
@@ -1188,30 +1175,11 @@ permissions:
       rcmds.listwarns.others: true
       rcmds.home.others: true
         
-      rcmds.see.ban: true
-      rcmds.see.kick: true
-      rcmds.see.warn: true
-      rcmds.see.unban: true
+      rcmds.see.*: true
       
-      rcmds.sign.warp: true
-      rcmds.sign.time: true
-      rcmds.sign.disposal: true
-      rcmds.sign.weather: true
-      rcmds.sign.give: true
-      rcmds.sign.command: true
-      
-      rcmds.sign.use.warp: true
-      rcmds.sign.use.time: true
-      rcmds.sign.use.disposal: true
-      rcmds.sign.use.weather: true
-      rcmds.sign.use.give: true
-      rcmds.sign.use.command: true
+      rcmds.sign.*: true
 
-      rcmds.setarmor.none: true
-      rcmds.setarmor.chain: true
-      rcmds.setarmor.diamond: true
-      rcmds.setarmor.gold: true
-      rcmds.setarmor.iron: true
+      rcmds.setarmor.*: true
         
       rcmds.notarget: true
       

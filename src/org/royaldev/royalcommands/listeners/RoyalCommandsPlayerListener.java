@@ -20,6 +20,7 @@ import org.royaldev.royalcommands.rcommands.Motd;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class RoyalCommandsPlayerListener implements Listener {
@@ -66,6 +67,19 @@ public class RoyalCommandsPlayerListener implements Listener {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
             plugin.log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to speak, but has been muted.");
+        }
+    }
+    
+    @EventHandler()
+    public void onChat(PlayerChatEvent e) {
+        Set<Player> recpts = e.getRecipients();
+        List<String> ignores = PConfManager.getPValStringList(e.getPlayer(), "ignoredby");
+        for (Player p : recpts) {
+            for (String ignoree : ignores) {
+                if (p.getName().equalsIgnoreCase(ignoree.toLowerCase())) {
+                    e.getRecipients().remove(p);
+                }
+            }
         }
     }
 
