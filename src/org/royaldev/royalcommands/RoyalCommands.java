@@ -17,7 +17,6 @@ package org.royaldev.royalcommands;
  If forked and not credited, alert him.
  */
 
-import com.smilingdevil.devilstats.api.DevilStats;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -272,18 +271,8 @@ public class RoyalCommands extends JavaPlugin {
         return player instanceof ConsoleCommandSender || this.setupPermissions() && (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
-    DevilStats stats;
-
     public void onEnable() {
         loadConfiguration();
-
-        // DevilStats ftw
-        try {
-            stats = new DevilStats(this);
-            stats.startup();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         setupEconomy();
 
@@ -423,11 +412,6 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void onDisable() {
-
-        if (stats != null) {
-            stats.shutdown();
-        }
-
         log.info("[RoyalCommands] RoyalCommands v" + this.version + " disabled.");
     }
 
