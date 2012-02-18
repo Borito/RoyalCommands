@@ -70,10 +70,8 @@ public class Warp implements CommandExecutor {
                 return false;
             }
 
-            Player p = (Player) cs;
-
             if (args.length < 1) {
-                File pconfl = new File(plugin.getDataFolder() + "/warps.yml");
+                File pconfl = new File(plugin.getDataFolder() + File.separator + "warps.yml");
                 if (pconfl.exists()) {
                     FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                     if (args.length < 1) {
@@ -96,7 +94,8 @@ public class Warp implements CommandExecutor {
                 }
             }
             if (args.length == 1) {
-                p.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
+                Player p = (Player) cs;
+                cs.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
                 Back.backdb.put(p, p.getLocation());
                 Location warpLoc = pWarp(p, plugin, args[0].toLowerCase());
                 if (warpLoc == null) {
@@ -107,14 +106,19 @@ public class Warp implements CommandExecutor {
             }
             if (args.length > 1) {
                 if (!plugin.isAuthorized(cs, "rcmds.warp.others")) {
-
+                    RUtils.dispNoPerms(cs);
+                    return true;
                 }
                 Player t = plugin.getServer().getPlayer(args[1]);
                 if (t == null || plugin.isVanished(t)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                p.sendMessage(ChatColor.BLUE + "Warping " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
+                if (plugin.isAuthorized(t, "rcmds.exempt.warp")) {
+                    cs.sendMessage(ChatColor.RED + "You cannot warp that player!");
+                    return true;
+                }
+                cs.sendMessage(ChatColor.BLUE + "Warping " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
                 Back.backdb.put(t, t.getLocation());
                 Location warpLoc = pWarp(t, plugin, args[0].toLowerCase());
                 if (warpLoc == null) {
