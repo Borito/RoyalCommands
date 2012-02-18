@@ -38,7 +38,7 @@ public class ListHome implements CommandExecutor {
             if (args.length < 1) {
                 pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
             } else {
-                if (!PConfManager.getPConfExists(args[0].trim())) {
+                if (!PConfManager.getPConfExists(args[0].trim().toLowerCase())) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
@@ -47,7 +47,7 @@ public class ListHome implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You can't list that player's homes!");
                     return true;
                 }
-                pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + args[0].trim() + ".yml");
+                pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + args[0].trim().toLowerCase() + ".yml");
             }
 
             if (pconfl.exists()) {
