@@ -19,6 +19,7 @@ import org.royaldev.royalcommands.rcommands.Back;
 import org.royaldev.royalcommands.rcommands.Motd;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -69,16 +70,15 @@ public class RoyalCommandsPlayerListener implements Listener {
             plugin.log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to speak, but has been muted.");
         }
     }
-    
+
     @EventHandler()
     public void onChat(PlayerChatEvent e) {
+        if (PConfManager.getPVal(e.getPlayer(), "ignoredby") == null) return;
         Set<Player> recpts = e.getRecipients();
-        List<String> ignores = PConfManager.getPValStringList(e.getPlayer(), "ignoredby");
+        ArrayList<String> ignores = (ArrayList<String>) PConfManager.getPValStringList(e.getPlayer(), "ignoredby");
         for (Player p : recpts) {
             for (String ignoree : ignores) {
-                if (p.getName().equalsIgnoreCase(ignoree.toLowerCase())) {
-                    e.getRecipients().remove(p);
-                }
+                if (p.getName().equalsIgnoreCase(ignoree.toLowerCase())) e.getRecipients().remove(p);
             }
         }
     }
