@@ -1,7 +1,7 @@
 name: RoyalCommands
 main: org.royaldev.royalcommands.RoyalCommands
 version: 0.1.8
-website: http://royaldev.org/
+website: http://dev.royaldev.org/
 author: jkcclemens
 depend: [Vault]
 softdepend: [VanishNoPacket]
@@ -479,6 +479,10 @@ commands:
     usage: /<command> (player)
     aliases: [forget]
 
+  help:
+    description: Displays help for commands.
+    usage: /<command>
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -780,9 +784,13 @@ permissions:
     description: Allows you to ignore other players.
     default: op
   rcmds.rcmds:
-    description: Allows you to reload RoyalCommands' config
+    description: Allows you to reload RoyalCommands' config.
     default: op
-    
+
+  rcmds.updates:
+    description: Allows you to see new update messages.
+    default: op
+
   rcmds.exempt.speak:
     description: Makes the player immune to /speak.
     default: false
@@ -1160,6 +1168,8 @@ permissions:
       rcmds.tppos: true
       rcmds.ignore: true
       rcmds.rcmds: true
+
+      rcmds.updates: true
         
       rcmds.exempt.*: true
       

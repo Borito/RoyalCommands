@@ -92,6 +92,8 @@ public class RoyalCommands extends JavaPlugin {
         pconfm = new PConfManager(this);
     }
 
+    public static Object commands = null;
+
     // Permissions with Vault
     public Boolean setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
@@ -278,6 +280,8 @@ public class RoyalCommands extends JavaPlugin {
 
         version = this.getDescription().getVersion();
 
+        commands = getDescription().getCommands();
+
         // yet again, borrowed from MilkBowl
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
             @Override
@@ -404,6 +408,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("whobanned").setExecutor(new CmdWhoBanned(this));
         getCommand("tppos").setExecutor(new CmdTppos(this));
         getCommand("ignore").setExecutor(new CmdIgnore(this));
+        getCommand("help").setExecutor(new CmdHelp(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
