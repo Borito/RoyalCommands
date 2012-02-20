@@ -37,7 +37,6 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (event.isCancelled()) return;
         if (plugin.showcommands) {
             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
         }
@@ -53,6 +52,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
         if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) {
             event.getPlayer().sendMessage(ChatColor.RED + "You are jailed.");
+            log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to use that command, but is jailed.");
             event.setCancelled(true);
         }
     }
