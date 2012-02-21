@@ -34,9 +34,19 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     Logger log = Logger.getLogger("Minecraft");
+    
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent e) {
+        if (e.isCancelled()) return;
+        if (PConfManager.getPValBoolean(e.getPlayer(), "jailed")) {
+            e.getPlayer().sendMessage(ChatColor.RED + "You are jailed and may not teleport.");
+            e.setCancelled(true);
+        }
+    }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        if (event.isCancelled()) return;
         if (plugin.showcommands) {
             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
         }

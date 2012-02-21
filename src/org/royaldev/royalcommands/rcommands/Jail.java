@@ -141,11 +141,11 @@ public class Jail implements CommandExecutor {
                 if (jailW == null) {
                     cs.sendMessage(ChatColor.RED + "World doesn't exist!");
                 }
-                PConfManager.setPValBoolean(t, true, "jailed");
                 cs.sendMessage(ChatColor.BLUE + "You have jailed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.RED + "You have been jailed.");
                 jaildb.put(t, t.getLocation());
                 t.teleport(jailLoc);
+                PConfManager.setPValBoolean(t, true, "jailed");
                 return true;
             }
         }
