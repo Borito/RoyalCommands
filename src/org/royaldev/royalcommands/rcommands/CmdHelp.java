@@ -22,9 +22,37 @@ public class CmdHelp implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
+            int i = 0;
+            int page = 1;
+            int wantedPage = 1;
+            int pages;
+            if (Help.helpdb.keySet().size() % 5 == 0) {
+                pages = Help.helpdb.keySet().size() / 5;
+            } else {
+                pages = (Help.helpdb.size()/5)+1;
+            }
+            if (args.length > 0) {
+                try {
+                    wantedPage = Integer.parseInt(args[0]);
+                } catch (Exception e) {
+                    cs.sendMessage(ChatColor.RED + "That page was invalid!");
+                    return true;
+                }
+            }
+            //this is incorrect
+            cs.sendMessage(ChatColor.BLUE + "Help page " + ChatColor.GRAY + wantedPage + ChatColor.BLUE + "/" + ChatColor.GRAY + pages + ChatColor.BLUE + ":");
             for (String com : Help.helpdb.keySet()) {
-                String desc = Help.helpdb.get(com);
-                cs.sendMessage(ChatColor.BLUE + com + ChatColor.WHITE + ": " + ChatColor.GRAY + desc);
+                if (i == 5) {
+                    page++;
+                    i = 0;
+                }
+                i++;
+                if (page < wantedPage) continue;
+                if (page == wantedPage) {
+                    String desc = Help.helpdb.get(com);
+                    cs.sendMessage(ChatColor.BLUE + "/" + com + ChatColor.WHITE + ": " + ChatColor.GRAY + desc);
+                    if (i == 5) break;
+                }
             }
             return true;
         }

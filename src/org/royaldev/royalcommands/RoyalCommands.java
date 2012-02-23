@@ -23,6 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -93,6 +94,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public static Object commands = null;
+    public static Plugin[] plugins = null;
 
     // Permissions with Vault
     public Boolean setupPermissions() {
@@ -281,6 +283,8 @@ public class RoyalCommands extends JavaPlugin {
         version = this.getDescription().getVersion();
 
         commands = getDescription().getCommands();
+
+        plugins = getServer().getPluginManager().getPlugins();
 
         // yet again, borrowed from MilkBowl
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
