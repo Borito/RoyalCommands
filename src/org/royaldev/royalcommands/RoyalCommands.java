@@ -71,6 +71,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean sendToSpawn = null;
     public Boolean stsBack = null;
     public Boolean stsNew = null;
+    public static Boolean otherHelp = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -144,7 +145,7 @@ public class RoyalCommands extends JavaPlugin {
         sendToSpawn = this.getConfig().getBoolean("send_to_spawn");
         stsBack = this.getConfig().getBoolean("sts_back");
         stsNew = this.getConfig().getBoolean("send_to_spawn_new");
-
+        otherHelp = this.getConfig().getBoolean("other_plugins_in_help");
 
         banMessage = this.getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         noBuildMessage = this.getConfig().getString("no_build_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
@@ -166,6 +167,8 @@ public class RoyalCommands extends JavaPlugin {
         muteCmds = this.getConfig().getStringList("mute_blocked_commands");
         blockedItems = this.getConfig().getStringList("blocked_spawn_items");
         motd = this.getConfig().getStringList("motd");
+        
+        Help.reloadHelp();
     }
 
     public void loadConfiguration() {

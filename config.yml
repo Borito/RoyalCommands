@@ -22,6 +22,8 @@ send_to_spawn: false
 sts_back: false
 # Put /new/ players at set spawn point (/setspawn) when they login?
 send_to_spawn_new: true
+# Show other plugin commands in /help?
+other_plugins_in_help: true
 # Message to be shown if player does not have rcmds.build
 no_build_message: "&cYou don't have permission to build!"
 # The default ban message for /ban

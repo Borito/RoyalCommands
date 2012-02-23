@@ -39,7 +39,10 @@ public class CmdHelp implements CommandExecutor {
                     return true;
                 }
             }
-            //this is incorrect
+            if (wantedPage <= 0 || wantedPage > pages) {
+                cs.sendMessage(ChatColor.RED + "That page was invalid!");
+                return true;
+            }
             cs.sendMessage(ChatColor.BLUE + "Help page " + ChatColor.GRAY + wantedPage + ChatColor.BLUE + "/" + ChatColor.GRAY + pages + ChatColor.BLUE + ":");
             for (String com : Help.helpdb.keySet()) {
                 if (i == 5) {
