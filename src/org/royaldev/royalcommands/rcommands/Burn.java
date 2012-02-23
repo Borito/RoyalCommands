@@ -39,10 +39,7 @@ public class Burn implements CommandExecutor {
                 return true;
             }
             if (args.length == 1) {
-                cs.sendMessage(ChatColor.BLUE + "You have set "
-                        + ChatColor.GRAY + t.getName() + ChatColor.BLUE
-                        + " on fire for " + ChatColor.GRAY + "5"
-                        + ChatColor.BLUE + " seconds.");
+                cs.sendMessage(ChatColor.BLUE + "You have set " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " on fire for " + ChatColor.GRAY + "5" + ChatColor.BLUE + " seconds.");
                 t.setFireTicks(100);
                 return true;
             }
@@ -58,10 +55,7 @@ public class Burn implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Invalid number!");
                     return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "You have set "
-                        + ChatColor.GRAY + t.getName() + ChatColor.BLUE
-                        + " on fire for " + ChatColor.GRAY + len
-                        + ChatColor.BLUE + " seconds.");
+                cs.sendMessage(ChatColor.BLUE + "You have set " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " on fire for " + ChatColor.GRAY + len + ChatColor.BLUE + " seconds.");
                 t.setFireTicks(len * 20);
                 return true;
             }
