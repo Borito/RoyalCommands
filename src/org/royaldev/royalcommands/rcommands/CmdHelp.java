@@ -26,10 +26,10 @@ public class CmdHelp implements CommandExecutor {
             int page = 1;
             int wantedPage = 1;
             int pages;
-            if (Help.helpdb.keySet().size() % 5 == 0) {
-                pages = Help.helpdb.keySet().size() / 5;
+            if (Help.helpdb.keySet().size() % plugin.helpAmount == 0) {
+                pages = Help.helpdb.keySet().size() / plugin.helpAmount;
             } else {
-                pages = (Help.helpdb.size()/5)+1;
+                pages = (Help.helpdb.size() / plugin.helpAmount) + 1;
             }
             if (args.length > 0) {
                 try {
@@ -45,7 +45,7 @@ public class CmdHelp implements CommandExecutor {
             }
             cs.sendMessage(ChatColor.BLUE + "Help page " + ChatColor.GRAY + wantedPage + ChatColor.BLUE + "/" + ChatColor.GRAY + pages + ChatColor.BLUE + ":");
             for (String com : Help.helpdb.keySet()) {
-                if (i == 5) {
+                if (i == plugin.helpAmount) {
                     page++;
                     i = 0;
                 }
@@ -54,7 +54,7 @@ public class CmdHelp implements CommandExecutor {
                 if (page == wantedPage) {
                     String desc = Help.helpdb.get(com);
                     cs.sendMessage(ChatColor.BLUE + "/" + com + ChatColor.WHITE + ": " + ChatColor.GRAY + desc);
-                    if (i == 5) break;
+                    if (i == plugin.helpAmount) break;
                 }
             }
             return true;
