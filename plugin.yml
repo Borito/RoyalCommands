@@ -422,7 +422,7 @@ commands:
   suicide:
     description: Kills yourself.
     usage: /<command>
-    aliases: [enditall]
+    aliases: [enditall, anhero]
 
   killall:
     description: Kills everyone on the server but yourself.
