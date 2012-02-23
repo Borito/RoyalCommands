@@ -50,6 +50,8 @@ default_near_radius: 50
 explode_power: 4
 # Maximum explode power (~50 is recommended)
 max_explode_power: 10
+# Amount of lines to display in /help per page
+help_lines: 5
 # Commands to block when muted
 mute_blocked_commands: ["/me", "/tc", "/nc"]
 # Items that cannot be spawned without rcmds.allowed.item

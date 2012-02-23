@@ -83,6 +83,7 @@ public class RoyalCommands extends JavaPlugin {
     public Integer defaultStack = null;
     public Integer warnBan = null;
     public Integer spawnmobLimit = null;
+    public Integer helpAmount = null;
 
     public Double maxNear = null;
     public Double defaultNear = null;
@@ -157,6 +158,7 @@ public class RoyalCommands extends JavaPlugin {
         defaultStack = this.getConfig().getInt("default_stack_size");
         warnBan = this.getConfig().getInt("max_warns_before_ban");
         spawnmobLimit = this.getConfig().getInt("spawnmob_limit");
+        helpAmount = this.getConfig().getInt("help_lines");
 
         maxNear = this.getConfig().getDouble("max_near_radius");
         defaultNear = this.getConfig().getDouble("default_near_radius");
@@ -280,7 +282,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public void onEnable() {
         loadConfiguration();
-
+        
         setupEconomy();
 
         version = this.getDescription().getVersion();
