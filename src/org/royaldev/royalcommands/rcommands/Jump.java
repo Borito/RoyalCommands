@@ -36,7 +36,7 @@ public class Jump implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "Can't jump there!");
                 return true;
             }
-            Location bLoc = new Location(p.getWorld(), bb.getLocation().getX(), bb.getLocation().getY() + 1, bb.getLocation().getZ(), p.getLocation().getYaw(), p.getLocation().getPitch());
+            Location bLoc = new Location(p.getWorld(), bb.getLocation().getX()+.5, bb.getLocation().getY() + 1, bb.getLocation().getZ()+.5, p.getLocation().getYaw(), p.getLocation().getPitch());
             Back.backdb.put(p, p.getLocation());
             p.teleport(bLoc);
             return true;
