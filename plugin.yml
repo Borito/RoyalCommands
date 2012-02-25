@@ -45,312 +45,312 @@ commands:
   banned:
     description: Returns if a player is banned.
     usage: /<command> [player]
-    
+
   setarmor:
     description: Sets your armor to a certain type.
     usage: /<command> [material]
     aliases: [armor, sarmor]
-    
+
   getip:
     description: Gets the IP of a user.
     usage: /<command> [player]
     aliases: [getaddr, gip]
-    
+
   compareip:
     description: Compare two users' IP addresses.
     usage: /<command> [player1] [player2]
     aliases: [compip, cip]
-  
+
   ragequit:
     description: Ragequits yourself or another player.
     usage: /<command> (player)
     aliases: [rage, rq]
-    
+
   quit:
     description: Makes yourself quit.
     usage: /<command>
-    
+
   rank:
     description: Check the rank of the specified player (permissions).
     usage: /<command> [player]
-    
+
   freeze:
     description: Freezes the player.
     usage: /<command> [player]
     aliases: [fz, frz]
-    
+
   fakeop:
     description: Fakes an "You are now op!" message.
     usage: /<command> [player]
     aliases: [fop]
-    
+
   vtp:
     description: Teleports to anyone, regardless of being vanished or having teleport off.
     usage: /<command> [player]
-    
+
   vtphere:
     description: Teleports anyone you, regardless of being vanished or having teleport off.
     usage: /<command> [player]
-    
+
   megastrike:
     description: Strikes lightning 15 times at the player's cursor or at specified player.
     usage: /<command> (player)
     aliases: [mstrike, megasmite, msmite, ms]
-    
+
   pext:
     description: Extinguishes yourself or a player.
     usage: /<command> (player)
     aliases: [playerext, pex, splash]
-    
+
   item:
     description: Add an item to your inventory.
     usage: /<command> [item](:metadata) (amount)
     aliases: [i]
-    
+
   clearinventory:
     description: Clears your inventory.
     usage: /<command> (user)
     aliases: [ci, clearinv]
-    
+
   weather:
     description: Changes the weather.
     usage: /<command> [conditions] (seconds)
-    
+
   fixchunk:
     description: Fixes a voided chunk (world holes) by reloading it.
     usage: /<command>
     aliases: [fc, fixc, cfix]
-    
+
   give:
     description: Gives a player items.
     usage: /<command> [player] [item](:metadata) (amount)
     aliases: [g]
-    
+
   message:
     description: Send a message to a player.
     usage: /<command> [player] [message]
     aliases: [msg, send, tell, whisper]
-    
+
   reply:
     description: Reply to a message.
     usage: /<command> [message]
     aliases: [r]
-    
+
   gamemode:
     description: Toggles your gamemode.
     usage: /<command> (player)
     aliases: [gm, gamem, gmode]
-    
+
   ban:
     description: Bans a user.
     usage: /<command> [player] (message)
     aliases: [rban]
-    
+
   mute:
     description: Stop a user from speaking.
-    usage: /<command> [player]
+    usage: /<command> [player] (seconds)
     aliases: [silence]
-    
+
   kick:
     description: Kicks a player from the server.
     usage: /<command> [player] (message)
     aliases: [boot]
-    
+
   time:
     description: Sets the time of your current world.
     usage: /<command> [ticks] (world)
-    
+
   home:
     description: Teleports the player home.
     usage: /<command> (home)
-    
+
   sethome:
     description: Sets the player's home.
     usage: /<command> (home)
     aliases: [shome]
-    
+
   delhome:
     description: Deletes a home.
     usage: /<command> [home]
     aliases: [dhome, rmhome, deletehome, removehome]
-    
+
   listhome:
     description: List your set homes.
     usage: /<command> (player)
     aliases: [lshome, listhomes, lshomes, homes]
-  
+
   strike:
     description: Strikes lightning at the player's cursor or at specified player.
     usage: /<command> (player)
     aliases: [smite, lightning]
-    
+
   jump:
     description: Moves the player to the block they are looking at.
     usage: /<command>
     aliases: [j, tps, go]
-    
+
   warn:
     description: Warns the specified player.
     usage: /<command> [player] (message)
-    
+
   clearwarns:
     description: Clears the warnings on a player.
     usage: /<command> [player]
     aliases: [removewarns, clearwarnings, removewarnings, rmwarns, rmwarnings]
-    
+
   warp:
     description: Go to a warp point.
     usage: /<command> [warp] (player)
     aliases: [warps]
-    
+
   setwarp:
     description: Set a warp point.
     usage: /<command> [warp]
     aliases: [mkwarp, createwarp]
-    
+
   delwarp:
     description: Delete a warp point.
     usage: /<command> [warp]
     aliases: [dwarp, deletewarp, rmwarp, removewarp]
-    
+
   repair:
     description: Repairs the item in your hand.
     usage: /<command> (all)
     aliases: [fix]
-    
+
   unban:
     description: Removes a ban from a player.
     usage: /<command> [player]
     aliases: [pardon]
-    
+
   heal:
     description: Heals a player or the player himself.
     usage: /<command> (player)
-  
+
   feed:
     description: Feeds a player or the player himself.
     usage: /<command> (player)
-    
+
   god:
     description: Toggles godmode on a player or the player himself.
     usage: /<command> (player)
     aliases: [tgm, godmode]
-    
+
   banreason:
     description: Displays the reason why a user was banned.
     usage: /<command> [player]
     aliases: [br, banr, breason]
-    
+
   setspawn:
     description: Sets the spawn of the world the player is standing in.
     usage: /<command>
-    
+
   spawn:
     description: Takes the player to the spawn of the world they are standing in.
     usage: /<command>
-    
+
   banip:
     description: Bans an IP address or a player's IP.
     usage: /<command> (player/IP)
-    
+
   unbanip:
     description: Unbans an IP address or a player's IP.
     usage: /<command> (player/IP)
     aliases: [pardonip]
-    
+
   list:
     description: Lists the players online and the maximum amount.
     usage: /<command>
     aliases: [who, players, online, listplayers, playing]
-    
+
   back:
     description: Takes you to your previous location.
     usage: /<command>
-    
+
   teleport:
     description: Teleports you to a player.
     usage: /<command> [player]
     aliases: [tp]
-    
+
   teleporthere:
     description: Teleports a player to you.
     usage: /<command> [player]
     aliases: [tphere, tph]
-    
+
   teleportrequest:
     description: Sends a teleport request to a player.
     usage: /<command> [player]
     aliases: [tpr, tpa, tprequest, teleportr]
-    
+
   tpaccept:
     description: Accepts a teleport request.
     usage: /<command>
     aliases: [tpac, tpyes]
-    
+
   tpdeny:
     description: Denies a teleport request.
     usage: /<command>
     aliases: [tpad, tpno]
-    
+
   listwarns:
     description: Lists the warnings a player has.
     usage: /<command> (player)
     aliases: [warns, lswarns, lwarns, lwarn, lswarn, listwarn]
-  
+
   more:
     description: Gives more of the item in hand.
     usage: /<command>
-    
+
   teleportrequesthere:
     description: Sends a teleport here request to a player.
     usage: /<command> [player]
     aliases: [tprh, tpahere, tpah, teleportrhere, tphrequest, tphererequest, tprhere]
-    
+
   spy:
     description: Allows the player to spy on private messages.
     usage: /<command>
     aliases: [msgspy, socialspy]
-    
+
   spawnmob:
     description: Spawns mobs where the player is looking.
     usage: /<command> [mob] (amount)
     aliases: [sm, mobspawn]
-    
+
   afk:
     description: Marks the player as away from keyboard.
     usage: /<command>
     aliases: [away]
-    
+
   assign:
     description: Assigns a command to a certain block.
     usage: /<command> [command]
     aliases: [as, pt, powertool]
-    
+
   onehitkill:
     description: Makes all attacks kill anything (not dragons).
     usage: /<command> (player)
     aliases: [ohk, instakill, ik]
-    
+
   burn:
     description: Sets a player on fire for a set amount of time.
     usage: /<command> [player] (seconds)
     aliases: [ignite, enflame]
-    
+
   kickall:
     description: Kicks everyone from the server except the command issuer.
     usage: /<command> (reason)
     aliases: [ka, kickeveryone]
-    
+
   world:
     description: Teleports the player to the specified world.
     usage: /<command> [world]
     aliases: [goto, gotoworld, tpworld, worldtp, teleportworld, worldteleport, tpw]
-    
+
   jail:
     description: Puts a player in jail.
     usage: /<command> [player] [jail]
     aliases: [tjail, togglejail]
-    
+
   setjail:
     description: Sets the location of a jail.
     usage: /<command> [name]
@@ -481,13 +481,13 @@ commands:
 
   help:
     description: Displays help for commands.
-    usage: /<command>
+    usage: /<command> (page)
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
     aliases: [royalcommands]
-    
+
 permissions:
   rcmds.level:
     description: Allows you to level your XP up by 1
@@ -882,7 +882,7 @@ permissions:
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
     default: false
-    
+
   rcmds.clearinventory.others:
     description: Allows the player to clear other peoples' inventories.
     default: op
@@ -910,7 +910,7 @@ permissions:
   rcmds.home.others:
     description: Allows the player to go to other player's homes.
     default: op
-    
+
   rcmds.see.ban:
     description: See ban messages.
     default: op
@@ -976,7 +976,7 @@ permissions:
     default: op
   rcmds.setarmor.iron:
     description: Allows the player to set iron armor.
-    
+
   rcmds.notarget:
     description: Disables the mobs' ability to target the player.
     default: false
@@ -1020,7 +1020,6 @@ permissions:
       rcmds.sign.use.give: true
       rcmds.sign.use.command: true
 
-    
   rcmds.exempt.*:
     description: Gives every exempt permission.
     default: false
@@ -1170,11 +1169,11 @@ permissions:
       rcmds.rcmds: true
 
       rcmds.updates: true
-        
+
       rcmds.exempt.*: true
-      
+
       rcmds.allowed.item: true
-        
+
       rcmds.clearinventory.others: true
       rcmds.megastrike.others: true
       rcmds.pext.others: true
@@ -1184,12 +1183,11 @@ permissions:
       rcmds.nick.others: true
       rcmds.listwarns.others: true
       rcmds.home.others: true
-        
+
       rcmds.see.*: true
-      
+
       rcmds.sign.*: true
 
       rcmds.setarmor.*: true
-        
+
       rcmds.notarget: true
-      

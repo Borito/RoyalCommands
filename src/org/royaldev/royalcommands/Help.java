@@ -3,7 +3,6 @@ package org.royaldev.royalcommands;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 public class Help {
 
