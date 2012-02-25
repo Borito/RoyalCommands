@@ -19,10 +19,7 @@ import org.royaldev.royalcommands.rcommands.Back;
 import org.royaldev.royalcommands.rcommands.Motd;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class RoyalCommandsPlayerListener implements Listener {
@@ -34,7 +31,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     Logger log = Logger.getLogger("Minecraft");
-    
+
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
@@ -51,6 +48,17 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
+            if (PConfManager.getPVal(event.getPlayer(), "mutelength") != null) {
+                long length = PConfManager.getPValLong(event.getPlayer(), "mutelength");
+                long set = PConfManager.getPValLong(event.getPlayer(), "mutestart");
+                long time = new Date().getTime();
+                long overall = length + set;
+                if (time > overall) {
+                    PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
+                    PConfManager.setPVal(event.getPlayer(), null, "mutelength");
+                    PConfManager.setPVal(event.getPlayer(), null, "mutestart");
+                }
+            }
             for (String command : plugin.muteCmds) {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
                     continue;
@@ -75,6 +83,17 @@ public class RoyalCommandsPlayerListener implements Listener {
             Afk.afkdb.remove(event.getPlayer());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
+            if (PConfManager.getPVal(event.getPlayer(), "mutelength") != null) {
+                long length = PConfManager.getPValLong(event.getPlayer(), "mutelength");
+                long set = PConfManager.getPValLong(event.getPlayer(), "mutestart");
+                long time = new Date().getTime();
+                long overall = set + length;
+                if (time > overall) {
+                    PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
+                    PConfManager.setPVal(event.getPlayer(), null, "mutelength");
+                    PConfManager.setPVal(event.getPlayer(), null, "mutestart");
+                }
+            }
             event.setFormat("");
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
@@ -146,6 +165,18 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (event.getPlayer().isBanned()) {
+            if (PConfManager.getPVal(event.getPlayer(), "banlength") != null) {
+                long length = PConfManager.getPValLong(event.getPlayer(), "banlength");
+                long set = PConfManager.getPValLong(event.getPlayer(), "banstart");
+                long time = new Date().getTime();
+                long overall = length + set;
+                if (time > overall) {
+                    event.getPlayer().setBanned(false);
+                    PConfManager.setPVal(event.getPlayer(), null, "banlength");
+                    PConfManager.setPVal(event.getPlayer(), null, "banstart");
+                    event.allow();
+                }
+            }
             String kickMessage;
             OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(event.getPlayer().getName());
             File oplayerconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + oplayer.getName() + ".yml");
