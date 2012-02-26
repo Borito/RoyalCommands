@@ -418,6 +418,9 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("tppos").setExecutor(new CmdTppos(this));
         getCommand("ignore").setExecutor(new CmdIgnore(this));
         getCommand("help").setExecutor(new CmdHelp(this));
+        getCommand("coords").setExecutor(new CmdCoords(this));
+        getCommand("tpall").setExecutor(new CmdTpAll(this));
+        getCommand("tpaall").setExecutor(new CmdTpaAll(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();

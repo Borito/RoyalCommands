@@ -483,6 +483,21 @@ commands:
     description: Displays help for commands.
     usage: /<command> (page)
 
+  coords:
+    description: Displays coordinates for yourself or a player.
+    usage: /<command> (player)
+    aliases: [pos, position, loc, location, coordinates]
+
+  tpall:
+    description: Teleports everyone to you.
+    usage: /<command>
+    aliases: [teleportall]
+
+  tpaall:
+    description: Sends a teleport request to everyone.
+    usage: /<command>
+    aliases: [tprall, teleportaskall, teleportrequestall]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -782,6 +797,15 @@ permissions:
     default: op
   rcmds.ignore:
     description: Allows you to ignore other players.
+    default: op
+  rcmds.coords:
+    description: Allows you to see your coordinates.
+    default: op
+  rcmds.tpall:
+    description: Allows you to teleport everyone to you.
+    default: op
+  rcmds.tpaall:
+    description: Allows you to request everyone to teleport to you.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1166,6 +1190,9 @@ permissions:
       rcmds.whobanned: true
       rcmds.tppos: true
       rcmds.ignore: true
+      rcmds.coords: true
+      rcmds.tpall: true
+      rcmds.tpaall: true
       rcmds.rcmds: true
 
       rcmds.updates: true
