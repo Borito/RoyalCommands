@@ -38,6 +38,10 @@ public class CmdCoords implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "world: " + ChatColor.GRAY + l.getWorld().getName());
                 return true;
             } else {
+                if (!plugin.isAuthorized(cs, "rcmds.coords.others")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
