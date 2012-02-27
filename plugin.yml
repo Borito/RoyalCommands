@@ -499,7 +499,7 @@ commands:
     aliases: [tprall, teleportaskall, teleportrequestall]
 
   vip:
-    description: Modifies the VIP list.
+    description: Modifies the VIP list. VIPs can join the server when it is full.
     usage: /<command> [add|remove|check|?] (player)
     aliases: [reserve, slot]
 
