@@ -74,6 +74,13 @@ public class RoyalCommandsPlayerListener implements Listener {
             event.setCancelled(true);
         }
     }
+    
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPLogin(PlayerLoginEvent e) {
+        if (e.getResult() != Result.KICK_FULL) return;
+        if (!PConfManager.getPConfExists(e.getPlayer())) return;
+        if (PConfManager.getPVal(e.getPlayer(), "vip") != null && PConfManager.getPValBoolean(e.getPlayer(), "vip")) e.allow();
+    }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {

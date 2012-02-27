@@ -421,15 +421,16 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("coords").setExecutor(new CmdCoords(this));
         getCommand("tpall").setExecutor(new CmdTpAll(this));
         getCommand("tpaall").setExecutor(new CmdTpaAll(this));
+        getCommand("vip").setExecutor(new CmdVip(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
 
-        log.info("[RoyalCommands] RoyalCommands v" + this.version + " initiated.");
+        log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
     }
 
     public void onDisable() {
-        log.info("[RoyalCommands] RoyalCommands v" + this.version + " disabled.");
+        log.info("[RoyalCommands] RoyalCommands v" + version + " disabled.");
     }
 
 }

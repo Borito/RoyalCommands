@@ -498,6 +498,11 @@ commands:
     usage: /<command>
     aliases: [tprall, teleportaskall, teleportrequestall]
 
+  vip:
+    description: Modifies the VIP list.
+    usage: /<command> [add|remove|check|?] (player)
+    aliases: [reserve, slot]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -807,6 +812,9 @@ permissions:
   rcmds.tpaall:
     description: Allows you to request everyone to teleport to you.
     default: op
+  rcmds.vip:
+    description: Allows you to modify the VIP list.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -932,7 +940,10 @@ permissions:
     description: Allows the player to /listwarns other players.
     default: op
   rcmds.home.others:
-    description: Allows the player to go to other player's homes.
+    description: Allows the player to go to other players' homes.
+    default: op
+  rcmds.coords.others:
+    description: Allows the player to see other players' coordinates.
     default: op
 
   rcmds.see.ban:
@@ -1193,6 +1204,7 @@ permissions:
       rcmds.coords: true
       rcmds.tpall: true
       rcmds.tpaall: true
+      rcmds.vip: true
       rcmds.rcmds: true
 
       rcmds.updates: true
@@ -1210,6 +1222,7 @@ permissions:
       rcmds.nick.others: true
       rcmds.listwarns.others: true
       rcmds.home.others: true
+      rcmds.coords.others: true
 
       rcmds.see.*: true
 
