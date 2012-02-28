@@ -503,6 +503,11 @@ commands:
     usage: /<command> [add|remove|check|?] (player)
     aliases: [reserve, slot]
 
+  dump:
+    description: Dumps contents of inventory into chest.
+    usage: /<command>
+    aliases: [empty, store]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -814,6 +819,9 @@ permissions:
     default: op
   rcmds.vip:
     description: Allows you to modify the VIP list.
+    default: op
+  rcmds.dump:
+    description: Allows you to store your inventory in a chest.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1205,6 +1213,7 @@ permissions:
       rcmds.tpall: true
       rcmds.tpaall: true
       rcmds.vip: true
+      rcmds.dump: true
       rcmds.rcmds: true
 
       rcmds.updates: true

@@ -72,6 +72,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean stsBack = null;
     public Boolean stsNew = null;
     public static Boolean otherHelp = null;
+    public Boolean tpEvery = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -147,6 +148,7 @@ public class RoyalCommands extends JavaPlugin {
         stsBack = this.getConfig().getBoolean("sts_back");
         stsNew = this.getConfig().getBoolean("send_to_spawn_new");
         otherHelp = this.getConfig().getBoolean("other_plugins_in_help");
+        tpEvery = this.getConfig().getBoolean("back_for_all_tps");
 
         banMessage = this.getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
         noBuildMessage = this.getConfig().getString("no_build_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
@@ -422,6 +424,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("tpall").setExecutor(new CmdTpAll(this));
         getCommand("tpaall").setExecutor(new CmdTpaAll(this));
         getCommand("vip").setExecutor(new CmdVip(this));
+        getCommand("dump").setExecutor(new CmdDump(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
