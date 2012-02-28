@@ -86,6 +86,7 @@ public class CmdVip implements CommandExecutor {
                 cs.sendMessage(ChatColor.GRAY + "/" + cmdName + " remove [player] " + ChatColor.BLUE + " - Removes a player from the VIP list.");
                 cs.sendMessage(ChatColor.GRAY + "/" + cmdName + " check [player] " + ChatColor.BLUE + " - Checks if a player is in the VIP list.");
                 cs.sendMessage(ChatColor.GRAY + "/" + cmdName + " ? " + ChatColor.BLUE + " - Displays this help.");
+                return true;
             } else {
                 cs.sendMessage(ChatColor.RED + "Invalid subcommand!");
                 cs.sendMessage(ChatColor.RED + "Try " + ChatColor.GRAY + "/" + cmd.getName() + " ?" + ChatColor.RED + ".");
