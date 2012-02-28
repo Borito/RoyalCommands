@@ -24,6 +24,8 @@ sts_back: false
 send_to_spawn_new: true
 # Show other plugin commands in /help?
 other_plugins_in_help: true
+# Use /back for /every/ teleport?
+back_for_all_tps: true
 # Message to be shown if player does not have rcmds.build
 no_build_message: "&cYou don't have permission to build!"
 # The default ban message for /ban

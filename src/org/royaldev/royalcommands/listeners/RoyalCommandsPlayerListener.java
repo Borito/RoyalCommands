@@ -39,6 +39,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.getPlayer().sendMessage(ChatColor.RED + "You are jailed and may not teleport.");
             e.setCancelled(true);
         }
+        if (plugin.tpEvery) Back.backdb.put(e.getPlayer(), e.getFrom());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
