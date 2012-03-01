@@ -39,7 +39,12 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.getPlayer().sendMessage(ChatColor.RED + "You are jailed and may not teleport.");
             e.setCancelled(true);
         }
-        if (plugin.tpEvery) Back.backdb.put(e.getPlayer(), e.getFrom());
+        if (plugin.tpEvery) {
+            if (Back.backdb.containsKey(e.getPlayer())) {
+                if (e.getTo().equals(Back.backdb.get(e.getPlayer()))) return;
+            }
+            Back.backdb.put(e.getPlayer(), e.getFrom());
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -75,12 +80,13 @@ public class RoyalCommandsPlayerListener implements Listener {
             event.setCancelled(true);
         }
     }
-    
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPLogin(PlayerLoginEvent e) {
         if (e.getResult() != Result.KICK_FULL) return;
         if (!PConfManager.getPConfExists(e.getPlayer())) return;
-        if (PConfManager.getPVal(e.getPlayer(), "vip") != null && PConfManager.getPValBoolean(e.getPlayer(), "vip")) e.allow();
+        if (PConfManager.getPVal(e.getPlayer(), "vip") != null && PConfManager.getPValBoolean(e.getPlayer(), "vip"))
+            e.allow();
     }
 
     @EventHandler(priority = EventPriority.LOW)
