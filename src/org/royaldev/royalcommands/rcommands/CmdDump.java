@@ -1,6 +1,8 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
@@ -38,11 +40,15 @@ public class CmdDump implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            Block b = RUtils.getTarget(p);
-            if (!(b.getState() instanceof Chest)) {
-                cs.sendMessage(ChatColor.RED + "Please look at a chest.");
+            Block bl = RUtils.getTarget(p);
+            Location l = bl.getLocation();
+            l.setY(l.getY()+1);
+            Block b = l.getBlock();
+            if (b.getTypeId() != 0) {
+                cs.sendMessage(ChatColor.RED + "Please make sure the block above is air.");
                 return true;
             }
+            b.setType(Material.CHEST);
             Chest c = (Chest) b.getState();
             Inventory ci = c.getInventory();
             PlayerInventory pi = p.getInventory();
