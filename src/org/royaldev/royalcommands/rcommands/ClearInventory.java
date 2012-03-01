@@ -17,24 +17,20 @@ public class ClearInventory implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("clearinventory")) {
             if (!plugin.isAuthorized(cs, "rcmds.clearinventory")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You don't have permission for that!");
+                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (args.length < 1) {
                 if (!(cs instanceof Player)) {
-                    cs.sendMessage(ChatColor.RED
-                            + "This command is only available to players!");
+                    cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                     return true;
                 }
                 Player p = (Player) cs;
                 p.getInventory().clear();
-                cs.sendMessage(ChatColor.BLUE
-                        + "You have cleared your inventory.");
+                cs.sendMessage(ChatColor.BLUE + "You have cleared your inventory.");
                 return true;
             }
         }
@@ -53,13 +49,13 @@ public class ClearInventory implements CommandExecutor {
                 return true;
             }
             if (plugin.isAuthorized(target, "rcmds.exempt.clearinventory")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You cannot alter that player's inventory!");
+                cs.sendMessage(ChatColor.RED + "You cannot alter that player's inventory!");
                 return true;
             }
             cs.sendMessage(ChatColor.BLUE + "You have cleared the inventory of " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
             target.sendMessage(ChatColor.RED + "Your inventory has been cleared.");
             target.getInventory().clear();
+            return true;
         }
         return false;
     }
