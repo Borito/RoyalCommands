@@ -508,6 +508,11 @@ commands:
     usage: /<command>
     aliases: [empty, store]
 
+  seen:
+    description: Shows when a player was last online.
+    usage: /<command> [player]
+    aliases: [lastseen]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -822,6 +827,9 @@ permissions:
     default: op
   rcmds.dump:
     description: Allows you to store your inventory in a chest.
+    default: op
+  rcmds.seen:
+    description: Allows you to see when a player was last online.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1214,6 +1222,7 @@ permissions:
       rcmds.tpaall: true
       rcmds.vip: true
       rcmds.dump: true
+      rcmds.seen: true
       rcmds.rcmds: true
 
       rcmds.updates: true
