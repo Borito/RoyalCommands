@@ -4,14 +4,14 @@ import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.PlayerInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class RUtils {
@@ -121,12 +121,81 @@ public class RUtils {
         }
     }
 
-    public static Integer getInt(String number) {
-        try {
-            return Integer.valueOf(number);
-        } catch (Exception e) {
-            return null;
-        }
+    public static boolean isTimeStampValid(OfflinePlayer p, String title) {
+        if (PConfManager.getPVal(p, title) == null) return false;
+        long time = new Date().getTime();
+        long overall = PConfManager.getPValLong(p, title);
+        return time < overall;
     }
 
+    public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
+        PConfManager.setPValLong(p, (seconds * 1000) + new Date().getTime(), title);
+    }
+
+    //if it isn't obvious, Essentials wrote this code. no way in hell I could manage this
+    public static String formatDateDiff(long date) {
+        Calendar c = new GregorianCalendar();
+        c.setTimeInMillis(date);
+        Calendar now = new GregorianCalendar();
+        return formatDateDiff(now, c);
+    }
+
+    private static int dateDiff(int type, Calendar fromDate, Calendar toDate, boolean future) {
+        int diff = 0;
+        long savedDate = fromDate.getTimeInMillis();
+        while ((future && !fromDate.after(toDate)) || (!future && !fromDate.before(toDate))) {
+            savedDate = fromDate.getTimeInMillis();
+            fromDate.add(type, future ? 1 : -1);
+            diff++;
+        }
+        diff--;
+        fromDate.setTimeInMillis(savedDate);
+        return diff;
+    }
+
+    public static String formatDateDiff(Calendar fromDate, Calendar toDate) {
+        boolean future = false;
+        if (toDate.equals(fromDate)) {
+            return " now";
+        }
+        if (toDate.after(fromDate)) {
+            future = true;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int[] types = new int[]
+                {
+                        Calendar.YEAR,
+                        Calendar.MONTH,
+                        Calendar.DAY_OF_MONTH,
+                        Calendar.HOUR_OF_DAY,
+                        Calendar.MINUTE,
+                        Calendar.SECOND
+                };
+        String[] names = new String[]
+                {
+                        "year",
+                        "years",
+                        "month",
+                        "months",
+                        "day",
+                        "days",
+                        "hour",
+                        "hours",
+                        "minute",
+                        "minutes",
+                        "second",
+                        "seconds"
+                };
+        for (int i = 0; i < types.length; i++) {
+            int diff = dateDiff(types[i], fromDate, toDate, future);
+            if (diff > 0) {
+                sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
+            }
+        }
+        if (sb.length() == 0) {
+            return " now";
+        }
+        return sb.toString();
+    }
 }
