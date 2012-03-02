@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.RUtils;
@@ -45,15 +46,15 @@ public class Spawner implements CommandExecutor {
                 return true;
             }
             CreatureSpawner crs = (CreatureSpawner) bb.getState();
-            CreatureType ct;
+            EntityType ct;
             try {
-                ct = CreatureType.valueOf(args[0].toUpperCase());
+                ct = EntityType.valueOf(args[0].toUpperCase());
             } catch (Exception e) {
                 cs.sendMessage(ChatColor.RED + "Invalid mob!");
                 return true;
             }
-            crs.setCreatureType(ct);
-            cs.sendMessage(ChatColor.BLUE + "Spawner type set to " + ChatColor.GRAY + crs.getCreatureTypeId().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+            crs.setSpawnedType(ct);
+            cs.sendMessage(ChatColor.BLUE + "Spawner type set to " + ChatColor.GRAY + crs.getCreatureTypeName().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
             return true;
         }
         return false;

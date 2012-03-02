@@ -287,7 +287,7 @@ public class RoyalCommands extends JavaPlugin {
         
         setupEconomy();
 
-        version = this.getDescription().getVersion();
+        version = getDescription().getVersion();
 
         commands = getDescription().getCommands();
 

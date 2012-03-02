@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -37,11 +37,11 @@ public class SpawnMob implements CommandExecutor {
                 return false;
             }
             Block bb = RUtils.getTarget(p);
-            CreatureType c;
+            EntityType c;
             Location l = bb.getLocation();
             l.setY(l.getY() + 1);
             try {
-                c = CreatureType.valueOf(args[0].toUpperCase());
+                c = EntityType.valueOf(args[0].toUpperCase());
             } catch (Exception e) {
                 cs.sendMessage(ChatColor.RED + "Invalid mob!");
                 return true;

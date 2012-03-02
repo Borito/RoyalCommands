@@ -21,8 +21,7 @@ public class Assign implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("assign")) {
             if (!plugin.isAuthorized(cs, "rcmds.assign")) {
                 RUtils.dispNoPerms(cs);

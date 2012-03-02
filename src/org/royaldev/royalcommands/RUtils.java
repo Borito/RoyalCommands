@@ -108,6 +108,11 @@ public class RUtils {
         log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
     }
 
+    public static void dispNoPerms(CommandSender cs, String message) {
+        cs.sendMessage(message);
+        log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
+    }
+
     public static Double getDouble(String number) {
         try {
             return Double.valueOf(number);
