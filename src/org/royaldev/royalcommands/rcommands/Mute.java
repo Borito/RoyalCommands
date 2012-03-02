@@ -11,7 +11,6 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class Mute implements CommandExecutor {
 
@@ -19,33 +18,6 @@ public class Mute implements CommandExecutor {
 
     public Mute(RoyalCommands plugin) {
         this.plugin = plugin;
-    }
-
-    public String getTime(long time) {
-        if (time > 86399) {
-            long days = TimeUnit.SECONDS.toDays(time);
-            if (days == 1) {
-                return days + " day";
-            }
-            return days + " days";
-        } else if (time > 3599) {
-            long hours = TimeUnit.SECONDS.toHours(time);
-            if (hours == 1) {
-                return hours + " hour";
-            }
-            return hours + " hours";
-        } else if (time > 59) {
-            long minutes = TimeUnit.SECONDS.toMinutes(time);
-            if (minutes == 1) {
-                return minutes + " minute";
-            }
-            return minutes + " minutes";
-        } else {
-            if (time == 1) {
-                return time + "second";
-            }
-            return time + " seconds";
-        }
     }
 
     @Override
@@ -123,8 +95,7 @@ public class Mute implements CommandExecutor {
                         return true;
                     } else {
                         PConfManager.setPValBoolean(t2, true, "muted");
-                        PConfManager.setPValLong(t2, time*1000, "mutelength");
-                        PConfManager.setPValLong(t2, new Date().getTime(), "mutestart");
+                        RUtils.setTimeStamp(t2, time, "mutetime");
                         cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
                         return true;
                     }
@@ -140,10 +111,9 @@ public class Mute implements CommandExecutor {
                         return true;
                     } else {
                         PConfManager.setPValBoolean(t, true, "muted");
-                        PConfManager.setPValLong(t, time*1000, "mutelength");
-                        PConfManager.setPValLong(t, new Date().getTime(), "mutestart");
-                        t.sendMessage(ChatColor.RED + "You have been muted by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for " + ChatColor.GRAY + getTime(time) + ChatColor.RED + ".");
-                        cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + getTime(time) + ChatColor.BLUE + ".");
+                        RUtils.setTimeStamp(t, time, "mutetime");
+                        t.sendMessage(ChatColor.RED + "You have been muted by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() + (time*1000)) + ChatColor.RED + ".");
+                        cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() + (time*1000)) + ChatColor.BLUE + ".");
                         return true;
                     }
                 }

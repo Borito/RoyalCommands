@@ -13,6 +13,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.Afk;
 import org.royaldev.royalcommands.rcommands.Back;
@@ -47,6 +48,11 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        PConfManager.setPValLong(e.getPlayer(), new Date().getTime(), "seen");
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (event.isCancelled()) return;
@@ -54,16 +60,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
-            if (PConfManager.getPVal(event.getPlayer(), "mutelength") != null) {
-                long length = PConfManager.getPValLong(event.getPlayer(), "mutelength");
-                long set = PConfManager.getPValLong(event.getPlayer(), "mutestart");
-                long time = new Date().getTime();
-                long overall = length + set;
-                if (time > overall) {
-                    PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
-                    PConfManager.setPVal(event.getPlayer(), null, "mutelength");
-                    PConfManager.setPVal(event.getPlayer(), null, "mutestart");
-                }
+            if (!RUtils.isTimeStampValid(event.getPlayer(), "mutetime")) {
+                PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
             }
             for (String command : plugin.muteCmds) {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
@@ -97,16 +95,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             Afk.afkdb.remove(event.getPlayer());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
-            if (PConfManager.getPVal(event.getPlayer(), "mutelength") != null) {
-                long length = PConfManager.getPValLong(event.getPlayer(), "mutelength");
-                long set = PConfManager.getPValLong(event.getPlayer(), "mutestart");
-                long time = new Date().getTime();
-                long overall = set + length;
-                if (time > overall) {
-                    PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
-                    PConfManager.setPVal(event.getPlayer(), null, "mutelength");
-                    PConfManager.setPVal(event.getPlayer(), null, "mutestart");
-                }
+            if (!RUtils.isTimeStampValid(event.getPlayer(), "mutetime")) {
+                PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
             }
             event.setFormat("");
             event.setCancelled(true);
