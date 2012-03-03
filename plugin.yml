@@ -513,6 +513,11 @@ commands:
     usage: /<command> [player]
     aliases: [lastseen]
 
+  tempban:
+    description: Temporarily bans a player.
+    usage: /<command> [player] [seconds]
+    aliases: [tban, temporarilyban]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -830,6 +835,9 @@ permissions:
     default: op
   rcmds.seen:
     description: Allows you to see when a player was last online.
+    default: op
+  rcmds.tempban:
+    description: Allows you to temporarily ban a player.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1223,6 +1231,7 @@ permissions:
       rcmds.vip: true
       rcmds.dump: true
       rcmds.seen: true
+      rcmds.tempban: true
       rcmds.rcmds: true
 
       rcmds.updates: true

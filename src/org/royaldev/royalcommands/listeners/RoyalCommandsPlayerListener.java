@@ -174,16 +174,10 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (event.getPlayer().isBanned()) {
-            if (PConfManager.getPVal(event.getPlayer(), "banlength") != null) {
-                long length = PConfManager.getPValLong(event.getPlayer(), "banlength");
-                long set = PConfManager.getPValLong(event.getPlayer(), "banstart");
-                long time = new Date().getTime();
-                long overall = length + set;
-                if (time > overall) {
-                    event.getPlayer().setBanned(false);
-                    PConfManager.setPVal(event.getPlayer(), null, "banlength");
-                    PConfManager.setPVal(event.getPlayer(), null, "banstart");
+            if (PConfManager.getPVal(event.getPlayer(), "bantime") != null) {
+                if (!RUtils.isTimeStampValid(event.getPlayer(), "bantime")) {
                     event.allow();
+                    event.getPlayer().setBanned(false);
                 }
             }
             String kickMessage;

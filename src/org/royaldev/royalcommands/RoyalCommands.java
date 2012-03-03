@@ -426,6 +426,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("vip").setExecutor(new CmdVip(this));
         getCommand("dump").setExecutor(new CmdDump(this));
         getCommand("seen").setExecutor(new CmdSeen(this));
+        getCommand("tempban").setExecutor(new CmdTempban(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
