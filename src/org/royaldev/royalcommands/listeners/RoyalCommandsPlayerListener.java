@@ -53,6 +53,11 @@ public class RoyalCommandsPlayerListener implements Listener {
         PConfManager.setPValLong(e.getPlayer(), new Date().getTime(), "seen");
     }
 
+    @EventHandler
+    public void onKick(PlayerKickEvent e) {
+        PConfManager.setPValLong(e.getPlayer(), new Date().getTime(), "seen");
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (event.isCancelled()) return;
