@@ -20,20 +20,28 @@ public class RoyalCommandsBlockListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
         if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) event.setCancelled(true);
-        if (!plugin.buildPerm) return;
-        if (plugin.isAuthorized(event.getPlayer(), "rcmds.build")) return;
-        event.getPlayer().sendMessage(plugin.noBuildMessage);
-        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBlockP(BlockPlaceEvent e) {
+        if (e.isCancelled() || !plugin.buildPerm) return;
+        if (plugin.isAuthorized(e.getPlayer(), "rcmds.build")) return;
+        e.getPlayer().sendMessage(plugin.noBuildMessage);
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBlockB(BlockBreakEvent e) {
+        if (e.isCancelled() || !plugin.buildPerm) return;
+        if (plugin.isAuthorized(e.getPlayer(), "rcmds.build")) return;
+        e.getPlayer().sendMessage(plugin.noBuildMessage);
+        e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(BlockBreakEvent event) {
         if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
         if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) event.setCancelled(true);
-        if (!plugin.buildPerm) return;
-        if (plugin.isAuthorized(event.getPlayer(), "rcmds.build")) return;
-        event.getPlayer().sendMessage(plugin.noBuildMessage);
-        event.setCancelled(true);
     }
 
 }
