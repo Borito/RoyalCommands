@@ -20,8 +20,7 @@ public class CmdWorld implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("world")) {
             if (!plugin.isAuthorized(cs, "rcmds.world")) {
                 RUtils.dispNoPerms(cs);
@@ -61,6 +60,7 @@ public class CmdWorld implements CommandExecutor {
             }
             Player p = (Player) cs;
             p.sendMessage(ChatColor.BLUE + "Teleporting you to world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
+            Back.backdb.put(p, p.getLocation());
             p.teleport(w.getSpawnLocation());
             return true;
         }
