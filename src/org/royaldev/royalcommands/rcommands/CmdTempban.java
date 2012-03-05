@@ -10,6 +10,8 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.Date;
+
 public class CmdTempban implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -55,14 +57,14 @@ public class CmdTempban implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "Time must be greater than 0!");
                 return true;
             }
-            String banreason = RUtils.formatDateDiff(time * 1000);
+            String banreason = RUtils.formatDateDiff(new Date().getTime() + (time*1000));
             RUtils.setTimeStamp(t, time, "bantime");
             t.setBanned(true);
             PConfManager.setPValString(t, banreason, "banreason");
             PConfManager.setPValString(t, cs.getName(), "banner");
             cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for" + ChatColor.GRAY + banreason + ChatColor.BLUE + ".");
-            plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
-            if (t.isOnline()) ((Player) t).kickPlayer("Banned for " + banreason);
+            plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for" + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
+            if (t.isOnline()) ((Player) t).kickPlayer("Banned for" + banreason);
             return true;
         }
         return false;
