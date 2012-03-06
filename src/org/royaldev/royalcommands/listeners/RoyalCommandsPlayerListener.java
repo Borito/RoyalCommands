@@ -39,12 +39,20 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (PConfManager.getPValBoolean(e.getPlayer(), "jailed")) {
             e.getPlayer().sendMessage(ChatColor.RED + "You are jailed and may not teleport.");
             e.setCancelled(true);
+            return;
         }
         if (plugin.tpEvery) {
             if (Back.backdb.containsKey(e.getPlayer())) {
                 if (e.getTo().equals(Back.backdb.get(e.getPlayer()))) return;
             }
             Back.backdb.put(e.getPlayer(), e.getFrom());
+        }
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent e) {
+        if (plugin.tpEvery) {
+            Back.backdb.put(e.getPlayer(), e.getPlayer().getLocation());
         }
     }
 
@@ -191,6 +199,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             }
             event.setKickMessage(kickMessage);
             event.disallow(Result.KICK_BANNED, kickMessage);
+            return;
         }
         Player p = event.getPlayer();
         String dispname = PConfManager.getPValString(p, "dispname").trim();

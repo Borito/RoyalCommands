@@ -29,8 +29,10 @@ public class RoyalCommandsEntityListener implements Listener {
         PlayerDeathEvent e = (PlayerDeathEvent) ent;
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
-        Location pLoc = p.getLocation();
-        Back.backdb.put(p, pLoc);
+        if (!plugin.tpEvery) {
+            Location pLoc = p.getLocation();
+            Back.backdb.put(p, pLoc);
+        }
         p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
     }
 
@@ -45,14 +47,12 @@ public class RoyalCommandsEntityListener implements Listener {
         if (!PConfManager.getPValBoolean(p, "ohk")) return;
         if (ed instanceof LivingEntity) {
             LivingEntity le = (LivingEntity) ed;
-            le.damage(le.getHealth() + 1);
-            le.setHealth(0);
+            le.damage(le.getHealth() * 1000);
         }
         if (ed instanceof EnderDragonPart) {
             EnderDragonPart ldp = (EnderDragonPart) ed;
             LivingEntity le = ldp.getParent();
-            le.damage(le.getHealth() + 1);
-            le.setHealth(0);
+            le.damage(le.getHealth() * 1000);
         }
     }
 
