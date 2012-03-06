@@ -9,11 +9,11 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-public class CompareIP implements CommandExecutor {
+public class CmdCompareIP implements CommandExecutor {
 
     RoyalCommands plugin;
 
-    public CompareIP(RoyalCommands plugin) {
+    public CmdCompareIP(RoyalCommands plugin) {
         this.plugin = plugin;
     }
 

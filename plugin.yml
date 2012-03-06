@@ -886,17 +886,11 @@ permissions:
   rcmds.exempt.strike:
     description: Makes the player immune to /strike.
     default: false
-  rcmds.exempt.teleport:
-    description: Makes the player immune to all teleports besides /vtp and /vtphere.
-    default: false
   rcmds.exempt.burn:
     description: Makes the player immune to /burn.
     default: false
   rcmds.exempt.jail:
     description: Makes the player immune to /jail.
-    default: false
-  rcmds.exempt.tp2p:
-    description: Makes the player immune to /tp2p.
     default: false
   rcmds.exempt.warp:
     description: Makes the player immune to /warp.
@@ -971,6 +965,14 @@ permissions:
     default: op
   rcmds.coords.others:
     description: Allows the player to see other players' coordinates.
+    default: op
+
+  rcmds.seehidden:
+    description: Allows the player to see hidden players in /list (VanishNoPacket).
+    default: op
+
+  rcmds.tpoverride:
+    description: Allows the player to override /tptoggle settings.
     default: op
 
   rcmds.see.ban:
@@ -1237,6 +1239,10 @@ permissions:
       rcmds.seen: true
       rcmds.tempban: true
       rcmds.rcmds: true
+
+      rcmds.tpoverride: true
+
+      rcmds.seehidden: true
 
       rcmds.updates: true
 
