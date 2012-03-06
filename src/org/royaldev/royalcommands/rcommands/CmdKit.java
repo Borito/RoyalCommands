@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.Date;
 import java.util.HashMap;
 
 public class CmdKit implements CommandExecutor {
@@ -45,7 +46,7 @@ public class CmdKit implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That kit does not exist!");
                 return true;
             }
-            java.util.List<String> kits = plugin.getConfig().getStringList("kits." + kitname);
+            java.util.List<String> kits = plugin.getConfig().getStringList("kits." + kitname + ".items");
             if (kits == null) {
                 cs.sendMessage(ChatColor.RED + "That kit does not exist!");
                 return true;
@@ -54,6 +55,19 @@ public class CmdKit implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You don't have permission for that kit!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
+            }
+            if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown")) {
+                long ts = RUtils.getTimeStamp(p, "kits." + kitname + ".cooldown");
+                if (ts > 0) {
+                    long time = ts - new Date().getTime();
+                    p.sendMessage(ChatColor.RED + "You can't use that kit for" + ChatColor.GRAY + RUtils.formatDateDiff(time) + ChatColor.RED + ".");
+                    return true;
+                }
+            }
+            if (plugin.getConfig().get("kits." + kitname + ".cooldown") != null) {
+                long cd = plugin.getConfig().getLong("kits." + kitname + ".cooldown") * 1000;
+                long down = (cd + new Date().getTime()) / 1000;
+                RUtils.setTimeStamp(p, down, "kits." + kitname + ".cooldown");
             }
             if (kits.size() < 1) {
                 cs.sendMessage(ChatColor.RED + "That kit was configured wrong!");

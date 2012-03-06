@@ -131,6 +131,11 @@ public class RUtils {
     public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
         PConfManager.setPValLong(p, (seconds * 1000) + new Date().getTime(), title);
     }
+    
+    public static long getTimeStamp(OfflinePlayer p, String title) {
+        if (PConfManager.getPVal(p, title) == null) return -1;
+        return PConfManager.getPValLong(p, title);
+    }
 
     //if it isn't obvious, Essentials wrote this code. no way in hell I could manage this
     public static String formatDateDiff(long date) {
