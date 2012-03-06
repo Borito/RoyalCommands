@@ -300,7 +300,7 @@ public class RoyalCommands extends JavaPlugin {
                 try {
                     newVersion = updateCheck(version);
                     String oldVersion = version;
-                    if (!newVersion.contains(oldVersion)) {
+                    if (!newVersion.contains(oldVersion) && !oldVersion.contains("pre")) {
                         log.warning(newVersion + " is out! You are running " + oldVersion);
                         log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
                     }
@@ -436,6 +436,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void onDisable() {
+        getServer().getScheduler().cancelTasks(this);
         log.info("[RoyalCommands] RoyalCommands v" + version + " disabled.");
     }
 

@@ -212,7 +212,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler()
     public void onPJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (!plugin.newVersion.contains(plugin.version) && plugin.isAuthorized(p, "rcmds.updates")) {
+        if (!plugin.newVersion.contains(plugin.version) && !plugin.version.contains("pre") && plugin.isAuthorized(p, "rcmds.updates")) {
             String newV = plugin.newVersion.split("RoyalCommands")[1].trim();
             p.sendMessage(ChatColor.BLUE + "RoyalCommands " + ChatColor.GRAY + newV + ChatColor.BLUE + " is out! You are running " + ChatColor.GRAY + "v" + plugin.version + ChatColor.BLUE + ".");
         }
