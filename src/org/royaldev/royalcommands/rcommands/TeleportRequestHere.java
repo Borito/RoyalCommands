@@ -21,8 +21,7 @@ public class TeleportRequestHere implements CommandExecutor {
     public static HashMap<Player, CommandSender> tprhdb = new HashMap<Player, CommandSender>();
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("teleportrequesthere")) {
             if (!plugin.isAuthorized(cs, "rcmds.teleportrequesthere")) {
                 RUtils.dispNoPerms(cs);
@@ -31,6 +30,10 @@ public class TeleportRequestHere implements CommandExecutor {
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
+            }
+            if (!(cs instanceof Player)) {
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                return true;
             }
             Player t = plugin.getServer().getPlayer(args[0].trim());
             if (t == null) {
@@ -41,18 +44,14 @@ public class TeleportRequestHere implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.teleport")) {
-                cs.sendMessage(ChatColor.RED + "You may not teleport with that player.");
+            if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
+                cs.sendMessage(ChatColor.RED + "That player has teleportation off!");
                 return true;
             }
             tprhdb.put(t, cs);
-            cs.sendMessage(ChatColor.BLUE + "Sent request to " + ChatColor.GRAY
-                    + t.getName() + ChatColor.BLUE + ".");
-            t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE
-                    + " has requested you to teleport to them.");
-            t.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY
-                    + "/tpaccept" + ChatColor.BLUE + " or " + ChatColor.GRAY
-                    + "/tpdeny" + ChatColor.BLUE + ".");
+            cs.sendMessage(ChatColor.BLUE + "Sent request to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has requested you to teleport to them.");
+            t.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/tpaccept" + ChatColor.BLUE + " or " + ChatColor.GRAY + "/tpdeny" + ChatColor.BLUE + ".");
             return true;
         }
         return false;

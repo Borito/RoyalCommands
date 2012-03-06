@@ -37,13 +37,17 @@ public class TeleportRequest implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
+            if (!(cs instanceof Player)) {
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                return true;
+            }
             Player t = plugin.getServer().getPlayer(args[0].trim());
             if (t == null || plugin.isVanished(t)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.teleport")) {
-                cs.sendMessage(ChatColor.RED + "You may not teleport with that player.");
+            if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
+                cs.sendMessage(ChatColor.RED + "That player has teleportation off!");
                 return true;
             }
             sendTpRequest(t, cs);

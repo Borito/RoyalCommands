@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
@@ -202,5 +203,10 @@ public class RUtils {
             return " now";
         }
         return sb.toString();
+    }
+
+    public static boolean isTeleportAllowed(OfflinePlayer p) {
+        if (PConfManager.getPVal(p, "allow-tp") == null) return true;
+        return PConfManager.getPValBoolean(p, "allow-tp");
     }
 }

@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -28,7 +29,7 @@ public class CmdTpaAll implements CommandExecutor {
             }
             Player p = (Player) cs;
             for (Player t : plugin.getServer().getOnlinePlayers()) {
-                if (plugin.isAuthorized(t, "rcmds.exempt.teleport")) continue;
+                if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(p, "rcmds.tpoverride")) continue;
                 if (t.equals(p)) continue;
                 TeleportRequest.sendTpRequest(t, p);
             }

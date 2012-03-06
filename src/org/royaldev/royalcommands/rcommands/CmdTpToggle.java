@@ -9,31 +9,32 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-public class CmdTpAll implements CommandExecutor {
+public class CmdTpToggle implements CommandExecutor {
 
-    public RoyalCommands plugin;
+    RoyalCommands plugin;
 
-    public CmdTpAll(RoyalCommands instance) {
+    public CmdTpToggle(RoyalCommands instance) {
         plugin = instance;
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("tpall")) {
-            if (!plugin.isAuthorized(cs, "rcmds.tpall")) {
+        if (cmd.getName().equalsIgnoreCase("tptoggle")) {
+            if (!plugin.isAuthorized(cs, "rcmds.tptoggle")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players.");
                 return true;
             }
             Player p = (Player) cs;
-            for (Player t : plugin.getServer().getOnlinePlayers()) {
-                if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(p, "rcmds.tpoverride")) continue;
-                if (t.equals(p)) continue;
-                t.teleport(p);
+            if (PConfManager.getPValBoolean(p, "allow-tp")) {
+                PConfManager.setPValBoolean(p, false, "allow-tp");
+                cs.sendMessage(ChatColor.BLUE + "Disabled teleportation.");
+                return true;
             }
-            p.sendMessage(ChatColor.BLUE + "All players teleported to you.");
+            PConfManager.setPValBoolean(p, true, "allow-tp");
+            cs.sendMessage(ChatColor.BLUE + "Enabled teleportation.");
             return true;
         }
         return false;

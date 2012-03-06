@@ -233,6 +233,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 out.set("dispname", dispname);
                 out.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
                 out.set("banreason", "");
+                out.set("allow-tp", true);
                 out.save(datafile);
                 log.info("[RoyalCommands] Userdata creation finished.");
             } catch (Exception e) {

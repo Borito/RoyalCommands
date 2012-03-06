@@ -34,8 +34,12 @@ public class Tp2p implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t1, "rcmds.exempt.tp2p") || plugin.isAuthorized(t1, "rcmds.exempt.teleport") || plugin.isAuthorized(t2, "rcmds.exempt.tp2p") || plugin.isAuthorized(t2, "rcmds.exempt.teleport")) {
-                cs.sendMessage(ChatColor.RED + "You cannot teleport that player!");
+            if (!RUtils.isTeleportAllowed(t1) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
+                cs.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + t1.getName() + ChatColor.RED + " has teleportation off!");
+                return true;
+            }
+            if (!RUtils.isTeleportAllowed(t2) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
+                cs.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has teleportation off!");
                 return true;
             }
             Back.backdb.put(t1, t1.getLocation());

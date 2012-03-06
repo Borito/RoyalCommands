@@ -17,16 +17,14 @@ public class TeleportHere implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("teleporthere")) {
             if (!plugin.isAuthorized(cs, "rcmds.teleporthere")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -42,15 +40,13 @@ public class TeleportHere implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.teleport")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You may not teleport with that player.");
+            if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
+                cs.sendMessage(ChatColor.RED + "That player has teleportation off!");
                 return true;
             }
             Player p = (Player) cs;
             Back.backdb.put(t, t.getLocation());
-            p.sendMessage(ChatColor.BLUE + "Teleporting " + ChatColor.GRAY
-                    + t.getName() + ChatColor.BLUE + " to you.");
+            p.sendMessage(ChatColor.BLUE + "Teleporting " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to you.");
             t.teleport(p.getLocation());
             return true;
         }

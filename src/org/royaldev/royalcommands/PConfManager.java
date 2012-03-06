@@ -28,7 +28,7 @@ public class PConfManager {
             }
         }
     }
-    
+
     public static void setPValLong(OfflinePlayer t, long value, String path) {
         File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
         if (pconfl.exists()) {
@@ -90,8 +90,7 @@ public class PConfManager {
         return null;
     }
 
-    public static void setPValBoolean(OfflinePlayer t, Boolean value,
-                                      String path) {
+    public static void setPValBoolean(OfflinePlayer t, Boolean value, String path) {
         File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
         if (pconfl.exists()) {
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
@@ -130,7 +129,7 @@ public class PConfManager {
         }
         return false;
     }
-    
+
     public static Long getPValLong(OfflinePlayer t, String path) {
         File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
         if (pconfl.exists()) {

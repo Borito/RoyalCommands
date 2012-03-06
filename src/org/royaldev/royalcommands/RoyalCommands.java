@@ -331,7 +331,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("banned").setExecutor(new Banned(this));
         getCommand("setarmor").setExecutor(new Setarmor(this));
         getCommand("getip").setExecutor(new GetIP(this));
-        getCommand("compareip").setExecutor(new CompareIP(this));
+        getCommand("compareip").setExecutor(new CmdCompareIP(this));
         getCommand("ragequit").setExecutor(new RageQuit(this));
         getCommand("quit").setExecutor(new Quit(this));
         getCommand("rank").setExecutor(new Rank(this));
@@ -427,6 +427,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("dump").setExecutor(new CmdDump(this));
         getCommand("seen").setExecutor(new CmdSeen(this));
         getCommand("tempban").setExecutor(new CmdTempban(this));
+        getCommand("tptoggle").setExecutor(new CmdTpToggle(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
