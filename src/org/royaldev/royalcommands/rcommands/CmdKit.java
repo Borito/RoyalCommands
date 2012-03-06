@@ -56,7 +56,7 @@ public class CmdKit implements CommandExecutor {
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
-            if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown")) {
+            if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown") && !plugin.isAuthorized(cs, "rcmds.exempt.kit.cooldown")) {
                 long ts = RUtils.getTimeStamp(p, "kits." + kitname + ".cooldown");
                 if (ts > 0) {
                     long time = ts - new Date().getTime();

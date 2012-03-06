@@ -934,6 +934,9 @@ permissions:
   rcmds.exempt.ignore:
     description: Makes the player immune to /ignore.
     default: false
+  rcmds.exempt.kit.cooldown:
+    description: Makes the player exempt to kit cooldowns.
+    default: false
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -1112,6 +1115,7 @@ permissions:
       rcmds.exempt.home: true
       rcmds.exempt.listhome: true
       rcmds.exempt.ignore: true
+      rcmds.exempt.kit.cooldown: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
