@@ -40,10 +40,7 @@ public class Nick implements CommandExecutor {
 
             if (args.length == 1) {
                 if (!plugin.isAuthorized(cs, "rcmds.nick.others")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that!");
-                    plugin.log.warning("[RoyalCommands] " + cs.getName()
-                            + " was denied access to the command!");
+                    RUtils.dispNoPerms(cs);
                     return true;
                 }
                 Player t = plugin.getServer().getPlayer(args[0].trim());
@@ -65,10 +62,7 @@ public class Nick implements CommandExecutor {
 
             if (args.length > 1) {
                 if (!plugin.isAuthorized(cs, "rcmds.nick.others")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that!");
-                    plugin.log.warning("[RoyalCommands] " + cs.getName()
-                            + " was denied access to the command!");
+                    RUtils.dispNoPerms(cs);
                     return true;
                 }
                 Player t = plugin.getServer().getPlayer(args[0].trim());

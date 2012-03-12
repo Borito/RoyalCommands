@@ -17,8 +17,7 @@ public class List implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("list")) {
             if (!plugin.isAuthorized(cs, "rcmds.list")) {
                 RUtils.dispNoPerms(cs);
@@ -44,17 +43,9 @@ public class List implements CommandExecutor {
             }
             if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
                 if (hid > 0) {
-                    cs.sendMessage(ChatColor.BLUE + "There are currently "
-                            + ChatColor.GRAY + (p.length - hid) + "/" + hid
-                            + ChatColor.BLUE + " out of " + ChatColor.GRAY
-                            + plugin.getServer().getMaxPlayers()
-                            + ChatColor.BLUE + " players online.");
+                    cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + (p.length - hid) + "/" + hid + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
                 } else {
-                    cs.sendMessage(ChatColor.BLUE + "There are currently "
-                            + ChatColor.GRAY + p.length + ChatColor.BLUE
-                            + " out of " + ChatColor.GRAY
-                            + plugin.getServer().getMaxPlayers()
-                            + ChatColor.BLUE + " players online.");
+                    cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + p.length + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
                 }
                 for (Player aP : p) {
                     String name = aP.getDisplayName() + ChatColor.WHITE;
@@ -68,11 +59,7 @@ public class List implements CommandExecutor {
                     }
                 }
             } else {
-                cs.sendMessage(ChatColor.BLUE + "There are currently "
-                        + ChatColor.GRAY + (p.length - hid) + ChatColor.BLUE
-                        + " out of " + ChatColor.GRAY
-                        + plugin.getServer().getMaxPlayers() + ChatColor.BLUE
-                        + " players online.");
+                cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + (p.length - hid) + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
             }
             cs.sendMessage("Online Players: " + ps);
             return true;
