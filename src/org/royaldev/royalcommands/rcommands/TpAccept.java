@@ -17,8 +17,7 @@ public class TpAccept implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label,String[] args) {
         if (cmd.getName().equalsIgnoreCase("tpaccept")) {
             if (!plugin.isAuthorized(cs, "rcmds.tpaccept")) {
                 RUtils.dispNoPerms(cs);
@@ -35,6 +34,7 @@ public class TpAccept implements CommandExecutor {
                 t.sendMessage(ChatColor.BLUE + "Your teleport request was accepted.");
                 Back.backdb.put(t, t.getLocation());
                 t.teleport(p.getLocation());
+                TeleportRequest.tprdb.remove(cs);
                 return true;
             }
             if (TeleportRequestHere.tprhdb.containsKey(cs)) {
@@ -43,6 +43,7 @@ public class TpAccept implements CommandExecutor {
                 t.sendMessage(ChatColor.BLUE + "Your teleport request was accepted.");
                 Back.backdb.put(((Player) cs), ((Player) cs).getLocation());
                 p.teleport(t.getLocation());
+                TeleportRequestHere.tprhdb.remove(cs);
                 return true;
             }
             cs.sendMessage(ChatColor.RED + "You have no requests pending.");
