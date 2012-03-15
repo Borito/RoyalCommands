@@ -65,9 +65,8 @@ public class CmdKit implements CommandExecutor {
                 }
             }
             if (plugin.getConfig().get("kits." + kitname + ".cooldown") != null) {
-                long cd = plugin.getConfig().getLong("kits." + kitname + ".cooldown") * 1000;
-                long down = (cd + new Date().getTime()) / 1000;
-                RUtils.setTimeStamp(p, down, "kits." + kitname + ".cooldown");
+                long cd = plugin.getConfig().getLong("kits." + kitname + ".cooldown");
+                RUtils.setTimeStamp(p, cd, "kits." + kitname + ".cooldown");
             }
             if (kits.size() < 1) {
                 cs.sendMessage(ChatColor.RED + "That kit was configured wrong!");
