@@ -202,14 +202,14 @@ public class RoyalCommands extends JavaPlugin {
                 } else {
                     try {
                         BufferedWriter out = new BufferedWriter(new FileWriter(this.getDataFolder() + File.separator + "rules.txt"));
-                        out.write("###");
-                        out.write("&2Page 1:");
-                        out.write("  1. Be kind");
-                        out.write("  2. Be courteous");
-                        out.write("  3. Be respectful");
-                        out.write("###");
-                        out.write("&2Page 2:");
-                        out.write("  4. Be cool");
+                        out.write("###\n");
+                        out.write("&2Page 1:\n");
+                        out.write("  1. Be kind\n");
+                        out.write("  2. Be courteous\n");
+                        out.write("  3. Be respectful\n");
+                        out.write("###\n");
+                        out.write("&2Page 2:\n");
+                        out.write("  4. Be cool\n");
                         out.close();
                     } catch (IOException e) {
                         //ignore
@@ -228,15 +228,15 @@ public class RoyalCommands extends JavaPlugin {
                     log.severe("[RoyalCommands] Could not create help.txt!");
                 } else {
                     try {
-                        BufferedWriter out = new BufferedWriter(new FileWriter(this.getDataFolder() + File.separator + "rules.txt"));
-                        out.write("###");
-                        out.write("&2Page 1:");
-                        out.write("  1. Do some awesome things");
-                        out.write("  2. You must meow to join");
-                        out.write("  3. The admins didn't change this");
-                        out.write("###");
-                        out.write("&2Page 2:");
-                        out.write("  4. Tell them to");
+                        BufferedWriter out = new BufferedWriter(new FileWriter(this.getDataFolder() + File.separator + "help.txt"));
+                        out.write("###\n");
+                        out.write("&2Page 1:\n");
+                        out.write("  1. Do some awesome things\n");
+                        out.write("  2. You must meow to join\n");
+                        out.write("  3. The admins didn't change this\n");
+                        out.write("###\n");
+                        out.write("&2Page 2:\n");
+                        out.write("  4. Tell them to\n");
                         out.close();
                     } catch (IOException e) {
                         //ignore
