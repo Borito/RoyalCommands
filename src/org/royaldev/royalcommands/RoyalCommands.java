@@ -73,6 +73,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean stsNew = null;
     public static Boolean otherHelp = null;
     public Boolean tpEvery = null;
+    public Boolean customHelp = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -135,43 +136,44 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void reloadConfigVals() {
-        showcommands = this.getConfig().getBoolean("view_commands");
-        disablegetip = this.getConfig().getBoolean("disable_getip");
-        useWelcome = this.getConfig().getBoolean("enable_welcome_message");
-        buildPerm = this.getConfig().getBoolean("use_build_perm");
-        backDeath = this.getConfig().getBoolean("back_on_death");
-        motdLogin = this.getConfig().getBoolean("motd_on_login");
-        dropExtras = this.getConfig().getBoolean("drop_extras");
-        kitPerms = this.getConfig().getBoolean("use_exclusive_kit_perms");
-        explodeFire = this.getConfig().getBoolean("explode_fire");
-        sendToSpawn = this.getConfig().getBoolean("send_to_spawn");
-        stsBack = this.getConfig().getBoolean("sts_back");
-        stsNew = this.getConfig().getBoolean("send_to_spawn_new");
-        otherHelp = this.getConfig().getBoolean("other_plugins_in_help");
-        tpEvery = this.getConfig().getBoolean("back_for_all_tps");
+        showcommands = getConfig().getBoolean("view_commands");
+        disablegetip = getConfig().getBoolean("disable_getip");
+        useWelcome = getConfig().getBoolean("enable_welcome_message");
+        buildPerm = getConfig().getBoolean("use_build_perm");
+        backDeath = getConfig().getBoolean("back_on_death");
+        motdLogin = getConfig().getBoolean("motd_on_login");
+        dropExtras = getConfig().getBoolean("drop_extras");
+        kitPerms = getConfig().getBoolean("use_exclusive_kit_perms");
+        explodeFire = getConfig().getBoolean("explode_fire");
+        sendToSpawn = getConfig().getBoolean("send_to_spawn");
+        stsBack = getConfig().getBoolean("sts_back");
+        stsNew = getConfig().getBoolean("send_to_spawn_new");
+        otherHelp = getConfig().getBoolean("other_plugins_in_help");
+        tpEvery = getConfig().getBoolean("back_for_all_tps");
+        customHelp = getConfig().getBoolean("use_custom_help");
 
-        banMessage = this.getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        noBuildMessage = this.getConfig().getString("no_build_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        kickMessage = this.getConfig().getString("default_kick_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        defaultWarn = this.getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        welcomeMessage = this.getConfig().getString("welcome_message").replaceAll("(&([a-f0-9]))", "\u00A7$2");
-        bcastFormat = this.getConfig().getString("bcast_format").replaceAll("(&([a-f0-9]))", "\u00A7$2");
+        banMessage = getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        noBuildMessage = getConfig().getString("no_build_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        kickMessage = getConfig().getString("default_kick_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        defaultWarn = getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        welcomeMessage = getConfig().getString("welcome_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        bcastFormat = getConfig().getString("bcast_format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
 
-        defaultStack = this.getConfig().getInt("default_stack_size");
-        warnBan = this.getConfig().getInt("max_warns_before_ban");
-        spawnmobLimit = this.getConfig().getInt("spawnmob_limit");
-        helpAmount = this.getConfig().getInt("help_lines");
+        defaultStack = getConfig().getInt("default_stack_size");
+        warnBan = getConfig().getInt("max_warns_before_ban");
+        spawnmobLimit = getConfig().getInt("spawnmob_limit");
+        helpAmount = getConfig().getInt("help_lines");
 
-        maxNear = this.getConfig().getDouble("max_near_radius");
-        defaultNear = this.getConfig().getDouble("default_near_radius");
+        maxNear = getConfig().getDouble("max_near_radius");
+        defaultNear = getConfig().getDouble("default_near_radius");
 
-        explodePower = (float) this.getConfig().getDouble("explode_power");
-        maxExplodePower = (float) this.getConfig().getDouble("max_explode_power");
+        explodePower = (float) getConfig().getDouble("explode_power");
+        maxExplodePower = (float) getConfig().getDouble("max_explode_power");
 
-        muteCmds = this.getConfig().getStringList("mute_blocked_commands");
-        blockedItems = this.getConfig().getStringList("blocked_spawn_items");
-        motd = this.getConfig().getStringList("motd");
-        
+        muteCmds = getConfig().getStringList("mute_blocked_commands");
+        blockedItems = getConfig().getStringList("blocked_spawn_items");
+        motd = getConfig().getStringList("motd");
+
         Help.reloadHelp();
     }
 
@@ -215,6 +217,33 @@ public class RoyalCommands extends JavaPlugin {
                 }
             } catch (Exception e) {
                 log.severe("[RoyalCommands] Could not create rules.txt!");
+                e.printStackTrace();
+            }
+        }
+        File help = new File(this.getDataFolder() + File.separator + "help.txt");
+        if (!help.exists()) {
+            try {
+                boolean success = new File(this.getDataFolder() + File.separator + "help.txt").createNewFile();
+                if (!success) {
+                    log.severe("[RoyalCommands] Could not create help.txt!");
+                } else {
+                    try {
+                        BufferedWriter out = new BufferedWriter(new FileWriter(this.getDataFolder() + File.separator + "rules.txt"));
+                        out.write("###");
+                        out.write("&2Page 1:");
+                        out.write("  1. Do some awesome things");
+                        out.write("  2. You must meow to join");
+                        out.write("  3. The admins didn't change this");
+                        out.write("###");
+                        out.write("&2Page 2:");
+                        out.write("  4. Tell them to");
+                        out.close();
+                    } catch (IOException e) {
+                        //ignore
+                    }
+                }
+            } catch (Exception e) {
+                log.severe("[RoyalCommands] Could not create help.txt!");
                 e.printStackTrace();
             }
         }
@@ -284,7 +313,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public void onEnable() {
         loadConfiguration();
-        
+
         setupEconomy();
 
         version = getDescription().getVersion();
