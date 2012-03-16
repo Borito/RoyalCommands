@@ -49,7 +49,7 @@ public class CmdRules implements CommandExecutor {
                 String line;
                 java.util.List<String> rules = new ArrayList<String>();
                 while ((line = br.readLine()) != null) {
-                    line = line.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                    line = line.replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
                     rules.add(line);
                     if (line.trim().equals("###")) pages++;
                 }
