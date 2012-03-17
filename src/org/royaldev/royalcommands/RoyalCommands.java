@@ -83,7 +83,7 @@ public class RoyalCommands extends JavaPlugin {
     public String welcomeMessage = null;
     public String noBuildMessage = null;
     public String bcastFormat = null;
-    public String whoPrefix = null;
+    public String whoFormat = null;
 
     public Integer defaultStack = null;
     public Integer warnBan = null;
@@ -169,7 +169,7 @@ public class RoyalCommands extends JavaPlugin {
         defaultWarn = getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         welcomeMessage = getConfig().getString("welcome_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         bcastFormat = getConfig().getString("bcast_format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
-        whoPrefix = getConfig().getString("who_prefix");
+        whoFormat = getConfig().getString("who_format");
 
         defaultStack = getConfig().getInt("default_stack_size");
         warnBan = getConfig().getInt("max_warns_before_ban");

@@ -17,11 +17,13 @@ public class List implements CommandExecutor {
     }
     
     public String formatPrepend(Player p) {
-        String format = plugin.whoPrefix;
-        format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getPlayerPrefix(p));
-        format.replaceAll("(?i)\\{group\\}", RoyalCommands.permission.getPrimaryGroup(p));
-        format.replaceAll("(?i)\\{suffix\\}", RoyalCommands.chat.getPlayerSuffix(p));
-        format.replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        String format = plugin.whoFormat;
+        format = format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getPlayerPrefix(p));
+        format = format.replaceAll("(?i)\\{group\\}", RoyalCommands.permission.getPrimaryGroup(p));
+        format = format.replaceAll("(?i)\\{suffix\\}", RoyalCommands.chat.getPlayerSuffix(p));
+        format = format.replaceAll("(?i)\\{name\\}", p.getName());
+        format = format.replaceAll("(?i)\\{dispname\\}", p.getDisplayName());
+        format = format.replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         return format;
     }
 
