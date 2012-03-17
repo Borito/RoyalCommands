@@ -38,9 +38,8 @@ public class List implements CommandExecutor {
             String ps = "";
             int hid = 0;
             for (Player aP : p) {
-                String name = aP.getDisplayName() + ChatColor.WHITE;
+                String name = formatPrepend(aP) + ChatColor.WHITE;
                 if (!plugin.isVanished(aP)) {
-                    formatPrepend(aP);
                     if (Afk.afkdb.containsKey(aP)) {
                         name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                     }
@@ -60,9 +59,8 @@ public class List implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + p.length + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
                 }
                 for (Player aP : p) {
-                    String name = aP.getDisplayName() + ChatColor.WHITE;
+                    String name = formatPrepend(aP) + ChatColor.WHITE;
                     if (plugin.isVanished(aP)) {
-                        formatPrepend(aP);
                         name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
                         if (ps.equals("")) {
                             ps = ps.concat(name);
