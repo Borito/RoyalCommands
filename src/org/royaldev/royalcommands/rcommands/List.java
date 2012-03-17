@@ -29,7 +29,7 @@ public class List implements CommandExecutor {
             for (Player aP : p) {
                 String name = aP.getDisplayName() + ChatColor.WHITE;
                 if (!plugin.isVanished(aP)) {
-                    if (plugin.whoPrefix) name = RoyalCommands.chat.getPlayerPrefix(aP) + name;
+                    if (plugin.whoPrefix) name = RoyalCommands.chat.getPlayerPrefix(aP).replaceAll("(&([a-f0-9kK]))", "\u00A7$2") + name;
                     if (Afk.afkdb.containsKey(aP)) {
                         name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                     }
@@ -51,7 +51,7 @@ public class List implements CommandExecutor {
                 for (Player aP : p) {
                     String name = aP.getDisplayName() + ChatColor.WHITE;
                     if (plugin.isVanished(aP)) {
-                        if (plugin.whoPrefix) name = RoyalCommands.chat.getPlayerPrefix(aP) + name;
+                        if (plugin.whoPrefix) name = RoyalCommands.chat.getPlayerPrefix(aP).replaceAll("(&([a-f0-9kK]))", "\u00A7$2") + name;
                         name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
                         if (ps.equals("")) {
                             ps = ps.concat(name);
