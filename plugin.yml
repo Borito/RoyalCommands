@@ -437,7 +437,6 @@ commands:
   kit:
     description: Gives you a kit defined in the config.
     usage: /<command> [kit-name]
-    aliases: [kits]
 
   rules:
     description: Displays server rules.
@@ -522,6 +521,11 @@ commands:
     description: Toggles teleportation.
     usage: /<command>
     aliases: [toggletp]
+
+  kits:
+    description: Lists the kits available to you.
+    usage: /<command>
+    aliases: [listkit, listkits]
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -852,6 +856,9 @@ permissions:
     default: op
   rcmds.tptoggle:
     description: Allows you to toggle teleportation.
+    default: op
+  rcmds.kits:
+    description: Allows you to list available kits.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1255,6 +1262,7 @@ permissions:
       rcmds.seen: true
       rcmds.tempban: true
       rcmds.tptoggle: true
+      rcmds.kits: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true

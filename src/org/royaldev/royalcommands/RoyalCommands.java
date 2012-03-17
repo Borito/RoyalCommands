@@ -457,6 +457,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("seen").setExecutor(new CmdSeen(this));
         getCommand("tempban").setExecutor(new CmdTempban(this));
         getCommand("tptoggle").setExecutor(new CmdTpToggle(this));
+        getCommand("kits").setExecutor(new CmdKits(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         reloadConfigVals();
