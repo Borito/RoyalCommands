@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
@@ -132,7 +131,7 @@ public class RUtils {
     public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
         PConfManager.setPValLong(p, (seconds * 1000) + new Date().getTime(), title);
     }
-    
+
     public static long getTimeStamp(OfflinePlayer p, String title) {
         if (PConfManager.getPVal(p, title) == null) return -1;
         return PConfManager.getPValLong(p, title);
@@ -206,7 +205,6 @@ public class RUtils {
     }
 
     public static boolean isTeleportAllowed(OfflinePlayer p) {
-        if (PConfManager.getPVal(p, "allow-tp") == null) return true;
-        return PConfManager.getPValBoolean(p, "allow-tp");
+        return PConfManager.getPVal(p, "allow-tp") == null || PConfManager.getPValBoolean(p, "allow-tp");
     }
 }

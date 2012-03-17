@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.util.Date;
 import java.util.HashMap;
 
 public class CmdKit implements CommandExecutor {
@@ -59,8 +58,7 @@ public class CmdKit implements CommandExecutor {
             if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown") && !plugin.isAuthorized(cs, "rcmds.exempt.kit.cooldown")) {
                 long ts = RUtils.getTimeStamp(p, "kits." + kitname + ".cooldown");
                 if (ts > 0) {
-                    long time = ts - new Date().getTime();
-                    p.sendMessage(ChatColor.RED + "You can't use that kit for" + ChatColor.GRAY + RUtils.formatDateDiff(time) + ChatColor.RED + ".");
+                    p.sendMessage(ChatColor.RED + "You can't use that kit for" + ChatColor.GRAY + RUtils.formatDateDiff(ts) + ChatColor.RED + ".");
                     return true;
                 }
             }
