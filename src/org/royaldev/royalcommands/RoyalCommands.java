@@ -17,6 +17,7 @@ package org.royaldev.royalcommands;
  If forked and not credited, alert him.
  */
 
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -51,6 +52,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public static Permission permission = null;
     public static Economy economy = null;
+    public static Chat chat = null;
 
     public String version = null;
     public String newVersion = null;
@@ -74,6 +76,7 @@ public class RoyalCommands extends JavaPlugin {
     public static Boolean otherHelp = null;
     public Boolean tpEvery = null;
     public Boolean customHelp = null;
+    public Boolean whoPrefix = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -107,6 +110,14 @@ public class RoyalCommands extends JavaPlugin {
             permission = permissionProvider.getProvider();
         }
         return (permission != null);
+    }
+
+    public Boolean setupChat() {
+        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (chatProvider != null) {
+            chat = chatProvider.getProvider();
+        }
+        return (chat != null);
     }
 
     private Boolean setupEconomy() {
@@ -151,6 +162,7 @@ public class RoyalCommands extends JavaPlugin {
         otherHelp = getConfig().getBoolean("other_plugins_in_help");
         tpEvery = getConfig().getBoolean("back_for_all_tps");
         customHelp = getConfig().getBoolean("use_custom_help");
+        whoPrefix = getConfig().getBoolean("who_prefixes");
 
         banMessage = getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         noBuildMessage = getConfig().getString("no_build_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
@@ -315,6 +327,7 @@ public class RoyalCommands extends JavaPlugin {
         loadConfiguration();
 
         setupEconomy();
+        setupChat();
 
         version = getDescription().getVersion();
 
