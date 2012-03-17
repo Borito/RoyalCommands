@@ -736,6 +736,9 @@ permissions:
   rcmds.burn:
     description: Allows you to set players on fire.
     default: op
+  rcmds.kick:
+    description: Allows you to a player.
+    default: op
   rcmds.kickall:
     description: Allows you to kick every player.
     default: op
@@ -801,6 +804,9 @@ permissions:
     default: op
   rcmds.rules:
     description: Allows you to see server rules.
+    default: op
+  rcmds.help:
+    description: Allows you to see server help.
     default: op
   rcmds.broadcast:
     description: Allows you to broadcast messages to the server.
@@ -1210,6 +1216,7 @@ permissions:
       rcmds.assign: true
       rcmds.onehitkill: true
       rcmds.burn: true
+      rcmds.kick: true
       rcmds.kickall: true
       rcmds.world: true
       rcmds.jail: true
@@ -1232,6 +1239,7 @@ permissions:
       rcmds.muteall: true
       rcmds.kit: true
       rcmds.rules: true
+      rcmds.help: true
       rcmds.broadcast: true
       rcmds.hug: true
       rcmds.explode: true
