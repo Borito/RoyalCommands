@@ -36,7 +36,7 @@ public class CmdKits implements CommandExecutor {
             }
             String homes = "";
             for (String s : opts.keySet()) {
-                if (plugin.kitPerms && !plugin.isAuthorized(cs, "rcmds.kit." + s)) {
+                if (plugin.kitPerms && plugin.isAuthorized(cs, "rcmds.kit." + s)) {
                     if (homes.isEmpty()) homes = homes + s;
                     else homes = homes + ", " + s;
                 } else if (!plugin.kitPerms) {
