@@ -15,6 +15,15 @@ public class List implements CommandExecutor {
     public List(RoyalCommands plugin) {
         this.plugin = plugin;
     }
+    
+    public String formatPrepend(Player p) {
+        String format = plugin.whoPrefix;
+        format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getPlayerPrefix(p));
+        format.replaceAll("(?i)\\{group\\}", RoyalCommands.permission.getPrimaryGroup(p));
+        format.replaceAll("(?i)\\{suffix\\}", RoyalCommands.chat.getPlayerSuffix(p));
+        format.replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        return format;
+    }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -29,7 +38,7 @@ public class List implements CommandExecutor {
             for (Player aP : p) {
                 String name = aP.getDisplayName() + ChatColor.WHITE;
                 if (!plugin.isVanished(aP)) {
-                    if (plugin.whoPrefix) name = RoyalCommands.chat.getPlayerPrefix(aP).replaceAll("(&([a-f0-9kK]))", "\u00A7$2") + name;
+                    formatPrepend(aP);
                     if (Afk.afkdb.containsKey(aP)) {
                         name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                     }
@@ -51,7 +60,7 @@ public class List implements CommandExecutor {
                 for (Player aP : p) {
                     String name = aP.getDisplayName() + ChatColor.WHITE;
                     if (plugin.isVanished(aP)) {
-                        if (plugin.whoPrefix) name = RoyalCommands.chat.getPlayerPrefix(aP).replaceAll("(&([a-f0-9kK]))", "\u00A7$2") + name;
+                        formatPrepend(aP);
                         name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
                         if (ps.equals("")) {
                             ps = ps.concat(name);

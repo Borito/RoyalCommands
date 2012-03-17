@@ -76,7 +76,6 @@ public class RoyalCommands extends JavaPlugin {
     public static Boolean otherHelp = null;
     public Boolean tpEvery = null;
     public Boolean customHelp = null;
-    public Boolean whoPrefix = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -84,6 +83,7 @@ public class RoyalCommands extends JavaPlugin {
     public String welcomeMessage = null;
     public String noBuildMessage = null;
     public String bcastFormat = null;
+    public String whoPrefix = null;
 
     public Integer defaultStack = null;
     public Integer warnBan = null;
@@ -162,7 +162,6 @@ public class RoyalCommands extends JavaPlugin {
         otherHelp = getConfig().getBoolean("other_plugins_in_help");
         tpEvery = getConfig().getBoolean("back_for_all_tps");
         customHelp = getConfig().getBoolean("use_custom_help");
-        whoPrefix = getConfig().getBoolean("who_prefixes");
 
         banMessage = getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         noBuildMessage = getConfig().getString("no_build_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
@@ -170,6 +169,7 @@ public class RoyalCommands extends JavaPlugin {
         defaultWarn = getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         welcomeMessage = getConfig().getString("welcome_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         bcastFormat = getConfig().getString("bcast_format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        whoPrefix = getConfig().getString("who_prefix");
 
         defaultStack = getConfig().getInt("default_stack_size");
         warnBan = getConfig().getInt("max_warns_before_ban");

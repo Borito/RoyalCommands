@@ -28,8 +28,6 @@ other_plugins_in_help: true
 back_for_all_tps: true
 # Custom /help (help.txt - same format as rules.txt)?
 use_custom_help: false
-# Prepend group prefixes to player names in /who?
-who_prefixes: true
 # Message to be shown if player does not have rcmds.build
 no_build_message: "&cYou don't have permission to build!"
 # The default ban message for /ban
@@ -42,6 +40,8 @@ default_warn_message: "You have been warned."
 welcome_message: "&5Welcome {name} to the server!"
 # Broadcast format (no variables support, just color codes) - message follows this immediately after this
 bcast_format: "&b[&aBroadcast&b]&a "
+# Who prepend format ({prefix}, {suffix}, and {group} supported, as well at text and color codes
+who_prefix: {prefix}
 # The default stack size for /i and /give
 default_stack_size: 64
 # The number of warns until a ban is issued, 0 to disable
