@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,16 +22,41 @@ public class Motd implements CommandExecutor {
         String ps = "";
         int hid = 0;
         for (Player aP : p) {
+            String name = List.formatPrepend(aP) + ChatColor.WHITE;
             if (!plugin.isVanished(aP)) {
+                if (Afk.afkdb.containsKey(aP)) {
+                    name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
+                }
                 if (ps.equals("")) {
-                    ps = ps.concat(aP.getName());
+                    ps = ps.concat(name);
                 } else {
-                    ps = ps.concat(", " + aP.getName());
+                    ps = ps.concat(", " + name);
                 }
             } else {
                 hid++;
             }
         }
+        if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
+            if (hid > 0) {
+                cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + (p.length - hid) + "/" + hid + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
+            } else {
+                cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + p.length + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
+            }
+            for (Player aP : p) {
+                String name = List.formatPrepend(aP) + ChatColor.WHITE;
+                if (plugin.isVanished(aP)) {
+                    name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
+                    if (ps.equals("")) {
+                        ps = ps.concat(name);
+                    } else {
+                        ps = ps.concat(", " + name);
+                    }
+                }
+            }
+        } else {
+            cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + (p.length - hid) + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
+        }
+        cs.sendMessage("Online Players: " + ps);
         Integer onnum = plugin.getServer().getOnlinePlayers().length;
         String onlinenum;
         try {
