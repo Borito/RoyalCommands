@@ -10,13 +10,13 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class List implements CommandExecutor {
 
-    RoyalCommands plugin;
+    static RoyalCommands plugin;
 
     public List(RoyalCommands plugin) {
-        this.plugin = plugin;
+        List.plugin = plugin;
     }
-    
-    public String formatPrepend(Player p) {
+
+    public static String formatPrepend(Player p) {
         String format = plugin.whoFormat;
         format = format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getPlayerPrefix(p));
         format = format.replaceAll("(?i)\\{group\\}", RoyalCommands.permission.getPrimaryGroup(p));
