@@ -28,13 +28,13 @@ public class CmdLag implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            int tps = 20;
-            int runfor = 5;
+            double tps = 20;
+            double runfor = 5;
             if (args.length > 0) {
                 try {
-                    runfor = Integer.valueOf(args[0]);
+                    runfor = Double.valueOf(args[0]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "Please input the amount of whole seconds you would like to run the test for.");
+                    cs.sendMessage(ChatColor.RED + "Please input a valid number.");
                     return true;
                 }
             }
