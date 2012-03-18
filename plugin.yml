@@ -163,21 +163,22 @@ commands:
   home:
     description: Teleports the player home.
     usage: /<command> (home)
+    aliases: [rhome]
 
   sethome:
     description: Sets the player's home.
     usage: /<command> (home)
-    aliases: [shome]
+    aliases: [shome, rsethome]
 
   delhome:
     description: Deletes a home.
     usage: /<command> [home]
-    aliases: [dhome, rmhome, deletehome, removehome]
+    aliases: [dhome, rmhome, deletehome, removehome, rdeletehome]
 
   listhome:
     description: List your set homes.
     usage: /<command> (player)
-    aliases: [lshome, listhomes, lshomes, homes]
+    aliases: [lshome, listhomes, lshomes, homes, rlisthomes]
 
   strike:
     description: Strikes lightning at the player's cursor or at specified player.
