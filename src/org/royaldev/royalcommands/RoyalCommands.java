@@ -76,6 +76,7 @@ public class RoyalCommands extends JavaPlugin {
     public static Boolean otherHelp = null;
     public Boolean tpEvery = null;
     public Boolean customHelp = null;
+    public Boolean useVNP = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -140,6 +141,7 @@ public class RoyalCommands extends JavaPlugin {
     VanishPlugin vp = null;
 
     public boolean isVanished(Player p) {
+        if (!useVNP) return false;
         if (vp == null) {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
             return false;
@@ -162,6 +164,7 @@ public class RoyalCommands extends JavaPlugin {
         otherHelp = getConfig().getBoolean("other_plugins_in_help");
         tpEvery = getConfig().getBoolean("back_for_all_tps");
         customHelp = getConfig().getBoolean("use_custom_help");
+        useVNP = getConfig().getBoolean("use_vanish");
 
         banMessage = getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         noBuildMessage = getConfig().getString("no_build_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");

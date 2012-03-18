@@ -28,6 +28,8 @@ other_plugins_in_help: true
 back_for_all_tps: true
 # Custom /help (help.txt - same format as rules.txt)?
 use_custom_help: false
+# Use VanishNoPacket integration?
+use_vanish: true
 # Message to be shown if player does not have rcmds.build
 no_build_message: "&cYou don't have permission to build!"
 # The default ban message for /ban
