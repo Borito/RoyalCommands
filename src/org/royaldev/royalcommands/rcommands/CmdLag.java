@@ -36,48 +36,48 @@ public class CmdLag implements CommandExecutor {
             }
         }
 
-        final int realms = runfor * 1000;
-        final int realsecs = runfor;
-        final int realticks = tps * realsecs;
+        final long expms = runfor * 1000;
+        final long expsecs = runfor;
+        final long expticks = tps * expsecs;
         final World world = plugin.getServer().getWorlds().get(0);
         final long started = System.currentTimeMillis();
         final long startedticks = world.getFullTime();
 
-        cs.sendMessage(ChatColor.YELLOW + "This measures in-game time, so please do not change the time for " + ChatColor.GRAY + realsecs + ChatColor.YELLOW + " seconds.");
+        cs.sendMessage(ChatColor.YELLOW + "This measures in-game time, so please do not change the time for " + ChatColor.GRAY + expsecs + ChatColor.YELLOW + " seconds.");
 
         Runnable getlag = new Runnable() {
             public void run() {
                 long ran = System.currentTimeMillis();
                 long ranticks = world.getFullTime();
 
-                long ranforms = started - ran;
-                long ranforsecs = started / 1000;
-                long currentticks = startedticks - ranticks;
+                long ranforms = ran - started;
+                long ranforsecs = ranforms / 1000;
+                long currentticks = ranticks - startedticks;
 
-                long error = ((realms - ranforms) / ranforms) * 100;
+                long error = ((expms - ranforms) / ranforms) * 100;
                 long rtps = currentticks / ranforsecs;
 
-                if (realticks != currentticks)
-                    cs.sendMessage(ChatColor.RED + "Got " + ChatColor.GRAY + realticks + ChatColor.RED + " instead of " + ChatColor.GRAY + currentticks + ChatColor.RED + "; Bukkit scheduling may be off.");
+                if (expticks != currentticks)
+                    cs.sendMessage(ChatColor.RED + "Got " + ChatColor.GRAY + currentticks + "ticks" + ChatColor.RED + " instead of " + ChatColor.GRAY + expticks + "ticks" + ChatColor.RED + "; Bukkit scheduling may be off.");
 
                 if (Math.round(rtps) == 20)
                     cs.sendMessage(ChatColor.GREEN + "Full throttle" + ChatColor.WHITE + " - " + ChatColor.GREEN + 20 + ChatColor.WHITE + "/20 TPS");
-                else if (rtps < 19)
-                    cs.sendMessage(ChatColor.YELLOW + "Small lag" + ChatColor.WHITE + " - " + ChatColor.YELLOW + rtps + ChatColor.WHITE + "/20 TPS");
-                else if (rtps < 15)
-                    cs.sendMessage(ChatColor.RED + "Big lag" + ChatColor.WHITE + " - " + ChatColor.RED + rtps + ChatColor.WHITE + "/20 TPS");
-                else if (rtps < 10)
-                    cs.sendMessage(ChatColor.RED + "Severe lag" + ChatColor.WHITE + " - " + ChatColor.RED + rtps + ChatColor.WHITE + "/20 TPS");
                 else if (rtps < 5)
                     cs.sendMessage(ChatColor.DARK_RED + "Inefficient" + ChatColor.WHITE + " - " + ChatColor.DARK_RED + rtps + ChatColor.WHITE + "/20 TPS");
+                else if (rtps < 10)
+                    cs.sendMessage(ChatColor.RED + "Severe lag" + ChatColor.WHITE + " - " + ChatColor.RED + rtps + ChatColor.WHITE + "/20 TPS");
+                else if (rtps < 15)
+                    cs.sendMessage(ChatColor.RED + "Big lag" + ChatColor.WHITE + " - " + ChatColor.RED + rtps + ChatColor.WHITE + "/20 TPS");
+                else if (rtps < 19)
+                    cs.sendMessage(ChatColor.YELLOW + "Small lag" + ChatColor.WHITE + " - " + ChatColor.YELLOW + rtps + ChatColor.WHITE + "/20 TPS");
                 else if (rtps > 20)
                     cs.sendMessage(ChatColor.GOLD + "Overboard" + ChatColor.WHITE + " - " + ChatColor.GOLD + rtps + ChatColor.WHITE + "/20 TPS");
 
-                cs.sendMessage(ChatColor.BLUE + "Margin of error: " + ChatColor.GRAY + error);
+                cs.sendMessage(ChatColor.BLUE + "Margin of error: " + ChatColor.GRAY + error + "%");
             }
         };
 
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, getlag, realticks);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, getlag, expticks);
 
         return true;
     }
