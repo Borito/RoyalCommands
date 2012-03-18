@@ -532,6 +532,11 @@ commands:
     usage: /<command> (seconds to run)
     aliases: [tps, getlag]
 
+  mem:
+    description: Displays the current memory usage.
+    usage: /<command>
+    aliases: [memory, getmem, lagmem]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -867,6 +872,9 @@ permissions:
     default: op
   rcmds.lag:
     description: Allows you to poll the ticks per second.
+    default: op
+  rcmds.mem:
+    description: Allows you to see the memory usage.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1272,6 +1280,7 @@ permissions:
       rcmds.tptoggle: true
       rcmds.kits: true
       rcmds.lag: true
+      rcmds.mem: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
