@@ -73,7 +73,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
-            if (!RUtils.isTimeStampValid(event.getPlayer(), "mutetime")) {
+            if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime")) {
                 PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
             }
             for (String command : plugin.muteCmds) {
@@ -108,7 +108,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             Afk.afkdb.remove(event.getPlayer());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
-            if (!RUtils.isTimeStampValid(event.getPlayer(), "mutetime")) {
+            if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime")) {
                 PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
             }
             event.setFormat("");
