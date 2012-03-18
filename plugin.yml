@@ -527,6 +527,11 @@ commands:
     usage: /<command>
     aliases: [listkit, listkits]
 
+  lag:
+    description: Displays the ticks per seconds over a period of time.
+    usage: /<command> (seconds to run)
+    aliases: [tps, getlag]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -859,6 +864,9 @@ permissions:
     default: op
   rcmds.kits:
     description: Allows you to list available kits.
+    default: op
+  rcmds.lag:
+    description: Allows you to poll the ticks per second.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1263,6 +1271,7 @@ permissions:
       rcmds.tempban: true
       rcmds.tptoggle: true
       rcmds.kits: true
+      rcmds.lag: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
