@@ -187,7 +187,7 @@ commands:
   jump:
     description: Moves the player to the block they are looking at.
     usage: /<command>
-    aliases: [j, tps, go]
+    aliases: [j, go]
 
   warn:
     description: Warns the specified player.
