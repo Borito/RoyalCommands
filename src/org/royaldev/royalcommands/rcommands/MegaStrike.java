@@ -19,17 +19,17 @@ public class MegaStrike implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("megastrike")) {
             if (!plugin.isAuthorized(cs, "rcmds.megastrike")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            Player p = null;
-            if (cs instanceof Player) {
-                p = (Player) cs;
+            if (!(cs instanceof Player)) {
+                cs.sendMessage(cmd.getDescription());
+                return false;
             }
+            Player p = (Player) cs;
             if (args.length < 1) {
                 BlockIterator b = new BlockIterator(p, 0);
                 if (!b.hasNext()) {
@@ -44,38 +44,28 @@ public class MegaStrike implements CommandExecutor {
                         }
                     }
                     for (int i = 0; i < 15; i++) {
-                        if (p != null) {
-                            p.getWorld().strikeLightning(bb.getLocation());
-                        }
+                        p.getWorld().strikeLightning(bb.getLocation());
                     }
                     return true;
                 }
             } else {
                 if (!plugin.isAuthorized(cs, "rcmds.megastrike.others")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that!");
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
                     return true;
                 }
                 Player target = plugin.getServer().getPlayer(args[0]);
                 if (target == null) {
-                    cs.sendMessage(ChatColor.RED
-                            + "That player does not exist!");
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
                 if (plugin.isVanished(target)) {
-                    cs.sendMessage(ChatColor.RED
-                            + "That player does not exist!");
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Megasmiting " + ChatColor.GRAY
-                        + target.getName() + ChatColor.BLUE + ".");
-                target.sendMessage(ChatColor.RED
-                        + "You have been megasmited by " + ChatColor.GRAY
-                        + cs.getName() + ChatColor.RED + ".");
+                cs.sendMessage(ChatColor.BLUE + "Megasmiting " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
+                target.sendMessage(ChatColor.RED + "You have been megasmited by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
                 for (int i = 0; i < 15; i++) {
-                    if (p != null) {
-                        p.getWorld().strikeLightning(target.getLocation());
-                    }
+                    p.getWorld().strikeLightning(target.getLocation());
                 }
                 return true;
 

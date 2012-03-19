@@ -536,7 +536,7 @@ commands:
   mem:
     description: Displays the current memory usage.
     usage: /<command>
-    aliases: [memory, getmem, lagmem]
+    aliases: [memory, getmem, lagmem, ram, getram]
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.

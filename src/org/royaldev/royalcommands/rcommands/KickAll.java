@@ -23,18 +23,12 @@ public class KickAll implements CommandExecutor {
                 return true;
             }
             String kickreason = plugin.kickMessage;
-            if (args.length > 0) {
-                kickreason = plugin.getFinalArg(args, 0);
-            }
+            if (args.length > 0) kickreason = plugin.getFinalArg(args, 0);
             kickreason = kickreason.replaceAll("(&([a-f0-9]))", "\u00A7$2");
             Player p = null;
-            if (cs instanceof Player) {
-                p = (Player) cs;
-            }
+            if (cs instanceof Player) p = (Player) cs;
             for (Player t : plugin.getServer().getOnlinePlayers()) {
-                if (!t.equals(p)) {
-                    t.kickPlayer(kickreason);
-                }
+                if (!t.equals(p)) t.kickPlayer(kickreason);
             }
             return true;
         }
