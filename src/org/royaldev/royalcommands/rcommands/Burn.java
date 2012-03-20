@@ -17,8 +17,7 @@ public class Burn implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("burn")) {
             if (!plugin.isAuthorized(cs, "rcmds.burn")) {
                 RUtils.dispNoPerms(cs);

@@ -55,11 +55,7 @@ public class List implements CommandExecutor {
                     if (Afk.afkdb.containsKey(aP)) {
                         name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                     }
-                    if (ps.equals("")) {
-                        ps = ps.concat(name);
-                    } else {
-                        ps = ps.concat(", " + name);
-                    }
+                    ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
                 } else {
                     hid++;
                 }
@@ -74,11 +70,7 @@ public class List implements CommandExecutor {
                     String name = formatPrepend(aP) + ChatColor.WHITE;
                     if (plugin.isVanished(aP)) {
                         name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
-                        if (ps.equals("")) {
-                            ps = ps.concat(name);
-                        } else {
-                            ps = ps.concat(", " + name);
-                        }
+                        ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
                     }
                 }
             } else {

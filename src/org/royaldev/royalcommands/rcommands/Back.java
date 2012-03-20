@@ -22,8 +22,7 @@ public class Back implements CommandExecutor {
     public static HashMap<Player, Location> backdb = new HashMap<Player, Location>();
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("back")) {
             if (!plugin.isAuthorized(cs, "rcmds.back")) {
                 RUtils.dispNoPerms(cs);

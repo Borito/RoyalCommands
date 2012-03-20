@@ -18,8 +18,7 @@ public class Gamemode implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gamemode")) {
             if (!plugin.isAuthorized(cs, "rcmds.gamemode")) {
                 RUtils.dispNoPerms(cs);
@@ -31,19 +30,10 @@ public class Gamemode implements CommandExecutor {
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
-                if (p.getGameMode().equals(GameMode.CREATIVE)) {
-                    p.setGameMode(GameMode.SURVIVAL);
-                    p.sendMessage(ChatColor.BLUE
-                            + "Your game mode has been set to " + ChatColor.GRAY
-                            + "survival" + ChatColor.BLUE + ".");
-                    return true;
-                } else if (p.getGameMode().equals(GameMode.SURVIVAL)) {
-                    p.setGameMode(GameMode.CREATIVE);
-                    p.sendMessage(ChatColor.BLUE
-                            + "Your game mode has been set to " + ChatColor.GRAY
-                            + "creative" + ChatColor.BLUE + ".");
-                    return true;
-                }
+                GameMode toSet = (p.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
+                p.setGameMode(toSet);
+                p.sendMessage(ChatColor.BLUE + "Your game mode has been set to " + ChatColor.GRAY + toSet.name().toLowerCase() + ChatColor.BLUE + ".");
+                return true;
             }
             if (args.length > 0) {
                 Player t = plugin.getServer().getPlayer(args[0].trim());
@@ -51,26 +41,21 @@ public class Gamemode implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
+                if (!plugin.isAuthorized(cs, "rcmds.gamemode.others")) {
+                    cs.sendMessage(ChatColor.RED + "You can't change other players' gamemodes!");
+                    return true;
+                }
                 if (plugin.isAuthorized(t, "rcmds.exempt.gamemode")) {
                     cs.sendMessage(ChatColor.RED + "You cannot change that player's gamemode.");
                     return true;
                 }
-                if (t.getGameMode().equals(GameMode.CREATIVE)) {
-                    t.setGameMode(GameMode.SURVIVAL);
-                    cs.sendMessage(ChatColor.BLUE + "You have changed " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + "survival" + ChatColor.BLUE + ".");
-                    t.sendMessage(ChatColor.BLUE + "Your game mode has been changed to " + ChatColor.GRAY + "survival" + ChatColor.BLUE + ".");
-                    return true;
-                }
-                if (t.getGameMode().equals(GameMode.SURVIVAL)) {
-                    t.setGameMode(GameMode.CREATIVE);
-                    cs.sendMessage(ChatColor.BLUE + "You have changed " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + "creative" + ChatColor.BLUE + ".");
-                    t.sendMessage(ChatColor.BLUE + "Your game mode has been changed to " + ChatColor.GRAY + "creative" + ChatColor.BLUE + ".");
-                    return true;
-                }
+                GameMode toSet = (t.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
+                t.setGameMode(toSet);
+                cs.sendMessage(ChatColor.BLUE + "You have changed " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + toSet.name().toLowerCase() + ChatColor.BLUE + ".");
+                t.sendMessage(ChatColor.BLUE + "Your game mode has been changed to " + ChatColor.GRAY + toSet.name().toLowerCase() + ChatColor.BLUE + ".");
+                return true;
             }
         }
-
         return false;
     }
-
 }

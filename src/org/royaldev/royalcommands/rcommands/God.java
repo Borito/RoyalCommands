@@ -19,8 +19,7 @@ public class God implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("god")) {
             if (!plugin.isAuthorized(cs, "rcmds.god")) {
                 RUtils.dispNoPerms(cs);
@@ -64,8 +63,7 @@ public class God implements CommandExecutor {
                         t.setFoodLevel(20);
                         t.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " has disabled godmode for you!");
                     }
-                    cs.sendMessage(ChatColor.BLUE
-                            + "You have disabled godmode for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                    cs.sendMessage(ChatColor.BLUE + "You have disabled godmode for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     PConfManager.setPValBoolean(t, false, "godmode");
                     return true;
                 }

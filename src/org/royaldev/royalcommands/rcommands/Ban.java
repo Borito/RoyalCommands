@@ -30,7 +30,7 @@ public class Ban implements CommandExecutor {
                 return false;
             }
             String banreason;
-            Player t = plugin.getServer().getPlayer(args[0].trim());
+            Player t = plugin.getServer().getPlayer(args[0]);
             if (t != null) {
                 if (!PConfManager.getPConfExists(t)) {
                     cs.sendMessage(ChatColor.RED+ "That player does not exist!");

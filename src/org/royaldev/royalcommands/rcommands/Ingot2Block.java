@@ -75,10 +75,7 @@ public class Ingot2Block implements CommandExecutor {
             else if (hand.getType() == Material.INK_SACK && hand.getDurability() == 4)
                 i2b(p, hand, Material.INK_SACK, Material.LAPIS_BLOCK, (short) 4);
             else if (hand.getType() == Material.GOLD_NUGGET) i2b(p, hand, Material.GOLD_NUGGET, Material.GOLD_INGOT);
-            else {
-                cs.sendMessage(ChatColor.RED + "That cannot be made into blocks!");
-                return true;
-            }
+            else cs.sendMessage(ChatColor.RED + "That cannot be made into blocks!");
             return true;
         }
         return false;

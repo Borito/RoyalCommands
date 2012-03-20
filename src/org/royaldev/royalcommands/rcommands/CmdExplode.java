@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,16 +19,12 @@ public class CmdExplode implements CommandExecutor {
 
     public void explodePlayer(Player p) {
         if (p == null) return;
-        Location l = p.getLocation();
-        World w = p.getWorld();
-        w.createExplosion(l, plugin.explodePower, plugin.explodeFire);
+        p.getLocation().getWorld().createExplosion(p.getLocation(), plugin.explodePower, plugin.explodeFire);
     }
 
     public void explodePlayer(Player p, float power) {
         if (p == null) return;
-        Location l = p.getLocation();
-        World w = p.getWorld();
-        w.createExplosion(l, power, plugin.explodeFire);
+        p.getLocation().getWorld().createExplosion(p.getLocation(), power, plugin.explodeFire);
     }
 
     @Override

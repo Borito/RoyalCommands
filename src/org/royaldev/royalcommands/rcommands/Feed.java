@@ -17,8 +17,7 @@ public class Feed implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("feed")) {
             if (!plugin.isAuthorized(cs, "rcmds.feed")) {
                 RUtils.dispNoPerms(cs);
@@ -34,7 +33,7 @@ public class Feed implements CommandExecutor {
                 t.setFoodLevel(20);
                 return true;
             }
-            Player t = plugin.getServer().getPlayer(args[0].trim());
+            Player t = plugin.getServer().getPlayer(args[0]);
             if (!plugin.isAuthorized(cs, "rcmds.feed.others")) {
                 RUtils.dispNoPerms(cs);
                 return true;

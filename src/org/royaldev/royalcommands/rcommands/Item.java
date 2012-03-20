@@ -84,11 +84,8 @@ public class Item implements CommandExecutor {
                         toInv = new ItemStack(Material.getMaterial(iblock).getId(), plugin.defaultStack);
                     }
                     HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);
-                    if (!left.isEmpty() && plugin.dropExtras) {
-                        for (ItemStack item : left.values()) {
-                            p.getWorld().dropItemNaturally(p.getLocation(), item);
-                        }
-                    }
+                    if (!left.isEmpty() && plugin.dropExtras)
+                        for (ItemStack item : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), item);
                     cs.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + plugin.defaultStack + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
                     return true;
                 } else {
@@ -113,7 +110,7 @@ public class Item implements CommandExecutor {
                     return true;
                 }
                 if (amount < 1) {
-                    amount = 1;
+                    cs.sendMessage(ChatColor.RED + "Invalid amount! You must specify a positive amount.");
                 }
                 Integer iblock;
                 try {
@@ -155,11 +152,8 @@ public class Item implements CommandExecutor {
                         toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount);
                     }
                     HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);
-                    if (!left.isEmpty() && plugin.dropExtras) {
-                        for (ItemStack item : left.values()) {
-                            p.getWorld().dropItemNaturally(p.getLocation(), item);
-                        }
-                    }
+                    if (!left.isEmpty() && plugin.dropExtras)
+                        for (ItemStack item : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), item);
                     cs.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
                     return true;
                 } else {

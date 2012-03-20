@@ -41,18 +41,13 @@ public class CmdTppos implements CommandExecutor {
             }
             Player p = (Player) cs;
             Location pLoc;
-            World w;
-            if (args.length > 3) {
-                w = plugin.getServer().getWorld(args[3]);
-                if (w == null) {
-                    cs.sendMessage(ChatColor.RED + "That world does not exist!");
-                    return true;
-                }
-                pLoc = new Location(w, x, y, z);
-            } else {
-                w = p.getWorld();
-                pLoc = new Location(w, x, y, z);
+            World w = p.getWorld();
+            if (args.length > 3) w = plugin.getServer().getWorld(args[3]);
+            if (w == null) {
+                cs.sendMessage(ChatColor.RED + "That world does not exist!");
+                return true;
             }
+            pLoc = new Location(w, x, y, z);
             cs.sendMessage(ChatColor.BLUE + "Teleporting you to x: " + ChatColor.GRAY + x + ChatColor.BLUE + ", y: " + ChatColor.GRAY + y + ChatColor.BLUE + ", z: " + ChatColor.GRAY + z + ChatColor.BLUE + " in world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
             p.teleport(pLoc);
             return true;

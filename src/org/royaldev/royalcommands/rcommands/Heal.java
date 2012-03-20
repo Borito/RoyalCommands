@@ -17,8 +17,7 @@ public class Heal implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("heal")) {
             if (!plugin.isAuthorized(cs, "rcmds.heal")) {
                 RUtils.dispNoPerms(cs);
@@ -26,8 +25,7 @@ public class Heal implements CommandExecutor {
             }
             if (args.length < 1) {
                 if (!(cs instanceof Player)) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You can't heal the console!");
+                    cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                     return true;
                 }
                 Player t = (Player) cs;
@@ -36,14 +34,12 @@ public class Heal implements CommandExecutor {
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0].trim());
-            if (t == null) {
+            if (t == null || plugin.isVanished(t)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "You have healed " + ChatColor.GRAY
-                    + t.getName() + ChatColor.BLUE + ".");
-            t.sendMessage(ChatColor.BLUE + "You have been healed by "
-                    + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + "!");
+            cs.sendMessage(ChatColor.BLUE + "You have healed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            t.sendMessage(ChatColor.BLUE + "You have been healed by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + "!");
             t.setHealth(20);
             return true;
         }

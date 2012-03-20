@@ -31,12 +31,8 @@ public class FixChunk implements CommandExecutor {
             Player p = (Player) cs;
             Chunk c = p.getLocation().getChunk();
             boolean worked = p.getWorld().refreshChunk(c.getX(), c.getZ());
-            if (worked) {
-                cs.sendMessage(ChatColor.BLUE + "The chunk you're standing in has been reloaded!");
-            }
-            if (!worked) {
-                cs.sendMessage(ChatColor.RED + "The chunk could not be reloaded.");
-            }
+            if (worked) cs.sendMessage(ChatColor.BLUE + "The chunk you're standing in has been reloaded!");
+            else cs.sendMessage(ChatColor.RED + "The chunk could not be reloaded.");
             return true;
         }
         return false;

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Afk implements CommandExecutor {
 
@@ -18,11 +18,10 @@ public class Afk implements CommandExecutor {
         this.plugin = instance;
     }
 
-    public static HashMap<Player, Boolean> afkdb = new HashMap<Player, Boolean>();
+    public static java.util.List<Player> afkdb = new ArrayList<Player>();
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("afk")) {
             if (!plugin.isAuthorized(cs, "rcmds.afk")) {
                 RUtils.dispNoPerms(cs);
@@ -37,16 +36,14 @@ public class Afk implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You are vanished! The cloak of illusion would be lost if you went AFK!");
                 return true;
             }
-            if (!afkdb.containsKey(p) || !afkdb.get(p)) {
-                afkdb.put(p, true);
+            if (!afkdb.contains(p)) {
+                afkdb.add(p);
                 plugin.getServer().broadcastMessage(p.getName() + " is now AFK.");
                 return true;
             }
-            if (afkdb.containsKey(p) && afkdb.get(p)) {
-                afkdb.remove(p);
-                plugin.getServer().broadcastMessage(p.getName() + " is no longer AFK.");
-                return true;
-            }
+            afkdb.remove(p);
+            plugin.getServer().broadcastMessage(p.getName() + " is no longer AFK.");
+            return true;
         }
         return false;
     }

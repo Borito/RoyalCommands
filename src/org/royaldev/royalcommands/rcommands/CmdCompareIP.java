@@ -29,6 +29,7 @@ public class CmdCompareIP implements CommandExecutor {
                 return true;
             }
             if (args.length < 2) {
+                cs.sendMessage(cmd.getDescription());
                 return false;
             }
             OfflinePlayer player1;

@@ -22,8 +22,7 @@ public class DelWarp implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("delwarp")) {
             if (!plugin.isAuthorized(cs, "rcmds.delwarp")) {
                 RUtils.dispNoPerms(cs);
@@ -40,8 +39,7 @@ public class DelWarp implements CommandExecutor {
             }
             File pconfl = new File(plugin.getDataFolder() + "/warps.yml");
             if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration
-                        .loadConfiguration(pconfl);
+                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 if (pconf.get("warps." + args[0]) == null) {
                     cs.sendMessage(ChatColor.RED + "That warp does not exist!");
                     return true;
@@ -52,8 +50,7 @@ public class DelWarp implements CommandExecutor {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                cs.sendMessage(ChatColor.BLUE + "The warp \"" + ChatColor.GRAY
-                        + args[0] + ChatColor.BLUE + "\" has been deleted.");
+                cs.sendMessage(ChatColor.BLUE + "The warp \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + "\" has been deleted.");
                 return true;
             }
         }

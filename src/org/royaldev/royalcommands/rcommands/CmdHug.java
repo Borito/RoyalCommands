@@ -37,10 +37,6 @@ public class CmdHug implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            /*if (plugin.isAuthorized(victim, "rcmds.exempt.slap")) {
-                cs.sendMessage(ChatColor.RED + "You may not hug that player.");
-                return true;
-            }*/
             plugin.getServer().broadcastMessage(ChatColor.DARK_GREEN + cs.getName() + ChatColor.LIGHT_PURPLE + " hugs " + ChatColor.DARK_GREEN + victim.getName() + ChatColor.LIGHT_PURPLE + "! " + ChatColor.RED + "<3");
             return true;
         }

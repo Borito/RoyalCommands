@@ -17,19 +17,14 @@ public class Level implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("level")) {
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command can only be used by players!");
+                cs.sendMessage(ChatColor.RED + "This command can only be used by players!");
+                return true;
             }
             if (!plugin.isAuthorized(cs, "rcmds.level")) {
                 RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
             Player player = (Player) cs;

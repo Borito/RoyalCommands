@@ -18,10 +18,8 @@ public class GetIP implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("getip")) {
-
             if (!plugin.isAuthorized(cs, "rcmds.getip")) {
                 RUtils.dispNoPerms(cs);
                 return true;
@@ -35,13 +33,10 @@ public class GetIP implements CommandExecutor {
                 return false;
             }
             OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(args[0].trim());
-            if (PConfManager.getPConfExists(oplayer)) {
+            if (PConfManager.getPConfExists(oplayer))
                 cs.sendMessage(ChatColor.GRAY + oplayer.getName() + ": " + PConfManager.getPValString(oplayer, "ip"));
-                return true;
-            } else {
-                cs.sendMessage(ChatColor.RED + "The player " + oplayer.getName() + " does not exist.");
-                return true;
-            }
+            else cs.sendMessage(ChatColor.RED + "The player " + oplayer.getName() + " does not exist.");
+            return true;
         }
         return false;
     }

@@ -103,7 +103,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.isCancelled()) return;
-        if (Afk.afkdb.containsKey(event.getPlayer())) {
+        if (Afk.afkdb.contains(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             Afk.afkdb.remove(event.getPlayer());
         }
@@ -135,7 +135,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
-        if (Afk.afkdb.containsKey(event.getPlayer())) {
+        if (Afk.afkdb.contains(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             Afk.afkdb.remove(event.getPlayer());
         }

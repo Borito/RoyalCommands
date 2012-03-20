@@ -27,7 +27,6 @@ public class CmdBroadcast implements CommandExecutor {
             }
             String message = plugin.getFinalArg(args, 0).trim().replaceAll("(&([a-f0-9]))", "\u00A7$2");
             String format = plugin.bcastFormat;
-            //if (!format.endsWith(" ")) format = format + " "; <- not sure if I want to do this
             message = format + message;
             plugin.getServer().broadcastMessage(message);
             return true;

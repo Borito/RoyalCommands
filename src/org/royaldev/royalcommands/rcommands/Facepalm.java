@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,8 +17,7 @@ public class Facepalm implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("facepalm")) {
             if (!plugin.isAuthorized(cs, "rcmds.facepalm")) {
                 RUtils.dispNoPerms(cs);
@@ -30,19 +28,15 @@ public class Facepalm implements CommandExecutor {
                 return true;
             }
             Player victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null) {
+            if (victim == null || plugin.isVanished(victim)) {
                 cs.sendMessage(ChatColor.RED + "That player is not online!");
-                return true;
-            }
-            if (plugin.isVanished(victim)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
             if (plugin.isAuthorized(victim, "rcmds.exempt.facepalm")) {
                 cs.sendMessage(ChatColor.RED + "You cannot facepalm at that player!");
                 return true;
             }
-            Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + cs.getName() + ChatColor.AQUA + " has facepalmed at " + ChatColor.YELLOW + victim.getName() + ChatColor.AQUA + ".");
+            plugin.getServer().broadcastMessage(ChatColor.YELLOW + cs.getName() + ChatColor.AQUA + " has facepalmed at " + ChatColor.YELLOW + victim.getName() + ChatColor.AQUA + ".");
             return true;
         }
         return false;

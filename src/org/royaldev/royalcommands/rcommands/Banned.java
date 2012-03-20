@@ -17,29 +17,23 @@ public class Banned implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("banned")) {
             if (!plugin.isAuthorized(cs, "rcmds.banned")) {
                 RUtils.dispNoPerms(cs);
                 return true;
-            } else {
-                if (args.length < 1) {
-                    cs.sendMessage(cmd.getDescription());
-                    return false;
-                }
-                OfflinePlayer dude;
-                dude = plugin.getServer().getOfflinePlayer(
-                        args[0]);
-                boolean banned = dude.isBanned();
-                if (!banned) {
-                    cs.sendMessage(ChatColor.GREEN + dude.getName() + ChatColor.WHITE + " is not banned.");
-                    return true;
-                } else {
-                    cs.sendMessage(ChatColor.RED + dude.getName() + ChatColor.WHITE + " is banned.");
-                    return true;
-                }
             }
+            if (args.length < 1) {
+                cs.sendMessage(cmd.getDescription());
+                return false;
+            }
+            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
+            if (!t.isBanned()) {
+                cs.sendMessage(ChatColor.GREEN + t.getName() + ChatColor.WHITE + " is not banned.");
+                return true;
+            }
+            cs.sendMessage(ChatColor.RED + t.getName() + ChatColor.WHITE + " is banned.");
+            return true;
         }
         return false;
     }

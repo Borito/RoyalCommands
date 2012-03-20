@@ -17,8 +17,7 @@ public class Kick implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("kick")) {
             if (!plugin.isAuthorized(cs, "rcmds.kick")) {
                 RUtils.dispNoPerms(cs);
@@ -29,11 +28,7 @@ public class Kick implements CommandExecutor {
                 return false;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null) {
-                cs.sendMessage(ChatColor.RED + "That player is not online!");
-                return true;
-            }
-            if (plugin.isVanished(t)) {
+            if (t == null || plugin.isVanished(t)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
@@ -42,25 +37,12 @@ public class Kick implements CommandExecutor {
                 return true;
             }
             if (args.length == 1) {
-                plugin.getServer().broadcast(
-                        ChatColor.RED + "The player " + ChatColor.GRAY
-                                + t.getName() + ChatColor.RED
-                                + " has been kicked for " + ChatColor.GRAY
-                                + plugin.kickMessage + ChatColor.RED + " by "
-                                + ChatColor.GRAY + cs.getName() + ChatColor.RED
-                                + ".", "rcmds.see.kick");
+                plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been kicked for " + ChatColor.GRAY + plugin.kickMessage + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.kick");
                 t.kickPlayer(plugin.kickMessage);
                 return true;
             } else if (args.length > 1) {
-                String kickMessage = plugin.getFinalArg(args, 1).replaceAll(
-                        "(&([a-f0-9]))", "\u00A7$2");
-                plugin.getServer().broadcast(
-                        ChatColor.RED + "The player " + ChatColor.GRAY
-                                + t.getName() + ChatColor.RED
-                                + " has been kicked for " + ChatColor.GRAY
-                                + kickMessage + ChatColor.RED + " by "
-                                + ChatColor.GRAY + cs.getName() + ChatColor.RED
-                                + ".", "rcmds.see.kick");
+                String kickMessage = plugin.getFinalArg(args, 1).replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been kicked for " + ChatColor.GRAY + kickMessage + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.kick");
                 t.kickPlayer(kickMessage);
                 return true;
             }

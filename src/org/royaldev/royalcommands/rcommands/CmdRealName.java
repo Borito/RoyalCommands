@@ -29,11 +29,8 @@ public class CmdRealName implements CommandExecutor {
                 return false;
             }
             Player t = null;
-            for (Player p : plugin.getServer().getOnlinePlayers()) {
-                if (p.getDisplayName().toLowerCase().equals(args[0].trim().toLowerCase())) {
-                    t = p;
-                }
-            }
+            for (Player p : plugin.getServer().getOnlinePlayers())
+                if (p.getDisplayName().toLowerCase().equals(args[0].toLowerCase())) t = p;
             if (t == null || plugin.isVanished(t)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;

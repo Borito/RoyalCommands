@@ -25,8 +25,8 @@ public class ClearInventory implements CommandExecutor {
             }
             if (args.length < 1) {
                 if (!(cs instanceof Player)) {
-                    cs.sendMessage(ChatColor.RED + "This command is only available to players!");
-                    return true;
+                    cs.sendMessage(cmd.getDescription());
+                    return false;
                 }
                 Player p = (Player) cs;
                 p.getInventory().clear();
@@ -40,12 +40,8 @@ public class ClearInventory implements CommandExecutor {
                 return true;
             }
             Player target = plugin.getServer().getPlayer(args[0].trim());
-            if (target == null) {
+            if (target == null || plugin.isVanished(target)) {
                 cs.sendMessage(ChatColor.RED + "That player is not online!");
-                return true;
-            }
-            if (plugin.isVanished(target)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
             if (plugin.isAuthorized(target, "rcmds.exempt.clearinventory")) {

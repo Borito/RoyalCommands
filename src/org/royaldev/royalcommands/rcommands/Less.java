@@ -18,16 +18,14 @@ public class Less implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("less")) {
             if (!plugin.isAuthorized(cs, "rcmds.less")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -37,8 +35,7 @@ public class Less implements CommandExecutor {
                 return true;
             }
             hand.setAmount(1);
-            cs.sendMessage(ChatColor.BLUE
-                    + "All of the item in hand, except for one, has been removed.");
+            cs.sendMessage(ChatColor.BLUE + "All of the item in hand, except for one, has been removed.");
             return true;
         }
         return false;
