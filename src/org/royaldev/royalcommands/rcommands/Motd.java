@@ -24,29 +24,16 @@ public class Motd implements CommandExecutor {
         for (Player aP : p) {
             String name = List.formatPrepend(aP) + ChatColor.WHITE;
             if (!plugin.isVanished(aP)) {
-                if (Afk.afkdb.containsKey(aP)) {
-                    name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
-                }
-                if (ps.equals("")) {
-                    ps = ps.concat(name);
-                } else {
-                    ps = ps.concat(", " + name);
-                }
-            } else {
-                hid++;
-            }
+                if (Afk.afkdb.contains(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
+                ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
+            } else hid++;
         }
         if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
             for (Player aP : p) {
                 String name = List.formatPrepend(aP) + ChatColor.WHITE;
-                if (plugin.isVanished(aP)) {
-                    name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
-                    if (ps.equals("")) {
-                        ps = ps.concat(name);
-                    } else {
-                        ps = ps.concat(", " + name);
-                    }
-                }
+                if (!plugin.isVanished(aP)) continue;
+                name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
+                ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
             }
         }
         Integer onnum = plugin.getServer().getOnlinePlayers().length;
@@ -64,33 +51,15 @@ public class Motd implements CommandExecutor {
             maxonl = null;
         }
         for (String s : plugin.motd) {
-            if (s == null) {
-                continue;
-            }
+            if (s == null) continue;
             s = s.replaceAll("(&([a-f0-9]))", "\u00A7$2");
             s = s.replace("{name}", cs.getName());
-            if (cs instanceof Player) {
-                s = s.replace("{dispname}", ((Player) cs).getDisplayName());
-            } else {
-                s = s.replace("{dispname}", cs.getName());
-            }
-            if (onlinenum != null) {
-                s = s.replace("{players}", onlinenum);
-            }
+            s = (cs instanceof Player) ? s.replace("{dispname}", ((Player) cs).getDisplayName()) : s.replace("{dispname}", cs.getName());
+            if (onlinenum != null) s = s.replace("{players}", onlinenum);
             s = s.replace("{playerlist}", ps);
-            if (cs instanceof Player) {
-                s = s.replace("{world}", ((Player) cs).getWorld().getName());
-            } else {
-                s = s.replace("{world}", "No World");
-            }
-            if (maxonl != null) {
-                s = s.replace("{maxplayers}", maxonl);
-            }
-            if (plugin.getServer().getServerName() != null || !plugin.getServer().getServerName().equals("")) {
-                s = s.replace("{servername}", plugin.getServer().getServerName());
-            } else {
-                s = s.replace("{servername}", "this server");
-            }
+            s = (cs instanceof Player) ? s.replace("{world}", ((Player) cs).getWorld().getName()) : s.replace("{world}", "No World");
+            if (maxonl != null) s = s.replace("{maxplayers}", maxonl);
+            s = (plugin.getServer().getServerName() != null || !plugin.getServer().getServerName().equals("")) ? s.replace("{servername}", plugin.getServer().getServerName()) : s.replace("{servername}", "this server");
             cs.sendMessage(s);
         }
     }
