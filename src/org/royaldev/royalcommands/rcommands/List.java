@@ -51,7 +51,7 @@ public class List implements CommandExecutor {
             int hid = 0;
             for (Player aP : p) {
                 String name = formatPrepend(aP) + ChatColor.WHITE;
-                if (plugin.isVanished(aP)) {
+                if (!plugin.isVanished(aP)) {
                     if (Afk.afkdb.contains(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                     ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
                 } else hid++;
