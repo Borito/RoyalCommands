@@ -80,27 +80,8 @@ public class Sci implements CommandExecutor {
                         toInv = new ItemStack(Material.getMaterial(iblock).getId(), plugin.defaultStack);
                     }
                     target.getInventory().removeItem(toInv);
-                    cs.sendMessage(ChatColor.BLUE
-                            + "Removing "
-                            + ChatColor.GRAY
-                            + plugin.defaultStack
-                            + ChatColor.BLUE
-                            + " of "
-                            + ChatColor.GRAY
-                            + Material.getMaterial(iblock).toString()
-                            .toLowerCase().replace("_", " ")
-                            + ChatColor.BLUE + " from " + ChatColor.GRAY
-                            + target.getName() + ChatColor.BLUE + ".");
-                    target.sendMessage(ChatColor.BLUE
-                            + "You have had "
-                            + ChatColor.GRAY
-                            + plugin.defaultStack
-                            + ChatColor.BLUE
-                            + " of "
-                            + ChatColor.GRAY
-                            + Material.getMaterial(iblock).toString()
-                            .toLowerCase().replace("_", " ")
-                            + ChatColor.BLUE + " taken.");
+                    cs.sendMessage(ChatColor.BLUE + "Removing " + ChatColor.GRAY + plugin.defaultStack + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " from " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
+                    target.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + plugin.defaultStack + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " taken.");
                     return true;
                 } else {
                     cs.sendMessage(ChatColor.RED + "You cannot spawn air!");
@@ -123,8 +104,7 @@ public class Sci implements CommandExecutor {
                 try {
                     amount = Integer.parseInt(args[2]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED
-                            + "The amount was not a number!");
+                    cs.sendMessage(ChatColor.RED + "The amount was not a number!");
                     return true;
                 }
                 if (amount < 1) {
@@ -173,26 +153,8 @@ public class Sci implements CommandExecutor {
                     toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount);
                 }
                 target.getInventory().removeItem(toInv);
-                cs.sendMessage(ChatColor.BLUE
-                        + "Removing "
-                        + ChatColor.GRAY
-                        + amount
-                        + ChatColor.BLUE
-                        + " of "
-                        + ChatColor.GRAY
-                        + Material.getMaterial(iblock).toString().toLowerCase()
-                        .replace("_", " ") + ChatColor.BLUE + " from "
-                        + ChatColor.GRAY + target.getName() + ChatColor.BLUE
-                        + ".");
-                target.sendMessage(ChatColor.BLUE
-                        + "You have had "
-                        + ChatColor.GRAY
-                        + amount
-                        + ChatColor.BLUE
-                        + " of "
-                        + ChatColor.GRAY
-                        + Material.getMaterial(iblock).toString().toLowerCase()
-                        .replace("_", " ") + ChatColor.BLUE + " taken.");
+                cs.sendMessage(ChatColor.BLUE + "Removing " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " from " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
+                target.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " taken.");
                 return true;
             }
         }

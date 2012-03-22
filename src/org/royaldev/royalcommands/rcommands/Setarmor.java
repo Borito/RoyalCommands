@@ -19,8 +19,7 @@ public class Setarmor implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("setarmor")) {
             if (!plugin.isAuthorized(cs, "rcmds.setarmor")) {
                 RUtils.dispNoPerms(cs);
@@ -84,63 +83,52 @@ public class Setarmor implements CommandExecutor {
 
             if (set.equalsIgnoreCase("diamond")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.diamond")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that type of material!");
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(diamond);
-                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to "
-                            + set + ".");
+                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("gold")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.gold")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that type of material!");
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(gold);
-                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to "
-                            + set + ".");
+                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("iron")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.iron")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that type of material!");
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(iron);
-                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to "
-                            + set + ".");
+                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("leather")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.leather")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that type of material!");
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(leather);
-                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to "
-                            + set + ".");
+                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("chain")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.chain")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that type of material!");
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(chain);
-                    player.sendMessage(ChatColor.BLUE
-                            + "Your armor was set to " + set + ".");
+                    player.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("none")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.none")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that type of material!");
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(none);
@@ -148,8 +136,7 @@ public class Setarmor implements CommandExecutor {
                     return true;
                 }
             } else {
-                cs.sendMessage(ChatColor.RED
-                        + "The armor type must be diamond, gold, iron, leather, chain, or none.");
+                cs.sendMessage(ChatColor.RED + "The armor type must be diamond, gold, iron, leather, chain, or none.");
                 return true;
             }
         }

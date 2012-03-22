@@ -70,13 +70,11 @@ public class OneHitKill implements CommandExecutor {
                 Boolean ohk = PConfManager.getPValBoolean(p, "ohk");
                 if (ohk == null || !ohk) {
                     PConfManager.setPValBoolean(p, true, "ohk");
-                    p.sendMessage(ChatColor.BLUE
-                            + "You have enabled onehitkill for yourself.");
+                    p.sendMessage(ChatColor.BLUE + "You have enabled onehitkill for yourself.");
                     return true;
                 }
                 PConfManager.setPValBoolean(p, false, "ohk");
-                p.sendMessage(ChatColor.BLUE
-                        + "You have disabled onehitkill for yourself.");
+                p.sendMessage(ChatColor.BLUE + "You have disabled onehitkill for yourself.");
                 return true;
             }
         }

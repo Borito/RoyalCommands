@@ -57,7 +57,7 @@ public class CmdLag implements CommandExecutor {
                     double ranforsecs = ranforms / 1000;
                     double currentticks = ranticks - startedticks;
 
-                    double error = ((ranforms - expms) / expms) * 100;
+                    double error = Math.abs(((ranforms - expms) / expms) * 100);
                     double rtps = currentticks / ranforsecs;
 
                     if (expticks != currentticks)

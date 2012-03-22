@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,16 +16,13 @@ public class Quit implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("quit")) {
             if (!plugin.isAuthorized(cs, "rcmds.quit")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
             ((Player) cs).kickPlayer("You have left the game.");
-            plugin.getServer().broadcastMessage(
-                    ChatColor.YELLOW + cs.getName() + " has left the game.");
             return true;
         }
         return false;

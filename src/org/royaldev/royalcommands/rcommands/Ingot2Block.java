@@ -28,11 +28,7 @@ public class Ingot2Block implements CommandExecutor {
         ItemStack ingots = new ItemStack(ingot, amount);
         p.getInventory().removeItem(ingots);
         HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
-        if (!left.isEmpty()) {
-            for (ItemStack s : left.values()) {
-                p.getWorld().dropItemNaturally(p.getLocation(), s);
-            }
-        }
+        if (!left.isEmpty()) for (ItemStack s : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), s);
         p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
     }
 
@@ -44,11 +40,7 @@ public class Ingot2Block implements CommandExecutor {
         ItemStack ingots = new ItemStack(ingot, amount, data);
         p.getInventory().removeItem(ingots);
         HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
-        if (!left.isEmpty()) {
-            for (ItemStack s : left.values()) {
-                p.getWorld().dropItemNaturally(p.getLocation(), s);
-            }
-        }
+        if (!left.isEmpty()) for (ItemStack s : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), s);
         p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
     }
 

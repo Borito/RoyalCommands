@@ -20,8 +20,7 @@ public class SpawnMob implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("spawnmob")) {
             if (!plugin.isAuthorized(cs, "rcmds.spawnmob")) {
                 RUtils.dispNoPerms(cs);
@@ -63,9 +62,7 @@ public class SpawnMob implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Setting amount to " + ChatColor.GRAY + plugin.spawnmobLimit + ChatColor.RED + ".");
                     i = plugin.spawnmobLimit;
                 }
-                for (int a = 0; a < i; a++) {
-                    p.getWorld().spawnCreature(l, c);
-                }
+                for (int a = 0; a < i; a++) p.getWorld().spawnCreature(l, c);
                 cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + i + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
                 return true;
             }

@@ -6,11 +6,10 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.RUtils;
+import org.royaldev.royalcommands.RoyalCommands;
 
 public class Spawner implements CommandExecutor {
 

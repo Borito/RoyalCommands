@@ -17,8 +17,7 @@ public class Speak implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("speak")) {
             if (!plugin.isAuthorized(cs, "rcmds.speak")) {
                 RUtils.dispNoPerms(cs);
@@ -47,8 +46,7 @@ public class Speak implements CommandExecutor {
                 return true;
             }
             victim.chat(plugin.getFinalArg(args, 1));
-            plugin.log.info(cs.getName() + " has spoofed a message from "
-                    + victim.getName() + "!");
+            plugin.log.info(cs.getName() + " has spoofed a message from " + victim.getName() + "!");
             return true;
         }
         return false;

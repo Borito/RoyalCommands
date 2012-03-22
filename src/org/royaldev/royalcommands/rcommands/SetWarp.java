@@ -22,8 +22,7 @@ public class SetWarp implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("setwarp")) {
             if (!plugin.isAuthorized(cs, "rcmds.setwarp")) {
                 RUtils.dispNoPerms(cs);
@@ -31,8 +30,7 @@ public class SetWarp implements CommandExecutor {
             }
 
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
 
@@ -50,11 +48,9 @@ public class SetWarp implements CommandExecutor {
             String locW = p.getWorld().getName();
             String name = args[0].toLowerCase();
 
-            File pconfl = new File(plugin.getDataFolder() + File.separator
-                    + "warps.yml");
+            File pconfl = new File(plugin.getDataFolder() + File.separator + "warps.yml");
             if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration
-                        .loadConfiguration(pconfl);
+                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 pconf.set("warps." + name + ".set", true);
                 pconf.set("warps." + name + ".x", locX);
                 pconf.set("warps." + name + ".y", locY);
@@ -67,8 +63,7 @@ public class SetWarp implements CommandExecutor {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                p.sendMessage(ChatColor.BLUE + "Warp \"" + ChatColor.GRAY
-                        + name + ChatColor.BLUE + "\" set.");
+                p.sendMessage(ChatColor.BLUE + "Warp \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");
                 return true;
             }
         }

@@ -17,8 +17,7 @@ public class Setlevel implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("setlevel")) {
             if (!plugin.isAuthorized(cs, "rcmds.setlevel")) {
                 RUtils.dispNoPerms(cs);
@@ -32,8 +31,7 @@ public class Setlevel implements CommandExecutor {
             }
             if (args.length == 1) {
                 if (!(cs instanceof Player)) {
-                    cs.sendMessage(ChatColor.RED
-                            + "This command can only be used by players!");
+                    cs.sendMessage(ChatColor.RED + "This command can only be used by players!");
                     return true;
                 }
             }
@@ -41,56 +39,38 @@ public class Setlevel implements CommandExecutor {
             int toLevel;
             if (args.length == 2) {
                 victim = plugin.getServer().getPlayer(args[1].trim());
-                if (victim == null) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You must input a valid player!");
-                    return true;
-                }
-                if (plugin.isVanished(victim)) {
-                    cs.sendMessage(ChatColor.RED
-                            + "That player does not exist!");
+                if (victim == null || plugin.isVanished(victim)) {
+                    cs.sendMessage(ChatColor.RED + "You must input a valid player!");
                     return true;
                 }
                 try {
                     toLevel = Integer.parseInt(args[0]);
                 } catch (NumberFormatException e) {
-                    cs.sendMessage(ChatColor.RED
-                            + "Your input was not an integer!");
+                    cs.sendMessage(ChatColor.RED + "Your input was not an integer!");
                     return false;
                 }
                 if (toLevel < 0) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You cannot input anything below 0.");
+                    cs.sendMessage(ChatColor.RED + "You cannot input anything below 0.");
                     return true;
                 }
                 victim.setLevel(toLevel);
-                cs.sendMessage(ChatColor.GRAY + victim.getName()
-                        + ChatColor.BLUE + "'s XP level was set to "
-                        + ChatColor.GRAY + toLevel + ChatColor.BLUE
-                        + "!");
-                victim.sendMessage(ChatColor.BLUE + "Your XP level was set to "
-                        + ChatColor.GRAY + toLevel + ChatColor.BLUE + " by "
-                        + ChatColor.GRAY + cs.getName() + ChatColor.BLUE
-                        + "!");
+                cs.sendMessage(ChatColor.GRAY + victim.getName() + ChatColor.BLUE + "'s XP level was set to " + ChatColor.GRAY + toLevel + ChatColor.BLUE + "!");
+                victim.sendMessage(ChatColor.BLUE + "Your XP level was set to " + ChatColor.GRAY + toLevel + ChatColor.BLUE + " by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + "!");
                 return true;
             }
             if (args.length < 2 && args.length != 0) {
                 try {
                     toLevel = Integer.parseInt(args[0]);
                 } catch (NumberFormatException e) {
-                    cs.sendMessage(ChatColor.RED
-                            + "Your input was not an integer!");
+                    cs.sendMessage(ChatColor.RED + "Your input was not an integer!");
                     return false;
                 }
                 if (toLevel < 0) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You cannot input anything below 0.");
+                    cs.sendMessage(ChatColor.RED + "You cannot input anything below 0.");
                     return true;
                 }
                 player.setLevel(toLevel);
-                cs.sendMessage(ChatColor.BLUE + "Your XP level was set to "
-                        + ChatColor.GRAY + toLevel + ChatColor.BLUE
-                        + "!");
+                cs.sendMessage(ChatColor.BLUE + "Your XP level was set to " + ChatColor.GRAY + toLevel + ChatColor.BLUE + "!");
                 return true;
             }
         }

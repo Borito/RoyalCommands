@@ -17,16 +17,14 @@ public class Spawn implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("spawn")) {
             if (!plugin.isAuthorized(cs, "rcmds.spawn")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;

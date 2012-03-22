@@ -17,8 +17,7 @@ public class Starve implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("starve")) {
             if (!plugin.isAuthorized(cs, "rcmds.starve")) {
                 RUtils.dispNoPerms(cs);
@@ -33,19 +32,16 @@ public class Starve implements CommandExecutor {
             try {
                 toStarve = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED
-                        + "The damage must be a number between 1 and 20!");
+                cs.sendMessage(ChatColor.RED + "The damage must be a number between 1 and 20!");
                 return false;
             }
             if (toStarve > 20 || toStarve <= 0) {
-                cs.sendMessage(ChatColor.RED
-                        + "The damage you entered is not within 1 and 20!");
+                cs.sendMessage(ChatColor.RED + "The damage you entered is not within 1 and 20!");
                 return true;
             }
             victim = plugin.getServer().getPlayer(args[0]);
             if (plugin.isAuthorized(victim, "rcmds.exempt.starve")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You may not starve that player.");
+                cs.sendMessage(ChatColor.RED + "You may not starve that player.");
                 return true;
             }
             if (victim == null) {
@@ -58,8 +54,8 @@ public class Starve implements CommandExecutor {
             }
             int starveLevel = victim.getFoodLevel() - toStarve;
             victim.setFoodLevel(starveLevel);
-            victim.sendMessage(ChatColor.RED + "You have just been starved by "+ ChatColor.BLUE + cs.getName() + ChatColor.RED + "!");
-            cs.sendMessage(ChatColor.BLUE + "You just starved " + ChatColor.RED+ victim.getName() + ChatColor.BLUE + "!");
+            victim.sendMessage(ChatColor.RED + "You have just been starved by " + ChatColor.BLUE + cs.getName() + ChatColor.RED + "!");
+            cs.sendMessage(ChatColor.BLUE + "You just starved " + ChatColor.RED + victim.getName() + ChatColor.BLUE + "!");
             return true;
         }
         return false;

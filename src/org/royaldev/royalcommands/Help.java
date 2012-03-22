@@ -5,6 +5,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class Help {
 
     public static HashMap<String, String> helpdb = new HashMap<String, String>();

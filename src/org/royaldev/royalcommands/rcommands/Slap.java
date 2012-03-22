@@ -17,8 +17,7 @@ public class Slap implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("slap")) {
             if (!plugin.isAuthorized(cs, "rcmds.slap")) {
                 RUtils.dispNoPerms(cs);
@@ -30,22 +29,15 @@ public class Slap implements CommandExecutor {
             }
             Player victim;
             victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null) {
+            if (victim == null || plugin.isVanished(victim)) {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
-                return true;
-            }
-            if (plugin.isVanished(victim)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
             if (plugin.isAuthorized(victim, "rcmds.exempt.slap")) {
                 cs.sendMessage(ChatColor.RED + "You may not slap that player.");
                 return true;
             }
-            plugin.getServer().broadcastMessage(
-                    ChatColor.GOLD + cs.getName() + ChatColor.WHITE + " slaps "
-                            + ChatColor.RED + victim.getName()
-                            + ChatColor.WHITE + "!");
+            plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + ChatColor.WHITE + " slaps " + ChatColor.RED + victim.getName() + ChatColor.WHITE + "!");
             return true;
         }
         return false;
