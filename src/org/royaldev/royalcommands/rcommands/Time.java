@@ -43,8 +43,7 @@ public class Time implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("time")) {
             if (!plugin.isAuthorized(cs, "rcmds.time")) {
                 RUtils.dispNoPerms(cs);
@@ -99,16 +98,12 @@ public class Time implements CommandExecutor {
             try {
                 world = plugin.getServer().getWorld(args[1]);
                 world.setTime(time);
-                p.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY
-                        + world.getName() + ChatColor.BLUE + " to "
-                        + ChatColor.GRAY + time + ChatColor.BLUE + " ticks.");
+                p.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + " to " + ChatColor.GRAY + time + ChatColor.BLUE + " ticks.");
                 return true;
             } catch (Exception e) {
                 world = p.getWorld();
                 world.setTime(time);
-                p.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY
-                        + world.getName() + ChatColor.BLUE + " to "
-                        + ChatColor.GRAY + time + ChatColor.BLUE + " ticks.");
+                p.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + " to " + ChatColor.GRAY + time + ChatColor.BLUE + " ticks.");
                 return true;
             }
         }

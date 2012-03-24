@@ -60,7 +60,6 @@ public class CmdNear implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That was not a valid number!");
                     return true;
                 }
-                //radius = radius / 2;
                 if (radius > plugin.maxNear) {
                     p.sendMessage(ChatColor.RED + "That radius was too large!");
                     return true;

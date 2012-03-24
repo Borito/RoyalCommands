@@ -56,11 +56,10 @@ public class Assign implements CommandExecutor {
                 cmds.add(plugin.getFinalArg(args, 0));
             }
             PConfManager.setPValStringList(p, cmds, "assign." + hand.getTypeId());
-            if (plugin.getFinalArg(args, 0).toLowerCase().startsWith("c:")) {
+            if (plugin.getFinalArg(args, 0).toLowerCase().startsWith("c:"))
                 p.sendMessage(ChatColor.BLUE + "Added message " + ChatColor.GRAY + plugin.getFinalArg(args, 0).substring(2) + ChatColor.BLUE + " to that item.");
-            } else {
+            else
                 p.sendMessage(ChatColor.BLUE + "Added command " + ChatColor.GRAY + "/" + plugin.getFinalArg(args, 0) + ChatColor.BLUE + " to that item.");
-            }
             return true;
         }
         return false;

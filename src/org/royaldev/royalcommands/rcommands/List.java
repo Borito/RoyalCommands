@@ -67,9 +67,8 @@ public class List implements CommandExecutor {
                     name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
                     ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
                 }
-            } else {
+            } else
                 cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + (p.length - hid) + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
-            }
             cs.sendMessage("Online Players: " + ps);
             return true;
         }

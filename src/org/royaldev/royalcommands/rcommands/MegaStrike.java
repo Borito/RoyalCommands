@@ -35,38 +35,28 @@ public class MegaStrike implements CommandExecutor {
                 if (!b.hasNext()) {
                     cs.sendMessage(ChatColor.RED + "Cannot megastrike there!");
                     return true;
-                } else {
-                    Block bb = b.next();
-                    while (b.hasNext()) {
-                        if (!(b.next().getTypeId() == 0)) {
-                            bb = b.next();
-                            break;
-                        }
-                    }
-                    for (int i = 0; i < 15; i++) {
-                        p.getWorld().strikeLightning(bb.getLocation());
-                    }
-                    return true;
                 }
+                Block bb = b.next();
+                while (b.hasNext()) {
+                    if (b.next().getTypeId() == 0) continue;
+                    bb = b.next();
+                    break;
+                }
+                for (int i = 0; i < 15; i++) p.getWorld().strikeLightning(bb.getLocation());
+                return true;
             } else {
                 if (!plugin.isAuthorized(cs, "rcmds.megastrike.others")) {
                     cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
                     return true;
                 }
                 Player target = plugin.getServer().getPlayer(args[0]);
-                if (target == null) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                    return true;
-                }
-                if (plugin.isVanished(target)) {
+                if (target == null || plugin.isVanished(target)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Megasmiting " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
                 target.sendMessage(ChatColor.RED + "You have been megasmited by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
-                for (int i = 0; i < 15; i++) {
-                    p.getWorld().strikeLightning(target.getLocation());
-                }
+                for (int i = 0; i < 15; i++) p.getWorld().strikeLightning(target.getLocation());
                 return true;
 
             }
