@@ -538,6 +538,11 @@ commands:
     usage: /<command>
     aliases: [memory, getmem, lagmem, ram, getram]
 
+  entities:
+    description: Displays the entities close to you.
+    usage: /<command> (radius)
+    aliases: [neare, enear, ents, entity, closeents, entsclose, ent]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
