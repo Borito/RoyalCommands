@@ -166,12 +166,12 @@ public class RoyalCommands extends JavaPlugin {
         customHelp = getConfig().getBoolean("use_custom_help");
         useVNP = getConfig().getBoolean("use_vanish");
 
-        banMessage = getConfig().getString("default_ban_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
-        noBuildMessage = getConfig().getString("no_build_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
-        kickMessage = getConfig().getString("default_kick_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
-        defaultWarn = getConfig().getString("default_warn_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
-        welcomeMessage = getConfig().getString("welcome_message").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
-        bcastFormat = getConfig().getString("bcast_format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        banMessage = RUtils.colorize(getConfig().getString("default_ban_message"));
+        noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message"));
+        kickMessage = RUtils.colorize(getConfig().getString("default_kick_message"));
+        defaultWarn = RUtils.colorize(getConfig().getString("default_warn_message"));
+        welcomeMessage = RUtils.colorize(getConfig().getString("welcome_message"));
+        bcastFormat = RUtils.colorize(getConfig().getString("bcast_format"));
         whoFormat = getConfig().getString("who_format");
 
         defaultStack = getConfig().getInt("default_stack_size");

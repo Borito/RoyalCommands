@@ -35,7 +35,7 @@ public class List implements CommandExecutor {
         }
         format = format.replaceAll("(?i)\\{name\\}", p.getName());
         format = format.replaceAll("(?i)\\{dispname\\}", p.getDisplayName());
-        format = format.replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        format = RUtils.colorize(format);
         return format;
     }
 

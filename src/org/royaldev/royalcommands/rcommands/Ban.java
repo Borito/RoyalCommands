@@ -19,7 +19,7 @@ public class Ban implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ban")) {
             if (!plugin.isAuthorized(cs, "rcmds.ban")) {
                 RUtils.dispNoPerms(cs);
@@ -33,7 +33,7 @@ public class Ban implements CommandExecutor {
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t != null) {
                 if (!PConfManager.getPConfExists(t)) {
-                    cs.sendMessage(ChatColor.RED+ "That player does not exist!");
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
                 if (plugin.isAuthorized(t, "rcmds.exempt.ban")) {
@@ -42,7 +42,7 @@ public class Ban implements CommandExecutor {
                 }
                 if (args.length == 1) {
                     banreason = plugin.banMessage;
-                    PConfManager.setPValString(t, banreason,"banreason");
+                    PConfManager.setPValString(t, banreason, "banreason");
                     PConfManager.setPValString(t, cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t.getName() + ChatColor.BLUE + ".");
                     plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
@@ -51,7 +51,7 @@ public class Ban implements CommandExecutor {
                     return true;
                 }
                 if (args.length > 1) {
-                    banreason = plugin.getFinalArg(args, 1).replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                    RUtils.colorize(banreason = plugin.getFinalArg(args, 1));
                     PConfManager.setPValString(t, banreason, "banreason");
                     PConfManager.setPValString(t, cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t.getName() + ChatColor.BLUE + ".");
@@ -80,7 +80,7 @@ public class Ban implements CommandExecutor {
                     return true;
                 }
                 if (args.length > 1) {
-                    banreason = plugin.getFinalArg(args, 1).replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                    banreason = RUtils.colorize(plugin.getFinalArg(args, 1));
                     PConfManager.setPValString(t2, banreason, "banreason");
                     PConfManager.setPValString(t2, cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t2.getName() + ChatColor.BLUE + ".");

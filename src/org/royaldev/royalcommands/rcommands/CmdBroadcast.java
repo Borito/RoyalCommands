@@ -25,7 +25,7 @@ public class CmdBroadcast implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            String message = plugin.getFinalArg(args, 0).trim().replaceAll("(&([a-f0-9]))", "\u00A7$2");
+            String message = RUtils.colorize(plugin.getFinalArg(args, 0));
             String format = plugin.bcastFormat;
             message = format + message;
             plugin.getServer().broadcastMessage(message);

@@ -52,7 +52,7 @@ public class Motd implements CommandExecutor {
         }
         for (String s : plugin.motd) {
             if (s == null) continue;
-            s = s.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+            s = RUtils.colorize(s);
             s = s.replace("{name}", cs.getName());
             s = (cs instanceof Player) ? s.replace("{dispname}", ((Player) cs).getDisplayName()) : s.replace("{dispname}", cs.getName());
             if (onlinenum != null) s = s.replace("{players}", onlinenum);

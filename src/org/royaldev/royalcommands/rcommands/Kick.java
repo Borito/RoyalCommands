@@ -41,7 +41,7 @@ public class Kick implements CommandExecutor {
                 t.kickPlayer(plugin.kickMessage);
                 return true;
             } else if (args.length > 1) {
-                String kickMessage = plugin.getFinalArg(args, 1).replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                String kickMessage = RUtils.colorize(plugin.getFinalArg(args, 1));
                 plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been kicked for " + ChatColor.GRAY + kickMessage + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.kick");
                 t.kickPlayer(kickMessage);
                 return true;

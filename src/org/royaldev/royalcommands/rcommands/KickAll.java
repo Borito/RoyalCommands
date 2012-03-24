@@ -24,7 +24,7 @@ public class KickAll implements CommandExecutor {
             }
             String kickreason = plugin.kickMessage;
             if (args.length > 0) kickreason = plugin.getFinalArg(args, 0);
-            kickreason = kickreason.replaceAll("(&([a-f0-9]))", "\u00A7$2");
+            kickreason = RUtils.colorize(kickreason);
             Player p = null;
             if (cs instanceof Player) p = (Player) cs;
             for (Player t : plugin.getServer().getOnlinePlayers()) {

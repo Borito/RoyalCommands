@@ -49,7 +49,8 @@ public class ListWarns implements CommandExecutor {
                     String homes = opts.values().toString();
                     homes = homes.substring(1, homes.length() - 1);
                     cs.sendMessage(ChatColor.RED + "Warnings:");
-                    cs.sendMessage(homes.replaceAll("(&([a-f0-9]))", "\u00A7$2"));
+                    homes = RUtils.colorize(homes);
+                    cs.sendMessage(homes);
                     return true;
                 }
             }
@@ -73,7 +74,8 @@ public class ListWarns implements CommandExecutor {
                     String homes = opts.values().toString();
                     homes = homes.substring(1, homes.length() - 1);
                     cs.sendMessage(ChatColor.RED + "User's warnings:");
-                    cs.sendMessage(homes.replaceAll("(&([a-f0-9]))", "\u00A7$2"));
+                    homes = RUtils.colorize(homes);
+                    cs.sendMessage(homes);
                     return true;
                 }
             }

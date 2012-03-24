@@ -199,4 +199,8 @@ public class RUtils {
     public static boolean isTeleportAllowed(OfflinePlayer p) {
         return PConfManager.getPVal(p, "allow-tp") == null || PConfManager.getPValBoolean(p, "allow-tp");
     }
+
+    public static String colorize(String text) {
+        return text.replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+    }
 }

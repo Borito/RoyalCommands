@@ -29,9 +29,7 @@ public class SignListener implements Listener {
             } catch (Exception ex) {
                 return null;
             }
-            if (amount < 0) {
-                return null;
-            }
+            if (amount < 0) return null;
             return amount;
         }
         return (double) -1;

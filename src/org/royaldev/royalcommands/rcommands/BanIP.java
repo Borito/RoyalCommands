@@ -71,7 +71,7 @@ public class BanIP implements CommandExecutor {
                     return true;
                 }
                 if (args.length > 1) {
-                    banreason = plugin.getFinalArg(args, 1).replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                    banreason = RUtils.colorize(plugin.getFinalArg(args, 1));
                     PConfManager.setPValString(t, banreason, "banreason");
                     PConfManager.setPValString(t, cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have IP banned " + ChatColor.RED + t.getName() + ChatColor.BLUE + ".");
@@ -106,7 +106,7 @@ public class BanIP implements CommandExecutor {
                     return true;
                 }
                 if (args.length > 1) {
-                    banreason = plugin.getFinalArg(args, 1).replaceAll("(&([a-f0-9]))", "\u00A7$2");
+                    banreason = RUtils.colorize(plugin.getFinalArg(args, 1));
                     PConfManager.setPValString(t2, banreason, "banreason");
                     PConfManager.setPValString(t2, cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have IP banned " + ChatColor.RED + t2.getName() + ChatColor.BLUE + ".");

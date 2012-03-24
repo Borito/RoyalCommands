@@ -33,7 +33,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     Logger log = Logger.getLogger("Minecraft");
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
         if (PConfManager.getPValBoolean(e.getPlayer(), "jailed")) {
@@ -42,18 +42,14 @@ public class RoyalCommandsPlayerListener implements Listener {
             return;
         }
         if (plugin.tpEvery) {
-            if (Back.backdb.containsKey(e.getPlayer())) {
-                if (e.getTo().equals(Back.backdb.get(e.getPlayer()))) return;
-            }
+            if (Back.backdb.containsKey(e.getPlayer())) if (e.getTo().equals(Back.backdb.get(e.getPlayer()))) return;
             Back.backdb.put(e.getPlayer(), e.getFrom());
         }
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
-        if (plugin.tpEvery) {
-            Back.backdb.put(e.getPlayer(), e.getPlayer().getLocation());
-        }
+        if (plugin.tpEvery) Back.backdb.put(e.getPlayer(), e.getPlayer().getLocation());
     }
 
     @EventHandler
@@ -69,13 +65,11 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (event.isCancelled()) return;
-        if (plugin.showcommands) {
+        if (plugin.showcommands)
             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
-        }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
-            if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime")) {
+            if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime"))
                 PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
-            }
             for (String command : plugin.muteCmds) {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
                     continue;
@@ -108,9 +102,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             Afk.afkdb.remove(event.getPlayer());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
-            if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime")) {
+            if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime"))
                 PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
-            }
             event.setFormat("");
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
@@ -124,11 +117,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         Set<Player> recpts = e.getRecipients();
         ArrayList<String> ignores = (ArrayList<String>) PConfManager.getPValStringList(e.getPlayer(), "ignoredby");
         Set<Player> ignore = new HashSet<Player>();
-        for (Player p : recpts) {
-            for (String ignoree : ignores) {
-                if (p.getName().equalsIgnoreCase(ignoree.toLowerCase())) ignore.add(p);
-            }
-        }
+        for (Player p : recpts)
+            for (String ignoree : ignores) if (p.getName().equalsIgnoreCase(ignoree.toLowerCase())) ignore.add(p);
         e.getRecipients().removeAll(ignore);
     }
 
@@ -139,44 +129,32 @@ public class RoyalCommandsPlayerListener implements Listener {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             Afk.afkdb.remove(event.getPlayer());
         }
-        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) {
-            event.setCancelled(true);
-        }
+        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        //if (event.isCancelled()) return; <- breaks everything
-        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) {
-            event.setCancelled(true);
-        }
+        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) event.setCancelled(true);
         Action act = event.getAction();
-        if (act.equals(Action.LEFT_CLICK_AIR) || act.equals(Action.RIGHT_CLICK_AIR) || act.equals(Action.LEFT_CLICK_BLOCK) || act.equals(Action.RIGHT_CLICK_BLOCK)) {
-            ItemStack id = event.getItem();
-            if (id != null) {
-                int idn = id.getTypeId();
-                if (idn != 0) {
-                    List<String> cmds = PConfManager.getPValStringList(event.getPlayer(), "assign." + idn);
-                    if (cmds != null) {
-                        for (String s : cmds) {
-                            if (s.toLowerCase().trim().startsWith("c:")) {
-                                event.getPlayer().chat(s.trim().substring(2));
-                            } else {
-                                event.getPlayer().performCommand(s.trim());
-                            }
-                        }
-                    }
-                }
-            }
+        if (act.equals(Action.PHYSICAL)) return;
+        ItemStack id = event.getItem();
+        if (id == null) return;
+        int idn = id.getTypeId();
+        if (idn == 0) return;
+        List<String> cmds = PConfManager.getPValStringList(event.getPlayer(), "assign." + idn);
+        if (cmds == null) return;
+        for (String s : cmds) {
+            if (s.toLowerCase().trim().startsWith("c:"))
+                event.getPlayer().chat(s.trim().substring(2));
+            else
+                event.getPlayer().performCommand(s.trim());
         }
-        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) {
-            event.setCancelled(true);
-        }
-        if (plugin.buildPerm) {
-            if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) {
-                event.setCancelled(true);
-            }
-        }
+    }
+
+    @EventHandler
+    public void onPInt(PlayerInteractEvent event) {
+        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
+        if (plugin.buildPerm) if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -194,18 +172,14 @@ public class RoyalCommandsPlayerListener implements Listener {
             if (oplayerconfl.exists()) {
                 FileConfiguration oplayerconf = YamlConfiguration.loadConfiguration(oplayerconfl);
                 kickMessage = oplayerconf.getString("banreason");
-            } else {
-                kickMessage = plugin.banMessage;
-            }
+            } else kickMessage = plugin.banMessage;
             event.setKickMessage(kickMessage);
             event.disallow(Result.KICK_BANNED, kickMessage);
             return;
         }
         Player p = event.getPlayer();
         String dispname = PConfManager.getPValString(p, "dispname").trim();
-        if (dispname == null || dispname.equals("")) {
-            dispname = p.getName().trim();
-        }
+        if (dispname == null || dispname.equals("")) dispname = p.getName().trim();
         p.setDisplayName(dispname);
     }
 
@@ -227,9 +201,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 FileConfiguration out = YamlConfiguration.loadConfiguration(datafile);
                 out.set("name", event.getPlayer().getName());
                 String dispname = event.getPlayer().getDisplayName();
-                if (dispname == null || dispname.equals("")) {
-                    dispname = event.getPlayer().getName();
-                }
+                if (dispname == null || dispname.equals("")) dispname = event.getPlayer().getName();
                 out.set("dispname", dispname);
                 out.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
                 out.set("banreason", "");
@@ -244,25 +216,19 @@ public class RoyalCommandsPlayerListener implements Listener {
                 String welcomemessage = plugin.welcomeMessage;
                 welcomemessage = welcomemessage.replace("{name}", event.getPlayer().getName());
                 String dispname = event.getPlayer().getDisplayName();
-                if (dispname == null || dispname.equals("")) {
-                    dispname = event.getPlayer().getName();
-                }
+                if (dispname == null || dispname.equals("")) dispname = event.getPlayer().getName();
                 welcomemessage = welcomemessage.replace("{dispname}", dispname);
                 welcomemessage = welcomemessage.replace("{world}", event.getPlayer().getWorld().getName());
                 plugin.getServer().broadcastMessage(welcomemessage);
             }
-            if (plugin.stsNew) {
-                event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
-            }
+            if (plugin.stsNew) event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
         } else {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
             String playerip = event.getPlayer().getAddress().getAddress().toString();
             playerip = playerip.replace("/", "");
             PConfManager.setPValString(event.getPlayer(), playerip, "ip");
         }
-        if (plugin.motdLogin) {
-            Motd.showMotd(event.getPlayer());
-        }
+        if (plugin.motdLogin) Motd.showMotd(event.getPlayer());
         if (plugin.sendToSpawn) {
             if (plugin.stsBack) Back.backdb.put(event.getPlayer(), event.getPlayer().getLocation());
             event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());

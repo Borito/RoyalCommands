@@ -33,12 +33,10 @@ public class Back implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-
             if (!backdb.containsKey(p)) {
                 cs.sendMessage(ChatColor.RED + "You have no place to go back to!");
                 return true;
             }
-
             Location to = backdb.get(p);
             backdb.put(p, p.getLocation());
             p.teleport(to);
