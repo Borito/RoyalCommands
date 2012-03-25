@@ -6,8 +6,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.RUtils;
+import org.royaldev.royalcommands.RoyalCommands;
 
 public class Strike implements CommandExecutor {
 
@@ -18,8 +18,7 @@ public class Strike implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("strike")) {
             if (!plugin.isAuthorized(cs, "rcmds.strike")) {
                 RUtils.dispNoPerms(cs);
@@ -38,37 +37,25 @@ public class Strike implements CommandExecutor {
                 }
                 p.getWorld().strikeLightning(bb.getLocation());
                 return true;
-            } else {
-                if (!plugin.isAuthorized(cs, "rcmds.strike.others")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You don't have permission for that!");
-                    return true;
-                }
-                Player target = plugin.getServer().getPlayer(args[0].trim());
-                if (target == null) {
-                    cs.sendMessage(ChatColor.RED
-                            + "That player does not exist!");
-                    return true;
-                }
-                if (plugin.isVanished(target)) {
-                    cs.sendMessage(ChatColor.RED
-                            + "That player does not exist!");
-                    return true;
-                }
-                if (plugin.isAuthorized(target, "rcmds.exempt.strike")) {
-                    cs.sendMessage(ChatColor.RED
-                            + "You can't strike that player!");
-                    return true;
-                }
-                cs.sendMessage(ChatColor.BLUE + "Smiting " + ChatColor.GRAY
-                        + target.getName() + ChatColor.BLUE + ".");
-                target.sendMessage(ChatColor.RED + "You have been smited by "
-                        + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
-                target.getWorld().strikeLightning(target.getLocation());
+            }
+            if (!plugin.isAuthorized(cs, "rcmds.strike.others")) {
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
                 return true;
             }
+            Player target = plugin.getServer().getPlayer(args[0].trim());
+            if (target == null || plugin.isVanished(target)) {
+                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                return true;
+            }
+            if (plugin.isAuthorized(target, "rcmds.exempt.strike")) {
+                cs.sendMessage(ChatColor.RED + "You can't strike that player!");
+                return true;
+            }
+            cs.sendMessage(ChatColor.BLUE + "Smiting " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
+            target.sendMessage(ChatColor.RED + "You have been smited by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
+            target.getWorld().strikeLightning(target.getLocation());
+            return true;
         }
         return false;
     }
-
 }

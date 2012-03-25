@@ -45,21 +45,14 @@ public class Warn implements CommandExecutor {
                 return true;
             }
             File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-            if (!pconfl.exists()) {
+            if (!PConfManager.getPConfExists(t)) {
                 cs.sendMessage(ChatColor.RED + "That user does not exist!");
                 return true;
             }
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
             Integer numwarns;
             String warnreason = null;
-            if (pconf.get("warns") == null) {
-                numwarns = 0;
-            } else {
-                numwarns = pconf.getConfigurationSection("warns").getValues(false).size();
-            }
-            if (numwarns == null) {
-                numwarns = 0;
-            }
+            numwarns = (PConfManager.getPVal(t, "warns") == null) ? 0 : pconf.getConfigurationSection("warns").getValues(false).size();
             if (args.length == 1) {
                 warnreason = plugin.defaultWarn;
                 pconf.set("warns." + (numwarns + 1), warnreason);
@@ -79,16 +72,14 @@ public class Warn implements CommandExecutor {
                 }
             }
             cs.sendMessage(ChatColor.BLUE + "You have warned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            if (t.isOnline()) {
+            if (t.isOnline())
                 ((Player) t).sendMessage(ChatColor.RED + "You have been warned by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for " + ChatColor.GRAY + warnreason + ChatColor.RED + ".");
-            }
             plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been warned for " + ChatColor.GRAY + warnreason + ChatColor.RED + ".", "rcmds.see.warn");
             if (plugin.warnBan > 0) {
                 if ((numwarns + 1) >= plugin.warnBan) {
                     t.setBanned(true);
-                    if (t.isOnline()) {
+                    if (t.isOnline())
                         ((Player) t).kickPlayer(ChatColor.DARK_RED + "You have been banned for reaching the max warn limit.");
-                    }
                     plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.DARK_RED + "You have been banned for reaching the max warn limit." + ChatColor.RED + ".", "rcmds.see.ban");
                 }
             }
@@ -110,14 +101,7 @@ public class Warn implements CommandExecutor {
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
             Integer numwarns;
             String warnreason = null;
-            if (pconf.get("warns") == null) {
-                numwarns = 0;
-            } else {
-                numwarns = pconf.getConfigurationSection("warns").getValues(false).size();
-            }
-            if (numwarns == null) {
-                numwarns = 0;
-            }
+            numwarns = (PConfManager.getPVal(t2, "warns") == null) ? 0 : pconf.getConfigurationSection("warns").getValues(false).size();
             if (args.length == 1) {
                 warnreason = plugin.defaultWarn;
                 pconf.set("warns." + (numwarns + 1), warnreason);

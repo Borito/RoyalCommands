@@ -25,9 +25,9 @@ public class Starve implements CommandExecutor {
             }
 
             if (args.length < 2) {
+                cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player victim;
             int toStarve;
             try {
                 toStarve = Integer.parseInt(args[1]);
@@ -39,17 +39,13 @@ public class Starve implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "The damage you entered is not within 1 and 20!");
                 return true;
             }
-            victim = plugin.getServer().getPlayer(args[0]);
+            Player victim = plugin.getServer().getPlayer(args[0]);
             if (plugin.isAuthorized(victim, "rcmds.exempt.starve")) {
                 cs.sendMessage(ChatColor.RED + "You may not starve that player.");
                 return true;
             }
-            if (victim == null) {
+            if (victim == null || plugin.isVanished(victim)) {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
-                return true;
-            }
-            if (plugin.isVanished(victim)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
             int starveLevel = victim.getFoodLevel() - toStarve;

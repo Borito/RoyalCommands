@@ -32,11 +32,7 @@ public class TeleportHere implements CommandExecutor {
                 return false;
             }
             Player t = plugin.getServer().getPlayer(args[0].trim());
-            if (t == null) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                return true;
-            }
-            if (plugin.isVanished(t)) {
+            if (t == null || plugin.isVanished(t)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
