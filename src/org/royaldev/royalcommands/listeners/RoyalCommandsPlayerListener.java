@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,6 +13,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -42,7 +45,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             return;
         }
         if (plugin.tpEvery) {
-            if (Back.backdb.containsKey(e.getPlayer())) if (e.getTo().equals(Back.backdb.get(e.getPlayer()))) return;
+            if (Back.backdb.containsKey(e.getPlayer()) && e.getTo().equals(Back.backdb.get(e.getPlayer()))) return;
             Back.backdb.put(e.getPlayer(), e.getFrom());
         }
     }
@@ -109,6 +112,27 @@ public class RoyalCommandsPlayerListener implements Listener {
             event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
             plugin.log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to speak, but has been muted.");
         }
+    }
+
+    @EventHandler
+    public void HeMan(PlayerChatEvent e) {
+        if (e.isCancelled()) return;
+        if (!e.getMessage().matches("(?i)by the power of gr[a|e]yskull")) return;
+        Player p = e.getPlayer();
+        if (!plugin.isAuthorized(p, "rcmds.heman")) return;
+        ItemStack is = p.getItemInHand();
+        if (is.getType() != Material.DIAMOND_SWORD) return;
+        if (is.getEnchantments().isEmpty()) return;
+        e.setCancelled(true);
+        p.getWorld().strikeLightningEffect(p.getLocation());
+        plugin.getServer().broadcastMessage(e.getFormat().replaceAll("(?i)by the power of gr([a|e])yskull", "BY THE POWER OF GR$1YSKULL"));
+        e.setFormat("");
+        List<PotionEffect> effects = new ArrayList<PotionEffect>();
+        effects.add(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, 2));
+        effects.add(new PotionEffect(PotionEffectType.REGENERATION, 60, 2));
+        effects.add(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 2));
+        effects.add(new PotionEffect(PotionEffectType.SPEED, 60, 2));
+        p.addPotionEffects(effects);
     }
 
     @EventHandler()
