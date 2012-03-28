@@ -25,6 +25,8 @@ import org.royaldev.royalcommands.rcommands.Motd;
 import java.io.File;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RoyalCommandsPlayerListener implements Listener {
 
@@ -117,7 +119,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void HeMan(PlayerChatEvent e) {
         if (e.isCancelled()) return;
-        if (!e.getMessage().matches("(?i)by the power of gr[a|e]yskull")) return;
+        if (!e.getMessage().matches("(?i)by the power of gr[a|e]yskull!?")) return;
         Player p = e.getPlayer();
         if (!plugin.isAuthorized(p, "rcmds.heman")) return;
         ItemStack is = p.getItemInHand();
@@ -125,13 +127,22 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (is.getEnchantments().isEmpty()) return;
         e.setCancelled(true);
         p.getWorld().strikeLightningEffect(p.getLocation());
-        plugin.getServer().broadcastMessage(e.getFormat().replaceAll("(?i)by the power of gr([a|e])yskull", "BY THE POWER OF GR$1YSKULL"));
+        Matcher m = Pattern.compile("(?i)by the power of gr[a|e]yskull!?").matcher(e.getMessage());
+        StringBuilder sb = new StringBuilder();
+        int last = 0;
+        while (m.find()) {
+            sb.append(e.getMessage().substring(last, m.start()));
+            sb.append(m.group(0).toUpperCase());
+            last = m.end();
+        }
+        sb.append(e.getMessage().substring(last));
+        plugin.getServer().broadcastMessage(e.getFormat().replaceAll("(?i)by the power of gr[a|e]yskull!?", sb.toString()));
         e.setFormat("");
         List<PotionEffect> effects = new ArrayList<PotionEffect>();
-        effects.add(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, 2));
-        effects.add(new PotionEffect(PotionEffectType.REGENERATION, 60, 2));
-        effects.add(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 2));
-        effects.add(new PotionEffect(PotionEffectType.SPEED, 60, 2));
+        effects.add(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 1200, 2));
+        effects.add(new PotionEffect(PotionEffectType.REGENERATION, 1200, 2));
+        effects.add(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1200, 2));
+        effects.add(new PotionEffect(PotionEffectType.SPEED, 1200, 2));
         p.addPotionEffects(effects);
     }
 
