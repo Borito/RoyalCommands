@@ -197,7 +197,7 @@ public class SignListener implements Listener {
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
-            Give.giveItemStandalone(p, plugin, line2, amount);
+            CmdGive.giveItemStandalone(p, plugin, line2, amount);
         }
 
         //Command signs
@@ -373,7 +373,7 @@ public class SignListener implements Listener {
                 e.setLine(3, ChatColor.DARK_GREEN + line4);
             }
 
-            boolean valid = Give.validItem(line2.trim());
+            boolean valid = CmdGive.validItem(line2.trim());
             if (!valid) {
                 p.sendMessage(ChatColor.RED + "That item is invalid!");
                 e.setLine(0, ChatColor.RED + line1);

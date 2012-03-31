@@ -22,7 +22,7 @@ public class Motd implements CommandExecutor {
         String ps = "";
         int hid = 0;
         for (Player aP : p) {
-            String name = List.formatPrepend(aP) + ChatColor.WHITE;
+            String name = CmdList.formatPrepend(aP) + ChatColor.WHITE;
             if (!plugin.isVanished(aP)) {
                 if (Afk.afkdb.contains(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                 ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
@@ -30,7 +30,7 @@ public class Motd implements CommandExecutor {
         }
         if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
             for (Player aP : p) {
-                String name = List.formatPrepend(aP) + ChatColor.WHITE;
+                String name = CmdList.formatPrepend(aP) + ChatColor.WHITE;
                 if (!plugin.isVanished(aP)) continue;
                 name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
                 ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);

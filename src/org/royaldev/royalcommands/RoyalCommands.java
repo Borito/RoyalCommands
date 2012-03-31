@@ -386,11 +386,11 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("vtphere").setExecutor(new Vtphere(this));
         getCommand("megastrike").setExecutor(new MegaStrike(this));
         getCommand("pext").setExecutor(new Pext(this));
-        getCommand("item").setExecutor(new Item(this));
+        getCommand("item").setExecutor(new CmdItem(this));
         getCommand("clearinventory").setExecutor(new ClearInventory(this));
         getCommand("weather").setExecutor(new Weather(this));
         getCommand("fixchunk").setExecutor(new FixChunk(this));
-        getCommand("give").setExecutor(new Give(this));
+        getCommand("give").setExecutor(new CmdGive(this));
         getCommand("message").setExecutor(new Message(this));
         getCommand("reply").setExecutor(new Reply(this));
         getCommand("gamemode").setExecutor(new Gamemode(this));
@@ -419,7 +419,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("spawn").setExecutor(new Spawn(this));
         getCommand("banip").setExecutor(new BanIP(this));
         getCommand("unbanip").setExecutor(new UnbanIP(this));
-        getCommand("list").setExecutor(new List(this));
+        getCommand("list").setExecutor(new CmdList(this));
         getCommand("back").setExecutor(new Back(this));
         getCommand("teleport").setExecutor(new Teleport(this));
         getCommand("teleporthere").setExecutor(new TeleportHere(this));
