@@ -1,6 +1,6 @@
 name: RoyalCommands
 main: org.royaldev.royalcommands.RoyalCommands
-version: 0.2.0
+version: 0.2.1pre
 website: http://dev.royaldev.org/
 author: jkcclemens
 depend: [Vault]
@@ -882,6 +882,9 @@ permissions:
   rcmds.mem:
     description: Allows you to see the memory usage.
     default: op
+  rcmds.entities:
+    description: Allows you to see nearby entities.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1287,6 +1290,7 @@ permissions:
       rcmds.kits: true
       rcmds.lag: true
       rcmds.mem: true
+      rcmds.entities: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
