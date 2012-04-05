@@ -24,8 +24,6 @@ sts_back: false
 send_to_spawn_new: true
 # Show other plugin commands in /help?
 other_plugins_in_help: true
-# Use /back for /every/ teleport?
-back_for_all_tps: true
 # Custom /help (help.txt - same format as rules.txt)?
 use_custom_help: false
 # Use VanishNoPacket integration?

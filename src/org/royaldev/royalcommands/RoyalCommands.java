@@ -74,7 +74,6 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean stsBack = null;
     public Boolean stsNew = null;
     public static Boolean otherHelp = null;
-    public Boolean tpEvery = null;
     public Boolean customHelp = null;
     public Boolean useVNP = null;
 
@@ -162,7 +161,6 @@ public class RoyalCommands extends JavaPlugin {
         stsBack = getConfig().getBoolean("sts_back");
         stsNew = getConfig().getBoolean("send_to_spawn_new");
         otherHelp = getConfig().getBoolean("other_plugins_in_help");
-        tpEvery = getConfig().getBoolean("back_for_all_tps");
         customHelp = getConfig().getBoolean("use_custom_help");
         useVNP = getConfig().getBoolean("use_vanish");
 

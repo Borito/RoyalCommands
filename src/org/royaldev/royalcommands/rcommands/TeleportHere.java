@@ -41,7 +41,6 @@ public class TeleportHere implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            Back.backdb.put(t, t.getLocation());
             p.sendMessage(ChatColor.BLUE + "Teleporting " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to you.");
             t.teleport(p.getLocation());
             return true;

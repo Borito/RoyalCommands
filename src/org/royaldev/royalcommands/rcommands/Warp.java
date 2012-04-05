@@ -96,7 +96,6 @@ public class Warp implements CommandExecutor {
             if (args.length == 1) {
                 Player p = (Player) cs;
                 cs.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
-                Back.backdb.put(p, p.getLocation());
                 Location warpLoc = pWarp(p, plugin, args[0].toLowerCase());
                 if (warpLoc == null) {
                     return true;
@@ -119,7 +118,6 @@ public class Warp implements CommandExecutor {
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Warping " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
-                Back.backdb.put(t, t.getLocation());
                 Location warpLoc = pWarp(t, plugin, args[0].toLowerCase());
                 if (warpLoc == null) {
                     return true;

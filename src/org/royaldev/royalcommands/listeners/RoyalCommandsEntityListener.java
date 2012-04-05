@@ -29,10 +29,8 @@ public class RoyalCommandsEntityListener implements Listener {
         PlayerDeathEvent e = (PlayerDeathEvent) ent;
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
-        if (!plugin.tpEvery) {
-            Location pLoc = p.getLocation();
-            Back.backdb.put(p, pLoc);
-        }
+        Location pLoc = p.getLocation();
+        Back.backdb.put(p, pLoc);
         p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
     }
 

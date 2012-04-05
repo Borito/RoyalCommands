@@ -28,7 +28,6 @@ public class Spawn implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            Back.backdb.put(p, p.getLocation());
             p.sendMessage(ChatColor.BLUE + "Going to spawn.");
             p.teleport(p.getWorld().getSpawnLocation());
             return true;

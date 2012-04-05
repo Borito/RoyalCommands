@@ -77,7 +77,6 @@ public class SignListener implements Listener {
             if (warpLoc == null) {
                 return;
             }
-            Back.backdb.put(p, p.getLocation());
             p.teleport(warpLoc);
         }
 

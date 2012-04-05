@@ -60,7 +60,6 @@ public class CmdWorld implements CommandExecutor {
             }
             Player p = (Player) cs;
             p.sendMessage(ChatColor.BLUE + "Teleporting you to world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
-            Back.backdb.put(p, p.getLocation());
             p.teleport(w.getSpawnLocation());
             return true;
         }

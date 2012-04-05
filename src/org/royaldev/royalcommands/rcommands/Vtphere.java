@@ -38,7 +38,6 @@ public class Vtphere implements CommandExecutor {
             }
             Player player = (Player) cs;
             cs.sendMessage(ChatColor.BLUE + "Teleporting player " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + " to you.");
-            Back.backdb.put(victim, victim.getLocation());
             victim.teleport(player.getLocation());
             return true;
         }

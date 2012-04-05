@@ -46,15 +46,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (plugin.tpEvery) {
-            if (Back.backdb.containsKey(e.getPlayer()) && e.getTo().equals(Back.backdb.get(e.getPlayer()))) return;
-            Back.backdb.put(e.getPlayer(), e.getFrom());
-        }
-    }
-
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent e) {
-        if (plugin.tpEvery) Back.backdb.put(e.getPlayer(), e.getPlayer().getLocation());
+        if (Back.backdb.containsKey(e.getPlayer()) && e.getTo().equals(Back.backdb.get(e.getPlayer()))) return;
+        Back.backdb.put(e.getPlayer(), e.getFrom());
     }
 
     @EventHandler
