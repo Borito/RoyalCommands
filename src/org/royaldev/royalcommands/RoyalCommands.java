@@ -46,6 +46,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class RoyalCommands extends JavaPlugin {
@@ -57,9 +58,10 @@ public class RoyalCommands extends JavaPlugin {
     public String version = null;
     public String newVersion = null;
 
-    public java.util.List<String> muteCmds = new ArrayList<String>();
-    public java.util.List<String> blockedItems = new ArrayList<String>();
-    public java.util.List<String> motd = new ArrayList<String>();
+    public List<String> muteCmds = new ArrayList<String>();
+    public List<String> blockedItems = new ArrayList<String>();
+    public List<String> motd = new ArrayList<String>();
+    public List<String> commandCooldowns = new ArrayList<String>();
 
     public Boolean showcommands = null;
     public Boolean disablegetip = null;
@@ -76,6 +78,7 @@ public class RoyalCommands extends JavaPlugin {
     public static Boolean otherHelp = null;
     public Boolean customHelp = null;
     public Boolean useVNP = null;
+    public Boolean cooldownAliases = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -163,6 +166,7 @@ public class RoyalCommands extends JavaPlugin {
         otherHelp = getConfig().getBoolean("other_plugins_in_help");
         customHelp = getConfig().getBoolean("use_custom_help");
         useVNP = getConfig().getBoolean("use_vanish");
+        cooldownAliases = getConfig().getBoolean("cooldowns_match_aliases");
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message"));
@@ -186,6 +190,7 @@ public class RoyalCommands extends JavaPlugin {
         muteCmds = getConfig().getStringList("mute_blocked_commands");
         blockedItems = getConfig().getStringList("blocked_spawn_items");
         motd = getConfig().getStringList("motd");
+        commandCooldowns = getConfig().getStringList("command_cooldowns");
 
         Help.reloadHelp();
     }

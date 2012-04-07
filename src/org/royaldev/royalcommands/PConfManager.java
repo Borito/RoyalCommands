@@ -42,6 +42,19 @@ public class PConfManager {
         }
     }
 
+    public static void setPValDouble(OfflinePlayer t, double value, String path) {
+        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
+        if (pconfl.exists()) {
+            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+            pconf.set(path, value);
+            try {
+                pconf.save(pconfl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void setPVal(OfflinePlayer t, Object value, String path) {
         File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
         if (pconfl.exists()) {
@@ -118,7 +131,7 @@ public class PConfManager {
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
             return pconf.getInt(path);
         }
-        return -1;
+        return null;
     }
 
     public static Object getPVal(OfflinePlayer t, String path) {
@@ -127,16 +140,26 @@ public class PConfManager {
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
             return pconf.get(path);
         }
-        return false;
+        return null;
     }
 
     public static Long getPValLong(OfflinePlayer t, String path) {
         File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
         if (pconfl.exists()) {
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            return pconf.getLong(path);
+            if (pconf.contains(path)) return pconf.getLong(path);
+            return null;
         }
-        return -1L;
+        return null;
+    }
+
+    public static Double getPValDouble(OfflinePlayer t, String path) {
+        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
+        if (pconfl.exists()) {
+            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+            return pconf.getDouble(path);
+        }
+        return null;
     }
 
     public static String getPValString(OfflinePlayer t, String path) {
@@ -145,7 +168,7 @@ public class PConfManager {
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
             return pconf.getString(path);
         }
-        return "";
+        return null;
     }
 
     public static boolean getPConfExists(OfflinePlayer t) {

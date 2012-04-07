@@ -52,7 +52,7 @@ spawnmob_limit: 15
 max_near_radius: 2000
 # Default /near radius - when /near is run without a radius
 default_near_radius: 50
-# The power for /explode - 4 is creeper
+# The default power for /explode - 4 is creeper
 explode_power: 4
 # Maximum explode power (~50 is recommended)
 max_explode_power: 10
@@ -81,3 +81,15 @@ kits:
   # The kit "wool" has 64 red wool and 35 black wool <item>:<amount>:<data>
   wool:
     items: ["35:64:14", "35:64:15"]
+# Command cooldowns - command:cooldown
+# Works for any command. Vanilla, rCmds, or any other
+# Even works for commands that don't exist
+# Cooldowns must be registered under their names in plugin.yml
+# e.g. /teleport, not /tp
+# Basically, you can't register aliases under command_cooldowns
+command_cooldowns:
+  # Matches /home, /home hello, etc. Does not match /homes
+  home: 25
+  teleport: 20
+  save-all: 5
+cooldowns_match_aliases: true

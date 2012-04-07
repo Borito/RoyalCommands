@@ -3,6 +3,7 @@ package org.royaldev.royalcommands.listeners;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -37,6 +38,47 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     Logger log = Logger.getLogger("Minecraft");
+
+    public void setCooldown(String command, OfflinePlayer p) {
+        ConfigurationSection cmdCds = plugin.getConfig().getConfigurationSection("command_cooldowns");
+        boolean contains = cmdCds.getKeys(false).contains(command);
+        if (plugin.cooldownAliases) {
+            if (plugin.getCommand(command) != null) {
+                for (String alias : plugin.getCommand(command).getAliases()) {
+                    if (cmdCds.getKeys(false).contains(alias)) {
+                        contains = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (contains) {
+            long cooldown = cmdCds.getLong(command);
+            PConfManager.setPValLong(p, new Date().getTime() + (cooldown * 1000), "command_cooldowns." + command);
+        }
+    }
+
+    @EventHandler
+    public void commandCooldown(PlayerCommandPreprocessEvent e) {
+        if (e.isCancelled()) return;
+        String command = e.getMessage().split(" ")[0].toLowerCase().substring(1);
+        plugin.log.info(command);
+        if (plugin.getCommand(command) != null) command = plugin.getCommand(command).getName();
+        plugin.log.info(command);
+        Player p = e.getPlayer();
+        //if (plugin.isAuthorized(p, "rcmds.exempt.cmdcooldowns")) return;
+        Long currentcd = PConfManager.getPValLong(p, "command_cooldowns." + command);
+        if (currentcd != null) {
+            if (currentcd <= new Date().getTime()) {
+                setCooldown(command, p);
+                return;
+            }
+            p.sendMessage(ChatColor.RED + "You can't use that command for" + ChatColor.GRAY + RUtils.formatDateDiff(currentcd) + ChatColor.RED + ".");
+            e.setCancelled(true);
+            return;
+        }
+        setCooldown(command, p);
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onTeleport(PlayerTeleportEvent e) {
