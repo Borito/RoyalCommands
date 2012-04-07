@@ -349,7 +349,7 @@ public class RoyalCommands extends JavaPlugin {
                     newVersion = updateCheck(version);
                     String oldVersion = version;
                     if (!newVersion.contains(oldVersion) && !oldVersion.contains("pre")) {
-                        log.warning(newVersion + " is out! You are running " + oldVersion);
+                        log.warning(newVersion + " is out! You are running v" + oldVersion);
                         log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
                     }
                 } catch (Exception ignored) {
