@@ -1,70 +1,41 @@
-## RoyalCommands v0.2.0 Config File
+## RoyalCommands v0.2.1pre Config File
+
+###
+# General section #
+###
 
 # Disable /getip and /compareip?
 disable_getip: false
 # Whether to show commands in console
 view_commands: true
-# Enable the welcome message?
-enable_welcome_message: true
 # Use the rcmds.build perm?
 use_build_perm: false
-# Enable /back on death?
-back_on_death: true
-# Show /motd on login?
-motd_on_login: true
 # Drop items that don't fit in inventory on /i or /give?
 drop_extras: false
 # Should /explode create fire around the explosion?
 explode_fire: false
-# Put /all/ players at set spawn point (/setspawn) when they login?
-send_to_spawn: false
-# Add previous location to /back (if above is true)?
-sts_back: false
-# Put /new/ players at set spawn point (/setspawn) when they login?
-send_to_spawn_new: true
 # Show other plugin commands in /help?
 other_plugins_in_help: true
 # Custom /help (help.txt - same format as rules.txt)?
 use_custom_help: false
 # Use VanishNoPacket integration?
 use_vanish: true
-# Message to be shown if player does not have rcmds.build
-no_build_message: "&cYou don't have permission to build!"
-# The default ban message for /ban
-default_ban_message: "&4Banhammered!"
-# The default kick message for /kick
-default_kick_message: "Kicked from server."
-# The default warn message for /warn
-default_warn_message: "You have been warned."
-# The message to be displayed if enable_welcome_message is true
-welcome_message: "&5Welcome {name} to the server!"
-# Broadcast format (no variables support, just color codes) - message follows this immediately after this
-bcast_format: "&b[&aBroadcast&b]&a "
-# /who format ({prefix}, {suffix}, {name}, {dispname}, and {group} supported, as well at text and color codes
-who_format: "{prefix}{dispname}"
-# The default stack size for /i and /give
-default_stack_size: 64
-# The number of warns until a ban is issued, 0 to disable
-max_warns_before_ban: 3
-# The maximum number of mobs allowed by /spawnmob
-spawnmob_limit: 15
-# Maximum /near radius (2000 is recommended, large numbers like /near 1000000 crash servers)
-max_near_radius: 2000
-# Default /near radius - when /near is run without a radius
-default_near_radius: 50
-# The default power for /explode - 4 is creeper
-explode_power: 4
-# Maximum explode power (~50 is recommended)
-max_explode_power: 10
 # Amount of lines to display in /help per page
 help_lines: 5
-# Commands to block when muted
-mute_blocked_commands: ["/me", "/tc", "/nc"]
-# Items that cannot be spawned without rcmds.allowed.item
-blocked_spawn_items: [7, 49, 383]
+
+###
+# MOTD #
+###
+
+# Show /motd on login?
+motd_on_login: true
 # The message of the day
 motd: ["&dWelcome to {servername}, {dispname}!", "&fThere are &8{players}&f players online:", "{playerlist}", "You are in the world &8{world}&f."]
-## Kits
+
+###
+# Kits #
+###
+
 # Use rcmds.kit.[kit-name] (true) or just rcmds.kit (false)
 use_exclusive_kit_perms: false
 # Define kits here - only use ID numbers, not names & you MUST use amounts (5:1 is one of wood)
@@ -81,7 +52,79 @@ kits:
   # The kit "wool" has 64 red wool and 35 black wool <item>:<amount>:<data>
   wool:
     items: ["35:64:14", "35:64:15"]
-# Command cooldowns - command:cooldown
+
+###
+# Messages #
+###
+
+# Message to be shown if player does not have rcmds.build
+no_build_message: "&cYou don't have permission to build!"
+# The default ban message for /ban
+default_ban_message: "&4Banhammered!"
+# The default kick message for /kick
+default_kick_message: "Kicked from server."
+# The default warn message for /warn
+default_warn_message: "You have been warned."
+# The message to be displayed if enable_welcome_message is true
+welcome_message: "&5Welcome {name} to the server!"
+# Broadcast format (no variables support, just color codes) - message follows this immediately after this
+bcast_format: "&b[&aBroadcast&b]&a "
+# /who format ({prefix}, {suffix}, {name}, {dispname}, and {group} supported, as well at text and color codes
+who_format: "{prefix}{dispname}"
+
+###
+# Message options #
+###
+
+# Enable the welcome message?
+enable_welcome_message: true
+
+###
+# Block management #
+###
+
+# Commands to block when muted
+mute_blocked_commands: ["/me", "/tc", "/nc"]
+# Items that cannot be spawned without rcmds.allowed.item
+blocked_spawn_items: [7, 49, 383]
+
+###
+# Defaults & Limits #
+###
+
+# The default stack size for /i and /give
+default_stack_size: 64
+# The number of warns until a ban is issued, 0 to disable
+max_warns_before_ban: 3
+# The maximum number of mobs allowed by /spawnmob
+spawnmob_limit: 15
+# Maximum /near radius (2000 is recommended, large numbers like /near 1000000 crash servers)
+max_near_radius: 2000
+# Default /near radius - when /near is run without a radius
+default_near_radius: 50
+# The default power for /explode - 4 is creeper
+explode_power: 4
+# Maximum explode power (~50 is recommended)
+max_explode_power: 10
+
+###
+# Teleports #
+###
+
+# Put /all/ players at set spawn point (/setspawn) when they login?
+send_to_spawn: false
+# Add previous location to /back (if above is true)?
+sts_back: false
+# Put /new/ players at set spawn point (/setspawn) when they login?
+send_to_spawn_new: true
+# Enable /back on death?
+back_on_death: true
+
+###
+# Command cooldowns #
+###
+
+# command: cooldown (seconds)
 # Works for any command. Vanilla, rCmds, or any other
 # Even works for commands that don't exist
 # Cooldowns must be registered under their names in plugin.yml
@@ -92,4 +135,5 @@ command_cooldowns:
   home: 25
   teleport: 20
   save-all: 5
+# Should cooldowns match aliases (e.g. /teleport and /tp have the same cooldown)?
 cooldowns_match_aliases: true
