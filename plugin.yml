@@ -1,6 +1,6 @@
 name: RoyalCommands
 main: org.royaldev.royalcommands.RoyalCommands
-version: 0.2.1pre
+version: 0.2.1
 website: http://dev.royaldev.org/
 author: jkcclemens
 depend: [Vault]
@@ -977,6 +977,9 @@ permissions:
   rcmds.exempt.kit.cooldown:
     description: Makes the player exempt to kit cooldowns.
     default: false
+  rcmds.exempt.cmdcooldowns:
+    description: Makes the player exempt to command cooldowns.
+    default: false
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -1164,6 +1167,7 @@ permissions:
       rcmds.exempt.listhome: true
       rcmds.exempt.ignore: true
       rcmds.exempt.kit.cooldown: true
+      rcmds.exempt.cmdcooldowns: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
