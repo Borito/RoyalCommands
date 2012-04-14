@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -37,6 +38,11 @@ public class Slap implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You may not slap that player.");
                 return true;
             }
+            Vector push = victim.getVelocity();
+            push.setY(push.getY() + .5);
+            push.setX(push.getX() + .5);
+            push.setZ(push.getZ() + .5);
+            victim.setVelocity(push);
             plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + ChatColor.WHITE + " slaps " + ChatColor.RED + victim.getName() + ChatColor.WHITE + "!");
             return true;
         }
