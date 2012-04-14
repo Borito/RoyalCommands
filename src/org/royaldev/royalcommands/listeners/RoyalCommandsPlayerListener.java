@@ -42,31 +42,32 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void setCooldown(String command, OfflinePlayer p) {
         ConfigurationSection cmdCds = plugin.getConfig().getConfigurationSection("command_cooldowns");
         boolean contains = cmdCds.getKeys(false).contains(command);
-        if (plugin.cooldownAliases) {
-            if (plugin.getCommand(command) != null) {
-                for (String alias : plugin.getCommand(command).getAliases()) {
+        if (plugin.cooldownAliases)
+            if (plugin.getCommand(command) != null)
+                for (String alias : plugin.getCommand(command).getAliases())
                     if (cmdCds.getKeys(false).contains(alias)) {
                         contains = true;
                         break;
                     }
-                }
-            }
-        }
         if (contains) {
             long cooldown = cmdCds.getLong(command);
             PConfManager.setPValLong(p, new Date().getTime() + (cooldown * 1000), "command_cooldowns." + command);
         }
     }
 
+    public void setTeleCooldown(OfflinePlayer p) {
+        double seconds = plugin.gTeleCd;
+        if (seconds <= 0) return;
+        PConfManager.setPValDouble(p, (seconds * 1000) + new Date().getTime(), "teleport_cooldown");
+    }
+
     @EventHandler
     public void commandCooldown(PlayerCommandPreprocessEvent e) {
         if (e.isCancelled()) return;
         String command = e.getMessage().split(" ")[0].toLowerCase().substring(1);
-        plugin.log.info(command);
         if (plugin.getCommand(command) != null) command = plugin.getCommand(command).getName();
-        plugin.log.info(command);
         Player p = e.getPlayer();
-        //if (plugin.isAuthorized(p, "rcmds.exempt.cmdcooldowns")) return;
+        if (plugin.isAuthorized(p, "rcmds.exempt.cooldown.commands")) return;
         Long currentcd = PConfManager.getPValLong(p, "command_cooldowns." + command);
         if (currentcd != null) {
             if (currentcd <= new Date().getTime()) {
@@ -80,7 +81,25 @@ public class RoyalCommandsPlayerListener implements Listener {
         setCooldown(command, p);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW)
+    public void teleCooldown(PlayerTeleportEvent e) {
+        if (e.isCancelled()) return;
+        Player p = e.getPlayer();
+        if (plugin.isAuthorized(p, "rcmds.exempt.cooldown.teleports")) return;
+        Long currentcd = PConfManager.getPValLong(p, "teleport_cooldown");
+        if (currentcd != null) {
+            if (currentcd <= new Date().getTime()) {
+                setTeleCooldown(p);
+                return;
+            }
+            p.sendMessage(ChatColor.RED + "You can't teleport for" + ChatColor.GRAY + RUtils.formatDateDiff(currentcd) + ChatColor.RED + ".");
+            e.setCancelled(true);
+            return;
+        }
+        setTeleCooldown(p);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
         if (PConfManager.getPValBoolean(e.getPlayer(), "jailed")) {
@@ -127,7 +146,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPLogin(PlayerLoginEvent e) {
+    public void vipLogin(PlayerLoginEvent e) {
         if (e.getResult() != Result.KICK_FULL) return;
         if (!PConfManager.getPConfExists(e.getPlayer())) return;
         if (PConfManager.getPVal(e.getPlayer(), "vip") != null && PConfManager.getPValBoolean(e.getPlayer(), "vip"))
@@ -229,27 +248,38 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
-        if (event.getPlayer().isBanned()) {
-            if (PConfManager.getPVal(event.getPlayer(), "bantime") != null) {
-                if (!RUtils.isTimeStampValid(event.getPlayer(), "bantime")) {
-                    event.allow();
-                    event.getPlayer().setBanned(false);
-                }
-            }
-            String kickMessage;
-            OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(event.getPlayer().getName());
-            File oplayerconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + oplayer.getName() + ".yml");
-            if (oplayerconfl.exists()) {
-                FileConfiguration oplayerconf = YamlConfiguration.loadConfiguration(oplayerconfl);
-                kickMessage = oplayerconf.getString("banreason");
-            } else kickMessage = plugin.banMessage;
-            event.setKickMessage(kickMessage);
-            event.disallow(Result.KICK_BANNED, kickMessage);
+        // Define the player
+        Player p = event.getPlayer();
+        // Pretty sure this isn't even necessary, but I just can't figure out wtf is throwing the NPE
+        if (p == null) return;
+        // Check if player is banned
+        if (!p.isBanned()) return;
+        // Check to see that they have a bantime, and that if they do, the timestamp is invalid.
+        if (PConfManager.getPVal(p, "bantime") != null && !RUtils.isTimeStampValid(p, "bantime")) {
+            // Allow the event
+            event.allow();
+            // Set them unbanned
+            event.getPlayer().setBanned(false);
+            // Stop the method
             return;
         }
-        Player p = event.getPlayer();
+        // Get the banreason from the player's userdata file
+        String kickMessage = PConfManager.getPValString(p, "banreason"); // Returns string or null
+        // Check if there was none, and if there wasn't, set it to default ban message.
+        if (kickMessage == null) kickMessage = plugin.banMessage;
+        // Set the kick message to the ban reason
+        event.setKickMessage(kickMessage);
+        // Disallow the event
+        event.disallow(Result.KICK_BANNED, kickMessage);
+    }
+
+    @EventHandler
+    public void displayNames(PlayerLoginEvent e) {
+        Player p = e.getPlayer();
+        if (p == null) return;
         String dispname = PConfManager.getPValString(p, "dispname").trim();
         if (dispname == null || dispname.equals("")) dispname = p.getName().trim();
+        if (dispname == null) return;
         p.setDisplayName(dispname);
     }
 
@@ -259,6 +289,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!plugin.newVersion.contains(plugin.version) && !plugin.version.contains("pre") && plugin.isAuthorized(p, "rcmds.updates")) {
             String newV = plugin.newVersion.split("RoyalCommands")[1].trim();
             p.sendMessage(ChatColor.BLUE + "RoyalCommands " + ChatColor.GRAY + newV + ChatColor.BLUE + " is out! You are running " + ChatColor.GRAY + "v" + plugin.version + ChatColor.BLUE + ".");
+            p.sendMessage(ChatColor.BLUE + "Get the new version at " + ChatColor.DARK_AQUA + "http://dev.bukkit.org/server-mods/royalcommands" + ChatColor.BLUE + ".");
         }
     }
 

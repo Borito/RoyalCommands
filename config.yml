@@ -137,3 +137,11 @@ command_cooldowns:
   save-all: 5
 # Should cooldowns match aliases (e.g. /teleport and /tp have the same cooldown)?
 cooldowns_match_aliases: true
+
+# Creates cooldowns for global teleports
+# Note that this will apply a cooldown to EVERY teleport
+# done, and not just the /tp command. Whether it be a
+# plugin like NoCheat teleporting you back (!), or Towny
+# spawns, it will apply the cooldown.
+# 0 is off
+global_teleport_cooldown: 0
