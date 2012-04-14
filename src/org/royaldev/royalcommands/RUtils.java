@@ -99,7 +99,7 @@ public class RUtils {
             return false;
         }
         RoyalCommands.economy.withdrawPlayer(cs.getName(), amount);
-        cs.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + amount + ChatColor.BLUE + " removed from your account.");
+        cs.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + RoyalCommands.economy.format(amount) + ChatColor.BLUE + " removed from your account.");
         return true;
     }
 
@@ -201,6 +201,7 @@ public class RUtils {
     }
 
     public static String colorize(String text) {
+        if (text == null) return null;
         return text.replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
     }
 }
