@@ -29,6 +29,7 @@ public class CmdTrade implements CommandExecutor {
     }
 
     public static HashMap<Player, Player> tradedb = new HashMap<Player, Player>();
+    public static HashMap<HashMap<Player, Player>, CraftInventory> trades = new HashMap<HashMap<Player, Player>, CraftInventory>();
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("trade")) {
@@ -50,14 +51,25 @@ public class CmdTrade implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
+            CraftInventory inv;
+            for (HashMap<Player, Player> set : trades.keySet()) {
+                if ((set.containsKey(t) && set.get(t).equals(p)) || (set.containsKey(p) && set.get(p).equals(t))) {
+                    inv = trades.get(set);
+                    p.sendMessage(ChatColor.BLUE + "Resumed trading.");
+                    p.openInventory(inv);
+                    return true;
+                }
+            }
             if (tradedb.containsKey(t)) {
                 EntityPlayer ep = ((CraftPlayer) p).getHandle();
-                CraftInventory inv = new CraftInventory(new PlayerInventory(ep));
+                inv = new CraftInventory(new PlayerInventory(ep));
                 inv.clear();
                 p.sendMessage(ChatColor.BLUE + "Opened trading interface.");
-                p.sendMessage(ChatColor.RED + "If you both close the inventory, all the items in it will be lost!");
                 p.openInventory(inv);
                 t.openInventory(inv);
+                HashMap<Player, Player> trade = new HashMap<Player, Player>();
+                trade.put(p, t);
+                trades.put(trade, inv);
                 tradedb.remove(t);
                 return true;
             } else {
