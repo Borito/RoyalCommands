@@ -41,6 +41,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     public void setCooldown(String command, OfflinePlayer p) {
         ConfigurationSection cmdCds = plugin.getConfig().getConfigurationSection("command_cooldowns");
+        if (cmdCds == null) return;
         boolean contains = cmdCds.getKeys(false).contains(command);
         if (plugin.cooldownAliases)
             if (plugin.getCommand(command) != null)
@@ -247,6 +248,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
+        if (event.getResult() != Result.ALLOWED) return;
         // Define the player
         Player p = event.getPlayer();
         // Pretty sure this isn't even necessary, but I just can't figure out wtf is throwing the NPE
@@ -274,6 +276,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void displayNames(PlayerLoginEvent e) {
+        if (e.getResult() != Result.ALLOWED) return;
         Player p = e.getPlayer();
         if (p == null) return;
         String dispname = PConfManager.getPValString(p, "dispname").trim();
@@ -286,8 +289,8 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (!plugin.newVersion.contains(plugin.version) && !plugin.version.contains("pre") && plugin.isAuthorized(p, "rcmds.updates")) {
-            String newV = plugin.newVersion.split("RoyalCommands")[1].trim();
-            p.sendMessage(ChatColor.BLUE + "RoyalCommands " + ChatColor.GRAY + newV + ChatColor.BLUE + " is out! You are running " + ChatColor.GRAY + "v" + plugin.version + ChatColor.BLUE + ".");
+            String newV = plugin.newVersion.split("RoyalCommands")[1].trim().substring(1);
+            p.sendMessage(ChatColor.BLUE + "RoyalCommands " + ChatColor.GRAY + "v" + newV + ChatColor.BLUE + " is out! You are running " + ChatColor.GRAY + "v" + plugin.version + ChatColor.BLUE + ".");
             p.sendMessage(ChatColor.BLUE + "Get the new version at " + ChatColor.DARK_AQUA + "http://dev.bukkit.org/server-mods/royalcommands" + ChatColor.BLUE + ".");
         }
     }
