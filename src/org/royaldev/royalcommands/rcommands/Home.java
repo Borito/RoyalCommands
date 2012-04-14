@@ -67,11 +67,7 @@ public class Home implements CommandExecutor {
             }
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                if (args.length > 0) {
-                    homeSet = pconf.getBoolean("home." + name + ".set");
-                } else {
-                    homeSet = pconf.getBoolean("home.home.set");
-                }
+                homeSet = (args.length > 0) ? pconf.getBoolean("home." + name + ".set") : pconf.getBoolean("home.home.set");
                 if (homeSet) {
                     if (args.length > 0) {
                         homeX = pconf.getDouble("home." + name + ".x");
