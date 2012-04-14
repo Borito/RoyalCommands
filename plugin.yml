@@ -562,6 +562,10 @@ commands:
     description: Opens a mutual chest between two players.
     usage: /<command> [player]
 
+  furnace:
+    description: Remotely manages a furnace you set.
+    usage: /<command> [set/show]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -915,6 +919,9 @@ permissions:
     default: op
   rcmds.trade:
     description: Allows you to trade with other players.
+    default: op
+  rcmds.furnace:
+    description: Allows you to remotely open a furnace.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1346,6 +1353,7 @@ permissions:
       rcmds.workbench: true
       rcmds.enchantingtable: true
       rcmds.trade: true
+      rcmds.furnace: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
