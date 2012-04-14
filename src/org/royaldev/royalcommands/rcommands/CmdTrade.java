@@ -55,7 +55,7 @@ public class CmdTrade implements CommandExecutor {
             for (HashMap<Player, Player> set : trades.keySet()) {
                 if ((set.containsKey(t) && set.get(t).equals(p)) || (set.containsKey(p) && set.get(p).equals(t))) {
                     inv = trades.get(set);
-                    p.sendMessage(ChatColor.BLUE + "Resumed trading.");
+                    p.sendMessage(ChatColor.BLUE + "Resumed trading with " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     p.openInventory(inv);
                     return true;
                 }
@@ -74,7 +74,7 @@ public class CmdTrade implements CommandExecutor {
                 return true;
             } else {
                 sendTradeRequest(t, p);
-                p.sendMessage(ChatColor.BLUE + "Send a trade request to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                p.sendMessage(ChatColor.BLUE + "Sent a trade request to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 return true;
             }
         }
