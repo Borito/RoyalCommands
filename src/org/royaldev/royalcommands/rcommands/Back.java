@@ -37,9 +37,7 @@ public class Back implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You have no place to go back to!");
                 return true;
             }
-            Location to = backdb.get(p);
-            backdb.put(p, p.getLocation());
-            p.teleport(to);
+            p.teleport(backdb.get(p));
             p.sendMessage(ChatColor.BLUE + "Returning to your previous location.");
             return true;
         }

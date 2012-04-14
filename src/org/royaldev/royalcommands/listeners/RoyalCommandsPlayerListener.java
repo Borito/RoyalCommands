@@ -107,7 +107,6 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (Back.backdb.containsKey(e.getPlayer()) && e.getTo().equals(Back.backdb.get(e.getPlayer()))) return;
         Back.backdb.put(e.getPlayer(), e.getFrom());
     }
 
