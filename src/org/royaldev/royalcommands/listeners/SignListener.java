@@ -2,6 +2,7 @@ package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +12,10 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.rcommands.*;
+import org.royaldev.royalcommands.rcommands.CmdGive;
+import org.royaldev.royalcommands.rcommands.Time;
+import org.royaldev.royalcommands.rcommands.Warp;
+import org.royaldev.royalcommands.rcommands.Weather;
 
 public class SignListener implements Listener {
 
@@ -106,6 +110,37 @@ public class SignListener implements Listener {
 
             long time = Time.getValidTime(line2);
             p.getWorld().setTime(time);
+        }
+
+        //Free signs
+        if (line1.equalsIgnoreCase("[free]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.use.free")) {
+                RUtils.dispNoPerms(p);
+                s.setLine(0, "");
+                return;
+            }
+
+            Double charge = getCharge(line3);
+            if (charge == null) {
+                p.sendMessage(ChatColor.RED + "The cost is invalid!");
+                s.setLine(0, ChatColor.RED + line1);
+                return;
+            } else if (charge >= 0) {
+                s.setLine(2, ChatColor.DARK_GREEN + line3);
+                if (!RUtils.chargePlayer(p, charge)) return;
+            }
+            Material mat;
+            try {
+                mat = Material.valueOf(line2.toUpperCase().replace(" ", "_"));
+            } catch (Exception ex) {
+                mat = null;
+            }
+            if (mat == null) {
+                s.setLine(1, ChatColor.RED + line2);
+                p.sendMessage(ChatColor.RED + "That material is invalid!");
+                return;
+            } else s.setLine(1, line2.toLowerCase().replace("_", "_"));
+            RUtils.showFilledChest(p, mat);
         }
 
         //Disposal signs
@@ -288,6 +323,38 @@ public class SignListener implements Listener {
 
             e.setLine(0, ChatColor.BLUE + line1);
             p.sendMessage(ChatColor.BLUE + "Time sign created successfully!");
+        }
+
+        //Free signs
+        if (line1.equalsIgnoreCase("[free]")) {
+            if (!plugin.isAuthorized(p, "rcmds.sign.free")) {
+                RUtils.dispNoPerms(p);
+                e.setLine(0, "");
+                return;
+            }
+
+            Double charge = getCharge(line3);
+            if (charge == null) {
+                p.sendMessage(ChatColor.RED + "The cost is invalid!");
+                e.setLine(0, ChatColor.RED + line1);
+                return;
+            } else if (charge >= 0) {
+                e.setLine(1, ChatColor.DARK_GREEN + line3);
+                if (!RUtils.chargePlayer(p, charge)) return;
+            }
+            Material mat;
+            try {
+                mat = Material.valueOf(line2.toUpperCase().replace(" ", "_"));
+            } catch (Exception ex) {
+                mat = null;
+            }
+            if (mat == null) {
+                e.setLine(1, ChatColor.RED + line2);
+                p.sendMessage(ChatColor.RED + "That material is invalid!");
+                return;
+            } else e.setLine(1, line2.toLowerCase().replace("_", " "));
+            e.setLine(0, ChatColor.BLUE + line1);
+            p.sendMessage(ChatColor.BLUE + "Free sign created successfully!");
         }
 
         //Disposal signs

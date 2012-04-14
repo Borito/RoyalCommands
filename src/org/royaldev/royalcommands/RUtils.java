@@ -8,8 +8,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -59,30 +60,36 @@ public class RUtils {
         AIR_MATERIALS.add(Material.WATER_LILY.getId());
         AIR_MATERIALS.add(Material.SNOW.getId());
 
-        for (Integer integer : AIR_MATERIALS) {
-            AIR_MATERIALS_TARGET.add(integer.byteValue());
-        }
+        for (Integer integer : AIR_MATERIALS) AIR_MATERIALS_TARGET.add(integer.byteValue());
         AIR_MATERIALS_TARGET.add((byte) Material.WATER.getId());
         AIR_MATERIALS_TARGET.add((byte) Material.STATIONARY_WATER.getId());
     }
 
     public static Block getTarget(Player p) {
         Block bb = p.getTargetBlock(AIR_MATERIALS_TARGET, 300);
-        if (bb == null) {
-            return null;
-        }
+        if (bb == null) return null;
         return bb;
     }
 
-    public static void showEmptyChest(Player player) {
-        try {
-            final EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-            final CraftInventoryPlayer inv = new CraftInventoryPlayer(new PlayerInventory(((CraftPlayer) player).getHandle()));
-            inv.clear();
-            entityPlayer.a(inv.getInventory());
-        } catch (Exception e) {
-            //ignored
+    public static void showFilledChest(Player p, Material mat) {
+        if (mat == null) {
+            p.sendMessage(ChatColor.RED + "Material was null!");
+            return;
         }
+        EntityPlayer ep = ((CraftPlayer) p).getHandle();
+        CraftInventory inv = new CraftInventory(new PlayerInventory(ep));
+        for (int i = 0; i < inv.getSize(); i++) {
+            ItemStack items = new ItemStack(mat, 64);
+            inv.addItem(items);
+        }
+        p.openInventory(inv);
+    }
+
+    public static void showEmptyChest(Player player) {
+        EntityPlayer ep = ((CraftPlayer) player).getHandle();
+        CraftInventory inv = new CraftInventory(new PlayerInventory(ep));
+        inv.clear();
+        player.openInventory(inv);
     }
 
     public static boolean chargePlayer(CommandSender cs, double amount) {
