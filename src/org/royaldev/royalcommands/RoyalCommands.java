@@ -17,6 +17,8 @@ package org.royaldev.royalcommands;
  If forked and not credited, alert him.
  */
 
+// import org.yaml.snakeyaml <- SnakeYAML start
+
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -95,6 +97,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public Double maxNear = null;
     public Double defaultNear = null;
+    public Double gTeleCd = null;
 
     public Float explodePower = null;
     public Float maxExplodePower = null;
@@ -109,26 +112,19 @@ public class RoyalCommands extends JavaPlugin {
     // Permissions with Vault
     public Boolean setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) {
-            permission = permissionProvider.getProvider();
-        }
+        if (permissionProvider != null) permission = permissionProvider.getProvider();
         return (permission != null);
     }
 
     public Boolean setupChat() {
         RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) {
-            chat = chatProvider.getProvider();
-        }
+        if (chatProvider != null) chat = chatProvider.getProvider();
         return (chat != null);
     }
 
     private Boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) {
-            economy = economyProvider.getProvider();
-        }
-
+        if (economyProvider != null) economy = economyProvider.getProvider();
         return (economy != null);
     }
 
@@ -183,6 +179,7 @@ public class RoyalCommands extends JavaPlugin {
 
         maxNear = getConfig().getDouble("max_near_radius");
         defaultNear = getConfig().getDouble("default_near_radius");
+        gTeleCd = getConfig().getDouble("global_teleport_cooldown");
 
         explodePower = (float) getConfig().getDouble("explode_power");
         maxExplodePower = (float) getConfig().getDouble("max_explode_power");
@@ -196,8 +193,8 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void loadConfiguration() {
-        this.getConfig().options().copyDefaults(true);
-        this.saveConfig();
+        // This until I get a custom YAML wrapper using SnakeYAML going.
+        if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveDefaultConfig();
         File file = new File(this.getDataFolder() + File.separator + "userdata" + File.separator);
         boolean exists = file.exists();
         if (!exists) {
@@ -331,6 +328,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public void onEnable() {
         loadConfiguration();
+        reloadConfigVals();
 
         setupEconomy();
         setupChat();
@@ -480,9 +478,10 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("lag").setExecutor(new CmdLag(this));
         getCommand("mem").setExecutor(new CmdMem(this));
         getCommand("entities").setExecutor(new CmdEntities(this));
+        getCommand("invmod").setExecutor(new CmdInvmod(this));
+        getCommand("workbench").setExecutor(new CmdWorkbench(this));
+        getCommand("enchantingtable").setExecutor(new CmdEnchantingTable(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
-
-        reloadConfigVals();
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
     }
