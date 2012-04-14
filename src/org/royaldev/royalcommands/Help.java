@@ -4,6 +4,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
 public class Help {
@@ -13,8 +14,12 @@ public class Help {
 
     public static void reloadHelp() {
         helpdb.clear();
+        if (commands == null) {
+            Logger.getLogger("Minecraft").severe("[RoyalCommands] Could not grab list of commands!");
+            return;
+        }
         for (String cmd : commands.keySet()) {
-            if (commands.get(cmd) == null || commands.get(cmd).get("description") == null) continue;
+            if (cmd == null || commands.get(cmd) == null || commands.get(cmd).get("description") == null) continue;
             String desc = commands.get(cmd).get("description").toString();
             helpdb.put(cmd, desc);
         }
