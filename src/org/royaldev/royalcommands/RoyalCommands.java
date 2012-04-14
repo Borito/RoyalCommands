@@ -481,6 +481,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("invmod").setExecutor(new CmdInvmod(this));
         getCommand("workbench").setExecutor(new CmdWorkbench(this));
         getCommand("enchantingtable").setExecutor(new CmdEnchantingTable(this));
+        getCommand("trade").setExecutor(new CmdTrade(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");

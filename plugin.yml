@@ -558,6 +558,10 @@ commands:
     usage: /<command>
     aliases: [et]
 
+  trade:
+    description: Opens a mutual chest between two players.
+    usage: /<command> [player]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -908,6 +912,9 @@ permissions:
     default: op
   rcmds.enchantingtable:
     description: Allows you to open an enchanting table anywhere.
+    default: op
+  rcmds.trade:
+    description: Allows you to trade with other players.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1338,6 +1345,7 @@ permissions:
       rcmds.invmod: true
       rcmds.workbench: true
       rcmds.enchantingtable: true
+      rcmds.trade: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
