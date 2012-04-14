@@ -80,7 +80,7 @@ commands:
     aliases: [fz, frz]
 
   fakeop:
-    description: Fakes an "You are now op!" message.
+    description: Fakes a "You are now op!" message.
     usage: /<command> [player]
     aliases: [fop]
 
@@ -103,7 +103,7 @@ commands:
     aliases: [playerext, pex, splash]
 
   item:
-    description: Add an item to your inventory.
+    description: Adds an item to your inventory.
     usage: /<command> [item](:metadata) (amount)
     aliases: [i]
 
@@ -144,7 +144,7 @@ commands:
   ban:
     description: Bans a user.
     usage: /<command> [player] (message)
-    aliases: [rban]
+    aliases: [rban, banish]
 
   mute:
     description: Stop a user from speaking.
@@ -222,7 +222,7 @@ commands:
   unban:
     description: Removes a ban from a player.
     usage: /<command> [player]
-    aliases: [pardon]
+    aliases: [unbanish]
 
   heal:
     description: Heals a player or the player himself.
@@ -467,7 +467,7 @@ commands:
   whobanned:
     description: Displays who banned the specified player.
     usage: /<command> [player]
-    aliases: [whoban, wbanned, banwho, bannedwho, wb]
+    aliases: [whoban, wbanned, banwho, bannedwho, wban]
 
   tppos:
     description: Teleports you to a specific coordinate point.
@@ -542,6 +542,21 @@ commands:
     description: Displays the entities close to you.
     usage: /<command> (radius)
     aliases: [neare, enear, ents, entity, closeents, entsclose, ent]
+
+  invmod:
+    description: Modifies other players' inventories.
+    usage: /<command> [player]
+    aliases: [modinv]
+
+  workbench:
+    description: Opens a workbench anywhere.
+    usage: /<command>
+    aliases: [wb, ct, craftingtable]
+
+  enchantingtable:
+    description: Opens an enchanting table anywhere.
+    usage: /<command>
+    aliases: [et]
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -885,6 +900,15 @@ permissions:
   rcmds.entities:
     description: Allows you to see nearby entities.
     default: op
+  rcmds.invmod:
+    description: Allows you to modify other players' inventories.
+    default: op
+  rcmds.workbench:
+    description: Allows you to open a workbench anywhere.
+    default: op
+  rcmds.enchantingtable:
+    description: Allows you to open an enchanting table anywhere.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -974,12 +998,20 @@ permissions:
   rcmds.exempt.ignore:
     description: Makes the player immune to /ignore.
     default: false
-  rcmds.exempt.kit.cooldown:
-    description: Makes the player exempt to kit cooldowns.
+  rcmds.exempt.invmod:
+    description: Makes the player immune to /invmod.
     default: false
-  rcmds.exempt.cmdcooldowns:
+
+  rcmds.exempt.cooldown.commands:
     description: Makes the player exempt to command cooldowns.
     default: false
+  rcmds.exempt.cooldown.kits:
+    description: Makes the player exempt to kit cooldowns.
+    default: false
+  rcmds.exempt.cooldown.teleports:
+    description: Makes the player exempt to teleport cooldowns.
+    default: false
+
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -1133,6 +1165,14 @@ permissions:
       rcmds.sign.use.give: true
       rcmds.sign.use.command: true
 
+  rcmds.exempt.cooldown.*:
+    description: Gives every cooldown exemption.
+    default: false
+    children:
+      rcmds.exempt.cooldown.commands: true
+      rcmds.exempt.cooldown.kits: true
+      rcmds.exempt.cooldown.teleports: true
+
   rcmds.exempt.*:
     description: Gives every exempt permission.
     default: false
@@ -1166,8 +1206,8 @@ permissions:
       rcmds.exempt.home: true
       rcmds.exempt.listhome: true
       rcmds.exempt.ignore: true
-      rcmds.exempt.kit.cooldown: true
-      rcmds.exempt.cmdcooldowns: true
+      rcmds.exempt.cooldown.*: true
+      rcmds.exempt.invmod: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -1295,6 +1335,9 @@ permissions:
       rcmds.lag: true
       rcmds.mem: true
       rcmds.entities: true
+      rcmds.invmod: true
+      rcmds.workbench: true
+      rcmds.enchantingtable: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
@@ -1304,6 +1347,8 @@ permissions:
       rcmds.updates: true
 
       rcmds.exempt.*: true
+
+      rcmds.heman: true
 
       rcmds.allowed.item: true
 

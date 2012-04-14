@@ -55,7 +55,7 @@ public class CmdKit implements CommandExecutor {
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
-            if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown") && !plugin.isAuthorized(cs, "rcmds.exempt.kit.cooldown")) {
+            if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown") && !plugin.isAuthorized(cs, "rcmds.exempt.cooldown.kits")) {
                 long ts = RUtils.getTimeStamp(p, "kits." + kitname + ".cooldown");
                 if (ts > 0) {
                     p.sendMessage(ChatColor.RED + "You can't use that kit for" + ChatColor.GRAY + RUtils.formatDateDiff(ts) + ChatColor.RED + ".");
