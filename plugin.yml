@@ -566,6 +566,10 @@ commands:
     description: Remotely manages a furnace you set.
     usage: /<command> [set/show]
 
+  enchant:
+    description: Enchants the item in hand.
+    usage: /<command> [enchantment/all] (level)
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -923,6 +927,7 @@ permissions:
   rcmds.furnace:
     description: Allows you to remotely open a furnace.
     default: op
+  rcmds.enchant: true
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1354,6 +1359,7 @@ permissions:
       rcmds.enchantingtable: true
       rcmds.trade: true
       rcmds.furnace: true
+      rcmds.enchant: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
