@@ -61,6 +61,12 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (seconds <= 0) return;
         PConfManager.setPValDouble(p, (seconds * 1000) + new Date().getTime(), "teleport_cooldown");
     }
+    
+    @EventHandler
+    public void whitelist(PlayerLoginEvent e) {
+        if (!plugin.useWhitelist) return;
+        if (!plugin.whitelist.contains(e.getPlayer().getName())) e.disallow(Result.KICK_WHITELIST, "You are not whitelisted on this server!");
+    }
 
     @EventHandler
     public void commandCooldown(PlayerCommandPreprocessEvent e) {
