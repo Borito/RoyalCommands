@@ -83,6 +83,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean useVNP = null;
     public Boolean cooldownAliases = null;
     public Boolean useWhitelist = null;
+    public Boolean smoothTime = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -166,6 +167,7 @@ public class RoyalCommands extends JavaPlugin {
         useVNP = getConfig().getBoolean("use_vanish");
         cooldownAliases = getConfig().getBoolean("cooldowns_match_aliases");
         useWhitelist = getConfig().getBoolean("use_whitelist");
+        smoothTime = getConfig().getBoolean("use_smooth_time");
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message"));

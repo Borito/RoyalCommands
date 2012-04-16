@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,12 @@ public class CmdPlayerTime implements CommandExecutor {
 
     public CmdPlayerTime(RoyalCommands instance) {
         this.plugin = instance;
+    }
+
+    public static void smoothPlayerTimeChange(long time, Player p) {
+        World world = p.getWorld();
+        if (time >= world.getTime()) for (long i = world.getTime(); i < time; i++) world.setTime(i);
+        else for (long i = world.getTime(); i > time; i--) world.setTime(i);
     }
 
     @Override
@@ -47,6 +54,7 @@ public class CmdPlayerTime implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Synced " + ChatColor.GRAY + t.getName() + possessive + ChatColor.BLUE + " time with the server's.");
                 return true;
             }
+            if (plugin.smoothTime) smoothPlayerTimeChange(time, t);
             t.setPlayerTime(time, true);
             cs.sendMessage(ChatColor.BLUE + "Set " + ChatColor.GRAY + t.getName() + possessive + ChatColor.BLUE + " time to " + ChatColor.GRAY + time + " ticks" + ChatColor.BLUE + ".");
             return true;

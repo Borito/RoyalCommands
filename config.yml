@@ -161,3 +161,6 @@ whitelist:
 - "jkcclemens"
 - "some_guy"
 - "guy2"
+
+# Smooth time transitions?
+use_smooth_time: true

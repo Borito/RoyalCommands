@@ -18,6 +18,11 @@ public class Time implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    public static void smoothTimeChange(long time, World world) {
+        if (time >= world.getTime()) for (long i = world.getTime(); i < time; i++) world.setTime(i);
+        else for (long i = world.getTime(); i > time; i--) world.setTime(i);
+    }
+
     public static Long getValidTime(String time) {
         Integer vtime;
         try {
@@ -64,9 +69,7 @@ public class Time implements CommandExecutor {
                     return true;
                 }
                 if (args.length == 1) {
-                    for (World w : plugin.getServer().getWorlds()) {
-                        w.setTime(time);
-                    }
+                    for (World w : plugin.getServer().getWorlds()) w.setTime(time);
                     cs.sendMessage(ChatColor.BLUE + "Time in all worlds set to " + ChatColor.GRAY + time + ChatColor.BLUE + ".");
                 }
                 if (args.length > 1) {
@@ -85,7 +88,8 @@ public class Time implements CommandExecutor {
                 return false;
             }
             Player p = (Player) cs;
-            World world;
+            World world = (args.length > 1) ? plugin.getServer().getWorld(args[1]) : p.getWorld();
+            if (world == null) world = p.getWorld();
             if (getValidTime(args[0]) == null) {
                 cs.sendMessage(ChatColor.RED + "Invalid time specified!");
                 return true;
@@ -95,17 +99,10 @@ public class Time implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "The time entered was invalid!");
                 return true;
             }
-            try {
-                world = plugin.getServer().getWorld(args[1]);
-                world.setTime(time);
-                p.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + " to " + ChatColor.GRAY + time + ChatColor.BLUE + " ticks.");
-                return true;
-            } catch (Exception e) {
-                world = p.getWorld();
-                world.setTime(time);
-                p.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + " to " + ChatColor.GRAY + time + ChatColor.BLUE + " ticks.");
-                return true;
-            }
+            if (plugin.smoothTime) smoothTimeChange(time, world);
+            world.setTime(time);
+            p.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + " to " + ChatColor.GRAY + time + ChatColor.BLUE + " ticks.");
+            return true;
         }
         return false;
     }
