@@ -687,7 +687,7 @@ permissions:
     description: Allows you to mute players.
     default: op
   rcmds.ban:
-    descripition: Allows you to ban players.
+    description: Allows you to ban players.
     default: op
   rcmds.time:
     description: Allows you to change the time.
@@ -1183,6 +1183,7 @@ permissions:
     default: op
   rcmds.setarmor.iron:
     description: Allows the player to set iron armor.
+    default: op
 
   rcmds.notarget:
     description: Disables the mobs' ability to target the player.
