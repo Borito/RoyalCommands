@@ -28,21 +28,13 @@ public class Time implements CommandExecutor {
         try {
             vtime = Integer.parseInt(time);
         } catch (Exception e) {
-            if (time.equalsIgnoreCase("day")) {
-                vtime = 0;
-            } else if (time.equalsIgnoreCase("midday")) {
-                vtime = 6000;
-            } else if (time.equalsIgnoreCase("sunset")) {
-                vtime = 12000;
-            } else if (time.equalsIgnoreCase("night")) {
-                vtime = 14000;
-            } else if (time.equalsIgnoreCase("midnight")) {
-                vtime = 18000;
-            } else if (time.equalsIgnoreCase("sunrise")) {
-                vtime = 23000;
-            } else {
-                return null;
-            }
+            if (time.equalsIgnoreCase("day")) vtime = 0;
+            else if (time.equalsIgnoreCase("midday")) vtime = 6000;
+            else if (time.equalsIgnoreCase("sunset")) vtime = 12000;
+            else if (time.equalsIgnoreCase("night")) vtime = 14000;
+            else if (time.equalsIgnoreCase("midnight")) vtime = 18000;
+            else if (time.equalsIgnoreCase("sunrise")) vtime = 23000;
+            else return null;
         }
         return (long) vtime;
     }
