@@ -584,6 +584,15 @@ commands:
     usage: /<command> [check/add/remove] [player]
     aliases: [wl]
 
+  playertime:
+    description: Changes player time. If not time specified, resets it.
+    usage: /<command> [player] (time)
+    aliases: [ptime]
+
+  compass:
+    description: Changes where your compass points.
+    usage: /<command> [reset/here/location/player] (x y z/player)
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -953,6 +962,12 @@ permissions:
   rcmds.whitelist:
     description: Allows you to manage the dynamic whitelist.
     default: op
+  rcmds.playertime:
+    descripiton: Allows you to change other players' times.
+    default: op
+  rcmds.compass:
+    description: Allows you to change where your compass points.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1090,6 +1105,9 @@ permissions:
     default: op
   rcmds.coords.others:
     description: Allows the player to see other players' coordinates.
+    default: op
+  rcmds.fly.others:
+    description: Allows the player to toggle other players' fly ability.
     default: op
 
   rcmds.seehidden:
@@ -1388,6 +1406,8 @@ permissions:
       rcmds.fireball: true
       rcmds.fly: true
       rcmds.whitelist: true
+      rcmds.playertime: true
+      rcmds.compass: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true

@@ -489,6 +489,8 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("whitelist").setExecutor(new CmdWhitelist(this));
         getCommand("fireball").setExecutor(new CmdFireball(this));
         getCommand("fly").setExecutor(new CmdFly(this));
+        getCommand("playertime").setExecutor(new CmdPlayerTime(this));
+        getCommand("compass").setExecutor(new CmdCompass(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
