@@ -570,6 +570,20 @@ commands:
     description: Enchants the item in hand.
     usage: /<command> [enchantment/all] (level)
 
+  fireball:
+    description: Launches a fireball out of you.
+    usage: /<command>
+    aliases: [fb]
+
+  fly:
+    description: Toggles creative flymode for yourself or a player
+    usage: /<command> (player)
+
+  whitelist:
+    description: Manages the dynamic whitelist.
+    usage: /<command> [check/add/remove] [player]
+    aliases: [wl]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -927,7 +941,18 @@ permissions:
   rcmds.furnace:
     description: Allows you to remotely open a furnace.
     default: op
-  rcmds.enchant: true
+  rcmds.enchant:
+    description: Allows you to enchant items.
+    default: op
+  rcmds.fireball:
+    description: Allows you to launch a fireball.
+    default: op
+  rcmds.fly:
+    description: Allows you to toggle flymode.
+    default: op
+  rcmds.whitelist:
+    description: Allows you to manage the dynamic whitelist.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1360,6 +1385,9 @@ permissions:
       rcmds.trade: true
       rcmds.furnace: true
       rcmds.enchant: true
+      rcmds.fireball: true
+      rcmds.fly: true
+      rcmds.whitelist: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true

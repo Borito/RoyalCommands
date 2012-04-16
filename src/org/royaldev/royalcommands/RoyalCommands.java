@@ -64,6 +64,7 @@ public class RoyalCommands extends JavaPlugin {
     public List<String> blockedItems = new ArrayList<String>();
     public List<String> motd = new ArrayList<String>();
     public List<String> commandCooldowns = new ArrayList<String>();
+    public List<String> whitelist = new ArrayList<String>();
 
     public Boolean showcommands = null;
     public Boolean disablegetip = null;
@@ -81,6 +82,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean customHelp = null;
     public Boolean useVNP = null;
     public Boolean cooldownAliases = null;
+    public Boolean useWhitelist = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -163,6 +165,7 @@ public class RoyalCommands extends JavaPlugin {
         customHelp = getConfig().getBoolean("use_custom_help");
         useVNP = getConfig().getBoolean("use_vanish");
         cooldownAliases = getConfig().getBoolean("cooldowns_match_aliases");
+        useWhitelist = getConfig().getBoolean("use_whitelist");
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message"));
@@ -188,6 +191,7 @@ public class RoyalCommands extends JavaPlugin {
         blockedItems = getConfig().getStringList("blocked_spawn_items");
         motd = getConfig().getStringList("motd");
         commandCooldowns = getConfig().getStringList("command_cooldowns");
+        whitelist = getConfig().getStringList("whitelist");
 
         Help.reloadHelp();
     }
@@ -289,9 +293,7 @@ public class RoyalCommands extends JavaPlugin {
     public String getFinalArg(final String[] args, final int start) {
         final StringBuilder bldr = new StringBuilder();
         for (int i = start; i < args.length; i++) {
-            if (i != start) {
-                bldr.append(" ");
-            }
+            if (i != start) bldr.append(" ");
             bldr.append(args[i]);
         }
         return bldr.toString();
@@ -484,6 +486,9 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("trade").setExecutor(new CmdTrade(this));
         getCommand("furnace").setExecutor(new CmdFurnace(this));
         getCommand("enchant").setExecutor(new CmdEnchant(this));
+        getCommand("whitelist").setExecutor(new CmdWhitelist(this));
+        getCommand("fireball").setExecutor(new CmdFireball(this));
+        getCommand("fly").setExecutor(new CmdFly(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
