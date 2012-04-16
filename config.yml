@@ -145,3 +145,19 @@ cooldowns_match_aliases: true
 # spawns, it will apply the cooldown.
 # 0 is off
 global_teleport_cooldown: 0
+
+###
+# Dynamic Whitelist
+###
+
+# The dynamic whitelist can be altered ingame and will be
+# reloaded upon /rcmds.
+
+# Use the dynamic whitelist?
+use_whitelist: false
+
+# Actual whitelist list.
+whitelist:
+- "jkcclemens"
+- "some_guy"
+- "guy2"
