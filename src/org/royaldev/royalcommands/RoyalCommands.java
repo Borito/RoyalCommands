@@ -93,7 +93,7 @@ public class RoyalCommands extends JavaPlugin {
     public String bcastFormat = null;
     public String whoFormat = null;
 
-    public Integer defaultStack = null;
+    public static Integer defaultStack = null;
     public Integer warnBan = null;
     public Integer spawnmobLimit = null;
     public Integer helpAmount = null;

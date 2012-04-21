@@ -211,4 +211,47 @@ public class RUtils {
         if (text == null) return null;
         return text.replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
     }
+
+    /**
+     * Returns the ItemStack for any material name and amount.
+     * If amount is null, will be default stack size.
+     * <p/>
+     * name can contain a ":" to specify data
+     *
+     * @param name   Name of the material
+     * @param amount Amount of items or null for default
+     * @return ItemStack or null if no such material
+     */
+    public static ItemStack getItem(String name, Integer amount) {
+        Short data;
+        String datas = null;
+        name = name.trim().toUpperCase();
+        if (name.contains(":")) {
+            if (name.split(":").length < 2) {
+                datas = null;
+                name = name.split(":")[0];
+            } else {
+                datas = name.split(":")[1];
+                name = name.split(":")[0];
+            }
+        }
+        try {
+            data = Short.valueOf(datas);
+        } catch (Exception e) {
+            data = null;
+        }
+        Material mat = Material.getMaterial(name);
+        if (mat == null) {
+            try {
+                mat = Material.getMaterial(Integer.valueOf(name));
+                if (mat == null) return null;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        if (amount == null) amount = RoyalCommands.defaultStack;
+        ItemStack stack = new ItemStack(mat, amount);
+        if (data != null) stack.setDurability(data);
+        return stack;
+    }
 }

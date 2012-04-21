@@ -36,34 +36,8 @@ public class CmdItem implements CommandExecutor {
                 return false;
             }
             Player p = (Player) cs;
-            String called = args[0];
-            String data = null;
-            if (called.contains(":")) {
-                String[] calleds = called.split(":");
-                called = calleds[0].trim();
-                data = calleds[1].trim();
-            }
-            Integer iblock;
-            try {
-                iblock = Integer.parseInt(called);
-            } catch (Exception e) {
-                try {
-                    iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
-                } catch (Exception e2) {
-                    cs.sendMessage(ChatColor.RED + "That block does not exist!");
-                    return true;
-                }
-            }
-            if (iblock == 0) {
-                cs.sendMessage(ChatColor.RED + "You cannot spawn air!");
-                return true;
-            }
-            if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
-                cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
-                return true;
-            }
-            int amount = plugin.defaultStack;
+            String item = args[0];
+            int amount = RoyalCommands.defaultStack;
             if (args.length == 2) {
                 try {
                     amount = Integer.parseInt(args[1]);
@@ -76,32 +50,25 @@ public class CmdItem implements CommandExecutor {
                     return true;
                 }
             }
-            ItemStack toInv;
-            if (Material.getMaterial(iblock) == null) {
-                cs.sendMessage(ChatColor.RED + "Invalid item ID!");
+            ItemStack toInv = RUtils.getItem(item, amount);
+            if (toInv == null) {
+                cs.sendMessage(ChatColor.RED + "Invalid item name!");
                 return true;
             }
-            if (data != null) {
-                int data2;
-                try {
-                    data2 = Integer.parseInt(data);
-                } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
-                    return true;
-                }
-                if (data2 < 0) {
-                    cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
-                    return true;
-                } else {
-                    toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount, (short) data2);
-                }
-            } else {
-                toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount);
+            Integer itemid = toInv.getTypeId();
+            if (itemid == 0) {
+                cs.sendMessage(ChatColor.RED + "You cannot spawn air!");
+                return true;
+            }
+            if (plugin.blockedItems.contains(itemid.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + itemid.toString())) {
+                cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
+                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+                return true;
             }
             HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);
             if (!left.isEmpty() && plugin.dropExtras)
-                for (ItemStack item : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), item);
-            cs.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
+                for (ItemStack i : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), i);
+            cs.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(itemid).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
             return true;
         }
         return false;

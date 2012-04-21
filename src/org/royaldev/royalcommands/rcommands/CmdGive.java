@@ -21,94 +21,28 @@ public class CmdGive implements CommandExecutor {
     }
 
     public static boolean validItem(String itemname) {
-        String called = itemname;
-        String data = null;
-        if (called.contains(":")) {
-            String[] calleds = called.split(":");
-            called = calleds[0].trim();
-            data = calleds[1].trim();
-        }
-        Integer iblock;
-        try {
-            iblock = Integer.parseInt(called);
-        } catch (Exception e) {
-            try {
-                iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
-            } catch (Exception e2) {
-                return false;
-            }
-        }
-        if (data != null) {
-            if (Material.getMaterial(iblock) == null) {
-                return false;
-            }
-            int data2;
-            try {
-                data2 = Integer.parseInt(data);
-            } catch (Exception e) {
-                return false;
-            }
-            if (data2 < 0) {
-                return false;
-            }
-        } else {
-            return true;
-        }
-        return true;
+        ItemStack stack = RUtils.getItem(itemname, null);
+        return stack != null;
     }
 
     public static boolean giveItemStandalone(Player target, RoyalCommands plugin, String itemname, int amount) {
-        if (target == null) {
+        if (target == null) return false;
+        if (amount < 0) {
+            target.sendMessage(ChatColor.RED + "The amount must be positive!");
             return false;
         }
-        String called = itemname;
-        String data = null;
-        if (called.contains(":")) {
-            String[] calleds = called.split(":");
-            called = calleds[0].trim();
-            data = calleds[1].trim();
+        ItemStack stack = RUtils.getItem(itemname, amount);
+        if (stack == null) {
+            target.sendMessage(ChatColor.RED + "Invalid item name!");
+            return false;
         }
-        Integer iblock;
-        try {
-            iblock = Integer.parseInt(called);
-        } catch (Exception e) {
-            try {
-                iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
-            } catch (Exception e2) {
-                target.sendMessage(ChatColor.RED + "That block does not exist!");
-                return false;
-            }
-        }
-        if (amount < 1) {
-            amount = 1;
-        }
-        if (iblock == 0) {
+        Integer itemid = stack.getTypeId();
+        if (itemid == 0) {
             target.sendMessage(ChatColor.RED + "You cannot spawn air!");
             return false;
         }
-        ItemStack toInv;
-        if (data != null) {
-            if (Material.getMaterial(iblock) == null) {
-                target.sendMessage(ChatColor.RED + "Invalid item ID!");
-                return false;
-            }
-            int data2;
-            try {
-                data2 = Integer.parseInt(data);
-            } catch (Exception e) {
-                target.sendMessage(ChatColor.RED + "The metadata was invalid!");
-                return false;
-            }
-            if (data2 < 0) {
-                target.sendMessage(ChatColor.RED + "The metadata was invalid!");
-                return false;
-            }
-            toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount, (short) data2);
-        } else {
-            toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount);
-        }
-        target.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
-        HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
+        target.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(itemid).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
+        HashMap<Integer, ItemStack> left = target.getInventory().addItem(stack);
         if (!left.isEmpty() && plugin.dropExtras)
             for (ItemStack item : left.values()) target.getWorld().dropItemNaturally(target.getLocation(), item);
         return true;
@@ -130,14 +64,7 @@ public class CmdGive implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player is not online!");
                 return true;
             }
-            String called = args[1];
-            String data = null;
-            if (called.contains(":")) {
-                String[] calleds = called.split(":");
-                called = calleds[0].trim();
-                data = calleds[1].trim();
-            }
-            int amount = plugin.defaultStack;
+            int amount = RoyalCommands.defaultStack;
             if (args.length == 3) {
                 try {
                     amount = Integer.parseInt(args[2]);
@@ -150,53 +77,27 @@ public class CmdGive implements CommandExecutor {
                     return true;
                 }
             }
-            Integer iblock;
-            try {
-                iblock = Integer.parseInt(called);
-            } catch (Exception e) {
-                try {
-                    iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
-                } catch (Exception e2) {
-                    cs.sendMessage(ChatColor.RED + "That block does not exist!");
-                    return true;
-                }
+            String name = args[1];
+            ItemStack toInv = RUtils.getItem(name, amount);
+            if (toInv == null) {
+                cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                return true;
             }
-            if (iblock == 0) {
+            Integer itemid = toInv.getTypeId();
+            if (itemid == 0) {
                 cs.sendMessage(ChatColor.RED + "You cannot spawn air!");
                 return true;
             }
-            if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
+            if (plugin.blockedItems.contains(itemid.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + itemid)) {
                 cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
-            ItemStack toInv;
-            if (data != null) {
-                if (Material.getMaterial(iblock) == null) {
-                    cs.sendMessage(ChatColor.RED + "Invalid item ID!");
-                    return true;
-                }
-                int data2;
-                try {
-                    data2 = Integer.parseInt(data);
-                } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
-                    return true;
-                }
-                if (data2 < 0) {
-                    cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
-                    return true;
-                } else {
-                    toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount, (short) data2);
-                }
-            } else {
-                toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount);
-            }
             HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
             if (!left.isEmpty() && plugin.dropExtras)
                 for (ItemStack item : left.values()) target.getWorld().dropItemNaturally(target.getLocation(), item);
-            cs.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
-            target.sendMessage(ChatColor.BLUE + "You have been given " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+            cs.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(itemid).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
+            target.sendMessage(ChatColor.BLUE + "You have been given " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(itemid).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
             return true;
         }
         return false;
