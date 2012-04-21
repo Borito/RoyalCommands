@@ -39,6 +39,10 @@ public class CmdHelmet implements CommandExecutor {
                 return true;
             }
             ItemStack stack = RUtils.getItem(name, 1);
+            if (stack == null) {
+                p.sendMessage(ChatColor.RED + "Invalid item name!");
+                return true;
+            }
             p.getInventory().setHelmet(stack);
             p.sendMessage(ChatColor.BLUE + "Set your helmet to " + ChatColor.GRAY + stack.getType().name().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
             return true;
