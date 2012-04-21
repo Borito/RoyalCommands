@@ -493,6 +493,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("fly").setExecutor(new CmdFly(this));
         getCommand("playertime").setExecutor(new CmdPlayerTime(this));
         getCommand("compass").setExecutor(new CmdCompass(this));
+        getCommand("helmet").setExecutor(new CmdHelmet(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");

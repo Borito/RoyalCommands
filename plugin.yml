@@ -593,6 +593,11 @@ commands:
     description: Changes where your compass points.
     usage: /<command> [reset/here/location/player] (x y z/player)
 
+  helmet:
+    description: Changes your helmet.
+    usage: /<command> [item/none]
+    aliases: [helm]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -967,6 +972,9 @@ permissions:
     default: op
   rcmds.compass:
     description: Allows you to change where your compass points.
+    default: op
+  rcmds.helmet:
+    description: Allows you to change your helmet.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1409,6 +1417,7 @@ permissions:
       rcmds.whitelist: true
       rcmds.playertime: true
       rcmds.compass: true
+      rcmds.helmet: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
