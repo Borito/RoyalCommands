@@ -285,8 +285,9 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (e.getResult() != Result.ALLOWED) return;
         Player p = e.getPlayer();
         if (p == null) return;
-        String dispname = PConfManager.getPValString(p, "dispname").trim();
+        String dispname = PConfManager.getPValString(p, "dispname");
         if (dispname == null || dispname.equals("")) dispname = p.getName().trim();
+        dispname = dispname.trim();
         if (dispname == null) return;
         p.setDisplayName(dispname);
     }
