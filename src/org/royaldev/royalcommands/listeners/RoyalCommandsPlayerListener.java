@@ -261,12 +261,12 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (p == null) return;
         // Check if player is banned
         if (!p.isBanned()) return;
-        // Check to see that they have a bantime, and that if they do, the timestamp is invalid.
+        // Check to see that they have a bantime, and that if they do, if the timestamp is invalid.
         if (PConfManager.getPVal(p, "bantime") != null && !RUtils.isTimeStampValid(p, "bantime")) {
             // Allow the event
             event.allow();
             // Set them unbanned
-            event.getPlayer().setBanned(false);
+            p.setBanned(false);
             // Stop the method
             return;
         }

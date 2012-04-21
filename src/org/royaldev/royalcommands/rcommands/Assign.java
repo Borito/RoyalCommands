@@ -52,9 +52,7 @@ public class Assign implements CommandExecutor {
             if (cmds == null) {
                 cmds = new ArrayList<String>();
                 cmds.add(plugin.getFinalArg(args, 0));
-            } else {
-                cmds.add(plugin.getFinalArg(args, 0));
-            }
+            } else cmds.add(plugin.getFinalArg(args, 0));
             PConfManager.setPValStringList(p, cmds, "assign." + hand.getTypeId());
             String message = (plugin.getFinalArg(args, 0).toLowerCase().startsWith("c:"))
                     ? ChatColor.BLUE + "Added message " + ChatColor.GRAY + plugin.getFinalArg(args, 0).substring(2) + ChatColor.BLUE + " to that item."
