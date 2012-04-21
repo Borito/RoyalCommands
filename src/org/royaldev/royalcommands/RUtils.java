@@ -71,17 +71,11 @@ public class RUtils {
         return bb;
     }
 
-    public static void showFilledChest(Player p, Material mat) {
-        if (mat == null) {
-            p.sendMessage(ChatColor.RED + "Material was null!");
-            return;
-        }
+    public static void showFilledChest(Player p, String name) {
         EntityPlayer ep = ((CraftPlayer) p).getHandle();
         CraftInventory inv = new CraftInventory(new PlayerInventory(ep));
-        for (int i = 0; i < inv.getSize(); i++) {
-            ItemStack items = new ItemStack(mat, 64);
-            inv.addItem(items);
-        }
+        ItemStack stack = getItem(name, 64);
+        for (int i = 0; i < inv.getSize(); i++) inv.addItem(stack);
         p.openInventory(inv);
     }
 

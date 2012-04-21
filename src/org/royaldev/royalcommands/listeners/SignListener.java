@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdGive;
@@ -129,18 +129,13 @@ public class SignListener implements Listener {
                 s.setLine(2, ChatColor.DARK_GREEN + line3);
                 if (!RUtils.chargePlayer(p, charge)) return;
             }
-            Material mat;
-            try {
-                mat = Material.valueOf(line2.toUpperCase().replace(" ", "_"));
-            } catch (Exception ex) {
-                mat = null;
-            }
-            if (mat == null) {
+            ItemStack stack = RUtils.getItem(line2, null);
+            if (stack == null) {
                 s.setLine(1, ChatColor.RED + line2);
                 p.sendMessage(ChatColor.RED + "That material is invalid!");
                 return;
             } else s.setLine(1, line2.toLowerCase().replace("_", "_"));
-            RUtils.showFilledChest(p, mat);
+            RUtils.showFilledChest(p, line2);
         }
 
         //Disposal signs
@@ -342,13 +337,8 @@ public class SignListener implements Listener {
                 e.setLine(1, ChatColor.DARK_GREEN + line3);
                 if (!RUtils.chargePlayer(p, charge)) return;
             }
-            Material mat;
-            try {
-                mat = Material.valueOf(line2.toUpperCase().replace(" ", "_"));
-            } catch (Exception ex) {
-                mat = null;
-            }
-            if (mat == null) {
+            ItemStack stack = RUtils.getItem(line2, null);
+            if (stack == null) {
                 e.setLine(1, ChatColor.RED + line2);
                 p.sendMessage(ChatColor.RED + "That material is invalid!");
                 return;
