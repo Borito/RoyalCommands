@@ -112,6 +112,8 @@ public class RoyalCommands extends JavaPlugin {
     public static Object commands = null;
     public static Plugin[] plugins = null;
 
+    public Metrics m = null;
+
     // Permissions with Vault
     public Boolean setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
@@ -337,6 +339,13 @@ public class RoyalCommands extends JavaPlugin {
         setupEconomy();
         setupChat();
 
+        try {
+            m = new Metrics(this);
+            m.start();
+        } catch (Exception ignore) {
+            log.warning("Could not start Metrics!");
+        }
+
         version = getDescription().getVersion();
 
         commands = getDescription().getCommands();
@@ -350,7 +359,9 @@ public class RoyalCommands extends JavaPlugin {
                 try {
                     newVersion = updateCheck(version);
                     String oldVersion = version;
-                    if (!newVersion.contains(oldVersion) && !oldVersion.contains("pre")) {
+                    Integer nVI = Integer.valueOf(newVersion.replaceAll("\\D+", ""));
+                    Integer oVI = Integer.valueOf(version.replaceAll("\\D+", ""));
+                    if (nVI > oVI) {
                         log.warning(newVersion + " is out! You are running v" + oldVersion);
                         log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
                     }
