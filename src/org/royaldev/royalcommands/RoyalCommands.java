@@ -361,7 +361,7 @@ public class RoyalCommands extends JavaPlugin {
                     String oldVersion = version;
                     Integer nVI = Integer.valueOf(newVersion.replaceAll("\\D+", ""));
                     Integer oVI = Integer.valueOf(version.replaceAll("\\D+", ""));
-                    if (nVI > oVI) {
+                    if (nVI > oVI || (oldVersion.contains("pre") && nVI.equals(oVI))) {
                         log.warning(newVersion + " is out! You are running v" + oldVersion);
                         log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
                     }
