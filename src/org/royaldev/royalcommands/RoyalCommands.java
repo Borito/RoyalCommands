@@ -343,7 +343,7 @@ public class RoyalCommands extends JavaPlugin {
             m = new Metrics(this);
             m.start();
         } catch (Exception ignore) {
-            log.warning("Could not start Metrics!");
+            log.warning("[RoyalCommands] Could not start Metrics!");
         }
 
         version = getDescription().getVersion();
@@ -505,6 +505,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("playertime").setExecutor(new CmdPlayerTime(this));
         getCommand("compass").setExecutor(new CmdCompass(this));
         getCommand("helmet").setExecutor(new CmdHelmet(this));
+        getCommand("worldmanager").setExecutor(new CmdWorldManager(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");

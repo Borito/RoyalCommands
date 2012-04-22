@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.logging.Logger;
 
+@SuppressWarnings("unchecked")
 public class RUtils {
 
     static Logger log = Logger.getLogger("Minecraft");
@@ -63,6 +64,55 @@ public class RUtils {
         for (Integer integer : AIR_MATERIALS) AIR_MATERIALS_TARGET.add(integer.byteValue());
         AIR_MATERIALS_TARGET.add((byte) Material.WATER.getId());
         AIR_MATERIALS_TARGET.add((byte) Material.STATIONARY_WATER.getId());
+    }
+
+    public static String[] wrapText(String text, int len) {
+        // return empty array for null text
+        if (text == null)
+            return new String[]{};
+
+        // return text if len is zero or less
+        if (len <= 0)
+            return new String[]{text};
+
+        // return text if less than length
+        if (text.length() <= len)
+            return new String[]{text};
+        char[] chars = text.toCharArray();
+        Vector lines = new Vector();
+        StringBuilder line = new StringBuilder();
+        StringBuilder word = new StringBuilder();
+
+        for (char aChar : chars) {
+            word.append(aChar);
+
+            if (aChar == ' ') {
+                if ((line.length() + word.length()) > len) {
+                    lines.add(line.toString());
+                    line.delete(0, line.length());
+                }
+
+                line.append(word);
+                word.delete(0, word.length());
+            }
+        }
+
+        // handle any extra chars in current word
+        if (word.length() > 0) {
+            if ((line.length() + word.length()) > len) {
+                lines.add(line.toString());
+                line.delete(0, line.length());
+            }
+            line.append(word);
+        }
+
+        // handle extra line
+        if (line.length() > 0) lines.add(line.toString());
+
+        String[] ret = new String[lines.size()];
+        int c = 0; // counter
+        for (Enumeration e = lines.elements(); e.hasMoreElements(); c++) ret[c] = (String) e.nextElement();
+        return ret;
     }
 
     public static Block getTarget(Player p) {

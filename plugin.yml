@@ -598,6 +598,11 @@ commands:
     usage: /<command> [item/none]
     aliases: [helm]
 
+  worldmanager:
+    description: Allows you to manage the world on your server.
+    usage: /<command> [help/create/unload/info] (additional args)
+    aliases: [wm]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -975,6 +980,9 @@ permissions:
     default: op
   rcmds.helmet:
     description: Allows you to change your helmet.
+    default: op
+  rcmds.worldmanager:
+    description: Allows you to manage worlds.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1418,6 +1426,7 @@ permissions:
       rcmds.playertime: true
       rcmds.compass: true
       rcmds.helmet: true
+      rcmds.worldmanager: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
