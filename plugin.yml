@@ -600,7 +600,7 @@ commands:
 
   worldmanager:
     description: Allows you to manage the worlds on your server.
-    usage: /<command> [help/create/unload/delete/list/info] (additional args)
+    usage: /<command> [help/create/load/unload/delete/list/info] (additional args)
     aliases: [wm]
 
   rcmds:

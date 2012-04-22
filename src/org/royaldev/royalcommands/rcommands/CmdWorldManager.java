@@ -160,7 +160,24 @@ public class CmdWorldManager implements CommandExecutor {
                 cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + " help" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Displays this help.", 64));
                 cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + "list" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Lists all the loaded worlds.", 64));
                 return true;
-
+            } else if (command.equals("load")) {
+                if (args.length < 2) {
+                    cs.sendMessage(ChatColor.RED + "Not enough arguments! Try " + ChatColor.GRAY + "/" + label + " help" + ChatColor.RED + " for help.");
+                    return true;
+                }
+                String name = args[1];
+                boolean contains = false;
+                for (File f : plugin.getServer().getWorldContainer().listFiles()) {
+                    if (f.getName().equals(name)) contains = true;
+                }
+                if (!contains) {
+                    cs.sendMessage(ChatColor.RED + "No such world!");
+                    return true;
+                }
+                WorldCreator wc = new WorldCreator(name);
+                World w = wc.createWorld();
+                cs.sendMessage(ChatColor.BLUE + "Loaded world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
+                return true;
             } else if (command.equals("info")) {
                 cs.sendMessage(ChatColor.GREEN + "RoyalCommands WorldManager Info");
                 cs.sendMessage(ChatColor.GREEN + "===============================");
