@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.io.File;
 import java.util.Random;
 
 public class CmdWorldManager implements CommandExecutor {
@@ -19,6 +20,25 @@ public class CmdWorldManager implements CommandExecutor {
 
     public CmdWorldManager(RoyalCommands instance) {
         plugin = instance;
+    }
+
+    public static boolean deleteDir(File dir) {
+        // If it is a directory get the child
+        if (dir.isDirectory()) {
+            // List all the contents of the directory
+            File[] fileList = dir.listFiles();
+            if (fileList == null) return false;
+            // Loop through the list of files/directories
+            for (File file : fileList) {
+                // Get the current file object.
+                // Call deleteDir function once again for deleting all the directory contents or
+                // sub directories if any present.
+                deleteDir(file);
+            }
+        }
+
+        // Delete the current directory or file.
+        return dir.delete();
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -119,9 +139,16 @@ public class CmdWorldManager implements CommandExecutor {
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Deleting world...");
-                success = w.getWorldFolder().delete();
-                if (success) cs.sendMessage(ChatColor.BLUE + "World deleted successfully!");
+                success = deleteDir(w.getWorldFolder());
+                if (success) cs.sendMessage(ChatColor.BLUE + "Successfully deleted world!");
                 else cs.sendMessage(ChatColor.RED + "Could not delete world.");
+                return true;
+            } else if (command.equals("list")) {
+                cs.sendMessage(ChatColor.BLUE + "Worlds:");
+                String worlds = "";
+                for (World w : plugin.getServer().getWorlds())
+                    worlds = (worlds.equals("")) ? worlds.concat(ChatColor.GRAY + w.getName()) : worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + w.getName());
+                cs.sendMessage(worlds);
                 return true;
             } else if (command.equals("help")) {
                 cs.sendMessage(ChatColor.GREEN + "RoyalCommands WorldManager Help");
@@ -131,6 +158,7 @@ public class CmdWorldManager implements CommandExecutor {
                 cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + " delete [name] (true)" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Unloads and deletes a world. If true is specified, will kick all players on the world.", 64));
                 cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + " info" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Displays available world types and environments; if you are a player, displays information about your world.", 64));
                 cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + " help" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Displays this help.", 64));
+                cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + "list" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Lists all the loaded worlds.", 64));
                 return true;
 
             } else if (command.equals("info")) {
