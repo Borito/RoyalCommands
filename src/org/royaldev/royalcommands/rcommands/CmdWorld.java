@@ -33,13 +33,8 @@ public class CmdWorld implements CommandExecutor {
             if (args.length < 1) {
                 List<World> ws = plugin.getServer().getWorlds();
                 String worlds = "";
-                for (World w : ws) {
-                    if (worlds.equals("")) {
-                        worlds = worlds.concat(ChatColor.GRAY + w.getName());
-                    } else {
-                        worlds = worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + w.getName());
-                    }
-                }
+                for (World w : ws)
+                    worlds = (worlds.equals("")) ? worlds.concat(ChatColor.GRAY + w.getName()) : worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + w.getName());
                 cs.sendMessage(ChatColor.BLUE + "Worlds: " + worlds);
                 return true;
             }
