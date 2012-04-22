@@ -65,6 +65,14 @@ public class CmdEnchant implements CommandExecutor {
                     return true;
                 }
             }
+            if (level < 1) {
+                if (args[0].equalsIgnoreCase("all"))
+                    for (Enchantment ench : Enchantment.values()) hand.removeEnchantment(ench);
+                else hand.removeEnchantment(enchantment);
+                String enchantments = (enchantment == null) ? "all" : enchantment.getName().toLowerCase().replace("_", " ");
+                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + enchantments + ChatColor.BLUE + " from " + ChatColor.GRAY + hand.getType().name().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+                return true;
+            }
             if (args[0].equalsIgnoreCase("all"))
                 for (Enchantment ench : Enchantment.values()) hand.addUnsafeEnchantment(ench, level);
             else hand.addUnsafeEnchantment(enchantment, level);
