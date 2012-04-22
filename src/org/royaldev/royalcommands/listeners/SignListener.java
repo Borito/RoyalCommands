@@ -134,7 +134,7 @@ public class SignListener implements Listener {
                 s.setLine(1, ChatColor.RED + line2);
                 p.sendMessage(ChatColor.RED + "That material is invalid!");
                 return;
-            } else s.setLine(1, line2.toLowerCase().replace("_", "_"));
+            } else s.setLine(1, line2.toLowerCase().replace("_", " "));
             RUtils.showFilledChest(p, line2);
         }
 
