@@ -599,7 +599,7 @@ commands:
     aliases: [helm]
 
   worldmanager:
-    description: Allows you to manage the world on your server.
+    description: Allows you to manage the worlds on your server.
     usage: /<command> [help/create/unload/delete/list/info] (additional args)
     aliases: [wm]
 
