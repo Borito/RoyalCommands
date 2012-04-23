@@ -43,21 +43,27 @@ public class CmdBiome implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player p = (Player) cs;
-            Biome b = Biome.valueOf(args[0].toUpperCase());
+            final Player p = (Player) cs;
+            final Biome b = Biome.valueOf(args[0].toUpperCase());
             if (b == null) {
                 p.sendMessage(ChatColor.RED + "No such biome!");
                 sendBiomeList(p);
                 return true;
             }
-            Chunk c = p.getLocation().getChunk();
-            for (int x = 0; x <= 16; x++)
-                for (int y = 0; y <= 256; y++)
-                    for (int z = 0; z <= 16; z++) {
-                        Block bl = c.getBlock(x, y, z);
-                        bl.setBiome(b);
-                    }
-            p.sendMessage(ChatColor.BLUE + "Set biome of this chunk to " + ChatColor.GRAY + b.name().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+            final Chunk c = p.getLocation().getChunk();
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    for (int x = 0; x <= 16; x++)
+                        for (int y = 0; y <= 256; y++)
+                            for (int z = 0; z <= 16; z++) {
+                                Block bl = c.getBlock(x, y, z);
+                                bl.setBiome(b);
+                            }
+                    p.sendMessage(ChatColor.BLUE + "Set biome of this chunk to " + ChatColor.GRAY + b.name().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+                }
+            };
+            plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, r);
             return true;
         }
         return false;
