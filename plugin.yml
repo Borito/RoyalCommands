@@ -603,6 +603,10 @@ commands:
     usage: /<command> [help/create/load/unload/delete/list/info] (additional args)
     aliases: [wm]
 
+  biome:
+    description: Changes the biome of the chunk you're in.
+    usage: /<command> [biome]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -983,6 +987,9 @@ permissions:
     default: op
   rcmds.worldmanager:
     description: Allows you to manage worlds.
+    default: op
+  rcmds.biome:
+    description: Allows you to change biomes.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1427,6 +1434,7 @@ permissions:
       rcmds.compass: true
       rcmds.helmet: true
       rcmds.worldmanager: true
+      rcmds.biome: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true

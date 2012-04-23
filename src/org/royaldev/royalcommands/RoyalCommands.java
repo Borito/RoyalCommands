@@ -506,6 +506,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("compass").setExecutor(new CmdCompass(this));
         getCommand("helmet").setExecutor(new CmdHelmet(this));
         getCommand("worldmanager").setExecutor(new CmdWorldManager(this));
+        getCommand("biome").setExecutor(new CmdBiome(this));
         getCommand("rcmds").setExecutor(new Rcmds(this));
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
