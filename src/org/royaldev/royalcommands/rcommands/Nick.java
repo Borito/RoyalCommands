@@ -54,6 +54,7 @@ public class Nick implements CommandExecutor {
                 }
                 String newname = t.getName();
                 t.setDisplayName(newname);
+                t.setPlayerListName(newname);
                 PConfManager.setPValString(t, newname, "dispname");
                 t.sendMessage(ChatColor.BLUE + "Your name has been reset to " + ChatColor.GRAY + newname + ChatColor.BLUE + ".");
                 cs.sendMessage(ChatColor.BLUE + "You have reset " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " name to " + ChatColor.GRAY + newname + ChatColor.BLUE + ".");
@@ -84,6 +85,7 @@ public class Nick implements CommandExecutor {
                 }
                 String newname = plugin.getFinalArg(args, 1).trim();
                 t.setDisplayName(newname);
+                t.setPlayerListName(newname);
                 PConfManager.setPValString(t, newname, "dispname");
                 t.sendMessage(ChatColor.BLUE + "Your display name has been changed to " + ChatColor.GRAY + newname + ChatColor.BLUE + ".");
                 cs.sendMessage(ChatColor.BLUE + "You have changed " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " name to " + ChatColor.GRAY + newname + ChatColor.BLUE + ".");
