@@ -72,10 +72,10 @@ public class CmdGive implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "The amount was not a number!");
                     return true;
                 }
-                if (amount < 1) {
-                    cs.sendMessage(ChatColor.RED + "Invalid amount! You must specify a positive amount.");
-                    return true;
-                }
+            }
+            if (amount < 1) {
+                cs.sendMessage(ChatColor.RED + "Invalid amount! You must specify a positive amount.");
+                return true;
             }
             String name = args[1];
             ItemStack toInv = RUtils.getItem(name, amount);

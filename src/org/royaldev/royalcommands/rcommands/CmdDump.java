@@ -42,7 +42,7 @@ public class CmdDump implements CommandExecutor {
             Player p = (Player) cs;
             Block bl = RUtils.getTarget(p);
             Location l = bl.getLocation();
-            l.setY(l.getY()+1);
+            l.setY(l.getY() + 1);
             Block b = l.getBlock();
             if (b.getTypeId() != 0) {
                 cs.sendMessage(ChatColor.RED + "Please make sure the block above is air.");

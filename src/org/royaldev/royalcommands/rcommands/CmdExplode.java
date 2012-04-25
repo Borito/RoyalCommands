@@ -45,7 +45,7 @@ public class CmdExplode implements CommandExecutor {
                 return true;
             }
             if (args.length == 2) {
-                if (args[1].trim().equalsIgnoreCase("power")) {
+                if (args[1].equalsIgnoreCase("power")) {
                     if (!(cs instanceof Player)) {
                         cs.sendMessage(cmd.getDescription());
                         return false;
