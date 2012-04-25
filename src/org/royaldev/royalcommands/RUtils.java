@@ -116,9 +116,7 @@ public class RUtils {
     }
 
     public static Block getTarget(Player p) {
-        Block bb = p.getTargetBlock(AIR_MATERIALS_TARGET, 300);
-        if (bb == null) return null;
-        return bb;
+        return p.getTargetBlock(AIR_MATERIALS_TARGET, 300);
     }
 
     public static void showFilledChest(Player p, String name) {
