@@ -61,7 +61,10 @@ public class Time implements CommandExecutor {
                     return true;
                 }
                 if (args.length == 1) {
-                    for (World w : plugin.getServer().getWorlds()) w.setTime(time);
+                    for (World w : plugin.getServer().getWorlds()) {
+                        if (plugin.smoothTime) smoothTimeChange(time, w);
+                        w.setTime(time);
+                    }
                     cs.sendMessage(ChatColor.BLUE + "Time in all worlds set to " + ChatColor.GRAY + time + ChatColor.BLUE + ".");
                 }
                 if (args.length > 1) {
@@ -70,6 +73,7 @@ public class Time implements CommandExecutor {
                         cs.sendMessage(ChatColor.RED + "No such world!");
                         return true;
                     }
+                    if (plugin.smoothTime) smoothTimeChange(time, w);
                     w.setTime(time);
                     cs.sendMessage(ChatColor.BLUE + "Time in world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + " set to " + ChatColor.GRAY + time + ChatColor.BLUE + ".");
                 }
