@@ -19,8 +19,15 @@ public class Time implements CommandExecutor {
     }
 
     public static void smoothTimeChange(long time, World world) {
-        if (time >= world.getTime()) for (long i = world.getTime(); i < time; i++) world.setTime(i);
-        else for (long i = world.getTime(); i > time; i--) world.setTime(i);
+        /*if (time >= world.getTime()) for (long i = world.getTime(); i < time; i++) world.setTime(i);
+        else for (long i = world.getTime(); i > time; i--) world.setTime(i);*/
+        for (long i = world.getTime() + 1; i != time; i++) {
+            if (i == 24001) {
+                i = 0;
+                if (time == 0) break;
+            }
+            world.setTime(i);
+        }
     }
 
     public static Long getValidTime(String time) {
