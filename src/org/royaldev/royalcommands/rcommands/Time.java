@@ -24,19 +24,19 @@ public class Time implements CommandExecutor {
     }
 
     public static Long getValidTime(String time) {
-        Integer vtime;
+        Long vtime;
         try {
-            vtime = Integer.parseInt(time);
+            vtime = Long.valueOf(time);
         } catch (Exception e) {
-            if (time.equalsIgnoreCase("day")) vtime = 0;
-            else if (time.equalsIgnoreCase("midday")) vtime = 6000;
-            else if (time.equalsIgnoreCase("sunset")) vtime = 12000;
-            else if (time.equalsIgnoreCase("night")) vtime = 14000;
-            else if (time.equalsIgnoreCase("midnight")) vtime = 18000;
-            else if (time.equalsIgnoreCase("sunrise")) vtime = 23000;
+            if (time.equalsIgnoreCase("day")) vtime = 0L;
+            else if (time.equalsIgnoreCase("midday")) vtime = 6000L;
+            else if (time.equalsIgnoreCase("sunset")) vtime = 12000L;
+            else if (time.equalsIgnoreCase("night")) vtime = 14000L;
+            else if (time.equalsIgnoreCase("midnight")) vtime = 18000L;
+            else if (time.equalsIgnoreCase("sunrise")) vtime = 23000L;
             else return null;
         }
-        return (long) vtime;
+        return vtime;
     }
 
     @Override
