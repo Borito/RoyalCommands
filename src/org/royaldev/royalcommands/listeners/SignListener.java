@@ -45,19 +45,18 @@ public class SignListener implements Listener {
         if (e.getClickedBlock() == null) return;
         if (!(e.getClickedBlock().getState() instanceof Sign)) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        Sign s = (Sign) e.getClickedBlock().getState();
         if (e.getPlayer() == null) return;
+        Sign s = (Sign) e.getClickedBlock().getState();
         Player p = e.getPlayer();
-        String line1 = ChatColor.stripColor(s.getLine(0));
-        String line2 = ChatColor.stripColor(s.getLine(1));
-        String line3 = ChatColor.stripColor(s.getLine(2));
-        String line4 = ChatColor.stripColor(s.getLine(3));
+        String line1 = ChatColor.stripColor(s.getLine(0)).trim();
+        String line2 = ChatColor.stripColor(s.getLine(1)).trim();
+        String line3 = ChatColor.stripColor(s.getLine(2)).trim();
+        String line4 = ChatColor.stripColor(s.getLine(3)).trim();
 
         //Warp signs
         if (line1.equalsIgnoreCase("[warp]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.warp")) {
                 RUtils.dispNoPerms(p);
-                s.setLine(0, "");
                 return;
             }
             if (line2.isEmpty()) {
@@ -88,7 +87,6 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase(ChatColor.stripColor("[time]"))) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.time")) {
                 RUtils.dispNoPerms(p);
-                s.setLine(0, "");
                 return;
             }
             if (line2.isEmpty() || (Time.getValidTime(line2) == null)) {
@@ -116,7 +114,6 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[free]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.free")) {
                 RUtils.dispNoPerms(p);
-                s.setLine(0, "");
                 return;
             }
 
@@ -129,7 +126,7 @@ public class SignListener implements Listener {
                 s.setLine(2, ChatColor.DARK_GREEN + line3);
                 if (!RUtils.chargePlayer(p, charge)) return;
             }
-            ItemStack stack = RUtils.getItem(line2, null);
+            ItemStack stack = RUtils.getItem(line2.replace(" ", "_"), null);
             if (stack == null) {
                 s.setLine(1, ChatColor.RED + line2);
                 p.sendMessage(ChatColor.RED + "That material is invalid!");
@@ -142,7 +139,6 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[disposal]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.disposal")) {
                 RUtils.dispNoPerms(p);
-                s.setLine(0, "");
                 return;
             }
 
@@ -164,7 +160,6 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[heal]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.heal")) {
                 RUtils.dispNoPerms(p);
-                s.setLine(0, "");
                 return;
             }
 
@@ -186,7 +181,6 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[weather]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.weather")) {
                 RUtils.dispNoPerms(p);
-                s.setLine(0, "");
                 return;
             }
             Double charge = getCharge(line3);
@@ -206,7 +200,6 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[give]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.give")) {
                 RUtils.dispNoPerms(p);
-                s.setLine(0, "");
                 return;
             }
             int amount;
@@ -233,7 +226,6 @@ public class SignListener implements Listener {
         if (line1.equalsIgnoreCase("[command]")) {
             if (!plugin.isAuthorized(p, "rcmds.sign.use.command")) {
                 RUtils.dispNoPerms(p);
-                s.setLine(0, "");
                 return;
             }
 
