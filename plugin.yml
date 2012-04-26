@@ -1191,6 +1191,9 @@ permissions:
   rcmds.sign.use.command:
     description: Allows the player to use command signs.
     default: op
+  rcmds.sign.use.free:
+    description: Allows the player to use free signs.
+    default: op
 
   rcmds.setarmor.none:
     description: Allows the player to set no armor.
@@ -1207,6 +1210,8 @@ permissions:
   rcmds.setarmor.iron:
     description: Allows the player to set iron armor.
     default: op
+  rcmds.setarmor.leather:
+    description: Allows the player to set leather armor.
 
   rcmds.notarget:
     description: Disables the mobs' ability to target the player.
@@ -1304,6 +1309,7 @@ permissions:
       rcmds.setarmor.diamond: true
       rcmds.setarmor.gold: true
       rcmds.setarmor.iron: true
+      rcmds.setarmor.leather: true
 
   rcmds.*:
     description: Gives every permission.
