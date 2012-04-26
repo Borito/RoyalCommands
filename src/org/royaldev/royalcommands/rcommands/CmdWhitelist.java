@@ -21,6 +21,10 @@ public class CmdWhitelist implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
+            if (plugin.whl == null) {
+                cs.sendMessage(ChatColor.RED + "The whitelist.yml file was invalid! Cannot use whitelist.");
+                return true;
+            }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
@@ -37,7 +41,8 @@ public class CmdWhitelist implements CommandExecutor {
                     return true;
                 }
                 plugin.whitelist.add(player);
-                plugin.saveConfig();
+                plugin.whl.setStringList("whitelist", plugin.whitelist);
+                plugin.whl.save();
                 cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + player + ChatColor.BLUE + " to whitelist.");
                 return true;
             } else if (command.equalsIgnoreCase("remove")) {
@@ -46,7 +51,8 @@ public class CmdWhitelist implements CommandExecutor {
                     return true;
                 }
                 plugin.whitelist.remove(player);
-                plugin.saveConfig();
+                plugin.whl.setStringList("whitelist", plugin.whitelist);
+                plugin.whl.save();
                 cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + player + ChatColor.BLUE + " from whitelist.");
                 return true;
             } else if (command.equalsIgnoreCase("check")) {

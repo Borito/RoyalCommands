@@ -156,11 +156,5 @@ global_teleport_cooldown: 0
 # Use the dynamic whitelist?
 use_whitelist: false
 
-# Actual whitelist list.
-whitelist:
-- "jkcclemens"
-- "some_guy"
-- "guy2"
-
 # Smooth time transitions?
 use_smooth_time: true

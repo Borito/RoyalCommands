@@ -42,16 +42,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class RoyalCommands extends JavaPlugin {
+
+    public ConfigManager whl;
 
     public static Permission permission = null;
     public static Economy economy = null;
@@ -152,6 +151,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void reloadConfigVals() {
+        if (whl != null) whl.load();
         showcommands = getConfig().getBoolean("view_commands");
         disablegetip = getConfig().getBoolean("disable_getip");
         useWelcome = getConfig().getBoolean("enable_welcome_message");
@@ -195,7 +195,7 @@ public class RoyalCommands extends JavaPlugin {
         blockedItems = getConfig().getStringList("blocked_spawn_items");
         motd = getConfig().getStringList("motd");
         commandCooldowns = getConfig().getStringList("command_cooldowns");
-        whitelist = getConfig().getStringList("whitelist");
+        if (whl != null) whitelist = whl.getStringList("whitelist");
 
         Help.reloadHelp();
     }
@@ -214,6 +214,28 @@ public class RoyalCommands extends JavaPlugin {
             } catch (Exception e) {
                 log.severe("[RoyalCommands] Failed to make userdata directory!");
                 log.severe(e.getMessage());
+            }
+        }
+        File whitelist = new File(getDataFolder() + File.separator + "whitelist.yml");
+        if (!whitelist.exists()) {
+            try {
+                boolean success = whitelist.createNewFile();
+                if (!success) {
+                    log.severe("[RoyalCommands] Could not create whitelist.yml!");
+                } else {
+                    try {
+                        BufferedWriter out = new BufferedWriter(new FileWriter(whitelist.getAbsolutePath()));
+                        out.write("whitelist:\n");
+                        out.write("- jkcclemens\n");
+                        out.write("- other_guy\n");
+                        out.close();
+                    } catch (IOException e) {
+                        //ignore
+                    }
+                }
+            } catch (Exception e) {
+                log.severe("[RoyalCommands] Could not create whitelist.yml!");
+                e.printStackTrace();
             }
         }
         File rules = new File(this.getDataFolder() + File.separator + "rules.txt");
@@ -335,6 +357,12 @@ public class RoyalCommands extends JavaPlugin {
     public void onEnable() {
         loadConfiguration();
         reloadConfigVals();
+        try {
+            whl = new ConfigManager(getDataFolder().getAbsolutePath() + File.separator + "whitelist.yml");
+        } catch (FileNotFoundException e) {
+            log.warning("[RoyalCommands] Could not find whitelist.yml!");
+            whl = null;
+        }
 
         setupEconomy();
         setupChat();
