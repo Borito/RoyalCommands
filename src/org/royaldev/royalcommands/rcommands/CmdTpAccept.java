@@ -28,20 +28,20 @@ public class CmdTpAccept implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            if (TeleportRequest.tprdb.containsKey(cs)) {
-                Player t = (Player) TeleportRequest.tprdb.get(cs);
+            if (CmdTeleportRequest.tprdb.containsKey(cs)) {
+                Player t = (Player) CmdTeleportRequest.tprdb.get(cs);
                 cs.sendMessage(ChatColor.BLUE + "Teleport request accepted.");
                 t.sendMessage(ChatColor.BLUE + "Your teleport request was accepted.");
                 t.teleport(p.getLocation());
-                TeleportRequest.tprdb.remove(cs);
+                CmdTeleportRequest.tprdb.remove(cs);
                 return true;
             }
-            if (TeleportRequestHere.tprhdb.containsKey(cs)) {
-                Player t = (Player) TeleportRequestHere.tprhdb.get(cs);
+            if (CmdTeleportRequestHere.tprhdb.containsKey(cs)) {
+                Player t = (Player) CmdTeleportRequestHere.tprhdb.get(cs);
                 cs.sendMessage(ChatColor.BLUE + "Teleport request accepted.");
                 t.sendMessage(ChatColor.BLUE + "Your teleport request was accepted.");
                 p.teleport(t.getLocation());
-                TeleportRequestHere.tprhdb.remove(cs);
+                CmdTeleportRequestHere.tprhdb.remove(cs);
                 return true;
             }
             cs.sendMessage(ChatColor.RED + "You have no requests pending.");

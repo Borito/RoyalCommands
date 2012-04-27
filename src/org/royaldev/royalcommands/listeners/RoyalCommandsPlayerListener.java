@@ -19,9 +19,9 @@ import org.bukkit.potion.PotionEffectType;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.rcommands.Afk;
-import org.royaldev.royalcommands.rcommands.Back;
-import org.royaldev.royalcommands.rcommands.Motd;
+import org.royaldev.royalcommands.rcommands.CmdAfk;
+import org.royaldev.royalcommands.rcommands.CmdBack;
+import org.royaldev.royalcommands.rcommands.CmdMotd;
 
 import java.io.File;
 import java.util.*;
@@ -114,7 +114,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        Back.backdb.put(e.getPlayer(), e.getFrom());
+        CmdBack.backdb.put(e.getPlayer(), e.getFrom());
     }
 
     @EventHandler
@@ -162,9 +162,9 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.isCancelled()) return;
-        if (Afk.afkdb.contains(event.getPlayer())) {
+        if (CmdAfk.afkdb.contains(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
-            Afk.afkdb.remove(event.getPlayer());
+            CmdAfk.afkdb.remove(event.getPlayer());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
             if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime"))
@@ -220,9 +220,9 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
-        if (Afk.afkdb.contains(event.getPlayer())) {
+        if (CmdAfk.afkdb.contains(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
-            Afk.afkdb.remove(event.getPlayer());
+            CmdAfk.afkdb.remove(event.getPlayer());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
     }
@@ -339,9 +339,9 @@ public class RoyalCommandsPlayerListener implements Listener {
             playerip = playerip.replace("/", "");
             PConfManager.setPValString(event.getPlayer(), playerip, "ip");
         }
-        if (plugin.motdLogin) Motd.showMotd(event.getPlayer());
+        if (plugin.motdLogin) CmdMotd.showMotd(event.getPlayer());
         if (plugin.sendToSpawn) {
-            if (plugin.stsBack) Back.backdb.put(event.getPlayer(), event.getPlayer().getLocation());
+            if (plugin.stsBack) CmdBack.backdb.put(event.getPlayer(), event.getPlayer().getLocation());
             event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
         }
     }

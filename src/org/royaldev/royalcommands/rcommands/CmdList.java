@@ -52,7 +52,7 @@ public class CmdList implements CommandExecutor {
             for (Player aP : p) {
                 String name = formatPrepend(aP) + ChatColor.WHITE;
                 if (!plugin.isVanished(aP)) {
-                    if (Afk.afkdb.contains(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
+                    if (CmdAfk.afkdb.contains(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                     ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
                 } else hid++;
             }

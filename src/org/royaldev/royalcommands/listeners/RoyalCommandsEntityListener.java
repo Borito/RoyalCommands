@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.rcommands.Back;
+import org.royaldev.royalcommands.rcommands.CmdBack;
 
 public class RoyalCommandsEntityListener implements Listener {
 
@@ -30,7 +30,7 @@ public class RoyalCommandsEntityListener implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
         Location pLoc = p.getLocation();
-        Back.backdb.put(p, pLoc);
+        CmdBack.backdb.put(p, pLoc);
         p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
     }
 

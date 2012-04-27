@@ -13,9 +13,9 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdGive;
-import org.royaldev.royalcommands.rcommands.Time;
-import org.royaldev.royalcommands.rcommands.Warp;
-import org.royaldev.royalcommands.rcommands.Weather;
+import org.royaldev.royalcommands.rcommands.CmdTime;
+import org.royaldev.royalcommands.rcommands.CmdWarp;
+import org.royaldev.royalcommands.rcommands.CmdWeather;
 
 public class SignListener implements Listener {
 
@@ -76,7 +76,7 @@ public class SignListener implements Listener {
                 if (!did) return;
             }
 
-            Location warpLoc = Warp.pWarp(p, plugin, line2.toLowerCase());
+            Location warpLoc = CmdWarp.pWarp(p, plugin, line2.toLowerCase());
             if (warpLoc == null) {
                 return;
             }
@@ -89,7 +89,7 @@ public class SignListener implements Listener {
                 RUtils.dispNoPerms(p);
                 return;
             }
-            if (line2.isEmpty() || (Time.getValidTime(line2) == null)) {
+            if (line2.isEmpty() || (CmdTime.getValidTime(line2) == null)) {
                 s.setLine(0, ChatColor.RED + line1);
                 p.sendMessage(ChatColor.RED + "Invalid time specified!");
                 return;
@@ -106,7 +106,7 @@ public class SignListener implements Listener {
                 if (!did) return;
             }
 
-            long time = Time.getValidTime(line2);
+            long time = CmdTime.getValidTime(line2);
             p.getWorld().setTime(time);
         }
 
@@ -194,7 +194,7 @@ public class SignListener implements Listener {
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
-            Weather.changeWeather(p, line2.trim());
+            CmdWeather.changeWeather(p, line2.trim());
         }
 
         //Give signs
@@ -280,7 +280,7 @@ public class SignListener implements Listener {
                 e.setLine(2, ChatColor.DARK_GREEN + line3);
             }
 
-            Location warpLoc = Warp.pWarp(p, plugin, line2.toLowerCase());
+            Location warpLoc = CmdWarp.pWarp(p, plugin, line2.toLowerCase());
             if (warpLoc == null) {
                 e.setLine(0, ChatColor.RED + line1);
                 return;
@@ -295,7 +295,7 @@ public class SignListener implements Listener {
                 RUtils.dispNoPerms(p);
                 return;
             }
-            if (line2.isEmpty() || (Time.getValidTime(line2)) == null) {
+            if (line2.isEmpty() || (CmdTime.getValidTime(line2)) == null) {
                 e.setLine(0, ChatColor.RED + line1);
                 return;
             }
@@ -396,7 +396,7 @@ public class SignListener implements Listener {
                 e.setLine(2, ChatColor.DARK_GREEN + line3);
             }
 
-            boolean valid = Weather.validWeather(line2.trim());
+            boolean valid = CmdWeather.validWeather(line2.trim());
             if (!valid) {
                 p.sendMessage(ChatColor.RED + "Invalid weather condition!");
                 e.setLine(0, ChatColor.RED + line1);

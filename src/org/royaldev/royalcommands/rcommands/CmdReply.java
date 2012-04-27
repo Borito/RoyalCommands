@@ -28,14 +28,14 @@ public class CmdReply implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            if (Message.replydb.containsKey(cs)) {
-                CommandSender t = Message.replydb.get(cs);
-                if (!Message.replydb.containsKey(t)) {
-                    Message.replydb.put(t, cs);
-                } else if (Message.replydb.containsKey(t)) {
-                    if (Message.replydb.get(t) != cs) {
-                        Message.replydb.remove(t);
-                        Message.replydb.put(t, cs);
+            if (CmdMessage.replydb.containsKey(cs)) {
+                CommandSender t = CmdMessage.replydb.get(cs);
+                if (!CmdMessage.replydb.containsKey(t)) {
+                    CmdMessage.replydb.put(t, cs);
+                } else if (CmdMessage.replydb.containsKey(t)) {
+                    if (CmdMessage.replydb.get(t) != cs) {
+                        CmdMessage.replydb.remove(t);
+                        CmdMessage.replydb.put(t, cs);
                     }
                 }
                 if ((t instanceof Player) && !((Player) t).isOnline()) {

@@ -24,12 +24,12 @@ public class CmdTpDeny implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (TeleportRequest.tprdb.containsKey(cs)) {
-                Player t = (Player) TeleportRequest.tprdb.get(cs);
+            if (CmdTeleportRequest.tprdb.containsKey(cs)) {
+                Player t = (Player) CmdTeleportRequest.tprdb.get(cs);
                 cs.sendMessage(ChatColor.BLUE + "Teleport request denied.");
                 t.sendMessage(ChatColor.BLUE
                         + "Your teleport request was denied.");
-                TeleportRequest.tprdb.remove(cs);
+                CmdTeleportRequest.tprdb.remove(cs);
                 return true;
             }
             cs.sendMessage(ChatColor.RED + "You have no requests pending.");
