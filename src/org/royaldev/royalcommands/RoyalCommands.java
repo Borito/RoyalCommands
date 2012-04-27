@@ -46,6 +46,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class RoyalCommands extends JavaPlugin {
@@ -108,7 +109,7 @@ public class RoyalCommands extends JavaPlugin {
         pconfm = new PConfManager(this);
     }
 
-    public static Object commands = null;
+    public static Map<String, Map<String, Object>> commands = null;
     public static Plugin[] plugins = null;
 
     public Metrics m = null;
@@ -355,6 +356,8 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void onEnable() {
+        commands = getDescription().getCommands();
+
         loadConfiguration();
         reloadConfigVals();
         try {
@@ -375,8 +378,6 @@ public class RoyalCommands extends JavaPlugin {
         }
 
         version = getDescription().getVersion();
-
-        commands = getDescription().getCommands();
 
         plugins = getServer().getPluginManager().getPlugins();
 

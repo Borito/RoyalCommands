@@ -6,11 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@SuppressWarnings("unchecked")
 public class Help {
 
     public static HashMap<String, String> helpdb = new HashMap<String, String>();
-    static Map<String, Map<String, Object>> commands = (Map<String, Map<String, Object>>) RoyalCommands.commands;
+    private static Map<String, Map<String, Object>> commands = RoyalCommands.commands;
 
     public static void reloadHelp() {
         helpdb.clear();
