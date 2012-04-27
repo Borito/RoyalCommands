@@ -357,6 +357,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public void onEnable() {
         commands = getDescription().getCommands();
+        plugins = getServer().getPluginManager().getPlugins();
 
         loadConfiguration();
         reloadConfigVals();
@@ -378,8 +379,6 @@ public class RoyalCommands extends JavaPlugin {
         }
 
         version = getDescription().getVersion();
-
-        plugins = getServer().getPluginManager().getPlugins();
 
         // yet again, borrowed from MilkBowl
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
