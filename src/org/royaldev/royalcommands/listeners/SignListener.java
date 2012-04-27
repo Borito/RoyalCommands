@@ -126,7 +126,8 @@ public class SignListener implements Listener {
                 s.setLine(2, ChatColor.DARK_GREEN + line3);
                 if (!RUtils.chargePlayer(p, charge)) return;
             }
-            ItemStack stack = RUtils.getItem(line2.replace(" ", "_"), null);
+            line2 = line2.replace(" ", "_");
+            ItemStack stack = RUtils.getItem(line2, null);
             if (stack == null) {
                 s.setLine(1, ChatColor.RED + line2);
                 p.sendMessage(ChatColor.RED + "That material is invalid!");
