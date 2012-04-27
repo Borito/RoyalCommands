@@ -119,6 +119,18 @@ public class RUtils {
         return p.getTargetBlock(AIR_MATERIALS_TARGET, 300);
     }
 
+    public static String join(Iterable<String> i, String between) {
+        String ret = "";
+        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        return ret;
+    }
+
+    public static String join(String[] i, String between) {
+        String ret = "";
+        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        return ret;
+    }
+
     public static void showFilledChest(Player p, String name) {
         EntityPlayer ep = ((CraftPlayer) p).getHandle();
         CraftInventory inv = new CraftInventory(new PlayerInventory(ep));
