@@ -9,8 +9,6 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.net.InetAddress;
-
 public class UnbanIP implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -19,22 +17,20 @@ public class UnbanIP implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    public InetAddress getAddress(String address) {
+    private boolean isValid(String address) {
+        if (address == null) return false;
         String[] ips = address.split("\\.");
-        if (ips.length != 4) {
-            plugin.log.info(String.valueOf(ips.length));
-            return null;
+        if (ips.length != 4) return false;
+        for (String s : ips) {
+            int ip;
+            try {
+                ip = Integer.valueOf(s);
+            } catch (Exception e) {
+                return false;
+            }
+            if (ip > 255) return false;
         }
-        byte b1 = Byte.valueOf(ips[0]);
-        byte b2 = Byte.valueOf(ips[1]);
-        byte b3 = Byte.valueOf(ips[2]);
-        byte b4 = Byte.valueOf(ips[3]);
-        try {
-            return InetAddress.getByAddress(address, new byte[]{b1, b2, b3, b4});
-        } catch (Exception e) {
-            plugin.log.info("dat null");
-            return null;
-        }
+        return true;
     }
 
     @Override
@@ -48,20 +44,20 @@ public class UnbanIP implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
-            if (!PConfManager.getPConfExists(t2)) {
-                InetAddress ip = getAddress(args[0]);
-                if (ip == null) {
-                    cs.sendMessage(ChatColor.RED + "Invalid IP address!");
-                    return true;
-                }
-                plugin.getServer().unbanIP(ip.getHostAddress());
-                cs.sendMessage(ChatColor.BLUE + "Unbanned IP address: " + ChatColor.GRAY + ip.getHostAddress() + ChatColor.BLUE + ".");
+            OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
+            String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPValString(op, "ip");
+            if (ip == null) ip = args[0];
+            if (!isValid(ip)) {
+                cs.sendMessage(ChatColor.RED + "Invalid IP (" + ChatColor.GRAY + ip + ChatColor.RED + ").");
                 return true;
             }
-            if (args.length > 0) {
-                cs.sendMessage(ChatColor.BLUE + "You have pardoned that IP.");
-                plugin.getServer().unbanIP(PConfManager.getPValString(t2, "ip"));
+            plugin.getServer().unbanIP(ip);
+            if (!op.hasPlayedBefore()) {
+                cs.sendMessage(ChatColor.BLUE + "Unbanned IP " + ChatColor.GRAY + ip + ChatColor.BLUE + ".");
+                return true;
+            } else {
+                op.setBanned(false);
+                cs.sendMessage(ChatColor.BLUE + "Unbanned IP of " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + " (" + ChatColor.GRAY + ip + ChatColor.BLUE + ").");
                 return true;
             }
         }
