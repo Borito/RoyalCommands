@@ -1099,37 +1099,37 @@ permissions:
     description: Allows the player to spawn prohibited items.
     default: false
 
-  rcmds.clearinventory.others:
+  rcmds.others.clearinventory:
     description: Allows the player to clear other peoples' inventories.
     default: op
-  rcmds.megastrike.others:
+  rcmds.others.megastrike:
     description: Allows the player to /megastrike other players.
     default: op
-  rcmds.pext.others:
+  rcmds.others.pext:
     description: Allows the player to /pext other players.
     default: op
-  rcmds.strike.others:
+  rcmds.others.strike:
     description: Allows the player to /strike other players.
     default: op
-  rcmds.god.others:
+  rcmds.others.god:
     description: Allows the player to /god other players.
     default: op
-  rcmds.warp.others:
+  rcmds.others.warp:
     description: Allows the player to /warp other players.
     default: op
-  rcmds.nick.others:
+  rcmds.others.nick:
     description: Allows the player to /nick other players.
     default: op
-  rcmds.listwarns.others:
+  rcmds.others.listwarns:
     description: Allows the player to /listwarns other players.
     default: op
-  rcmds.home.others:
+  rcmds.others.home:
     description: Allows the player to go to other players' homes.
     default: op
-  rcmds.coords.others:
+  rcmds.others.coords:
     description: Allows the player to see other players' coordinates.
     default: op
-  rcmds.fly.others:
+  rcmds.others.fly:
     description: Allows the player to toggle other players' fly ability.
     default: op
 
@@ -1171,6 +1171,9 @@ permissions:
     default: op
   rcmds.sign.command:
     description: Allows the player to create command signs.
+    default: op
+  rcmds.sign.free:
+    description: Allows the player to create free signs.
     default: op
 
   rcmds.sign.use.warp:
@@ -1220,6 +1223,24 @@ permissions:
   rcmds.admin:
     description: Gives every permission.
     default: false
+    children:
+      rcmds.*: true
+
+  rcmds.others.*:
+    description: Gives every permission to use commands towards others.
+    default: false
+    children:
+      rcmds.others.clearinventory: true
+      rcmds.others.megastrike: true
+      rcmds.others.pext: true
+      rcmds.others.strike: true
+      rcmds.others.god: true
+      rcmds.others.warp: true
+      rcmds.others.nick: true
+      rcmds.others.listwarns: true
+      rcmds.others.home: true
+      rcmds.others.coords: true
+      rcmds.others.fly: true
 
   rcmds.see.*:
     description: Gives every see permission.
@@ -1230,22 +1251,6 @@ permissions:
       rcmds.see.warn: true
       rcmds.see.unban: true
 
-  rcmds.sign.*:
-    description: Gives every sign permission.
-    default: false
-    children:
-      rcmds.sign.warp: true
-      rcmds.sign.time: true
-      rcmds.sign.disposal: true
-      rcmds.sign.give: true
-      rcmds.sign.command: true
-
-      rcmds.sign.use.warp: true
-      rcmds.sign.use.time: true
-      rcmds.sign.use.disposal: true
-      rcmds.sign.use.give: true
-      rcmds.sign.use.command: true
-
   rcmds.sign.use.*:
     description: Gives every sign use permisison.
     default: false
@@ -1255,6 +1260,19 @@ permissions:
       rcmds.sign.use.disposal: true
       rcmds.sign.use.give: true
       rcmds.sign.use.command: true
+
+  rcmds.sign.*:
+    description: Gives every sign permission.
+    default: false
+    children:
+      rcmds.sign.warp: true
+      rcmds.sign.time: true
+      rcmds.sign.disposal: true
+      rcmds.sign.give: true
+      rcmds.sign.command: true
+      rcmds.sign.free: true
+
+      rcmds.sign.use.*: true
 
   rcmds.exempt.cooldown.*:
     description: Gives every cooldown exemption.
