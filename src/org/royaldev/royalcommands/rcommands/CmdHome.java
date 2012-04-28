@@ -92,6 +92,10 @@ public class CmdHome implements CommandExecutor {
             if (homeW == null) {
                 cs.sendMessage(ChatColor.RED + "World doesn't exist!");
             }
+            if (homeX == null || homeY == null || homeZ == null || homeYaw == null || homePitch == null) {
+                cs.sendMessage(ChatColor.RED + "Home was saved incorrectly!");
+                return true;
+            }
             Location homeLoc = new Location(homeW, homeX, homeY, homeZ, homeYaw, homePitch);
             if (args.length > 0) {
                 p.sendMessage(ChatColor.BLUE + "Going to home \"" + ChatColor.GRAY + name + ChatColor.BLUE + ".\"");
