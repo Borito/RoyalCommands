@@ -158,3 +158,13 @@ use_whitelist: false
 
 # Smooth time transitions?
 use_smooth_time: true
+
+# Time in seconds to automatically set an idle player to afk
+# Default is 120 (2 minutes)
+# Disable by setting to 0
+auto_afk_time: 120
+
+# Time in seconds for afk kicks
+# Default is 300 (kicks after 5 minutes)
+# Disable by setting to 0
+afk_kick_time: 300
