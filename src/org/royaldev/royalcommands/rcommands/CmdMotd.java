@@ -24,7 +24,7 @@ public class CmdMotd implements CommandExecutor {
         for (Player aP : p) {
             String name = CmdList.formatPrepend(aP) + ChatColor.WHITE;
             if (!plugin.isVanished(aP)) {
-                if (CmdAfk.afkdb.contains(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
+                if (CmdAfk.afkdb.containsKey(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                 ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
             } else hid++;
         }
