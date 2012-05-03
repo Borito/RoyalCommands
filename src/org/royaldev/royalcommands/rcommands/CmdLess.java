@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,6 +30,14 @@ public class CmdLess implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
+            if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
+                for (ItemStack i : p.getInventory()) {
+                    if (i.getType().equals(Material.AIR)) continue;
+                    i.setAmount(1);
+                }
+                cs.sendMessage(ChatColor.BLUE + "All items in your inventory have been reduced to one.");
+                return true;
+            }
             ItemStack hand = p.getItemInHand();
             if (hand.getTypeId() == 0) {
                 cs.sendMessage(ChatColor.RED + "You can't spawn air!");
