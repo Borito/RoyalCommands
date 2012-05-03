@@ -8,7 +8,9 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CmdAfk implements CommandExecutor {
 
@@ -18,7 +20,8 @@ public class CmdAfk implements CommandExecutor {
         this.plugin = instance;
     }
 
-    public static java.util.List<Player> afkdb = new ArrayList<Player>();
+    public static Map<Player, Long> afkdb = new HashMap<Player, Long>();
+    public static Map<Player, Long> movetimes = new HashMap<Player, Long>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -36,8 +39,8 @@ public class CmdAfk implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You are vanished! The cloak of illusion would be lost if you went AFK!");
                 return true;
             }
-            if (!afkdb.contains(p)) {
-                afkdb.add(p);
+            if (!afkdb.containsKey(p)) {
+                afkdb.put(p, new Date().getTime());
                 plugin.getServer().broadcastMessage(p.getName() + " is now AFK.");
                 return true;
             }

@@ -61,11 +61,17 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (seconds <= 0) return;
         PConfManager.setPValDouble(p, (seconds * 1000) + new Date().getTime(), "teleport_cooldown");
     }
-    
+
+    @EventHandler
+    public void afk(PlayerMoveEvent e) {
+        CmdAfk.movetimes.put(e.getPlayer(), new Date().getTime());
+    }
+
     @EventHandler
     public void whitelist(PlayerLoginEvent e) {
         if (!plugin.useWhitelist) return;
-        if (!plugin.whitelist.contains(e.getPlayer().getName())) e.disallow(Result.KICK_WHITELIST, "You are not whitelisted on this server!");
+        if (!plugin.whitelist.contains(e.getPlayer().getName()))
+            e.disallow(Result.KICK_WHITELIST, "You are not whitelisted on this server!");
     }
 
     @EventHandler
@@ -162,7 +168,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.isCancelled()) return;
-        if (CmdAfk.afkdb.contains(event.getPlayer())) {
+        if (CmdAfk.afkdb.containsKey(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             CmdAfk.afkdb.remove(event.getPlayer());
         }
@@ -220,9 +226,10 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
-        if (CmdAfk.afkdb.contains(event.getPlayer())) {
+        if (CmdAfk.afkdb.containsKey(event.getPlayer())) {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             CmdAfk.afkdb.remove(event.getPlayer());
+            return;
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
     }
