@@ -300,7 +300,7 @@ commands:
 
   more:
     description: Gives more of the item in hand.
-    usage: /<command>
+    usage: /<command> (all)
 
   teleportrequesthere:
     description: Sends a teleport here request to a player.
@@ -359,7 +359,7 @@ commands:
 
   less:
     description: Sets the amount of the item in hand to one.
-    usage: /<command>
+    usage: /<command> (all)
 
   spawner:
     description: Sets the type of a mob spawner.
@@ -606,6 +606,10 @@ commands:
   biome:
     description: Changes the biome of the chunk you're in.
     usage: /<command> [biome]
+
+  getid:
+    description: Gets the ID of the item in your hand.
+    usage: /<command>
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -990,6 +994,9 @@ permissions:
     default: op
   rcmds.biome:
     description: Allows you to change biomes.
+    default: op
+  rcmds.getid:
+    description: Allows you to get the ID of the item in hand.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1459,6 +1466,7 @@ permissions:
       rcmds.helmet: true
       rcmds.worldmanager: true
       rcmds.biome: true
+      rcmds.getid: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
@@ -1473,16 +1481,7 @@ permissions:
 
       rcmds.allowed.item: true
 
-      rcmds.clearinventory.others: true
-      rcmds.megastrike.others: true
-      rcmds.pext.others: true
-      rcmds.strike.others: true
-      rcmds.god.others: true
-      rcmds.warp.others: true
-      rcmds.nick.others: true
-      rcmds.listwarns.others: true
-      rcmds.home.others: true
-      rcmds.coords.others: true
+      rcmds.others.*: true
 
       rcmds.see.*: true
 

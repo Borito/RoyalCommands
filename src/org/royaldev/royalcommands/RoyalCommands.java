@@ -36,6 +36,7 @@ import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.rcommands.*;
+import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -101,6 +102,9 @@ public class RoyalCommands extends JavaPlugin {
     public Double maxNear = null;
     public Double defaultNear = null;
     public Double gTeleCd = null;
+
+    public Long afkKickTime = null;
+    public Long afkAutoTime = null;
 
     public Float explodePower = null;
     public Float maxExplodePower = null;
@@ -191,6 +195,9 @@ public class RoyalCommands extends JavaPlugin {
 
         explodePower = (float) getConfig().getDouble("explode_power");
         maxExplodePower = (float) getConfig().getDouble("max_explode_power");
+
+        afkKickTime = getConfig().getLong("afk_kick_time");
+        afkAutoTime = getConfig().getLong("auto_afk_time");
 
         muteCmds = getConfig().getStringList("mute_blocked_commands");
         blockedItems = getConfig().getStringList("blocked_spawn_items");
@@ -381,7 +388,7 @@ public class RoyalCommands extends JavaPlugin {
         version = getDescription().getVersion();
 
         // yet again, borrowed from MilkBowl
-        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+        getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
                 try {
@@ -399,6 +406,8 @@ public class RoyalCommands extends JavaPlugin {
             }
 
         }, 0, 36000);
+
+        getServer().getScheduler().scheduleAsyncRepeatingTask(this, new AFKWatcher(this), 0, 200);
 
         vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
 
@@ -535,6 +544,7 @@ public class RoyalCommands extends JavaPlugin {
         getCommand("helmet").setExecutor(new CmdHelmet(this));
         getCommand("worldmanager").setExecutor(new CmdWorldManager(this));
         getCommand("biome").setExecutor(new CmdBiome(this));
+        getCommand("getid").setExecutor(new CmdGetID(this));
         getCommand("rcmds").setExecutor(new CmdRcmds(this));
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
