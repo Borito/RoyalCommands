@@ -27,8 +27,8 @@ public class RoyalCommandsEntityListener implements Listener {
         if (!(ent instanceof PlayerDeathEvent)) return;
         if (!plugin.backDeath) return;
         PlayerDeathEvent e = (PlayerDeathEvent) ent;
-        if (!(e.getEntity() instanceof Player)) return;
-        Player p = (Player) e.getEntity();
+        if (e.getEntity() == null) return;
+        Player p = e.getEntity();
         Location pLoc = p.getLocation();
         CmdBack.backdb.put(p, pLoc);
         p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
@@ -54,7 +54,17 @@ public class RoyalCommandsEntityListener implements Listener {
         }
     }
 
-    @EventHandler()
+    @EventHandler
+    public void buddhaMode(EntityDamageEvent e) {
+        Entity ent = e.getEntity();
+        if (!(ent instanceof Player)) return;
+        Player p = (Player) ent;
+        if (!PConfManager.getPValBoolean(p, "buddha")) return;
+        if (e.getDamage() >= p.getHealth()) e.setDamage(p.getHealth() - 1);
+        if (p.getHealth() == 1) e.setCancelled(true);
+    }
+
+    @EventHandler
     public void godMode(EntityDamageEvent e) {
         Entity ent = e.getEntity();
         if (!(ent instanceof Player)) return;

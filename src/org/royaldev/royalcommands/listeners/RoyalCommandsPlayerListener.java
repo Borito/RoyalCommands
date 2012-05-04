@@ -120,6 +120,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.setCancelled(true);
             return;
         }
+        if (CmdBack.backdb.containsKey(e.getPlayer())) if (CmdBack.backdb.get(e.getPlayer()).equals(e.getFrom())) return;
         CmdBack.backdb.put(e.getPlayer(), e.getFrom());
     }
 
@@ -161,6 +162,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void vipLogin(PlayerLoginEvent e) {
         if (e.getResult() != Result.KICK_FULL) return;
         if (!PConfManager.getPConfExists(e.getPlayer())) return;
+        if (e.getPlayer().isBanned()) return;
         if (PConfManager.getPVal(e.getPlayer(), "vip") != null && PConfManager.getPValBoolean(e.getPlayer(), "vip"))
             e.allow();
     }
@@ -270,8 +272,6 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!p.isBanned()) return;
         // Check to see that they have a bantime, and that if they do, if the timestamp is invalid.
         if (PConfManager.getPVal(p, "bantime") != null && !RUtils.isTimeStampValid(p, "bantime")) {
-            // Allow the event
-            event.allow();
             // Set them unbanned
             p.setBanned(false);
             // Stop the method
