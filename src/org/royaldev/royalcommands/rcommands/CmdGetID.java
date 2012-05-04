@@ -33,7 +33,7 @@ public class CmdGetID implements CommandExecutor {
             int id = hand.getTypeId();
             int damage = hand.getDurability();
             String name = hand.getType().name().replace("_", " ").toLowerCase();
-            cs.sendMessage(ChatColor.GRAY + name + ChatColor.BLUE + ": " + ChatColor.GRAY + id + ChatColor.BLUE + "(damage: " + ChatColor.GRAY + damage + ChatColor.BLUE + ")");
+            cs.sendMessage(ChatColor.GRAY + name + ChatColor.BLUE + ": " + ChatColor.GRAY + id + ChatColor.BLUE + " (damage: " + ChatColor.GRAY + damage + ChatColor.BLUE + ")");
             return true;
         }
         return false;
