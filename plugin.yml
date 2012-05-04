@@ -611,6 +611,11 @@ commands:
     description: Gets the ID of the item in your hand.
     usage: /<command>
 
+  buddha:
+    description: Toggles buddha mode.
+    usage: /<command> (player)
+    aliases: [tbm, buddhamode]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -998,6 +1003,9 @@ permissions:
   rcmds.getid:
     description: Allows you to get the ID of the item in hand.
     default: op
+  rcmds.buddha:
+    description: Allows you to toggle buddha mode.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1138,6 +1146,9 @@ permissions:
     default: op
   rcmds.others.fly:
     description: Allows the player to toggle other players' fly ability.
+    default: op
+  rcmds.others.buddha:
+    description: Allows the player to /buddha other players.
     default: op
 
   rcmds.seehidden:
@@ -1467,6 +1478,7 @@ permissions:
       rcmds.worldmanager: true
       rcmds.biome: true
       rcmds.getid: true
+      rcmds.buddha: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
