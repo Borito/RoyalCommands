@@ -32,7 +32,7 @@ public class CmdLess implements CommandExecutor {
             Player p = (Player) cs;
             if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
                 for (ItemStack i : p.getInventory()) {
-                    if (i.getType().equals(Material.AIR)) continue;
+                    if (i == null || i.getType().equals(Material.AIR)) continue;
                     i.setAmount(1);
                 }
                 cs.sendMessage(ChatColor.BLUE + "All items in your inventory have been reduced to one.");
