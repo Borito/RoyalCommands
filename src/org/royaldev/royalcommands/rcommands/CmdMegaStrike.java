@@ -45,7 +45,7 @@ public class CmdMegaStrike implements CommandExecutor {
                 for (int i = 0; i < 15; i++) p.getWorld().strikeLightning(bb.getLocation());
                 return true;
             } else {
-                if (!plugin.isAuthorized(cs, "rcmds.megastrike.others")) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.megastrike")) {
                     cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
                     return true;
                 }

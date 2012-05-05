@@ -300,7 +300,7 @@ public class RoyalCommands extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        File warps = new File(this.getDataFolder() + File.separator + "warps.yml");
+        File warps = new File(getDataFolder() + File.separator + "warps.yml");
         if (!warps.exists()) {
             try {
                 boolean success = new File(this.getDataFolder() + File.separator + "warps.yml").createNewFile();

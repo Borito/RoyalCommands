@@ -33,7 +33,7 @@ public class CmdFly implements CommandExecutor {
                 String status = (p.getAllowFlight()) ? "on" : "off";
                 p.sendMessage(ChatColor.BLUE + "Toggled flight to " + ChatColor.GRAY + status + ChatColor.BLUE + ".");
             } else {
-                if (!plugin.isAuthorized(cs, "rcmds.fly.others")) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.fly")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }

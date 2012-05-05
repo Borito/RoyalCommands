@@ -54,7 +54,7 @@ public class RoyalCommandsEntityListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void buddhaMode(EntityDamageEvent e) {
         Entity ent = e.getEntity();
         if (!(ent instanceof Player)) return;
@@ -64,7 +64,7 @@ public class RoyalCommandsEntityListener implements Listener {
         if (p.getHealth() == 1) e.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void godMode(EntityDamageEvent e) {
         Entity ent = e.getEntity();
         if (!(ent instanceof Player)) return;

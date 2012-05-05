@@ -38,7 +38,7 @@ public class CmdCoords implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "world: " + ChatColor.GRAY + l.getWorld().getName());
                 return true;
             }
-            if (!plugin.isAuthorized(cs, "rcmds.coords.others")) {
+            if (!plugin.isAuthorized(cs, "rcmds.others.coords")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

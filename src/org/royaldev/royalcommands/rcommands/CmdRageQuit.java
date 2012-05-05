@@ -31,7 +31,7 @@ public class CmdRageQuit implements CommandExecutor {
                 }
             }
             if (args.length == 1) {
-                if (!plugin.isAuthorized(cs, "rcmds.ragequit.others")) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.ragequit")) {
                     cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
                     return true;
                 }

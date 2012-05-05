@@ -38,7 +38,7 @@ public class CmdStrike implements CommandExecutor {
                 p.getWorld().strikeLightning(bb.getLocation());
                 return true;
             }
-            if (!plugin.isAuthorized(cs, "rcmds.strike.others")) {
+            if (!plugin.isAuthorized(cs, "rcmds.others.strike")) {
                 cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
                 return true;
             }

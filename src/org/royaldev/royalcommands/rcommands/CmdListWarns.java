@@ -55,7 +55,7 @@ public class CmdListWarns implements CommandExecutor {
                 }
             }
             if (args.length > 0) {
-                if (!plugin.isAuthorized(cs, "rcmds.listwarns.others")) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.listwarns")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }

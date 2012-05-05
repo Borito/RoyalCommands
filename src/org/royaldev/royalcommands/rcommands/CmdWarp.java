@@ -104,7 +104,7 @@ public class CmdWarp implements CommandExecutor {
                 return true;
             }
             if (args.length > 1) {
-                if (!plugin.isAuthorized(cs, "rcmds.warp.others")) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.warp")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }

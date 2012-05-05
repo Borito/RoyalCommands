@@ -35,7 +35,7 @@ public class CmdClearInventory implements CommandExecutor {
             }
         }
         if (args.length == 1) {
-            if (!plugin.isAuthorized(cs, "rcmds.clearinventory.others")) {
+            if (!plugin.isAuthorized(cs, "rcmds.others.clearinventory")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

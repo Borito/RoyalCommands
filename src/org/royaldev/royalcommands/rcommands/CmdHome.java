@@ -50,7 +50,7 @@ public class CmdHome implements CommandExecutor {
             if (args.length > 0) name = args[0];
 
             File pconfl;
-            if (name.contains(":") && plugin.isAuthorized(cs, "rcmds.home.others")) {
+            if (name.contains(":") && plugin.isAuthorized(cs, "rcmds.others.home")) {
                 if (!PConfManager.getPConfExists(name.split(":")[0])) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;

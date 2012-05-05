@@ -80,7 +80,7 @@ public class CmdNick implements CommandExecutor {
                     p.sendMessage(ChatColor.BLUE + "You have set your nickname to " + ChatColor.GRAY + newname + ChatColor.BLUE + ".");
                     return true;
                 }
-                if (!plugin.isAuthorized(cs, "rcmds.nick.others")) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.nick")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }

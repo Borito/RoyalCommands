@@ -34,7 +34,7 @@ public class CmdPext implements CommandExecutor {
                 p.setFireTicks(0);
                 return true;
             } else {
-                if (!plugin.isAuthorized(cs, "rcmds.pext.others")) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.pext")) {
                     cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
                     return true;
                 }
