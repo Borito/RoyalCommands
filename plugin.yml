@@ -1099,6 +1099,10 @@ permissions:
     description: Makes the player immune to /invmod.
     default: false
 
+  rcmds.exempt.afkkick:
+    description: Makes the player immune to AFK kicks.
+    default: false
+
   rcmds.exempt.cooldown.commands:
     description: Makes the player exempt to command cooldowns.
     default: false
@@ -1335,6 +1339,7 @@ permissions:
       rcmds.exempt.ignore: true
       rcmds.exempt.cooldown.*: true
       rcmds.exempt.invmod: true
+      rcmds.exempt.afkkick: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
