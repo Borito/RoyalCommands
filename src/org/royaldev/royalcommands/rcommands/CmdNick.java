@@ -33,7 +33,7 @@ public class CmdNick implements CommandExecutor {
                 Player p = (Player) cs;
                 String newname = p.getName();
                 p.setDisplayName(newname);
-                PConfManager.setPValString(p, p.getName(), "dispname");
+                PConfManager.setPValString(p, newname, "dispname");
                 p.sendMessage(ChatColor.BLUE + "Your name has been reset to " + ChatColor.GRAY + newname + ChatColor.BLUE + ".");
                 return true;
             }
@@ -47,11 +47,11 @@ public class CmdNick implements CommandExecutor {
                     return false;
                 }
                 Player p = (Player) cs;
-                String newname = args[0];
+                String newname = plugin.nickPrefix + args[0];
                 if (newname.equalsIgnoreCase("none")) {
                     p.setDisplayName(p.getName());
                     p.setPlayerListName(p.getName());
-                    PConfManager.setPValString(p, newname, p.getName());
+                    PConfManager.setPValString(p, p.getName(), "dispname");
                     p.sendMessage(ChatColor.BLUE + "Removed your nickname.");
                     return true;
                 }
@@ -66,11 +66,11 @@ public class CmdNick implements CommandExecutor {
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if ((cs instanceof Player) && t.equals(cs)) {
                     Player p = (Player) cs;
-                    String newname = RUtils.join(args, " ");
+                    String newname = plugin.nickPrefix + args[0];
                     if (newname.equalsIgnoreCase("none")) {
                         p.setDisplayName(p.getName());
                         p.setPlayerListName(p.getName());
-                        PConfManager.setPValString(p, newname, p.getName());
+                        PConfManager.setPValString(p, p.getName(), "dispname");
                         p.sendMessage(ChatColor.BLUE + "Removed your nickname.");
                         return true;
                     }
@@ -92,7 +92,7 @@ public class CmdNick implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You cannot change that player's nick!");
                     return true;
                 }
-                String newname = plugin.getFinalArg(args, 1).trim();
+                String newname = plugin.nickPrefix + args[0];
                 t.setDisplayName(newname);
                 t.setPlayerListName(newname);
                 PConfManager.setPValString(t, newname, "dispname");
