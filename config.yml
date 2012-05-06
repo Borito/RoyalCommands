@@ -168,3 +168,11 @@ auto_afk_time: 120
 # Default is 300 (kicks after 5 minutes)
 # Disable by setting to 0
 afk_kick_time: 300
+
+# List of disabled commands. You MUST use full names.
+disabled_commands:
+# - god
+# - teleport
+
+# Prefix to go before nicknames.
+nick_prefix: "*"
