@@ -120,18 +120,23 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (CmdBack.backdb.containsKey(e.getPlayer())) if (CmdBack.backdb.get(e.getPlayer()).equals(e.getFrom())) return;
+        if (CmdBack.backdb.containsKey(e.getPlayer()))
+            if (CmdBack.backdb.get(e.getPlayer()).equals(e.getFrom())) return;
         CmdBack.backdb.put(e.getPlayer(), e.getFrom());
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         PConfManager.setPValLong(e.getPlayer(), new Date().getTime(), "seen");
+        if (CmdAfk.afkdb.containsKey(e.getPlayer())) CmdAfk.afkdb.remove(e.getPlayer());
+        if (CmdAfk.movetimes.containsKey(e.getPlayer())) CmdAfk.movetimes.remove(e.getPlayer());
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
         PConfManager.setPValLong(e.getPlayer(), new Date().getTime(), "seen");
+        if (CmdAfk.afkdb.containsKey(e.getPlayer())) CmdAfk.afkdb.remove(e.getPlayer());
+        if (CmdAfk.movetimes.containsKey(e.getPlayer())) CmdAfk.movetimes.remove(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
