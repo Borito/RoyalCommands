@@ -158,48 +158,48 @@ public class RoyalCommands extends JavaPlugin {
 
     public void reloadConfigVals() {
         if (whl != null) whl.load();
-        showcommands = getConfig().getBoolean("view_commands");
-        disablegetip = getConfig().getBoolean("disable_getip");
-        useWelcome = getConfig().getBoolean("enable_welcome_message");
-        buildPerm = getConfig().getBoolean("use_build_perm");
-        backDeath = getConfig().getBoolean("back_on_death");
-        motdLogin = getConfig().getBoolean("motd_on_login");
-        dropExtras = getConfig().getBoolean("drop_extras");
-        kitPerms = getConfig().getBoolean("use_exclusive_kit_perms");
-        explodeFire = getConfig().getBoolean("explode_fire");
-        sendToSpawn = getConfig().getBoolean("send_to_spawn");
-        stsBack = getConfig().getBoolean("sts_back");
-        stsNew = getConfig().getBoolean("send_to_spawn_new");
-        otherHelp = getConfig().getBoolean("other_plugins_in_help");
-        customHelp = getConfig().getBoolean("use_custom_help");
-        useVNP = getConfig().getBoolean("use_vanish");
-        cooldownAliases = getConfig().getBoolean("cooldowns_match_aliases");
-        useWhitelist = getConfig().getBoolean("use_whitelist");
-        smoothTime = getConfig().getBoolean("use_smooth_time");
+        showcommands = getConfig().getBoolean("view_commands", true);
+        disablegetip = getConfig().getBoolean("disable_getip", false);
+        useWelcome = getConfig().getBoolean("enable_welcome_message", true);
+        buildPerm = getConfig().getBoolean("use_build_perm", false);
+        backDeath = getConfig().getBoolean("back_on_death", true);
+        motdLogin = getConfig().getBoolean("motd_on_login", true);
+        dropExtras = getConfig().getBoolean("drop_extras", false);
+        kitPerms = getConfig().getBoolean("use_exclusive_kit_perms", false);
+        explodeFire = getConfig().getBoolean("explode_fire", false);
+        sendToSpawn = getConfig().getBoolean("send_to_spawn", false);
+        stsBack = getConfig().getBoolean("sts_back", false);
+        stsNew = getConfig().getBoolean("send_to_spawn_new", true);
+        otherHelp = getConfig().getBoolean("other_plugins_in_help", true);
+        customHelp = getConfig().getBoolean("use_custom_help", false);
+        useVNP = getConfig().getBoolean("use_vanish", true);
+        cooldownAliases = getConfig().getBoolean("cooldowns_match_aliases", true);
+        useWhitelist = getConfig().getBoolean("use_whitelist", false);
+        smoothTime = getConfig().getBoolean("use_smooth_time", true);
 
-        banMessage = RUtils.colorize(getConfig().getString("default_ban_message"));
-        noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message"));
-        kickMessage = RUtils.colorize(getConfig().getString("default_kick_message"));
-        defaultWarn = RUtils.colorize(getConfig().getString("default_warn_message"));
-        welcomeMessage = RUtils.colorize(getConfig().getString("welcome_message"));
-        bcastFormat = RUtils.colorize(getConfig().getString("bcast_format"));
-        whoFormat = getConfig().getString("who_format");
-        nickPrefix = RUtils.colorize(getConfig().getString("nick_prefix"));
+        banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
+        noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
+        kickMessage = RUtils.colorize(getConfig().getString("default_kick_message", "Kicked from server."));
+        defaultWarn = RUtils.colorize(getConfig().getString("default_warn_message", "You have been warned."));
+        welcomeMessage = RUtils.colorize(getConfig().getString("welcome_message", "&5Welcome {name} to the server!"));
+        bcastFormat = RUtils.colorize(getConfig().getString("bcast_format", "&b[&aBroadcast&b]&a "));
+        whoFormat = getConfig().getString("who_format", "{prefix}{dispname}");
+        nickPrefix = RUtils.colorize(getConfig().getString("nick_prefix", "*"));
 
-        defaultStack = getConfig().getInt("default_stack_size");
-        warnBan = getConfig().getInt("max_warns_before_ban");
-        spawnmobLimit = getConfig().getInt("spawnmob_limit");
-        helpAmount = getConfig().getInt("help_lines");
+        defaultStack = getConfig().getInt("default_stack_size", 64);
+        warnBan = getConfig().getInt("max_warns_before_ban", 3);
+        spawnmobLimit = getConfig().getInt("spawnmob_limit", 15);
+        helpAmount = getConfig().getInt("help_lines", 5);
 
-        maxNear = getConfig().getDouble("max_near_radius");
-        defaultNear = getConfig().getDouble("default_near_radius");
-        gTeleCd = getConfig().getDouble("global_teleport_cooldown");
+        maxNear = getConfig().getDouble("max_near_radius", 2000);
+        defaultNear = getConfig().getDouble("default_near_radius", 50);
+        gTeleCd = getConfig().getDouble("global_teleport_cooldown", 0);
 
-        explodePower = (float) getConfig().getDouble("explode_power");
-        maxExplodePower = (float) getConfig().getDouble("max_explode_power");
+        explodePower = (float) getConfig().getDouble("explode_power", 4);
+        maxExplodePower = (float) getConfig().getDouble("max_explode_power", 10);
 
-        afkKickTime = getConfig().getLong("afk_kick_time");
-        afkAutoTime = getConfig().getLong("auto_afk_time");
+        afkKickTime = getConfig().getLong("afk_kick_time", 120);
+        afkAutoTime = getConfig().getLong("auto_afk_time", 300);
 
         muteCmds = getConfig().getStringList("mute_blocked_commands");
         blockedItems = getConfig().getStringList("blocked_spawn_items");
@@ -212,7 +212,6 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void loadConfiguration() {
-        // This until I get a custom YAML wrapper using SnakeYAML going.
         if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveDefaultConfig();
         File file = new File(this.getDataFolder() + File.separator + "userdata" + File.separator);
         boolean exists = file.exists();
