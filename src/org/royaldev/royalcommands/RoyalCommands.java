@@ -213,14 +213,12 @@ public class RoyalCommands extends JavaPlugin {
 
     public void loadConfiguration() {
         if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveDefaultConfig();
-        File file = new File(this.getDataFolder() + File.separator + "userdata" + File.separator);
+        File file = new File(getDataFolder() + File.separator + "userdata" + File.separator);
         boolean exists = file.exists();
         if (!exists) {
             try {
-                boolean success = new File(this.getDataFolder() + File.separator + "userdata").mkdir();
-                if (success) {
-                    log.info("[RoyalCommands] Created userdata directory.");
-                }
+                boolean success = new File(getDataFolder() + File.separator + "userdata").mkdir();
+                if (success) log.info("[RoyalCommands] Created userdata directory.");
             } catch (Exception e) {
                 log.severe("[RoyalCommands] Failed to make userdata directory!");
                 log.severe(e.getMessage());
@@ -230,9 +228,8 @@ public class RoyalCommands extends JavaPlugin {
         if (!whitelist.exists()) {
             try {
                 boolean success = whitelist.createNewFile();
-                if (!success) {
-                    log.severe("[RoyalCommands] Could not create whitelist.yml!");
-                } else {
+                if (!success) log.severe("[RoyalCommands] Could not create whitelist.yml!");
+                else {
                     try {
                         BufferedWriter out = new BufferedWriter(new FileWriter(whitelist.getAbsolutePath()));
                         out.write("whitelist:\n");
@@ -248,15 +245,14 @@ public class RoyalCommands extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        File rules = new File(this.getDataFolder() + File.separator + "rules.txt");
+        File rules = new File(getDataFolder() + File.separator + "rules.txt");
         if (!rules.exists()) {
             try {
-                boolean success = new File(this.getDataFolder() + File.separator + "rules.txt").createNewFile();
-                if (!success) {
-                    log.severe("[RoyalCommands] Could not create rules.txt!");
-                } else {
+                boolean success = new File(getDataFolder() + File.separator + "rules.txt").createNewFile();
+                if (!success) log.severe("[RoyalCommands] Could not create rules.txt!");
+                else {
                     try {
-                        BufferedWriter out = new BufferedWriter(new FileWriter(this.getDataFolder() + File.separator + "rules.txt"));
+                        BufferedWriter out = new BufferedWriter(new FileWriter(getDataFolder() + File.separator + "rules.txt"));
                         out.write("###\n");
                         out.write("&2Page 1:\n");
                         out.write("  1. Be kind\n");
@@ -275,15 +271,14 @@ public class RoyalCommands extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        File help = new File(this.getDataFolder() + File.separator + "help.txt");
+        File help = new File(getDataFolder() + File.separator + "help.txt");
         if (!help.exists()) {
             try {
-                boolean success = new File(this.getDataFolder() + File.separator + "help.txt").createNewFile();
-                if (!success) {
-                    log.severe("[RoyalCommands] Could not create help.txt!");
-                } else {
+                boolean success = new File(getDataFolder() + File.separator + "help.txt").createNewFile();
+                if (!success) log.severe("[RoyalCommands] Could not create help.txt!");
+                else {
                     try {
-                        BufferedWriter out = new BufferedWriter(new FileWriter(this.getDataFolder() + File.separator + "help.txt"));
+                        BufferedWriter out = new BufferedWriter(new FileWriter(getDataFolder() + File.separator + "help.txt"));
                         out.write("###\n");
                         out.write("&2Page 1:\n");
                         out.write("  1. Do some awesome things\n");
@@ -305,10 +300,10 @@ public class RoyalCommands extends JavaPlugin {
         File warps = new File(getDataFolder() + File.separator + "warps.yml");
         if (!warps.exists()) {
             try {
-                boolean success = new File(this.getDataFolder() + File.separator + "warps.yml").createNewFile();
+                boolean success = new File(getDataFolder() + File.separator + "warps.yml").createNewFile();
                 if (success) {
                     try {
-                        FileWriter fstream = new FileWriter(this.getDataFolder() + File.separator + "warps.yml");
+                        FileWriter fstream = new FileWriter(getDataFolder() + File.separator + "warps.yml");
                         BufferedWriter out = new BufferedWriter(fstream);
                         out.write("warps:");
                         out.close();
@@ -357,11 +352,11 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public boolean isAuthorized(final Player player, final String node) {
-        return player instanceof ConsoleCommandSender || this.setupPermissions() && (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+        return player instanceof ConsoleCommandSender || setupPermissions() && (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
     public boolean isAuthorized(final CommandSender player, final String node) {
-        return player instanceof ConsoleCommandSender || this.setupPermissions() && (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+        return player instanceof ConsoleCommandSender || setupPermissions() && (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
     public void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
@@ -418,7 +413,7 @@ public class RoyalCommands extends JavaPlugin {
 
         vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
 
-        PluginManager pm = this.getServer().getPluginManager();
+        PluginManager pm = getServer().getPluginManager();
 
         pm.registerEvents(playerListener, this);
         pm.registerEvents(entityListener, this);
