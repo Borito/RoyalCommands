@@ -986,7 +986,7 @@ permissions:
     description: Allows you to manage the dynamic whitelist.
     default: op
   rcmds.playertime:
-    descripiton: Allows you to change other players' times.
+    description: Allows you to change other players' times.
     default: op
   rcmds.compass:
     description: Allows you to change where your compass points.
