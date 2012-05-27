@@ -153,12 +153,13 @@ public class CmdWorldManager implements CommandExecutor {
             } else if (command.equals("help")) {
                 cs.sendMessage(ChatColor.GREEN + "RoyalCommands WorldManager Help");
                 cs.sendMessage(ChatColor.GREEN + "===============================");
-                cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + " create [name] [type] [environment] (seed) (generator)" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Creates a new world.", 64));
-                cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + " unload [name] (true)" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Unloads a world. If true is specified, will kick all players on the world.", 64));
-                cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + " delete [name] (true)" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Unloads and deletes a world. If true is specified, will kick all players on the world.", 64));
-                cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + " info" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Displays available world types and environments; if you are a player, displays information about your world.", 64));
-                cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + " help" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Displays this help.", 64));
-                cs.sendMessage(RUtils.wrapText("* " + ChatColor.GRAY + "/" + label + "list" + ChatColor.GRAY + " - " + ChatColor.WHITE + "Lists all the loaded worlds.", 64));
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " create [name] [type] [environment] (seed) (generator)" + ChatColor.BLUE + " - Creates a new world.");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " load [name]" + ChatColor.BLUE + " - Loads a world.");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " unload [name] (true)" + ChatColor.BLUE + " - Unloads a world. If true is specified, will kick all players on the world.");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " delete [name] (true)" + ChatColor.BLUE + " - Unloads and deletes a world. If true is specified, will kick all players on the world.");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info" + ChatColor.BLUE + " - Displays available world types and environments; if you are a player, displays information about your world.");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " help" + ChatColor.BLUE + " - Displays this help.");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + "list" + ChatColor.BLUE + " - Lists all the loaded worlds.");
                 return true;
             } else if (command.equals("load")) {
                 if (args.length < 2) {
