@@ -35,7 +35,23 @@ public class CmdSetarmor implements CommandExecutor {
                 return true;
             }
 
-            Player player = (Player) cs;
+            Player player;
+
+            if (args.length > 1) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.setarmor")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                player = plugin.getServer().getPlayer(args[1]);
+                if (player == null || plugin.isVanished(player)) {
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
+                if (plugin.isAuthorized(player, "rcmds.exempt.setarmor")) {
+                    cs.sendMessage(ChatColor.RED + "You can't modify that player's armor!");
+                    return true;
+                }
+            } else player = (Player) cs;
 
             String set = args[0];
 
@@ -87,7 +103,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 } else {
                     player.getInventory().setArmorContents(diamond);
-                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
+                    cs.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("gold")) {
@@ -96,7 +112,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 } else {
                     player.getInventory().setArmorContents(gold);
-                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
+                    cs.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("iron")) {
@@ -105,7 +121,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 } else {
                     player.getInventory().setArmorContents(iron);
-                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
+                    cs.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("leather")) {
@@ -114,7 +130,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 } else {
                     player.getInventory().setArmorContents(leather);
-                    cs.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
+                    cs.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("chain")) {
@@ -123,7 +139,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 } else {
                     player.getInventory().setArmorContents(chain);
-                    player.sendMessage(ChatColor.BLUE + "Your armor was set to " + set + ".");
+                    player.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("none")) {
@@ -132,7 +148,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 } else {
                     player.getInventory().setArmorContents(none);
-                    cs.sendMessage(ChatColor.BLUE + "Your armor was cleared.");
+                    cs.sendMessage(ChatColor.BLUE + "Armor was cleared.");
                     return true;
                 }
             } else {
