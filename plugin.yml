@@ -1,6 +1,6 @@
 name: RoyalCommands
 main: org.royaldev.royalcommands.RoyalCommands
-version: 0.2.3pre
+version: 0.2.3
 website: http://dev.royaldev.org/
 author: jkcclemens
 depend: [Vault]
@@ -1098,6 +1098,9 @@ permissions:
   rcmds.exempt.invmod:
     description: Makes the player immune to /invmod.
     default: false
+  rcmds.exempt.setarmor:
+    description: Makes the player immune to /setarmor.
+    default: false
 
   rcmds.exempt.afkkick:
     description: Makes the player immune to AFK kicks.
@@ -1154,6 +1157,9 @@ permissions:
   rcmds.others.buddha:
     description: Allows the player to /buddha other players.
     default: op
+  rcmds.others.setarmor:
+    description: Allows the player to /setarmor other players.
+    default: op
 
   rcmds.seehidden:
     description: Allows the player to see hidden players in /list (VanishNoPacket).
@@ -1165,15 +1171,15 @@ permissions:
 
   rcmds.see.ban:
     description: See ban messages.
-    default: op
+    default: true
   rcmds.see.kick:
     description: See kick messages.
-    default: op
-  rcmds.see.warn:
-    description: See warn messages.
-    default: op
+    default: true
   rcmds.see.unban:
     description: See unban messages.
+    default: true
+  rcmds.see.warn:
+    description: See warn messages.
     default: op
 
   rcmds.sign.warp:
@@ -1264,6 +1270,8 @@ permissions:
       rcmds.others.home: true
       rcmds.others.coords: true
       rcmds.others.fly: true
+      rcmds.others.buddha: true
+      rcmds.others.setarmor: true
 
   rcmds.see.*:
     description: Gives every see permission.
@@ -1341,6 +1349,7 @@ permissions:
       rcmds.exempt.cooldown.*: true
       rcmds.exempt.invmod: true
       rcmds.exempt.afkkick: true
+      rcmds.exempt.setarmor: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.

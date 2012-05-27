@@ -1,4 +1,4 @@
-## RoyalCommands v0.2.3pre Config File
+## RoyalCommands v0.2.3 Config File
 
 ###
 # General section #
@@ -159,6 +159,10 @@ use_whitelist: false
 # Smooth time transitions?
 use_smooth_time: true
 
+###
+# AFK management #
+###
+
 # Time in seconds to automatically set an idle player to afk
 # Default is 120 (2 minutes)
 # Disable by setting to 0
@@ -169,10 +173,18 @@ auto_afk_time: 120
 # Disable by setting to 0
 afk_kick_time: 300
 
+###
+# Disabled commands #
+###
+
 # List of disabled commands. You MUST use full names.
 disabled_commands:
 # - god
 # - teleport
+
+###
+# Nicks
+###
 
 # Prefix to go before nicknames.
 nick_prefix: "*"
