@@ -548,6 +548,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdBiome(this), "biome", this);
         registerCommand(new CmdGetID(this), "getid", this);
         registerCommand(new CmdBuddha(this), "buddha", this);
+        registerCommand(new CmdRemove(this), "remove", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
