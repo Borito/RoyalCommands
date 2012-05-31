@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.List;
+
 public class CmdEntities implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -31,7 +33,7 @@ public class CmdEntities implements CommandExecutor {
             if (args.length < 1) {
                 Player p = (Player) cs;
                 double radius = plugin.defaultNear;
-                java.util.List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
+                List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
                 int amount = 0;
                 for (Entity e : ents) {
                     if (e instanceof Player) continue;
