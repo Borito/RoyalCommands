@@ -618,7 +618,7 @@ commands:
 
   remove:
     description: Removes entities.
-    usage: /<command> [mobs|arrows|boats|littnt|all] (radius)
+    usage: /<command> [mobs|arrows|boats|littnt|xp|minecarts|paintings|all] (radius)
     aliases: [rm]
 
   rcmds:

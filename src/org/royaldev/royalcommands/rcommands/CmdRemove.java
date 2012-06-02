@@ -84,6 +84,33 @@ public class CmdRemove implements CommandExecutor {
                     count++;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "entities" : "entity") + ChatColor.BLUE + ".");
+            } else if (command.equalsIgnoreCase("minecarts")) {
+                for (Entity e : entlist) {
+                    if (e instanceof Item) {
+                        e.remove();
+                        count++;
+                    }
+                }
+                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "minecarts" : "minecart") + ChatColor.BLUE + ".");
+            } else if (command.equalsIgnoreCase("xp")) {
+                for (Entity e : entlist) {
+                    if (e instanceof ExperienceOrb) {
+                        e.remove();
+                        count++;
+                    }
+                }
+                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "orbs" : "orb") + ChatColor.BLUE + ".");
+            } else if (command.equalsIgnoreCase("paintings")) {
+                for (Entity e : entlist) {
+                    if (e instanceof Painting) {
+                        e.remove();
+                        count++;
+                    }
+                }
+                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "paintings" : "paintings") + ChatColor.BLUE + ".");
+            } else {
+                cs.sendMessage(cmd.getDescription());
+                return false;
             }
             return true;
         }
