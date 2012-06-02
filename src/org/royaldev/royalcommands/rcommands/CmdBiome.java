@@ -44,8 +44,10 @@ public class CmdBiome implements CommandExecutor {
                 return false;
             }
             final Player p = (Player) cs;
-            final Biome b = Biome.valueOf(args[0].toUpperCase());
-            if (b == null) {
+            final Biome b;
+            try {
+                b = Biome.valueOf(args[0].toUpperCase());
+            } catch (Exception e) {
                 p.sendMessage(ChatColor.RED + "No such biome!");
                 sendBiomeList(p);
                 return true;
