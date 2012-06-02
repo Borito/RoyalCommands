@@ -85,6 +85,7 @@ public class CmdRemove implements CommandExecutor {
                 }
                 cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "entities" : "entity") + ChatColor.BLUE + ".");
             }
+            return true;
         }
         return false;
     }
