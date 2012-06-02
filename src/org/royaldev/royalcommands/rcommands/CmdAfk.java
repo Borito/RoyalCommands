@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -39,12 +40,12 @@ public class CmdAfk implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You are vanished! The cloak of illusion would be lost if you went AFK!");
                 return true;
             }
-            if (!afkdb.containsKey(p)) {
-                afkdb.put(p, new Date().getTime());
+            if (!AFKUtils.isAfk(p)) {
+                AFKUtils.setAfk(p, new Date().getTime());
                 plugin.getServer().broadcastMessage(p.getName() + " is now AFK.");
                 return true;
             }
-            afkdb.remove(p);
+            AFKUtils.unsetAfk(p);
             plugin.getServer().broadcastMessage(p.getName() + " is no longer AFK.");
             return true;
         }

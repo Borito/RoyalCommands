@@ -16,10 +16,10 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.rcommands.CmdAfk;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
 
@@ -64,7 +64,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void afk(PlayerMoveEvent e) {
-        CmdAfk.movetimes.put(e.getPlayer(), new Date().getTime());
+        AFKUtils.setLastMove(e.getPlayer(), new Date().getTime());
     }
 
     @EventHandler
@@ -128,15 +128,15 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         PConfManager.setPValLong(e.getPlayer(), new Date().getTime(), "seen");
-        if (CmdAfk.afkdb.containsKey(e.getPlayer())) CmdAfk.afkdb.remove(e.getPlayer());
-        if (CmdAfk.movetimes.containsKey(e.getPlayer())) CmdAfk.movetimes.remove(e.getPlayer());
+        if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
+        if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
         PConfManager.setPValLong(e.getPlayer(), new Date().getTime(), "seen");
-        if (CmdAfk.afkdb.containsKey(e.getPlayer())) CmdAfk.afkdb.remove(e.getPlayer());
-        if (CmdAfk.movetimes.containsKey(e.getPlayer())) CmdAfk.movetimes.remove(e.getPlayer());
+        if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
+        if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -175,9 +175,9 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.isCancelled()) return;
-        if (CmdAfk.afkdb.containsKey(event.getPlayer())) {
+        if (AFKUtils.isAfk(event.getPlayer())) {
+            AFKUtils.unsetAfk(event.getPlayer());
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
-            CmdAfk.afkdb.remove(event.getPlayer());
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
             if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime"))
@@ -233,9 +233,9 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
-        if (CmdAfk.afkdb.containsKey(event.getPlayer())) {
+        if (AFKUtils.isAfk(event.getPlayer())) {
+            AFKUtils.unsetAfk(event.getPlayer());
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
-            CmdAfk.afkdb.remove(event.getPlayer());
             return;
         }
         if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);

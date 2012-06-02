@@ -13,6 +13,18 @@ public class AFKUtils {
         return CmdAfk.afkdb.get(p);
     }
     
+    public synchronized static void unsetAfk(Player p) {
+        CmdAfk.afkdb.remove(p);
+    }
+    
+    public synchronized static void setLastMove(Player p, long time) {
+        CmdAfk.movetimes.put(p, time);
+    }
+    
+    public synchronized static void removeLastMove(Player p) {
+        CmdAfk.movetimes.remove(p);
+    }
+    
     public synchronized static boolean isAfk(Player p) {
         return CmdAfk.afkdb.containsKey(p);
     }
