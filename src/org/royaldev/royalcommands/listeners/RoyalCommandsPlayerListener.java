@@ -302,7 +302,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         dispname = dispname.trim();
         if (dispname == null) return;
         p.setDisplayName(dispname);
-        p.setPlayerListName(dispname);
+        if (dispname.length() <= 16) p.setPlayerListName(dispname);
     }
 
     @EventHandler()
