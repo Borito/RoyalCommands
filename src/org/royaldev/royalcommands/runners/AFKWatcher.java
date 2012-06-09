@@ -18,9 +18,10 @@ public class AFKWatcher implements Runnable {
     public void run() {
         long afkKickTime = plugin.afkKickTime;
         long afkAutoTime = plugin.afkAutoTime;
+        long currentTime = new Date().getTime();
         for (Player p : plugin.getServer().getOnlinePlayers()) {
-            long currentTime = new Date().getTime();
             if (!AFKUtils.isAfk(p)) {
+                if (plugin.isAuthorized(p, "rcmds.exempt.autoafk")) continue;
                 if (plugin.isVanished(p)) continue;
                 if (!AFKUtils.moveTimesContains(p)) continue;
                 if (afkAutoTime <= 0) continue;

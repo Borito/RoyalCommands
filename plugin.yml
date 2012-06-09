@@ -1114,6 +1114,9 @@ permissions:
     description: Makes the player immune to /setarmor.
     default: false
 
+  rcmds.exempt.autoafk:
+    description: Makes the player immune to auto AFK.
+    default: false
   rcmds.exempt.afkkick:
     description: Makes the player immune to AFK kicks.
     default: false
