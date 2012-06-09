@@ -80,7 +80,7 @@ public class SignListener implements Listener {
             if (warpLoc == null) {
                 return;
             }
-            p.teleport(warpLoc);
+            RUtils.teleport(p, warpLoc);
         }
 
         //Time signs

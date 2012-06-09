@@ -3,6 +3,7 @@ package org.royaldev.royalcommands;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.PlayerInventory;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -11,6 +12,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.rcommands.CmdBack;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -307,5 +309,26 @@ public class RUtils {
         ItemStack stack = new ItemStack(mat, amount);
         if (data != null) stack.setDurability(data);
         return stack;
+    }
+
+    /**
+     * Teleports a player and registers it in /back.
+     *
+     * @param p Player to teleport
+     * @param l Location to teleport to
+     */
+    public static void teleport(Player p, Location l) {
+        CmdBack.backdb.put(p, p.getLocation());
+        p.teleport(l);
+    }
+
+    /**
+     * Teleports a player without registering it in /back.
+     *
+     * @param p Player to teleport
+     * @param l Location to teleport to
+     */
+    public static void silentTeleport(Player p, Location l) {
+        p.teleport(l);
     }
 }

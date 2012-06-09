@@ -20,7 +20,6 @@ import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
 
 import java.io.File;
@@ -118,11 +117,10 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (PConfManager.getPValBoolean(e.getPlayer(), "jailed")) {
             e.getPlayer().sendMessage(ChatColor.RED + "You are jailed and may not teleport.");
             e.setCancelled(true);
-            return;
         }
-        if (CmdBack.backdb.containsKey(e.getPlayer()))
+        /*if (CmdBack.backdb.containsKey(e.getPlayer()))
             if (CmdBack.backdb.get(e.getPlayer()).equals(e.getFrom())) return;
-        CmdBack.backdb.put(e.getPlayer(), e.getFrom());
+        CmdBack.backdb.put(e.getPlayer(), e.getFrom());*/
     }
 
     @EventHandler
@@ -345,7 +343,8 @@ public class RoyalCommandsPlayerListener implements Listener {
                 welcomemessage = welcomemessage.replace("{world}", event.getPlayer().getWorld().getName());
                 plugin.getServer().broadcastMessage(welcomemessage);
             }
-            if (plugin.stsNew) event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
+            if (plugin.stsNew)
+                RUtils.silentTeleport(event.getPlayer(), event.getPlayer().getWorld().getSpawnLocation());
         } else {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
             String playerip = event.getPlayer().getAddress().getAddress().toString();
@@ -354,8 +353,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
         if (plugin.motdLogin) CmdMotd.showMotd(event.getPlayer());
         if (plugin.sendToSpawn) {
-            if (plugin.stsBack) CmdBack.backdb.put(event.getPlayer(), event.getPlayer().getLocation());
-            event.getPlayer().teleport(event.getPlayer().getWorld().getSpawnLocation());
+            if (plugin.stsBack) RUtils.teleport(event.getPlayer(), event.getPlayer().getWorld().getSpawnLocation());
+            else RUtils.silentTeleport(event.getPlayer(), event.getPlayer().getWorld().getSpawnLocation());
         }
     }
 }

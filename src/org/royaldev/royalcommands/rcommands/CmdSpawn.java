@@ -29,7 +29,7 @@ public class CmdSpawn implements CommandExecutor {
             }
             Player p = (Player) cs;
             p.sendMessage(ChatColor.BLUE + "Going to spawn.");
-            p.teleport(p.getWorld().getSpawnLocation());
+            RUtils.teleport(p, p.getWorld().getSpawnLocation());
             return true;
         }
         return false;

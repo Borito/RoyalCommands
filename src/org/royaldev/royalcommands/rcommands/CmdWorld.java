@@ -55,7 +55,7 @@ public class CmdWorld implements CommandExecutor {
             }
             Player p = (Player) cs;
             p.sendMessage(ChatColor.BLUE + "Teleporting you to world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
-            p.teleport(w.getSpawnLocation());
+            RUtils.teleport(p, w.getSpawnLocation());
             return true;
         }
         return false;

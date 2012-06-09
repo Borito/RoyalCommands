@@ -102,7 +102,7 @@ public class CmdHome implements CommandExecutor {
             } else {
                 p.sendMessage(ChatColor.BLUE + "Going home.");
             }
-            p.teleport(homeLoc);
+            RUtils.teleport(p, homeLoc);
             return true;
 
         }

@@ -72,10 +72,10 @@ public class CmdJail implements CommandExecutor {
                     t.sendMessage(ChatColor.BLUE + "You have been released.");
                     if (jaildb.get(t).getWorld() == null) {
                         t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
-                        t.teleport(t.getWorld().getSpawnLocation());
+                        RUtils.silentTeleport(t, t.getWorld().getSpawnLocation());
                         return true;
                     }
-                    t.teleport(jaildb.get(t));
+                    RUtils.silentTeleport(t, jaildb.get(t));
                     return true;
                 }
                 cs.sendMessage(cmd.getDescription());
@@ -132,10 +132,10 @@ public class CmdJail implements CommandExecutor {
                 t.sendMessage(ChatColor.BLUE + "You have been released.");
                 if (jaildb.get(t).getWorld() == null) {
                     t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
-                    t.teleport(t.getWorld().getSpawnLocation());
+                    RUtils.silentTeleport(t, t.getWorld().getSpawnLocation());
                     return true;
                 }
-                t.teleport(jaildb.get(t));
+                RUtils.silentTeleport(t, jaildb.get(t));
                 return true;
             } else {
                 if (jailW == null) {
@@ -144,7 +144,7 @@ public class CmdJail implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "You have jailed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.RED + "You have been jailed.");
                 jaildb.put(t, t.getLocation());
-                t.teleport(jailLoc);
+                RUtils.silentTeleport(t, jailLoc);
                 PConfManager.setPValBoolean(t, true, "jailed");
                 return true;
             }

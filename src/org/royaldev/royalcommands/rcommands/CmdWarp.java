@@ -100,7 +100,7 @@ public class CmdWarp implements CommandExecutor {
                 if (warpLoc == null) {
                     return true;
                 }
-                p.teleport(warpLoc);
+                RUtils.teleport(p, warpLoc);
                 return true;
             }
             if (args.length > 1) {
@@ -122,7 +122,7 @@ public class CmdWarp implements CommandExecutor {
                 if (warpLoc == null) {
                     return true;
                 }
-                t.teleport(warpLoc);
+                RUtils.teleport(t, warpLoc);
                 return true;
             }
         }

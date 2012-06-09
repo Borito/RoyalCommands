@@ -32,7 +32,7 @@ public class CmdTpAccept implements CommandExecutor {
                 Player t = (Player) CmdTeleportRequest.tprdb.get(cs);
                 cs.sendMessage(ChatColor.BLUE + "Teleport request accepted.");
                 t.sendMessage(ChatColor.BLUE + "Your teleport request was accepted.");
-                t.teleport(p.getLocation());
+                RUtils.teleport(t, p.getLocation());
                 CmdTeleportRequest.tprdb.remove(cs);
                 return true;
             }
@@ -40,7 +40,7 @@ public class CmdTpAccept implements CommandExecutor {
                 Player t = (Player) CmdTeleportRequestHere.tprhdb.get(cs);
                 cs.sendMessage(ChatColor.BLUE + "Teleport request accepted.");
                 t.sendMessage(ChatColor.BLUE + "Your teleport request was accepted.");
-                p.teleport(t.getLocation());
+                RUtils.teleport(p, t.getLocation());
                 CmdTeleportRequestHere.tprhdb.remove(cs);
                 return true;
             }

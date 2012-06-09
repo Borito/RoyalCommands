@@ -36,7 +36,7 @@ public class CmdJump implements CommandExecutor {
                 return true;
             }
             Location bLoc = new Location(p.getWorld(), bb.getLocation().getX() + .5, bb.getLocation().getY() + 1, bb.getLocation().getZ() + .5, p.getLocation().getYaw(), p.getLocation().getPitch());
-            p.teleport(bLoc);
+            RUtils.teleport(p, bLoc);
             return true;
 
         }
