@@ -9,6 +9,8 @@ import org.bukkit.util.Vector;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.Random;
+
 public class CmdSlap implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -38,10 +40,11 @@ public class CmdSlap implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You may not slap that player.");
                 return true;
             }
-            Vector push = victim.getVelocity();
-            push.setY(push.getY() + .5);
-            push.setX(push.getX() + .5);
-            push.setZ(push.getZ() + .5);
+            Random r = new Random();
+            Vector push = new Vector();
+            push.setY(r.nextInt(2));
+            push.setX(r.nextInt(4) - 2);
+            push.setZ(r.nextInt(4) - 2);
             victim.setVelocity(push);
             plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + ChatColor.WHITE + " slaps " + ChatColor.RED + victim.getName() + ChatColor.WHITE + "!");
             return true;
