@@ -85,6 +85,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean cooldownAliases = null;
     public Boolean useWhitelist = null;
     public Boolean smoothTime = null;
+    public Boolean requireHelm = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -176,6 +177,7 @@ public class RoyalCommands extends JavaPlugin {
         cooldownAliases = getConfig().getBoolean("cooldowns_match_aliases", true);
         useWhitelist = getConfig().getBoolean("use_whitelist", false);
         smoothTime = getConfig().getBoolean("use_smooth_time", true);
+        requireHelm = getConfig().getBoolean("helm_require_item", false);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
@@ -548,7 +550,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdBiome(this), "biome", this);
         registerCommand(new CmdGetID(this), "getid", this);
         registerCommand(new CmdBuddha(this), "buddha", this);
-        registerCommand(new CmdRemove(this), "remove", this);
+        registerCommand(new CmdErase(this), "erase", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");

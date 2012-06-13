@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -35,6 +36,13 @@ public class CmdHelmet implements CommandExecutor {
             String name = args[0];
             if (name.trim().equalsIgnoreCase("none")) {
                 p.getInventory().setHelmet(null);
+                if (plugin.requireHelm) {
+                    if (PConfManager.getPValString(p, "helmet") != null) {
+                        ItemStack stack = RUtils.getItem(PConfManager.getPValString(p, "helmet"), 1);
+                        p.getInventory().addItem(stack);
+                        PConfManager.setPVal(p, null, "helmet");
+                    }
+                }
                 p.sendMessage(ChatColor.BLUE + "Removed your helmet.");
                 return true;
             }
@@ -42,6 +50,14 @@ public class CmdHelmet implements CommandExecutor {
             if (stack == null) {
                 p.sendMessage(ChatColor.RED + "Invalid item name!");
                 return true;
+            }
+            if (plugin.requireHelm) {
+                if (!p.getInventory().contains(stack)) {
+                    p.sendMessage(ChatColor.RED + "You don't have that item!");
+                    return true;
+                }
+                PConfManager.setPValString(p, stack.getType().name(), "helmet");
+                p.getInventory().remove(stack);
             }
             p.getInventory().setHelmet(stack);
             p.sendMessage(ChatColor.BLUE + "Set your helmet to " + ChatColor.GRAY + stack.getType().name().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");

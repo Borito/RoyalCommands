@@ -188,3 +188,10 @@ disabled_commands:
 
 # Prefix to go before nicknames.
 nick_prefix: "*"
+
+###
+# Patch to 0.2.4 #
+###
+
+# Require the player to have the item for /helm in their inventory?
+helm_require_item: false
