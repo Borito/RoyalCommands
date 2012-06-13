@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.List;
@@ -20,6 +21,10 @@ public class CmdErase implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("erase")) {
+            if (!plugin.isAuthorized(cs, "rcmds.erase")) {
+                RUtils.dispNoPerms(cs);
+                return true;
+            }
             if (!(cs instanceof Player)) {
                 cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
@@ -86,7 +91,7 @@ public class CmdErase implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "entities" : "entity") + ChatColor.BLUE + ".");
             } else if (command.equalsIgnoreCase("minecarts")) {
                 for (Entity e : entlist) {
-                    if (e instanceof Item) {
+                    if (e instanceof Minecart) {
                         e.remove();
                         count++;
                     }
@@ -107,7 +112,15 @@ public class CmdErase implements CommandExecutor {
                         count++;
                     }
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "paintings" : "paintings") + ChatColor.BLUE + ".");
+                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "paintings" : "painting") + ChatColor.BLUE + ".");
+            } else if (command.equalsIgnoreCase("drops")) {
+                for (Entity e : entlist) {
+                    if (e instanceof Item) {
+                        e.remove();
+                        count++;
+                    }
+                }
+                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "drops" : "drop") + ChatColor.BLUE + ".");
             } else {
                 cs.sendMessage(cmd.getDescription());
                 return false;
