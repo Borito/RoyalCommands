@@ -616,7 +616,7 @@ commands:
     usage: /<command> (player)
     aliases: [tbm, buddhamode]
 
-  remove:
+  erase:
     description: Removes entities.
     usage: /<command> [mobs|arrows|boats|littnt|xp|minecarts|paintings|all] (radius)
     aliases: [rm]
@@ -1011,7 +1011,7 @@ permissions:
   rcmds.buddha:
     description: Allows you to toggle buddha mode.
     default: op
-  rcmds.remove:
+  rcmds.erase:
     description: Allows you to remove entities.
     default: op
   rcmds.rcmds:
@@ -1509,7 +1509,7 @@ permissions:
       rcmds.biome: true
       rcmds.getid: true
       rcmds.buddha: true
-      rcmds.remove: true
+      rcmds.erase: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true

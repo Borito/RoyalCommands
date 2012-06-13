@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("unused, unchecked")
 public class ConfigManager {
 
     private Yaml y = new Yaml();

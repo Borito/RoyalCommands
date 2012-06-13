@@ -17,7 +17,7 @@ import org.royaldev.royalcommands.rcommands.CmdBack;
 import java.util.*;
 import java.util.logging.Logger;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked, unused")
 public class RUtils {
 
     static Logger log = Logger.getLogger("Minecraft");

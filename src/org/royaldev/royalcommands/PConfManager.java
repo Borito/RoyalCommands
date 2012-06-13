@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class PConfManager {
 
     static RoyalCommands plugin;
