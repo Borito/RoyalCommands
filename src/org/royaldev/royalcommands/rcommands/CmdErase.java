@@ -9,17 +9,17 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.List;
 
-public class CmdRemove implements CommandExecutor {
+public class CmdErase implements CommandExecutor {
 
     RoyalCommands plugin;
 
-    public CmdRemove(RoyalCommands instance) {
+    public CmdErase(RoyalCommands instance) {
         plugin = instance;
     }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("remove")) {
+        if (cmd.getName().equalsIgnoreCase("erase")) {
             if (!(cs instanceof Player)) {
                 cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
