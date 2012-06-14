@@ -621,6 +621,11 @@ commands:
     usage: /<command> [mobs|arrows|boats|littnt|xp|minecarts|paintings|all] (radius)
     aliases: [rm]
 
+  whois:
+    description: Looks up data on the specified player.
+    usage: /<command> [player]
+    aliases: [whowas]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1014,6 +1019,9 @@ permissions:
   rcmds.erase:
     description: Allows you to remove entities.
     default: op
+  rcmds.whois:
+    description: Allows you to look players up.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1264,6 +1272,151 @@ permissions:
     description: Disables the mobs' ability to target the player.
     default: false
 
+  rcmds.op:
+    description: Gives every default operator permission.
+    default: false
+    children:
+      rcmds.setarmor.*: true
+      rcmds.sign.*: true
+      rcmds.others.*: true
+      rcmds.seehidden: true
+      rcmds.see.*: true
+      rcmds.nick.color: true
+      rcmds.updates: true
+      rcmds.tpoverride: true
+
+      rcmds.level: true
+      rcmds.setlevel: true
+      rcmds.sci: true
+      rcmds.speak: true
+      rcmds.facepalm: true
+      rcmds.slap: true
+      rcmds.harm: true
+      rcmds.starve: true
+      rcmds.banned: true
+      rcmds.setarmor: true
+      rcmds.getip: true
+      rcmds.compareip: true
+      rcmds.ragequit: true
+      rcmds.quit: true
+      rcmds.rank: true
+      rcmds.freeze: true
+      rcmds.fakeop: true
+      rcmds.vtp: true
+      rcmds.megastrike: true
+      rcmds.pext: true
+      rcmds.item: true
+      rcmds.fixchunk: true
+      rcmds.weather: true
+      rcmds.clearinventory: true
+      rcmds.give: true
+      rcmds.message: true
+      rcmds.reply: true
+      rcmds.gamemode: true
+      rcmds.mute: true
+      rcmds.ban: true
+      rcmds.time: true
+      rcmds.home: true
+      rcmds.sethome: true
+      rcmds.sethome.multi: true
+      rcmds.delhome: true
+      rcmds.listhome: true
+      rcmds.strike: true
+      rcmds.jump: true
+      rcmds.warn: true
+      rcmds.clearwarns: true
+      rcmds.warp: true
+      rcmds.setwarp: true
+      rcmds.delwarp: true
+      rcmds.repair: true
+      rcmds.heal: true
+      rcmds.unban: true
+      rcmds.feed: true
+      rcmds.banreason: true
+      rcmds.setspawn: true
+      rcmds.god: true
+      rcmds.spawn: true
+      rcmds.banip: true
+      rcmds.unbanip: true
+      rcmds.list: true
+      rcmds.back: true
+      rcmds.teleport: true
+      rcmds.teleporthere: true
+      rcmds.teleportrequest: true
+      rcmds.teleportrequesthere: true
+      rcmds.tpaccept: true
+      rcmds.tpdeny: true
+      rcmds.listwarns: true
+      rcmds.more: true
+      rcmds.spy: true
+      rcmds.spawnmob: true
+      rcmds.afk: true
+      rcmds.assign: true
+      rcmds.onehitkill: true
+      rcmds.burn: true
+      rcmds.kick: true
+      rcmds.kickall: true
+      rcmds.world: true
+      rcmds.jail: true
+      rcmds.setjail: true
+      rcmds.less: true
+      rcmds.spawner: true
+      rcmds.tp2p: true
+      rcmds.motd: true
+      rcmds.deljail: true
+      rcmds.force: true
+      rcmds.ping: true
+      rcmds.invsee: true
+      rcmds.realname: true
+      rcmds.nick: true
+      rcmds.ingot2block: true
+      rcmds.near: true
+      rcmds.kill: true
+      rcmds.suicide: true
+      rcmds.killall: true
+      rcmds.muteall: true
+      rcmds.kit: true
+      rcmds.rules: true
+      rcmds.help: true
+      rcmds.broadcast: true
+      rcmds.hug: true
+      rcmds.explode: true
+      rcmds.ride: true
+      rcmds.whobanned: true
+      rcmds.tppos: true
+      rcmds.ignore: true
+      rcmds.coords: true
+      rcmds.tpall: true
+      rcmds.tpaall: true
+      rcmds.vip: true
+      rcmds.dump: true
+      rcmds.seen: true
+      rcmds.tempban: true
+      rcmds.tptoggle: true
+      rcmds.kits: true
+      rcmds.lag: true
+      rcmds.mem: true
+      rcmds.entities: true
+      rcmds.invmod: true
+      rcmds.workbench: true
+      rcmds.enchantingtable: true
+      rcmds.trade: true
+      rcmds.furnace: true
+      rcmds.enchant: true
+      rcmds.fireball: true
+      rcmds.fly: true
+      rcmds.whitelist: true
+      rcmds.playertime: true
+      rcmds.compass: true
+      rcmds.helmet: true
+      rcmds.worldmanager: true
+      rcmds.biome: true
+      rcmds.getid: true
+      rcmds.buddha: true
+      rcmds.erase: true
+      rcmds.whois: true
+      rcmds.rcmds: true
+
   rcmds.admin:
     description: Gives every permission.
     default: false
@@ -1510,6 +1663,7 @@ permissions:
       rcmds.getid: true
       rcmds.buddha: true
       rcmds.erase: true
+      rcmds.whois: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
