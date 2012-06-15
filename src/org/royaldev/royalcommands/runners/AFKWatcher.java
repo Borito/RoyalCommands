@@ -34,9 +34,9 @@ public class AFKWatcher implements Runnable {
             }
             if (!AFKUtils.isAfk(p)) continue;
             if (afkKickTime <= 0) continue;
-            long afkAt = AFKUtils.getAfkTime(p);
             if (plugin.isAuthorized(p, "rcmds.exempt.afkkick")) return;
-            if (afkAt + (afkKickTime * 1000) >= currentTime) p.kickPlayer("You have been AFK for too long!");
+            long afkAt = AFKUtils.getAfkTime(p);
+            if (afkAt + (afkKickTime * 1000) < currentTime) p.kickPlayer("You have been AFK for too long!");
         }
     }
 
