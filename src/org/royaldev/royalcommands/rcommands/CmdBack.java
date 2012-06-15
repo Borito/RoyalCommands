@@ -37,7 +37,11 @@ public class CmdBack implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You have no place to go back to!");
                 return true;
             }
-            RUtils.teleport(p, backdb.get(p));
+            String error = RUtils.teleport(p, backdb.get(p));
+            if (!error.isEmpty()) {
+                p.sendMessage(ChatColor.RED + error);
+                return true;
+            }
             p.sendMessage(ChatColor.BLUE + "Returning to your previous location.");
             return true;
         }

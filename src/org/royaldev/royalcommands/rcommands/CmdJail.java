@@ -72,10 +72,18 @@ public class CmdJail implements CommandExecutor {
                     t.sendMessage(ChatColor.BLUE + "You have been released.");
                     if (jaildb.get(t).getWorld() == null) {
                         t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
-                        RUtils.silentTeleport(t, t.getWorld().getSpawnLocation());
+                        String error = RUtils.silentTeleport(t, t.getWorld().getSpawnLocation());
+                        if (!error.isEmpty()) {
+                            cs.sendMessage(ChatColor.RED + error);
+                            return true;
+                        }
                         return true;
                     }
-                    RUtils.silentTeleport(t, jaildb.get(t));
+                    String error = RUtils.silentTeleport(t, jaildb.get(t));
+                    if (!error.isEmpty()) {
+                        cs.sendMessage(ChatColor.RED + error);
+                        return true;
+                    }
                     return true;
                 }
                 cs.sendMessage(cmd.getDescription());
@@ -132,10 +140,18 @@ public class CmdJail implements CommandExecutor {
                 t.sendMessage(ChatColor.BLUE + "You have been released.");
                 if (jaildb.get(t).getWorld() == null) {
                     t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
-                    RUtils.silentTeleport(t, t.getWorld().getSpawnLocation());
+                    String error = RUtils.silentTeleport(t, t.getWorld().getSpawnLocation());
+                    if (!error.isEmpty()) {
+                        cs.sendMessage(ChatColor.RED + error);
+                        return true;
+                    }
                     return true;
                 }
-                RUtils.silentTeleport(t, jaildb.get(t));
+                String error = RUtils.silentTeleport(t, jaildb.get(t));
+                if (!error.isEmpty()) {
+                    cs.sendMessage(ChatColor.RED + error);
+                    return true;
+                }
                 return true;
             } else {
                 if (jailW == null) {
@@ -144,7 +160,11 @@ public class CmdJail implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "You have jailed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.RED + "You have been jailed.");
                 jaildb.put(t, t.getLocation());
-                RUtils.silentTeleport(t, jailLoc);
+                String error = RUtils.silentTeleport(t, jailLoc);
+                if (!error.isEmpty()) {
+                    cs.sendMessage(ChatColor.RED + error);
+                    return true;
+                }
                 PConfManager.setPValBoolean(t, true, "jailed");
                 return true;
             }

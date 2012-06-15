@@ -49,7 +49,11 @@ public class CmdTppos implements CommandExecutor {
             }
             pLoc = new Location(w, x, y, z);
             cs.sendMessage(ChatColor.BLUE + "Teleporting you to x: " + ChatColor.GRAY + x + ChatColor.BLUE + ", y: " + ChatColor.GRAY + y + ChatColor.BLUE + ", z: " + ChatColor.GRAY + z + ChatColor.BLUE + " in world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
-            RUtils.teleport(p, pLoc);
+            String error = RUtils.teleport(p, pLoc);
+            if (!error.isEmpty()) {
+                p.sendMessage(ChatColor.RED + error);
+                return true;
+            }
             return true;
         }
         return false;

@@ -102,7 +102,11 @@ public class CmdHome implements CommandExecutor {
             } else {
                 p.sendMessage(ChatColor.BLUE + "Going home.");
             }
-            RUtils.teleport(p, homeLoc);
+            String error = RUtils.teleport(p, homeLoc);
+            if (!error.isEmpty()) {
+                p.sendMessage(ChatColor.RED + error);
+                return true;
+            }
             return true;
 
         }

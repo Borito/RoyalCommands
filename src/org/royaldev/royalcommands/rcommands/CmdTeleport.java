@@ -42,7 +42,11 @@ public class CmdTeleport implements CommandExecutor {
             }
             Player p = (Player) cs;
             p.sendMessage(ChatColor.BLUE + "Teleporting you to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            RUtils.teleport(p, t.getLocation());
+            String error = RUtils.teleport(p, t.getLocation());
+            if (!error.isEmpty()) {
+                p.sendMessage(ChatColor.RED + error);
+                return true;
+            }
             return true;
         }
         return false;

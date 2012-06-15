@@ -195,3 +195,6 @@ nick_prefix: "*"
 
 # Require the player to have the item for /helm in their inventory?
 helm_require_item: false
+
+# Make teleports try to find ground for the teleported player, rather than teleport into midair?
+safe_teleport: true

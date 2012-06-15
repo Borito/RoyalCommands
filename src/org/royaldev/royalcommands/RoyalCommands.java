@@ -86,6 +86,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean useWhitelist = null;
     public Boolean smoothTime = null;
     public Boolean requireHelm = null;
+    public static Boolean safeTeleport = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -178,6 +179,7 @@ public class RoyalCommands extends JavaPlugin {
         useWhitelist = getConfig().getBoolean("use_whitelist", false);
         smoothTime = getConfig().getBoolean("use_smooth_time", true);
         requireHelm = getConfig().getBoolean("helm_require_item", false);
+        safeTeleport = getConfig().getBoolean("safe_teleport", true);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));

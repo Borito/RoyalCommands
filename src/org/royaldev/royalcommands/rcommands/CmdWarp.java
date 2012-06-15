@@ -100,7 +100,11 @@ public class CmdWarp implements CommandExecutor {
                 if (warpLoc == null) {
                     return true;
                 }
-                RUtils.teleport(p, warpLoc);
+                String error = RUtils.teleport(p, warpLoc);
+                if (!error.isEmpty()) {
+                    p.sendMessage(ChatColor.RED + error);
+                    return true;
+                }
                 return true;
             }
             if (args.length > 1) {
@@ -122,7 +126,11 @@ public class CmdWarp implements CommandExecutor {
                 if (warpLoc == null) {
                     return true;
                 }
-                RUtils.teleport(t, warpLoc);
+                String error = RUtils.teleport(t, warpLoc);
+                if (!error.isEmpty()) {
+                    cs.sendMessage(ChatColor.RED + error);
+                    return true;
+                }
                 return true;
             }
         }

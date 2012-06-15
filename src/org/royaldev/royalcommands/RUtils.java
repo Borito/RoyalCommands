@@ -316,10 +316,19 @@ public class RUtils {
      *
      * @param p Player to teleport
      * @param l Location to teleport to
+     * @return Error message if any.
      */
-    public static void teleport(Player p, Location l) {
-        CmdBack.backdb.put(p, p.getLocation());
-        p.teleport(l);
+    public static String teleport(Player p, Location l) {
+        if (!RoyalCommands.safeTeleport) {
+            CmdBack.backdb.put(p, p.getLocation());
+            p.teleport(l);
+        } else {
+            Location toTele = getSafeLocation(l);
+            if (toTele == null) return "There is no ground below.";
+            CmdBack.backdb.put(p, p.getLocation());
+            p.teleport(toTele);
+        }
+        return "";
     }
 
     /**
@@ -327,8 +336,36 @@ public class RUtils {
      *
      * @param p Player to teleport
      * @param l Location to teleport to
+     * @return Error message if any.
      */
-    public static void silentTeleport(Player p, Location l) {
-        p.teleport(l);
+    public static String silentTeleport(Player p, Location l) {
+        if (!RoyalCommands.safeTeleport) p.teleport(l);
+        else {
+            Location toTele = getSafeLocation(l);
+            if (toTele == null) return "There is no ground below.";
+            p.teleport(toTele);
+        }
+        return "";
+    }
+
+    /**
+     * Returns a location that is always above ground.
+     * If there is no ground under the location, returns
+     * null.
+     *
+     * @param l Location to find safe location for
+     * @return Safe location or null if no ground
+     */
+    public static Location getSafeLocation(Location l) {
+        int unsafeY = l.getBlockY();
+        if (unsafeY < 0) return null;
+        for (int i = unsafeY; i >= 0; i--) {
+            if (i < 0) return null;
+            Block b = l.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ());
+            if (b == null) return null;
+            if (b.getType().equals(Material.AIR)) continue;
+            return b.getLocation();
+        }
+        return null;
     }
 }
