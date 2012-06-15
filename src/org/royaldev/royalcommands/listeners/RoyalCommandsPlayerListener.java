@@ -173,6 +173,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.isCancelled()) return;
+        AFKUtils.setLastMove(event.getPlayer(), new Date().getTime());
         if (AFKUtils.isAfk(event.getPlayer())) {
             AFKUtils.unsetAfk(event.getPlayer());
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
