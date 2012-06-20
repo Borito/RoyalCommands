@@ -364,8 +364,17 @@ public class RUtils {
             Block b = l.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ());
             if (b == null) return null;
             if (b.getType().equals(Material.AIR)) continue;
-            return b.getLocation();
+            Location bLoc = b.getLocation();
+            return new Location(bLoc.getWorld(), bLoc.getX(), bLoc.getY() + 1, bLoc.getZ());
         }
         return null;
+    }
+
+    public static String getItemName(ItemStack is) {
+        return is.getType().name().toLowerCase().replace("_", " ");
+    }
+
+    public static String getItemName(Material m) {
+        return m.name().toLowerCase().replace("_", " ");
     }
 }
