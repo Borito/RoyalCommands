@@ -686,6 +686,9 @@ permissions:
   rcmds.vtp:
     description: Allows you to override teleport.
     default: op
+  rcmds.vtphere:
+    description: Allows you to override teleporthere.
+    default: op
   rcmds.megastrike:
     description: Allows you to call a mega-strike.
     default: op
@@ -1303,6 +1306,7 @@ permissions:
       rcmds.freeze: true
       rcmds.fakeop: true
       rcmds.vtp: true
+      rcmds.vtphere: true
       rcmds.megastrike: true
       rcmds.pext: true
       rcmds.item: true
@@ -1552,6 +1556,7 @@ permissions:
       rcmds.freeze: true
       rcmds.fakeop: true
       rcmds.vtp: true
+      rcmds.vtphere: true
       rcmds.megastrike: true
       rcmds.pext: true
       rcmds.item: true
