@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -180,6 +181,15 @@ public class PConfManager {
     public static boolean getPConfExists(String name) {
         File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + name.toLowerCase() + ".yml");
         return pconfl.exists();
+    }
+
+    public static ConfigurationSection getPConfSection(OfflinePlayer t, String name) {
+        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
+        if (pconfl.exists()) {
+            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+            return pconf.getConfigurationSection(name);
+        }
+        return null;
     }
 
 }

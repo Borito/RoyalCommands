@@ -32,7 +32,7 @@ public class CmdWarp implements CommandExecutor {
         Float warpPitch;
         World warpW;
 
-        File pconfl = new File(plugin.getDataFolder() + "/warps.yml");
+        File pconfl = new File(plugin.getDataFolder() + File.separator + "warps.yml");
         if (pconfl.exists()) {
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
             warpSet = pconf.getBoolean("warps." + name + ".set");

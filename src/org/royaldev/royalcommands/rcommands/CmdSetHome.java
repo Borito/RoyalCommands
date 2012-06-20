@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -32,7 +33,8 @@ public class CmdSetHome implements CommandExecutor {
             if (args.length > 0) {
                 if (!plugin.isAuthorized(cs, "rcmds.sethome.multi")) {
                     cs.sendMessage(ChatColor.RED + "You don't have permission for multiple homes!");
-                    plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+                    RUtils.dispNoPerms(cs);
+                    //plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                     return true;
                 }
             }
@@ -60,7 +62,7 @@ public class CmdSetHome implements CommandExecutor {
             File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                if (args.length > 0) {
+                if (name.equals("")) {
                     pconf.set("home." + name + ".set", true);
                     pconf.set("home." + name + ".x", locX);
                     pconf.set("home." + name + ".y", locY);
