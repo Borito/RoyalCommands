@@ -62,7 +62,7 @@ public class CmdSetHome implements CommandExecutor {
             File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                if (name.equals("")) {
+                if (!name.equals("")) {
                     pconf.set("home." + name + ".set", true);
                     pconf.set("home." + name + ".x", locX);
                     pconf.set("home." + name + ".y", locY);
