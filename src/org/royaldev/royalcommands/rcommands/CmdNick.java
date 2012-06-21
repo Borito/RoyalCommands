@@ -41,7 +41,8 @@ public class CmdNick implements CommandExecutor {
                     Player p = (Player) t;
                     p.setDisplayName(t.getName());
                     if (t.getName().length() <= 16) p.setPlayerListName(t.getName());
-                    p.sendMessage(ChatColor.BLUE + "Your nickname was reset by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
+                    if (!(cs instanceof Player) || !cs.equals(p))
+                        p.sendMessage(ChatColor.BLUE + "Your nickname was reset by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
                 }
                 cs.sendMessage(ChatColor.BLUE + "You reset the nickname of " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 return true;
@@ -53,7 +54,8 @@ public class CmdNick implements CommandExecutor {
                 Player p = (Player) t;
                 p.setDisplayName(newName);
                 if (newName.length() <= 16) p.setPlayerListName(newName);
-                p.sendMessage(ChatColor.BLUE + "Your nickname was changed to " + ChatColor.GRAY + newName + ChatColor.BLUE + " by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
+                if (!(cs instanceof Player) || !cs.equals(p))
+                    p.sendMessage(ChatColor.BLUE + "Your nickname was changed to " + ChatColor.GRAY + newName + ChatColor.BLUE + " by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
             }
             cs.sendMessage(ChatColor.BLUE + "Changed the nick of " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
             return true;
