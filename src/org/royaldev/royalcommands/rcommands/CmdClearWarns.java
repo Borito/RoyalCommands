@@ -36,7 +36,7 @@ public class CmdClearWarns implements CommandExecutor {
             }
             Player t = plugin.getServer().getPlayer(args[0].trim());
             if (t != null) {
-                File pconfl = new File(plugin.getDataFolder() + "/userdata/" + t.getName().toLowerCase() + ".yml");
+                File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
                 if (pconfl.exists()) {
                     FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                     if (pconf.get("warns") == null) {
@@ -58,7 +58,7 @@ public class CmdClearWarns implements CommandExecutor {
                 }
             }
             OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
-            File pconfl = new File(plugin.getDataFolder() + "/userdata/" + t2.getName().toLowerCase() + ".yml");
+            File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t2.getName().toLowerCase() + ".yml");
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 if (pconf.get("warns") == null) {
