@@ -45,6 +45,8 @@ public class CmdWhois implements CommandExecutor {
             cs.sendMessage(ChatColor.BLUE + "Nickname: " + ChatColor.GRAY + dispname);
             cs.sendMessage(ChatColor.BLUE + "IP: " + ChatColor.GRAY + ip);
             cs.sendMessage(ChatColor.BLUE + "Is VIP: " + ChatColor.GRAY + ((PConfManager.getPValBoolean(t, "vip")) ? "yes" : "no"));
+            cs.sendMessage(ChatColor.BLUE + "Is muted: " + ChatColor.GRAY + ((PConfManager.getPValBoolean(t, "muted")) ? "yes" : "no"));
+            cs.sendMessage(ChatColor.BLUE + "Is jailed: " + ChatColor.GRAY + ((PConfManager.getPValBoolean(t, "jailed")) ? "yes" : "no"));
             long timestamp = RUtils.getTimeStamp(t, "seen");
             String lastseen = (timestamp < 0) ? "unknown" : RUtils.formatDateDiff(timestamp);
             cs.sendMessage(ChatColor.BLUE + "Last seen:" + ChatColor.GRAY + ((t.isOnline()) ? " now" : lastseen));
