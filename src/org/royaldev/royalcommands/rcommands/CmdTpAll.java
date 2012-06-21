@@ -30,7 +30,7 @@ public class CmdTpAll implements CommandExecutor {
             for (Player t : plugin.getServer().getOnlinePlayers()) {
                 if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(p, "rcmds.tpoverride")) continue;
                 if (t.equals(p)) continue;
-                String error = RUtils.teleport(t, p.getLocation());
+                String error = RUtils.teleport(t, p);
                 if (!error.isEmpty()) {
                     p.sendMessage(ChatColor.RED + error);
                     return true;

@@ -38,7 +38,7 @@ public class CmdVtp implements CommandExecutor {
             }
             Player player = (Player) cs;
             cs.sendMessage(ChatColor.BLUE + "Teleporting you to player " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + ".");
-            String error = RUtils.teleport(player, victim.getLocation());
+            String error = RUtils.teleport(player, victim);
             if (!error.isEmpty()) {
                 cs.sendMessage(ChatColor.RED + error);
                 return true;

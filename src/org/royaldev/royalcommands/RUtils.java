@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.rcommands.CmdBack;
@@ -349,6 +350,44 @@ public class RUtils {
     }
 
     /**
+     * Teleports a player and registers it in /back.
+     *
+     * @param p Player to teleport
+     * @param e Entity to teleport to
+     * @return Error message if any.
+     */
+    public static String teleport(Player p, Entity e) {
+
+        if (!RoyalCommands.safeTeleport) {
+            CmdBack.backdb.put(p, p.getLocation());
+            p.teleport(e);
+        } else {
+            Location toTele = getSafeLocation(e);
+            if (toTele == null) return "There is no ground below.";
+            CmdBack.backdb.put(p, p.getLocation());
+            p.teleport(toTele);
+        }
+        return "";
+    }
+
+    /**
+     * Teleports a player without registering it in /back.
+     *
+     * @param p Player to teleport
+     * @param e Entity to teleport to
+     * @return Error message if any.
+     */
+    public static String silentTeleport(Player p, Entity e) {
+        if (!RoyalCommands.safeTeleport) p.teleport(e);
+        else {
+            Location toTele = getSafeLocation(e);
+            if (toTele == null) return "There is no ground below.";
+            p.teleport(toTele);
+        }
+        return "";
+    }
+
+    /**
      * Returns a location that is always above ground.
      * If there is no ground under the location, returns
      * null.
@@ -366,6 +405,29 @@ public class RUtils {
             if (b.getType().equals(Material.AIR)) continue;
             Location bLoc = b.getLocation();
             return new Location(bLoc.getWorld(), bLoc.getX(), bLoc.getY() + 1, bLoc.getZ());
+        }
+        return null;
+    }
+
+    /**
+     * Returns a location that is always above ground.
+     * If there is no ground under the location, returns
+     * null.
+     *
+     * @param e Entity to derive location from
+     * @return Safe location or null if no ground
+     */
+    public static Location getSafeLocation(Entity e) {
+        Location l = e.getLocation();
+        int unsafeY = l.getBlockY();
+        if (unsafeY < 0) return null;
+        for (int i = unsafeY; i >= 0; i--) {
+            if (i < 0) return null;
+            Block b = l.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ());
+            if (b == null) return null;
+            if (b.getType().equals(Material.AIR)) continue;
+            Location bLoc = b.getLocation();
+            return new Location(bLoc.getWorld(), bLoc.getX(), bLoc.getY() + 1, bLoc.getZ(), l.getYaw(), l.getPitch());
         }
         return null;
     }

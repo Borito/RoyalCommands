@@ -42,7 +42,7 @@ public class CmdTp2p implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has teleportation off!");
                 return true;
             }
-            String error = RUtils.teleport(t1, t2.getLocation());
+            String error = RUtils.teleport(t1, t2);
             if (!error.isEmpty()) {
                 cs.sendMessage(ChatColor.RED + error);
                 return true;

@@ -38,7 +38,7 @@ public class CmdVtphere implements CommandExecutor {
             }
             Player player = (Player) cs;
             cs.sendMessage(ChatColor.BLUE + "Teleporting player " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + " to you.");
-            String error = RUtils.teleport(victim, player.getLocation());
+            String error = RUtils.teleport(victim, player);
             if (!error.isEmpty()) {
                 cs.sendMessage(ChatColor.RED + error);
                 return true;
