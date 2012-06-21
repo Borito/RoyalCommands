@@ -24,6 +24,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -356,11 +357,11 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public boolean isAuthorized(final Player player, final String node) {
-        return player instanceof ConsoleCommandSender || setupPermissions() && (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || setupPermissions() && (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
     public boolean isAuthorized(final CommandSender player, final String node) {
-        return player instanceof ConsoleCommandSender || setupPermissions() && (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || setupPermissions() && (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
     public void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
