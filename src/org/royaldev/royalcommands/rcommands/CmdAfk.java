@@ -21,8 +21,8 @@ public class CmdAfk implements CommandExecutor {
         this.plugin = instance;
     }
 
-    public static Map<Player, Long> afkdb = new HashMap<Player, Long>();
-    public static Map<Player, Long> movetimes = new HashMap<Player, Long>();
+    public final static Map<Player, Long> afkdb = new HashMap<Player, Long>();
+    public final static Map<Player, Long> movetimes = new HashMap<Player, Long>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
