@@ -1142,6 +1142,9 @@ permissions:
     description: Makes the player exempt to teleport cooldowns.
     default: false
 
+  rcmds.exempt.limit.spawnmob:
+    description: Allows the player to spawn more than the server limit of mobs.
+    default: false
 
   rcmds.allowed.item:
     description: Allows the player to spawn prohibited items.
@@ -1489,6 +1492,7 @@ permissions:
     description: Gives every exempt permission.
     default: false
     children:
+      rcmds.exempt.limit.spawnmob: true
       rcmds.exempt.notarget: true
       rcmds.exempt.feed: true
       rcmds.exempt.speak: true

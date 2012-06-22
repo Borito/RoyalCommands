@@ -57,7 +57,7 @@ public class CmdSpawnMob implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Invalid amount specified!");
                     return true;
                 }
-                if (i > plugin.spawnmobLimit) {
+                if (i > plugin.spawnmobLimit && !plugin.isAuthorized(cs, "rcmds.exempt.limit.spawnmob")) {
                     cs.sendMessage(ChatColor.RED + "The amount specified was larger than the allowed amount.");
                     cs.sendMessage(ChatColor.RED + "Setting amount to " + ChatColor.GRAY + plugin.spawnmobLimit + ChatColor.RED + ".");
                     i = plugin.spawnmobLimit;
