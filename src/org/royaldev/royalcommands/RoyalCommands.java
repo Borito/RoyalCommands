@@ -159,6 +159,15 @@ public class RoyalCommands extends JavaPlugin {
         } else return vp.getManager().isVanished(p.getName());
     }
 
+    public boolean isVanished(Player p, CommandSender cs) {
+        if (!useVNP) return false;
+        if (vp == null) {
+            vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
+            return false;
+        }
+        return RoyalCommands.hasPerm(cs, "rcmds.seehidden") || vp.getManager().isVanished(p.getName());
+    }
+
     public void reloadConfigVals() {
         if (whl != null) whl.load();
         showcommands = getConfig().getBoolean("view_commands", true);
@@ -354,6 +363,10 @@ public class RoyalCommands extends JavaPlugin {
         } catch (Exception ignored) {
         }
         return currentVersion;
+    }
+
+    public static boolean hasPerm(final CommandSender player, final String node) {
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
     public boolean isAuthorized(final Player player, final String node) {

@@ -626,6 +626,11 @@ commands:
     usage: /<command> [player]
     aliases: [whowas]
 
+  mobignore:
+    description: Toggles if mobs ignore the player.
+    usage: /<command> (player)
+    aliases: [mi]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1025,6 +1030,9 @@ permissions:
   rcmds.whois:
     description: Allows you to look players up.
     default: op
+  rcmds.mobignore:
+    description: Allows you to toggle if mobs ignore you.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1099,9 +1107,6 @@ permissions:
     default: false
   rcmds.exempt.kill:
     description: Makes the player immune to /kill.
-    default: false
-  rcmds.exempt.notarget:
-    description: Makes the player visible to mobs if they have rcmds.notarget.
     default: false
   rcmds.exempt.explode:
     description: Makes the player immune to /explode.
@@ -1422,6 +1427,7 @@ permissions:
       rcmds.buddha: true
       rcmds.erase: true
       rcmds.whois: true
+      rcmds.mobignore: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1493,7 +1499,6 @@ permissions:
     default: false
     children:
       rcmds.exempt.limit.spawnmob: true
-      rcmds.exempt.notarget: true
       rcmds.exempt.feed: true
       rcmds.exempt.speak: true
       rcmds.exempt.sci: true
@@ -1518,7 +1523,6 @@ permissions:
       rcmds.exempt.nick: true
       rcmds.exempt.kill: true
       rcmds.exempt.explode: true
-      rcmds.exempt.notarget: true
       rcmds.exempt.home: true
       rcmds.exempt.listhome: true
       rcmds.exempt.ignore: true
@@ -1673,6 +1677,7 @@ permissions:
       rcmds.buddha: true
       rcmds.erase: true
       rcmds.whois: true
+      rcmds.mobignore: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
@@ -1694,5 +1699,3 @@ permissions:
       rcmds.sign.*: true
 
       rcmds.setarmor.*: true
-
-      rcmds.notarget: true

@@ -27,8 +27,8 @@ public class RoyalCommandsEntityListener implements Listener {
         if (!(ent instanceof PlayerDeathEvent)) return;
         if (!plugin.backDeath) return;
         PlayerDeathEvent e = (PlayerDeathEvent) ent;
-        if (e.getEntity() == null) return;
-        Player p = e.getEntity();
+        if (e.getEntity() == null || !(e.getEntity() instanceof Player)) return;
+        Player p = (Player) e.getEntity();
         Location pLoc = p.getLocation();
         CmdBack.backdb.put(p, pLoc);
         p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
@@ -76,8 +76,7 @@ public class RoyalCommandsEntityListener implements Listener {
     public void onEntityTarget(EntityTargetEvent event) {
         if (!(event.getTarget() instanceof Player)) return;
         Player p = (Player) event.getTarget();
-        if (plugin.isAuthorized(p, "rcmds.notarget") && !plugin.isAuthorized(p, "rcmds.exempt.notarget"))
-            event.setCancelled(true);
+        if (PConfManager.getPValBoolean(p, "mobignored")) event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
