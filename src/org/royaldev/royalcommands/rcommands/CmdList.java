@@ -5,8 +5,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CmdList implements CommandExecutor {
 
@@ -47,29 +53,59 @@ public class CmdList implements CommandExecutor {
                 return true;
             }
             Player p[] = plugin.getServer().getOnlinePlayers();
-            String ps = "";
-            int hid = 0;
-            for (Player aP : p) {
-                String name = formatPrepend(aP) + ChatColor.WHITE;
-                if (!plugin.isVanished(aP)) {
-                    if (CmdAfk.afkdb.containsKey(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
-                    ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
-                } else hid++;
-            }
-            if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
-                if (hid > 0)
-                    cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + (p.length - hid) + "/" + hid + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
-                else
-                    cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + p.length + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
-                for (Player aP : p) {
-                    String name = formatPrepend(aP) + ChatColor.WHITE;
-                    if (!plugin.isVanished(aP)) continue;
-                    name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
-                    ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
+            Map<String, List<Player>> groups = new HashMap<String, List<Player>>();
+            if (plugin.simpleList) {
+                String ps = "";
+                int hid = 0;
+                for (Player pl : p) {
+                    String name = formatPrepend(pl) + ChatColor.WHITE;
+                    if (plugin.isVanished(pl) && plugin.isAuthorized(cs, "rcmds.seehidden")) {
+                        name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
+                        ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
+                        hid++;
+                    } else {
+                        if (AFKUtils.isAfk(pl)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
+                        ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
+                    }
                 }
-            } else
-                cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + (p.length - hid) + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
-            cs.sendMessage("Online Players: " + ps);
+                String numPlayers;
+                if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
+                    if (hid < 1) numPlayers = String.valueOf(p.length);
+                    else numPlayers = (p.length - hid) + "/" + hid;
+                } else numPlayers = String.valueOf(p.length - hid);
+                cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + numPlayers + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
+                cs.sendMessage("Online Players: " + ps);
+                return true;
+            }
+            int hid = 0;
+            for (Player pl : p) {
+                if (plugin.isVanished(pl)) hid++;
+                String group = RoyalCommands.permission.getPrimaryGroup(pl);
+                List<Player> inGroup = (groups.containsKey(group)) ? groups.get(group) : new ArrayList<Player>();
+                inGroup.add(pl);
+                groups.put(group, inGroup);
+            }
+            String numPlayers;
+            if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
+                if (hid < 1) numPlayers = String.valueOf(p.length);
+                else numPlayers = (p.length - hid) + "/" + hid;
+            } else numPlayers = String.valueOf(p.length - hid);
+            cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + numPlayers + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
+            for (String group : groups.keySet()) {
+                String online = "";
+                for (Player pl : groups.get(group)) {
+                    String name = formatPrepend(pl) + ChatColor.WHITE;
+                    if (plugin.isVanished(pl) && plugin.isAuthorized(cs, "rcmds.seehidden")) {
+                        name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
+                        online = (online.equals("")) ? online.concat(name) : online.concat(", " + name);
+                    } else {
+                        if (AFKUtils.isAfk(pl)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
+                        online = (online.equals("")) ? online.concat(name) : online.concat(", " + name);
+                    }
+                }
+                online = RUtils.colorize(group) + ": " + online;
+                cs.sendMessage(online);
+            }
             return true;
         }
         return false;

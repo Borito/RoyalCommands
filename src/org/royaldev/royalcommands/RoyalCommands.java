@@ -91,6 +91,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean requireHelm = null;
     public static Boolean safeTeleport = null;
     public Boolean checkVersion = null;
+    public Boolean simpleList = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -196,6 +197,7 @@ public class RoyalCommands extends JavaPlugin {
         requireHelm = getConfig().getBoolean("helm_require_item", false);
         safeTeleport = getConfig().getBoolean("safe_teleport", true);
         checkVersion = getConfig().getBoolean("version_check", true);
+        simpleList = getConfig().getBoolean("simple_list", true);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
@@ -376,11 +378,11 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public boolean isAuthorized(final Player player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || setupPermissions() && (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
     public boolean isAuthorized(final CommandSender player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || setupPermissions() && (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
     public void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
@@ -429,6 +431,7 @@ public class RoyalCommands extends JavaPlugin {
 
         setupEconomy();
         setupChat();
+        setupPermissions();
 
         try {
             m = new Metrics(this);

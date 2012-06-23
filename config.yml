@@ -201,3 +201,6 @@ safe_teleport: true
 
 # Check to see if the version of CraftBukkit you're running is safe?
 version_check: true
+
+# Display /list as a simple list (true) or display it separated by groups (false)?
+simple_list: true
