@@ -198,3 +198,6 @@ helm_require_item: false
 
 # Make teleports try to find ground for the teleported player, rather than teleport into midair?
 safe_teleport: true
+
+# Check to see if the version of CraftBukkit you're running is safe?
+version_check: true

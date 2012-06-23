@@ -184,6 +184,14 @@ public class RUtils {
             return null;
         }
     }
+    
+    public static Integer getInt(String number) {
+        try {
+            return Integer.valueOf(number);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public static boolean isTimeStampValid(OfflinePlayer p, String title) {
         if (PConfManager.getPVal(p, title) == null) return false;

@@ -49,6 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RoyalCommands extends JavaPlugin {
 
@@ -88,6 +90,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean smoothTime = null;
     public Boolean requireHelm = null;
     public static Boolean safeTeleport = null;
+    public Boolean checkVersion = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -116,6 +119,8 @@ public class RoyalCommands extends JavaPlugin {
     public RoyalCommands() {
         pconfm = new PConfManager(this);
     }
+
+    private int minVersion = 2244;
 
     public static Map<String, Map<String, Object>> commands = null;
     public static Plugin[] plugins = null;
@@ -190,6 +195,7 @@ public class RoyalCommands extends JavaPlugin {
         smoothTime = getConfig().getBoolean("use_smooth_time", true);
         requireHelm = getConfig().getBoolean("helm_require_item", false);
         safeTeleport = getConfig().getBoolean("safe_teleport", true);
+        checkVersion = getConfig().getBoolean("version_check", true);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
@@ -382,12 +388,38 @@ public class RoyalCommands extends JavaPlugin {
         jp.getCommand(command).setExecutor(ce);
     }
 
+    public boolean versionCheck() {
+        if (!checkVersion) return true;
+        Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
+        Matcher m = p.matcher(getServer().getVersion());
+        if (!m.matches()) {
+            log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
+            return true;
+        }
+        if (m.groupCount() < 1) {
+            log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
+            return true;
+        }
+        Integer currentVersion = RUtils.getInt(m.group(1));
+        return currentVersion == null || currentVersion >= minVersion;
+    }
+
     public void onEnable() {
+
         commands = getDescription().getCommands();
         plugins = getServer().getPluginManager().getPlugins();
 
         loadConfiguration();
         reloadConfigVals();
+
+        if (!versionCheck()) {
+            log.severe("[RoyalCommands] This version of CraftBukkit is too old to run RoyalCommands!");
+            log.severe("[RoyalCommands] This version of RoyalCommands needs at least CraftBukkit " + minVersion + ".");
+            log.severe("[RoyalCommands] Disabling plugin. You can turn this check off in the config.");
+            getPluginLoader().disablePlugin(this);
+            return;
+        }
+
         try {
             whl = new ConfigManager(getDataFolder().getAbsolutePath() + File.separator + "whitelist.yml");
         } catch (FileNotFoundException e) {
