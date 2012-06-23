@@ -44,7 +44,7 @@ public class CmdStarve implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You may not starve that player.");
                 return true;
             }
-            if (victim == null || plugin.isVanished(victim)) {
+            if (victim == null || plugin.isVanished(victim, cs)) {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
                 return true;
             }

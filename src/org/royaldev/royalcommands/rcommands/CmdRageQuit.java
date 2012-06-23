@@ -36,7 +36,7 @@ public class CmdRageQuit implements CommandExecutor {
                     return true;
                 }
                 Player victim = plugin.getServer().getPlayer(args[0]);
-                if (victim == null || plugin.isVanished(victim)) {
+                if (victim == null || plugin.isVanished(victim, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }

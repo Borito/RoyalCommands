@@ -36,7 +36,7 @@ public class CmdNear implements CommandExecutor {
                 for (Entity e : ents) {
                     if (!(e instanceof Player)) continue;
                     Player t = (Player) e;
-                    if (plugin.isVanished(t)) continue;
+                    if (plugin.isVanished(t, cs)) continue;
                     double dist = p.getLocation().distanceSquared(t.getLocation());
                     p.sendMessage(ChatColor.GRAY + t.getDisplayName() + ": " + ChatColor.WHITE + Math.sqrt(dist));
                     amount++;
@@ -69,7 +69,7 @@ public class CmdNear implements CommandExecutor {
                 for (Entity e : ents) {
                     if (!(e instanceof Player)) continue;
                     Player t = (Player) e;
-                    if (plugin.isVanished(t)) continue;
+                    if (plugin.isVanished(t, cs)) continue;
                     double dist = p.getLocation().distanceSquared(t.getLocation());
                     p.sendMessage(ChatColor.GRAY + t.getDisplayName() + ": " + ChatColor.WHITE + Math.sqrt(dist));
                     amount++;

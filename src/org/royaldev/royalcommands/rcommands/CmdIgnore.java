@@ -34,7 +34,7 @@ public class CmdIgnore implements CommandExecutor {
             String name = args[0].trim().toLowerCase();
 
             Player t = plugin.getServer().getPlayer(name);
-            if (t == null || plugin.isVanished(t)) {
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }

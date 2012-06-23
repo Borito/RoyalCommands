@@ -32,7 +32,7 @@ public class CmdSlap implements CommandExecutor {
             }
             Player victim;
             victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null || plugin.isVanished(victim)) {
+            if (victim == null || plugin.isVanished(victim, cs)) {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
                 return true;
             }

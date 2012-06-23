@@ -43,7 +43,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 }
                 player = plugin.getServer().getPlayer(args[1]);
-                if (player == null || plugin.isVanished(player)) {
+                if (player == null || plugin.isVanished(player, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }

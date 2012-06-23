@@ -50,7 +50,7 @@ public class CmdMegaStrike implements CommandExecutor {
                     return true;
                 }
                 Player target = plugin.getServer().getPlayer(args[0]);
-                if (target == null || plugin.isVanished(target)) {
+                if (target == null || plugin.isVanished(target, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }

@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -30,7 +29,7 @@ public class CmdForce implements CommandExecutor {
                 return false;
             }
             Player t = plugin.getServer().getPlayer(args[0].trim());
-            if (t == null || plugin.isVanished(t) && !(cs instanceof ConsoleCommandSender)) {
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }

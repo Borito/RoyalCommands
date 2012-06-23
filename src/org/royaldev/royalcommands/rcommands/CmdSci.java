@@ -31,7 +31,7 @@ public class CmdSci implements CommandExecutor {
             }
             if (args.length < 3) {
                 Player target = plugin.getServer().getPlayer(args[0].trim());
-                if (target == null || plugin.isVanished(target)) {
+                if (target == null || plugin.isVanished(target, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player is not online!");
                     return true;
                 }

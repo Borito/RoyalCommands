@@ -43,7 +43,7 @@ public class CmdCoords implements CommandExecutor {
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null || plugin.isVanished(t)) {
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }

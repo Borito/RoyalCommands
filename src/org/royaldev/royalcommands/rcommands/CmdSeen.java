@@ -29,7 +29,7 @@ public class CmdSeen implements CommandExecutor {
                 return false;
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-            if (t.isOnline() && !plugin.isVanished((Player) t)) {
+            if (t.isOnline() && !plugin.isVanished((Player) t, cs)) {
                 cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " was last seen " + ChatColor.GRAY + "now" + ChatColor.BLUE + ".");
                 return true;
             }

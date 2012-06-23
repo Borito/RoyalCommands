@@ -165,7 +165,7 @@ public class RoyalCommands extends JavaPlugin {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
             return false;
         }
-        return RoyalCommands.hasPerm(cs, "rcmds.seehidden") || vp.getManager().isVanished(p.getName());
+        return !RoyalCommands.hasPerm(cs, "rcmds.seehidden") && vp.getManager().isVanished(p);
     }
 
     public void reloadConfigVals() {

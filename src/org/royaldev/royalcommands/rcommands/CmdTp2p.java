@@ -30,7 +30,7 @@ public class CmdTp2p implements CommandExecutor {
             }
             Player t1 = plugin.getServer().getPlayer(args[0].trim());
             Player t2 = plugin.getServer().getPlayer(args[1].trim());
-            if (t1 == null || t2 == null || plugin.isVanished(t1) || plugin.isVanished(t2)) {
+            if (t1 == null || t2 == null || plugin.isVanished(t1, cs) || plugin.isVanished(t2, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }

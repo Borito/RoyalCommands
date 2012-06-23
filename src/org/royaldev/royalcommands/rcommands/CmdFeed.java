@@ -39,7 +39,7 @@ public class CmdFeed implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (t == null || plugin.isVanished(t)) {
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }

@@ -32,7 +32,7 @@ public class CmdInvmod implements CommandExecutor {
             }
             Player p = (Player) cs;
             Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null || plugin.isVanished(t)) {
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                 return true;
             }

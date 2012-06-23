@@ -27,7 +27,7 @@ public class CmdHarm implements CommandExecutor {
                 return false;
             }
             Player victim = plugin.getServer().getPlayer(args[0].trim());
-            if (victim == null || plugin.isVanished(victim)) {
+            if (victim == null || plugin.isVanished(victim, cs)) {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
                 return true;
             }

@@ -39,8 +39,8 @@ public class CmdSetlevel implements CommandExecutor {
             int toLevel;
             if (args.length == 2) {
                 victim = plugin.getServer().getPlayer(args[1].trim());
-                if (victim == null || plugin.isVanished(victim)) {
-                    cs.sendMessage(ChatColor.RED + "You must input a valid player!");
+                if (victim == null || plugin.isVanished(victim, cs)) {
+                    cs.sendMessage(ChatColor.RED + "Thay player does not exist!");
                     return true;
                 }
                 try {

@@ -29,7 +29,7 @@ public class CmdBurn implements CommandExecutor {
             }
             String pname = args[0];
             Player t = plugin.getServer().getPlayer(pname.trim());
-            if (t == null || plugin.isVanished(t)) {
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }

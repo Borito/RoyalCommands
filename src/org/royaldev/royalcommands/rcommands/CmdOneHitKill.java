@@ -28,7 +28,7 @@ public class CmdOneHitKill implements CommandExecutor {
             }
             if (args.length > 0) {
                 Player t = plugin.getServer().getPlayer(args[0].trim());
-                if (t == null || plugin.isVanished(t)) {
+                if (t == null || plugin.isVanished(t, cs)) {
                     OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0].trim());
                     if (!PConfManager.getPConfExists(op)) {
                         cs.sendMessage(ChatColor.RED + "That player does not exist!");

@@ -33,7 +33,7 @@ public class CmdHug implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
                 return true;
             }
-            if (plugin.isVanished(victim)) {
+            if (plugin.isVanished(victim, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
