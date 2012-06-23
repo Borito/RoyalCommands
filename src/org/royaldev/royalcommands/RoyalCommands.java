@@ -600,6 +600,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdBuddha(this), "buddha", this);
         registerCommand(new CmdErase(this), "erase", this);
         registerCommand(new CmdWhois(this), "whois", this);
+        registerCommand(new CmdMobIgnore(this), "mobignore", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
