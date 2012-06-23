@@ -62,12 +62,12 @@ public class CmdSpawnMob implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Setting amount to " + ChatColor.GRAY + plugin.spawnmobLimit + ChatColor.RED + ".");
                     i = plugin.spawnmobLimit;
                 }
-                for (int a = 0; a < i; a++) p.getWorld().spawnCreature(l, c);
+                for (int a = 0; a < i; a++) p.getWorld().spawnEntity(l, c);
                 cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + i + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
                 return true;
             }
             cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + "1" + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
-            p.getWorld().spawnCreature(l, c);
+            p.getWorld().spawnEntity(l, c);
             return true;
         }
         return false;
