@@ -51,7 +51,7 @@ public class CmdList implements CommandExecutor {
             int hid = 0;
             for (Player aP : p) {
                 String name = formatPrepend(aP) + ChatColor.WHITE;
-                if (!plugin.isVanished(aP, cs)) {
+                if (!plugin.isVanished(aP)) {
                     if (CmdAfk.afkdb.containsKey(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
                     ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
                 } else hid++;
@@ -63,7 +63,7 @@ public class CmdList implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + p.length + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
                 for (Player aP : p) {
                     String name = formatPrepend(aP) + ChatColor.WHITE;
-                    if (!plugin.isVanished(aP, cs)) continue;
+                    if (!plugin.isVanished(aP)) continue;
                     name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
                     ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
                 }
