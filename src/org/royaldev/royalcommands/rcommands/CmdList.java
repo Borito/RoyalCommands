@@ -22,6 +22,84 @@ public class CmdList implements CommandExecutor {
         CmdList.plugin = plugin;
     }
 
+    public String getNumOnline(CommandSender cs) {
+        int hid = plugin.getNumberVanished();
+        int all = plugin.getServer().getOnlinePlayers().length;
+        boolean canSeeVanished = plugin.isAuthorized(cs, "rcmds.seehidden");
+        String numPlayers;
+        if (canSeeVanished && hid > 0) numPlayers = (all - hid) + "/" + hid;
+        else numPlayers = String.valueOf(all - hid);
+        return ChatColor.BLUE + "There are currently " + ChatColor.GRAY + numPlayers + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.";
+    }
+
+    public static String getSimpleList(CommandSender cs) {
+        Player[] pl = plugin.getServer().getOnlinePlayers();
+        StringBuilder sb = new StringBuilder();
+        for (Player p : pl) {
+            if (plugin.isVanished(p) && plugin.isAuthorized(cs, "rcmds.seehidden")) {
+                sb.append(ChatColor.GRAY);
+                sb.append("[HIDDEN]");
+                sb.append(ChatColor.RESET);
+                sb.append(formatPrepend(p));
+                sb.append(ChatColor.RESET);
+                sb.append(", ");
+            } else if (!plugin.isVanished(p)) {
+                if (AFKUtils.isAfk(p)) sb.append(ChatColor.GRAY + "[AFK]");
+                sb.append(formatPrepend(p));
+                sb.append(ChatColor.RESET + ", ");
+            }
+        }
+        return "Online Players: " + sb.toString().substring(0, sb.length() - 2);
+    }
+
+    public static String[] getGroupList(CommandSender cs) {
+        Player[] pl = plugin.getServer().getOnlinePlayers();
+        Map<String, List<String>> groups = new HashMap<String, List<String>>();
+        StringBuilder sb = new StringBuilder();
+        for (Player p : pl) {
+            String group = RoyalCommands.permission.getPrimaryGroup(p);
+            List<String> inGroup = (groups.containsKey(group)) ? groups.get(group) : new ArrayList<String>();
+            if (plugin.isVanished(p) && plugin.isAuthorized(cs, "rcmds.seehidden"))
+                inGroup.add(ChatColor.GRAY + "[HIDDEN]" + ChatColor.RESET + formatPrepend(p));
+            else if (!plugin.isVanished(p)) inGroup.add(formatPrepend(p));
+            groups.put(group, inGroup);
+        }
+        List<String> toRet = new ArrayList<String>();
+        for (String group : groups.keySet()) {
+            List<String> inGroup = groups.get(group);
+            if (inGroup.size() < 1) continue;
+            sb.append(groupPrepend(group));
+            sb.append(ChatColor.RESET);
+            sb.append(": ");
+            for (String name : inGroup) {
+                sb.append(name);
+                sb.append(ChatColor.RESET);
+                sb.append(", ");
+            }
+            toRet.add(sb.toString().substring(0, sb.length() - 2));
+            sb = new StringBuilder();
+        }
+        for (String s : toRet) if (s == null) toRet.remove(s);
+        return toRet.toArray(new String[toRet.size()]);
+    }
+
+    public static String groupPrepend(String group) {
+        String format = plugin.whoGroupFormat;
+        try {
+            format = format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getGroupPrefix(plugin.getServer().getWorlds().get(0), group));
+        } catch (Exception e) {
+            format = format.replaceAll("(?i)\\{prefix\\}", "");
+        }
+        try {
+            format = format.replaceAll("(?i)\\{suffix\\}", RoyalCommands.chat.getGroupSuffix(plugin.getServer().getWorlds().get(0), group));
+        } catch (Exception e) {
+            format = format.replaceAll("(?i)\\{suffix\\}", "");
+        }
+        format = format.replace("{group}", group);
+        format = RUtils.colorize(format);
+        return format;
+    }
+
     public static String formatPrepend(Player p) {
         String format = plugin.whoFormat;
         try {
@@ -52,60 +130,9 @@ public class CmdList implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            Player p[] = plugin.getServer().getOnlinePlayers();
-            Map<String, List<Player>> groups = new HashMap<String, List<Player>>();
-            if (plugin.simpleList) {
-                String ps = "";
-                int hid = 0;
-                for (Player pl : p) {
-                    String name = formatPrepend(pl) + ChatColor.WHITE;
-                    if (plugin.isVanished(pl) && plugin.isAuthorized(cs, "rcmds.seehidden")) {
-                        name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
-                        ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
-                        hid++;
-                    } else {
-                        if (AFKUtils.isAfk(pl)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
-                        ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
-                    }
-                }
-                String numPlayers;
-                if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
-                    if (hid < 1) numPlayers = String.valueOf(p.length);
-                    else numPlayers = (p.length - hid) + "/" + hid;
-                } else numPlayers = String.valueOf(p.length - hid);
-                cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + numPlayers + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
-                cs.sendMessage("Online Players: " + ps);
-                return true;
-            }
-            int hid = 0;
-            for (Player pl : p) {
-                if (plugin.isVanished(pl)) hid++;
-                String group = RoyalCommands.permission.getPrimaryGroup(pl);
-                List<Player> inGroup = (groups.containsKey(group)) ? groups.get(group) : new ArrayList<Player>();
-                inGroup.add(pl);
-                groups.put(group, inGroup);
-            }
-            String numPlayers;
-            if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
-                if (hid < 1) numPlayers = String.valueOf(p.length);
-                else numPlayers = (p.length - hid) + "/" + hid;
-            } else numPlayers = String.valueOf(p.length - hid);
-            cs.sendMessage(ChatColor.BLUE + "There are currently " + ChatColor.GRAY + numPlayers + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.");
-            for (String group : groups.keySet()) {
-                String online = "";
-                for (Player pl : groups.get(group)) {
-                    String name = formatPrepend(pl) + ChatColor.WHITE;
-                    if (plugin.isVanished(pl) && plugin.isAuthorized(cs, "rcmds.seehidden")) {
-                        name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
-                        online = (online.equals("")) ? online.concat(name) : online.concat(", " + name);
-                    } else {
-                        if (AFKUtils.isAfk(pl)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
-                        online = (online.equals("")) ? online.concat(name) : online.concat(", " + name);
-                    }
-                }
-                online = RUtils.colorize(group) + ": " + online;
-                cs.sendMessage(online);
-            }
+            cs.sendMessage(getNumOnline(cs));
+            if (plugin.simpleList) cs.sendMessage(getSimpleList(cs));
+            else cs.sendMessage(getGroupList(cs));
             return true;
         }
         return false;

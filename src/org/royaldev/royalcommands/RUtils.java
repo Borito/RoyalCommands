@@ -184,7 +184,7 @@ public class RUtils {
             return null;
         }
     }
-    
+
     public static Integer getInt(String number) {
         try {
             return Integer.valueOf(number);

@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,25 +17,9 @@ public class CmdMotd implements CommandExecutor {
 
 
     public static void showMotd(CommandSender cs) {
-        Player p[] = plugin.getServer().getOnlinePlayers();
-        String ps = "";
-        int hid = 0;
-        for (Player aP : p) {
-            String name = CmdList.formatPrepend(aP) + ChatColor.WHITE;
-            if (!plugin.isVanished(aP)) {
-                if (CmdAfk.afkdb.containsKey(aP)) name = ChatColor.GRAY + "[AFK]" + ChatColor.WHITE + name;
-                ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
-            } else hid++;
-        }
-        if (plugin.isAuthorized(cs, "rcmds.seehidden")) {
-            for (Player aP : p) {
-                String name = CmdList.formatPrepend(aP) + ChatColor.WHITE;
-                if (!plugin.isVanished(aP)) continue;
-                name = ChatColor.GRAY + "[HIDDEN]" + ChatColor.WHITE + name;
-                ps = (ps.equals("")) ? ps.concat(name) : ps.concat(", " + name);
-            }
-        }
+        String ps = (plugin.simpleList) ? CmdList.getSimpleList(cs) : RUtils.join(CmdList.getGroupList(cs), "\n");
         Integer onnum = plugin.getServer().getOnlinePlayers().length;
+        int hid = plugin.getNumberVanished();
         String onlinenum;
         try {
             onlinenum = Integer.toString(onnum - hid);
