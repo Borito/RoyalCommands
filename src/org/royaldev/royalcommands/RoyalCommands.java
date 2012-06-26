@@ -101,6 +101,7 @@ public class RoyalCommands extends JavaPlugin {
     public String bcastFormat = null;
     public String whoFormat = null;
     public String nickPrefix = null;
+    public String whoGroupFormat = null;
 
     public static Integer defaultStack = null;
     public Integer warnBan = null;
@@ -174,6 +175,12 @@ public class RoyalCommands extends JavaPlugin {
         return !RoyalCommands.hasPerm(cs, "rcmds.seehidden") && vp.getManager().isVanished(p);
     }
 
+    public int getNumberVanished() {
+        int hid = 0;
+        for (Player p : getServer().getOnlinePlayers()) if (isVanished(p)) hid++;
+        return hid;
+    }
+
     public void reloadConfigVals() {
         if (whl != null) whl.load();
         showcommands = getConfig().getBoolean("view_commands", true);
@@ -207,6 +214,7 @@ public class RoyalCommands extends JavaPlugin {
         bcastFormat = RUtils.colorize(getConfig().getString("bcast_format", "&b[&aBroadcast&b]&a "));
         whoFormat = getConfig().getString("who_format", "{prefix}{dispname}");
         nickPrefix = RUtils.colorize(getConfig().getString("nick_prefix", "*"));
+        whoGroupFormat = getConfig().getString("who_group_format", "{prefix}{group}{suffix}");
 
         defaultStack = getConfig().getInt("default_stack_size", 64);
         warnBan = getConfig().getInt("max_warns_before_ban", 3);

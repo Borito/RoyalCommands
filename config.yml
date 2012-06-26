@@ -76,7 +76,7 @@ who_format: "{prefix}{dispname}"
 # Message options #
 ###
 
-# Enable the welcome message?
+# Enable the welcome message for new players?
 enable_welcome_message: true
 
 ###
@@ -204,3 +204,7 @@ version_check: true
 
 # Display /list as a simple list (true) or display it separated by groups (false)?
 simple_list: true
+
+# How groups should be displayed if simple_list is false.
+# Only variables are {prefix}, {group}, and {suffix}
+who_group_format: "{prefix}{group}{suffix}"
