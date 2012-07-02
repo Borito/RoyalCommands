@@ -49,6 +49,7 @@ public class CmdList implements CommandExecutor {
                 sb.append(ChatColor.RESET + ", ");
             }
         }
+        if (sb.length() < 2) return "";
         return "Online Players: " + sb.toString().substring(0, sb.length() - 2);
     }
 
@@ -75,6 +76,10 @@ public class CmdList implements CommandExecutor {
                 sb.append(name);
                 sb.append(ChatColor.RESET);
                 sb.append(", ");
+            }
+            if (sb.length() < 2) {
+                sb = new StringBuilder();
+                continue;
             }
             toRet.add(sb.toString().substring(0, sb.length() - 2));
             sb = new StringBuilder();
