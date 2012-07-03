@@ -22,6 +22,10 @@ public class CmdNick implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("nick")) {
+            if (plugin.isAuthorized(cs, "rcmds.nick")) {
+                RUtils.dispNoPerms(cs);
+                return true;
+            }
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
