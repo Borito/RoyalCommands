@@ -136,8 +136,11 @@ public class CmdList implements CommandExecutor {
                 return true;
             }
             cs.sendMessage(getNumOnline(cs));
-            if (plugin.simpleList) cs.sendMessage(getSimpleList(cs));
-            else cs.sendMessage(getGroupList(cs));
+            if (plugin.simpleList) {
+                String pList = getSimpleList(cs);
+                if (pList.equals("")) return true;
+                cs.sendMessage(pList);
+            } else cs.sendMessage(getGroupList(cs));
             return true;
         }
         return false;
