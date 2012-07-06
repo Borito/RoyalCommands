@@ -399,14 +399,11 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public boolean versionCheck() {
+        // If someone happens to be looking through this and knows a better way, let me know.
         if (!checkVersion) return true;
         Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
         Matcher m = p.matcher(getServer().getVersion());
-        if (!m.matches()) {
-            log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
-            return true;
-        }
-        if (m.groupCount() < 1) {
+        if (!m.matches() || m.groupCount() < 1) {
             log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
             return true;
         }

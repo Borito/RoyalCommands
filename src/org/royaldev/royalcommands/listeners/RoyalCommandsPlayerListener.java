@@ -13,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
-import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -209,7 +208,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             last = m.end();
         }
         sb.append(e.getMessage().substring(last));
-        plugin.getServer().broadcastMessage(e.getFormat().replaceAll("(?i)by the power of gr[a|e]yskull!?", sb.toString()));
+        plugin.getServer().broadcastMessage(e.getFormat().replaceAll("(?i)by the power of gr[ae]yskull!?", sb.toString()));
         e.setFormat("");
         List<PotionEffect> effects = new ArrayList<PotionEffect>();
         effects.add(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 1200, 2));
@@ -271,7 +270,6 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (event.getResult() != Result.ALLOWED) return;
         // Define the player
         Player p = event.getPlayer();
-        // Pretty sure this isn't even necessary, but I just can't figure out wtf is throwing the NPE
         if (p == null) return;
         // Check if player is banned
         if (!p.isBanned()) return;
