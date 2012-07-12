@@ -26,6 +26,7 @@
                 <pathelement location="lib/VanishNoPacket.jar"/>
                 <pathelement location="lib/craftbukkit-1.1-R2-SNAPSHOT.jar"/>
             </classpath>
+            <compilerarg value="-cacao"/>
         </javac>
     </target>
 
