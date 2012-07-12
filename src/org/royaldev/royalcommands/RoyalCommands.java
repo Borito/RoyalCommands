@@ -31,10 +31,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
-import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
-import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
-import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
-import org.royaldev.royalcommands.listeners.SignListener;
+import org.royaldev.royalcommands.listeners.*;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.w3c.dom.Document;
@@ -152,6 +149,7 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     private final SignListener signListener = new SignListener(this);
+    private final MonitorListener monitorListener = new MonitorListener(this);
     public final PConfManager pconfm;
 
     public Logger log = Logger.getLogger("Minecraft");
@@ -477,6 +475,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(entityListener, this);
         pm.registerEvents(blockListener, this);
         pm.registerEvents(signListener, this);
+        pm.registerEvents(monitorListener, this);
 
         registerCommand(new CmdLevel(this), "level", this);
         registerCommand(new CmdSetlevel(this), "setlevel", this);
@@ -609,6 +608,8 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdErase(this), "erase", this);
         registerCommand(new CmdWhois(this), "whois", this);
         registerCommand(new CmdMobIgnore(this), "mobignore", this);
+        registerCommand(new CmdMonitor(this), "monitor", this);
+        registerCommand(new CmdGarbageCollector(this), "garbagecollector", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");

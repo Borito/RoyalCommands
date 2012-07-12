@@ -631,6 +631,16 @@ commands:
     usage: /<command> (player)
     aliases: [mi]
 
+  monitor:
+    description: Watch another player.
+    usage: /<command> (player)
+    aliases: [watch]
+
+  garbagecollector:
+    description: Runs the Java garbage collector.
+    usage: /<command>
+    aliases: [gc]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1033,6 +1043,12 @@ permissions:
   rcmds.mobignore:
     description: Allows you to toggle if mobs ignore you.
     default: op
+  rcmds.monitor:
+    description: Allows you to watch other players.
+    default: op
+  rcmds.garbagecollector:
+    description: Allows you to run the Java garbage collector.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1128,6 +1144,9 @@ permissions:
     default: false
   rcmds.exempt.setarmor:
     description: Makes the player immune to /setarmor.
+    default: false
+  rcmds.exempt.monitor:
+    description: Makes the player immune to /monitor.
     default: false
 
   rcmds.exempt.autoafk:
@@ -1428,6 +1447,8 @@ permissions:
       rcmds.erase: true
       rcmds.whois: true
       rcmds.mobignore: true
+      rcmds.monitor: true
+      rcmds.garbagecollector: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1530,6 +1551,7 @@ permissions:
       rcmds.exempt.invmod: true
       rcmds.exempt.afkkick: true
       rcmds.exempt.setarmor: true
+      rcmds.exempt.monitor: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -1678,6 +1700,8 @@ permissions:
       rcmds.erase: true
       rcmds.whois: true
       rcmds.mobignore: true
+      rcmds.monitor: true
+      rcmds.garbagecollector: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
