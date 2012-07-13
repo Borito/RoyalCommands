@@ -4,10 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -30,13 +30,9 @@ public class CmdSetHome implements CommandExecutor {
                 return true;
             }
 
-            if (args.length > 0) {
-                if (!plugin.isAuthorized(cs, "rcmds.sethome.multi")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for multiple homes!");
-                    RUtils.dispNoPerms(cs);
-                    //plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
-                    return true;
-                }
+            if (args.length > 0 && !plugin.isAuthorized(cs, "rcmds.sethome.multi")) {
+                RUtils.dispNoPerms(cs, ChatColor.RED + "You don't have permission for multiple homes!");
+                return true;
             }
 
             if (!(cs instanceof Player)) {
@@ -62,6 +58,27 @@ public class CmdSetHome implements CommandExecutor {
             File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+                String group = RoyalCommands.permission.getPrimaryGroup(p);
+                if (group == null) group = "";
+                ConfigurationSection groups = plugin.homeLimits.getConfigurationSection("groups");
+                ConfigurationSection players = plugin.homeLimits.getConfigurationSection("players");
+                Integer limit;
+                if (players != null && players.contains(p.getName())) limit = players.getInt(p.getName());
+                else if (groups != null && groups.contains(group)) limit = groups.getInt(group);
+                else limit = null;
+                // limit = (players != null && players.contains(p.getName())) ? players.getInt(p.getName()) : (groups != null && groups.contains(group)) ? groups.getInt(group) : null;
+                // This should work, but IntelliJ says it could throw an NPE, so I'm playing it safe ^
+                int curHomes = pconf.getConfigurationSection("home").getKeys(false).size();
+                if (limit != null && pconf.get("home." + name) != null) {
+                    if (limit == 0) {
+                        RUtils.dispNoPerms(cs, ChatColor.RED + "Your home limit is set to " + ChatColor.GRAY + "0" + ChatColor.RED + "!");
+                        cs.sendMessage(ChatColor.RED + "You can't set any homes!");
+                        return true;
+                    } else if (curHomes >= limit && limit > -1) {
+                        RUtils.dispNoPerms(cs, ChatColor.RED + "You've reached your max number of homes! (" + ChatColor.GRAY + limit + ChatColor.RED + ")");
+                        return true;
+                    }
+                }
                 if (!name.equals("")) {
                     pconf.set("home." + name + ".set", true);
                     pconf.set("home." + name + ".x", locX);

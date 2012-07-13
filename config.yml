@@ -208,3 +208,21 @@ simple_list: true
 # How groups should be displayed if simple_list is false.
 # Only variables are {prefix}, {group}, and {suffix}
 who_group_format: "{prefix}{group}{suffix}"
+
+# Limit the amount of homes available to be set with /sethome
+# These will not override rcmds.sethome.multi; you must have it to set more than 1 home
+# You can limit people to 0 homes without it, though.
+# 0 for none, -1 for infinite
+# Remember, a player limit will override a group limit.
+# If jkcclemens is in the group Mod, but he also has a player limit of 10, he can set 10 homes instead of 5.
+# There is no default home limit; if a group/player does not have a limit here, they can set:
+# - 1 home if they don't have rcmds.sethome.multi
+# - Unlimited homes if they do
+home_limits:
+  groups:
+    Mod: 5
+    Admin: 10
+  players:
+    jkcclemens: -1
+    WizardCM: 7
+    Herobrine: 0

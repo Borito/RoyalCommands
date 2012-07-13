@@ -25,6 +25,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -66,6 +67,8 @@ public class RoyalCommands extends JavaPlugin {
     public List<String> commandCooldowns = new ArrayList<String>();
     public List<String> whitelist = new ArrayList<String>();
     public static List<String> disabledCommands = new ArrayList<String>();
+
+    public ConfigurationSection homeLimits = null;
 
     public Boolean showcommands = null;
     public Boolean disablegetip = null;
@@ -234,6 +237,9 @@ public class RoyalCommands extends JavaPlugin {
         motd = getConfig().getStringList("motd");
         commandCooldowns = getConfig().getStringList("command_cooldowns");
         disabledCommands = getConfig().getStringList("disabled_commands");
+
+        homeLimits = getConfig().getConfigurationSection("home_limits");
+        
         if (whl != null) whitelist = whl.getStringList("whitelist");
 
         Help.reloadHelp();
