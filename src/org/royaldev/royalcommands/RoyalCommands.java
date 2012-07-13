@@ -239,7 +239,7 @@ public class RoyalCommands extends JavaPlugin {
         disabledCommands = getConfig().getStringList("disabled_commands");
 
         homeLimits = getConfig().getConfigurationSection("home_limits");
-        
+
         if (whl != null) whitelist = whl.getStringList("whitelist");
 
         Help.reloadHelp();

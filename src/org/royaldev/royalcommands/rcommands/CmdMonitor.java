@@ -49,6 +49,7 @@ public class CmdMonitor implements CommandExecutor {
             String toWatch = (args.length > 0) ? args[0] : "";
             if (toWatch.equals("")) {
                 cs.sendMessage(ChatColor.RED + "Monitoring all players is not yet supported.");
+                cs.sendMessage(cmd.getUsage());
             } else {
                 Player t = plugin.getServer().getPlayer(toWatch);
                 if (t == null || plugin.isVanished(t)) {
