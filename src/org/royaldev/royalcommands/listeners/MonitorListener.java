@@ -1,5 +1,7 @@
 package org.royaldev.royalcommands.listeners;
 
+import org.bukkit.ChatColor;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +13,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.royaldev.royalcommands.RUtils;
@@ -44,6 +47,7 @@ public class MonitorListener implements Listener {
         Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
+        t.setItemInHand(e.getPlayer().getItemInHand());
     }
 
     @EventHandler
@@ -109,7 +113,13 @@ public class MonitorListener implements Listener {
         //final Inventory i = plugin.getServer().createInventory(e.getInventory().getHolder(), e.getInventory().getSize());
         Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
         if (t == null) return;
-        t.openInventory(e.getInventory());
+        Inventory i = e.getInventory();
+        if (i.getType().equals(InventoryType.WORKBENCH)) return;
+        if (i.getType().equals(InventoryType.ENCHANTING)) return;
+        if (i.getType().equals(InventoryType.BREWING)) return;
+        if (i.getType().equals(InventoryType.CRAFTING)) return;
+        if (i.getType().equals(InventoryType.FURNACE)) return;
+        if (i.getType().equals(InventoryType.DISPENSER)) return;
         openInvs.add(t.getName());
     }
 
@@ -119,11 +129,12 @@ public class MonitorListener implements Listener {
         e.setCancelled(true);
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onInvCloseMonitor(InventoryCloseEvent e) {
         if (!openInvs.contains(e.getPlayer().getName())) return;
         e.getPlayer().openInventory(e.getInventory());
-    }
+    }*/
+    // Seems a bit harsh ^
 
     @EventHandler
     public void onInvCloseViewee(InventoryCloseEvent e) {
@@ -136,8 +147,9 @@ public class MonitorListener implements Listener {
 
     @EventHandler
     public void onTele(PlayerTeleportEvent e) {
-        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
+        if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
         Player p = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
         e.getPlayer().hidePlayer(p);
     }
@@ -179,6 +191,12 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void interact(PlayerInteractEvent e) {
         if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
+        if (e.getClickedBlock().getState() instanceof Chest) {
+            Chest c = (Chest) e.getClickedBlock().getState();
+            final Inventory i = plugin.getServer().createInventory(c.getInventory().getHolder(), c.getInventory().getSize());
+            e.getPlayer().openInventory(i);
+            e.getPlayer().sendMessage(ChatColor.BLUE + "Opened chest in read-only mode; you can't make changes.");
+        }
         e.setCancelled(true);
     }
 

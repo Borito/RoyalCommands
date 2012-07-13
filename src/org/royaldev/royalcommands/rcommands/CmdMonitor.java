@@ -39,8 +39,8 @@ public class CmdMonitor implements CommandExecutor {
                 Player m = plugin.getServer().getPlayer(monitors.get(p.getName()));
                 if (m != null) p.showPlayer(m);
                 for (Player pl : plugin.getServer().getOnlinePlayers()) pl.showPlayer(p);
-                monitors.remove(p.getName());
                 viewees.remove(monitors.get(p.getName()));
+                monitors.remove(p.getName());
                 p.getInventory().setContents(invs.get(p.getName()).getContents());
                 invs.remove(p.getName());
                 cs.sendMessage(ChatColor.BLUE + "Stopped active monitoring.");
