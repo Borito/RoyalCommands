@@ -33,15 +33,15 @@ public class CmdSpawn implements CommandExecutor {
             p.sendMessage(ChatColor.BLUE + "Going to spawn.");
             ConfManager cm = new ConfManager("spawns.yml");
             String w = p.getWorld().getName();
-            double x = cm.getDouble("spawns." + w + ".x");
-            double y = cm.getDouble("spawns." + w + ".y");
-            double z = cm.getDouble("spawns." + w + ".z");
-            float yaw = cm.getFloat("spawns." + w + ".yaw");
-            float pitch = cm.getFloat("spawns." + w + ".pitch");
+            Double x = cm.getDouble("spawns." + w + ".x");
+            Double y = cm.getDouble("spawns." + w + ".y");
+            Double z = cm.getDouble("spawns." + w + ".z");
+            Float yaw = cm.getFloat("spawns." + w + ".yaw");
+            Float pitch = cm.getFloat("spawns." + w + ".pitch");
             Location l;
             try {
                 l = new Location(p.getWorld(), x, y, z, yaw, pitch);
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
                 l = p.getWorld().getSpawnLocation();
             }
             String error = RUtils.teleport(p, l);
