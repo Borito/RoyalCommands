@@ -68,7 +68,8 @@ public class CmdSetHome implements CommandExecutor {
                 else limit = null;
                 // limit = (players != null && players.contains(p.getName())) ? players.getInt(p.getName()) : (groups != null && groups.contains(group)) ? groups.getInt(group) : null;
                 // This should work, but IntelliJ says it could throw an NPE, so I'm playing it safe ^
-                int curHomes = pconf.getConfigurationSection("home").getKeys(false).size();
+                ConfigurationSection home = pconf.getConfigurationSection("home");
+                int curHomes = (home == null) ? 0 : home.getValues(false).keySet().size();
                 if (limit != null && pconf.get("home." + name) != null) {
                     if (limit == 0) {
                         RUtils.dispNoPerms(cs, ChatColor.RED + "Your home limit is set to " + ChatColor.GRAY + "0" + ChatColor.RED + "!");
