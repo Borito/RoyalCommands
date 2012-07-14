@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -20,6 +21,25 @@ public class CmdSetHome implements CommandExecutor {
 
     public CmdSetHome(RoyalCommands plugin) {
         this.plugin = plugin;
+    }
+
+    private Integer getHomeLimit(Player p) {
+        String name = p.getName();
+        String group = RoyalCommands.permission.getPrimaryGroup(p);
+        if (group == null) group = "";
+        ConfigurationSection players = plugin.homeLimits.getConfigurationSection("players");
+        ConfigurationSection groups = plugin.homeLimits.getConfigurationSection("groups");
+        Integer limit;
+        if (players != null && players.contains(name)) limit = players.getInt(name);
+        else if (groups != null && groups.contains(group)) limit = groups.getInt(group);
+        else limit = null;
+        return limit;
+    }
+
+    private int getCurrentHomes(Player p) {
+        ConfigurationSection pconf = PConfManager.getPConfSection(p, "home");
+        if (pconf == null) return 0;
+        return pconf.getValues(false).keySet().size();
     }
 
     @Override
@@ -58,18 +78,8 @@ public class CmdSetHome implements CommandExecutor {
             File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                String group = RoyalCommands.permission.getPrimaryGroup(p);
-                if (group == null) group = "";
-                ConfigurationSection groups = plugin.homeLimits.getConfigurationSection("groups");
-                ConfigurationSection players = plugin.homeLimits.getConfigurationSection("players");
-                Integer limit;
-                if (players != null && players.contains(p.getName())) limit = players.getInt(p.getName());
-                else if (groups != null && groups.contains(group)) limit = groups.getInt(group);
-                else limit = null;
-                // limit = (players != null && players.contains(p.getName())) ? players.getInt(p.getName()) : (groups != null && groups.contains(group)) ? groups.getInt(group) : null;
-                // This should work, but IntelliJ says it could throw an NPE, so I'm playing it safe ^
-                ConfigurationSection home = pconf.getConfigurationSection("home");
-                int curHomes = (home == null) ? 0 : home.getValues(false).keySet().size();
+                Integer limit = getHomeLimit(p);
+                int curHomes = getCurrentHomes(p);
                 if (limit != null && pconf.get("home." + name) != null) {
                     if (limit == 0) {
                         RUtils.dispNoPerms(cs, ChatColor.RED + "Your home limit is set to " + ChatColor.GRAY + "0" + ChatColor.RED + "!");

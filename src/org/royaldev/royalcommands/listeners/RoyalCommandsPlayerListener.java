@@ -320,6 +320,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!datafile.exists()) {
             log.info("[RoyalCommands] Creating userdata for user " + event.getPlayer().getName() + ".");
             try {
+                boolean created = datafile.createNewFile();
+                if (!created) log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
                 FileConfiguration out = YamlConfiguration.loadConfiguration(datafile);
                 out.set("name", event.getPlayer().getName());
                 String dispname = event.getPlayer().getDisplayName();
