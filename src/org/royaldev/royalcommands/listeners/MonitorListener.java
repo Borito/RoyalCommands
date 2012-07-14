@@ -1,6 +1,8 @@
 package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -114,16 +116,25 @@ public class MonitorListener implements Listener {
 
     @EventHandler
     public void onInvOpen(InventoryOpenEvent e) {
-        if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
+        if (!(e.getPlayer() instanceof Player)) return;
+        Player p = (Player) e.getPlayer();
+        if (!CmdMonitor.viewees.containsKey(p.getName())) return;
         //final Inventory i = plugin.getServer().createInventory(e.getInventory().getHolder(), e.getInventory().getSize());
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(p.getName()));
         if (t == null) return;
         Inventory i = e.getInventory();
-        if (i.getType().equals(InventoryType.WORKBENCH)) return;
-        if (i.getType().equals(InventoryType.ENCHANTING)) return;
+        if (i.getType().equals(InventoryType.WORKBENCH)) {
+            Block b = RUtils.getTarget(p);
+            if (!b.getType().equals(Material.WORKBENCH)) return;
+            t.openWorkbench(b.getLocation(), false);
+        }
+        if (i.getType().equals(InventoryType.ENCHANTING)) {
+            Block b = RUtils.getTarget(p);
+            if (!b.getType().equals(Material.ENCHANTMENT_TABLE)) return;
+            t.openEnchanting(b.getLocation(), false);
+        }
         if (i.getType().equals(InventoryType.BREWING)) return;
         if (i.getType().equals(InventoryType.CRAFTING)) return;
-        if (i.getType().equals(InventoryType.FURNACE)) return;
         if (i.getType().equals(InventoryType.DISPENSER)) return;
         t.openInventory(e.getInventory());
         openInvs.add(t.getName());
