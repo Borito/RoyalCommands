@@ -45,7 +45,7 @@ public class CmdUnbanIP implements CommandExecutor {
                 return false;
             }
             OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
-            String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPValString(op, "ip");
+            String ip = (!op.hasPlayedBefore()) ? args[0] : new PConfManager(op).getString("ip");
             if (ip == null) ip = args[0];
             if (!isValid(ip)) {
                 cs.sendMessage(ChatColor.RED + "Invalid IP (" + ChatColor.GRAY + ip + ChatColor.RED + ").");

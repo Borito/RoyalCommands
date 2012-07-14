@@ -33,8 +33,9 @@ public class CmdGetIP implements CommandExecutor {
                 return false;
             }
             OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(args[0].trim());
-            if (PConfManager.getPConfExists(oplayer))
-                cs.sendMessage(ChatColor.GRAY + oplayer.getName() + ": " + PConfManager.getPValString(oplayer, "ip"));
+            PConfManager pcm = new PConfManager(oplayer);
+            if (pcm.exists())
+                cs.sendMessage(ChatColor.GRAY + oplayer.getName() + ": " + pcm.getString("ip"));
             else cs.sendMessage(ChatColor.RED + "The player " + oplayer.getName() + " does not exist.");
             return true;
         }

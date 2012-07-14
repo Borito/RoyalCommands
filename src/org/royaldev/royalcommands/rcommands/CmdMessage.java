@@ -62,7 +62,7 @@ public class CmdMessage implements CommandExecutor {
                     + ChatColor.GRAY + "] " + m);
             Player[] ps = plugin.getServer().getOnlinePlayers();
             for (Player p1 : ps) {
-                if (PConfManager.getPValBoolean(p1, "spy")) {
+                if (new PConfManager(p1).getBoolean("spy")) {
                     if (t == p1 || cs == p1) {
                         continue;
                     }

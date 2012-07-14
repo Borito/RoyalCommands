@@ -35,12 +35,13 @@ public class CmdNick implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (!PConfManager.getPConfExists(t)) {
+            PConfManager pcm = new PConfManager(t);
+            if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                 return true;
             }
             if (args[1].equalsIgnoreCase("off")) {
-                PConfManager.setPValString(t, t.getName(), "dispname");
+                pcm.setString(t.getName(), "dispname");
                 if (t.isOnline()) {
                     Player p = (Player) t;
                     p.setDisplayName(t.getName());
@@ -53,7 +54,7 @@ public class CmdNick implements CommandExecutor {
             }
             String newName = plugin.nickPrefix + args[1];
             if (plugin.isAuthorized(cs, "rcmds.nick.color")) newName = RUtils.colorize(newName);
-            PConfManager.setPValString(t, newName, "dispname");
+            pcm.setString(newName, "dispname");
             if (t.isOnline()) {
                 Player p = (Player) t;
                 p.setDisplayName(newName);

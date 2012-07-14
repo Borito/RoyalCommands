@@ -10,186 +10,257 @@ import java.io.IOException;
 import java.util.List;
 
 @SuppressWarnings("unused")
+/**
+ * Player configuration manager
+ */
 public class PConfManager {
 
-    static RoyalCommands plugin;
+    private FileConfiguration pconf = null;
+    private File pconfl = null;
 
-    public PConfManager(RoyalCommands instance) {
-        PConfManager.plugin = instance;
+    /**
+     * Player configuration manager
+     *
+     * @param p Player to manage
+     */
+    public PConfManager(OfflinePlayer p) {
+        File dataFolder = RoyalCommands.dataFolder;
+        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.getName().toLowerCase() + ".yml");
+        if (!pconfl.exists()) return;
+        pconf = YamlConfiguration.loadConfiguration(pconfl);
     }
 
-    public static void setPValString(OfflinePlayer t, String value, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            pconf.set(path, value);
-            try {
-                pconf.save(pconfl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    /**
+     * Player configuration manager.
+     *
+     * @param p Player to manage
+     */
+    public PConfManager(String p) {
+        File dataFolder = RoyalCommands.dataFolder;
+        File pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.toLowerCase() + ".yml");
+        if (!pconfl.exists()) return;
+        pconf = YamlConfiguration.loadConfiguration(pconfl);
+    }
+
+    /**
+     * Sets a string in config
+     *
+     * @param value String to set
+     * @param path  Path in the yml to set
+     */
+    public void setString(String value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void setPValLong(OfflinePlayer t, long value, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            pconf.set(path, value);
-            try {
-                pconf.save(pconfl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    /**
+     * Sets a long in config
+     *
+     * @param value Long to set
+     * @param path  Path in the yml to set
+     */
+    public void setLong(long value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void setPValDouble(OfflinePlayer t, double value, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            pconf.set(path, value);
-            try {
-                pconf.save(pconfl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    /**
+     * Sets a double in config
+     *
+     * @param value Double to set
+     * @param path  Path in the yml to set
+     */
+    public void setDouble(double value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void setPVal(OfflinePlayer t, Object value, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            pconf.set(path, value);
-            try {
-                pconf.save(pconfl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    /**
+     * Sets an object in config
+     *
+     * @param value An object
+     * @param path  Path in the yml to set
+     */
+    public void set(Object value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void setPValInteger(OfflinePlayer t, Integer value, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            pconf.set(path, value);
-            try {
-                pconf.save(pconfl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    /**
+     * Sets an integer in config
+     *
+     * @param value Integer to set
+     * @param path  Path in the yml to set
+     */
+    public void setInteger(Integer value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void setPValStringList(OfflinePlayer t, List<String> value, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            pconf.set(path, value);
-            try {
-                pconf.save(pconfl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    /**
+     * Sets a string list in config
+     *
+     * @param value String list to set
+     * @param path  Path in the yml to set
+     */
+    public void setStringList(List<String> value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static List<String> getPValStringList(OfflinePlayer t, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            return pconf.getStringList(path);
-        }
-        return null;
-    }
-
-    public static void setPValBoolean(OfflinePlayer t, Boolean value, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            pconf.set(path, value);
-            try {
-                pconf.save(pconfl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    /**
+     * Sets a boolean in config
+     *
+     * @param value Boolean to set
+     * @param path  Path in the yml to set
+     */
+    public void setBoolean(Boolean value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static boolean getPValBoolean(OfflinePlayer t, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            return pconf.getBoolean(path);
-        }
-        return false;
+    /**
+     * Gets a string list from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return String list or null if path does not exist or if config doesn't exist
+     */
+    public List<String> getStringList(String path) {
+        if (pconf == null) return null;
+        return pconf.getStringList(path);
     }
 
-    public static Integer getPValInteger(OfflinePlayer t, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            return pconf.getInt(path);
-        }
-        return null;
+    /**
+     * Gets a boolean from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Boolean or null if path does not exist or if config doesn't exist
+     */
+    public boolean getBoolean(String path) {
+        return pconf != null && pconf.getBoolean(path);
     }
 
-    public static Object getPVal(OfflinePlayer t, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            return pconf.get(path);
-        }
-        return null;
+    /**
+     * Gets an integer from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Integer or null if path does not exist or if config doesn't exist
+     */
+    public Integer getInteger(String path) {
+        if (pconf == null) return null;
+        return pconf.getInt(path);
     }
 
-    public static Long getPValLong(OfflinePlayer t, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            if (pconf.contains(path)) return pconf.getLong(path);
-            return null;
-        }
-        return null;
+    /**
+     * Gets an object from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Object or null if path does not exist or if config doesn't exist
+     */
+    public Object get(String path) {
+        if (pconf == null) return null;
+        return pconf.get(path);
     }
 
-    public static Double getPValDouble(OfflinePlayer t, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            return pconf.getDouble(path);
-        }
-        return null;
+    /**
+     * Gets a long from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Long or null if path does not exist or if config doesn't exist
+     */
+    public Long getLong(String path) {
+        if (pconf == null) return null;
+        return pconf.getLong(path);
     }
 
-    public static String getPValString(OfflinePlayer t, String path) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            return pconf.getString(path);
-        }
-        return null;
+    /**
+     * Gets a double from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Double or null if path does not exist or if config doesn't exist
+     */
+    public Double getDouble(String path) {
+        if (pconf == null) return null;
+        return pconf.getDouble(path);
     }
 
-    public static boolean getPConfExists(OfflinePlayer t) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        return pconfl.exists();
+    /**
+     * Gets a string from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return String or null if path does not exist or if config doesn't exist
+     */
+    public String getString(String path) {
+        if (pconf == null) return null;
+        return pconf.getString(path);
     }
 
-    public static boolean getPConfExists(String name) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + name.toLowerCase() + ".yml");
-        return pconfl.exists();
+    /**
+     * Gets a ConfigurationSection from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return ConfigurationSection or null if the path does not exist or if config doesn't exist
+     */
+    public ConfigurationSection getConfigurationSection(String path) {
+        if (pconf == null) return null;
+        return pconf.getConfigurationSection(path);
     }
 
-    public static ConfigurationSection getPConfSection(OfflinePlayer t, String name) {
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            return pconf.getConfigurationSection(name);
-        }
-        return null;
+    /**
+     * Checks to see if config exists.
+     * <p/>
+     * Equivalent to exists()
+     *
+     * @return boolean of existance
+     */
+    public boolean getConfExists() {
+        return pconf != null;
+    }
+
+    /**
+     * Checks to see if config exists.
+     * <p/>
+     * Equivalent to getConfExists()
+     *
+     * @return boolean of existance
+     */
+    public boolean exists() {
+        return pconf != null;
     }
 
 }

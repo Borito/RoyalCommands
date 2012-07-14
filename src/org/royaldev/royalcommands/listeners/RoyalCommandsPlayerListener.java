@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("unused")
 public class RoyalCommandsPlayerListener implements Listener {
 
     public static RoyalCommands plugin;
@@ -51,14 +52,14 @@ public class RoyalCommandsPlayerListener implements Listener {
                     }
         if (contains) {
             long cooldown = cmdCds.getLong(command);
-            PConfManager.setPValLong(p, new Date().getTime() + (cooldown * 1000), "command_cooldowns." + command);
+            new PConfManager(p).setLong(new Date().getTime() + (cooldown * 1000), "command_cooldowns." + command);
         }
     }
 
     public void setTeleCooldown(OfflinePlayer p) {
         double seconds = plugin.gTeleCd;
         if (seconds <= 0) return;
-        PConfManager.setPValDouble(p, (seconds * 1000) + new Date().getTime(), "teleport_cooldown");
+        new PConfManager(p).setDouble((seconds * 1000) + new Date().getTime(), "teleport_cooldown");
     }
 
     @EventHandler
@@ -80,7 +81,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (plugin.getCommand(command) != null) command = plugin.getCommand(command).getName();
         Player p = e.getPlayer();
         if (plugin.isAuthorized(p, "rcmds.exempt.cooldown.commands")) return;
-        Long currentcd = PConfManager.getPValLong(p, "command_cooldowns." + command);
+        Long currentcd = new PConfManager(p).getLong("command_cooldowns." + command);
         if (currentcd != null) {
             if (currentcd <= new Date().getTime()) {
                 setCooldown(command, p);
@@ -98,7 +99,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (e.isCancelled()) return;
         Player p = e.getPlayer();
         if (plugin.isAuthorized(p, "rcmds.exempt.cooldown.teleports")) return;
-        Long currentcd = PConfManager.getPValLong(p, "teleport_cooldown");
+        Long currentcd = new PConfManager(p).getLong("teleport_cooldown");
         if (currentcd != null) {
             if (currentcd <= new Date().getTime()) {
                 setTeleCooldown(p);
@@ -114,7 +115,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
-        if (PConfManager.getPValBoolean(e.getPlayer(), "jailed")) {
+        if (new PConfManager(e.getPlayer()).getBoolean("jailed")) {
             e.getPlayer().sendMessage(ChatColor.RED + "You are jailed and may not teleport.");
             e.setCancelled(true);
         }
@@ -125,14 +126,14 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        PConfManager.setPValLong(e.getPlayer(), new Date().getTime(), "seen");
+        new PConfManager(e.getPlayer()).setLong(new Date().getTime(), "seen");
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
         if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
-        PConfManager.setPValLong(e.getPlayer(), new Date().getTime(), "seen");
+        new PConfManager(e.getPlayer()).setLong(new Date().getTime(), "seen");
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
         if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
@@ -140,23 +141,25 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (event.isCancelled()) return;
+        Player p = event.getPlayer();
+        PConfManager pcm = new PConfManager(p);
         if (plugin.showcommands)
-            log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
-        if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
-            if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime"))
-                PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
+            log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
+        if (pcm.getBoolean("muted")) {
+            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValid(p, "mutetime"))
+                pcm.setBoolean(false, "muted");
             for (String command : plugin.muteCmds) {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
                     continue;
-                event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
-                log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to use that command, but is muted.");
+                p.sendMessage(ChatColor.RED + "You are muted.");
+                log.info("[RoyalCommands] " + p.getName() + " tried to use that command, but is muted.");
                 event.setCancelled(true);
             }
         }
 
-        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) {
-            event.getPlayer().sendMessage(ChatColor.RED + "You are jailed.");
-            log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to use that command, but is jailed.");
+        if (pcm.getBoolean("jailed")) {
+            p.sendMessage(ChatColor.RED + "You are jailed.");
+            log.info("[RoyalCommands] " + p.getName() + " tried to use that command, but is jailed.");
             event.setCancelled(true);
         }
     }
@@ -164,27 +167,30 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void vipLogin(PlayerLoginEvent e) {
         if (e.getResult() != Result.KICK_FULL) return;
-        if (!PConfManager.getPConfExists(e.getPlayer())) return;
-        if (e.getPlayer().isBanned()) return;
-        if (PConfManager.getPVal(e.getPlayer(), "vip") != null && PConfManager.getPValBoolean(e.getPlayer(), "vip"))
-            e.allow();
+        Player p = e.getPlayer();
+        PConfManager pcm = new PConfManager(p);
+        if (!pcm.getConfExists()) return;
+        if (p.isBanned()) return;
+        if (pcm.get("vip") != null && pcm.getBoolean("vip")) e.allow();
     }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.isCancelled()) return;
-        AFKUtils.setLastMove(event.getPlayer(), new Date().getTime());
-        if (AFKUtils.isAfk(event.getPlayer())) {
-            AFKUtils.unsetAfk(event.getPlayer());
-            plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
+        Player p = event.getPlayer();
+        AFKUtils.setLastMove(p, new Date().getTime());
+        if (AFKUtils.isAfk(p)) {
+            AFKUtils.unsetAfk(p);
+            plugin.getServer().broadcastMessage(p.getName() + " is no longer AFK.");
         }
-        if (PConfManager.getPValBoolean(event.getPlayer(), "muted")) {
-            if (PConfManager.getPVal(event.getPlayer(), "mutetime") != null && !RUtils.isTimeStampValid(event.getPlayer(), "mutetime"))
-                PConfManager.setPValBoolean(event.getPlayer(), false, "muted");
+        PConfManager pcm = new PConfManager(p);
+        if (pcm.getBoolean("muted")) {
+            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValid(p, "mutetime"))
+                pcm.setBoolean(false, "muted");
             event.setFormat("");
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatColor.RED + "You are muted.");
-            plugin.log.info("[RoyalCommands] " + event.getPlayer().getName() + " tried to speak, but has been muted.");
+            p.sendMessage(ChatColor.RED + "You are muted.");
+            plugin.log.info("[RoyalCommands] " + p.getName() + " tried to speak, but has been muted.");
         }
     }
 
@@ -220,12 +226,14 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler()
     public void onChat(PlayerChatEvent e) {
-        if (PConfManager.getPVal(e.getPlayer(), "ignoredby") == null) return;
+        Player p = e.getPlayer();
+        PConfManager pcm = new PConfManager(p);
+        if (pcm.get("ignoredby") == null) return;
         Set<Player> recpts = e.getRecipients();
-        ArrayList<String> ignores = (ArrayList<String>) PConfManager.getPValStringList(e.getPlayer(), "ignoredby");
+        ArrayList<String> ignores = (ArrayList<String>) pcm.getStringList("ignoredby");
         Set<Player> ignore = new HashSet<Player>();
-        for (Player p : recpts)
-            for (String ignoree : ignores) if (p.getName().equalsIgnoreCase(ignoree.toLowerCase())) ignore.add(p);
+        for (Player pl : recpts)
+            for (String ignoree : ignores) if (pl.getName().equalsIgnoreCase(ignoree.toLowerCase())) ignore.add(pl);
         e.getRecipients().removeAll(ignore);
     }
 
@@ -237,19 +245,19 @@ public class RoyalCommandsPlayerListener implements Listener {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             return;
         }
-        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
+        if (new PConfManager(event.getPlayer()).getBoolean("frozen")) event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) event.setCancelled(true);
+        if (new PConfManager(event.getPlayer()).getBoolean("jailed")) event.setCancelled(true);
         Action act = event.getAction();
         if (act.equals(Action.PHYSICAL)) return;
         ItemStack id = event.getItem();
         if (id == null) return;
         int idn = id.getTypeId();
         if (idn == 0) return;
-        List<String> cmds = PConfManager.getPValStringList(event.getPlayer(), "assign." + idn);
+        List<String> cmds = new PConfManager(event.getPlayer()).getStringList("assign." + idn);
         if (cmds == null) return;
         for (String s : cmds) {
             if (s.toLowerCase().trim().startsWith("c:"))
@@ -261,7 +269,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onPInt(PlayerInteractEvent event) {
-        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
+        if (new PConfManager(event.getPlayer()).getBoolean("frozen")) event.setCancelled(true);
         if (plugin.buildPerm) if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) event.setCancelled(true);
     }
 
@@ -270,18 +278,19 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (event.getResult() != Result.ALLOWED) return;
         // Define the player
         Player p = event.getPlayer();
+        PConfManager pcm = new PConfManager(p);
         if (p == null) return;
         // Check if player is banned
         if (!p.isBanned()) return;
         // Check to see that they have a bantime, and that if they do, if the timestamp is invalid.
-        if (PConfManager.getPVal(p, "bantime") != null && !RUtils.isTimeStampValid(p, "bantime")) {
+        if (pcm.get("bantime") != null && !RUtils.isTimeStampValid(p, "bantime")) {
             // Set them unbanned
             p.setBanned(false);
             // Stop the method
             return;
         }
         // Get the banreason from the player's userdata file
-        String kickMessage = PConfManager.getPValString(p, "banreason"); // Returns string or null
+        String kickMessage = pcm.getString("banreason"); // Returns string or null
         // Check if there was none, and if there wasn't, set it to default ban message.
         if (kickMessage == null) kickMessage = plugin.banMessage;
         // Set the kick message to the ban reason
@@ -295,7 +304,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (e.getResult() != Result.ALLOWED) return;
         Player p = e.getPlayer();
         if (p == null) return;
-        String dispname = PConfManager.getPValString(p, "dispname");
+        String dispname = new PConfManager(p).getString("dispname");
         if (dispname == null || dispname.equals("")) dispname = p.getName().trim();
         dispname = dispname.trim();
         if (dispname == null) return;
@@ -321,7 +330,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[RoyalCommands] Creating userdata for user " + event.getPlayer().getName() + ".");
             try {
                 boolean created = datafile.createNewFile();
-                if (!created) log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
+                if (!created)
+                    log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
                 FileConfiguration out = YamlConfiguration.loadConfiguration(datafile);
                 out.set("name", event.getPlayer().getName());
                 String dispname = event.getPlayer().getDisplayName();
@@ -351,7 +361,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
             String playerip = event.getPlayer().getAddress().getAddress().toString();
             playerip = playerip.replace("/", "");
-            PConfManager.setPValString(event.getPlayer(), playerip, "ip");
+            new PConfManager(event.getPlayer()).setString(playerip, "ip");
         }
         if (plugin.motdLogin) CmdMotd.showMotd(event.getPlayer());
         if (plugin.sendToSpawn) {

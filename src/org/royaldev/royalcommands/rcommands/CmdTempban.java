@@ -31,7 +31,8 @@ public class CmdTempban implements CommandExecutor {
                 return false;
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-            if (!PConfManager.getPConfExists(t)) {
+            PConfManager pcm = new PConfManager(t);
+            if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                 return true;
             }
@@ -60,8 +61,8 @@ public class CmdTempban implements CommandExecutor {
             String banreason = (args.length > 2) ? plugin.getFinalArg(args, 2) : RUtils.formatDateDiff(new Date().getTime() + (time*1000)).substring(1);
             RUtils.setTimeStamp(t, time, "bantime");
             t.setBanned(true);
-            PConfManager.setPValString(t, banreason, "banreason");
-            PConfManager.setPValString(t, cs.getName(), "banner");
+            pcm.setString(banreason, "banreason");
+            pcm.setString(cs.getName(), "banner");
             cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + banreason + ChatColor.BLUE + ".");
             plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
             if (t.isOnline()) ((Player) t).kickPlayer("Banned for " + banreason);

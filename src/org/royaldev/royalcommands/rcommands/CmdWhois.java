@@ -36,17 +36,18 @@ public class CmdWhois implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player has never played before!");
                 return true;
             }
+            PConfManager pcm = new PConfManager(t);
             DecimalFormat df = new DecimalFormat("#.##");
-            String ip = PConfManager.getPValString(t, "ip");
-            String name = PConfManager.getPValString(t, "name");
-            String dispname = PConfManager.getPValString(t, "dispname");
+            String ip = pcm.getString("ip");
+            String name = pcm.getString("name");
+            String dispname = pcm.getString("dispname");
             cs.sendMessage(ChatColor.BLUE + "=====================");
             cs.sendMessage(ChatColor.BLUE + ((t.isOnline()) ? "Whois" : "Whowas") + " for " + ChatColor.GRAY + name);
             cs.sendMessage(ChatColor.BLUE + "Nickname: " + ChatColor.GRAY + dispname);
             cs.sendMessage(ChatColor.BLUE + "IP: " + ChatColor.GRAY + ip);
-            cs.sendMessage(ChatColor.BLUE + "Is VIP: " + ChatColor.GRAY + ((PConfManager.getPValBoolean(t, "vip")) ? "yes" : "no"));
-            cs.sendMessage(ChatColor.BLUE + "Is muted: " + ChatColor.GRAY + ((PConfManager.getPValBoolean(t, "muted")) ? "yes" : "no"));
-            cs.sendMessage(ChatColor.BLUE + "Is jailed: " + ChatColor.GRAY + ((PConfManager.getPValBoolean(t, "jailed")) ? "yes" : "no"));
+            cs.sendMessage(ChatColor.BLUE + "Is VIP: " + ChatColor.GRAY + ((pcm.getBoolean("vip")) ? "yes" : "no"));
+            cs.sendMessage(ChatColor.BLUE + "Is muted: " + ChatColor.GRAY + ((pcm.getBoolean("muted")) ? "yes" : "no"));
+            cs.sendMessage(ChatColor.BLUE + "Is jailed: " + ChatColor.GRAY + ((pcm.getBoolean("jailed")) ? "yes" : "no"));
             long timestamp = RUtils.getTimeStamp(t, "seen");
             String lastseen = (timestamp < 0) ? "unknown" : RUtils.formatDateDiff(timestamp);
             cs.sendMessage(ChatColor.BLUE + "Last seen:" + ChatColor.GRAY + ((t.isOnline()) ? " now" : lastseen));

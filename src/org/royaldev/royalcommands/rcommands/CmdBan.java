@@ -31,8 +31,9 @@ public class CmdBan implements CommandExecutor {
             }
             String banreason;
             Player t = plugin.getServer().getPlayer(args[0]);
+            PConfManager pcm = new PConfManager(t);
             if (t != null) {
-                if (!PConfManager.getPConfExists(t)) {
+                if (!pcm.getConfExists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
@@ -42,8 +43,8 @@ public class CmdBan implements CommandExecutor {
                 }
                 if (args.length == 1) {
                     banreason = plugin.banMessage;
-                    PConfManager.setPValString(t, banreason, "banreason");
-                    PConfManager.setPValString(t, cs.getName(), "banner");
+                    pcm.setString(banreason, "banreason");
+                    pcm.setString(cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t.getName() + ChatColor.BLUE + ".");
                     plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
                     t.setBanned(true);
@@ -52,8 +53,8 @@ public class CmdBan implements CommandExecutor {
                 }
                 if (args.length > 1) {
                     RUtils.colorize(banreason = plugin.getFinalArg(args, 1));
-                    PConfManager.setPValString(t, banreason, "banreason");
-                    PConfManager.setPValString(t, cs.getName(), "banner");
+                    pcm.setString(banreason, "banreason");
+                    pcm.setString(cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t.getName() + ChatColor.BLUE + ".");
                     plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
                     t.setBanned(true);
@@ -62,7 +63,8 @@ public class CmdBan implements CommandExecutor {
                 }
             } else {
                 OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
-                if (!PConfManager.getPConfExists(t2)) {
+                PConfManager pcm2 = new PConfManager(t2);
+                if (!pcm2.getConfExists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
@@ -72,8 +74,8 @@ public class CmdBan implements CommandExecutor {
                 }
                 if (args.length == 1) {
                     banreason = plugin.banMessage;
-                    PConfManager.setPValString(t2, banreason, "banreason");
-                    PConfManager.setPValString(t2, cs.getName(), "banner");
+                    pcm2.setString(banreason, "banreason");
+                    pcm2.setString(cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t2.getName() + ChatColor.BLUE + ".");
                     plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
                     t2.setBanned(true);
@@ -81,8 +83,8 @@ public class CmdBan implements CommandExecutor {
                 }
                 if (args.length > 1) {
                     banreason = RUtils.colorize(plugin.getFinalArg(args, 1));
-                    PConfManager.setPValString(t2, banreason, "banreason");
-                    PConfManager.setPValString(t2, cs.getName(), "banner");
+                    pcm2.setString(banreason, "banreason");
+                    pcm2.setString(cs.getName(), "banner");
                     cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t2.getName() + ChatColor.BLUE + ".");
                     plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
                     t2.setBanned(true);

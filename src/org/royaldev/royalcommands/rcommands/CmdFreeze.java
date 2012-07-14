@@ -10,8 +10,6 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import static org.royaldev.royalcommands.PConfManager.setPValBoolean;
-
 public class CmdFreeze implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -37,33 +35,35 @@ public class CmdFreeze implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You can't freeze that player!");
                     return true;
                 }
-                if (!PConfManager.getPValBoolean(victim, "frozen")) {
-                    setPValBoolean(victim, true, "frozen");
+                PConfManager pcm = new PConfManager(victim);
+                if (!pcm.getBoolean("frozen")) {
+                    pcm.setBoolean(true, "frozen");
                     cs.sendMessage(ChatColor.BLUE + "You have frozen " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + "!");
                     victim.sendMessage(ChatColor.RED + "You have been frozen!");
                     return true;
                 } else {
-                    setPValBoolean(victim, false, "frozen");
+                    pcm.setBoolean(false, "frozen");
                     cs.sendMessage(ChatColor.BLUE + "You have thawed " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + "!");
                     victim.sendMessage(ChatColor.BLUE + "You have been thawed!");
                     return true;
                 }
             } else {
                 OfflinePlayer victim2 = plugin.getServer().getOfflinePlayer(args[0].trim());
+                PConfManager pcm = new PConfManager(victim2);
                 if (victim2.isOp()) {
                     cs.sendMessage(ChatColor.RED + "You can't freeze that player!");
                     return true;
                 }
-                if (!PConfManager.getPConfExists(victim2)) {
+                if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (!PConfManager.getPValBoolean(victim2, "frozen")) {
-                    setPValBoolean(victim2, true, "frozen");
+                if (!pcm.getBoolean("frozen")) {
+                    pcm.setBoolean(true, "frozen");
                     cs.sendMessage(ChatColor.BLUE + "You have frozen " + ChatColor.GRAY + victim2.getName() + ChatColor.BLUE + "!");
                     return true;
                 } else {
-                    setPValBoolean(victim2, false, "frozen");
+                    pcm.setBoolean(false, "frozen");
                     cs.sendMessage(ChatColor.BLUE + "You have thawed " + ChatColor.GRAY + victim2.getName() + ChatColor.BLUE + "!");
                     return true;
                 }

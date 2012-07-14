@@ -33,9 +33,10 @@ public class CmdMute implements CommandExecutor {
             }
             if (args.length == 1) {
                 Player t = plugin.getServer().getPlayer(args[0].trim());
+                PConfManager pcm = new PConfManager(t);
                 if (t == null) {
                     OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
-                    if (!PConfManager.getPConfExists(t2)) {
+                    if (!pcm.exists()) {
                         cs.sendMessage(ChatColor.RED + "That player does not exist!");
                         return true;
                     }
@@ -43,12 +44,12 @@ public class CmdMute implements CommandExecutor {
                         cs.sendMessage(ChatColor.RED + "You cannot mute that player!");
                         return true;
                     }
-                    if (PConfManager.getPValBoolean(t2, "muted")) {
-                        PConfManager.setPValBoolean(t2, false, "muted");
+                    if (pcm.getBoolean("muted")) {
+                        pcm.setBoolean(false, "muted");
                         cs.sendMessage(ChatColor.BLUE + "You have unmuted " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
                         return true;
                     } else {
-                        PConfManager.setPValBoolean(t2, true, "muted");
+                        pcm.setBoolean(true, "muted");
                         cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
                         return true;
                     }
@@ -58,13 +59,13 @@ public class CmdMute implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You cannot mute that player!");
                     return true;
                 }
-                if (PConfManager.getPValBoolean(t, "muted")) {
-                    PConfManager.setPValBoolean(t, false, "muted");
+                if (pcm.getBoolean("muted")) {
+                    pcm.setBoolean(false, "muted");
                     t.sendMessage(ChatColor.BLUE + "You have been unmuted by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
                     cs.sendMessage(ChatColor.BLUE + "You have unmuted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     return true;
                 } else {
-                    PConfManager.setPValBoolean(t, true, "muted");
+                    pcm.setBoolean(true, "muted");
                     t.sendMessage(ChatColor.RED + "You have been muted by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
                     cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     return true;
@@ -79,9 +80,10 @@ public class CmdMute implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That time was invalid!");
                     return true;
                 }
+                PConfManager pcm = new PConfManager(t);
                 if (t == null) {
                     OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
-                    if (!PConfManager.getPConfExists(t2)) {
+                    if (!pcm.exists()) {
                         cs.sendMessage(ChatColor.RED + "That player does not exist!");
                         return true;
                     }
@@ -89,28 +91,28 @@ public class CmdMute implements CommandExecutor {
                         cs.sendMessage(ChatColor.RED + "You cannot mute that player!");
                         return true;
                     }
-                    if (PConfManager.getPValBoolean(t2, "muted")) {
-                        PConfManager.setPValBoolean(t2, false, "muted");
+                    if (pcm.getBoolean("muted")) {
+                        pcm.setBoolean(false, "muted");
                         cs.sendMessage(ChatColor.BLUE + "You have unmuted " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
                         return true;
                     } else {
-                        PConfManager.setPValBoolean(t2, true, "muted");
+                        pcm.setBoolean(true, "muted");
                         RUtils.setTimeStamp(t2, time, "mutetime");
                         cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
                         return true;
                     }
                 } else {
-                    if (!PConfManager.getPConfExists(t)) {
+                    if (!pcm.exists()) {
                         cs.sendMessage(ChatColor.RED + "That player does not exist!");
                         return true;
                     }
-                    if (PConfManager.getPValBoolean(t, "muted")) {
-                        PConfManager.setPValBoolean(t, false, "muted");
+                    if (pcm.getBoolean("muted")) {
+                        pcm.setBoolean(false, "muted");
                         t.sendMessage(ChatColor.BLUE + "You have been unmuted by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
                         cs.sendMessage(ChatColor.BLUE + "You have unmuted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                         return true;
                     } else {
-                        PConfManager.setPValBoolean(t, true, "muted");
+                        pcm.setBoolean(true, "muted");
                         RUtils.setTimeStamp(t, time, "mutetime");
                         t.sendMessage(ChatColor.RED + "You have been muted by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() + (time*1000)) + ChatColor.RED + ".");
                         cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() + (time*1000)) + ChatColor.BLUE + ".");

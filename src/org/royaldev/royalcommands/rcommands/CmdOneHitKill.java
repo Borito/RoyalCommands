@@ -19,8 +19,7 @@ public class CmdOneHitKill implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("onehitkill")) {
             if (!plugin.isAuthorized(cs, "rcmds.onehitkill")) {
                 RUtils.dispNoPerms(cs);
@@ -30,33 +29,35 @@ public class CmdOneHitKill implements CommandExecutor {
                 Player t = plugin.getServer().getPlayer(args[0].trim());
                 if (t == null || plugin.isVanished(t, cs)) {
                     OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0].trim());
-                    if (!PConfManager.getPConfExists(op)) {
+                    PConfManager pcm = new PConfManager(op);
+                    if (!pcm.exists()) {
                         cs.sendMessage(ChatColor.RED + "That player does not exist!");
                         return true;
                     }
-                    Boolean ohk = PConfManager.getPValBoolean(op, "ohk");
+                    Boolean ohk = pcm.getBoolean("ohk");
                     if (!ohk) {
-                        PConfManager.setPValBoolean(op, true, "ohk");
+                        pcm.setBoolean(true, "ohk");
                         cs.sendMessage(ChatColor.BLUE + "You have enabled onehitkill mode for " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
                         return true;
                     }
-                    PConfManager.setPValBoolean(op, false, "ohk");
+                    pcm.setBoolean(false, "ohk");
                     cs.sendMessage(ChatColor.BLUE + "You have disabled onehitkill mode for " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
                     return true;
                 }
                 Player p = plugin.getServer().getPlayer(args[0].trim());
-                if (!PConfManager.getPConfExists(p)) {
+                PConfManager pcm = new PConfManager(p);
+                if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                Boolean ohk = PConfManager.getPValBoolean(p, "ohk");
+                Boolean ohk = pcm.getBoolean("ohk");
                 if (!ohk) {
-                    PConfManager.setPValBoolean(p, true, "ohk");
+                    pcm.setBoolean(true, "ohk");
                     cs.sendMessage(ChatColor.BLUE + "You have enabled onehitkill mode for " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
                     p.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has enabled onehitkill for you.");
                     return true;
                 }
-                PConfManager.setPValBoolean(p, false, "ohk");
+                pcm.setBoolean(false, "ohk");
                 cs.sendMessage(ChatColor.BLUE + "You have disabled onehitkill mode for " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
                 p.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " has disabled your onehitkill.");
                 return true;
@@ -67,13 +68,14 @@ public class CmdOneHitKill implements CommandExecutor {
                     return false;
                 }
                 Player p = (Player) cs;
-                Boolean ohk = PConfManager.getPValBoolean(p, "ohk");
+                PConfManager pcm = new PConfManager(p);
+                Boolean ohk = pcm.getBoolean("ohk");
                 if (ohk == null || !ohk) {
-                    PConfManager.setPValBoolean(p, true, "ohk");
+                    pcm.setBoolean(true, "ohk");
                     p.sendMessage(ChatColor.BLUE + "You have enabled onehitkill for yourself.");
                     return true;
                 }
-                PConfManager.setPValBoolean(p, false, "ohk");
+                pcm.setBoolean(false, "ohk");
                 p.sendMessage(ChatColor.BLUE + "You have disabled onehitkill for yourself.");
                 return true;
             }

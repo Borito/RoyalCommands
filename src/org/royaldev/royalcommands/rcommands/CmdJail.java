@@ -65,9 +65,10 @@ public class CmdJail implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You cannot jail that player.");
                 return true;
             }
+            PConfManager pcm = new PConfManager(t);
             if (args.length < 2) {
-                if (PConfManager.getPValBoolean(t, "jailed")) {
-                    PConfManager.setPValBoolean(t, false, "jailed");
+                if (pcm.getBoolean("jailed")) {
+                    pcm.setBoolean(false, "jailed");
                     cs.sendMessage(ChatColor.BLUE + "You have released " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     t.sendMessage(ChatColor.BLUE + "You have been released.");
                     if (jaildb.get(t).getWorld() == null) {
@@ -134,8 +135,8 @@ public class CmdJail implements CommandExecutor {
                 return true;
             }
             Location jailLoc = new Location(jailW, jailX, jailY, jailZ, jailYaw, jailPitch);
-            if (PConfManager.getPValBoolean(t, "jailed")) {
-                PConfManager.setPValBoolean(t, false, "jailed");
+            if (pcm.getBoolean("jailed")) {
+                pcm.setBoolean(false, "jailed");
                 cs.sendMessage(ChatColor.BLUE + "You have released " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.BLUE + "You have been released.");
                 if (jaildb.get(t).getWorld() == null) {
@@ -165,7 +166,7 @@ public class CmdJail implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + error);
                     return true;
                 }
-                PConfManager.setPValBoolean(t, true, "jailed");
+                pcm.setBoolean(true, "jailed");
                 return true;
             }
         }

@@ -35,15 +35,16 @@ public class CmdVip implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
-                if (!PConfManager.getPConfExists(t)) {
+                PConfManager pcm = new PConfManager(t);
+                if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (PConfManager.getPVal(t, "vip") != null && PConfManager.getPValBoolean(t, "vip")) {
+                if (pcm.get("vip") != null && pcm.getBoolean("vip")) {
                     cs.sendMessage(ChatColor.RED + "That player is already in the VIP list.");
                     return true;
                 }
-                PConfManager.setPValBoolean(t, true, "vip");
+                pcm.setBoolean(true, "vip");
                 cs.sendMessage(ChatColor.BLUE + "Successfully added " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to the VIP list.");
                 return true;
             } else if (command.equalsIgnoreCase("remove")) {
@@ -52,15 +53,16 @@ public class CmdVip implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
-                if (!PConfManager.getPConfExists(t)) {
+                PConfManager pcm = new PConfManager(t);
+                if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (PConfManager.getPVal(t, "vip") == null || !PConfManager.getPValBoolean(t, "vip")) {
+                if (pcm.get("vip") == null || !pcm.getBoolean("vip")) {
                     cs.sendMessage(ChatColor.RED + "That player is not in the VIP list.");
                     return true;
                 }
-                PConfManager.setPValBoolean(t, false, "vip");
+                pcm.setBoolean(false, "vip");
                 cs.sendMessage(ChatColor.BLUE + "Successfully removed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to the VIP list.");
                 return true;
             } else if (command.equalsIgnoreCase("check")) {
@@ -69,11 +71,12 @@ public class CmdVip implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
-                if (!PConfManager.getPConfExists(t)) {
+                PConfManager pcm = new PConfManager(t);
+                if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                boolean inList = PConfManager.getPValBoolean(t, "vip");
+                boolean inList = pcm.getBoolean("vip");
                 if (inList) {
                     cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " is in the VIP list.");
                     return true;

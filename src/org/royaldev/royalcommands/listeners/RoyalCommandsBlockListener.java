@@ -8,6 +8,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
 
+@SuppressWarnings("unused")
 public class RoyalCommandsBlockListener implements Listener {
 
     public static RoyalCommands plugin;
@@ -18,8 +19,9 @@ public class RoyalCommandsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
-        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) event.setCancelled(true);
+        PConfManager pcm = new PConfManager(event.getPlayer());
+        if (pcm.getBoolean("frozen")) event.setCancelled(true);
+        if (pcm.getBoolean("jailed")) event.setCancelled(true);
     }
 
     @EventHandler
@@ -40,8 +42,9 @@ public class RoyalCommandsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (PConfManager.getPValBoolean(event.getPlayer(), "frozen")) event.setCancelled(true);
-        if (PConfManager.getPValBoolean(event.getPlayer(), "jailed")) event.setCancelled(true);
+        PConfManager pcm = new PConfManager(event.getPlayer());
+        if (pcm.getBoolean("frozen")) event.setCancelled(true);
+        if (pcm.getBoolean("jailed")) event.setCancelled(true);
     }
 
 }

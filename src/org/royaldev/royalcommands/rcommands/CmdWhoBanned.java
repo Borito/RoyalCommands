@@ -29,7 +29,8 @@ public class CmdWhoBanned implements CommandExecutor {
                 return false;
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0].trim());
-            if (!PConfManager.getPConfExists(t)) {
+            PConfManager pcm = new PConfManager(t);
+            if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
@@ -37,7 +38,7 @@ public class CmdWhoBanned implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player is not banned!");
                 return true;
             }
-            String banreason = PConfManager.getPValString(t, "banner");
+            String banreason = pcm.getString("banner");
             cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " was banned by: " + ChatColor.GRAY + banreason + ChatColor.BLUE + ".");
             return true;
         }

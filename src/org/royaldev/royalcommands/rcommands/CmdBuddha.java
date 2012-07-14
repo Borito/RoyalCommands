@@ -33,12 +33,13 @@ public class CmdBuddha implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (!PConfManager.getPValBoolean(t, "buddha")) {
-                    PConfManager.setPValBoolean(t, true, "buddha");
+                PConfManager pcm = new PConfManager(t);
+                if (!pcm.getBoolean("buddha")) {
+                    pcm.setBoolean(true, "buddha");
                     t.sendMessage(ChatColor.BLUE + "Buddha mode enabled by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
                     cs.sendMessage(ChatColor.BLUE + "Enabled buddha mode for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 } else {
-                    PConfManager.setPValBoolean(t, false, "buddha");
+                    pcm.setBoolean(false, "buddha");
                     t.sendMessage(ChatColor.BLUE + "Buddha mode disabled by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
                     cs.sendMessage(ChatColor.BLUE + "Disabled buddha mode for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 }
@@ -49,11 +50,12 @@ public class CmdBuddha implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            if (!PConfManager.getPValBoolean(p, "buddha")) {
-                PConfManager.setPValBoolean(p, true, "buddha");
+            PConfManager pcm = new PConfManager(p);
+            if (!pcm.getBoolean("buddha")) {
+                pcm.setBoolean(true, "buddha");
                 cs.sendMessage(ChatColor.BLUE + "Enabled buddha mode for yourself.");
             } else {
-                PConfManager.setPValBoolean(p, false, "buddha");
+                pcm.setBoolean(false, "buddha");
                 cs.sendMessage(ChatColor.BLUE + "Disabled buddha mode for yourself.");
             }
             return true;

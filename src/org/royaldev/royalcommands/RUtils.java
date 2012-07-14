@@ -194,19 +194,22 @@ public class RUtils {
     }
 
     public static boolean isTimeStampValid(OfflinePlayer p, String title) {
-        if (PConfManager.getPVal(p, title) == null) return false;
+        PConfManager pcm = new PConfManager(p);
+        if (pcm.get(title) == null) return false;
         long time = new Date().getTime();
-        long overall = PConfManager.getPValLong(p, title);
+        long overall = pcm.getLong(title);
         return time < overall;
     }
 
     public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
-        PConfManager.setPValLong(p, (seconds * 1000) + new Date().getTime(), title);
+        PConfManager pcm = new PConfManager(p);
+        pcm.setLong((seconds * 1000) + new Date().getTime(), title);
     }
 
     public static long getTimeStamp(OfflinePlayer p, String title) {
-        if (PConfManager.getPVal(p, title) == null) return -1;
-        return PConfManager.getPValLong(p, title);
+        PConfManager pcm = new PConfManager(p);
+        if (pcm.get(title) == null) return -1;
+        return pcm.getLong(title);
     }
 
     //if it isn't obvious, Essentials wrote this code. no way in hell I could manage this
@@ -269,7 +272,8 @@ public class RUtils {
     }
 
     public static boolean isTeleportAllowed(OfflinePlayer p) {
-        return PConfManager.getPVal(p, "allow-tp") == null || PConfManager.getPValBoolean(p, "allow-tp");
+        PConfManager pcm = new PConfManager(p);
+        return pcm.get("allow-tp") == null || pcm.getBoolean("allow-tp");
     }
 
     public static String colorize(String text) {

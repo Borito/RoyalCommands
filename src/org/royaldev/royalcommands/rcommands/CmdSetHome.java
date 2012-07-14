@@ -5,15 +5,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.io.File;
-import java.io.IOException;
 
 public class CmdSetHome implements CommandExecutor {
 
@@ -37,7 +32,7 @@ public class CmdSetHome implements CommandExecutor {
     }
 
     private int getCurrentHomes(Player p) {
-        ConfigurationSection pconf = PConfManager.getPConfSection(p, "home");
+        ConfigurationSection pconf = new PConfManager(p).getConfigurationSection("home");
         if (pconf == null) return 0;
         return pconf.getValues(false).keySet().size();
     }
@@ -60,7 +55,7 @@ public class CmdSetHome implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-
+            PConfManager pcm = new PConfManager(p);
             double locX = p.getLocation().getX();
             double locY = p.getLocation().getY();
             double locZ = p.getLocation().getZ();
@@ -75,50 +70,42 @@ public class CmdSetHome implements CommandExecutor {
                 return true;
             }
 
-            File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
-            if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                Integer limit = getHomeLimit(p);
-                int curHomes = getCurrentHomes(p);
-                if (limit != null && pconf.get("home." + name) != null) {
-                    if (limit == 0) {
-                        RUtils.dispNoPerms(cs, ChatColor.RED + "Your home limit is set to " + ChatColor.GRAY + "0" + ChatColor.RED + "!");
-                        cs.sendMessage(ChatColor.RED + "You can't set any homes!");
-                        return true;
-                    } else if (curHomes >= limit && limit > -1) {
-                        RUtils.dispNoPerms(cs, ChatColor.RED + "You've reached your max number of homes! (" + ChatColor.GRAY + limit + ChatColor.RED + ")");
-                        return true;
-                    }
+
+            Integer limit = getHomeLimit(p);
+            int curHomes = getCurrentHomes(p);
+            if (limit != null && pcm.get("home." + name) != null) {
+                if (limit == 0) {
+                    RUtils.dispNoPerms(cs, ChatColor.RED + "Your home limit is set to " + ChatColor.GRAY + "0" + ChatColor.RED + "!");
+                    cs.sendMessage(ChatColor.RED + "You can't set any homes!");
+                    return true;
+                } else if (curHomes >= limit && limit > -1) {
+                    RUtils.dispNoPerms(cs, ChatColor.RED + "You've reached your max number of homes! (" + ChatColor.GRAY + limit + ChatColor.RED + ")");
+                    return true;
                 }
-                if (!name.equals("")) {
-                    pconf.set("home." + name + ".set", true);
-                    pconf.set("home." + name + ".x", locX);
-                    pconf.set("home." + name + ".y", locY);
-                    pconf.set("home." + name + ".z", locZ);
-                    pconf.set("home." + name + ".pitch", locPitch.toString());
-                    pconf.set("home." + name + ".yaw", locYaw.toString());
-                    pconf.set("home." + name + ".w", locW);
-                } else {
-                    pconf.set("home.home.set", true);
-                    pconf.set("home.home.x", locX);
-                    pconf.set("home.home.y", locY);
-                    pconf.set("home.home.z", locZ);
-                    pconf.set("home.home.pitch", locPitch.toString());
-                    pconf.set("home.home.yaw", locYaw.toString());
-                    pconf.set("home.home.w", locW);
-                }
-                try {
-                    pconf.save(pconfl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (args.length > 0) {
-                    p.sendMessage(ChatColor.BLUE + "Home \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");
-                } else {
-                    p.sendMessage(ChatColor.BLUE + "Home set.");
-                }
-                return true;
             }
+            if (!name.equals("")) {
+                pcm.setBoolean(true, "home." + name + ".set");
+                pcm.setDouble(locX, "home." + name + ".x");
+                pcm.setDouble(locY, "home." + name + ".y");
+                pcm.setDouble(locZ, "home." + name + ".z");
+                pcm.setString(locPitch.toString(), "home." + name + ".pitch");
+                pcm.setString(locYaw.toString(), "home." + name + ".yaw");
+                pcm.setString(locW, "home." + name + ".w");
+            } else {
+                pcm.setBoolean(true, "home.home.set");
+                pcm.setDouble(locX, "home.home.x");
+                pcm.setDouble(locY, "home.home.y");
+                pcm.setDouble(locZ, "home.home.z");
+                pcm.setString(locPitch.toString(), "home.home.pitch");
+                pcm.setString(locYaw.toString(), "home.home.yaw");
+                pcm.setString(locW, "home.home.w");
+            }
+            if (args.length > 0) {
+                p.sendMessage(ChatColor.BLUE + "Home \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");
+            } else {
+                p.sendMessage(ChatColor.BLUE + "Home set.");
+            }
+            return true;
         }
         return false;
     }

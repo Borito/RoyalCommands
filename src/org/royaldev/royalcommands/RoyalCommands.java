@@ -54,6 +54,8 @@ public class RoyalCommands extends JavaPlugin {
 
     public ConfigManager whl;
 
+    public static File dataFolder;
+
     public static Permission permission = null;
     public static Economy economy = null;
     public static Chat chat = null;
@@ -118,10 +120,6 @@ public class RoyalCommands extends JavaPlugin {
     public Float explodePower = null;
     public Float maxExplodePower = null;
 
-    public RoyalCommands() {
-        pconfm = new PConfManager(this);
-    }
-
     private int minVersion = 2244;
 
     public static Map<String, Map<String, Object>> commands = null;
@@ -153,7 +151,6 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     private final SignListener signListener = new SignListener(this);
     private final MonitorListener monitorListener = new MonitorListener(this);
-    public final PConfManager pconfm;
 
     public Logger log = Logger.getLogger("Minecraft");
 
@@ -416,6 +413,8 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void onEnable() {
+
+        dataFolder = getDataFolder();
 
         commands = getDescription().getCommands();
         plugins = getServer().getPluginManager().getPlugins();

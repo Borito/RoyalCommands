@@ -38,7 +38,7 @@ public class CmdListHome implements CommandExecutor {
             if (args.length < 1) {
                 pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
             } else {
-                if (!PConfManager.getPConfExists(args[0].trim().toLowerCase())) {
+                if (!new PConfManager(args[0].trim().toLowerCase()).exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }

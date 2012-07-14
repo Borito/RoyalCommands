@@ -36,7 +36,8 @@ public class CmdWarn implements CommandExecutor {
             }
 
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0].trim());
-            if (!PConfManager.getPConfExists(t)) {
+            PConfManager pcm = new PConfManager(t);
+            if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That user does not exist!");
                 return true;
             }
@@ -45,14 +46,10 @@ public class CmdWarn implements CommandExecutor {
                 return true;
             }
             File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-            if (!PConfManager.getPConfExists(t)) {
-                cs.sendMessage(ChatColor.RED + "That user does not exist!");
-                return true;
-            }
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
             Integer numwarns;
             String warnreason = null;
-            numwarns = (PConfManager.getPVal(t, "warns") == null) ? 0 : pconf.getConfigurationSection("warns").getValues(false).size();
+            numwarns = (pcm.get("warns") == null) ? 0 : pconf.getConfigurationSection("warns").getValues(false).size();
             if (args.length == 1) {
                 warnreason = plugin.defaultWarn;
                 pconf.set("warns." + (numwarns + 1), warnreason);
@@ -96,12 +93,13 @@ public class CmdWarn implements CommandExecutor {
                 return true;
             }
         }
+        PConfManager pcm = new PConfManager(t2);
         File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t2.getName().toLowerCase() + ".yml");
         if (pconfl.exists()) {
             FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
             Integer numwarns;
             String warnreason = null;
-            numwarns = (PConfManager.getPVal(t2, "warns") == null) ? 0 : pconf.getConfigurationSection("warns").getValues(false).size();
+            numwarns = (pcm.get("warns") == null) ? 0 : pconf.getConfigurationSection("warns").getValues(false).size();
             if (args.length == 1) {
                 warnreason = plugin.defaultWarn;
                 pconf.set("warns." + (numwarns + 1), warnreason);

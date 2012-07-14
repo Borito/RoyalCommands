@@ -33,15 +33,16 @@ public class CmdSeen implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " was last seen " + ChatColor.GRAY + "now" + ChatColor.BLUE + ".");
                 return true;
             }
-            if (!PConfManager.getPConfExists(t)) {
+            PConfManager pcm = new PConfManager(t);
+            if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                 return true;
             }
-            if (PConfManager.getPVal(t, "seen") == null) {
+            if (pcm.get("seen") == null) {
                 cs.sendMessage(ChatColor.RED + "I don't know when that player was last seen!");
                 return true;
             }
-            long seen = PConfManager.getPValLong(t, "seen");
+            long seen = pcm.getLong("seen");
             String lastseen = RUtils.formatDateDiff(seen);
             cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " was last seen" + ChatColor.GRAY + lastseen + ChatColor.BLUE + " ago.");
             return true;
