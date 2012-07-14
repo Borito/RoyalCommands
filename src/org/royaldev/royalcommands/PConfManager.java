@@ -155,6 +155,22 @@ public class PConfManager {
     }
 
     /**
+     * Sets a float in config
+     *
+     * @param value Float to set
+     * @param path  Path in the yml to set
+     */
+    public void setFloat(Float value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Gets a string list from config
      *
      * @param path Path in the yml to fetch from
@@ -228,6 +244,21 @@ public class PConfManager {
     public String getString(String path) {
         if (pconf == null) return null;
         return pconf.getString(path);
+    }
+
+    /**
+     * Gets a float from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Float or null if path does not exist or if config doesn't exist or if not valid float
+     */
+    public Float getFloat(String path) {
+        if (pconf == null) return null;
+        try {
+            return Float.valueOf(pconf.getString(path));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**

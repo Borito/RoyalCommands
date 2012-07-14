@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
 
 public class RoyalCommands extends JavaPlugin {
 
-    public ConfigManager whl;
+    public ConfManager whl;
 
     public static File dataFolder;
 
@@ -180,7 +180,6 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void reloadConfigVals() {
-        if (whl != null) whl.load();
         showcommands = getConfig().getBoolean("view_commands", true);
         disablegetip = getConfig().getBoolean("disable_getip", false);
         useWelcome = getConfig().getBoolean("enable_welcome_message", true);
@@ -237,7 +236,7 @@ public class RoyalCommands extends JavaPlugin {
 
         homeLimits = getConfig().getConfigurationSection("home_limits");
 
-        if (whl != null) whitelist = whl.getStringList("whitelist");
+        if (whl.exists()) whitelist = whl.getStringList("whitelist");
 
         Help.reloadHelp();
     }
@@ -428,13 +427,6 @@ public class RoyalCommands extends JavaPlugin {
             log.severe("[RoyalCommands] Disabling plugin. You can turn this check off in the config.");
             getPluginLoader().disablePlugin(this);
             return;
-        }
-
-        try {
-            whl = new ConfigManager(getDataFolder().getAbsolutePath() + File.separator + "whitelist.yml");
-        } catch (FileNotFoundException e) {
-            log.warning("[RoyalCommands] Could not find whitelist.yml!");
-            whl = null;
         }
 
         setupEconomy();

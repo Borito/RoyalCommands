@@ -15,6 +15,10 @@ public class CmdWhitelist implements CommandExecutor {
         plugin = instance;
     }
 
+    public void reloadWhitelist() {
+        plugin.whitelist = plugin.whl.getStringList("whitelist");
+    }
+
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("whitelist")) {
             if (!plugin.isAuthorized(cs, "rcmds.whitelist")) {
@@ -41,8 +45,8 @@ public class CmdWhitelist implements CommandExecutor {
                     return true;
                 }
                 plugin.whitelist.add(player);
-                plugin.whl.setStringList("whitelist", plugin.whitelist);
-                plugin.whl.save();
+                plugin.whl.setStringList(plugin.whitelist, "whitelist");
+                reloadWhitelist();
                 cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + player + ChatColor.BLUE + " to whitelist.");
                 return true;
             } else if (command.equalsIgnoreCase("remove")) {
@@ -51,8 +55,8 @@ public class CmdWhitelist implements CommandExecutor {
                     return true;
                 }
                 plugin.whitelist.remove(player);
-                plugin.whl.setStringList("whitelist", plugin.whitelist);
-                plugin.whl.save();
+                plugin.whl.setStringList(plugin.whitelist, "whitelist");
+                reloadWhitelist();
                 cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + player + ChatColor.BLUE + " from whitelist.");
                 return true;
             } else if (command.equalsIgnoreCase("check")) {
