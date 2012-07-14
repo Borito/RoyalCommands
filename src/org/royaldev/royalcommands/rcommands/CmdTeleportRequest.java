@@ -18,6 +18,12 @@ public class CmdTeleportRequest implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    /**
+     * Send a teleport request.
+     *
+     * @param target Person to request
+     * @param sender Requester
+     */
     public static void sendTpRequest(Player target, CommandSender sender) {
         tprdb.put(target, sender);
         target.sendMessage(ChatColor.GRAY + sender.getName() + ChatColor.BLUE + " has requested to teleport to you.");

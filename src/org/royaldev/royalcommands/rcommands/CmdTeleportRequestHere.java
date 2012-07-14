@@ -18,6 +18,18 @@ public class CmdTeleportRequestHere implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    /**
+     * Send a teleport request to the sender's location.
+     *
+     * @param target Person to send the request to
+     * @param sender Person sending the request
+     */
+    public static void sendTpRequest(Player target, CommandSender sender) {
+        tprhdb.put(target, sender);
+        target.sendMessage(ChatColor.GRAY + sender.getName() + ChatColor.BLUE + " has requested you to teleport to them.");
+        target.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/tpaccept" + ChatColor.BLUE + " or " + ChatColor.GRAY + "/tpdeny" + ChatColor.BLUE + ".");
+    }
+
     public static HashMap<Player, CommandSender> tprhdb = new HashMap<Player, CommandSender>();
 
     @Override
@@ -44,10 +56,8 @@ public class CmdTeleportRequestHere implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player has teleportation off!");
                 return true;
             }
-            tprhdb.put(t, cs);
+            sendTpRequest(t, cs);
             cs.sendMessage(ChatColor.BLUE + "Sent request to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has requested you to teleport to them.");
-            t.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/tpaccept" + ChatColor.BLUE + " or " + ChatColor.GRAY + "/tpdeny" + ChatColor.BLUE + ".");
             return true;
         }
         return false;
