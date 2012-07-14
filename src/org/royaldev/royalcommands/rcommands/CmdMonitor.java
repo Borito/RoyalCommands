@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.listeners.MonitorListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +25,7 @@ public class CmdMonitor implements CommandExecutor {
     public static Map<String, String> monitors = new HashMap<String, String>();
     public static Map<String, String> viewees = new HashMap<String, String>();
     public static Map<String, PlayerInventory> invs = new HashMap<String, PlayerInventory>();
+    public static Map<String, Location> locs = new HashMap<String, Location>();
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("monitor")) {
@@ -37,10 +40,13 @@ public class CmdMonitor implements CommandExecutor {
             Player p = (Player) cs;
             if (monitors.containsKey(p.getName())) {
                 Player m = plugin.getServer().getPlayer(monitors.get(p.getName()));
+                RUtils.silentTeleport(p, locs.get(p.getName()));
                 if (m != null) p.showPlayer(m);
                 for (Player pl : plugin.getServer().getOnlinePlayers()) pl.showPlayer(p);
                 viewees.remove(monitors.get(p.getName()));
                 monitors.remove(p.getName());
+                locs.remove(p.getName());
+                if (MonitorListener.openInvs.contains(p.getName())) MonitorListener.openInvs.remove(p.getName());
                 p.getInventory().setContents(invs.get(p.getName()).getContents());
                 invs.remove(p.getName());
                 cs.sendMessage(ChatColor.BLUE + "Stopped active monitoring.");
@@ -69,8 +75,13 @@ public class CmdMonitor implements CommandExecutor {
                 }
                 p.hidePlayer(t);
                 invs.put(p.getName(), p.getInventory());
+                locs.put(p.getName(), p.getLocation());
                 p.getInventory().clear();
                 p.getInventory().setContents(t.getInventory().getContents());
+                p.setItemInHand(t.getItemInHand());
+                p.setHealth(t.getHealth());
+                p.setFoodLevel(t.getFoodLevel());
+                p.setSaturation(t.getSaturation());
                 RUtils.silentTeleport(p, t);
                 return true;
             }

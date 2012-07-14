@@ -31,7 +31,7 @@ public class MonitorListener implements Listener {
         plugin = instance;
     }
 
-    private List<String> openInvs = new ArrayList<String>();
+    public static List<String> openInvs = new ArrayList<String>();
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
@@ -56,6 +56,7 @@ public class MonitorListener implements Listener {
         Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
+        t.setItemInHand(e.getPlayer().getItemInHand());
     }
 
     @EventHandler
@@ -64,6 +65,7 @@ public class MonitorListener implements Listener {
         Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
+        t.setItemInHand(e.getPlayer().getItemInHand());
     }
 
     @EventHandler
@@ -72,6 +74,7 @@ public class MonitorListener implements Listener {
         Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
+        t.setItemInHand(e.getPlayer().getItemInHand());
     }
 
     @EventHandler
@@ -93,6 +96,7 @@ public class MonitorListener implements Listener {
         Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(p.getName()));
         if (t == null) return;
         if (p.getHealth() < 1) return;
+        if (p.getHealth() < t.getHealth()) return;
         t.setHealth(p.getHealth());
     }
 
@@ -103,8 +107,9 @@ public class MonitorListener implements Listener {
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
         Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(p.getName()));
         if (t == null) return;
-        if (p.getHealth() < 1) return;
-        t.setHealth(p.getHealth());
+        if (p.getFoodLevel() < 1) return;
+        t.setFoodLevel(p.getFoodLevel());
+        t.setSaturation(p.getSaturation());
     }
 
     @EventHandler
@@ -120,6 +125,7 @@ public class MonitorListener implements Listener {
         if (i.getType().equals(InventoryType.CRAFTING)) return;
         if (i.getType().equals(InventoryType.FURNACE)) return;
         if (i.getType().equals(InventoryType.DISPENSER)) return;
+        t.openInventory(e.getInventory());
         openInvs.add(t.getName());
     }
 
@@ -174,6 +180,14 @@ public class MonitorListener implements Listener {
             if (p == null) continue;
             e.getPlayer().hidePlayer(p);
         }
+    }
+
+    @EventHandler
+    public void joinViewee(PlayerJoinEvent e) {
+        if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
+        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        if (t == null) return;
+        t.hidePlayer(e.getPlayer());
     }
 
     @EventHandler
