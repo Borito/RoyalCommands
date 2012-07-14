@@ -269,7 +269,7 @@ public class ConfManager {
         if (pconf == null) return null;
         try {
             return Float.valueOf(pconf.getString(path));
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             return null;
         }
     }
