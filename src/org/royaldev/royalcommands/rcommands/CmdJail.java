@@ -73,7 +73,7 @@ public class CmdJail implements CommandExecutor {
                     t.sendMessage(ChatColor.BLUE + "You have been released.");
                     if (jaildb.get(t).getWorld() == null) {
                         t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
-                        String error = RUtils.silentTeleport(t, t.getWorld().getSpawnLocation());
+                        String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
                         if (!error.isEmpty()) {
                             cs.sendMessage(ChatColor.RED + error);
                             return true;
@@ -141,7 +141,7 @@ public class CmdJail implements CommandExecutor {
                 t.sendMessage(ChatColor.BLUE + "You have been released.");
                 if (jaildb.get(t).getWorld() == null) {
                     t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
-                    String error = RUtils.silentTeleport(t, t.getWorld().getSpawnLocation());
+                    String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
                     if (!error.isEmpty()) {
                         cs.sendMessage(ChatColor.RED + error);
                         return true;

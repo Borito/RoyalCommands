@@ -21,6 +21,7 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
+import org.royaldev.royalcommands.rcommands.CmdSpawn;
 
 import java.io.File;
 import java.util.*;
@@ -356,7 +357,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 plugin.getServer().broadcastMessage(welcomemessage);
             }
             if (plugin.stsNew)
-                RUtils.silentTeleport(event.getPlayer(), event.getPlayer().getWorld().getSpawnLocation());
+                RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
         } else {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
             String playerip = event.getPlayer().getAddress().getAddress().toString();
@@ -365,8 +366,9 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
         if (plugin.motdLogin) CmdMotd.showMotd(event.getPlayer());
         if (plugin.sendToSpawn) {
-            if (plugin.stsBack) RUtils.teleport(event.getPlayer(), event.getPlayer().getWorld().getSpawnLocation());
-            else RUtils.silentTeleport(event.getPlayer(), event.getPlayer().getWorld().getSpawnLocation());
+            if (plugin.stsBack)
+                RUtils.teleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
+            else RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
         }
     }
 }

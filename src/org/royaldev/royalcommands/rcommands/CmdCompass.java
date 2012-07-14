@@ -40,7 +40,7 @@ public class CmdCompass implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "Your compass now points to your current location.");
                     return true;
                 } else if (command.equalsIgnoreCase("reset")) {
-                    p.setCompassTarget((p.getBedSpawnLocation() != null) ? p.getBedSpawnLocation() : p.getWorld().getSpawnLocation());
+                    p.setCompassTarget((p.getBedSpawnLocation() != null) ? p.getBedSpawnLocation() : CmdSpawn.getWorldSpawn(p.getWorld()));
                     p.sendMessage(ChatColor.BLUE + "Reset your compass.");
                     return true;
                 } else {
