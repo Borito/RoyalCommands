@@ -254,27 +254,6 @@ public class RoyalCommands extends JavaPlugin {
                 log.severe(e.getMessage());
             }
         }
-        File whitelist = new File(getDataFolder() + File.separator + "whitelist.yml");
-        if (!whitelist.exists()) {
-            try {
-                boolean success = whitelist.createNewFile();
-                if (!success) log.severe("[RoyalCommands] Could not create whitelist.yml!");
-                else {
-                    try {
-                        BufferedWriter out = new BufferedWriter(new FileWriter(whitelist.getAbsolutePath()));
-                        out.write("whitelist:\n");
-                        out.write("- jkcclemens\n");
-                        out.write("- other_guy\n");
-                        out.close();
-                    } catch (IOException e) {
-                        //ignore
-                    }
-                }
-            } catch (Exception e) {
-                log.severe("[RoyalCommands] Could not create whitelist.yml!");
-                e.printStackTrace();
-            }
-        }
         File rules = new File(getDataFolder() + File.separator + "rules.txt");
         if (!rules.exists()) {
             try {
@@ -414,6 +393,8 @@ public class RoyalCommands extends JavaPlugin {
     public void onEnable() {
 
         dataFolder = getDataFolder();
+
+        whl = new ConfManager("whitelist.yml");
 
         commands = getDescription().getCommands();
         plugins = getServer().getPluginManager().getPlugins();
