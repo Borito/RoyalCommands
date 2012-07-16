@@ -7,6 +7,14 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Serializable ItemStack
+ * <p/>
+ * Needed for SerializableCraftInventory
+ *
+ * @author jkcclemens
+ * @see SerializableCraftInventory
+ */
 public class SerializableItemStack implements Serializable {
 
     private int amount = 0;

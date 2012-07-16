@@ -1,15 +1,23 @@
 package org.royaldev.royalcommands.serializable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.royaldev.royalcommands.RUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
+/**
+ * Serializable CraftInventory
+ * <p/>
+ * Very useful for saving Inventories to a file.
+ *
+ * @author jkcclemens
+ * @see SerializableItemStack
+ */
 public class SerializableCraftInventory implements Serializable {
     private final String name;
     private List<SerializableItemStack> contents = new ArrayList<SerializableItemStack>();
@@ -104,7 +112,7 @@ public class SerializableCraftInventory implements Serializable {
      * @return Converted CraftInventory
      */
     public CraftInventory getCraftInventory() {
-        Inventory i = RUtils.createInv(null, size, name);
+        Inventory i = Bukkit.createInventory(null, size, name);
         ItemStack[] is = new ItemStack[contents.size()];
         for (int x = 0; x < contents.size(); x++) is[x] = contents.get(x).getItemStack();
         i.setContents(is);
@@ -117,7 +125,7 @@ public class SerializableCraftInventory implements Serializable {
      * @return Converted Inventory
      */
     public Inventory getInventory() {
-        Inventory i = RUtils.createInv(null, size, name);
+        Inventory i = Bukkit.createInventory(null, size, name);
         ItemStack[] is = new ItemStack[contents.size()];
         for (int x = 0; x < contents.size(); x++) is[x] = contents.get(x).getItemStack();
         i.setContents(is);
