@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.serializable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -97,20 +98,15 @@ public class SerializableCraftInventory implements Serializable {
         return is;
     }
 
-/*
-     * Gets the holder of this inventory
-     *
-     * @return InventoryHolder
-
-    public InventoryHolder getHolder() {
-        return ih;
-    }*/
-
     /**
-     * Returns a CraftInventory out of a SCI
-     *
-     * @return Converted CraftInventory
+     * Clears the inventory
      */
+    public void clear() {
+        ItemStack[] content = getContents();
+        for (ItemStack is : content) is.setType(Material.AIR);
+        setContents(content);
+    }
+
     public CraftInventory getCraftInventory() {
         Inventory i = Bukkit.createInventory(null, size, name);
         ItemStack[] is = new ItemStack[contents.size()];

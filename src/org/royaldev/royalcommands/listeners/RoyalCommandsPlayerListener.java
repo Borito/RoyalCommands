@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
@@ -170,6 +171,14 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[RoyalCommands] " + p.getName() + " tried to use that command, but is jailed.");
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent e) {
+        if (!plugin.backpackReset) return;
+        if (!CmdBackpack.invs.containsKey(e.getEntity().getName())) return;
+        CmdBackpack.invs.get(e.getEntity().getName()).clear();
+        RUtils.saveHash(CmdBackpack.invs, plugin.getDataFolder() + File.separator + "backpacks.sav");
     }
 
     @EventHandler

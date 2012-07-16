@@ -232,3 +232,6 @@ home_limits:
 command_log_blacklist:
 - login
 - l
+
+# Reset /backpack on death?
+reset_backpack_death: false

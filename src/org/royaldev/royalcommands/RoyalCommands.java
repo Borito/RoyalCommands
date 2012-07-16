@@ -98,6 +98,7 @@ public class RoyalCommands extends JavaPlugin {
     public static Boolean safeTeleport = null;
     public Boolean checkVersion = null;
     public Boolean simpleList = null;
+    public Boolean backpackReset = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -206,6 +207,7 @@ public class RoyalCommands extends JavaPlugin {
         safeTeleport = getConfig().getBoolean("safe_teleport", true);
         checkVersion = getConfig().getBoolean("version_check", true);
         simpleList = getConfig().getBoolean("simple_list", true);
+        backpackReset = getConfig().getBoolean("reset_backpack_death", false);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
