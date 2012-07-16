@@ -55,7 +55,7 @@ public class CmdWorld implements CommandExecutor {
             }
             Player p = (Player) cs;
             p.sendMessage(ChatColor.BLUE + "Teleporting you to world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
-            String error = RUtils.teleport(p, CmdSpawn.getWorldSpawn(p.getWorld()));
+            String error = RUtils.teleport(p, CmdSpawn.getWorldSpawn(w));
             if (!error.isEmpty()) {
                 p.sendMessage(ChatColor.RED + error);
                 return true;
