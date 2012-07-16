@@ -55,6 +55,7 @@ public class CmdBackpack implements CommandExecutor {
                 Inventory i = invs.get(t.getName()).getInventory();
                 i = RUtils.setHolder(i, t);
                 p.openInventory(i);
+                return true;
             }
             if (!invs.containsKey(p.getName())) {
                 invs.put(p.getName(), RUtils.convInvToSCI(RUtils.createInv(p, 36, "Backpack")));
