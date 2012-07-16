@@ -146,7 +146,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         PConfManager pcm = new PConfManager(p);
         if (plugin.showcommands) {
             String command = event.getMessage().split(" ")[0].toLowerCase();
-            if (!plugin.logBlacklist.contains(command))
+            if (!plugin.logBlacklist.contains(command.substring(1)))
                 log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
         }
         if (pcm.getBoolean("muted")) {
