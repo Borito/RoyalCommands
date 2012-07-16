@@ -41,7 +41,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +71,7 @@ public class RoyalCommands extends JavaPlugin {
     public List<String> motd = new ArrayList<String>();
     public List<String> commandCooldowns = new ArrayList<String>();
     public List<String> whitelist = new ArrayList<String>();
+    public List<String> logBlacklist = new ArrayList<String>();
     public static List<String> disabledCommands = new ArrayList<String>();
 
     public ConfigurationSection homeLimits = null;
@@ -233,6 +237,7 @@ public class RoyalCommands extends JavaPlugin {
         motd = getConfig().getStringList("motd");
         commandCooldowns = getConfig().getStringList("command_cooldowns");
         disabledCommands = getConfig().getStringList("disabled_commands");
+        logBlacklist = getConfig().getStringList("command_log_blacklist");
 
         homeLimits = getConfig().getConfigurationSection("home_limits");
 
@@ -306,24 +311,28 @@ public class RoyalCommands extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        File warps = new File(getDataFolder() + File.separator + "warps.yml");
-        if (!warps.exists()) {
+        createDefault(new File(getDataFolder() + File.separator + "warps.yml"), "warps:");
+    }
+
+    public void createDefault(File f, String def) {
+        if (!f.exists()) {
             try {
-                boolean success = new File(getDataFolder() + File.separator + "warps.yml").createNewFile();
+                boolean success = f.createNewFile();
                 if (success) {
                     try {
-                        FileWriter fstream = new FileWriter(getDataFolder() + File.separator + "warps.yml");
+                        FileWriter fstream = new FileWriter(f.getAbsolutePath());
                         BufferedWriter out = new BufferedWriter(fstream);
-                        out.write("warps:");
+                        out.write(def);
                         out.close();
                     } catch (Exception e) {
-                        log.severe("[RoyalCommands] Could not write to warps file.");
+                        log.severe("[RoyalCommands] Could not write to a config.");
+                        e.printStackTrace();
                     }
-                    log.info("[RoyalCommands] Created warps file.");
+                    log.info("[RoyalCommands] Created config file.");
                 }
             } catch (Exception e) {
-                log.severe("[RoyalCommands] Failed to make warps file!");
-                log.severe(e.getMessage());
+                log.severe("[RoyalCommands] Failed to create file!");
+                e.printStackTrace();
             }
         }
     }
@@ -365,7 +374,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public boolean isAuthorized(final Player player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), "rcmds.admin") || RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), node));
     }
 
     public boolean isAuthorized(final CommandSender player, final String node) {

@@ -144,8 +144,11 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (event.isCancelled()) return;
         Player p = event.getPlayer();
         PConfManager pcm = new PConfManager(p);
-        if (plugin.showcommands)
-            log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
+        if (plugin.showcommands) {
+            String command = event.getMessage().split(" ")[0].toLowerCase();
+            if (!plugin.logBlacklist.contains(command))
+                log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
+        }
         if (pcm.getBoolean("muted")) {
             if (pcm.get("mutetime") != null && !RUtils.isTimeStampValid(p, "mutetime"))
                 pcm.setBoolean(false, "muted");

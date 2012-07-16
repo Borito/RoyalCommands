@@ -226,3 +226,9 @@ home_limits:
     jkcclemens: -1
     WizardCM: 7
     Herobrine: 0
+
+# Commands to not show up if command logging is on
+# Please use all lowercase and no preceding /
+command_log_blacklist:
+- login
+- l
