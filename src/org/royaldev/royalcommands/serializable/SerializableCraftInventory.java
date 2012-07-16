@@ -107,6 +107,11 @@ public class SerializableCraftInventory implements Serializable {
         setContents(content);
     }
 
+    /**
+     * Returns a CraftInventory out of a SCI
+     *
+     * @return Converted CraftInventory
+     */
     public CraftInventory getCraftInventory() {
         Inventory i = Bukkit.createInventory(null, size, name);
         ItemStack[] is = new ItemStack[contents.size()];

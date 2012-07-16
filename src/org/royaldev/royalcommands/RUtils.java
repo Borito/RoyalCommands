@@ -1,14 +1,11 @@
 package org.royaldev.royalcommands;
 
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.PlayerInventory;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -136,16 +133,14 @@ public class RUtils {
     }
 
     public static void showFilledChest(Player p, String name) {
-        EntityPlayer ep = ((CraftPlayer) p).getHandle();
-        CraftInventory inv = new CraftInventory(new PlayerInventory(ep));
+        Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST);
         ItemStack stack = getItem(name, 64);
         for (int i = 0; i < inv.getSize(); i++) inv.addItem(stack);
         p.openInventory(inv);
     }
 
     public static void showEmptyChest(Player player) {
-        Inventory inv = createInv(null, 36, "Disposal");
-        player.openInventory(inv);
+        player.openInventory(Bukkit.createInventory(null, InventoryType.CHEST));
     }
 
     public static boolean chargePlayer(CommandSender cs, double amount) {
@@ -489,6 +484,7 @@ public class RUtils {
      * @return HashMap
      */
     public static HashMap loadHash(String path) {
+
         try {
             if (!new File(path).exists()) {
                 new File(path).createNewFile();
