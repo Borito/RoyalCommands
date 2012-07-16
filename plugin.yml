@@ -641,6 +641,11 @@ commands:
     usage: /<command>
     aliases: [gc]
 
+  backpack:
+    description: Opens a personal backpack.
+    usage: /<command> (player)
+    aliases: [pack, bp]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1049,6 +1054,8 @@ permissions:
   rcmds.garbagecollector:
     description: Allows you to run the Java garbage collector.
     default: op
+  rcmds.backpack:
+    description: Allows you to open a personal backpack.
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1148,6 +1155,9 @@ permissions:
   rcmds.exempt.monitor:
     description: Makes the player immune to /monitor.
     default: false
+  rcmds.exempt.backpack:
+    description: Makes the player immune to /backpack.
+    default: false
 
   rcmds.exempt.autoafk:
     description: Makes the player immune to auto AFK.
@@ -1212,6 +1222,9 @@ permissions:
     default: op
   rcmds.others.setarmor:
     description: Allows the player to /setarmor other players.
+    default: op
+  rcmds.others.backpack:
+    description: Allows the player to /backpack other players.
     default: op
 
   rcmds.seehidden:
@@ -1449,6 +1462,7 @@ permissions:
       rcmds.mobignore: true
       rcmds.monitor: true
       rcmds.garbagecollector: true
+      rcmds.backpack: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1474,6 +1488,7 @@ permissions:
       rcmds.others.fly: true
       rcmds.others.buddha: true
       rcmds.others.setarmor: true
+      rcmds.others.backpack: true
 
   rcmds.see.*:
     description: Gives every see permission.
@@ -1552,6 +1567,7 @@ permissions:
       rcmds.exempt.afkkick: true
       rcmds.exempt.setarmor: true
       rcmds.exempt.monitor: true
+      rcmds.exempt.backpack: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -1702,6 +1718,7 @@ permissions:
       rcmds.mobignore: true
       rcmds.monitor: true
       rcmds.garbagecollector: true
+      rcmds.backpack: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true

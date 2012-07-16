@@ -3,6 +3,7 @@ package org.royaldev.royalcommands.listeners;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,8 +12,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -20,6 +23,7 @@ import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.rcommands.CmdBackpack;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
 
@@ -168,6 +172,17 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void invClose(InventoryCloseEvent e) {
+        if (!e.getInventory().getName().equals("Backpack")) return;
+        InventoryHolder ih = e.getInventory().getHolder();
+        if (!(ih instanceof CommandSender)) return;
+        Player p = (Player) ih;
+        if (!CmdBackpack.invs.containsKey(p.getName())) return;
+        CmdBackpack.invs.get(p.getName()).setContents(e.getInventory().getContents());
+        RUtils.saveHash(CmdBackpack.invs, plugin.getDataFolder() + File.separator + "backpacks.sav");
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void vipLogin(PlayerLoginEvent e) {
         if (e.getResult() != Result.KICK_FULL) return;
@@ -199,7 +214,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler
-    public void HeMan(PlayerChatEvent e) {
+    public void heMan(PlayerChatEvent e) {
         if (e.isCancelled()) return;
         if (!e.getMessage().matches("(?i)by the power of gr[a|e]yskull!?")) return;
         Player p = e.getPlayer();

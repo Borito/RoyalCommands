@@ -2,19 +2,20 @@ package org.royaldev.royalcommands;
 
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.PlayerInventory;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.rcommands.CmdBack;
+import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
 
+import java.io.*;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -143,9 +144,7 @@ public class RUtils {
     }
 
     public static void showEmptyChest(Player player) {
-        EntityPlayer ep = ((CraftPlayer) player).getHandle();
-        CraftInventory inv = new CraftInventory(new PlayerInventory(ep));
-        inv.clear();
+        Inventory inv = createInv(null, 36, "Disposal");
         player.openInventory(inv);
     }
 
@@ -278,7 +277,7 @@ public class RUtils {
 
     public static String colorize(String text) {
         if (text == null) return null;
-        return text.replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+        return text.replaceAll("(&([a-f0-9k-or]))", "\u00A7$2");
     }
 
     /**
@@ -444,11 +443,103 @@ public class RUtils {
         return null;
     }
 
+    /**
+     * Returns formatted name of an ItemStack.
+     *
+     * @param is ItemStack to get name for
+     * @return Name of item (formatted)
+     */
     public static String getItemName(ItemStack is) {
         return is.getType().name().toLowerCase().replace("_", " ");
     }
 
+    /**
+     * Returns formatted name of a Material
+     *
+     * @param m Material to get name for
+     * @return Name of item (formatted)
+     */
     public static String getItemName(Material m) {
         return m.name().toLowerCase().replace("_", " ");
+    }
+
+    /**
+     * Saves a HashMap to a file.
+     *
+     * @param hash HashMap to save
+     * @param path Path to file to save to
+     */
+    public static void saveHash(Object hash, String path) {
+        try {
+            ObjectOutputStream st = new ObjectOutputStream(new FileOutputStream(path));
+            st.writeObject(hash);
+            st.flush();
+            st.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads a HashMap from a file.
+     * <p/>
+     * Never returns null.
+     *
+     * @param path Path to file to load from
+     * @return HashMap
+     */
+    public static HashMap loadHash(String path) {
+        try {
+            if (!new File(path).exists()) {
+                new File(path).createNewFile();
+                return new HashMap();
+            }
+            ObjectInputStream st = new ObjectInputStream(new FileInputStream(path));
+            Object o = st.readObject();
+            if (o == null) return new HashMap();
+            return (HashMap) o;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new HashMap();
+        }
+    }
+
+    /**
+     * Returns an empty inventory for use.
+     *
+     * @param handler May be null - owner of inventory
+     * @param size    Size of inventory - MUST be divisible by 9
+     * @param name    May be null (default to Chest) - name of inventory to open
+     * @return Inventory or null if size not divisible by 9
+     */
+    public static Inventory createInv(InventoryHolder handler, Integer size, String name) {
+        if (size == null) size = 27;
+        //if (size % 9 != 0) return null;
+        final Inventory i = Bukkit.getServer().createInventory(handler, size, name);
+        i.clear();
+        return i;
+    }
+
+    /**
+     * Converts a normal inventory into a serializable one.
+     *
+     * @param i Inventory to convert
+     * @return SerializableCraftInventory from Inventory
+     */
+    public static SerializableCraftInventory convInvToSCI(Inventory i) {
+        return new SerializableCraftInventory(i);
+    }
+
+    /**
+     * Sets the holder of an Inventory
+     *
+     * @param i  Inventory to set holder of
+     * @param ih InventoryHolder to be set
+     * @return New inventory with updated holder
+     */
+    public static Inventory setHolder(Inventory i, InventoryHolder ih) {
+        Inventory ii = createInv(ih, i.getSize(), i.getName());
+        ii.setContents(i.getContents());
+        return ii;
     }
 }
