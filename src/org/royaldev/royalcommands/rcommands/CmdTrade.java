@@ -51,6 +51,10 @@ public class CmdTrade implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
+            if (t.equals(p)) {
+                cs.sendMessage(ChatColor.RED + "You can't trade with yourself!");
+                return true;
+            }
             CraftInventory inv;
             for (HashMap<Player, Player> set : trades.keySet()) {
                 if ((set.containsKey(t) && set.get(t).equals(p)) || (set.containsKey(p) && set.get(p).equals(t))) {
