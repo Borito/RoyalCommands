@@ -31,8 +31,8 @@ public class CmdBan implements CommandExecutor {
             }
             String banreason;
             Player t = plugin.getServer().getPlayer(args[0]);
-            PConfManager pcm = new PConfManager(t);
             if (t != null) {
+                PConfManager pcm = new PConfManager(t);
                 if (!pcm.getConfExists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
