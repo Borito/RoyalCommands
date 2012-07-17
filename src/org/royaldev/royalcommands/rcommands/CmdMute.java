@@ -33,9 +33,9 @@ public class CmdMute implements CommandExecutor {
             }
             if (args.length == 1) {
                 Player t = plugin.getServer().getPlayer(args[0].trim());
-                PConfManager pcm = new PConfManager(t);
                 if (t == null) {
                     OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
+                    PConfManager pcm = new PConfManager(t2);
                     if (!pcm.exists()) {
                         cs.sendMessage(ChatColor.RED + "That player does not exist!");
                         return true;
@@ -55,6 +55,7 @@ public class CmdMute implements CommandExecutor {
                     }
 
                 }
+                PConfManager pcm = new PConfManager(t);
                 if (plugin.isAuthorized(t, "rcmds.exempt.mute")) {
                     cs.sendMessage(ChatColor.RED + "You cannot mute that player!");
                     return true;
@@ -114,8 +115,8 @@ public class CmdMute implements CommandExecutor {
                     } else {
                         pcm.setBoolean(true, "muted");
                         RUtils.setTimeStamp(t, time, "mutetime");
-                        t.sendMessage(ChatColor.RED + "You have been muted by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() + (time*1000)) + ChatColor.RED + ".");
-                        cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() + (time*1000)) + ChatColor.BLUE + ".");
+                        t.sendMessage(ChatColor.RED + "You have been muted by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() + (time * 1000)) + ChatColor.RED + ".");
+                        cs.sendMessage(ChatColor.BLUE + "You have muted " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() + (time * 1000)) + ChatColor.BLUE + ".");
                         return true;
                     }
                 }
