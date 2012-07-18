@@ -20,7 +20,7 @@ public class SerializableItemStack implements Serializable {
     private int amount = 0;
     private short durability = 0;
     private int type = 0;
-    private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+    private Map<SerializableCraftEnchantment, Integer> enchantments = new HashMap<SerializableCraftEnchantment, Integer>();
     private byte materialData = 0;
 
     /**
@@ -32,7 +32,8 @@ public class SerializableItemStack implements Serializable {
         if (i == null) return;
         amount = i.getAmount();
         durability = i.getDurability();
-        enchantments = i.getEnchantments();
+        for (Enchantment e : i.getEnchantments().keySet())
+            enchantments.put(new SerializableCraftEnchantment(e), i.getEnchantments().get(e));
         type = i.getTypeId();
         materialData = i.getData().getData();
     }
@@ -44,7 +45,8 @@ public class SerializableItemStack implements Serializable {
      */
     public ItemStack getItemStack() {
         ItemStack i = new ItemStack(type, amount, durability, materialData);
-        i.addUnsafeEnchantments(enchantments);
+        for (SerializableCraftEnchantment sce : enchantments.keySet())
+            i.addUnsafeEnchantment(sce.getEnchantment(), enchantments.get(sce));
         return i;
     }
 
