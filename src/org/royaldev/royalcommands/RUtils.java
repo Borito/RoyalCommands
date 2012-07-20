@@ -384,6 +384,7 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String silentTeleport(Player p, Entity e) {
+        if (p == null || e == null) return "Player/entity was null!";
         if (!RoyalCommands.safeTeleport) p.teleport(e);
         else {
             Location toTele = getSafeLocation(e);
