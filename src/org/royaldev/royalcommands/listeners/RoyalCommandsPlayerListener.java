@@ -303,11 +303,10 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
-        if (event.getResult() != Result.ALLOWED) return;
         // Define the player
         Player p = event.getPlayer();
-        PConfManager pcm = new PConfManager(p);
         if (p == null) return;
+        PConfManager pcm = new PConfManager(p);
         // Check if player is banned
         if (!p.isBanned()) return;
         // Check to see that they have a bantime, and that if they do, if the timestamp is invalid.
