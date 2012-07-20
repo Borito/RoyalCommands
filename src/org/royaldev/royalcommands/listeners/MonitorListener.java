@@ -25,6 +25,7 @@ import org.royaldev.royalcommands.rcommands.CmdMonitor;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class MonitorListener implements Listener {
 
     RoyalCommands plugin;
@@ -49,7 +50,7 @@ public class MonitorListener implements Listener {
         Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
-        t.setItemInHand(e.getPlayer().getItemInHand());
+        t.setItemInHand(e.getPlayer().getInventory().getItem(e.getNewSlot()));
     }
 
     @EventHandler
@@ -119,7 +120,6 @@ public class MonitorListener implements Listener {
         if (!(e.getPlayer() instanceof Player)) return;
         Player p = (Player) e.getPlayer();
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        //final Inventory i = plugin.getServer().createInventory(e.getInventory().getHolder(), e.getInventory().getSize());
         Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(p.getName()));
         if (t == null) return;
         Inventory i = e.getInventory();
@@ -216,6 +216,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void interact(PlayerInteractEvent e) {
         if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
+        if (e.getClickedBlock() == null) return; // Fixed NPE below?
         if (e.getClickedBlock().getState() instanceof Chest) {
             Chest c = (Chest) e.getClickedBlock().getState();
             final Inventory i = plugin.getServer().createInventory(c.getInventory().getHolder(), c.getInventory().getSize());

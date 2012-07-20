@@ -37,7 +37,7 @@ public class PConfManager {
      */
     public PConfManager(String p) {
         File dataFolder = RoyalCommands.dataFolder;
-        File pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.toLowerCase() + ".yml");
+        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.toLowerCase() + ".yml");
         if (!pconfl.exists()) return;
         pconf = YamlConfiguration.loadConfiguration(pconfl);
     }
