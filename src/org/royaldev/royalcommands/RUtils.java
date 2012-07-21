@@ -496,7 +496,6 @@ public class RUtils {
             if (o == null) return new HashMap();
             return (HashMap) o;
         } catch (Exception e) {
-            e.printStackTrace();
             return new HashMap();
         }
     }
