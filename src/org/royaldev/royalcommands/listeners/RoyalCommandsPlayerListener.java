@@ -5,8 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -246,7 +244,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void heMan(PlayerChatEvent e) {
         if (e.isCancelled()) return;
-        if (!e.getMessage().matches("(?i)by the power of gr[a|e]yskull!?")) return;
+        if (!e.getMessage().matches("(?i)by the power of gr[ae]yskull!?")) return;
         Player p = e.getPlayer();
         if (!plugin.isAuthorized(p, "rcmds.heman")) return;
         ItemStack is = p.getItemInHand();
@@ -254,7 +252,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (is.getEnchantments().isEmpty()) return;
         e.setCancelled(true);
         p.getWorld().strikeLightningEffect(p.getLocation());
-        Matcher m = Pattern.compile("(?i)by the power of gr[a|e]yskull!?").matcher(e.getMessage());
+        Matcher m = Pattern.compile("(?i)by the power of gr[ae]yskull!?").matcher(e.getMessage());
         StringBuilder sb = new StringBuilder();
         int last = 0;
         while (m.find()) {
@@ -326,7 +324,9 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPlayerLogin(PlayerLoginEvent event) {
         // Define the player
         Player p = event.getPlayer();
+        // If player is null, stop
         if (p == null) return;
+        // Create new config manager for player
         PConfManager pcm = new PConfManager(p);
         // Check if player is banned
         if (!p.isBanned()) return;
@@ -373,32 +373,25 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        File datafile = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + event.getPlayer().getName().toLowerCase() + ".yml");
-        if (!datafile.exists()) {
-            log.info("[RoyalCommands] Creating userdata for user " + event.getPlayer().getName() + ".");
-            try {
-                boolean created = datafile.createNewFile();
-                if (!created)
-                    log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
-                FileConfiguration out = YamlConfiguration.loadConfiguration(datafile);
-                out.set("name", event.getPlayer().getName());
-                String dispname = event.getPlayer().getDisplayName();
-                if (dispname == null || dispname.equals("")) dispname = event.getPlayer().getName();
-                out.set("dispname", dispname);
-                out.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
-                out.set("banreason", "");
-                out.set("allow-tp", true);
-                out.save(datafile);
+        if (event.getPlayer() == null) return;
+        PConfManager pcm = new PConfManager(event.getPlayer());
+        if (!pcm.exists()) {
+            log.info("[RoyalCommands] Creating userdata for " + event.getPlayer().getName() + ".");
+            String dispname = event.getPlayer().getDisplayName();
+            if (dispname == null || dispname.trim().equals("")) dispname = event.getPlayer().getName();
+            boolean success = pcm.createFile();
+            if (!success) log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
+            else {
+                pcm.setString(event.getPlayer().getName(), "name");
+                pcm.setString(dispname, "dispname");
+                pcm.setString(event.getPlayer().getAddress().getAddress().toString().replace("/", ""), "ip");
+                pcm.setString("", "banreason");
+                pcm.setBoolean(true, "allow-tp");
                 log.info("[RoyalCommands] Userdata creation finished.");
-            } catch (Exception e) {
-                log.severe("[RoyalCommands] Could not create userdata for user " + event.getPlayer().getName() + "!");
-                e.printStackTrace();
             }
             if (plugin.useWelcome) {
                 String welcomemessage = plugin.welcomeMessage;
                 welcomemessage = welcomemessage.replace("{name}", event.getPlayer().getName());
-                String dispname = event.getPlayer().getDisplayName();
-                if (dispname == null || dispname.equals("")) dispname = event.getPlayer().getName();
                 welcomemessage = welcomemessage.replace("{dispname}", dispname);
                 welcomemessage = welcomemessage.replace("{world}", event.getPlayer().getWorld().getName());
                 plugin.getServer().broadcastMessage(welcomemessage);
@@ -409,7 +402,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
             String playerip = event.getPlayer().getAddress().getAddress().toString();
             playerip = playerip.replace("/", "");
-            new PConfManager(event.getPlayer()).setString(playerip, "ip");
+            pcm.setString(playerip, "ip");
         }
         if (plugin.motdLogin) CmdMotd.showMotd(event.getPlayer());
         if (plugin.sendToSpawn) {

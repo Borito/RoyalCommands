@@ -43,6 +43,22 @@ public class PConfManager {
     }
 
     /**
+     * Creates configuration file if it doesn't exist.
+     *
+     * @return If file was created
+     */
+    public boolean createFile() {
+        if (pconf != null) return false;
+        try {
+            boolean success = pconfl.createNewFile();
+            pconf = YamlConfiguration.loadConfiguration(pconfl);
+            return success;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * Sets a string in config
      *
      * @param value String to set
