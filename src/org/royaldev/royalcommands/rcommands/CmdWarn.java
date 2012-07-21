@@ -5,15 +5,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class CmdWarn implements CommandExecutor {
 
@@ -34,102 +33,36 @@ public class CmdWarn implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-
-            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0].trim());
-            PConfManager pcm = new PConfManager(t);
+            OfflinePlayer op = plugin.getServer().getPlayer(args[0]);
+            if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
+            PConfManager pcm = new PConfManager(op);
             if (!pcm.exists()) {
-                cs.sendMessage(ChatColor.RED + "That user does not exist!");
+                cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (t.isOnline() && plugin.isAuthorized((Player) t, "rcmds.exempt.warn")) {
-                cs.sendMessage(ChatColor.RED + "You cannot warn that player!");
+            if (plugin.isAuthorized(op, "rcmds.exempt.warn")) {
+                RUtils.dispNoPerms(cs, ChatColor.RED + "You can't warn that player!");
                 return true;
             }
-            File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t.getName().toLowerCase() + ".yml");
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            Integer numwarns;
-            String warnreason = null;
-            numwarns = (pcm.get("warns") == null) ? 0 : pconf.getConfigurationSection("warns").getValues(false).size();
-            if (args.length == 1) {
-                warnreason = plugin.defaultWarn;
-                pconf.set("warns." + (numwarns + 1), warnreason);
-                try {
-                    pconf.save(pconfl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (args.length > 1) {
-                warnreason = plugin.getFinalArg(args, 1);
-                pconf.set("warns." + (numwarns + 1), warnreason);
-                try {
-                    pconf.save(pconfl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            cs.sendMessage(ChatColor.BLUE + "You have warned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            if (t.isOnline())
-                ((Player) t).sendMessage(ChatColor.RED + "You have been warned by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for " + ChatColor.GRAY + warnreason + ChatColor.RED + ".");
-            plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been warned for " + ChatColor.GRAY + warnreason + ChatColor.RED + ".", "rcmds.see.warn");
-            if (plugin.warnBan > 0) {
-                if ((numwarns + 1) >= plugin.warnBan) {
-                    t.setBanned(true);
-                    if (t.isOnline())
-                        ((Player) t).kickPlayer(ChatColor.DARK_RED + "You have been banned for reaching the max warn limit.");
-                    plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.DARK_RED + "You have been banned for reaching the max warn limit." + ChatColor.RED + ".", "rcmds.see.ban");
-                }
-            }
-            return true;
-        }
-        OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
-        if (t2.isOp()) {
-            cs.sendMessage(ChatColor.RED + "You cannot warn that player!");
-            return true;
-        }
-        if (t2.isOnline()) {
-            if (plugin.isAuthorized((Player) t2, "rcmds.exempt.warn")) {
-                cs.sendMessage(ChatColor.RED + "You cannot warn that player!");
+            List<String> warns = pcm.getStringList("warns");
+            if (warns == null) warns = new ArrayList<String>();
+            String reason = (args.length > 1) ? plugin.getFinalArg(args, 1) : plugin.defaultWarn;
+            reason = RUtils.colorize(reason);
+            if (reason.contains("\u00b5")) {
+                cs.sendMessage(ChatColor.RED + "Reason cannot contain micro sign!");
                 return true;
             }
-        }
-        PConfManager pcm = new PConfManager(t2);
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + t2.getName().toLowerCase() + ".yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            Integer numwarns;
-            String warnreason = null;
-            numwarns = (pcm.get("warns") == null) ? 0 : pconf.getConfigurationSection("warns").getValues(false).size();
-            if (args.length == 1) {
-                warnreason = plugin.defaultWarn;
-                pconf.set("warns." + (numwarns + 1), warnreason);
-                try {
-                    pconf.save(pconfl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            warns.add(reason + "\u00b5" + new Date().getTime());
+            if (plugin.warnActions != null && plugin.warnActions.get(String.valueOf(warns.size())) != null) {
+                String action = plugin.warnActions.getString(String.valueOf(warns.size())).substring(1).replace("{reason}", reason).replace("{player}", op.getName());
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), action);
             }
-            if (args.length > 1) {
-                warnreason = plugin.getFinalArg(args, 1);
-                pconf.set("warns." + (numwarns + 1), warnreason);
-                try {
-                    pconf.save(pconfl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if (op.isOnline()) {
+                Player t = (Player) op;
+                t.sendMessage(ChatColor.RED + "You have been warned for " + ChatColor.GRAY + reason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
             }
-            cs.sendMessage(ChatColor.BLUE + "You have warned " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
-            if (t2.isOnline())
-                ((Player) t2).sendMessage(ChatColor.RED + "You have been warned by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " for " + ChatColor.GRAY + warnreason + ChatColor.RED + ".");
-            plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has been warned for " + ChatColor.GRAY + warnreason + ChatColor.RED + ".", "rcmds.see.warn");
-            if (plugin.warnBan > 0) {
-                if ((numwarns + 1) >= plugin.warnBan) {
-                    t2.setBanned(true);
-                    if (t2.isOnline())
-                        ((Player) t2).kickPlayer(ChatColor.DARK_RED + "You have been banned for reaching the max warn limit.");
-                    plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has been banned for " + ChatColor.DARK_RED + "You have been banned for reaching the max warn limit." + ChatColor.RED + ".", "rcmds.see.ban");
-                }
-            }
+            cs.sendMessage(ChatColor.BLUE + "You have warned " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + reason + ChatColor.BLUE + ".");
+            pcm.setStringList(warns, "warns");
             return true;
         }
         return false;

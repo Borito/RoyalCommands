@@ -21,6 +21,7 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -32,9 +33,15 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
-import org.royaldev.royalcommands.listeners.*;
+import org.royaldev.royalcommands.listeners.MonitorListener;
+import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
+import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
+import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
+import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
+import org.royaldev.royalcommands.runners.BanWatcher;
+import org.royaldev.royalcommands.runners.WarnWatcher;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -75,6 +82,7 @@ public class RoyalCommands extends JavaPlugin {
     public static List<String> disabledCommands = new ArrayList<String>();
 
     public ConfigurationSection homeLimits = null;
+    public ConfigurationSection warnActions = null;
 
     public Boolean showcommands = null;
     public Boolean disablegetip = null;
@@ -111,7 +119,6 @@ public class RoyalCommands extends JavaPlugin {
     public String whoGroupFormat = null;
 
     public static Integer defaultStack = null;
-    public Integer warnBan = null;
     public Integer spawnmobLimit = null;
     public Integer helpAmount = null;
 
@@ -121,6 +128,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public Long afkKickTime = null;
     public Long afkAutoTime = null;
+    public Long warnExpireTime = null;
 
     public Float explodePower = null;
     public Float maxExplodePower = null;
@@ -220,19 +228,19 @@ public class RoyalCommands extends JavaPlugin {
         whoGroupFormat = getConfig().getString("who_group_format", "{prefix}{group}{suffix}");
 
         defaultStack = getConfig().getInt("default_stack_size", 64);
-        warnBan = getConfig().getInt("max_warns_before_ban", 3);
         spawnmobLimit = getConfig().getInt("spawnmob_limit", 15);
         helpAmount = getConfig().getInt("help_lines", 5);
 
-        maxNear = getConfig().getDouble("max_near_radius", 2000);
-        defaultNear = getConfig().getDouble("default_near_radius", 50);
-        gTeleCd = getConfig().getDouble("global_teleport_cooldown", 0);
+        maxNear = getConfig().getDouble("max_near_radius", 2000D);
+        defaultNear = getConfig().getDouble("default_near_radius", 50D);
+        gTeleCd = getConfig().getDouble("global_teleport_cooldown", 0D);
 
-        explodePower = (float) getConfig().getDouble("explode_power", 4);
-        maxExplodePower = (float) getConfig().getDouble("max_explode_power", 10);
+        explodePower = (float) getConfig().getDouble("explode_power", 4F);
+        maxExplodePower = (float) getConfig().getDouble("max_explode_power", 10F);
 
-        afkKickTime = getConfig().getLong("afk_kick_time", 120);
-        afkAutoTime = getConfig().getLong("auto_afk_time", 300);
+        afkKickTime = getConfig().getLong("afk_kick_time", 120L);
+        afkAutoTime = getConfig().getLong("auto_afk_time", 300L);
+        warnExpireTime = getConfig().getLong("warns_expire_after", 604800L);
 
         muteCmds = getConfig().getStringList("mute_blocked_commands");
         blockedItems = getConfig().getStringList("blocked_spawn_items");
@@ -242,6 +250,7 @@ public class RoyalCommands extends JavaPlugin {
         logBlacklist = getConfig().getStringList("command_log_blacklist");
 
         homeLimits = getConfig().getConfigurationSection("home_limits");
+        warnActions = getConfig().getConfigurationSection("actions_on_warn");
 
         if (whl.exists()) whitelist = whl.getStringList("whitelist");
 
@@ -375,6 +384,11 @@ public class RoyalCommands extends JavaPlugin {
         return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
+    public boolean isAuthorized(final OfflinePlayer p, final String node) {
+        String world = getServer().getWorlds().get(0).getName();
+        return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || (RoyalCommands.permission.has(world, p.getName(), "rcmds.admin") || RoyalCommands.permission.has(world, p.getName(), node));
+    }
+
     public boolean isAuthorized(final Player player, final String node) {
         return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), "rcmds.admin") || RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), node));
     }
@@ -455,6 +469,8 @@ public class RoyalCommands extends JavaPlugin {
         }, 0, 36000);
 
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new AFKWatcher(this), 0, 200);
+        getServer().getScheduler().scheduleAsyncRepeatingTask(this, new BanWatcher(this), 20, 600);
+        getServer().getScheduler().scheduleAsyncRepeatingTask(this, new WarnWatcher(this), 20, 12000);
 
         vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
 

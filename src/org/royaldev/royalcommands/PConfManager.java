@@ -139,6 +139,22 @@ public class PConfManager {
     }
 
     /**
+     * Sets a configuration section in the config
+     *
+     * @param value ConfigurationSection to set
+     * @param path  Path in the yml to set
+     */
+    public void setConfigurationSection(ConfigurationSection value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Sets a boolean in config
      *
      * @param value Boolean to set
@@ -277,7 +293,7 @@ public class PConfManager {
      * <p/>
      * Equivalent to exists()
      *
-     * @return boolean of existance
+     * @return boolean of existence
      */
     public boolean getConfExists() {
         return pconf != null;
@@ -288,7 +304,7 @@ public class PConfManager {
      * <p/>
      * Equivalent to getConfExists()
      *
-     * @return boolean of existance
+     * @return boolean of existence
      */
     public boolean exists() {
         return pconf != null;
