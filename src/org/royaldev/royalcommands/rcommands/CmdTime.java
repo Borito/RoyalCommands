@@ -10,6 +10,11 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CmdTime implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -19,8 +24,6 @@ public class CmdTime implements CommandExecutor {
     }
 
     public static void smoothTimeChange(long time, World world) {
-        /*if (time >= world.getTime()) for (long i = world.getTime(); i < time; i++) world.setTime(i);
-        else for (long i = world.getTime(); i > time; i--) world.setTime(i);*/
         for (long i = world.getTime() + 1; i != time; i++) {
             if (i == 24001) {
                 i = 0;
@@ -34,6 +37,7 @@ public class CmdTime implements CommandExecutor {
         Long vtime;
         try {
             vtime = Long.valueOf(time);
+            if (vtime > 24000L) vtime = vtime % 24000L;
         } catch (Exception e) {
             if (time.equalsIgnoreCase("day")) vtime = 0L;
             else if (time.equalsIgnoreCase("midday")) vtime = 6000L;
@@ -46,6 +50,24 @@ public class CmdTime implements CommandExecutor {
         return vtime;
     }
 
+    public static Map<String, String> getRealTime(long ticks) {
+        if (ticks > 24000L) ticks = ticks % 24000L;
+        DecimalFormat df = new DecimalFormat("00");
+        df.setRoundingMode(RoundingMode.DOWN);
+        float thour = 1000F;
+        float tminute = 16.6666666666666666666666666666666666666666666666666666666666666666666666F;
+        float hour = (ticks / thour) + 6F;
+        if (hour >= 24F) hour = hour - 24F;
+        float minute = (ticks % thour) / tminute;
+        String meridian = (hour >= 12F) ? "PM" : "AM";
+        float twelvehour = (hour > 12F) ? hour - 12F : hour;
+        if (df.format(twelvehour).equals("00")) twelvehour = 12F;
+        Map<String, String> toRet = new HashMap<String, String>();
+        toRet.put("24h", df.format(hour) + ":" + df.format(minute));
+        toRet.put("12h", df.format(twelvehour) + ":" + df.format(minute) + " " + meridian);
+        return toRet;
+    }
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("time")) {
@@ -56,6 +78,11 @@ public class CmdTime implements CommandExecutor {
             if (cs instanceof ConsoleCommandSender) {
                 if (args.length < 1) {
                     cs.sendMessage(cmd.getDescription());
+                    for (World w : plugin.getServer().getWorlds()) {
+                        long ticks = w.getTime();
+                        Map<String, String> times = getRealTime(ticks);
+                        cs.sendMessage(ChatColor.BLUE + "Current time in " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + " is " + ChatColor.GRAY + ticks + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
+                    }
                     return false;
                 }
                 if (getValidTime(args[0]) == null) {
@@ -86,11 +113,14 @@ public class CmdTime implements CommandExecutor {
                 }
                 return true;
             }
+            Player p = (Player) cs;
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
+                long ticks = p.getWorld().getTime();
+                Map<String, String> times = getRealTime(ticks);
+                cs.sendMessage(ChatColor.BLUE + "Current time is " + ChatColor.GRAY + ticks + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
                 return false;
             }
-            Player p = (Player) cs;
             World world = (args.length > 1) ? plugin.getServer().getWorld(args[1]) : p.getWorld();
             if (world == null) world = p.getWorld();
             if (getValidTime(args[0]) == null) {
