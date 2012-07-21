@@ -111,9 +111,9 @@ max_explode_power: 10
 # These commands are performed by the console. Any command output will be sent to the console.
 # Keep preceding slash
 actions_on_warn:
-  1: "/tempban {player} 500"
-  2: "/kick {player} {reason}"
-  3: "/ban {player} &4You have reached the warn limit!"
+  1: "/tempban {player} 500" # Happens on the first warn
+  2: "/kick {player} {reason}" # Happens on the second warn
+  3: "/ban {player} &4You have reached the warn limit!" # Happens on the third warn
 # Amount of time in seconds before warns expire - set to 0 to disable
 # 3600 = 1 hour
 # 86400 = 1 day

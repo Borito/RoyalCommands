@@ -96,17 +96,17 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean sendToSpawn = null;
     public Boolean stsBack = null;
     public Boolean stsNew = null;
-    public static Boolean otherHelp = null;
     public Boolean customHelp = null;
     public Boolean useVNP = null;
     public Boolean cooldownAliases = null;
     public Boolean useWhitelist = null;
     public Boolean smoothTime = null;
     public Boolean requireHelm = null;
-    public static Boolean safeTeleport = null;
     public Boolean checkVersion = null;
     public Boolean simpleList = null;
     public Boolean backpackReset = null;
+    public static Boolean otherHelp = null;
+    public static Boolean safeTeleport = null;
 
     public String banMessage = null;
     public String kickMessage = null;
@@ -118,9 +118,9 @@ public class RoyalCommands extends JavaPlugin {
     public String nickPrefix = null;
     public String whoGroupFormat = null;
 
-    public static Integer defaultStack = null;
     public Integer spawnmobLimit = null;
     public Integer helpAmount = null;
+    public static Integer defaultStack = null;
 
     public Double maxNear = null;
     public Double defaultNear = null;

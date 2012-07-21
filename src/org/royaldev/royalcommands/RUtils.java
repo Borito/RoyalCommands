@@ -1,6 +1,10 @@
 package org.royaldev.royalcommands;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -10,10 +14,23 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.rcommands.CmdBack;
+import org.royaldev.royalcommands.rcommands.CmdTeleport;
 import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked, unused")
@@ -338,6 +355,24 @@ public class RUtils {
         return "";
     }
 
+    /*
+     * If teleport warmup is on, determines if the player can teleport.
+     *
+     * @param p Player to determine teleportation status for
+     * @return true if player can teleport, false if otherwise
+     */
+    /*public static boolean teleWait(Player p) {
+        if (RoyalCommands.teleWarmup < 1) return true;
+        synchronized (CmdTeleport.waitingToTele) {
+            if (!CmdTeleport.waitingToTele.contains(p.getName())) {
+                CmdTeleport.waitingToTele.add(p.getName());
+                p.sendMessage(ChatColor.BLUE + "Please wait for " + ChatColor.GRAY + RoyalCommands.teleWarmup + " seconds" + ChatColor.BLUE + " before teleporting.");
+                return false;
+            } else CmdTeleport.waitingToTele.remove(p.getName());
+        }
+        return true;
+    }*/
+
     /**
      * Teleports a player without registering it in /back.
      *
@@ -346,6 +381,7 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String silentTeleport(Player p, Location l) {
+        //if (!teleWait(p)) return "";
         if (!RoyalCommands.safeTeleport) p.teleport(l);
         else {
             Location toTele = getSafeLocation(l);
@@ -363,7 +399,7 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String teleport(Player p, Entity e) {
-
+        //if (!teleWait(p)) return "";
         if (!RoyalCommands.safeTeleport) {
             CmdBack.backdb.put(p, p.getLocation());
             p.teleport(e);

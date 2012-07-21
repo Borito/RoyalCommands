@@ -16,6 +16,8 @@ public class CmdTeleport implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    //public static final List<String> waitingToTele = new ArrayList<String>();
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("teleport")) {

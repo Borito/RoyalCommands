@@ -80,6 +80,15 @@ public class RoyalCommandsPlayerListener implements Listener {
         new PConfManager(p).setDouble((seconds * 1000) + new Date().getTime(), "teleport_cooldown");
     }
 
+/*    @EventHandler
+    public void teleWarmup(PlayerMoveEvent e) {
+        synchronized (CmdTeleport.waitingToTele) {
+            if (!CmdTeleport.waitingToTele.contains(e.getPlayer().getName())) return;
+            e.getPlayer().sendMessage(ChatColor.RED + "You moved! Teleport cancelled!");
+            CmdTeleport.waitingToTele.remove(e.getPlayer().getName());
+        }
+    }*/
+
     @EventHandler
     public void afk(PlayerMoveEvent e) {
         AFKUtils.setLastMove(e.getPlayer(), new Date().getTime());
