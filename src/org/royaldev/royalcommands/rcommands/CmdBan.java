@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -18,6 +19,22 @@ public class CmdBan implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    /**
+     * Bans a player. Message is not sent to banned player or person who banned.
+     * Message is broadcasted to those with rcmds.see.ban
+     * Kicks banned player if they're online
+     *
+     * @param t      Player to ban
+     * @param cs     CommandSender who issued the ban
+     * @param reason Reason for the ban
+     */
+    public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
+        reason = RUtils.colorize(reason);
+        t.setBanned(true);
+        Bukkit.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + reason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
+        if (t.isOnline()) ((Player) t).kickPlayer(reason);
+    }
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ban")) {
@@ -29,68 +46,24 @@ public class CmdBan implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            String banreason;
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t != null) {
-                PConfManager pcm = new PConfManager(t);
-                if (!pcm.getConfExists()) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                    return true;
-                }
-                if (plugin.isAuthorized(t, "rcmds.exempt.ban")) {
-                    cs.sendMessage(ChatColor.RED + "You can't ban that player!");
-                    return true;
-                }
-                if (args.length == 1) {
-                    banreason = plugin.banMessage;
-                    pcm.setString(banreason, "banreason");
-                    pcm.setString(cs.getName(), "banner");
-                    cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t.getName() + ChatColor.BLUE + ".");
-                    plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
-                    t.setBanned(true);
-                    t.kickPlayer(banreason);
-                    return true;
-                }
-                if (args.length > 1) {
-                    RUtils.colorize(banreason = plugin.getFinalArg(args, 1));
-                    pcm.setString(banreason, "banreason");
-                    pcm.setString(cs.getName(), "banner");
-                    cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t.getName() + ChatColor.BLUE + ".");
-                    plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
-                    t.setBanned(true);
-                    t.kickPlayer(banreason);
-                    return true;
-                }
-            } else {
-                OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
-                PConfManager pcm2 = new PConfManager(t2);
-                if (!pcm2.getConfExists()) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                    return true;
-                }
-                if (t2.isOp()) {
-                    cs.sendMessage(ChatColor.RED + "You can't ban that player!");
-                    return true;
-                }
-                if (args.length == 1) {
-                    banreason = plugin.banMessage;
-                    pcm2.setString(banreason, "banreason");
-                    pcm2.setString(cs.getName(), "banner");
-                    cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t2.getName() + ChatColor.BLUE + ".");
-                    plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
-                    t2.setBanned(true);
-                    return true;
-                }
-                if (args.length > 1) {
-                    banreason = RUtils.colorize(plugin.getFinalArg(args, 1));
-                    pcm2.setString(banreason, "banreason");
-                    pcm2.setString(cs.getName(), "banner");
-                    cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.RED + t2.getName() + ChatColor.BLUE + ".");
-                    plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
-                    t2.setBanned(true);
-                    return true;
-                }
+            OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
+            if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
+            PConfManager pcm = new PConfManager(t);
+            if (!pcm.getConfExists()) {
+                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                return true;
             }
+            if (plugin.isAuthorized(t, "rcmds.exempt.ban")) {
+                cs.sendMessage(ChatColor.RED + "You can't ban that player!");
+                return true;
+            }
+            String banreason = (args.length > 1) ? plugin.getFinalArg(args, 1) : plugin.banMessage;
+            banreason = RUtils.colorize(banreason);
+            pcm.setString(banreason, "banreason");
+            pcm.setString(cs.getName(), "banner");
+            cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            banPlayer(t, cs, banreason);
+            return true;
         }
         return false;
     }
