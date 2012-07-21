@@ -6,7 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.listeners.MonitorListener;
@@ -24,7 +24,7 @@ public class CmdMonitor implements CommandExecutor {
 
     public static Map<String, String> monitors = new HashMap<String, String>();
     public static Map<String, String> viewees = new HashMap<String, String>();
-    public static Map<String, PlayerInventory> invs = new HashMap<String, PlayerInventory>();
+    public static Map<String, ItemStack[]> invs = new HashMap<String, ItemStack[]>();
     public static Map<String, Location> locs = new HashMap<String, Location>();
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -47,7 +47,8 @@ public class CmdMonitor implements CommandExecutor {
                 monitors.remove(p.getName());
                 locs.remove(p.getName());
                 if (MonitorListener.openInvs.contains(p.getName())) MonitorListener.openInvs.remove(p.getName());
-                p.getInventory().setContents(invs.get(p.getName()).getContents());
+                p.getInventory().clear();
+                p.getInventory().setContents(invs.get(p.getName()));
                 invs.remove(p.getName());
                 cs.sendMessage(ChatColor.BLUE + "Stopped active monitoring.");
                 return true;
@@ -74,7 +75,7 @@ public class CmdMonitor implements CommandExecutor {
                     pl.hidePlayer(p);
                 }
                 p.hidePlayer(t);
-                invs.put(p.getName(), p.getInventory());
+                invs.put(p.getName(), p.getInventory().getContents());
                 locs.put(p.getName(), p.getLocation());
                 p.getInventory().clear();
                 p.getInventory().setContents(t.getInventory().getContents());
