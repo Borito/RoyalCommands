@@ -24,7 +24,7 @@ public class ConfManager {
      */
     public ConfManager(String filename) {
         File dataFolder = RoyalCommands.dataFolder;
-        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + filename);
+        pconfl = new File(dataFolder + File.separator + filename);
         if (!pconfl.exists()) {
             try {
                 pconfl.createNewFile();
@@ -43,7 +43,7 @@ public class ConfManager {
      */
     public ConfManager(File file) {
         File dataFolder = RoyalCommands.dataFolder;
-        File pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + file.getName());
+        File pconfl = new File(dataFolder + File.separator + file.getName());
         if (!pconfl.exists()) {
             try {
                 pconfl.createNewFile();
