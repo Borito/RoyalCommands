@@ -20,7 +20,12 @@ public class CmdSetHome implements CommandExecutor {
 
     private Integer getHomeLimit(Player p) {
         String name = p.getName();
-        String group = RoyalCommands.permission.getPrimaryGroup(p);
+        String group;
+        try {
+            group = RoyalCommands.permission.getPrimaryGroup(p);
+        } catch (Exception e) {
+            group = "";
+        }
         if (group == null) group = "";
         ConfigurationSection players = plugin.homeLimits.getConfigurationSection("players");
         ConfigurationSection groups = plugin.homeLimits.getConfigurationSection("groups");
