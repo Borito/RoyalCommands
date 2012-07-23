@@ -605,7 +605,7 @@ commands:
 
   biome:
     description: Changes the biome of the chunk you're in.
-    usage: /<command> [biome]
+    usage: /<command> [biome] (radius)
 
   getid:
     description: Gets the ID of the item in your hand.

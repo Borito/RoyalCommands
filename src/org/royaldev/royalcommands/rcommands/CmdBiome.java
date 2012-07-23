@@ -52,13 +52,23 @@ public class CmdBiome implements CommandExecutor {
                 sendBiomeList(p);
                 return true;
             }
+            int rradius = 1;
+            if (args.length > 1) {
+                try {
+                    rradius = Integer.valueOf(args[1]);
+                } catch (NumberFormatException e) {
+                    cs.sendMessage(ChatColor.RED + "Invalid radius!");
+                    return true;
+                }
+            }
+            final int radius = rradius;
             final Chunk c = p.getLocation().getChunk();
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    for (int x = 0; x <= 16; x++)
-                        for (int y = 0; y <= 256; y++)
-                            for (int z = 0; z <= 16; z++) {
+                    for (int x = 0; x <= 16 * radius; x++)
+                        for (int y = 0; y <= p.getWorld().getMaxHeight(); y++)
+                            for (int z = 0; z <= 16 * radius; z++) {
                                 Block bl = c.getBlock(x, y, z);
                                 bl.setBiome(b);
                             }
