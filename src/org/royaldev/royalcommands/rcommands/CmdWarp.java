@@ -35,7 +35,6 @@ public class CmdWarp implements CommandExecutor {
         if (!cm.exists()) return null;
         warpSet = cm.getBoolean("warps." + name + ".set");
         if (warpSet != null && !warpSet) {
-            p.sendMessage(ChatColor.RED + "That warp does not exist.");
             return null;
         }
         warpX = cm.getDouble("warps." + name + ".x");
