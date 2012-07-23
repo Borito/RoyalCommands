@@ -32,6 +32,16 @@ public class CmdSpawnMob implements CommandExecutor {
             }
             Player p = (Player) cs;
             if (args.length < 1) {
+                StringBuilder sb = new StringBuilder();
+                for (EntityType et : EntityType.values()) {
+                    if (!et.isAlive()) continue;
+                    if (!et.isSpawnable()) continue;
+                    sb.append(ChatColor.WHITE);
+                    sb.append(", ");
+                    sb.append(ChatColor.GRAY);
+                    sb.append(et.toString().toLowerCase());
+                }
+                cs.sendMessage(sb.substring(3));
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
@@ -42,6 +52,16 @@ public class CmdSpawnMob implements CommandExecutor {
             try {
                 c = EntityType.valueOf(args[0].toUpperCase());
             } catch (Exception e) {
+                StringBuilder sb = new StringBuilder();
+                for (EntityType et : EntityType.values()) {
+                    if (!et.isAlive()) continue;
+                    if (!et.isSpawnable()) continue;
+                    sb.append(ChatColor.WHITE);
+                    sb.append(", ");
+                    sb.append(ChatColor.GRAY);
+                    sb.append(et.toString().toLowerCase());
+                }
+                cs.sendMessage(sb.substring(3));
                 cs.sendMessage(ChatColor.RED + "Invalid mob!");
                 return true;
             }
