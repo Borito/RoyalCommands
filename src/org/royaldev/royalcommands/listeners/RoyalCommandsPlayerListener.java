@@ -78,7 +78,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         new PConfManager(p).setDouble((seconds * 1000) + new Date().getTime(), "teleport_cooldown");
     }
 
-/*    @EventHandler
+/*  Hey! I'd love to do this, but it's easily bypassed.
+    @EventHandler
     public void teleWarmup(PlayerMoveEvent e) {
         synchronized (CmdTeleport.waitingToTele) {
             if (!CmdTeleport.waitingToTele.contains(e.getPlayer().getName())) return;
@@ -144,9 +145,6 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.getPlayer().sendMessage(ChatColor.RED + "You are jailed and may not teleport.");
             e.setCancelled(true);
         }
-        /*if (CmdBack.backdb.containsKey(e.getPlayer()))
-            if (CmdBack.backdb.get(e.getPlayer()).equals(e.getFrom())) return;
-        CmdBack.backdb.put(e.getPlayer(), e.getFrom());*/
     }
 
     @EventHandler
@@ -358,6 +356,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (dispname == null) return;
         p.setDisplayName(dispname);
         if (dispname.length() <= 16) p.setPlayerListName(dispname);
+        else p.setPlayerListName(dispname.substring(0, 16));
     }
 
     @EventHandler()
