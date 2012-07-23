@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -9,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.ConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -23,8 +25,8 @@ public class CmdWarp implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    public static Location pWarp(Player p, RoyalCommands plugin, String name) {
-        boolean warpSet;
+    public static Location pWarp(Player p, String name) {
+        Boolean warpSet;
         Double warpX;
         Double warpY;
         Double warpZ;
@@ -32,29 +34,28 @@ public class CmdWarp implements CommandExecutor {
         Float warpPitch;
         World warpW;
 
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "warps.yml");
-        if (pconfl.exists()) {
-            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-            warpSet = pconf.getBoolean("warps." + name + ".set");
-            if (!warpSet) {
-                p.sendMessage(ChatColor.RED + "That warp does not exist.");
-                return null;
-            }
-            warpX = pconf.getDouble("warps." + name + ".x");
-            warpY = pconf.getDouble("warps." + name + ".y");
-            warpZ = pconf.getDouble("warps." + name + ".z");
-            warpYaw = Float.parseFloat(pconf.getString("warps." + name + ".yaw"));
-            warpPitch = Float.parseFloat(pconf.getString("warps." + name + ".pitch"));
-            warpW = plugin.getServer().getWorld(pconf.getString("warps." + name + ".w"));
-        } else {
-            p.sendMessage(ChatColor.RED + "There are no warps!");
+        ConfManager cm = new ConfManager("warps.yml");
+        warpSet = cm.getBoolean("warps." + name + ".set");
+        if (warpSet != null && !warpSet) {
+            p.sendMessage(ChatColor.RED + "That warp does not exist.");
             return null;
         }
+        warpX = cm.getDouble("warps." + name + ".x");
+        warpY = cm.getDouble("warps." + name + ".y");
+        warpZ = cm.getDouble("warps." + name + ".z");
+        warpYaw = Float.parseFloat(cm.getString("warps." + name + ".yaw"));
+        warpPitch = Float.parseFloat(cm.getString("warps." + name + ".pitch"));
+        warpW = Bukkit.getServer().getWorld(cm.getString("warps." + name + ".w"));
         if (warpW == null) {
             p.sendMessage(ChatColor.RED + "World doesn't exist!");
             return null;
         }
-        return new Location(warpW, warpX, warpY, warpZ, warpYaw, warpPitch);
+        try {
+            return new Location(warpW, warpX, warpY, warpZ, warpYaw, warpPitch);
+        } catch (Exception e) {
+            p.sendMessage(ChatColor.RED + "There are no warps!");
+            return null;
+        }
     }
 
     @Override
@@ -95,11 +96,12 @@ public class CmdWarp implements CommandExecutor {
             }
             if (args.length == 1) {
                 Player p = (Player) cs;
-                cs.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
-                Location warpLoc = pWarp(p, plugin, args[0].toLowerCase());
+                Location warpLoc = pWarp(p, args[0].toLowerCase());
                 if (warpLoc == null) {
+                    cs.sendMessage(ChatColor.RED + "No such warp!");
                     return true;
                 }
+                cs.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
                 String error = RUtils.teleport(p, warpLoc);
                 if (!error.isEmpty()) {
                     p.sendMessage(ChatColor.RED + error);
@@ -122,8 +124,9 @@ public class CmdWarp implements CommandExecutor {
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Warping " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
-                Location warpLoc = pWarp(t, plugin, args[0].toLowerCase());
+                Location warpLoc = pWarp(t, args[0].toLowerCase());
                 if (warpLoc == null) {
+                    cs.sendMessage(ChatColor.RED + "No such warp!");
                     return true;
                 }
                 String error = RUtils.teleport(t, warpLoc);
