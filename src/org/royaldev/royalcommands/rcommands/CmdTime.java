@@ -38,7 +38,7 @@ public class CmdTime implements CommandExecutor {
                 world.setTime(ftime);
             }
         };
-        plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, r);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
     }
 
     public static Long getValidTime(String time) {
