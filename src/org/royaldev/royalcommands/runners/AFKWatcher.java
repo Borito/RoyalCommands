@@ -2,9 +2,12 @@ package org.royaldev.royalcommands.runners;
 
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AFKUtils;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.Date;
+
+// TODO: Make this sync vs async
 
 public class AFKWatcher implements Runnable {
 
@@ -20,6 +23,7 @@ public class AFKWatcher implements Runnable {
         long afkAutoTime = plugin.afkAutoTime;
         long currentTime = new Date().getTime();
         for (Player p : plugin.getServer().getOnlinePlayers()) {
+            if (p == null) continue;
             if (!AFKUtils.isAfk(p)) {
                 if (plugin.isAuthorized(p, "rcmds.exempt.autoafk")) continue;
                 if (plugin.isVanished(p)) continue;
@@ -36,7 +40,7 @@ public class AFKWatcher implements Runnable {
             if (afkKickTime <= 0) continue;
             if (plugin.isAuthorized(p, "rcmds.exempt.afkkick")) return;
             long afkAt = AFKUtils.getAfkTime(p);
-            if (afkAt + (afkKickTime * 1000) < currentTime) p.kickPlayer("You have been AFK for too long!");
+            if (afkAt + (afkKickTime * 1000) < currentTime) RUtils.kickPlayer(p, "You have been AFK for too long!");
         }
     }
 
