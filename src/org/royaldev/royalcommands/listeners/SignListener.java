@@ -76,7 +76,7 @@ public class SignListener implements Listener {
                 if (!did) return;
             }
 
-            Location warpLoc = CmdWarp.pWarp(p, plugin, line2.toLowerCase());
+            Location warpLoc = CmdWarp.pWarp(p, line2.toLowerCase());
             if (warpLoc == null) {
                 return;
             }
@@ -280,7 +280,7 @@ public class SignListener implements Listener {
                 e.setLine(2, ChatColor.DARK_GREEN + line3);
             }
 
-            Location warpLoc = CmdWarp.pWarp(p, plugin, line2.toLowerCase());
+            Location warpLoc = CmdWarp.pWarp(p, line2.toLowerCase());
             if (warpLoc == null) {
                 e.setLine(0, ChatColor.RED + line1);
                 return;
