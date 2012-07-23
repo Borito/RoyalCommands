@@ -18,6 +18,8 @@ import java.util.List;
  *
  * @author jkcclemens
  * @see SerializableItemStack
+ * @see SerializableCraftEnchantment
+ * @since 0.2.4pre
  */
 public class SerializableCraftInventory implements Serializable {
     private final String name;

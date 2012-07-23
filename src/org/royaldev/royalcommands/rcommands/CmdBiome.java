@@ -72,7 +72,7 @@ public class CmdBiome implements CommandExecutor {
                                 Block bl = c.getBlock(x, y, z);
                                 bl.setBiome(b);
                             }
-                    p.sendMessage(ChatColor.BLUE + "Set biome of this chunk to " + ChatColor.GRAY + b.name().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+                    p.sendMessage(ChatColor.BLUE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + ChatColor.GRAY + b.name().toLowerCase().replace(" _ ", " ") + ChatColor.BLUE + ".");
                 }
             };
             plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, r);

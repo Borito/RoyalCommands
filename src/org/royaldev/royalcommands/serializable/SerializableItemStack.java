@@ -14,6 +14,8 @@ import java.util.Map;
  *
  * @author jkcclemens
  * @see SerializableCraftInventory
+ * @see SerializableCraftEnchantment
+ * @since 0.2.4pre
  */
 public class SerializableItemStack implements Serializable {
 
