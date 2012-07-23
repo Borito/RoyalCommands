@@ -27,6 +27,7 @@ public class ConfManager {
         pconfl = new File(dataFolder + File.separator + filename);
         if (!pconfl.exists()) {
             try {
+                pconfl.getParentFile().mkdirs();
                 pconfl.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -46,6 +47,7 @@ public class ConfManager {
         File pconfl = new File(dataFolder + File.separator + file.getName());
         if (!pconfl.exists()) {
             try {
+                pconfl.getParentFile().mkdirs();
                 pconfl.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -63,6 +65,7 @@ public class ConfManager {
     public boolean createFile() {
         if (pconf != null) return false;
         try {
+            pconfl.getParentFile().mkdirs();
             boolean success = pconfl.createNewFile();
             pconf = YamlConfiguration.loadConfiguration(pconfl);
             return success;

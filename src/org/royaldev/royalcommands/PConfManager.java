@@ -50,6 +50,7 @@ public class PConfManager {
     public boolean createFile() {
         if (pconf != null) return false;
         try {
+            pconfl.getParentFile().mkdirs();
             boolean success = pconfl.createNewFile();
             pconf = YamlConfiguration.loadConfiguration(pconfl);
             return success;
