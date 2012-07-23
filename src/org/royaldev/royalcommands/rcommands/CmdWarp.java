@@ -7,14 +7,11 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.ConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.io.File;
 import java.util.Map;
 
 public class CmdWarp implements CommandExecutor {
@@ -35,6 +32,7 @@ public class CmdWarp implements CommandExecutor {
         World warpW;
 
         ConfManager cm = new ConfManager("warps.yml");
+        if (!cm.exists()) return null;
         warpSet = cm.getBoolean("warps." + name + ".set");
         if (warpSet != null && !warpSet) {
             p.sendMessage(ChatColor.RED + "That warp does not exist.");
@@ -72,27 +70,21 @@ public class CmdWarp implements CommandExecutor {
             }
 
             if (args.length < 1) {
-                File pconfl = new File(plugin.getDataFolder() + File.separator + "warps.yml");
-                if (pconfl.exists()) {
-                    FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                    if (args.length < 1) {
-                        if (pconf.get("warps") == null) {
-                            cs.sendMessage(ChatColor.RED + "There are no warps!");
-                            return true;
-                        }
-                        final Map<String, Object> opts = pconf.getConfigurationSection("warps").getValues(false);
-                        if (opts.keySet().isEmpty()) {
-                            cs.sendMessage(ChatColor.RED + "There are no warps!");
-                            return true;
-                        }
-                        String warps = opts.keySet().toString();
-                        warps = warps.substring(1, warps.length() - 1);
-                        cs.sendMessage(ChatColor.BLUE + "Warps:");
-                        cs.sendMessage(warps);
-                        return true;
-                    }
+                ConfManager cm = new ConfManager("warps.yml");
+                if (!cm.exists() || cm.get("warps") == null) {
+                    cs.sendMessage(ChatColor.RED + "There are no warps!");
                     return true;
                 }
+                final Map<String, Object> opts = cm.getConfigurationSection("warps").getValues(false);
+                if (opts.keySet().isEmpty()) {
+                    cs.sendMessage(ChatColor.RED + "There are no warps!");
+                    return true;
+                }
+                String warps = opts.keySet().toString();
+                warps = warps.substring(1, warps.length() - 1);
+                cs.sendMessage(ChatColor.BLUE + "Warps:");
+                cs.sendMessage(warps);
+                return true;
             }
             if (args.length == 1) {
                 Player p = (Player) cs;
