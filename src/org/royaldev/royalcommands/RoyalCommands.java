@@ -32,12 +32,14 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
+import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
@@ -105,6 +107,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean checkVersion = null;
     public Boolean simpleList = null;
     public Boolean backpackReset = null;
+    public Boolean changeNameTag = null;
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
 
@@ -168,6 +171,7 @@ public class RoyalCommands extends JavaPlugin {
     public Logger log = Logger.getLogger("Minecraft");
 
     VanishPlugin vp = null;
+    TagAPI ta = null;
 
     public boolean isVanished(Player p) {
         if (!useVNP) return false;
@@ -216,6 +220,7 @@ public class RoyalCommands extends JavaPlugin {
         checkVersion = getConfig().getBoolean("version_check", true);
         simpleList = getConfig().getBoolean("simple_list", true);
         backpackReset = getConfig().getBoolean("reset_backpack_death", false);
+        changeNameTag = getConfig().getBoolean("change_nametag", false);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
@@ -473,6 +478,7 @@ public class RoyalCommands extends JavaPlugin {
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new WarnWatcher(this), 20, 12000);
 
         vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
+        ta = (TagAPI) getServer().getPluginManager().getPlugin("TagAPI");
 
         PluginManager pm = getServer().getPluginManager();
 
@@ -481,6 +487,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(blockListener, this);
         pm.registerEvents(signListener, this);
         pm.registerEvents(monitorListener, this);
+        if (ta != null && changeNameTag) pm.registerEvents(new TagAPIListener(this), this);
 
         registerCommand(new CmdLevel(this), "level", this);
         registerCommand(new CmdSetlevel(this), "setlevel", this);

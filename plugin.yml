@@ -4,7 +4,7 @@ version: 0.2.4pre
 website: http://dev.royaldev.org/
 author: jkcclemens
 depend: [Vault]
-softdepend: [VanishNoPacket]
+softdepend: [VanishNoPacket, TagAPI]
 
 commands:
   level:

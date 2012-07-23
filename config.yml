@@ -203,6 +203,8 @@ disabled_commands:
 
 # Prefix to go before nicknames.
 nick_prefix: "*"
+# Change name above head? REQUIRES TagAPI. This will not work without it.
+change_nametag: false
 
 ###
 # Patch to 0.2.4 #
