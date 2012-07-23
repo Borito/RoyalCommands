@@ -63,6 +63,10 @@ public class CmdMonitor implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
+                if (t.equals(p)) {
+                    cs.sendMessage(ChatColor.RED + "You cannot monitor yourself!");
+                    return true;
+                }
                 if (plugin.isAuthorized(t, "rcmds.exempt.monitor")) {
                     cs.sendMessage(ChatColor.RED + "You can't monitor that player!");
                     return true;
