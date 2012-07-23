@@ -14,7 +14,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.rcommands.CmdBack;
-import org.royaldev.royalcommands.rcommands.CmdTeleport;
 import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
 
 import java.io.File;
@@ -146,6 +145,13 @@ public class RUtils {
     public static String join(String[] i, String between) {
         String ret = "";
         for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        return ret;
+    }
+
+    public static String join(Object[] i, String between) {
+        String ret = "";
+        for (Object o : i)
+            ret = (ret.equals("")) ? ret.concat(o.toString().toLowerCase()) : ret.concat(between + o.toString().toLowerCase());
         return ret;
     }
 
@@ -447,7 +453,8 @@ public class RUtils {
             if (b == null) return null;
             if (b.getType().equals(Material.AIR)) continue;
             Location bLoc = b.getLocation();
-            return new Location(bLoc.getWorld(), bLoc.getX(), bLoc.getY() + 1, bLoc.getZ());
+            double safeY = l.getY() - (unsafeY - i);
+            return new Location(l.getWorld(), l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
         }
         return null;
     }
@@ -470,7 +477,8 @@ public class RUtils {
             if (b == null) return null;
             if (b.getType().equals(Material.AIR)) continue;
             Location bLoc = b.getLocation();
-            return new Location(bLoc.getWorld(), bLoc.getX(), bLoc.getY() + 1, bLoc.getZ(), l.getYaw(), l.getPitch());
+            double safeY = l.getY() - (unsafeY - i);
+            return new Location(l.getWorld(), l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
         }
         return null;
     }
@@ -573,5 +581,9 @@ public class RUtils {
         Inventory ii = createInv(ih, i.getSize(), i.getName());
         ii.setContents(i.getContents());
         return ii;
+    }
+
+    public static void kickPlayer(Player p, String reason) {
+        p.kickPlayer(reason);
     }
 }
