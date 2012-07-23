@@ -1,4 +1,4 @@
-## RoyalCommands v0.2.4pre Config File
+## RoyalCommands v0.2.4 Config File
 
 ###
 # General section #
@@ -6,22 +6,45 @@
 
 # Disable /getip and /compareip?
 disable_getip: false
+
 # Whether to show commands in console
 view_commands: true
+
 # Use the rcmds.build perm?
 use_build_perm: false
+
 # Drop items that don't fit in inventory on /i or /give?
 drop_extras: false
+
 # Should /explode create fire around the explosion?
 explode_fire: false
+
 # Show other plugin commands in /help?
 other_plugins_in_help: true
+
 # Custom /help (help.txt - same format as rules.txt)?
 use_custom_help: false
+
 # Use VanishNoPacket integration?
 use_vanish: true
+
 # Amount of lines to display in /help per page
 help_lines: 5
+
+# Require the player to have the item for /helm in their inventory?
+helm_require_item: false
+
+# Check to see if the version of CraftBukkit you're running is safe?
+version_check: true
+
+# Commands to not show up if command logging is on
+# Please use all lowercase and no preceding /
+command_log_blacklist:
+- login
+- l
+
+# Reset /backpack on death?
+reset_backpack_death: false
 
 ###
 # MOTD #
@@ -29,6 +52,7 @@ help_lines: 5
 
 # Show /motd on login?
 motd_on_login: true
+
 # The message of the day
 motd: ["&dWelcome to {servername}, {dispname}!", "&fThere are &8{players}&f players online:", "{playerlist}", "You are in the world &8{world}&f."]
 
@@ -38,6 +62,7 @@ motd: ["&dWelcome to {servername}, {dispname}!", "&fThere are &8{players}&f play
 
 # Use rcmds.kit.[kit-name] (true) or just rcmds.kit (false)
 use_exclusive_kit_perms: false
+
 # Define kits here - only use ID numbers, not names & you MUST use amounts (5:1 is one of wood)
 kits:
   # The kit "default" has 10 wood, 5 stone, 25 dirt, and 64 cobblestone. <item>:<amount>
@@ -59,16 +84,28 @@ kits:
 
 # Message to be shown if player does not have rcmds.build
 no_build_message: "&cYou don't have permission to build!"
+
 # The default ban message for /ban
 default_ban_message: "&4Banhammered!"
+
 # The default kick message for /kick
 default_kick_message: "Kicked from server."
+
 # The message to be displayed if enable_welcome_message is true
 welcome_message: "&5Welcome {name} to the server!"
+
 # Broadcast format (no variables support, just color codes) - message follows this immediately after this
 bcast_format: "&b[&aBroadcast&b]&a "
+
 # /who format ({prefix}, {suffix}, {name}, {dispname}, and {group} supported, as well at text and color codes
 who_format: "{prefix}{dispname}"
+
+# Display /list as a simple list (true) or display it separated by groups (false)?
+simple_list: true
+
+# How groups should be displayed if simple_list is false.
+# Only variables are {prefix}, {group}, and {suffix}
+who_group_format: "{prefix}{group}{suffix}"
 
 ###
 # Message options #
@@ -83,6 +120,7 @@ enable_welcome_message: true
 
 # Commands to block when muted
 mute_blocked_commands: ["/me", "/tc", "/nc"]
+
 # Items that cannot be spawned without rcmds.allowed.item
 blocked_spawn_items: [7, 49, 383]
 
@@ -92,16 +130,39 @@ blocked_spawn_items: [7, 49, 383]
 
 # The default stack size for /i and /give
 default_stack_size: 64
+
 # The maximum number of mobs allowed by /spawnmob
 spawnmob_limit: 15
+
 # Maximum /near radius (2000 is recommended, large numbers like /near 1000000 crash servers)
 max_near_radius: 2000
+
 # Default /near radius - when /near is run without a radius
 default_near_radius: 50
+
 # The default power for /explode - 4 is creeper
 explode_power: 4
+
 # Maximum explode power (~50 is recommended)
 max_explode_power: 10
+
+# Limit the amount of homes available to be set with /sethome
+# These will not override rcmds.sethome.multi; you must have it to set more than 1 home
+# You can limit people to 0 homes without it, though.
+# 0 for none, -1 for infinite
+# Remember, a player limit will override a group limit.
+# If jkcclemens is in the group Mod, but he also has a player limit of 10, he can set 10 homes instead of 5.
+# There is no default home limit; if a group/player does not have a limit here, they can set:
+# - 1 home if they don't have rcmds.sethome.multi
+# - Unlimited homes if they do
+home_limits:
+  groups:
+    Mod: 5
+    Admin: 10
+  players:
+    jkcclemens: -1
+    WizardCM: 7
+    Herobrine: 0
 
 ###
 # Warns #
@@ -119,6 +180,7 @@ actions_on_warn:
 # 86400 = 1 day
 # 604800 = 1 week
 warns_expire_after: 604800
+
 # The default warn message for /warn
 default_warn_message: "You have been warned."
 
@@ -128,12 +190,18 @@ default_warn_message: "You have been warned."
 
 # Put /all/ players at set spawn point (/setspawn) when they login?
 send_to_spawn: false
+
 # Add previous location to /back (if above is true)?
 sts_back: false
+
 # Put /new/ players at set spawn point (/setspawn) when they login?
 send_to_spawn_new: true
+
 # Enable /back on death?
 back_on_death: true
+
+# Make teleports try to find ground for the teleported player, rather than teleport into midair?
+safe_teleport: true
 
 ###
 # Command cooldowns #
@@ -150,6 +218,7 @@ command_cooldowns:
   home: 25
   teleport: 20
   save-all: 5
+
 # Should cooldowns match aliases (e.g. /teleport and /tp have the same cooldown)?
 cooldowns_match_aliases: true
 
@@ -203,52 +272,6 @@ disabled_commands:
 
 # Prefix to go before nicknames.
 nick_prefix: "*"
+
 # Change name above head? REQUIRES TagAPI. This will not work without it.
 change_nametag: false
-
-###
-# Patch to 0.2.4 #
-###
-
-# Require the player to have the item for /helm in their inventory?
-helm_require_item: false
-
-# Make teleports try to find ground for the teleported player, rather than teleport into midair?
-safe_teleport: true
-
-# Check to see if the version of CraftBukkit you're running is safe?
-version_check: true
-
-# Display /list as a simple list (true) or display it separated by groups (false)?
-simple_list: true
-
-# How groups should be displayed if simple_list is false.
-# Only variables are {prefix}, {group}, and {suffix}
-who_group_format: "{prefix}{group}{suffix}"
-
-# Limit the amount of homes available to be set with /sethome
-# These will not override rcmds.sethome.multi; you must have it to set more than 1 home
-# You can limit people to 0 homes without it, though.
-# 0 for none, -1 for infinite
-# Remember, a player limit will override a group limit.
-# If jkcclemens is in the group Mod, but he also has a player limit of 10, he can set 10 homes instead of 5.
-# There is no default home limit; if a group/player does not have a limit here, they can set:
-# - 1 home if they don't have rcmds.sethome.multi
-# - Unlimited homes if they do
-home_limits:
-  groups:
-    Mod: 5
-    Admin: 10
-  players:
-    jkcclemens: -1
-    WizardCM: 7
-    Herobrine: 0
-
-# Commands to not show up if command logging is on
-# Please use all lowercase and no preceding /
-command_log_blacklist:
-- login
-- l
-
-# Reset /backpack on death?
-reset_backpack_death: false
