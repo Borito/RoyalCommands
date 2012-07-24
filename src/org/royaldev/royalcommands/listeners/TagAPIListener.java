@@ -20,8 +20,12 @@ public class TagAPIListener implements Listener {
         PConfManager pcm = new PConfManager(e.getNamedPlayer());
         String dispname = pcm.getString("dispname");
         if (dispname == null) return;
-        if (dispname.equals(e.getNamedPlayer().getName())) e.setTag(dispname);
-        if (!plugin.nickPrefix.equals("")) dispname = dispname.substring(plugin.nickPrefix.length());
+        if (dispname.equals(e.getNamedPlayer().getName())) {
+            e.setTag(dispname);
+            return;
+        }
+        if (!plugin.nickPrefix.equals(""))
+            dispname = dispname.substring(plugin.nickPrefix.length());
         e.setTag(dispname);
     }
 
