@@ -623,6 +623,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdMonitor(this), "monitor", this);
         registerCommand(new CmdGarbageCollector(this), "garbagecollector", this);
         registerCommand(new CmdBackpack(this), "backpack", this);
+        registerCommand(new CmdUsage(this), "usage", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");

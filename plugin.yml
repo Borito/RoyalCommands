@@ -646,6 +646,10 @@ commands:
     usage: /<command> (player)
     aliases: [pack, bp]
 
+  usage:
+    description: Displays the usage of another command.
+    usage: /<command> [command]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1056,6 +1060,10 @@ permissions:
     default: op
   rcmds.backpack:
     description: Allows you to open a personal backpack.
+    default: op
+  rcmds.usage:
+    description: Allows you to view the usage of other commands.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1463,6 +1471,7 @@ permissions:
       rcmds.monitor: true
       rcmds.garbagecollector: true
       rcmds.backpack: true
+      rcmds.usage: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1719,6 +1728,7 @@ permissions:
       rcmds.monitor: true
       rcmds.garbagecollector: true
       rcmds.backpack: true
+      rcmds.usage: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
