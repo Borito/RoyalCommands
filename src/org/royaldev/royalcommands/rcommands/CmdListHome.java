@@ -44,6 +44,10 @@ public class CmdListHome implements CommandExecutor {
             }
 
             PConfManager pcm = new PConfManager(t);
+            if (!pcm.exists()) {
+                cs.sendMessage(ChatColor.RED + "No such player!");
+                return true;
+            }
             ConfigurationSection cfgs = pcm.getConfigurationSection("home");
             if (cfgs == null) {
                 cs.sendMessage(ChatColor.RED + "No homes found!");
