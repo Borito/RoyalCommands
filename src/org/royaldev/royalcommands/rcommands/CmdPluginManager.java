@@ -26,10 +26,6 @@ public class CmdPluginManager implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("pluginmanager")) {
-            if (!plugin.isAuthorized(cs, "rcmds.pluginmanager")) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
@@ -37,6 +33,10 @@ public class CmdPluginManager implements CommandExecutor {
             String subcmd = args[0];
             PluginManager pm = plugin.getServer().getPluginManager();
             if (subcmd.equalsIgnoreCase("load")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.load")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 if (args.length < 2) {
                     cs.sendMessage(ChatColor.RED + "Please provide the name of the jar to load!");
                     return true;
@@ -72,6 +72,10 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Loaded and enabled " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + " successfully.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("disable")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.disable")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 if (args.length < 2) {
                     cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to disable!");
                     return true;
@@ -90,6 +94,10 @@ public class CmdPluginManager implements CommandExecutor {
                 else cs.sendMessage(ChatColor.RED + "Could not disabled that plugin!");
                 return true;
             } else if (subcmd.equalsIgnoreCase("enable")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.enable")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 if (args.length < 2) {
                     cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to enable!");
                     return true;
@@ -109,6 +117,10 @@ public class CmdPluginManager implements CommandExecutor {
                 else cs.sendMessage(ChatColor.RED + "Could not enable that plugin.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("reload")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.reload")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 if (args.length < 2) {
                     cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to reload!");
                     return true;
@@ -122,6 +134,10 @@ public class CmdPluginManager implements CommandExecutor {
                 pm.enablePlugin(p);
                 cs.sendMessage(ChatColor.BLUE + "Reloaded " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
             } else if (subcmd.equalsIgnoreCase("update")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.update")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 if (args.length < 3) {
                     cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to update and its filename!");
                     return true;
@@ -162,6 +178,10 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Updated " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + " successfully.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("reloadall")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.reloadall")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 for (Plugin p : pm.getPlugins()) {
                     pm.disablePlugin(p);
                     pm.enablePlugin(p);
@@ -169,6 +189,10 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Reloaded all plugins!");
                 return true;
             } else if (subcmd.equalsIgnoreCase("list")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.list")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 Plugin[] ps = pm.getPlugins();
                 StringBuilder list = new StringBuilder();
                 for (Plugin p : ps) {
@@ -182,6 +206,10 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Plugins (" + ChatColor.GRAY + ps.length + ChatColor.BLUE + "): " + list.substring(0, list.length() - 4));
                 return true;
             } else if (subcmd.equalsIgnoreCase("info")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.info")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 if (args.length < 2) {
                     cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to update and its filename!");
                     return true;
@@ -219,6 +247,10 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "Dependencies: " + ChatColor.GRAY + RUtils.join(dep, ChatColor.RESET + ", " + ChatColor.GRAY));
                 return true;
             } else if (subcmd.equalsIgnoreCase("help")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.help")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 cs.sendMessage(ChatColor.BLUE + "RoyalCommands PluginManager Help");
                 cs.sendMessage(ChatColor.BLUE + "================================");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " load [jar]" + ChatColor.BLUE + " - Loads and enables a new plugin");

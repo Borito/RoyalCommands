@@ -1069,11 +1069,58 @@ permissions:
   rcmds.usage:
     description: Allows you to view the usage of other commands.
     default: op
-  rcmds.pluginmanager:
-    description: Allows you to manage plugins.
-    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
+    default: op
+
+  rcmds.pluginmanager.*:
+    description: Allows you to use all of PluginManager's features.
+    default: false
+    children:
+      rcmds.pluginmanager.load: true
+      rcmds.pluginmanager.disable: true
+      rcmds.pluginmanager.enable: true
+      rcmds.pluginmanager.reload: true
+      rcmds.pluginmanager.update: true
+      rcmds.pluginmanager.reloadall: true
+      rcmds.pluginmanager.list: true
+      rcmds.pluginmanager.info: true
+      rcmds.pluginmanager.help: true
+
+  rcmds.pluginmanager.load:
+    description: Allows you to use PluginManager's load feature.
+    default: op
+
+  rcmds.pluginmanager.disable:
+    description: Allows you to use PluginManager's disable feature.
+    default: op
+
+  rcmds.pluginmanager.enable:
+    description: Allows you to use PluginManager's enable feature.
+    default: op
+
+  rcmds.pluginmanager.reload:
+    description: Allows you to use PluginManager's reload feature.
+    default: op
+
+  rcmds.pluginmanager.update:
+    description: Allows you to use PluginManager's update feature.
+    default: op
+
+  rcmds.pluginmanager.reloadall:
+    description: Allows you to use PluginManager's reloadall feature.
+    default: op
+
+  rcmds.pluginmanager.list:
+    description: Allows you to use PluginManager's list feature.
+    default: op
+
+  rcmds.pluginmanager.info:
+    description: Allows you to use PluginManager's info feature.
+    default: op
+
+  rcmds.pluginmanager.help:
+    description: Allows you to use PluginManager's help feature.
     default: op
 
   rcmds.nick.color:
@@ -1480,7 +1527,7 @@ permissions:
       rcmds.garbagecollector: true
       rcmds.backpack: true
       rcmds.usage: true
-      rcmds.pluginmanager: true
+      rcmds.pluginmanager.*: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1738,8 +1785,9 @@ permissions:
       rcmds.garbagecollector: true
       rcmds.backpack: true
       rcmds.usage: true
-      rcmds.pluginmanager: true
       rcmds.rcmds: true
+
+      rcmds.pluginmanager.*: true
 
       rcmds.tpoverride: true
 
