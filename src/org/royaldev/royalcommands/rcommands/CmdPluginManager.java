@@ -195,15 +195,20 @@ public class CmdPluginManager implements CommandExecutor {
                 }
                 Plugin[] ps = pm.getPlugins();
                 StringBuilder list = new StringBuilder();
+                int enabled = 0;
+                int disabled = 0;
                 for (Plugin p : ps) {
                     String name = p.getName();
-                    if (!p.isEnabled()) name = name + " (disabled)";
+                    if (!p.isEnabled()) {
+                        name = name + " (disabled)";
+                        disabled = disabled + 1;
+                    } else enabled = enabled + 1;
                     list.append(ChatColor.GRAY);
                     list.append(name);
                     list.append(ChatColor.RESET);
                     list.append(", ");
                 }
-                cs.sendMessage(ChatColor.BLUE + "Plugins (" + ChatColor.GRAY + ps.length + ChatColor.BLUE + "): " + list.substring(0, list.length() - 4));
+                cs.sendMessage(ChatColor.BLUE + "Plugins (" + ChatColor.GRAY + enabled + ((disabled > 0) ? ChatColor.BLUE + "/" + ChatColor.GRAY + disabled + " disabled" : "") + ChatColor.BLUE + "): " + list.substring(0, list.length() - 4));
                 return true;
             } else if (subcmd.equalsIgnoreCase("info")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.info")) {
