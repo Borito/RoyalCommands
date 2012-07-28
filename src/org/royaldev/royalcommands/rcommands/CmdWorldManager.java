@@ -159,7 +159,7 @@ public class CmdWorldManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " delete [name] (true)" + ChatColor.BLUE + " - Unloads and deletes a world. If true is specified, will kick all players on the world.");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info" + ChatColor.BLUE + " - Displays available world types and environments; if you are a player, displays information about your world.");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " help" + ChatColor.BLUE + " - Displays this help.");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + "list" + ChatColor.BLUE + " - Lists all the loaded worlds.");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the loaded worlds.");
                 return true;
             } else if (command.equals("load")) {
                 if (args.length < 2) {
