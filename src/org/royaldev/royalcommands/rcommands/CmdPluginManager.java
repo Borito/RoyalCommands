@@ -15,6 +15,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 public class CmdPluginManager implements CommandExecutor {
 
@@ -216,7 +217,7 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to update and its filename!");
+                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin!");
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
@@ -251,6 +252,31 @@ public class CmdPluginManager implements CommandExecutor {
                 if (dep != null && !dep.isEmpty())
                     cs.sendMessage(ChatColor.BLUE + "Dependencies: " + ChatColor.GRAY + RUtils.join(dep, ChatColor.RESET + ", " + ChatColor.GRAY));
                 return true;
+            } else if (subcmd.equalsIgnoreCase("commands")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.commands")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                if (args.length < 2) {
+                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin!");
+                    return true;
+                }
+                Plugin p = pm.getPlugin(args[1]);
+                if (p == null) {
+                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    return true;
+                }
+                Map<String, Map<String, Object>> commands = p.getDescription().getCommands();
+                if (commands == null) {
+                    cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.RED + " has no registered commands.");
+                    return true;
+                }
+                for (String command : commands.keySet()) {
+                    Object odesc = commands.get(command).get("description");
+                    String desc = (odesc != null) ? odesc.toString() : "";
+                    cs.sendMessage(ChatColor.GRAY + "/" + command + ((desc.equals("")) ? "" : ChatColor.BLUE + " - " + desc));
+                }
+                return true;
             } else if (subcmd.equalsIgnoreCase("help")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.help")) {
                     RUtils.dispNoPerms(cs);
@@ -264,6 +290,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " reload [plugin]" + ChatColor.BLUE + " - Disables then enables a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " reloadall" + ChatColor.BLUE + " - Reloads every plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " update [plugin] [jar]" + ChatColor.BLUE + " - Disables the plugin and loads the new jar");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " commands [plugin]" + ChatColor.BLUE + " - Lists all registered commands and their description of a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the plugins");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info [plugin]" + ChatColor.BLUE + " - Displays information about a plugin");
                 return true;
