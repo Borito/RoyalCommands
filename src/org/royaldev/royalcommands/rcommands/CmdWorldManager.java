@@ -151,8 +151,8 @@ public class CmdWorldManager implements CommandExecutor {
                 cs.sendMessage(worlds);
                 return true;
             } else if (command.equals("help")) {
-                cs.sendMessage(ChatColor.GREEN + "RoyalCommands WorldManager Help");
-                cs.sendMessage(ChatColor.GREEN + "===============================");
+                cs.sendMessage(ChatColor.BLUE + "RoyalCommands WorldManager Help");
+                cs.sendMessage(ChatColor.BLUE + "===============================");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " create [name] [type] [environment] (seed) (generator)" + ChatColor.BLUE + " - Creates a new world.");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " load [name]" + ChatColor.BLUE + " - Loads a world.");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " unload [name] (true)" + ChatColor.BLUE + " - Unloads a world. If true is specified, will kick all players on the world.");
