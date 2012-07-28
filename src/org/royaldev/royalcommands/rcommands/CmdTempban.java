@@ -58,9 +58,10 @@ public class CmdTempban implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "Time must be greater than zero!");
                 return true;
             }
-            String banreason = (args.length > 2) ? plugin.getFinalArg(args, 2) : RUtils.formatDateDiff(new Date().getTime() + (time * 1000)).substring(1);
-            RUtils.setTimeStamp(t, time, "bantime");
+            long curTime = new Date().getTime();
+            String banreason = (args.length > 2) ? plugin.getFinalArg(args, 2) : RUtils.formatDateDiff(curTime + (time * 1000)).substring(1);
             t.setBanned(true);
+            pcm.setLong((time * 1000) + curTime, "bantime");
             pcm.setString(banreason, "banreason");
             pcm.setString(cs.getName(), "banner");
             cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + banreason + ChatColor.BLUE + ".");

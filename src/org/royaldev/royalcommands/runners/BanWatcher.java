@@ -20,7 +20,10 @@ public class BanWatcher implements Runnable {
             if (!op.isBanned()) continue;
             PConfManager pcm = new PConfManager(op);
             if (!pcm.exists()) continue;
-            if (pcm.get("bantime") != null && !RUtils.isTimeStampValid(op, "bantime")) op.setBanned(false);
+            if (pcm.get("bantime") != null && !RUtils.isTimeStampValid(op, "bantime")) {
+                op.setBanned(false);
+                pcm.set(null, "bantime");
+            }
         }
     }
 
