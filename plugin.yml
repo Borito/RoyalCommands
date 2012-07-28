@@ -650,6 +650,11 @@ commands:
     description: Displays the usage of another command.
     usage: /<command> [command]
 
+  pluginmanager:
+    description: Manages plugin on the server.
+    usage: /<command> [subcommand] (argument)
+    aliases: [pm]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1064,6 +1069,9 @@ permissions:
   rcmds.usage:
     description: Allows you to view the usage of other commands.
     default: op
+  rcmds.pluginmanager:
+    description: Allows you to manage plugins.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1472,6 +1480,7 @@ permissions:
       rcmds.garbagecollector: true
       rcmds.backpack: true
       rcmds.usage: true
+      rcmds.pluginmanager: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1729,6 +1738,7 @@ permissions:
       rcmds.garbagecollector: true
       rcmds.backpack: true
       rcmds.usage: true
+      rcmds.pluginmanager: true
       rcmds.rcmds: true
 
       rcmds.tpoverride: true
