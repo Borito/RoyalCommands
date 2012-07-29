@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,18 +11,30 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.UnknownDependencyException;
+import org.royaldev.royalcommands.FileUtils;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.UnZip;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CmdPluginManager implements CommandExecutor {
 
@@ -317,6 +330,99 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the plugins");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info [plugin]" + ChatColor.BLUE + " - Displays information about a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheck [plugin]" + ChatColor.BLUE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
+                return true;
+            } else if (subcmd.equalsIgnoreCase("download")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.download")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                if (args.length < 2) {
+                    cs.sendMessage(ChatColor.RED + "Please provide plugin tag!");
+                    cs.sendMessage(ChatColor.RED + "http://dev.bukkit.org/server-mods/" + ChatColor.GRAY + "royalcommands" + ChatColor.RED + "/");
+                    return true;
+                }
+                cs.sendMessage(ChatColor.BLUE + "Getting download link...");
+                String pluginUrlString = "http://dev.bukkit.org/server-mods/" + args[1].toLowerCase() + "/files.rss";
+                String file;
+                try {
+                    URL url = new URL(pluginUrlString);
+                    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
+                    doc.getDocumentElement().normalize();
+                    NodeList nodes = doc.getElementsByTagName("item");
+                    Node firstNode = nodes.item(0);
+                    if (firstNode.getNodeType() == 1) {
+                        Element firstElement = (Element) firstNode;
+                        NodeList firstElementTagName = firstElement.getElementsByTagName("link");
+                        Element firstNameElement = (Element) firstElementTagName.item(0);
+                        NodeList firstNodes = firstNameElement.getChildNodes();
+                        String link = firstNodes.item(0).getNodeValue();
+                        URL dpage = new URL(link);
+                        BufferedReader br = new BufferedReader(new InputStreamReader(dpage.openStream()));
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = br.readLine()) != null)
+                            content.append(inputLine);
+                        br.close();
+                        file = StringUtils.substringBetween(content.toString(), "<li class=\"user-action user-action-download\"><span><a href=\"", "\">Download</a></span></li>");
+                    } else throw new Exception();
+                } catch (Exception e) {
+                    cs.sendMessage(ChatColor.RED + "Could not fetch download link! Either this plugin has no downloads, or you specified an invalid tag.");
+                    return true;
+                }
+                BufferedInputStream bis;
+                try {
+                    bis = new BufferedInputStream(new URL(file).openStream());
+                } catch (MalformedURLException e) {
+                    cs.sendMessage(ChatColor.RED + "The received download link was invalid!");
+                    return true;
+                } catch (IOException e) {
+                    cs.sendMessage(ChatColor.RED + "An internal input/output error occurred. Please try again.");
+                    return true;
+                }
+                Pattern p = Pattern.compile("https?://dev\\.bukkit\\.org/media/files/.+/([\\w\\W]+)");
+                Matcher m = p.matcher(file);
+                m.find();
+                String fileName = m.group(1).trim();
+                cs.sendMessage(ChatColor.BLUE + "Creating temporary folder...");
+                File f = new File(plugin.getDataFolder() + File.separator + "temp" + File.separator + fileName);
+                if (!fileName.endsWith(".zip") && !fileName.endsWith(".jar")) {
+                    System.out.println(fileName);
+                    cs.sendMessage(ChatColor.RED + "The file wasn't a zip or jar file, so it was not downloaded.");
+                    return true;
+                }
+                f.getParentFile().mkdirs();
+                BufferedOutputStream bos;
+                try {
+                    bos = new BufferedOutputStream(new FileOutputStream(f));
+                } catch (FileNotFoundException e) {
+                    cs.sendMessage(ChatColor.RED + "The temporary download folder was not found. Make sure that plugins/RoyalCommands is writable.");
+                    return true;
+                }
+                int b;
+                cs.sendMessage(ChatColor.BLUE + "Downloading file " + ChatColor.GRAY + fileName + ChatColor.BLUE + "...");
+                try {
+                    while ((b = bis.read()) != -1) bos.write(b);
+                    bos.flush();
+                    bos.close();
+                } catch (IOException e) {
+                    cs.sendMessage(ChatColor.RED + "An internal input/output error occurred. Please try again.");
+                    return true;
+                }
+                if (fileName.endsWith(".zip")) {
+                    cs.sendMessage(ChatColor.BLUE + "Decompressing zip...");
+                    UnZip.decompress(f.getAbsolutePath(), f.getParent());
+                }
+                for (File fi : f.getParentFile().listFiles()) {
+                    if (!fi.getName().endsWith(".jar")) continue;
+                    cs.sendMessage(ChatColor.BLUE + "Moving " + ChatColor.GRAY + fi.getName() + ChatColor.BLUE + " to plugins folder...");
+                    fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
+                }
+                cs.sendMessage(ChatColor.BLUE + "Removing temporary folder...");
+                try {
+                    FileUtils.deleteRecursive(f.getParentFile());
+                } catch (FileNotFoundException ignored) {
+                }
+                cs.sendMessage(ChatColor.BLUE + "Downloaded plugin. Use " + ChatColor.GRAY + "/" + label + " load" + ChatColor.BLUE + " to enable it.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("updatecheck")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.updatecheck")) {
