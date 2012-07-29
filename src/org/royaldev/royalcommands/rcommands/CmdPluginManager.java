@@ -330,6 +330,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the plugins");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info [plugin]" + ChatColor.BLUE + " - Displays information about a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheck [plugin]" + ChatColor.BLUE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " download [tag]" + ChatColor.BLUE + " - Attempts to download a plugin from BukkitDev using its tag");
                 return true;
             } else if (subcmd.equalsIgnoreCase("download")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.download")) {
@@ -367,6 +368,7 @@ public class CmdPluginManager implements CommandExecutor {
                     } else throw new Exception();
                 } catch (Exception e) {
                     cs.sendMessage(ChatColor.RED + "Could not fetch download link! Either this plugin has no downloads, or you specified an invalid tag.");
+                    cs.sendMessage(ChatColor.RED + "Tag: http://dev.bukkit.org/server-mods/" + ChatColor.GRAY + "plugin-name" + ChatColor.RED + "/");
                     return true;
                 }
                 BufferedInputStream bis;

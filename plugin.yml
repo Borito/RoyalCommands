@@ -1086,6 +1086,8 @@ permissions:
       rcmds.pluginmanager.list: true
       rcmds.pluginmanager.info: true
       rcmds.pluginmanager.help: true
+      rcmds.pluginmanager.updatecheck: true
+      rcmds.pluginmanager.download: true
 
   rcmds.pluginmanager.load:
     description: Allows you to use PluginManager's load feature.
@@ -1122,6 +1124,13 @@ permissions:
   rcmds.pluginmanager.help:
     description: Allows you to use PluginManager's help feature.
     default: op
+
+  rcmds.pluginmanager.updatecheck:
+    description: Allows you to use PluginManager's updatecheck feature.
+    default: op
+
+  rcmds.pluginmanager.download:
+    description: Allows you to use PluginManager's download feature.
 
   rcmds.nick.color:
     description: Allows you to use color in nicknames.
