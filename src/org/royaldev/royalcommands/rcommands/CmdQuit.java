@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,6 +21,10 @@ public class CmdQuit implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("quit")) {
             if (!plugin.isAuthorized(cs, "rcmds.quit")) {
                 RUtils.dispNoPerms(cs);
+                return true;
+            }
+            if (!(cs instanceof Player)) {
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
             ((Player) cs).kickPlayer("You have left the game.");
