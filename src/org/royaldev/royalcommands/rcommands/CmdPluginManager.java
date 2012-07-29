@@ -12,8 +12,14 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.UnknownDependencyException;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +29,23 @@ public class CmdPluginManager implements CommandExecutor {
 
     public CmdPluginManager(RoyalCommands instance) {
         plugin = instance;
+    }
+
+    public String updateCheck(String name, String currentVersion) throws Exception {
+        String pluginUrlString = "http://dev.bukkit.org/server-mods/" + name.toLowerCase() + "/files.rss";
+        URL url = new URL(pluginUrlString);
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
+        doc.getDocumentElement().normalize();
+        NodeList nodes = doc.getElementsByTagName("item");
+        Node firstNode = nodes.item(0);
+        if (firstNode.getNodeType() == 1) {
+            Element firstElement = (Element) firstNode;
+            NodeList firstElementTagName = firstElement.getElementsByTagName("title");
+            Element firstNameElement = (Element) firstElementTagName.item(0);
+            NodeList firstNodes = firstNameElement.getChildNodes();
+            return firstNodes.item(0).getNodeValue();
+        }
+        return currentVersion;
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -277,7 +300,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.GRAY + "/" + command + ((desc.equals("")) ? "" : ChatColor.BLUE + " - " + desc));
                 }
                 return true;
-            } else if (subcmd.equalsIgnoreCase("help")) {
+            } else if (subcmd.equalsIgnoreCase("help") || subcmd.equals("?")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.help")) {
                     RUtils.dispNoPerms(cs);
                     return true;
@@ -293,6 +316,38 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " commands [plugin]" + ChatColor.BLUE + " - Lists all registered commands and their description of a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the plugins");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info [plugin]" + ChatColor.BLUE + " - Displays information about a plugin");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheck [plugin]" + ChatColor.BLUE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
+                return true;
+            } else if (subcmd.equalsIgnoreCase("updatecheck")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.updatecheck")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                if (args.length < 2) {
+                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin!");
+                    return true;
+                }
+                Plugin p = pm.getPlugin(args[1]);
+                if (p == null) {
+                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    return true;
+                }
+                String name = p.getName();
+                if (p.getDescription() == null) {
+                    cs.sendMessage(ChatColor.RED + "Plugin has no description!");
+                    return true;
+                }
+                String version = p.getDescription().getVersion();
+                if (version == null) {
+                    cs.sendMessage(ChatColor.RED + "Plugin has not set a version!");
+                    return true;
+                }
+                try {
+                    String checked = updateCheck(name, version);
+                    cs.sendMessage(ChatColor.BLUE + "Current version is " + ChatColor.GRAY + version + ChatColor.BLUE + "; newest version is " + ChatColor.GRAY + checked + ChatColor.BLUE + ".");
+                } catch (Exception e) {
+                    cs.sendMessage(ChatColor.RED + "Could not check for update!");
+                }
                 return true;
             } else {
                 cs.sendMessage(ChatColor.RED + "Unknown subcommand!");
