@@ -29,8 +29,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -335,7 +337,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " commands [plugin]" + ChatColor.BLUE + " - Lists all registered commands and their description of a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the plugins");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info [plugin]" + ChatColor.BLUE + " - Displays information about a plugin");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheck [plugin]" + ChatColor.BLUE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheck [plugin] (tag)" + ChatColor.BLUE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " download [tag]" + ChatColor.BLUE + " - Attempts to download a plugin from BukkitDev using its tag");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " findtag [search]" + ChatColor.BLUE + " - Searches BukkitDev for a tag to use in download");
                 return true;
@@ -447,11 +449,17 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
+                String tag = (args.length > 2) ? plugin.getFinalArg(args, 2) : p.getName();
+                try {
+                    tag = URLEncoder.encode(tag, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    cs.sendMessage(ChatColor.RED + "Tell the developer enc1.");
+                    return true;
+                }
                 if (p == null) {
                     cs.sendMessage(ChatColor.RED + "No such plugin!");
                     return true;
                 }
-                String name = p.getName();
                 if (p.getDescription() == null) {
                     cs.sendMessage(ChatColor.RED + "Plugin has no description!");
                     return true;
@@ -462,7 +470,7 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 try {
-                    String checked = updateCheck(name, version);
+                    String checked = updateCheck(tag, version);
                     cs.sendMessage(ChatColor.BLUE + "Current version is " + ChatColor.GRAY + version + ChatColor.BLUE + "; newest version is " + ChatColor.GRAY + checked + ChatColor.BLUE + ".");
                 } catch (Exception e) {
                     cs.sendMessage(ChatColor.RED + "Could not check for update!");
@@ -477,7 +485,13 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Please specify a search term!");
                     return true;
                 }
-                String search = args[1];
+                String search = plugin.getFinalArg(args, 1);
+                try {
+                    search = URLEncoder.encode(search, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    cs.sendMessage(ChatColor.RED + "Tell the developer enc1.");
+                    return true;
+                }
                 URL u;
                 try {
                     u = new URL("http://dev.bukkit.org/search/?scope=projects&search=" + search);
