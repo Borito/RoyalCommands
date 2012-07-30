@@ -1088,6 +1088,8 @@ permissions:
       rcmds.pluginmanager.help: true
       rcmds.pluginmanager.updatecheck: true
       rcmds.pluginmanager.download: true
+      rcmds.pluginmanager.findtag: true
+      rcmds.pluginmanager.delete: true
 
   rcmds.pluginmanager.load:
     description: Allows you to use PluginManager's load feature.
@@ -1131,6 +1133,15 @@ permissions:
 
   rcmds.pluginmanager.download:
     description: Allows you to use PluginManager's download feature.
+    default: op
+
+  rcmds.pluginmanager.findtag:
+    description: Allows you to use PluginManager's findtag feature.
+    default: op
+
+  rcmds.pluginmanager.delete:
+    description: Allows you to use PluginManager's delete feature.
+    default: op
 
   rcmds.nick.color:
     description: Allows you to use color in nicknames.

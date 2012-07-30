@@ -33,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,7 +107,10 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That plugin contained an invalid description!");
                     return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Loaded and enabled " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + " successfully.");
+                if (p.isEnabled())
+                    cs.sendMessage(ChatColor.BLUE + "Loaded and enabled " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + " successfully.");
+                else
+                    cs.sendMessage(ChatColor.RED + "Could not load and enable " + ChatColor.GRAY + p.getName() + ChatColor.RED + ".");
                 return true;
             } else if (subcmd.equalsIgnoreCase("disable")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.disable")) {
@@ -170,6 +174,7 @@ public class CmdPluginManager implements CommandExecutor {
                 pm.disablePlugin(p);
                 pm.enablePlugin(p);
                 cs.sendMessage(ChatColor.BLUE + "Reloaded " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
+                return true;
             } else if (subcmd.equalsIgnoreCase("update")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.update")) {
                     RUtils.dispNoPerms(cs);
@@ -325,12 +330,14 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " enable [plugin]" + ChatColor.BLUE + " - Enables a disabled plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " reload [plugin]" + ChatColor.BLUE + " - Disables then enables a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " reloadall" + ChatColor.BLUE + " - Reloads every plugin");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " delete [jar]" + ChatColor.BLUE + " - Tries to delete the specified jar");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " update [plugin] [jar]" + ChatColor.BLUE + " - Disables the plugin and loads the new jar");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " commands [plugin]" + ChatColor.BLUE + " - Lists all registered commands and their description of a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the plugins");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info [plugin]" + ChatColor.BLUE + " - Displays information about a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheck [plugin]" + ChatColor.BLUE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " download [tag]" + ChatColor.BLUE + " - Attempts to download a plugin from BukkitDev using its tag");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " findtag [search]" + ChatColor.BLUE + " - Searches BukkitDev for a tag to use in download");
                 return true;
             } else if (subcmd.equalsIgnoreCase("download")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.download")) {
@@ -381,12 +388,14 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "An internal input/output error occurred. Please try again.");
                     return true;
                 }
-                Pattern p = Pattern.compile("https?://dev\\.bukkit\\.org/media/files/.+/([\\w\\W]+)");
+                Pattern p = Pattern.compile("https?://dev\\.bukkit\\.org/media/files[\\d/]+([\\w\\W]+)");
                 Matcher m = p.matcher(file);
                 m.find();
                 String fileName = m.group(1).trim();
                 cs.sendMessage(ChatColor.BLUE + "Creating temporary folder...");
-                File f = new File(plugin.getDataFolder() + File.separator + "temp" + File.separator + fileName);
+                File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
+                while (f.exists())
+                    f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
                 if (!fileName.endsWith(".zip") && !fileName.endsWith(".jar")) {
                     System.out.println(fileName);
                     cs.sendMessage(ChatColor.RED + "The file wasn't a zip or jar file, so it was not downloaded.");
@@ -417,7 +426,9 @@ public class CmdPluginManager implements CommandExecutor {
                 for (File fi : f.getParentFile().listFiles()) {
                     if (!fi.getName().endsWith(".jar")) continue;
                     cs.sendMessage(ChatColor.BLUE + "Moving " + ChatColor.GRAY + fi.getName() + ChatColor.BLUE + " to plugins folder...");
-                    fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
+                    boolean s = fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
+                    if (!s)
+                        cs.sendMessage(ChatColor.RED + "Couldn't move " + ChatColor.GRAY + fi.getName() + ChatColor.RED + "!");
                 }
                 cs.sendMessage(ChatColor.BLUE + "Removing temporary folder...");
                 try {
@@ -457,12 +468,96 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Could not check for update!");
                 }
                 return true;
+            } else if (subcmd.equalsIgnoreCase("findtag")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.findtag")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                if (args.length < 2) {
+                    cs.sendMessage(ChatColor.RED + "Please specify a search term!");
+                    return true;
+                }
+                String search = args[1];
+                URL u;
+                try {
+                    u = new URL("http://dev.bukkit.org/search/?scope=projects&search=" + search);
+                } catch (MalformedURLException e) {
+                    cs.sendMessage(ChatColor.RED + "Malformed search term!");
+                    return true;
+                }
+                BufferedReader br;
+                try {
+                    br = new BufferedReader(new InputStreamReader(u.openStream()));
+                } catch (IOException e) {
+                    cs.sendMessage(ChatColor.RED + "Internal input/output error. Please try again.");
+                    return true;
+                }
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                try {
+                    while ((inputLine = br.readLine()) != null) content.append(inputLine);
+                } catch (IOException e) {
+                    cs.sendMessage(ChatColor.RED + "Internal input/output error. Please try again.");
+                    return true;
+                }
+                cs.sendMessage(ChatColor.BLUE + "Project name" + ChatColor.GRAY + " - tag");
+                for (int i = 0; i < 5; i++) {
+                    String project = StringUtils.substringBetween(content.toString(), " row-joined-to-next\">", "</tr>");
+                    String base = StringUtils.substringBetween(project, "<td class=\"col-search-entry\">", "</td>");
+                    if (base == null) {
+                        if (i == 0) cs.sendMessage(ChatColor.RED + "No results found.");
+                        return true;
+                    }
+                    Pattern p = Pattern.compile("<h2><a href=\"/server-mods/([\\W\\w]+)/\">([\\w\\W]+)</a></h2>");
+                    Matcher m = p.matcher(base);
+                    if (m == null) {
+                        if (i == 0) cs.sendMessage(ChatColor.RED + "No results found.");
+                        return true;
+                    }
+                    m.find();
+                    String name = m.group(2).replaceAll("</?\\w+>", "");
+                    String tag = m.group(1);
+                    int beglen = StringUtils.substringBefore(content.toString(), base).length();
+                    content = new StringBuilder(content.substring(beglen + project.length()));
+                    cs.sendMessage(ChatColor.BLUE + name + ChatColor.GRAY + " - " + tag);
+                }
+                return true;
+            } else if (subcmd.equalsIgnoreCase("delete")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.delete")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                if (args.length < 2) {
+                    cs.sendMessage(ChatColor.RED + "Please specify the filename to delete!");
+                    return true;
+                }
+                String toDelete = args[1];
+                if (!toDelete.endsWith(".jar")) {
+                    cs.sendMessage(ChatColor.RED + "Please only specify jar files!");
+                    return true;
+                }
+                if (toDelete.contains("/")) {
+                    cs.sendMessage(ChatColor.RED + "Please don't try to leave the plugins directory!");
+                    return true;
+                }
+                File f = new File(plugin.getDataFolder().getParentFile() + File.separator + toDelete);
+                if (!f.exists()) {
+                    cs.sendMessage(ChatColor.RED + "No such file!");
+                    return true;
+                }
+                boolean success = f.delete();
+                if (!success)
+                    cs.sendMessage(ChatColor.RED + "Could not delete " + ChatColor.GRAY + f.getName() + ChatColor.BLUE + ".");
+                else
+                    cs.sendMessage(ChatColor.BLUE + "Deleted " + ChatColor.GRAY + f.getName() + ChatColor.BLUE + ".");
+                return true;
             } else {
                 cs.sendMessage(ChatColor.RED + "Unknown subcommand!");
                 cs.sendMessage(ChatColor.RED + "Try " + ChatColor.GRAY + "/" + label + " help");
                 return true;
             }
         }
+
         return false;
     }
 }
