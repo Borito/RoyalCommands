@@ -78,7 +78,8 @@ public class RUtils {
         AIR_MATERIALS.add(Material.WATER_LILY.getId());
         AIR_MATERIALS.add(Material.SNOW.getId());
 
-        for (Integer integer : AIR_MATERIALS) AIR_MATERIALS_TARGET.add(integer.byteValue());
+        for (Integer integer : AIR_MATERIALS)
+            AIR_MATERIALS_TARGET.add(integer.byteValue());
         AIR_MATERIALS_TARGET.add((byte) Material.WATER.getId());
         AIR_MATERIALS_TARGET.add((byte) Material.STATIONARY_WATER.getId());
     }
@@ -128,7 +129,8 @@ public class RUtils {
 
         String[] ret = new String[lines.size()];
         int c = 0; // counter
-        for (Enumeration e = lines.elements(); e.hasMoreElements(); c++) ret[c] = (String) e.nextElement();
+        for (Enumeration e = lines.elements(); e.hasMoreElements(); c++)
+            ret[c] = (String) e.nextElement();
         return ret;
     }
 
@@ -138,13 +140,15 @@ public class RUtils {
 
     public static String join(Iterable<String> i, String between) {
         String ret = "";
-        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        for (String s : i)
+            ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
         return ret;
     }
 
     public static String join(String[] i, String between) {
         String ret = "";
-        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        for (String s : i)
+            ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
         return ret;
     }
 
@@ -282,7 +286,8 @@ public class RUtils {
                 };
         for (int i = 0; i < types.length; i++) {
             int diff = dateDiff(types[i], fromDate, toDate, future);
-            if (diff > 0) sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
+            if (diff > 0)
+                sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
         }
         if (sb.length() == 0) return " now";
         return sb.toString();

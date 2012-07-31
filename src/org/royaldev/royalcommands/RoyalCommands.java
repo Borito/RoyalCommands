@@ -263,7 +263,8 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public void loadConfiguration() {
-        if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveDefaultConfig();
+        if (!new File(getDataFolder() + File.separator + "config.yml").exists())
+            saveDefaultConfig();
         File file = new File(getDataFolder() + File.separator + "userdata" + File.separator);
         boolean exists = file.exists();
         if (!exists) {
@@ -487,7 +488,8 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(blockListener, this);
         pm.registerEvents(signListener, this);
         pm.registerEvents(monitorListener, this);
-        if (ta != null && changeNameTag) pm.registerEvents(new TagAPIListener(this), this);
+        if (ta != null && changeNameTag)
+            pm.registerEvents(new TagAPIListener(this), this);
 
         registerCommand(new CmdLevel(this), "level", this);
         registerCommand(new CmdSetlevel(this), "setlevel", this);

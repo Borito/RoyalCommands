@@ -33,7 +33,8 @@ public class CmdFixChunk implements CommandExecutor {
             boolean worked = p.getWorld().refreshChunk(c.getX(), c.getZ());
             c.unload();
             c.load();
-            if (worked) cs.sendMessage(ChatColor.BLUE + "The chunk you're standing in has been reloaded!");
+            if (worked)
+                cs.sendMessage(ChatColor.BLUE + "The chunk you're standing in has been reloaded!");
             else cs.sendMessage(ChatColor.RED + "The chunk could not be reloaded.");
             return true;
         }

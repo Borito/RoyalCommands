@@ -48,10 +48,12 @@ public class CmdTime implements CommandExecutor {
             if (vtime > 24000L) vtime = vtime % 24000L;
         } catch (Exception e) {
             if (time.equalsIgnoreCase("day")) vtime = 0L;
-            else if (time.equalsIgnoreCase("midday") || time.equalsIgnoreCase("noon")) vtime = 6000L;
+            else if (time.equalsIgnoreCase("midday") || time.equalsIgnoreCase("noon"))
+                vtime = 6000L;
             else if (time.equalsIgnoreCase("sunset") || time.equalsIgnoreCase("sundown") || time.equalsIgnoreCase("dusk"))
                 vtime = 12000L;
-            else if (time.equalsIgnoreCase("night") || time.equalsIgnoreCase("dark")) vtime = 14000L;
+            else if (time.equalsIgnoreCase("night") || time.equalsIgnoreCase("dark"))
+                vtime = 14000L;
             else if (time.equalsIgnoreCase("midnight")) vtime = 18000L;
             else if (time.equalsIgnoreCase("sunrise") || time.equalsIgnoreCase("sunup") || time.equalsIgnoreCase("dawn"))
                 vtime = 23000L;
@@ -107,7 +109,8 @@ public class CmdTime implements CommandExecutor {
             }
             String target = "";
             if (!(cs instanceof Player) && args.length < 2) target = "*";
-            else if ((cs instanceof Player) && args.length < 2) target = ((Player) cs).getWorld().getName();
+            else if ((cs instanceof Player) && args.length < 2)
+                target = ((Player) cs).getWorld().getName();
             if (args.length > 1) target = args[1];
             if (target.equalsIgnoreCase("all")) target = "*";
             if (plugin.getServer().getWorld(target) == null && !target.equals("*")) {

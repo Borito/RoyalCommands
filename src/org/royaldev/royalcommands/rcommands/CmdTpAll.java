@@ -28,7 +28,8 @@ public class CmdTpAll implements CommandExecutor {
             }
             Player p = (Player) cs;
             for (Player t : plugin.getServer().getOnlinePlayers()) {
-                if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(p, "rcmds.tpoverride")) continue;
+                if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(p, "rcmds.tpoverride"))
+                    continue;
                 if (t.equals(p)) continue;
                 String error = RUtils.teleport(t, p);
                 if (!error.isEmpty()) {

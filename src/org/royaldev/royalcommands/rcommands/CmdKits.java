@@ -38,7 +38,8 @@ public class CmdKits implements CommandExecutor {
             for (String s : opts.keySet()) {
                 if (plugin.kitPerms && plugin.isAuthorized(cs, "rcmds.kit." + s))
                     kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
-                else if (!plugin.kitPerms) kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
+                else if (!plugin.kitPerms)
+                    kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
             }
             cs.sendMessage(ChatColor.BLUE + "Kits:");
             if (kits.isEmpty()) return true;

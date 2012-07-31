@@ -18,7 +18,8 @@ public class Help {
             return;
         }
         for (String cmd : commands.keySet()) {
-            if (cmd == null || commands.get(cmd) == null || commands.get(cmd).get("description") == null) continue;
+            if (cmd == null || commands.get(cmd) == null || commands.get(cmd).get("description") == null)
+                continue;
             String desc = commands.get(cmd).get("description").toString();
             helpdb.put(cmd, desc);
         }
@@ -26,11 +27,13 @@ public class Help {
             for (Plugin p : RoyalCommands.plugins) {
                 if (p == null) continue;
                 if ((p instanceof RoyalCommands) || !p.isEnabled()) continue;
-                if (p.getDescription() == null || p.getDescription().getCommands() == null) continue;
+                if (p.getDescription() == null || p.getDescription().getCommands() == null)
+                    continue;
                 Map<String, Map<String, Object>> commands = p.getDescription().getCommands();
                 if (commands.keySet() == null) continue;
                 for (String cmd : commands.keySet()) {
-                    if (commands.get(cmd) == null || commands.get(cmd).get("description") == null) continue;
+                    if (commands.get(cmd) == null || commands.get(cmd).get("description") == null)
+                        continue;
                     String desc = commands.get(cmd).get("description").toString();
                     helpdb.put(cmd, desc);
                 }

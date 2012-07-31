@@ -106,7 +106,8 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void commandCooldown(PlayerCommandPreprocessEvent e) {
         if (e.isCancelled()) return;
         String command = e.getMessage().split(" ")[0].toLowerCase().substring(1);
-        if (plugin.getCommand(command) != null) command = plugin.getCommand(command).getName();
+        if (plugin.getCommand(command) != null)
+            command = plugin.getCommand(command).getName();
         Player p = e.getPlayer();
         if (plugin.isAuthorized(p, "rcmds.exempt.cooldown.commands")) return;
         Long currentcd = new PConfManager(p).getLong("command_cooldowns." + command);
@@ -153,14 +154,16 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         new PConfManager(e.getPlayer()).setLong(new Date().getTime(), "seen");
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
-        if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
+        if (AFKUtils.moveTimesContains(e.getPlayer()))
+            AFKUtils.removeLastMove(e.getPlayer());
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
         new PConfManager(e.getPlayer()).setLong(new Date().getTime(), "seen");
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
-        if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
+        if (AFKUtils.moveTimesContains(e.getPlayer()))
+            AFKUtils.removeLastMove(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -280,7 +283,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         ArrayList<String> ignores = (ArrayList<String>) pcm.getStringList("ignoredby");
         Set<Player> ignore = new HashSet<Player>();
         for (Player pl : recpts)
-            for (String ignoree : ignores) if (pl.getName().equalsIgnoreCase(ignoree.toLowerCase())) ignore.add(pl);
+            for (String ignoree : ignores)
+                if (pl.getName().equalsIgnoreCase(ignoree.toLowerCase())) ignore.add(pl);
         e.getRecipients().removeAll(ignore);
     }
 
@@ -292,12 +296,14 @@ public class RoyalCommandsPlayerListener implements Listener {
             plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
             return;
         }
-        if (new PConfManager(event.getPlayer()).getBoolean("frozen")) event.setCancelled(true);
+        if (new PConfManager(event.getPlayer()).getBoolean("frozen"))
+            event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (new PConfManager(event.getPlayer()).getBoolean("jailed")) event.setCancelled(true);
+        if (new PConfManager(event.getPlayer()).getBoolean("jailed"))
+            event.setCancelled(true);
         Action act = event.getAction();
         if (act.equals(Action.PHYSICAL)) return;
         ItemStack id = event.getItem();
@@ -316,8 +322,10 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onPInt(PlayerInteractEvent event) {
-        if (new PConfManager(event.getPlayer()).getBoolean("frozen")) event.setCancelled(true);
-        if (plugin.buildPerm) if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build")) event.setCancelled(true);
+        if (new PConfManager(event.getPlayer()).getBoolean("frozen"))
+            event.setCancelled(true);
+        if (plugin.buildPerm) if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build"))
+            event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -379,9 +387,11 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!pcm.exists()) {
             log.info("[RoyalCommands] Creating userdata for " + event.getPlayer().getName() + ".");
             String dispname = event.getPlayer().getDisplayName();
-            if (dispname == null || dispname.trim().equals("")) dispname = event.getPlayer().getName();
+            if (dispname == null || dispname.trim().equals(""))
+                dispname = event.getPlayer().getName();
             boolean success = pcm.createFile();
-            if (!success) log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
+            if (!success)
+                log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
             else {
                 pcm.setString(event.getPlayer().getName(), "name");
                 pcm.setString(dispname, "dispname");
@@ -409,7 +419,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (plugin.sendToSpawn) {
             if (plugin.stsBack)
                 RUtils.teleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
-            else RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
+            else
+                RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
         }
     }
 }

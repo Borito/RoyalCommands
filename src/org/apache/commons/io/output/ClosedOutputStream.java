@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,7 @@ import java.io.OutputStream;
 /**
  * Closed output stream. This stream throws an exception on all attempts to
  * write something to the stream.
- * <p>
+ * <p/>
  * Typically uses of this class include testing for corner cases in methods
  * that accept an output stream and acting as a sentinel value instead of
  * a {@code null} output stream.
@@ -31,7 +31,7 @@ import java.io.OutputStream;
  * @since 1.4
  */
 public class ClosedOutputStream extends OutputStream {
-    
+
     /**
      * A singleton.
      */

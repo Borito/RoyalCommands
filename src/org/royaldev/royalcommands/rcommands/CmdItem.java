@@ -67,7 +67,8 @@ public class CmdItem implements CommandExecutor {
             }
             HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);
             if (!left.isEmpty() && plugin.dropExtras)
-                for (ItemStack i : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), i);
+                for (ItemStack i : left.values())
+                    p.getWorld().dropItemNaturally(p.getLocation(), i);
             cs.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + RUtils.getItemName(Material.getMaterial(itemid)) + ChatColor.BLUE + " to " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
             return true;
         }

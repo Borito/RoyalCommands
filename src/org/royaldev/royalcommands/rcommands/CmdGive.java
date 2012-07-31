@@ -44,7 +44,8 @@ public class CmdGive implements CommandExecutor {
         target.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + RUtils.getItemName(Material.getMaterial(itemid)) + ChatColor.BLUE + " to " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
         HashMap<Integer, ItemStack> left = target.getInventory().addItem(stack);
         if (!left.isEmpty() && plugin.dropExtras)
-            for (ItemStack item : left.values()) target.getWorld().dropItemNaturally(target.getLocation(), item);
+            for (ItemStack item : left.values())
+                target.getWorld().dropItemNaturally(target.getLocation(), item);
         return true;
     }
 
@@ -95,7 +96,8 @@ public class CmdGive implements CommandExecutor {
             }
             HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
             if (!left.isEmpty() && plugin.dropExtras)
-                for (ItemStack item : left.values()) target.getWorld().dropItemNaturally(target.getLocation(), item);
+                for (ItemStack item : left.values())
+                    target.getWorld().dropItemNaturally(target.getLocation(), item);
             cs.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + RUtils.getItemName(Material.getMaterial(itemid)) + ChatColor.BLUE + " to " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
             target.sendMessage(ChatColor.BLUE + "You have been given " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + RUtils.getItemName(Material.getMaterial(itemid)) + ChatColor.BLUE + ".");
             return true;

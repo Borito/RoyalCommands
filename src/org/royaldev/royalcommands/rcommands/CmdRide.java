@@ -9,13 +9,13 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdRide implements CommandExecutor {
-    
+
     RoyalCommands plugin;
-    
+
     public CmdRide(RoyalCommands instance) {
         this.plugin = instance;
     }
-    
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ride")) {
@@ -57,5 +57,5 @@ public class CmdRide implements CommandExecutor {
         }
         return false;
     }
-    
+
 }

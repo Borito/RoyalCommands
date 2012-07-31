@@ -36,7 +36,8 @@ public class CmdGetIP implements CommandExecutor {
             PConfManager pcm = new PConfManager(oplayer);
             if (pcm.exists())
                 cs.sendMessage(ChatColor.GRAY + oplayer.getName() + ": " + pcm.getString("ip"));
-            else cs.sendMessage(ChatColor.RED + "The player " + oplayer.getName() + " does not exist.");
+            else
+                cs.sendMessage(ChatColor.RED + "The player " + oplayer.getName() + " does not exist.");
             return true;
         }
         return false;

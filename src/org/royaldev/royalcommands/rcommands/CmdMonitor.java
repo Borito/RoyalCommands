@@ -46,7 +46,8 @@ public class CmdMonitor implements CommandExecutor {
                 viewees.remove(monitors.get(p.getName()));
                 monitors.remove(p.getName());
                 locs.remove(p.getName());
-                if (MonitorListener.openInvs.contains(p.getName())) MonitorListener.openInvs.remove(p.getName());
+                if (MonitorListener.openInvs.contains(p.getName()))
+                    MonitorListener.openInvs.remove(p.getName());
                 p.getInventory().clear();
                 p.getInventory().setContents(invs.get(p.getName()));
                 invs.remove(p.getName());

@@ -19,7 +19,8 @@ public class CmdPlayerTime implements CommandExecutor {
 
     public static void smoothPlayerTimeChange(long time, Player p) {
         World world = p.getWorld();
-        if (time >= world.getTime()) for (long i = world.getTime(); i < time; i++) world.setTime(i);
+        if (time >= world.getTime())
+            for (long i = world.getTime(); i < time; i++) world.setTime(i);
         else for (long i = world.getTime(); i > time; i--) world.setTime(i);
     }
 

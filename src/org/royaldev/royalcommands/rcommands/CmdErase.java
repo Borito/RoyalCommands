@@ -81,7 +81,7 @@ public class CmdErase implements CommandExecutor {
                         count++;
                     }
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " tnt"  + ChatColor.BLUE + ".");
+                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " tnt" + ChatColor.BLUE + ".");
             } else if (command.equalsIgnoreCase("all")) {
                 for (Entity e : entlist) {
                     if (e instanceof Player) continue;

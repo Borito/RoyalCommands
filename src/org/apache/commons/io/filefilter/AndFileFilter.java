@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,16 +29,17 @@ import java.util.List;
  * Checking of the file filter list stops when the first filter returns
  * {@code false}.
  *
- * @since 1.0
  * @version $Id: AndFileFilter.java 1307462 2012-03-30 15:13:11Z ggregory $
- *
  * @see FileFilterUtils#and(IOFileFilter...)
+ * @since 1.0
  */
 public class AndFileFilter
         extends AbstractFileFilter
         implements ConditionalFileFilter, Serializable {
 
-    /** The list of file filters. */
+    /**
+     * The list of file filters.
+     */
     private final List<IOFileFilter> fileFilters;
 
     /**
@@ -54,7 +55,7 @@ public class AndFileFilter
      * Constructs a new instance of <code>AndFileFilter</code>
      * with the specified list of filters.
      *
-     * @param fileFilters  a List of IOFileFilter instances, copied, null ignored
+     * @param fileFilters a List of IOFileFilter instances, copied, null ignored
      * @since 1.1
      */
     public AndFileFilter(final List<IOFileFilter> fileFilters) {
@@ -68,8 +69,8 @@ public class AndFileFilter
     /**
      * Constructs a new file filter that ANDs the result of two other filters.
      *
-     * @param filter1  the first filter, must not be null
-     * @param filter2  the second filter, must not be null
+     * @param filter1 the first filter, must not be null
+     * @param filter2 the second filter, must not be null
      * @throws IllegalArgumentException if either filter is null
      */
     public AndFileFilter(IOFileFilter filter1, IOFileFilter filter2) {

@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,12 +35,12 @@ public class TaggedIOException extends IOExceptionWithCause {
 
     /**
      * Checks whether the given throwable is tagged with the given tag.
-     * <p>
+     * <p/>
      * This check can only succeed if the throwable is a
      * {@link TaggedIOException} and the tag is {@link Serializable}, but
      * the argument types are intentionally more generic to make it easier
      * to use this method without type casts.
-     * <p>
+     * <p/>
      * A typical use for this method is in a <code>catch</code> block to
      * determine how a caught exception should be handled:
      * <pre>
@@ -57,14 +57,14 @@ public class TaggedIOException extends IOExceptionWithCause {
      * </pre>
      *
      * @param throwable The Throwable object to check
-     * @param tag tag object
+     * @param tag       tag object
      * @return {@code true} if the throwable has the specified tag,
-     * otherwise {@code false}
+     *         otherwise {@code false}
      */
     public static boolean isTaggedWith(Throwable throwable, Object tag) {
         return tag != null
-            && throwable instanceof TaggedIOException
-            && tag.equals(((TaggedIOException) throwable).tag);
+                && throwable instanceof TaggedIOException
+                && tag.equals(((TaggedIOException) throwable).tag);
     }
 
     /**
@@ -72,7 +72,7 @@ public class TaggedIOException extends IOExceptionWithCause {
      * a {@link TaggedIOException} decorator the given tag. Does nothing
      * if the given throwable is of a different type or if it is tagged
      * with some other tag.
-     * <p>
+     * <p/>
      * This method is typically used in a <code>catch</code> block to
      * selectively rethrow tagged exceptions.
      * <pre>
@@ -86,7 +86,7 @@ public class TaggedIOException extends IOExceptionWithCause {
      * </pre>
      *
      * @param throwable an exception
-     * @param tag tag object
+     * @param tag       tag object
      * @throws IOException original exception from the tagged decorator, if any
      */
     public static void throwCauseIfTaggedWith(Throwable throwable, Object tag)
@@ -105,7 +105,7 @@ public class TaggedIOException extends IOExceptionWithCause {
      * Creates a tagged wrapper for the given exception.
      *
      * @param original the exception to be tagged
-     * @param tag tag of this exception
+     * @param tag      tag of this exception
      */
     public TaggedIOException(IOException original, Serializable tag) {
         super(original.getMessage(), original);

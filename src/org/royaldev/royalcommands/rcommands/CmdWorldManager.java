@@ -114,9 +114,11 @@ public class CmdWorldManager implements CommandExecutor {
                 }
                 cs.sendMessage(ChatColor.BLUE + "Unloading world...");
                 if (args.length > 2 && Boolean.getBoolean(args[2].toLowerCase()))
-                    for (Player p : w.getPlayers()) p.kickPlayer("Your world is being unloaded!");
+                    for (Player p : w.getPlayers())
+                        p.kickPlayer("Your world is being unloaded!");
                 boolean success = plugin.getServer().unloadWorld(w, true);
-                if (success) cs.sendMessage(ChatColor.BLUE + "World unloaded successfully!");
+                if (success)
+                    cs.sendMessage(ChatColor.BLUE + "World unloaded successfully!");
                 else cs.sendMessage(ChatColor.RED + "Could not unload that world.");
                 return true;
             } else if (command.equals("delete")) {
@@ -131,16 +133,19 @@ public class CmdWorldManager implements CommandExecutor {
                 }
                 cs.sendMessage(ChatColor.BLUE + "Unloading world...");
                 if (args.length > 2 && Boolean.getBoolean(args[2].toLowerCase()))
-                    for (Player p : w.getPlayers()) p.kickPlayer("Your world is being unloaded!");
+                    for (Player p : w.getPlayers())
+                        p.kickPlayer("Your world is being unloaded!");
                 boolean success = plugin.getServer().unloadWorld(w, true);
-                if (success) cs.sendMessage(ChatColor.BLUE + "World unloaded successfully!");
+                if (success)
+                    cs.sendMessage(ChatColor.BLUE + "World unloaded successfully!");
                 else {
                     cs.sendMessage(ChatColor.RED + "Could not unload that world.");
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Deleting world...");
                 success = deleteDir(w.getWorldFolder());
-                if (success) cs.sendMessage(ChatColor.BLUE + "Successfully deleted world!");
+                if (success)
+                    cs.sendMessage(ChatColor.BLUE + "Successfully deleted world!");
                 else cs.sendMessage(ChatColor.RED + "Could not delete world.");
                 return true;
             } else if (command.equals("list")) {

@@ -28,7 +28,8 @@ public class CmdMuteAll implements CommandExecutor {
             }
             Player[] ps = plugin.getServer().getOnlinePlayers();
             for (Player p : ps) {
-                if (plugin.isVanished(p, cs) || plugin.isAuthorized(p, "rcmds.exempt.mute")) continue;
+                if (plugin.isVanished(p, cs) || plugin.isAuthorized(p, "rcmds.exempt.mute"))
+                    continue;
                 if (cs instanceof Player) {
                     if (p == cs) continue;
                 }

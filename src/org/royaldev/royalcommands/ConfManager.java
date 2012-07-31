@@ -22,7 +22,7 @@ public class ConfManager {
 
     /**
      * Configuration file manager
-     *
+     * <p/>
      * If file does not exist, it will be created.
      *
      * @param filename Filename (local) for the config
@@ -44,7 +44,7 @@ public class ConfManager {
 
     /**
      * Configuration file manager
-     *
+     * <p/>
      * If file does not exist, it will be created.
      *
      * @param file File object for the config

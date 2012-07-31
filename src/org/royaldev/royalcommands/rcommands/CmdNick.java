@@ -53,7 +53,8 @@ public class CmdNick implements CommandExecutor {
                 return true;
             }
             String newName = plugin.nickPrefix + args[1];
-            if (plugin.isAuthorized(cs, "rcmds.nick.color")) newName = RUtils.colorize(newName);
+            if (plugin.isAuthorized(cs, "rcmds.nick.color"))
+                newName = RUtils.colorize(newName);
             pcm.setString(newName, "dispname");
             if (t.isOnline()) {
                 Player p = (Player) t;
