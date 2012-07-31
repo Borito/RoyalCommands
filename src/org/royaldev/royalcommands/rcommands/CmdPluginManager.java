@@ -428,6 +428,7 @@ public class CmdPluginManager implements CommandExecutor {
                 }
                 for (File fi : FileUtils.listFiles(f.getParentFile(), null, true)) {
                     if (!fi.getName().endsWith(".jar")) continue;
+//                  String extraFile = (f.getParent().equals(fi.getParent())) ? "" : fi.getParentFile().getName() + File.separator;
                     cs.sendMessage(ChatColor.BLUE + "Moving " + ChatColor.GRAY + fi.getName() + ChatColor.BLUE + " to plugins folder...");
                     boolean s = fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
                     if (!s)
