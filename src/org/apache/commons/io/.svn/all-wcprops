@@ -1,0 +1,131 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/repos/asf/!svn/ver/1349509/commons/proper/io/trunk/src/main/java/org/apache/commons/io
+END
+FileCleaner.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1302056/commons/proper/io/trunk/src/main/java/org/apache/commons/io/FileCleaner.java
+END
+HexDump.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1302748/commons/proper/io/trunk/src/main/java/org/apache/commons/io/HexDump.java
+END
+DirectoryWalker.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1307459/commons/proper/io/trunk/src/main/java/org/apache/commons/io/DirectoryWalker.java
+END
+ByteOrderMark.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1347571/commons/proper/io/trunk/src/main/java/org/apache/commons/io/ByteOrderMark.java
+END
+Charsets.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1311751/commons/proper/io/trunk/src/main/java/org/apache/commons/io/Charsets.java
+END
+package.html
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1004358/commons/proper/io/trunk/src/main/java/org/apache/commons/io/package.html
+END
+ThreadMonitor.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1307459/commons/proper/io/trunk/src/main/java/org/apache/commons/io/ThreadMonitor.java
+END
+EndianUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/repos/asf/!svn/ver/1302056/commons/proper/io/trunk/src/main/java/org/apache/commons/io/EndianUtils.java
+END
+FileDeleteStrategy.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/asf/!svn/ver/1307461/commons/proper/io/trunk/src/main/java/org/apache/commons/io/FileDeleteStrategy.java
+END
+IOUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/repos/asf/!svn/ver/1326636/commons/proper/io/trunk/src/main/java/org/apache/commons/io/IOUtils.java
+END
+overview.html
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/asf/!svn/ver/1004358/commons/proper/io/trunk/src/main/java/org/apache/commons/io/overview.html
+END
+CopyUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1302056/commons/proper/io/trunk/src/main/java/org/apache/commons/io/CopyUtils.java
+END
+FileCleaningTracker.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1307462/commons/proper/io/trunk/src/main/java/org/apache/commons/io/FileCleaningTracker.java
+END
+FileExistsException.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/asf/!svn/ver/1304052/commons/proper/io/trunk/src/main/java/org/apache/commons/io/FileExistsException.java
+END
+FileUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/asf/!svn/ver/1349509/commons/proper/io/trunk/src/main/java/org/apache/commons/io/FileUtils.java
+END
+FilenameUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/repos/asf/!svn/ver/1307462/commons/proper/io/trunk/src/main/java/org/apache/commons/io/FilenameUtils.java
+END
+LineIterator.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/repos/asf/!svn/ver/1307461/commons/proper/io/trunk/src/main/java/org/apache/commons/io/LineIterator.java
+END
+TaggedIOException.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/repos/asf/!svn/ver/1307462/commons/proper/io/trunk/src/main/java/org/apache/commons/io/TaggedIOException.java
+END
+IOExceptionWithCause.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/repos/asf/!svn/ver/1307459/commons/proper/io/trunk/src/main/java/org/apache/commons/io/IOExceptionWithCause.java
+END
+IOCase.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repos/asf/!svn/ver/1307459/commons/proper/io/trunk/src/main/java/org/apache/commons/io/IOCase.java
+END
+FileSystemUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/repos/asf/!svn/ver/1304052/commons/proper/io/trunk/src/main/java/org/apache/commons/io/FileSystemUtils.java
+END
