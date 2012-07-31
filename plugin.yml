@@ -1087,6 +1087,7 @@ permissions:
       rcmds.pluginmanager.info: true
       rcmds.pluginmanager.help: true
       rcmds.pluginmanager.updatecheck: true
+      rcmds.pluginmanager.updatecheckall: true
       rcmds.pluginmanager.download: true
       rcmds.pluginmanager.findtag: true
       rcmds.pluginmanager.delete: true
@@ -1094,51 +1095,42 @@ permissions:
   rcmds.pluginmanager.load:
     description: Allows you to use PluginManager's load feature.
     default: op
-
   rcmds.pluginmanager.disable:
     description: Allows you to use PluginManager's disable feature.
     default: op
-
   rcmds.pluginmanager.enable:
     description: Allows you to use PluginManager's enable feature.
     default: op
-
   rcmds.pluginmanager.reload:
     description: Allows you to use PluginManager's reload feature.
     default: op
-
   rcmds.pluginmanager.update:
     description: Allows you to use PluginManager's update feature.
     default: op
-
   rcmds.pluginmanager.reloadall:
     description: Allows you to use PluginManager's reloadall feature.
     default: op
-
   rcmds.pluginmanager.list:
     description: Allows you to use PluginManager's list feature.
     default: op
-
   rcmds.pluginmanager.info:
     description: Allows you to use PluginManager's info feature.
     default: op
-
   rcmds.pluginmanager.help:
     description: Allows you to use PluginManager's help feature.
     default: op
-
   rcmds.pluginmanager.updatecheck:
     description: Allows you to use PluginManager's updatecheck feature.
     default: op
-
+  rcmds.pluginmanager.updatecheckall:
+    description: Allows you to use PluginManager's updatecheckall feature.
+    default: op
   rcmds.pluginmanager.download:
     description: Allows you to use PluginManager's download feature.
     default: op
-
   rcmds.pluginmanager.findtag:
     description: Allows you to use PluginManager's findtag feature.
     default: op
-
   rcmds.pluginmanager.delete:
     description: Allows you to use PluginManager's delete feature.
     default: op

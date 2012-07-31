@@ -75,13 +75,13 @@ public class CmdSci implements CommandExecutor {
                             cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
                             return true;
                         }
-                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), plugin.defaultStack, (short) data2);
+                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), RoyalCommands.defaultStack, (short) data2);
                     } else {
-                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), plugin.defaultStack);
+                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), RoyalCommands.defaultStack);
                     }
                     target.getInventory().removeItem(toInv);
-                    cs.sendMessage(ChatColor.BLUE + "Removing " + ChatColor.GRAY + plugin.defaultStack + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " from " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
-                    target.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + plugin.defaultStack + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " taken.");
+                    cs.sendMessage(ChatColor.BLUE + "Removing " + ChatColor.GRAY + RoyalCommands.defaultStack + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " from " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
+                    target.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + RoyalCommands.defaultStack + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " taken.");
                     return true;
                 } else {
                     cs.sendMessage(ChatColor.RED + "You cannot spawn air!");

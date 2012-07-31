@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,7 +12,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.UnknownDependencyException;
-import org.royaldev.royalcommands.FileUtils;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.UnZip;
@@ -338,6 +338,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the plugins");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info [plugin]" + ChatColor.BLUE + " - Displays information about a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheck [plugin] (tag)" + ChatColor.BLUE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheckall" + ChatColor.BLUE + " - Attempts to check for newest version of all plugins");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " download [tag]" + ChatColor.BLUE + " - Attempts to download a plugin from BukkitDev using its tag");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " findtag [search]" + ChatColor.BLUE + " - Searches BukkitDev for a tag to use in download");
                 return true;
@@ -396,11 +397,11 @@ public class CmdPluginManager implements CommandExecutor {
                 String fileName = m.group(1).trim();
                 cs.sendMessage(ChatColor.BLUE + "Creating temporary folder...");
                 File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
-                while (f.exists())
+                while (f.getParentFile().exists())
                     f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
                 if (!fileName.endsWith(".zip") && !fileName.endsWith(".jar")) {
-                    System.out.println(fileName);
                     cs.sendMessage(ChatColor.RED + "The file wasn't a zip or jar file, so it was not downloaded.");
+                    cs.sendMessage(ChatColor.RED + "Filename: " + ChatColor.GRAY + fileName);
                     return true;
                 }
                 f.getParentFile().mkdirs();
@@ -408,7 +409,7 @@ public class CmdPluginManager implements CommandExecutor {
                 try {
                     bos = new BufferedOutputStream(new FileOutputStream(f));
                 } catch (FileNotFoundException e) {
-                    cs.sendMessage(ChatColor.RED + "The temporary download folder was not found. Make sure that plugins/RoyalCommands is writable.");
+                    cs.sendMessage(ChatColor.RED + "The temporary download folder was not found. Make sure that " + ChatColor.GRAY + System.getProperty("java.io.tmpdir") + ChatColor.RED + " is writable.");
                     return true;
                 }
                 int b;
@@ -425,7 +426,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "Decompressing zip...");
                     UnZip.decompress(f.getAbsolutePath(), f.getParent());
                 }
-                for (File fi : f.getParentFile().listFiles()) {
+                for (File fi : FileUtils.listFiles(f.getParentFile(), null, true)) {
                     if (!fi.getName().endsWith(".jar")) continue;
                     cs.sendMessage(ChatColor.BLUE + "Moving " + ChatColor.GRAY + fi.getName() + ChatColor.BLUE + " to plugins folder...");
                     boolean s = fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
@@ -434,10 +435,29 @@ public class CmdPluginManager implements CommandExecutor {
                 }
                 cs.sendMessage(ChatColor.BLUE + "Removing temporary folder...");
                 try {
-                    FileUtils.deleteRecursive(f.getParentFile());
-                } catch (FileNotFoundException ignored) {
+                    FileUtils.deleteDirectory(f.getParentFile());
+                } catch (IOException ignored) {
                 }
                 cs.sendMessage(ChatColor.BLUE + "Downloaded plugin. Use " + ChatColor.GRAY + "/" + label + " load" + ChatColor.BLUE + " to enable it.");
+                return true;
+            } else if (subcmd.equalsIgnoreCase("updatecheckall")) {
+                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.updatecheckall")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                for (Plugin p : pm.getPlugins()) {
+                    String version = p.getDescription().getVersion();
+                    if (version == null) continue;
+                    String checked;
+                    try {
+                        checked = updateCheck(p.getName(), version);
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    if (checked.contains(version)) continue;
+                    cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.BLUE + " may have an update. C: " + ChatColor.GRAY + version + ChatColor.BLUE + " N: " + ChatColor.GRAY + checked);
+                }
+                cs.sendMessage(ChatColor.BLUE + "Finished checking for updates.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("updatecheck")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.updatecheck")) {
@@ -449,6 +469,10 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
+                if (p == null) {
+                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    return true;
+                }
                 String tag = (args.length > 2) ? plugin.getFinalArg(args, 2) : p.getName();
                 try {
                     tag = URLEncoder.encode(tag, "UTF-8");

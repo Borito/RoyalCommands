@@ -10,7 +10,10 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 /**
- * Player configuration manager
+ * Configuration manager
+ *
+ * @author jkcclemens
+ * @see PConfManager
  */
 public class ConfManager {
 
@@ -19,6 +22,8 @@ public class ConfManager {
 
     /**
      * Configuration file manager
+     *
+     * If file does not exist, it will be created.
      *
      * @param filename Filename (local) for the config
      */
@@ -39,6 +44,8 @@ public class ConfManager {
 
     /**
      * Configuration file manager
+     *
+     * If file does not exist, it will be created.
      *
      * @param file File object for the config
      */

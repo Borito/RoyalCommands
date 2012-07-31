@@ -12,6 +12,9 @@ import java.util.List;
 @SuppressWarnings("unused")
 /**
  * Player configuration manager
+ *
+ * @author jkcclemens
+ * @see ConfManager
  */
 public class PConfManager {
 

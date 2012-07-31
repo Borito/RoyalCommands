@@ -26,13 +26,13 @@ public class CmdUsage implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            PluginCommand t = plugin.getCommand(args[0]);
-            if (t == null) {
+            PluginCommand pc = plugin.getServer().getPluginCommand(args[0]);
+            if (pc == null) {
                 cs.sendMessage(ChatColor.RED + "No such command!");
                 return true;
             }
-            cs.sendMessage(t.getDescription());
-            cs.sendMessage(t.getUsage());
+            cs.sendMessage(pc.getDescription());
+            cs.sendMessage(pc.getUsage());
             return true;
         }
         return false;
