@@ -21,14 +21,14 @@ public class UnZip {
             while (e.hasMoreElements()) {
                 entry = (ZipEntry) e.nextElement();
                 if (entry.isDirectory()) {
-                    //System.out.println("Creating directory: " + entry.getName());
                     new File(destinationFolder + File.separator + entry.getName()).mkdir();
                     continue;
                 }
-                //System.out.println("Extracting: " + entry.getName());
                 is = new BufferedInputStream(zipfile.getInputStream(entry));
                 int count;
                 byte data[] = new byte[BUFFER];
+                File f = new File(destinationFolder + File.separator + entry.getName());
+                if (!f.exists()) f.getParentFile().mkdirs();
                 FileOutputStream fos = new FileOutputStream(destinationFolder + File.separator + entry.getName());
                 dest = new BufferedOutputStream(fos, BUFFER);
                 while ((count = is.read(data, 0, BUFFER)) != -1) dest.write(data, 0, count);
@@ -37,6 +37,7 @@ public class UnZip {
                 is.close();
             }
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
     }
 }
