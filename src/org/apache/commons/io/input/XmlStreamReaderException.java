@@ -41,8 +41,6 @@ public class XmlStreamReaderException extends IOException {
 
     private final String xmlEncoding;
 
-    private final String contentTypeMime;
-
     private final String contentTypeEncoding;
 
     /**
@@ -58,7 +56,7 @@ public class XmlStreamReaderException extends IOException {
      */
     public XmlStreamReaderException(String msg, String bomEnc,
                                     String xmlGuessEnc, String xmlEnc) {
-        this(msg, null, null, bomEnc, xmlGuessEnc, xmlEnc);
+        this(msg, null, bomEnc, xmlGuessEnc, xmlEnc);
     }
 
     /**
@@ -68,16 +66,14 @@ public class XmlStreamReaderException extends IOException {
      * Instances of this exception are thrown by the XmlStreamReader.
      *
      * @param msg         message describing the reason for the exception.
-     * @param ctMime      MIME type in the content-type.
      * @param ctEnc       encoding in the content-type.
      * @param bomEnc      BOM encoding.
      * @param xmlGuessEnc XML guess encoding.
      * @param xmlEnc      XML prolog encoding.
      */
-    public XmlStreamReaderException(String msg, String ctMime, String ctEnc,
+    public XmlStreamReaderException(String msg, String ctEnc,
                                     String bomEnc, String xmlGuessEnc, String xmlEnc) {
         super(msg);
-        contentTypeMime = ctMime;
         contentTypeEncoding = ctEnc;
         bomEncoding = bomEnc;
         xmlGuessEncoding = xmlGuessEnc;
@@ -109,17 +105,6 @@ public class XmlStreamReaderException extends IOException {
      */
     public String getXmlEncoding() {
         return xmlEncoding;
-    }
-
-    /**
-     * Returns the MIME type in the content-type used to attempt determining the
-     * encoding.
-     *
-     * @return the MIME type in the content-type, null if there was not
-     *         content-type or the encoding detection did not involve HTTP.
-     */
-    public String getContentTypeMime() {
-        return contentTypeMime;
     }
 
     /**

@@ -38,13 +38,6 @@ import java.util.Comparator;
  *       NameFileComparator.NAME_COMPARATOR.sort(list);
  * </pre>
  * <p/>
- * Example of a <i>reverse case-insensitive</i> file name sort using the
- * {@link #NAME_INSENSITIVE_REVERSE} singleton instance:
- * <pre>
- *       File[] array = ...
- *       NameFileComparator.NAME_INSENSITIVE_REVERSE.sort(array);
- * </pre>
- * <p/>
  *
  * @version $Id: NameFileComparator.java 1304052 2012-03-22 20:55:29Z ggregory $
  * @since 1.4
@@ -57,29 +50,14 @@ public class NameFileComparator extends AbstractFileComparator implements Serial
     public static final Comparator<File> NAME_COMPARATOR = new NameFileComparator();
 
     /**
-     * Reverse case-sensitive name comparator instance (see {@link IOCase#SENSITIVE})
-     */
-    public static final Comparator<File> NAME_REVERSE = new ReverseComparator(NAME_COMPARATOR);
-
-    /**
      * Case-insensitive name comparator instance (see {@link IOCase#INSENSITIVE})
      */
     public static final Comparator<File> NAME_INSENSITIVE_COMPARATOR = new NameFileComparator(IOCase.INSENSITIVE);
 
     /**
-     * Reverse case-insensitive name comparator instance (see {@link IOCase#INSENSITIVE})
-     */
-    public static final Comparator<File> NAME_INSENSITIVE_REVERSE = new ReverseComparator(NAME_INSENSITIVE_COMPARATOR);
-
-    /**
      * System sensitive name comparator instance (see {@link IOCase#SYSTEM})
      */
     public static final Comparator<File> NAME_SYSTEM_COMPARATOR = new NameFileComparator(IOCase.SYSTEM);
-
-    /**
-     * Reverse system sensitive name comparator instance (see {@link IOCase#SYSTEM})
-     */
-    public static final Comparator<File> NAME_SYSTEM_REVERSE = new ReverseComparator(NAME_SYSTEM_COMPARATOR);
 
     /**
      * Whether the comparison is case sensitive.

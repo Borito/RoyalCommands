@@ -21,10 +21,8 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
-import java.nio.charset.CodingErrorAction;
 
 /**
  * {@link OutputStream} implementation that transforms a byte stream to a
@@ -70,7 +68,6 @@ import java.nio.charset.CodingErrorAction;
  * @since 2.0
  */
 public class WriterOutputStream extends OutputStream {
-    private static final int DEFAULT_BUFFER_SIZE = 1024;
 
     private final Writer writer;
     private final CharsetDecoder decoder;
@@ -91,19 +88,6 @@ public class WriterOutputStream extends OutputStream {
     private final CharBuffer decoderOut;
 
     /**
-     * Constructs a new {@link WriterOutputStream} with a default output buffer size of
-     * 1024 characters. The output buffer will only be flushed when it overflows or when
-     * {@link #flush()} or {@link #close()} is called.
-     *
-     * @param writer  the target {@link Writer}
-     * @param decoder the charset decoder
-     * @since 2.1
-     */
-    public WriterOutputStream(Writer writer, CharsetDecoder decoder) {
-        this(writer, decoder, DEFAULT_BUFFER_SIZE, false);
-    }
-
-    /**
      * Constructs a new {@link WriterOutputStream}.
      *
      * @param writer           the target {@link Writer}
@@ -121,79 +105,6 @@ public class WriterOutputStream extends OutputStream {
         this.decoder = decoder;
         this.writeImmediately = writeImmediately;
         decoderOut = CharBuffer.allocate(bufferSize);
-    }
-
-    /**
-     * Constructs a new {@link WriterOutputStream}.
-     *
-     * @param writer           the target {@link Writer}
-     * @param charset          the charset encoding
-     * @param bufferSize       the size of the output buffer in number of characters
-     * @param writeImmediately If <tt>true</tt> the output buffer will be flushed after each
-     *                         write operation, i.e. all available data will be written to the
-     *                         underlying {@link Writer} immediately. If <tt>false</tt>, the
-     *                         output buffer will only be flushed when it overflows or when
-     *                         {@link #flush()} or {@link #close()} is called.
-     */
-    public WriterOutputStream(Writer writer, Charset charset, int bufferSize, boolean writeImmediately) {
-        this(writer,
-                charset.newDecoder()
-                        .onMalformedInput(CodingErrorAction.REPLACE)
-                        .onUnmappableCharacter(CodingErrorAction.REPLACE)
-                        .replaceWith("?"),
-                bufferSize,
-                writeImmediately);
-    }
-
-    /**
-     * Constructs a new {@link WriterOutputStream} with a default output buffer size of
-     * 1024 characters. The output buffer will only be flushed when it overflows or when
-     * {@link #flush()} or {@link #close()} is called.
-     *
-     * @param writer  the target {@link Writer}
-     * @param charset the charset encoding
-     */
-    public WriterOutputStream(Writer writer, Charset charset) {
-        this(writer, charset, DEFAULT_BUFFER_SIZE, false);
-    }
-
-    /**
-     * Constructs a new {@link WriterOutputStream}.
-     *
-     * @param writer           the target {@link Writer}
-     * @param charsetName      the name of the charset encoding
-     * @param bufferSize       the size of the output buffer in number of characters
-     * @param writeImmediately If <tt>true</tt> the output buffer will be flushed after each
-     *                         write operation, i.e. all available data will be written to the
-     *                         underlying {@link Writer} immediately. If <tt>false</tt>, the
-     *                         output buffer will only be flushed when it overflows or when
-     *                         {@link #flush()} or {@link #close()} is called.
-     */
-    public WriterOutputStream(Writer writer, String charsetName, int bufferSize, boolean writeImmediately) {
-        this(writer, Charset.forName(charsetName), bufferSize, writeImmediately);
-    }
-
-    /**
-     * Constructs a new {@link WriterOutputStream} with a default output buffer size of
-     * 1024 characters. The output buffer will only be flushed when it overflows or when
-     * {@link #flush()} or {@link #close()} is called.
-     *
-     * @param writer      the target {@link Writer}
-     * @param charsetName the name of the charset encoding
-     */
-    public WriterOutputStream(Writer writer, String charsetName) {
-        this(writer, charsetName, DEFAULT_BUFFER_SIZE, false);
-    }
-
-    /**
-     * Constructs a new {@link WriterOutputStream} that uses the default character encoding
-     * and with a default output buffer size of 1024 characters. The output buffer will only
-     * be flushed when it overflows or when {@link #flush()} or {@link #close()} is called.
-     *
-     * @param writer the target {@link Writer}
-     */
-    public WriterOutputStream(Writer writer) {
-        this(writer, Charset.defaultCharset(), DEFAULT_BUFFER_SIZE, false);
     }
 
     /**

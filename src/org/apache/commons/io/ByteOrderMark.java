@@ -115,19 +115,6 @@ public class ByteOrderMark implements Serializable {
     }
 
     /**
-     * Return a copy of the BOM's bytes.
-     *
-     * @return a copy of the BOM's bytes
-     */
-    public byte[] getBytes() {
-        byte[] copy = new byte[bytes.length];
-        for (int i = 0; i < bytes.length; i++) {
-            copy[i] = (byte) bytes[i];
-        }
-        return copy;
-    }
-
-    /**
      * Indicates if this BOM's bytes equals another.
      *
      * @param obj The object to compare to

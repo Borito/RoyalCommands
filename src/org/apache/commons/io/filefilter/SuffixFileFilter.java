@@ -20,7 +20,6 @@ import org.apache.commons.io.IOCase;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Filters files based on the suffix (what the filename ends with).
@@ -112,35 +111,6 @@ public class SuffixFileFilter extends AbstractFileFilter implements Serializable
         }
         this.suffixes = new String[suffixes.length];
         System.arraycopy(suffixes, 0, this.suffixes, 0, suffixes.length);
-        this.caseSensitivity = caseSensitivity == null ? IOCase.SENSITIVE : caseSensitivity;
-    }
-
-    /**
-     * Constructs a new Suffix file filter for a list of suffixes.
-     *
-     * @param suffixes the suffixes to allow, must not be null
-     * @throws IllegalArgumentException if the suffix list is null
-     * @throws ClassCastException       if the list does not contain Strings
-     */
-    public SuffixFileFilter(List<String> suffixes) {
-        this(suffixes, IOCase.SENSITIVE);
-    }
-
-    /**
-     * Constructs a new Suffix file filter for a list of suffixes
-     * specifying case-sensitivity.
-     *
-     * @param suffixes        the suffixes to allow, must not be null
-     * @param caseSensitivity how to handle case sensitivity, null means case-sensitive
-     * @throws IllegalArgumentException if the suffix list is null
-     * @throws ClassCastException       if the list does not contain Strings
-     * @since 1.4
-     */
-    public SuffixFileFilter(List<String> suffixes, IOCase caseSensitivity) {
-        if (suffixes == null) {
-            throw new IllegalArgumentException("The list of suffixes must not be null");
-        }
-        this.suffixes = suffixes.toArray(new String[suffixes.size()]);
         this.caseSensitivity = caseSensitivity == null ? IOCase.SENSITIVE : caseSensitivity;
     }
 

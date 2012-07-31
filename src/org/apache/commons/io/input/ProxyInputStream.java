@@ -55,9 +55,9 @@ public abstract class ProxyInputStream extends FilterInputStream {
     @Override
     public int read() throws IOException {
         try {
-            beforeRead(1);
+            beforeRead();
             int b = in.read();
-            afterRead(b != -1 ? 1 : -1);
+            afterRead();
             return b;
         } catch (IOException e) {
             handleIOException(e);
@@ -75,9 +75,9 @@ public abstract class ProxyInputStream extends FilterInputStream {
     @Override
     public int read(byte[] bts) throws IOException {
         try {
-            beforeRead(bts != null ? bts.length : 0);
+            beforeRead();
             int n = in.read(bts);
-            afterRead(n);
+            afterRead();
             return n;
         } catch (IOException e) {
             handleIOException(e);
@@ -97,9 +97,9 @@ public abstract class ProxyInputStream extends FilterInputStream {
     @Override
     public int read(byte[] bts, int off, int len) throws IOException {
         try {
-            beforeRead(len);
+            beforeRead();
             int n = in.read(bts, off, len);
-            afterRead(n);
+            afterRead();
             return n;
         } catch (IOException e) {
             handleIOException(e);
@@ -202,11 +202,10 @@ public abstract class ProxyInputStream extends FilterInputStream {
      * {@link #reset()}. You need to explicitly override those methods if
      * you want to add pre-processing steps also to them.
      *
-     * @param n number of bytes that the caller asked to be read
      * @throws IOException if the pre-processing fails
      * @since 2.0
      */
-    protected void beforeRead(int n) throws IOException {
+    protected void beforeRead() throws IOException {
     }
 
     /**
@@ -222,11 +221,10 @@ public abstract class ProxyInputStream extends FilterInputStream {
      * {@link #reset()}. You need to explicitly override those methods if
      * you want to add post-processing steps also to them.
      *
-     * @param n number of bytes read, or -1 if the end of stream was reached
      * @throws IOException if the post-processing fails
      * @since 2.0
      */
-    protected void afterRead(int n) throws IOException {
+    protected void afterRead() throws IOException {
     }
 
     /**

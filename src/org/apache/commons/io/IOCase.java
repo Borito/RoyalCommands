@@ -131,15 +131,6 @@ public final class IOCase implements Serializable {
         return name;
     }
 
-    /**
-     * Does the object represent case sensitive comparison.
-     *
-     * @return true if case sensitive
-     */
-    public boolean isCaseSensitive() {
-        return sensitive;
-    }
-
     //-----------------------------------------------------------------------
 
     /**
@@ -207,49 +198,6 @@ public final class IOCase implements Serializable {
     public boolean checkEndsWith(String str, String end) {
         int endLen = end.length();
         return str.regionMatches(!sensitive, str.length() - endLen, end, 0, endLen);
-    }
-
-    /**
-     * Checks if one string contains another starting at a specific index using the
-     * case-sensitivity rule.
-     * <p/>
-     * This method mimics parts of {@link String#indexOf(String, int)}
-     * but takes case-sensitivity into account.
-     *
-     * @param str           the string to check, not null
-     * @param strStartIndex the index to start at in str
-     * @param search        the start to search for, not null
-     * @return the first index of the search String,
-     *         -1 if no match or {@code null} string input
-     * @throws NullPointerException if either string is null
-     * @since 2.0
-     */
-    public int checkIndexOf(String str, int strStartIndex, String search) {
-        int endIndex = str.length() - search.length();
-        if (endIndex >= strStartIndex) {
-            for (int i = strStartIndex; i <= endIndex; i++) {
-                if (checkRegionMatches(str, i, search)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Checks if one string contains another at a specific index using the case-sensitivity rule.
-     * <p/>
-     * This method mimics parts of {@link String#regionMatches(boolean, int, String, int, int)}
-     * but takes case-sensitivity into account.
-     *
-     * @param str           the string to check, not null
-     * @param strStartIndex the index to start at in str
-     * @param search        the start to search for, not null
-     * @return true if equal using the case rules
-     * @throws NullPointerException if either string is null
-     */
-    public boolean checkRegionMatches(String str, int strStartIndex, String search) {
-        return str.regionMatches(!sensitive, strStartIndex, search, 0, search.length());
     }
 
     //-----------------------------------------------------------------------

@@ -27,10 +27,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.charset.Charset;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * General file manipulation utilities.
@@ -63,144 +60,9 @@ public class FileUtils {
     }
 
     /**
-     * The number of bytes in a kilobyte.
-     */
-    public static final long ONE_KB = 1024;
-
-    /**
-     * The number of bytes in a kilobyte.
-     *
-     * @since 2.4
-     */
-    public static final BigInteger ONE_KB_BI = BigInteger.valueOf(ONE_KB);
-
-    /**
-     * The number of bytes in a megabyte.
-     */
-    public static final long ONE_MB = ONE_KB * ONE_KB;
-
-    /**
-     * The number of bytes in a megabyte.
-     *
-     * @since 2.4
-     */
-    public static final BigInteger ONE_MB_BI = ONE_KB_BI.multiply(ONE_KB_BI);
-
-    /**
-     * The file copy buffer size (30 MB)
-     */
-    private static final long FILE_COPY_BUFFER_SIZE = ONE_MB * 30;
-
-    /**
-     * The number of bytes in a gigabyte.
-     */
-    public static final long ONE_GB = ONE_KB * ONE_MB;
-
-    /**
-     * The number of bytes in a gigabyte.
-     *
-     * @since 2.4
-     */
-    public static final BigInteger ONE_GB_BI = ONE_KB_BI.multiply(ONE_MB_BI);
-
-    /**
-     * The number of bytes in a terabyte.
-     */
-    public static final long ONE_TB = ONE_KB * ONE_GB;
-
-    /**
-     * The number of bytes in a terabyte.
-     *
-     * @since 2.4
-     */
-    public static final BigInteger ONE_TB_BI = ONE_KB_BI.multiply(ONE_GB_BI);
-
-    /**
-     * The number of bytes in a petabyte.
-     */
-    public static final long ONE_PB = ONE_KB * ONE_TB;
-
-    /**
-     * The number of bytes in a petabyte.
-     *
-     * @since 2.4
-     */
-    public static final BigInteger ONE_PB_BI = ONE_KB_BI.multiply(ONE_TB_BI);
-
-    /**
-     * The number of bytes in an exabyte.
-     */
-    public static final long ONE_EB = ONE_KB * ONE_PB;
-
-    /**
-     * The number of bytes in an exabyte.
-     *
-     * @since 2.4
-     */
-    public static final BigInteger ONE_EB_BI = ONE_KB_BI.multiply(ONE_PB_BI);
-
-    /**
-     * The number of bytes in a zettabyte.
-     */
-    public static final BigInteger ONE_ZB = BigInteger.valueOf(ONE_KB).multiply(BigInteger.valueOf(ONE_EB));
-
-    /**
-     * The number of bytes in a yottabyte.
-     */
-    public static final BigInteger ONE_YB = ONE_KB_BI.multiply(ONE_ZB);
-
-    /**
      * An empty array of type <code>File</code>.
      */
     public static final File[] EMPTY_FILE_ARRAY = new File[0];
-
-    /**
-     * The UTF-8 character set, used to decode octets in URLs.
-     */
-    private static final Charset UTF8 = Charset.forName("UTF-8");
-
-    /**
-     * Tests if the specified <code>File</code> is newer than the reference
-     * <code>File</code>.
-     *
-     * @param file      the <code>File</code> of which the modification date must
-     *                  be compared, must not be {@code null}
-     * @param reference the <code>File</code> of which the modification date
-     *                  is used, must not be {@code null}
-     * @return true if the <code>File</code> exists and has been modified more
-     *         recently than the reference <code>File</code>
-     * @throws IllegalArgumentException if the file is {@code null}
-     * @throws IllegalArgumentException if the reference file is {@code null} or doesn't exist
-     */
-    public static boolean isFileNewer(File file, File reference) {
-        if (reference == null) {
-            throw new IllegalArgumentException("No specified reference file");
-        }
-        if (!reference.exists()) {
-            throw new IllegalArgumentException("The reference file '"
-                    + reference + "' doesn't exist");
-        }
-        return isFileNewer(file, reference.lastModified());
-    }
-
-    /**
-     * Tests if the specified <code>File</code> is newer than the specified
-     * <code>Date</code>.
-     *
-     * @param file the <code>File</code> of which the modification date
-     *             must be compared, must not be {@code null}
-     * @param date the date reference, must not be {@code null}
-     * @return true if the <code>File</code> exists and has been modified
-     *         after the given <code>Date</code>.
-     * @throws IllegalArgumentException if the file is {@code null}
-     * @throws IllegalArgumentException if the date is {@code null}
-     */
-    public static boolean isFileNewer(File file, Date date) {
-        if (date == null) {
-            throw new IllegalArgumentException("No specified date");
-        }
-        return isFileNewer(file, date.getTime());
-    }
 
     /**
      * Counts the size of a directory recursively (sum of the length of all files).
@@ -226,36 +88,6 @@ public class FileUtils {
                     if (size < 0) {
                         break;
                     }
-                }
-            } catch (IOException ioe) {
-                // Ignore exceptions caught when asking if a File is a symlink.
-            }
-        }
-
-        return size;
-    }
-
-    /**
-     * Counts the size of a directory recursively (sum of the length of all files).
-     *
-     * @param directory directory to inspect, must not be {@code null}
-     * @return size of directory in bytes, 0 if directory is security restricted.
-     * @throws NullPointerException if the directory is {@code null}
-     * @since 2.4
-     */
-    public static BigInteger sizeOfDirectoryAsBigInteger(File directory) {
-        checkDirectory(directory);
-
-        final File[] files = directory.listFiles();
-        if (files == null) {  // null if security restricted
-            return BigInteger.ZERO;
-        }
-        BigInteger size = BigInteger.ZERO;
-
-        for (final File file : files) {
-            try {
-                if (!isSymlink(file)) {
-                    size = size.add(BigInteger.valueOf(sizeOf(file)));
                 }
             } catch (IOException ioe) {
                 // Ignore exceptions caught when asking if a File is a symlink.
@@ -311,36 +143,6 @@ public class FileUtils {
     }
 
     /**
-     * Returns the size of the specified file or directory. If the provided
-     * {@link File} is a regular file, then the file's length is returned.
-     * If the argument is a directory, then the size of the directory is
-     * calculated recursively. If a directory or subdirectory is security
-     * restricted, its size will not be included.
-     *
-     * @param file the regular file or directory to return the size
-     *             of (must not be {@code null}).
-     * @return the length of the file, or recursive size of the directory,
-     *         provided (in bytes).
-     * @throws NullPointerException     if the file is {@code null}
-     * @throws IllegalArgumentException if the file does not exist.
-     * @since 2.4
-     */
-    public static BigInteger sizeOfAsBigInteger(File file) {
-
-        if (!file.exists()) {
-            String message = file + " does not exist";
-            throw new IllegalArgumentException(message);
-        }
-
-        if (file.isDirectory()) {
-            return sizeOfDirectoryAsBigInteger(file);
-        } else {
-            return BigInteger.valueOf(file.length());
-        }
-
-    }
-
-    /**
      * Tests if the specified <code>File</code> is newer than the specified
      * time reference.
      *
@@ -356,10 +158,7 @@ public class FileUtils {
         if (file == null) {
             throw new IllegalArgumentException("No specified file");
         }
-        if (!file.exists()) {
-            return false;
-        }
-        return file.lastModified() > timeMillis;
+        return file.exists() && file.lastModified() > timeMillis;
     }
 
     /**
@@ -627,69 +426,4 @@ public class FileUtils {
         return !fileInCanonicalDir.getCanonicalFile().equals(fileInCanonicalDir.getAbsoluteFile());
     }
 
-    /**
-     * Deletes a file, never throwing an exception. If file is a directory, delete it and all sub-directories.
-     * <p/>
-     * The difference between File.delete() and this method are:
-     * <ul>
-     * <li>A directory to be deleted does not have to be empty.</li>
-     * <li>No exceptions are thrown when a file or directory cannot be deleted.</li>
-     * </ul>
-     *
-     * @param file file or directory to delete, can be {@code null}
-     * @return {@code true} if the file or directory was deleted, otherwise
-     *         {@code false}
-     * @since 1.4
-     */
-    public static boolean deleteQuietly(File file) {
-        if (file == null) {
-            return false;
-        }
-        try {
-            if (file.isDirectory()) {
-                cleanDirectory(file);
-            }
-        } catch (Exception ignored) {
-        }
-
-        try {
-            return file.delete();
-        } catch (Exception ignored) {
-            return false;
-        }
-    }
-
-    /**
-     * Makes a directory, including any necessary but nonexistent parent
-     * directories. If a file already exists with specified name but it is
-     * not a directory then an IOException is thrown.
-     * If the directory cannot be created (or does not already exist)
-     * then an IOException is thrown.
-     *
-     * @param directory directory to create, must not be {@code null}
-     * @throws NullPointerException if the directory is {@code null}
-     * @throws IOException          if the directory cannot be created or the file already exists but is not a directory
-     */
-    public static void forceMkdir(File directory) throws IOException {
-        if (directory.exists()) {
-            if (!directory.isDirectory()) {
-                String message =
-                        "File "
-                                + directory
-                                + " exists and is "
-                                + "not a directory. Unable to create directory.";
-                throw new IOException(message);
-            }
-        } else {
-            if (!directory.mkdirs()) {
-                // Double-check that some other thread or process hasn't made
-                // the directory in the background
-                if (!directory.isDirectory()) {
-                    String message =
-                            "Unable to create directory " + directory;
-                    throw new IOException(message);
-                }
-            }
-        }
-    }
 }

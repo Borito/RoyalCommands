@@ -19,7 +19,6 @@ package org.apache.commons.io.filefilter;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,15 +40,6 @@ public class AndFileFilter
      * The list of file filters.
      */
     private final List<IOFileFilter> fileFilters;
-
-    /**
-     * Constructs a new instance of <code>AndFileFilter</code>.
-     *
-     * @since 1.1
-     */
-    public AndFileFilter() {
-        this.fileFilters = new ArrayList<IOFileFilter>();
-    }
 
     /**
      * Constructs a new instance of <code>AndFileFilter</code>
@@ -87,28 +77,6 @@ public class AndFileFilter
      */
     public void addFileFilter(final IOFileFilter ioFileFilter) {
         this.fileFilters.add(ioFileFilter);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<IOFileFilter> getFileFilters() {
-        return Collections.unmodifiableList(this.fileFilters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean removeFileFilter(final IOFileFilter ioFileFilter) {
-        return this.fileFilters.remove(ioFileFilter);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setFileFilters(final List<IOFileFilter> fileFilters) {
-        this.fileFilters.clear();
-        this.fileFilters.addAll(fileFilters);
     }
 
     /**

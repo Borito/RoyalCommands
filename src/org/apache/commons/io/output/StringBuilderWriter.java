@@ -52,15 +52,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
     }
 
     /**
-     * Construct a new instance with the specified {@link StringBuilder}.
-     *
-     * @param builder The String builder
-     */
-    public StringBuilderWriter(StringBuilder builder) {
-        this.builder = builder != null ? builder : new StringBuilder();
-    }
-
-    /**
      * Append a single character to this Writer.
      *
      * @param value The character to append
@@ -137,15 +128,6 @@ public class StringBuilderWriter extends Writer implements Serializable {
         if (value != null) {
             builder.append(value, offset, length);
         }
-    }
-
-    /**
-     * Return the underlying builder.
-     *
-     * @return The underlying builder
-     */
-    public StringBuilder getBuilder() {
-        return builder;
     }
 
     /**

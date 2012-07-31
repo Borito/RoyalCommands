@@ -18,9 +18,6 @@ package org.apache.commons.io.output;
 
 import org.apache.commons.io.input.XmlStreamReader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -52,16 +49,6 @@ public class XmlStreamWriter extends Writer {
 
     /**
      * Construct an new XML stream writer for the specified output stream
-     * with a default encoding of UTF-8.
-     *
-     * @param out The output stream
-     */
-    public XmlStreamWriter(OutputStream out) {
-        this(out, null);
-    }
-
-    /**
-     * Construct an new XML stream writer for the specified output stream
      * with the specified default encoding.
      *
      * @param out             The output stream
@@ -70,49 +57,6 @@ public class XmlStreamWriter extends Writer {
     public XmlStreamWriter(OutputStream out, String defaultEncoding) {
         this.out = out;
         this.defaultEncoding = defaultEncoding != null ? defaultEncoding : "UTF-8";
-    }
-
-    /**
-     * Construct an new XML stream writer for the specified file
-     * with a default encoding of UTF-8.
-     *
-     * @param file The file to write to
-     * @throws FileNotFoundException if there is an error creating or
-     *                               opening the file
-     */
-    public XmlStreamWriter(File file) throws FileNotFoundException {
-        this(file, null);
-    }
-
-    /**
-     * Construct an new XML stream writer for the specified file
-     * with the specified default encoding.
-     *
-     * @param file            The file to write to
-     * @param defaultEncoding The default encoding if not encoding could be detected
-     * @throws FileNotFoundException if there is an error creating or
-     *                               opening the file
-     */
-    public XmlStreamWriter(File file, String defaultEncoding) throws FileNotFoundException {
-        this(new FileOutputStream(file), defaultEncoding);
-    }
-
-    /**
-     * Return the detected encoding.
-     *
-     * @return the detected encoding
-     */
-    public String getEncoding() {
-        return encoding;
-    }
-
-    /**
-     * Return the default encoding.
-     *
-     * @return the default encoding
-     */
-    public String getDefaultEncoding() {
-        return defaultEncoding;
     }
 
     /**

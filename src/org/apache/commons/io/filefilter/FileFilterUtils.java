@@ -22,10 +22,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -148,95 +146,6 @@ public class FileFilterUtils {
      */
     public static List<File> filterList(IOFileFilter filter, Iterable<File> files) {
         return filter(filter, files, new ArrayList<File>());
-    }
-
-    /**
-     * <p>
-     * Applies an {@link IOFileFilter} to the provided {@link File}
-     * objects. The resulting list is a subset of the original files that
-     * matches the provided filter.
-     * </p>
-     * <p/>
-     * <p>
-     * The {@link List} returned by this method is not guaranteed to be thread safe.
-     * </p>
-     * <p/>
-     * <pre>
-     * List&lt;File&gt; filesAndDirectories = ...
-     * List&lt;File&gt; directories = FileFilterUtils.filterList(filesAndDirectories,
-     *     FileFilterUtils.directoryFileFilter());
-     * </pre>
-     *
-     * @param filter the filter to apply to each files in the list.
-     * @param files  the collection of files to apply the filter to.
-     * @return a subset of <code>files</code> that is accepted by the
-     *         file filter.
-     * @throws IllegalArgumentException if the filter is {@code null}
-     *                                  or <code>files</code> contains a {@code null} value.
-     * @since 2.0
-     */
-    public static List<File> filterList(IOFileFilter filter, File... files) {
-        File[] acceptedFiles = filter(filter, files);
-        return Arrays.asList(acceptedFiles);
-    }
-
-    /**
-     * <p>
-     * Applies an {@link IOFileFilter} to the provided {@link File}
-     * objects. The resulting set is a subset of the original file list that
-     * matches the provided filter.
-     * </p>
-     * <p/>
-     * <p>
-     * The {@link Set} returned by this method is not guaranteed to be thread safe.
-     * </p>
-     * <p/>
-     * <pre>
-     * Set&lt;File&gt; allFiles = ...
-     * Set&lt;File&gt; javaFiles = FileFilterUtils.filterSet(allFiles,
-     *     FileFilterUtils.suffixFileFilter(".java"));
-     * </pre>
-     *
-     * @param filter the filter to apply to the set of files.
-     * @param files  the collection of files to apply the filter to.
-     * @return a subset of <code>files</code> that is accepted by the
-     *         file filter.
-     * @throws IllegalArgumentException if the filter is {@code null}
-     *                                  or <code>files</code> contains a {@code null} value.
-     * @since 2.0
-     */
-    public static Set<File> filterSet(IOFileFilter filter, File... files) {
-        File[] acceptedFiles = filter(filter, files);
-        return new HashSet<File>(Arrays.asList(acceptedFiles));
-    }
-
-    /**
-     * <p>
-     * Applies an {@link IOFileFilter} to the provided {@link File}
-     * objects. The resulting set is a subset of the original file list that
-     * matches the provided filter.
-     * </p>
-     * <p/>
-     * <p>
-     * The {@link Set} returned by this method is not guaranteed to be thread safe.
-     * </p>
-     * <p/>
-     * <pre>
-     * Set&lt;File&gt; allFiles = ...
-     * Set&lt;File&gt; javaFiles = FileFilterUtils.filterSet(allFiles,
-     *     FileFilterUtils.suffixFileFilter(".java"));
-     * </pre>
-     *
-     * @param filter the filter to apply to the set of files.
-     * @param files  the collection of files to apply the filter to.
-     * @return a subset of <code>files</code> that is accepted by the
-     *         file filter.
-     * @throws IllegalArgumentException if the filter is {@code null}
-     *                                  or <code>files</code> contains a {@code null} value.
-     * @since 2.0
-     */
-    public static Set<File> filterSet(IOFileFilter filter, Iterable<File> files) {
-        return filter(filter, files, new HashSet<File>());
     }
 
     /**
@@ -372,36 +281,6 @@ public class FileFilterUtils {
     }
 
     //-----------------------------------------------------------------------
-
-    /**
-     * Returns a filter that ANDs the two specified filters.
-     *
-     * @param filter1 the first filter
-     * @param filter2 the second filter
-     * @return a filter that ANDs the two specified filters
-     * @see #and(IOFileFilter...)
-     * @see AndFileFilter
-     * @deprecated use {@link #and(IOFileFilter...)}
-     */
-    @Deprecated
-    public static IOFileFilter andFileFilter(IOFileFilter filter1, IOFileFilter filter2) {
-        return new AndFileFilter(filter1, filter2);
-    }
-
-    /**
-     * Returns a filter that ORs the two specified filters.
-     *
-     * @param filter1 the first filter
-     * @param filter2 the second filter
-     * @return a filter that ORs the two specified filters
-     * @see #or(IOFileFilter...)
-     * @see OrFileFilter
-     * @deprecated use {@link #or(IOFileFilter...)}
-     */
-    @Deprecated
-    public static IOFileFilter orFileFilter(IOFileFilter filter1, IOFileFilter filter2) {
-        return new OrFileFilter(filter1, filter2);
-    }
 
     /**
      * Returns a filter that ANDs the specified filters.
@@ -711,78 +590,5 @@ public class FileFilterUtils {
     }
 
     //-----------------------------------------------------------------------
-    /* Constructed on demand and then cached */
-    private static final IOFileFilter cvsFilter = notFileFilter(
-            and(directoryFileFilter(), nameFileFilter("CVS")));
-
-    /* Constructed on demand and then cached */
-    private static final IOFileFilter svnFilter = notFileFilter(
-            and(directoryFileFilter(), nameFileFilter(".svn")));
-
-    /**
-     * Decorates a filter to make it ignore CVS directories.
-     * Passing in {@code null} will return a filter that accepts everything
-     * except CVS directories.
-     *
-     * @param filter the filter to decorate, null means an unrestricted filter
-     * @return the decorated filter, never null
-     * @since 1.1 (method existed but had bug in 1.0)
-     */
-    public static IOFileFilter makeCVSAware(IOFileFilter filter) {
-        if (filter == null) {
-            return cvsFilter;
-        } else {
-            return and(filter, cvsFilter);
-        }
-    }
-
-    /**
-     * Decorates a filter to make it ignore SVN directories.
-     * Passing in {@code null} will return a filter that accepts everything
-     * except SVN directories.
-     *
-     * @param filter the filter to decorate, null means an unrestricted filter
-     * @return the decorated filter, never null
-     * @since 1.1
-     */
-    public static IOFileFilter makeSVNAware(IOFileFilter filter) {
-        if (filter == null) {
-            return svnFilter;
-        } else {
-            return and(filter, svnFilter);
-        }
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Decorates a filter so that it only applies to directories and not to files.
-     *
-     * @param filter the filter to decorate, null means an unrestricted filter
-     * @return the decorated filter, never null
-     * @see DirectoryFileFilter#DIRECTORY
-     * @since 1.3
-     */
-    public static IOFileFilter makeDirectoryOnly(IOFileFilter filter) {
-        if (filter == null) {
-            return DirectoryFileFilter.DIRECTORY;
-        }
-        return new AndFileFilter(DirectoryFileFilter.DIRECTORY, filter);
-    }
-
-    /**
-     * Decorates a filter so that it only applies to files and not to directories.
-     *
-     * @param filter the filter to decorate, null means an unrestricted filter
-     * @return the decorated filter, never null
-     * @see FileFileFilter#FILE
-     * @since 1.3
-     */
-    public static IOFileFilter makeFileOnly(IOFileFilter filter) {
-        if (filter == null) {
-            return FileFileFilter.FILE;
-        }
-        return new AndFileFilter(FileFileFilter.FILE, filter);
-    }
 
 }

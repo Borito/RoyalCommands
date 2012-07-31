@@ -19,7 +19,6 @@ package org.apache.commons.io.filefilter;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,15 +42,6 @@ public class OrFileFilter
     private final List<IOFileFilter> fileFilters;
 
     /**
-     * Constructs a new instance of <code>OrFileFilter</code>.
-     *
-     * @since 1.1
-     */
-    public OrFileFilter() {
-        this.fileFilters = new ArrayList<IOFileFilter>();
-    }
-
-    /**
      * Constructs a new instance of <code>OrFileFilter</code>
      * with the specified filters.
      *
@@ -67,48 +57,10 @@ public class OrFileFilter
     }
 
     /**
-     * Constructs a new file filter that ORs the result of two other filters.
-     *
-     * @param filter1 the first filter, must not be null
-     * @param filter2 the second filter, must not be null
-     * @throws IllegalArgumentException if either filter is null
-     */
-    public OrFileFilter(IOFileFilter filter1, IOFileFilter filter2) {
-        if (filter1 == null || filter2 == null) {
-            throw new IllegalArgumentException("The filters must not be null");
-        }
-        this.fileFilters = new ArrayList<IOFileFilter>(2);
-        addFileFilter(filter1);
-        addFileFilter(filter2);
-    }
-
-    /**
      * {@inheritDoc}
      */
     public void addFileFilter(final IOFileFilter ioFileFilter) {
         this.fileFilters.add(ioFileFilter);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<IOFileFilter> getFileFilters() {
-        return Collections.unmodifiableList(this.fileFilters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean removeFileFilter(IOFileFilter ioFileFilter) {
-        return this.fileFilters.remove(ioFileFilter);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setFileFilters(final List<IOFileFilter> fileFilters) {
-        this.fileFilters.clear();
-        this.fileFilters.addAll(fileFilters);
     }
 
     /**

@@ -98,35 +98,6 @@ public class BOMInputStream extends ProxyInputStream {
     private boolean markedAtStart;
 
     /**
-     * Constructs a new BOM InputStream that excludes a {@link ByteOrderMark#UTF_8} BOM.
-     *
-     * @param delegate the InputStream to delegate to
-     */
-    public BOMInputStream(InputStream delegate) {
-        this(delegate, false, ByteOrderMark.UTF_8);
-    }
-
-    /**
-     * Constructs a new BOM InputStream that detects a a {@link ByteOrderMark#UTF_8} and optionally includes it.
-     *
-     * @param delegate the InputStream to delegate to
-     * @param include  true to include the UTF-8 BOM or false to exclude it
-     */
-    public BOMInputStream(InputStream delegate, boolean include) {
-        this(delegate, include, ByteOrderMark.UTF_8);
-    }
-
-    /**
-     * Constructs a new BOM InputStream that excludes the specified BOMs.
-     *
-     * @param delegate the InputStream to delegate to
-     * @param boms     The BOMs to detect and exclude
-     */
-    public BOMInputStream(InputStream delegate, ByteOrderMark... boms) {
-        this(delegate, false, boms);
-    }
-
-    /**
      * Compares ByteOrderMark objects in descending length order.
      */
     private static final Comparator<ByteOrderMark> ByteOrderMarkLengthComparator = new Comparator<ByteOrderMark>() {
@@ -161,31 +132,6 @@ public class BOMInputStream extends ProxyInputStream {
         Arrays.sort(boms, ByteOrderMarkLengthComparator);
         this.boms = Arrays.asList(boms);
 
-    }
-
-    /**
-     * Indicates whether the stream contains one of the specified BOMs.
-     *
-     * @return true if the stream has one of the specified BOMs, otherwise false if it does not
-     * @throws IOException if an error reading the first bytes of the stream occurs
-     */
-    public boolean hasBOM() throws IOException {
-        return getBOM() != null;
-    }
-
-    /**
-     * Indicates whether the stream contains the specified BOM.
-     *
-     * @param bom The BOM to check for
-     * @return true if the stream has the specified BOM, otherwise false if it does not
-     * @throws IllegalArgumentException if the BOM is not one the stream is configured to detect
-     * @throws IOException              if an error reading the first bytes of the stream occurs
-     */
-    public boolean hasBOM(ByteOrderMark bom) throws IOException {
-        if (!boms.contains(bom)) {
-            throw new IllegalArgumentException("Stream not configure to detect " + bom);
-        }
-        return byteOrderMark != null && getBOM().equals(bom);
     }
 
     /**

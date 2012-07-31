@@ -127,68 +127,6 @@ public class FileAlterationObserver implements Serializable {
     private final Comparator<File> comparator;
 
     /**
-     * Construct an observer for the specified directory.
-     *
-     * @param directoryName the name of the directory to observe
-     */
-    public FileAlterationObserver(String directoryName) {
-        this(new File(directoryName));
-    }
-
-    /**
-     * Construct an observer for the specified directory and file filter.
-     *
-     * @param directoryName the name of the directory to observe
-     * @param fileFilter    The file filter or null if none
-     */
-    public FileAlterationObserver(String directoryName, FileFilter fileFilter) {
-        this(new File(directoryName), fileFilter);
-    }
-
-    /**
-     * Construct an observer for the specified directory, file filter and
-     * file comparator.
-     *
-     * @param directoryName   the name of the directory to observe
-     * @param fileFilter      The file filter or null if none
-     * @param caseSensitivity what case sensitivity to use comparing file names, null means system sensitive
-     */
-    public FileAlterationObserver(String directoryName, FileFilter fileFilter, IOCase caseSensitivity) {
-        this(new File(directoryName), fileFilter, caseSensitivity);
-    }
-
-    /**
-     * Construct an observer for the specified directory.
-     *
-     * @param directory the directory to observe
-     */
-    public FileAlterationObserver(File directory) {
-        this(directory, (FileFilter) null);
-    }
-
-    /**
-     * Construct an observer for the specified directory and file filter.
-     *
-     * @param directory  the directory to observe
-     * @param fileFilter The file filter or null if none
-     */
-    public FileAlterationObserver(File directory, FileFilter fileFilter) {
-        this(directory, fileFilter, (IOCase) null);
-    }
-
-    /**
-     * Construct an observer for the specified directory, file filter and
-     * file comparator.
-     *
-     * @param directory       the directory to observe
-     * @param fileFilter      The file filter or null if none
-     * @param caseSensitivity what case sensitivity to use comparing file names, null means system sensitive
-     */
-    public FileAlterationObserver(File directory, FileFilter fileFilter, IOCase caseSensitivity) {
-        this(new FileEntry(directory), fileFilter, caseSensitivity);
-    }
-
-    /**
      * Construct an observer for the specified directory, file filter and
      * file comparator.
      *
@@ -224,48 +162,6 @@ public class FileAlterationObserver implements Serializable {
     }
 
     /**
-     * Return the fileFilter.
-     *
-     * @return the fileFilter
-     * @since 2.1
-     */
-    public FileFilter getFileFilter() {
-        return fileFilter;
-    }
-
-    /**
-     * Add a file system listener.
-     *
-     * @param listener The file system listener
-     */
-    public void addListener(final FileAlterationListener listener) {
-        if (listener != null) {
-            listeners.add(listener);
-        }
-    }
-
-    /**
-     * Remove a file system listener.
-     *
-     * @param listener The file system listener
-     */
-    public void removeListener(final FileAlterationListener listener) {
-        if (listener != null) {
-            while (listeners.remove(listener)) {
-            }
-        }
-    }
-
-    /**
-     * Returns the set of registered file system listeners.
-     *
-     * @return The file system listeners
-     */
-    public Iterable<FileAlterationListener> getListeners() {
-        return listeners;
-    }
-
-    /**
      * Initialize the observer.
      *
      * @throws Exception if an error occurs
@@ -278,14 +174,6 @@ public class FileAlterationObserver implements Serializable {
             children[i] = createFileEntry(rootEntry, files[i]);
         }
         rootEntry.setChildren(children);
-    }
-
-    /**
-     * Final processing.
-     *
-     * @throws Exception if an error occurs
-     */
-    public void destroy() throws Exception {
     }
 
     /**

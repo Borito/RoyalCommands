@@ -21,10 +21,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
-import java.nio.charset.CodingErrorAction;
 
 /**
  * {@link InputStream} implementation that reads a character stream from a {@link Reader}
@@ -74,7 +72,6 @@ import java.nio.charset.CodingErrorAction;
  * @since 2.0
  */
 public class ReaderInputStream extends InputStream {
-    private static final int DEFAULT_BUFFER_SIZE = 1024;
 
     private final Reader reader;
     private final CharsetEncoder encoder;
@@ -98,17 +95,6 @@ public class ReaderInputStream extends InputStream {
     /**
      * Construct a new {@link ReaderInputStream}.
      *
-     * @param reader  the target {@link Reader}
-     * @param encoder the charset encoder
-     * @since 2.1
-     */
-    public ReaderInputStream(Reader reader, CharsetEncoder encoder) {
-        this(reader, encoder, DEFAULT_BUFFER_SIZE);
-    }
-
-    /**
-     * Construct a new {@link ReaderInputStream}.
-     *
      * @param reader     the target {@link Reader}
      * @param encoder    the charset encoder
      * @param bufferSize the size of the input buffer in number of characters
@@ -121,64 +107,6 @@ public class ReaderInputStream extends InputStream {
         this.encoderIn.flip();
         this.encoderOut = ByteBuffer.allocate(128);
         this.encoderOut.flip();
-    }
-
-    /**
-     * Construct a new {@link ReaderInputStream}.
-     *
-     * @param reader     the target {@link Reader}
-     * @param charset    the charset encoding
-     * @param bufferSize the size of the input buffer in number of characters
-     */
-    public ReaderInputStream(Reader reader, Charset charset, int bufferSize) {
-        this(reader,
-                charset.newEncoder()
-                        .onMalformedInput(CodingErrorAction.REPLACE)
-                        .onUnmappableCharacter(CodingErrorAction.REPLACE),
-                bufferSize);
-    }
-
-    /**
-     * Construct a new {@link ReaderInputStream} with a default input buffer size of
-     * 1024 characters.
-     *
-     * @param reader  the target {@link Reader}
-     * @param charset the charset encoding
-     */
-    public ReaderInputStream(Reader reader, Charset charset) {
-        this(reader, charset, DEFAULT_BUFFER_SIZE);
-    }
-
-    /**
-     * Construct a new {@link ReaderInputStream}.
-     *
-     * @param reader      the target {@link Reader}
-     * @param charsetName the name of the charset encoding
-     * @param bufferSize  the size of the input buffer in number of characters
-     */
-    public ReaderInputStream(Reader reader, String charsetName, int bufferSize) {
-        this(reader, Charset.forName(charsetName), bufferSize);
-    }
-
-    /**
-     * Construct a new {@link ReaderInputStream} with a default input buffer size of
-     * 1024 characters.
-     *
-     * @param reader      the target {@link Reader}
-     * @param charsetName the name of the charset encoding
-     */
-    public ReaderInputStream(Reader reader, String charsetName) {
-        this(reader, charsetName, DEFAULT_BUFFER_SIZE);
-    }
-
-    /**
-     * Construct a new {@link ReaderInputStream} that uses the default character encoding
-     * with a default input buffer size of 1024 characters.
-     *
-     * @param reader the target {@link Reader}
-     */
-    public ReaderInputStream(Reader reader) {
-        this(reader, Charset.defaultCharset());
     }
 
     /**

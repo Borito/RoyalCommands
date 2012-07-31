@@ -239,10 +239,7 @@ public class MagicNumberFileFilter extends AbstractFileFilter implements
                 randomAccessFile = new RandomAccessFile(file, "r");
                 randomAccessFile.seek(byteOffset);
                 int read = randomAccessFile.read(fileBytes);
-                if (read != magicNumbers.length) {
-                    return false;
-                }
-                return Arrays.equals(this.magicNumbers, fileBytes);
+                return read == magicNumbers.length && Arrays.equals(this.magicNumbers, fileBytes);
             } catch (IOException ioe) {
                 // Do nothing, fall through and do not accept file
             } finally {
