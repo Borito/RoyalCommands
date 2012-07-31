@@ -339,7 +339,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info [plugin]" + ChatColor.BLUE + " - Displays information about a plugin");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheck [plugin] (tag)" + ChatColor.BLUE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheckall" + ChatColor.BLUE + " - Attempts to check for newest version of all plugins");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " download [tag]" + ChatColor.BLUE + " - Attempts to download a plugin from BukkitDev using its tag");
+                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " download [tag] (recursive)" + ChatColor.BLUE + " - Attempts to download a plugin from BukkitDev using its tag - recursive can be \"true\" if you would like the plugin to search for jars in all subdirectories of an archive downloaded");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " findtag [search]" + ChatColor.BLUE + " - Searches BukkitDev for a tag to use in download");
                 return true;
             } else if (subcmd.equalsIgnoreCase("download")) {
@@ -352,6 +352,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "http://dev.bukkit.org/server-mods/" + ChatColor.GRAY + "royalcommands" + ChatColor.RED + "/");
                     return true;
                 }
+                boolean recursive = args.length > 2 && args[2].equalsIgnoreCase("true");
                 cs.sendMessage(ChatColor.BLUE + "Getting download link...");
                 String pluginUrlString = "http://dev.bukkit.org/server-mods/" + args[1].toLowerCase() + "/files.rss";
                 String file;
@@ -426,7 +427,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "Decompressing zip...");
                     UnZip.decompress(f.getAbsolutePath(), f.getParent());
                 }
-                for (File fi : FileUtils.listFiles(f.getParentFile(), null, true)) {
+                for (File fi : FileUtils.listFiles(f.getParentFile(), null, recursive)) {
                     if (!fi.getName().endsWith(".jar")) continue;
 //                  String extraFile = (f.getParent().equals(fi.getParent())) ? "" : fi.getParentFile().getName() + File.separator;
                     cs.sendMessage(ChatColor.BLUE + "Moving " + ChatColor.GRAY + fi.getName() + ChatColor.BLUE + " to plugins folder...");
