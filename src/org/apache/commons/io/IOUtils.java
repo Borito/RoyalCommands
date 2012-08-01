@@ -168,14 +168,32 @@ public class IOUtils {
         }
     }
 
-    // read toByteArray
-    //-----------------------------------------------------------------------
-
-    // read char[]
-    //-----------------------------------------------------------------------
-
-    // read toString
-    //-----------------------------------------------------------------------
+    /**
+     * Unconditionally close an <code>InputStream</code>.
+     * <p/>
+     * Equivalent to {@link InputStream#close()}, except any exceptions will be ignored.
+     * This is typically used in finally blocks.
+     * <p/>
+     * Example code:
+     * <pre>
+     *   byte[] data = new byte[1024];
+     *   InputStream in = null;
+     *   try {
+     *       in = new FileInputStream("foo.txt");
+     *       in.read(data);
+     *       in.close(); //close errors are handled
+     *   } catch (Exception e) {
+     *       // error handling
+     *   } finally {
+     *       IOUtils.closeQuietly(in);
+     *   }
+     * </pre>
+     *
+     * @param input the InputStream to close, may be null or already closed
+     */
+    public static void closeQuietly(InputStream input) {
+        closeQuietly((Closeable) input);
+    }
 
     /**
      * Get the contents of an <code>InputStream</code> as a String
@@ -370,19 +388,6 @@ public class IOUtils {
     public static String toString(byte[] input, String encoding) throws IOException {
         return new String(input, Charsets.toCharset(encoding));
     }
-
-    // readLines
-    //-----------------------------------------------------------------------
-
-    // lineIterator
-    //-----------------------------------------------------------------------
-
-    //-----------------------------------------------------------------------
-
-    //-----------------------------------------------------------------------
-
-    // write byte[]
-    //-----------------------------------------------------------------------
 
     /**
      * Writes bytes from a <code>byte[]</code> to an <code>OutputStream</code>.
