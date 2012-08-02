@@ -50,8 +50,19 @@ public class CmdGamemode implements CommandExecutor {
                     return true;
                 }
                 GameMode toSet = (t.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
+                if (args.length > 1) {
+                    String wantedMode = args[1];
+                    try {
+                        toSet = GameMode.valueOf(wantedMode.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        cs.sendMessage(ChatColor.RED + "Invalid gamemode!");
+                        cs.sendMessage(ChatColor.GRAY + "creative" + ChatColor.RESET + "," + ChatColor.GRAY + " survival" + ChatColor.RESET + ", " + ChatColor.GRAY + "adventure");
+                        return true;
+                    }
+                }
                 t.setGameMode(toSet);
-                cs.sendMessage(ChatColor.BLUE + "You have changed " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + toSet.name().toLowerCase() + ChatColor.BLUE + ".");
+                if (cs instanceof Player && !cs.equals(t))
+                    cs.sendMessage(ChatColor.BLUE + "You have changed " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + toSet.name().toLowerCase() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.BLUE + "Your game mode has been changed to " + ChatColor.GRAY + toSet.name().toLowerCase() + ChatColor.BLUE + ".");
                 return true;
             }
