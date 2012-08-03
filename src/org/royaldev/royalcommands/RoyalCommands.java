@@ -17,11 +17,15 @@ package org.royaldev.royalcommands;
  If forked and not credited, alert him.
  */
 
+import com.griefcraft.lwc.LWCPlugin;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -108,6 +112,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean simpleList = null;
     public Boolean backpackReset = null;
     public Boolean changeNameTag = null;
+    public Boolean dumpCreateChest = null;
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
 
@@ -170,8 +175,22 @@ public class RoyalCommands extends JavaPlugin {
 
     public Logger log = Logger.getLogger("Minecraft");
 
-    VanishPlugin vp = null;
-    TagAPI ta = null;
+    private VanishPlugin vp = null;
+    private WorldGuardPlugin wg = null;
+    private LWCPlugin lwc = null;
+
+    @SuppressWarnings("unused")
+    public boolean canBuild(Player p, Location l) {
+        return wg == null || wg.canBuild(p, l);
+    }
+
+    public boolean canBuild(Player p, Block b) {
+        return wg == null || wg.canBuild(p, b);
+    }
+
+    public boolean canAccessChest(Player p, Block b) {
+        return lwc == null || lwc.getLWC().canAccessProtection(p, b);
+    }
 
     public boolean isVanished(Player p) {
         if (!useVNP) return false;
@@ -221,6 +240,7 @@ public class RoyalCommands extends JavaPlugin {
         simpleList = getConfig().getBoolean("simple_list", true);
         backpackReset = getConfig().getBoolean("reset_backpack_death", false);
         changeNameTag = getConfig().getBoolean("change_nametag", false);
+        dumpCreateChest = getConfig().getBoolean("dump_create_chest", true);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
@@ -478,8 +498,10 @@ public class RoyalCommands extends JavaPlugin {
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new BanWatcher(this), 20, 600);
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new WarnWatcher(this), 20, 12000);
 
-        vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
-        ta = (TagAPI) getServer().getPluginManager().getPlugin("TagAPI");
+        vp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
+        wg = (WorldGuardPlugin) getServer().getPluginManager().getPlugin("WorldGuard");
+        lwc = (LWCPlugin) getServer().getPluginManager().getPlugin("LWC");
+        TagAPI ta = (TagAPI) getServer().getPluginManager().getPlugin("TagAPI");
 
         PluginManager pm = getServer().getPluginManager();
 

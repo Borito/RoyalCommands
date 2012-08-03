@@ -262,12 +262,13 @@ afk_kick_time: 300
 ###
 
 # List of disabled commands. You MUST use full names.
+# e.g. teleport vs tp
 disabled_commands:
 # - god
 # - teleport
 
 ###
-# Nicks
+# Nicks #
 ###
 
 # Prefix to go before nicknames.
@@ -275,3 +276,12 @@ nick_prefix: "*"
 
 # Change name above head? REQUIRES TagAPI. This will not work without it.
 change_nametag: false
+
+###
+# Update to 0.2.5 #
+###
+
+# Should /dump create a new chest or dump into an existing chest?
+# Checks if player can build via WorldGuard, and checks if player can access chest via
+# LWC.
+dump_create_chest: true

@@ -26,6 +26,8 @@
                 <pathelement location="lib/VanishNoPacket.jar"/>
                 <pathelement location="lib/craftbukkit-1.1-R2-SNAPSHOT.jar"/>
                 <pathelement location="lib/TagAPI.jar"/>
+                <pathelement location="lib/WorldGuard.jar"/>
+                <pathelement location="lib/LWC.jar"/>
             </classpath>
         </javac>
     </target>
