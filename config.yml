@@ -285,6 +285,3 @@ change_nametag: false
 # Checks if player can build via WorldGuard, and checks if player can access chest via
 # LWC.
 dump_create_chest: true
-
-# Should /dump use chests from inventory if dump_create_chest is true?
-dump_use_inv: true

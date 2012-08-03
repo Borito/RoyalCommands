@@ -80,25 +80,6 @@ public class CmdDump implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You're not allowed to create blocks there!");
                 return true;
             }
-            if (plugin.dumpUseInv) {
-                if (!p.getInventory().contains(Material.CHEST)) {
-                    cs.sendMessage(ChatColor.RED + "You have no chests to use!");
-                    return true;
-                }
-                int chestAt = -1;
-                for (int i = 0; i < p.getInventory().getContents().length; i++) {
-                    if (p.getInventory().getContents()[i].getType().equals(Material.CHEST)) {
-                        chestAt = i;
-                        break;
-                    }
-                }
-                if (chestAt == -1) {
-                    cs.sendMessage(ChatColor.RED + "You have no chests to use!");
-                }
-                ItemStack chests = p.getInventory().getContents()[chestAt];
-                chests.setAmount(chests.getAmount() - 1);
-                p.getInventory().setItem(chestAt, chests);
-            }
             b.setType(Material.CHEST);
             Chest c = (Chest) b.getState();
             dumpItems(c, p.getInventory());
