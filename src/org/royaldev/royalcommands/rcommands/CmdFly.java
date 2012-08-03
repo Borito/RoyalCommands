@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,7 +45,7 @@ public class CmdFly implements CommandExecutor {
                 }
                 if (t.getAllowFlight()) t.setAllowFlight(false);
                 else t.setAllowFlight(true);
-                String status = (t.getAllowFlight()) ? "on" : "off";
+                String status = BooleanUtils.toStringOnOff(t.getAllowFlight());
                 cs.sendMessage(ChatColor.BLUE + "Toggled flight to " + ChatColor.GRAY + status + ChatColor.BLUE + " on " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.BLUE + "You have had flight toggled to " + ChatColor.GRAY + status + ChatColor.BLUE + ".");
             }

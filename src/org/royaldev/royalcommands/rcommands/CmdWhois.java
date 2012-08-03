@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -45,9 +46,10 @@ public class CmdWhois implements CommandExecutor {
             cs.sendMessage(ChatColor.BLUE + ((t.isOnline()) ? "Whois" : "Whowas") + " for " + ChatColor.GRAY + name);
             cs.sendMessage(ChatColor.BLUE + "Nickname: " + ChatColor.GRAY + dispname);
             cs.sendMessage(ChatColor.BLUE + "IP: " + ChatColor.GRAY + ip);
-            cs.sendMessage(ChatColor.BLUE + "Is VIP: " + ChatColor.GRAY + ((pcm.getBoolean("vip")) ? "yes" : "no"));
-            cs.sendMessage(ChatColor.BLUE + "Is muted: " + ChatColor.GRAY + ((pcm.getBoolean("muted")) ? "yes" : "no"));
-            cs.sendMessage(ChatColor.BLUE + "Is jailed: " + ChatColor.GRAY + ((pcm.getBoolean("jailed")) ? "yes" : "no"));
+            cs.sendMessage(ChatColor.BLUE + "Is VIP: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(pcm.getBoolean("vip")));
+            cs.sendMessage(ChatColor.BLUE + "Is muted: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(pcm.getBoolean("muted")));
+            cs.sendMessage(ChatColor.BLUE + "Is frozen: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(pcm.getBoolean("frozen")));
+            cs.sendMessage(ChatColor.BLUE + "Is jailed: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(pcm.getBoolean("jailed")));
             long timestamp = RUtils.getTimeStamp(t, "seen");
             String lastseen = (timestamp < 0) ? "unknown" : RUtils.formatDateDiff(timestamp);
             cs.sendMessage(ChatColor.BLUE + "Last seen:" + ChatColor.GRAY + ((t.isOnline()) ? " now" : lastseen));
