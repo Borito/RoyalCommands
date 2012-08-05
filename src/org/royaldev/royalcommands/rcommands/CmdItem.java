@@ -37,6 +37,7 @@ public class CmdItem implements CommandExecutor {
             }
             Player p = (Player) cs;
             String item = args[0];
+
             int amount = RoyalCommands.defaultStack;
             if (args.length == 2) {
                 try {
@@ -52,8 +53,16 @@ public class CmdItem implements CommandExecutor {
             }
             ItemStack toInv = RUtils.getItem(item, amount);
             if (toInv == null) {
-                cs.sendMessage(ChatColor.RED + "Invalid item name!");
-                return true;
+                if (plugin.inm != null) {
+                    toInv = RUtils.getItem(plugin.inm.getIDFromAlias(item), amount);
+                    if (toInv == null) {
+                        cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                        return true;
+                    }
+                } else {
+                    cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                    return true;
+                }
             }
             Integer itemid = toInv.getTypeId();
             if (itemid == 0) {

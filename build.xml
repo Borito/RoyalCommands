@@ -38,6 +38,7 @@
             <fileset dir="${build}"/>
             <fileset file="plugin.yml"/>
             <fileset file="config.yml"/>
+            <fileset file="items.csv"/>
             <fileset file="LICENSE"/>
             <fileset file="README.markdown"/>
         </jar>

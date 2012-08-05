@@ -314,6 +314,7 @@ public class RUtils {
      * @return ItemStack or null if no such material
      */
     public static ItemStack getItem(String name, Integer amount) {
+        if (name == null) return null;
         Short data;
         String datas = null;
         name = name.trim().toUpperCase();
@@ -329,7 +330,8 @@ public class RUtils {
         try {
             data = Short.valueOf(datas);
         } catch (Exception e) {
-            data = null;
+            if (datas != null) return null;
+            else data = null;
         }
         Material mat = Material.getMaterial(name);
         if (mat == null) {

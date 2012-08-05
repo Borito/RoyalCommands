@@ -44,6 +44,7 @@ import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
+import org.royaldev.royalcommands.opencsv.CSVReader;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
@@ -56,8 +57,11 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +73,8 @@ import java.util.regex.Pattern;
 public class RoyalCommands extends JavaPlugin {
 
     public ConfManager whl;
+
+    public ItemNameManager inm;
 
     public static File dataFolder;
 
@@ -113,6 +119,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean backpackReset = null;
     public Boolean changeNameTag = null;
     public Boolean dumpCreateChest = null;
+    public Boolean dumpUseInv = null;
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
 
@@ -241,6 +248,7 @@ public class RoyalCommands extends JavaPlugin {
         backpackReset = getConfig().getBoolean("reset_backpack_death", false);
         changeNameTag = getConfig().getBoolean("change_nametag", false);
         dumpCreateChest = getConfig().getBoolean("dump_create_chest", true);
+        dumpUseInv = getConfig().getBoolean("dump_use_inv", true);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
@@ -280,11 +288,24 @@ public class RoyalCommands extends JavaPlugin {
         if (whl.exists()) whitelist = whl.getStringList("whitelist");
 
         Help.reloadHelp();
+
+        try {
+            Reader in = new FileReader(new File(getDataFolder() + File.separator + "items.csv"));
+            inm = new ItemNameManager(new CSVReader(in).readAll());
+        } catch (FileNotFoundException e) {
+            log.warning("items.csv was not found! Item aliases will not be used.");
+            inm = null;
+        } catch (IOException e) {
+            log.warning("Internal input/output error loading items.csv. Item aliases will not be used.");
+            inm = null;
+        }
+
     }
 
     public void loadConfiguration() {
         if (!new File(getDataFolder() + File.separator + "config.yml").exists())
             saveDefaultConfig();
+        if (!new File(getDataFolder() + File.separator + "files.csv").exists()) saveResource("items.csv", false);
         File file = new File(getDataFolder() + File.separator + "userdata" + File.separator);
         boolean exists = file.exists();
         if (!exists) {

@@ -33,8 +33,16 @@ public class CmdGive implements CommandExecutor {
         }
         ItemStack stack = RUtils.getItem(itemname, amount);
         if (stack == null) {
-            target.sendMessage(ChatColor.RED + "Invalid item name!");
-            return false;
+            if (plugin.inm != null) {
+                stack = RUtils.getItem(plugin.inm.getIDFromAlias(itemname), amount);
+                if (stack == null) {
+                    target.sendMessage(ChatColor.RED + "Invalid item name!");
+                    return true;
+                }
+            } else {
+                target.sendMessage(ChatColor.RED + "Invalid item name!");
+                return true;
+            }
         }
         Integer itemid = stack.getTypeId();
         if (itemid == 0) {
@@ -81,8 +89,16 @@ public class CmdGive implements CommandExecutor {
             String name = args[1];
             ItemStack toInv = RUtils.getItem(name, amount);
             if (toInv == null) {
-                cs.sendMessage(ChatColor.RED + "Invalid item name!");
-                return true;
+                if (plugin.inm != null) {
+                    toInv = RUtils.getItem(plugin.inm.getIDFromAlias(name), amount);
+                    if (toInv == null) {
+                        cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                        return true;
+                    }
+                } else {
+                    cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                    return true;
+                }
             }
             Integer itemid = toInv.getTypeId();
             if (itemid == 0) {
