@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -225,7 +225,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
         Player p = event.getPlayer();
         AFKUtils.setLastMove(p, new Date().getTime());
@@ -245,7 +245,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler
-    public void heMan(PlayerChatEvent e) {
+    public void heMan(AsyncPlayerChatEvent e) {
         if (e.isCancelled()) return;
         if (!e.getMessage().matches("(?i)by the power of gr[ae]yskull!?")) return;
         Player p = e.getPlayer();
@@ -275,7 +275,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler()
-    public void onChat(PlayerChatEvent e) {
+    public void onChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
         PConfManager pcm = new PConfManager(p);
         if (pcm.get("ignoredby") == null) return;

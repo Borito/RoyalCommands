@@ -39,7 +39,7 @@ public class SignListener implements Listener {
         return (double) -1;
     }
 
-    @EventHandler()
+    @EventHandler
     public void onInt(PlayerInteractEvent e) {
         if (e.isCancelled()) return;
         if (e.getClickedBlock() == null) return;
