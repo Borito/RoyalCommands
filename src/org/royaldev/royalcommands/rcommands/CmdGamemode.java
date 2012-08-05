@@ -41,11 +41,11 @@ public class CmdGamemode implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (!plugin.isAuthorized(cs, "rcmds.others.gamemode")) {
+                if (!t.equals(cs) && !plugin.isAuthorized(cs, "rcmds.others.gamemode")) {
                     cs.sendMessage(ChatColor.RED + "You can't change other players' gamemodes!");
                     return true;
                 }
-                if (plugin.isAuthorized(t, "rcmds.exempt.gamemode")) {
+                if (!t.equals(cs) && plugin.isAuthorized(t, "rcmds.exempt.gamemode")) {
                     cs.sendMessage(ChatColor.RED + "You cannot change that player's gamemode.");
                     return true;
                 }

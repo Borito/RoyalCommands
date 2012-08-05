@@ -41,8 +41,7 @@ public class CmdSpeak implements CommandExecutor {
                 return true;
             }
             if (plugin.isAuthorized(victim, "rcmds.exempt.speak")) {
-                cs.sendMessage(ChatColor.RED
-                        + "You may not make that player speak.");
+                cs.sendMessage(ChatColor.RED + "You may not make that player speak.");
                 return true;
             }
             victim.chat(plugin.getFinalArg(args, 1));

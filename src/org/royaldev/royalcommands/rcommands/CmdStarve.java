@@ -23,7 +23,6 @@ public class CmdStarve implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
