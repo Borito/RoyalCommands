@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 
 import java.util.HashMap;
 
@@ -53,14 +54,13 @@ public class CmdItem implements CommandExecutor {
             }
             ItemStack toInv = RUtils.getItem(item, amount);
             if (toInv == null) {
-                if (plugin.inm != null) {
-                    toInv = RUtils.getItem(plugin.inm.getIDFromAlias(item), amount);
-                    if (toInv == null) {
-                        cs.sendMessage(ChatColor.RED + "Invalid item name!");
-                        return true;
-                    }
-                } else {
+                try {
+                    toInv = RUtils.getItemFromAlias(item, amount);
+                } catch (InvalidItemNameException e) {
                     cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                    return true;
+                } catch (NullPointerException e) {
+                    cs.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
                     return true;
                 }
             }

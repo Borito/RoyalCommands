@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
 
@@ -590,7 +591,30 @@ public class RUtils {
         return ii;
     }
 
+    /**
+     * Kicks a player.
+     *
+     * @param p      Player to kick
+     * @param reason Reason for kick
+     */
     public static void kickPlayer(Player p, String reason) {
         p.kickPlayer(reason);
+    }
+
+    /**
+     * Gets an ItemStack from an alias and an amount.
+     *
+     * @param alias  Alias of the item name
+     * @param amount Amount of the item to be in the stack
+     * @return ItemStack or null if a) item alias was invalid or b) ItemNameManager isn't loaded
+     */
+    public static ItemStack getItemFromAlias(String alias, int amount) throws InvalidItemNameException, NullPointerException {
+        ItemStack toRet;
+        if (RoyalCommands.inm != null) {
+            toRet = RUtils.getItem(RoyalCommands.inm.getIDFromAlias(alias), amount);
+            if (toRet == null)
+                throw new InvalidItemNameException(alias + " is not a valid alias!");
+        } else throw new NullPointerException("ItemNameManager is not loaded!");
+        return toRet;
     }
 }

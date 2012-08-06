@@ -75,7 +75,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public ConfManager whl;
 
-    public ItemNameManager inm;
+    public static ItemNameManager inm;
 
     public static File dataFolder;
 

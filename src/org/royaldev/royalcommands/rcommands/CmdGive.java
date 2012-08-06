@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 
 import java.util.HashMap;
 
@@ -33,14 +34,13 @@ public class CmdGive implements CommandExecutor {
         }
         ItemStack stack = RUtils.getItem(itemname, amount);
         if (stack == null) {
-            if (plugin.inm != null) {
-                stack = RUtils.getItem(plugin.inm.getIDFromAlias(itemname), amount);
-                if (stack == null) {
-                    target.sendMessage(ChatColor.RED + "Invalid item name!");
-                    return true;
-                }
-            } else {
+            try {
+                stack = RUtils.getItemFromAlias(itemname, amount);
+            } catch (InvalidItemNameException e) {
                 target.sendMessage(ChatColor.RED + "Invalid item name!");
+                return true;
+            } catch (NullPointerException e) {
+                target.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
                 return true;
             }
         }
@@ -89,14 +89,13 @@ public class CmdGive implements CommandExecutor {
             String name = args[1];
             ItemStack toInv = RUtils.getItem(name, amount);
             if (toInv == null) {
-                if (plugin.inm != null) {
-                    toInv = RUtils.getItem(plugin.inm.getIDFromAlias(name), amount);
-                    if (toInv == null) {
-                        cs.sendMessage(ChatColor.RED + "Invalid item name!");
-                        return true;
-                    }
-                } else {
+                try {
+                    toInv = RUtils.getItemFromAlias(name, amount);
+                } catch (InvalidItemNameException e) {
                     cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                    return true;
+                } catch (NullPointerException e) {
+                    cs.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
                     return true;
                 }
             }
