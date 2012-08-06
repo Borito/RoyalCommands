@@ -22,6 +22,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.apache.commons.lang.text.StrBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -148,7 +149,7 @@ public class RoyalCommands extends JavaPlugin {
     public Float explodePower = null;
     public Float maxExplodePower = null;
 
-    private int minVersion = 2244;
+    private int minVersion = 2287;
 
     public static Map<String, Map<String, Object>> commands = null;
     public static Plugin[] plugins = null;
@@ -395,15 +396,20 @@ public class RoyalCommands extends JavaPlugin {
         }
     }
 
-    // getFinalArg taken from EssentialsCommand.java - Essentials by
-    // EssentialsTeam
-    public String getFinalArg(final String[] args, final int start) {
-        final StringBuilder bldr = new StringBuilder();
-        for (int i = start; i < args.length; i++) {
-            if (i != start) bldr.append(" ");
-            bldr.append(args[i]);
+    /**
+     * Joins an array of strings with spaces
+     *
+     * @param array    Array to join
+     * @param position Position to start joining from
+     * @return Joined string
+     */
+    public static String getFinalArg(String[] array, int position) {
+        StrBuilder sb = new StrBuilder();
+        for (int i = position; i < array.length; i++) {
+            sb.append(array[i]);
+            sb.append(" ");
         }
-        return bldr.toString();
+        return sb.substring(0, sb.length() - 1);
     }
 
     // updateCheck() from MilkBowl's Vault
