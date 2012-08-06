@@ -20,7 +20,7 @@ public class TagAPIListener implements Listener {
         PConfManager pcm = new PConfManager(e.getNamedPlayer());
         String dispname = pcm.getString("dispname");
         if (dispname == null) return;
-        if (dispname.toLowerCase().equals(e.getNamedPlayer().getName().toLowerCase())) {
+        if (dispname.equalsIgnoreCase(e.getNamedPlayer().getName())) {
             e.setTag(dispname);
             return;
         }
