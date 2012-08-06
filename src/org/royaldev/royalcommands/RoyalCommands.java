@@ -154,7 +154,7 @@ public class RoyalCommands extends JavaPlugin {
     public static Map<String, Map<String, Object>> commands = null;
     public static Plugin[] plugins = null;
 
-    public Metrics m = null;
+    public MetricsLite ml = null;
 
     // Permissions with Vault
     public Boolean setupPermissions() {
@@ -493,8 +493,8 @@ public class RoyalCommands extends JavaPlugin {
         setupPermissions();
 
         try {
-            m = new Metrics(this);
-            m.start();
+            ml = new MetricsLite(this);
+            ml.start();
         } catch (Exception ignore) {
             log.warning("[RoyalCommands] Could not start Metrics!");
         }
