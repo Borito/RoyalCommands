@@ -6,6 +6,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 // TODO: Make this sync vs async
 
@@ -40,8 +41,15 @@ public class AFKWatcher implements Runnable {
             if (afkKickTime <= 0) continue;
             if (plugin.isAuthorized(p, "rcmds.exempt.afkkick")) return;
             long afkAt = AFKUtils.getAfkTime(p);
-            if (afkAt + (afkKickTime * 1000) < currentTime)
-                RUtils.kickPlayer(p, "You have been AFK for too long!");
+            if (afkAt + (afkKickTime * 1000) < currentTime) {
+                try {
+                    RUtils.scheduleKick(p, "You have been AFK for too long!");
+                } catch (IllegalArgumentException e) {
+                    Logger.getLogger("Minecraft").warning("[RoyalCommands] Could not kick " + p.getName() + " for being AFK: " + e.getMessage());
+                } catch (NullPointerException e) {
+                    Logger.getLogger("Minecraft").warning("[RoyalCommands] Could not kick " + p.getName() + " for being AFK: " + e.getMessage());
+                }
+            }
         }
     }
 

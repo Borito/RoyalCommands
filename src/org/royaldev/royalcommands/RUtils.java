@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
@@ -686,6 +687,29 @@ public class RUtils {
      */
     public static void kickPlayer(Player p, String reason) {
         p.kickPlayer(reason);
+    }
+
+    /**
+     * Schedules a player kick via the Bukkit scheduler. Will run as soon as a spot frees for the event.
+     *
+     * @param p      Player to kick
+     * @param reason Reason for kick
+     * @throws IllegalArgumentException If p or reason is null
+     * @throws NullPointerException     If method could not get the RoyalCommands plugin to schedule with via Bukkit
+     */
+    public static void scheduleKick(final Player p, final String reason) throws IllegalArgumentException, NullPointerException {
+        if (p == null) throw new IllegalArgumentException("Player cannot be null!");
+        if (reason == null) throw new IllegalArgumentException("Reason cannot be null!");
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                p.kickPlayer(reason);
+            }
+        };
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("RoyalCommands");
+        if (plugin == null)
+            throw new NullPointerException("Could not get the RoyalCommands plugin.");
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("RoyalCommands"), r);
     }
 
     /**
