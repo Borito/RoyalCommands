@@ -22,8 +22,18 @@ import java.util.List;
  * @since 0.2.4pre
  */
 public class SerializableCraftInventory implements Serializable {
+
+    /**
+     * Name of the inventory
+     */
     private final String name;
+    /**
+     * List of SISs in the inventory
+     */
     private List<SerializableItemStack> contents = new ArrayList<SerializableItemStack>();
+    /**
+     * Number of slots in the inventory
+     */
     private final int size;
 
     /**

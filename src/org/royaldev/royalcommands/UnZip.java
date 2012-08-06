@@ -11,6 +11,12 @@ import java.util.zip.ZipFile;
 public class UnZip {
     static final int BUFFER = 2048;
 
+    /**
+     * Decompresses a zipped file - respects directories
+     *
+     * @param fileName          File name of the zipped file
+     * @param destinationFolder Folder to unzip in
+     */
     public static void decompress(String fileName, String destinationFolder) {
         try {
             BufferedOutputStream dest;

@@ -19,10 +19,25 @@ import java.util.Map;
  */
 public class SerializableItemStack implements Serializable {
 
+    /**
+     * Amount of items in the ItemStack - defaults to 0
+     */
     private int amount = 0;
+    /**
+     * Durability, or damage, of the items in the ItemStack - defaults to 0
+     */
     private short durability = 0;
+    /**
+     * Item ID of the ItemStack - defaults to 0
+     */
     private int type = 0;
+    /**
+     * Map containing enchantments and their respective levels on this ItemStack - defaults to an empty map
+     */
     private Map<SerializableCraftEnchantment, Integer> enchantments = new HashMap<SerializableCraftEnchantment, Integer>();
+    /**
+     * Material data on this ItemStack - defaults to 0
+     */
     private byte materialData = 0;
 
     /**

@@ -85,6 +85,13 @@ public class RUtils {
         AIR_MATERIALS_TARGET.add((byte) Material.STATIONARY_WATER.getId());
     }
 
+    /**
+     * Wraps text to fit evenly in the chat box
+     *
+     * @param text Text to wrap
+     * @param len  Length to wrap at
+     * @return Array of strings
+     */
     public static String[] wrapText(String text, int len) {
         // return empty array for null text
         if (text == null)
@@ -135,6 +142,12 @@ public class RUtils {
         return ret;
     }
 
+    /**
+     * Gets the block the player is looking at
+     *
+     * @param p Player to get block from
+     * @return Block player is looking at
+     */
     public static Block getTarget(Player p) {
         return p.getTargetBlock(AIR_MATERIALS_TARGET, 300);
     }
@@ -160,6 +173,12 @@ public class RUtils {
         return ret;
     }
 
+    /**
+     * Shows a chest filled of an item to player
+     *
+     * @param p    Player to show chest to
+     * @param name Name of item to fill chest with
+     */
     public static void showFilledChest(Player p, String name) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST);
         ItemStack stack = getItem(name, 64);
@@ -167,10 +186,22 @@ public class RUtils {
         p.openInventory(inv);
     }
 
+    /**
+     * Shows a temporary empty chest to the player
+     *
+     * @param player Player to show chest to
+     */
     public static void showEmptyChest(Player player) {
         player.openInventory(Bukkit.createInventory(null, InventoryType.CHEST));
     }
 
+    /**
+     * Charges a CommandSender an amount of money
+     *
+     * @param cs     CommandSender to charge
+     * @param amount Amount to charge cs
+     * @return true if transaction was successful, false if otherwise
+     */
     public static boolean chargePlayer(CommandSender cs, double amount) {
         if (RoyalCommands.economy == null) {
             cs.sendMessage(ChatColor.RED + "No economy! Continuing without charging.");
@@ -189,16 +220,33 @@ public class RUtils {
         return true;
     }
 
+    /**
+     * Sends the standard message of no permission to console and command sender
+     *
+     * @param cs CommandSender to send message to
+     */
     public static void dispNoPerms(CommandSender cs) {
         cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
         log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
     }
 
+    /**
+     * Displays a no permissions message to the command sender and console/
+     *
+     * @param cs      CommandSender to send message to
+     * @param message Custom message to send
+     */
     public static void dispNoPerms(CommandSender cs, String message) {
         cs.sendMessage(message);
         log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
     }
 
+    /**
+     * Returns the Double from a String
+     *
+     * @param number String to get double from
+     * @return Double or null if string was not a valid double
+     */
     public static Double getDouble(String number) {
         try {
             return Double.valueOf(number);
@@ -207,6 +255,12 @@ public class RUtils {
         }
     }
 
+    /**
+     * Returns the Integer from a String
+     *
+     * @param number String to get int from
+     * @return Integer or null if string was not a valid integer
+     */
     public static Integer getInt(String number) {
         try {
             return Integer.valueOf(number);
@@ -215,6 +269,13 @@ public class RUtils {
         }
     }
 
+    /**
+     * Checks to see if the timestamp is greater than the current time.
+     *
+     * @param p     OfflinePlayer to check for
+     * @param title Path of timestamp to check
+     * @return true if the timestamp has not been passed, false if otherwie
+     */
     public static boolean isTimeStampValid(OfflinePlayer p, String title) {
         PConfManager pcm = new PConfManager(p);
         if (pcm.get(title) == null) return false;
@@ -223,11 +284,25 @@ public class RUtils {
         return time < overall;
     }
 
+    /**
+     * Sets a timestamp in a player's userdata file
+     *
+     * @param p       OfflinePlayer to set the timestamp on
+     * @param seconds Seconds relative to the current time for timestamp
+     * @param title   Path to timestamp
+     */
     public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
         PConfManager pcm = new PConfManager(p);
         pcm.setLong((seconds * 1000) + new Date().getTime(), title);
     }
 
+    /**
+     * Gets a timestamp from a player's userdata file.
+     *
+     * @param p     OfflinePlayer to get timestamp from
+     * @param title Path of timestamp
+     * @return timestamp or -1 if there was no such timestamp
+     */
     public static long getTimeStamp(OfflinePlayer p, String title) {
         PConfManager pcm = new PConfManager(p);
         if (pcm.get(title) == null) return -1;
@@ -294,11 +369,23 @@ public class RUtils {
         return sb.toString();
     }
 
+    /**
+     * Checks to see if teleport is allowed for the specified OfflinePlayer
+     *
+     * @param p OfflinePlayer to check teleportation status on
+     * @return true or false
+     */
     public static boolean isTeleportAllowed(OfflinePlayer p) {
         PConfManager pcm = new PConfManager(p);
         return pcm.get("allow-tp") == null || pcm.getBoolean("allow-tp");
     }
 
+    /**
+     * Replaces raw color codes with processed color codes
+     *
+     * @param text String with codes to be converted
+     * @return Processed string
+     */
     public static String colorize(String text) {
         if (text == null) return null;
         return text.replaceAll("(&([a-f0-9k-or]))", "\u00A7$2");
@@ -606,7 +693,9 @@ public class RUtils {
      *
      * @param alias  Alias of the item name
      * @param amount Amount of the item to be in the stack
-     * @return ItemStack or null if a) item alias was invalid or b) ItemNameManager isn't loaded
+     * @return ItemStack
+     * @throws InvalidItemNameException If item alias is not valid
+     * @throws NullPointerException     If ItemNameManager is not loaded
      */
     public static ItemStack getItemFromAlias(String alias, int amount) throws InvalidItemNameException, NullPointerException {
         ItemStack toRet;
