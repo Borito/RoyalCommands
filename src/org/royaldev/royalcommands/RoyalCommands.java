@@ -73,18 +73,39 @@ import java.util.regex.Pattern;
 
 public class RoyalCommands extends JavaPlugin {
 
-    public ConfManager whl;
-
-    public static ItemNameManager inm;
-
-    public static File dataFolder;
+    //--- Globals ---//
 
     public static Permission permission = null;
     public static Economy economy = null;
     public static Chat chat = null;
+    public static Map<String, Map<String, Object>> commands = null;
+    public static Plugin[] plugins = null;
+    public static File dataFolder;
+    public static ItemNameManager inm;
 
+    public ConfManager whl;
+    public Logger log = Logger.getLogger("Minecraft");
     public String version = null;
     public String newVersion = null;
+    public MetricsLite ml = null;
+
+    //--- Privates ---//
+
+    private int minVersion = 2287;
+
+    private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
+    private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
+    private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
+    private final SignListener signListener = new SignListener(this);
+    private final MonitorListener monitorListener = new MonitorListener(this);
+
+    private VanishPlugin vp = null;
+    private WorldGuardPlugin wg = null;
+    private LWCPlugin lwc = null;
+
+    //--- Configuration options ---//
+
+    //-- String lists --//
 
     public List<String> muteCmds = new ArrayList<String>();
     public List<String> blockedItems = new ArrayList<String>();
@@ -94,8 +115,12 @@ public class RoyalCommands extends JavaPlugin {
     public List<String> logBlacklist = new ArrayList<String>();
     public static List<String> disabledCommands = new ArrayList<String>();
 
+    //-- ConfigurationSections --//
+
     public ConfigurationSection homeLimits = null;
     public ConfigurationSection warnActions = null;
+
+    //-- Booleans --//
 
     public Boolean showcommands = null;
     public Boolean disablegetip = null;
@@ -124,6 +149,8 @@ public class RoyalCommands extends JavaPlugin {
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
 
+    //-- Strings --//
+
     public String banMessage = null;
     public String kickMessage = null;
     public String defaultWarn = null;
@@ -134,58 +161,30 @@ public class RoyalCommands extends JavaPlugin {
     public String nickPrefix = null;
     public String whoGroupFormat = null;
 
+    //-- Integers --//
+
     public Integer spawnmobLimit = null;
     public Integer helpAmount = null;
     public static Integer defaultStack = null;
+
+    //-- Doubles --//
 
     public Double maxNear = null;
     public Double defaultNear = null;
     public Double gTeleCd = null;
 
+    //-- Longs --//
+
     public Long afkKickTime = null;
     public Long afkAutoTime = null;
     public Long warnExpireTime = null;
 
+    //-- Floats --//
+
     public Float explodePower = null;
     public Float maxExplodePower = null;
 
-    private int minVersion = 2287;
-
-    public static Map<String, Map<String, Object>> commands = null;
-    public static Plugin[] plugins = null;
-
-    public MetricsLite ml = null;
-
-    // Permissions with Vault
-    public Boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) permission = permissionProvider.getProvider();
-        return (permission != null);
-    }
-
-    public Boolean setupChat() {
-        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) chat = chatProvider.getProvider();
-        return (chat != null);
-    }
-
-    private Boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) economy = economyProvider.getProvider();
-        return (economy != null);
-    }
-
-    private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
-    private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
-    private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
-    private final SignListener signListener = new SignListener(this);
-    private final MonitorListener monitorListener = new MonitorListener(this);
-
-    public Logger log = Logger.getLogger("Minecraft");
-
-    private VanishPlugin vp = null;
-    private WorldGuardPlugin wg = null;
-    private LWCPlugin lwc = null;
+    //--- Public methods ---//
 
     @SuppressWarnings("unused")
     public boolean canBuild(Player p, Location l) {
@@ -222,6 +221,125 @@ public class RoyalCommands extends JavaPlugin {
         for (Player p : getServer().getOnlinePlayers()) if (isVanished(p)) hid++;
         return hid;
     }
+
+    public void createDefault(File f, String def) {
+        if (!f.exists()) {
+            try {
+                boolean success = f.createNewFile();
+                if (success) {
+                    try {
+                        FileWriter fstream = new FileWriter(f.getAbsolutePath());
+                        BufferedWriter out = new BufferedWriter(fstream);
+                        out.write(def);
+                        out.close();
+                    } catch (Exception e) {
+                        log.severe("[RoyalCommands] Could not write to a config.");
+                        e.printStackTrace();
+                    }
+                    log.info("[RoyalCommands] Created config file.");
+                }
+            } catch (Exception e) {
+                log.severe("[RoyalCommands] Failed to create file!");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean isAuthorized(final OfflinePlayer p, final String node) {
+        String world = getServer().getWorlds().get(0).getName();
+        return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || (RoyalCommands.permission.has(world, p.getName(), "rcmds.admin") || RoyalCommands.permission.has(world, p.getName(), node));
+    }
+
+    public boolean isAuthorized(final Player player, final String node) {
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), "rcmds.admin") || RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), node));
+    }
+
+    public boolean isAuthorized(final CommandSender player, final String node) {
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+    }
+
+    public void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
+        if (RoyalCommands.disabledCommands.contains(command)) return;
+        jp.getCommand(command).setExecutor(ce);
+    }
+
+    public boolean versionCheck() {
+        // If someone happens to be looking through this and knows a better way, let me know.
+        if (!checkVersion) return true;
+        Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
+        Matcher m = p.matcher(getServer().getVersion());
+        if (!m.matches() || m.groupCount() < 1) {
+            log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
+            return true;
+        }
+        Integer currentVersion = RUtils.getInt(m.group(1));
+        return currentVersion == null || currentVersion >= minVersion;
+    }
+
+    // updateCheck() from MilkBowl's Vault
+    public String updateCheck(String currentVersion) throws Exception {
+        String pluginUrlString = "http://dev.bukkit.org/server-mods/royalcommands/files.rss";
+        try {
+            URL url = new URL(pluginUrlString);
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
+            doc.getDocumentElement().normalize();
+            NodeList nodes = doc.getElementsByTagName("item");
+            Node firstNode = nodes.item(0);
+            if (firstNode.getNodeType() == 1) {
+                Element firstElement = (Element) firstNode;
+                NodeList firstElementTagName = firstElement.getElementsByTagName("title");
+                Element firstNameElement = (Element) firstElementTagName.item(0);
+                NodeList firstNodes = firstNameElement.getChildNodes();
+                return firstNodes.item(0).getNodeValue();
+            }
+        } catch (Exception ignored) {
+        }
+        return currentVersion;
+    }
+
+    //-- Static methods --//
+
+    public static boolean hasPerm(final CommandSender player, final String node) {
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+    }
+
+    /**
+     * Joins an array of strings with spaces
+     *
+     * @param array    Array to join
+     * @param position Position to start joining from
+     * @return Joined string
+     */
+    public static String getFinalArg(String[] array, int position) {
+        StrBuilder sb = new StrBuilder();
+        for (int i = position; i < array.length; i++) {
+            sb.append(array[i]);
+            sb.append(" ");
+        }
+        return sb.substring(0, sb.length() - 1);
+    }
+
+    //--- Private methods ---//
+
+    private Boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) permission = permissionProvider.getProvider();
+        return (permission != null);
+    }
+
+    private Boolean setupChat() {
+        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (chatProvider != null) chat = chatProvider.getProvider();
+        return (chat != null);
+    }
+
+    private Boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) economy = economyProvider.getProvider();
+        return (economy != null);
+    }
+
+    //--- Reload configuration values ---//
 
     public void reloadConfigVals() {
         showcommands = getConfig().getBoolean("view_commands", true);
@@ -303,10 +421,13 @@ public class RoyalCommands extends JavaPlugin {
 
     }
 
+    //--- Load initial configuration ---//
+
     public void loadConfiguration() {
         if (!new File(getDataFolder() + File.separator + "config.yml").exists())
             saveDefaultConfig();
-        if (!new File(getDataFolder() + File.separator + "files.csv").exists()) saveResource("items.csv", false);
+        if (!new File(getDataFolder() + File.separator + "files.csv").exists())
+            saveResource("items.csv", false);
         File file = new File(getDataFolder() + File.separator + "userdata" + File.separator);
         boolean exists = file.exists();
         if (!exists) {
@@ -373,102 +494,11 @@ public class RoyalCommands extends JavaPlugin {
         createDefault(new File(getDataFolder() + File.separator + "warps.yml"), "warps:");
     }
 
-    public void createDefault(File f, String def) {
-        if (!f.exists()) {
-            try {
-                boolean success = f.createNewFile();
-                if (success) {
-                    try {
-                        FileWriter fstream = new FileWriter(f.getAbsolutePath());
-                        BufferedWriter out = new BufferedWriter(fstream);
-                        out.write(def);
-                        out.close();
-                    } catch (Exception e) {
-                        log.severe("[RoyalCommands] Could not write to a config.");
-                        e.printStackTrace();
-                    }
-                    log.info("[RoyalCommands] Created config file.");
-                }
-            } catch (Exception e) {
-                log.severe("[RoyalCommands] Failed to create file!");
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * Joins an array of strings with spaces
-     *
-     * @param array    Array to join
-     * @param position Position to start joining from
-     * @return Joined string
-     */
-    public static String getFinalArg(String[] array, int position) {
-        StrBuilder sb = new StrBuilder();
-        for (int i = position; i < array.length; i++) {
-            sb.append(array[i]);
-            sb.append(" ");
-        }
-        return sb.substring(0, sb.length() - 1);
-    }
-
-    // updateCheck() from MilkBowl's Vault
-    public String updateCheck(String currentVersion) throws Exception {
-        String pluginUrlString = "http://dev.bukkit.org/server-mods/royalcommands/files.rss";
-        try {
-            URL url = new URL(pluginUrlString);
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
-            doc.getDocumentElement().normalize();
-            NodeList nodes = doc.getElementsByTagName("item");
-            Node firstNode = nodes.item(0);
-            if (firstNode.getNodeType() == 1) {
-                Element firstElement = (Element) firstNode;
-                NodeList firstElementTagName = firstElement.getElementsByTagName("title");
-                Element firstNameElement = (Element) firstElementTagName.item(0);
-                NodeList firstNodes = firstNameElement.getChildNodes();
-                return firstNodes.item(0).getNodeValue();
-            }
-        } catch (Exception ignored) {
-        }
-        return currentVersion;
-    }
-
-    public static boolean hasPerm(final CommandSender player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
-    }
-
-    public boolean isAuthorized(final OfflinePlayer p, final String node) {
-        String world = getServer().getWorlds().get(0).getName();
-        return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || (RoyalCommands.permission.has(world, p.getName(), "rcmds.admin") || RoyalCommands.permission.has(world, p.getName(), node));
-    }
-
-    public boolean isAuthorized(final Player player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), "rcmds.admin") || RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), node));
-    }
-
-    public boolean isAuthorized(final CommandSender player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
-    }
-
-    public void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
-        if (RoyalCommands.disabledCommands.contains(command)) return;
-        jp.getCommand(command).setExecutor(ce);
-    }
-
-    public boolean versionCheck() {
-        // If someone happens to be looking through this and knows a better way, let me know.
-        if (!checkVersion) return true;
-        Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
-        Matcher m = p.matcher(getServer().getVersion());
-        if (!m.matches() || m.groupCount() < 1) {
-            log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
-            return true;
-        }
-        Integer currentVersion = RUtils.getInt(m.group(1));
-        return currentVersion == null || currentVersion >= minVersion;
-    }
+    //--- onEnable() ---//
 
     public void onEnable() {
+
+        //-- Set globals --//
 
         dataFolder = getDataFolder();
 
@@ -477,8 +507,23 @@ public class RoyalCommands extends JavaPlugin {
         commands = getDescription().getCommands();
         plugins = getServer().getPluginManager().getPlugins();
 
+        version = getDescription().getVersion();
+
+        //-- Hidendra's Metrics --//
+
+        try {
+            ml = new MetricsLite(this);
+            ml.start();
+        } catch (Exception ignore) {
+            log.warning("[RoyalCommands] Could not start Metrics!");
+        }
+
+        //-- Get configs --//
+
         loadConfiguration();
         reloadConfigVals();
+
+        //-- Check CB version --//
 
         if (!versionCheck()) {
             log.severe("[RoyalCommands] This version of CraftBukkit is too old to run RoyalCommands!");
@@ -488,18 +533,13 @@ public class RoyalCommands extends JavaPlugin {
             return;
         }
 
+        //-- Set up Vault --//
+
         setupEconomy();
         setupChat();
         setupPermissions();
 
-        try {
-            ml = new MetricsLite(this);
-            ml.start();
-        } catch (Exception ignore) {
-            log.warning("[RoyalCommands] Could not start Metrics!");
-        }
-
-        version = getDescription().getVersion();
+        //-- Schedule tasks --//
 
         // yet again, borrowed from MilkBowl
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
@@ -525,10 +565,14 @@ public class RoyalCommands extends JavaPlugin {
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new BanWatcher(this), 20, 600);
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new WarnWatcher(this), 20, 12000);
 
+        //-- Get dependencies --//
+
         vp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
         wg = (WorldGuardPlugin) getServer().getPluginManager().getPlugin("WorldGuard");
         lwc = (LWCPlugin) getServer().getPluginManager().getPlugin("LWC");
         TagAPI ta = (TagAPI) getServer().getPluginManager().getPlugin("TagAPI");
+
+        //-- Register events --//
 
         PluginManager pm = getServer().getPluginManager();
 
@@ -539,6 +583,8 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(monitorListener, this);
         if (ta != null && changeNameTag)
             pm.registerEvents(new TagAPIListener(this), this);
+
+        //-- Register commands --//
 
         registerCommand(new CmdLevel(this), "level", this);
         registerCommand(new CmdSetlevel(this), "setlevel", this);
@@ -678,11 +724,21 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdPluginManager(this), "pluginmanager", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
+        //-- We're done! --//
+
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
     }
 
+    //--- onDisable() ---//
+
     public void onDisable() {
+
+        //-- Cancel scheduled tasks --//
+
         getServer().getScheduler().cancelTasks(this);
+
+        //-- We're done! --//
+
         log.info("[RoyalCommands] RoyalCommands v" + version + " disabled.");
     }
 
