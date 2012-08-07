@@ -32,8 +32,9 @@ public class CmdGetID implements CommandExecutor {
             ItemStack hand = p.getItemInHand();
             int id = hand.getTypeId();
             int damage = hand.getDurability();
+            int data = hand.getData().getData();
             String name = RUtils.getItemName(hand);
-            cs.sendMessage(ChatColor.GRAY + name + ChatColor.BLUE + ": " + ChatColor.GRAY + id + ChatColor.BLUE + " (damage: " + ChatColor.GRAY + damage + ChatColor.BLUE + ")");
+            cs.sendMessage(ChatColor.GRAY + name + ChatColor.BLUE + ": " + ChatColor.GRAY + id + ChatColor.BLUE + " (damage: " + ChatColor.GRAY + damage + ChatColor.BLUE + ", materialdata: " + ChatColor.GRAY + data + ChatColor.BLUE + ")");
             return true;
         }
         return false;
