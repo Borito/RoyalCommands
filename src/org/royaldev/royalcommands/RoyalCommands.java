@@ -426,7 +426,7 @@ public class RoyalCommands extends JavaPlugin {
     public void loadConfiguration() {
         if (!new File(getDataFolder() + File.separator + "config.yml").exists())
             saveDefaultConfig();
-        if (!new File(getDataFolder() + File.separator + "files.csv").exists())
+        if (!new File(getDataFolder() + File.separator + "items.csv").exists())
             saveResource("items.csv", false);
         File file = new File(getDataFolder() + File.separator + "userdata" + File.separator);
         boolean exists = file.exists();
