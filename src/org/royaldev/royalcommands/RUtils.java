@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -729,5 +730,11 @@ public class RUtils {
                 throw new InvalidItemNameException(alias + " is not a valid alias!");
         } else throw new NullPointerException("ItemNameManager is not loaded!");
         return toRet;
+    }
+
+    public static String getMVWorldName(World w) {
+        if (w == null) throw new NullPointerException("w can't be null!");
+        if (!RoyalCommands.multiverseNames || RoyalCommands.mvc == null) return w.getName();
+        return RoyalCommands.mvc.getMVWorldManager().getMVWorld(w).getColoredWorldString();
     }
 }

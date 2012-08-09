@@ -90,16 +90,17 @@ public class CmdTime implements CommandExecutor {
             if (args.length < 1) {
                 if (!(cs instanceof Player))
                     for (World w : plugin.getServer().getWorlds()) {
+                        String name = RUtils.getMVWorldName(w);
                         long ticks = w.getTime();
                         Map<String, String> times = getRealTime(ticks);
-                        cs.sendMessage(ChatColor.BLUE + "The current time in " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + " is " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
+                        cs.sendMessage(ChatColor.BLUE + "The current time in " + ChatColor.GRAY + name + ChatColor.BLUE + " is " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
                     }
                 else {
                     Player p = (Player) cs;
                     World w = p.getWorld();
                     long ticks = w.getTime();
                     Map<String, String> times = getRealTime(ticks);
-                    cs.sendMessage(ChatColor.BLUE + "The current time in " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + " is " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
+                    cs.sendMessage(ChatColor.BLUE + "The current time in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + " is " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
                 }
                 return true;
             }
@@ -124,7 +125,7 @@ public class CmdTime implements CommandExecutor {
                     w = plugin.getServer().getWorld(args[0]);
                     ticks = w.getTime();
                     Map<String, String> times = getRealTime(ticks);
-                    cs.sendMessage(ChatColor.BLUE + "The current time in " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + " is " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
+                    cs.sendMessage(ChatColor.BLUE + "The current time in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + " is " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
                     return true;
                 }
                 cs.sendMessage(ChatColor.RED + "Invalid time specified!");
@@ -140,7 +141,7 @@ public class CmdTime implements CommandExecutor {
             } else {
                 if (plugin.smoothTime) smoothTimeChange(ticks, w);
                 else w.setTime(ticks);
-                cs.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + " to " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
+                cs.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + " to " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
             }
             return true;
 

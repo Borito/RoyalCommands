@@ -28,6 +28,7 @@
                 <pathelement location="lib/TagAPI.jar"/>
                 <pathelement location="lib/WorldGuard.jar"/>
                 <pathelement location="lib/LWC.jar"/>
+                <pathelement location="lib/Multiverse-Core-2.4.jar"/>
             </classpath>
         </javac>
     </target>

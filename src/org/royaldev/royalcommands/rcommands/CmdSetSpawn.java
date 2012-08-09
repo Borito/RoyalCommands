@@ -42,7 +42,7 @@ public class CmdSetSpawn implements CommandExecutor {
             spawns.setDouble(x, "spawns." + w + ".x");
             spawns.setDouble(y, "spawns." + w + ".y");
             spawns.setDouble(z, "spawns." + w + ".z");
-            cs.sendMessage(ChatColor.BLUE + "The spawn point of " + ChatColor.GRAY + p.getWorld().getName() + ChatColor.BLUE + " is set.");
+            cs.sendMessage(ChatColor.BLUE + "The spawn point of " + ChatColor.GRAY + RUtils.getMVWorldName(p.getWorld()) + ChatColor.BLUE + " is set.");
             return true;
         }
         return false;

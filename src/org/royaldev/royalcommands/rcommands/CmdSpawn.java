@@ -54,13 +54,18 @@ public class CmdSpawn implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            p.sendMessage(ChatColor.BLUE + "Going to spawn.");
-            Location l = getWorldSpawn(p.getWorld());
+            World w;
+            if (args.length > 0) {
+                w = plugin.getServer().getWorld(args[0]);
+                if (w == null) {
+                    cs.sendMessage(ChatColor.RED + "No such world!");
+                    return true;
+                }
+            } else w = p.getWorld();
+            Location l = getWorldSpawn(w);
+            p.sendMessage(ChatColor.BLUE + "Going to spawn in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + ".");
             String error = RUtils.teleport(p, l);
-            if (!error.isEmpty()) {
-                p.sendMessage(ChatColor.RED + error);
-                return true;
-            }
+            if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
             return true;
         }
         return false;

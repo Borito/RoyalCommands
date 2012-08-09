@@ -18,6 +18,7 @@ package org.royaldev.royalcommands;
  */
 
 import com.griefcraft.lwc.LWCPlugin;
+import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -99,9 +100,13 @@ public class RoyalCommands extends JavaPlugin {
     private final SignListener signListener = new SignListener(this);
     private final MonitorListener monitorListener = new MonitorListener(this);
 
+    //--- Dependencies ---//
+
     private VanishPlugin vp = null;
     private WorldGuardPlugin wg = null;
     private LWCPlugin lwc = null;
+
+    public static MultiverseCore mvc = null;
 
     //--- Configuration options ---//
 
@@ -146,6 +151,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean changeNameTag = null;
     public Boolean dumpCreateChest = null;
     public Boolean dumpUseInv = null;
+    public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
 
@@ -364,6 +370,7 @@ public class RoyalCommands extends JavaPlugin {
         safeTeleport = getConfig().getBoolean("safe_teleport", true);
         checkVersion = getConfig().getBoolean("version_check", true);
         simpleList = getConfig().getBoolean("simple_list", true);
+        multiverseNames = getConfig().getBoolean("multiverse_world_names", true);
         backpackReset = getConfig().getBoolean("reset_backpack_death", false);
         changeNameTag = getConfig().getBoolean("change_nametag", false);
         dumpCreateChest = getConfig().getBoolean("dump_create_chest", true);
@@ -570,6 +577,7 @@ public class RoyalCommands extends JavaPlugin {
         vp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
         wg = (WorldGuardPlugin) getServer().getPluginManager().getPlugin("WorldGuard");
         lwc = (LWCPlugin) getServer().getPluginManager().getPlugin("LWC");
+        mvc = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
         TagAPI ta = (TagAPI) getServer().getPluginManager().getPlugin("TagAPI");
 
         //-- Register events --//

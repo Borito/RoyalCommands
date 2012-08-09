@@ -34,7 +34,7 @@ public class CmdWorld implements CommandExecutor {
                 List<World> ws = plugin.getServer().getWorlds();
                 String worlds = "";
                 for (World w : ws)
-                    worlds = (worlds.equals("")) ? worlds.concat(ChatColor.GRAY + w.getName()) : worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + w.getName());
+                    worlds = (worlds.equals("")) ? worlds.concat(ChatColor.GRAY + RUtils.getMVWorldName(w)) : worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + RUtils.getMVWorldName(w));
                 cs.sendMessage(ChatColor.BLUE + "Worlds: " + worlds);
                 return true;
             }
@@ -44,17 +44,16 @@ public class CmdWorld implements CommandExecutor {
                 List<World> ws = plugin.getServer().getWorlds();
                 String worlds = "";
                 for (World w2 : ws) {
-                    if (worlds.equals("")) {
-                        worlds = worlds.concat(ChatColor.GRAY + w2.getName());
-                    } else {
-                        worlds = worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + w2.getName());
-                    }
+                    if (worlds.equals(""))
+                        worlds = worlds.concat(ChatColor.GRAY + RUtils.getMVWorldName(w2));
+                    else
+                        worlds = worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + RUtils.getMVWorldName(w2));
                 }
                 cs.sendMessage(ChatColor.BLUE + "Worlds: " + worlds);
                 return true;
             }
             Player p = (Player) cs;
-            p.sendMessage(ChatColor.BLUE + "Teleporting you to world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
+            p.sendMessage(ChatColor.BLUE + "Teleporting you to world " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + ".");
             String error = RUtils.teleport(p, CmdSpawn.getWorldSpawn(w));
             if (!error.isEmpty()) {
                 p.sendMessage(ChatColor.RED + error);

@@ -19,20 +19,21 @@ public class CmdWeather implements CommandExecutor {
 
     public static boolean changeWeather(Player p, String conds) {
         World world = p.getWorld();
+        String wName = RUtils.getMVWorldName(world);
         if (conds.toLowerCase().trim().startsWith("sun")) {
             world.setStorm(false);
             world.setThundering(false);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "sun" + ChatColor.BLUE + " in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + ".");
+            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "sun" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + ".");
             return true;
         } else if (conds.toLowerCase().startsWith("rain")) {
             world.setStorm(true);
             world.setThundering(false);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "rain" + ChatColor.BLUE + " in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + ".");
+            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "rain" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + ".");
             return true;
         } else if (conds.toLowerCase().startsWith("storm")) {
             world.setStorm(true);
             world.setThundering(true);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "storm" + ChatColor.BLUE + " in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + ".");
+            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "storm" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + ".");
             return true;
         }
         return false;
@@ -48,23 +49,24 @@ public class CmdWeather implements CommandExecutor {
             return false;
         }
         World world = p.getWorld();
+        String wName = RUtils.getMVWorldName(world);
         if (conds.toLowerCase().trim().startsWith("sun")) {
             world.setStorm(false);
             world.setThundering(false);
             world.setWeatherDuration(length * 20);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "sun" + ChatColor.BLUE + " in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + length + ChatColor.BLUE + " seconds.");
+            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "sun" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + " for " + ChatColor.GRAY + length + ChatColor.BLUE + " seconds.");
             return true;
         } else if (conds.toLowerCase().startsWith("rain")) {
             world.setStorm(true);
             world.setThundering(false);
             world.setWeatherDuration(length * 20);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "rain" + ChatColor.BLUE + " in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + length + ChatColor.BLUE + " seconds.");
+            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "rain" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + " for " + ChatColor.GRAY + length + ChatColor.BLUE + " seconds.");
             return true;
         } else if (conds.toLowerCase().startsWith("storm")) {
             world.setStorm(true);
             world.setThundering(true);
             world.setWeatherDuration(length * 20);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "storm" + ChatColor.BLUE + " in " + ChatColor.GRAY + world.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + length + ChatColor.BLUE + " seconds.");
+            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "storm" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + " for " + ChatColor.GRAY + length + ChatColor.BLUE + " seconds.");
             return true;
         } else {
             p.sendMessage(ChatColor.RED + "Invalid condition!");

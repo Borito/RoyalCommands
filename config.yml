@@ -288,3 +288,6 @@ dump_create_chest: true
 
 # Should /dump use chests from inventory if dump_create_chest is true?
 dump_use_inv: true
+
+# Use Multiverse world names? If Multiverse-Core is not installed, this makes no difference.
+multiverse_world_names: true
