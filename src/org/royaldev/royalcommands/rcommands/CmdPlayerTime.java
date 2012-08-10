@@ -1,7 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,17 +10,29 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdPlayerTime implements CommandExecutor {
 
-    RoyalCommands plugin;
+    static RoyalCommands plugin;
 
     public CmdPlayerTime(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
-    public static void smoothPlayerTimeChange(long time, Player p) {
-        World world = p.getWorld();
-        if (time >= world.getTime())
-            for (long i = world.getTime(); i < time; i++) world.setTime(i);
-        else for (long i = world.getTime(); i > time; i--) world.setTime(i);
+    public static void smoothPlayerTimeChange(long time, final Player p) {
+        if (time > 24000) time = time % 24000L;
+        final long ftime = time;
+        final Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                for (long i = p.getPlayerTime() + 1; i != ftime; i++) {
+                    if (i == 24001) {
+                        i = 0;
+                        if (ftime == 0) break;
+                    }
+                    p.setPlayerTime(i, true);
+                }
+                p.setPlayerTime(ftime, true);
+            }
+        };
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
     }
 
     @Override
