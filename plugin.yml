@@ -655,6 +655,11 @@ commands:
     usage: /<command> [subcommand] (argument)
     aliases: [pm]
 
+  freezetime:
+    description: Freezes time on a world.
+    usage: /<command> [world]
+    aliases: [ft]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>

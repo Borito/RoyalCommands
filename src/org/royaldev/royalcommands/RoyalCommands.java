@@ -50,6 +50,7 @@ import org.royaldev.royalcommands.opencsv.CSVReader;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
+import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.WarnWatcher;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -83,6 +84,9 @@ public class RoyalCommands extends JavaPlugin {
     public static Plugin[] plugins = null;
     public static File dataFolder;
     public static ItemNameManager inm;
+    public static WorldManager wm;
+
+    public static RoyalCommands instance;
 
     public ConfManager whl;
     public Logger log = Logger.getLogger("Minecraft");
@@ -415,6 +419,8 @@ public class RoyalCommands extends JavaPlugin {
 
         Help.reloadHelp();
 
+        wm.reloadConfig();
+
         try {
             Reader in = new FileReader(new File(getDataFolder() + File.separator + "items.csv"));
             inm = new ItemNameManager(new CSVReader(in).readAll());
@@ -507,6 +513,8 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Set globals --//
 
+        instance = this;
+
         dataFolder = getDataFolder();
 
         whl = new ConfManager("whitelist.yml");
@@ -515,6 +523,8 @@ public class RoyalCommands extends JavaPlugin {
         plugins = getServer().getPluginManager().getPlugins();
 
         version = getDescription().getVersion();
+
+        wm = new WorldManager();
 
         //-- Hidendra's Metrics --//
 
@@ -571,6 +581,7 @@ public class RoyalCommands extends JavaPlugin {
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new AFKWatcher(this), 0, 200);
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new BanWatcher(this), 20, 600);
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new WarnWatcher(this), 20, 12000);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20, 100);
 
         //-- Get dependencies --//
 
@@ -730,6 +741,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdBackpack(this), "backpack", this);
         registerCommand(new CmdUsage(this), "usage", this);
         registerCommand(new CmdPluginManager(this), "pluginmanager", this);
+        registerCommand(new CmdFreezeTime(this), "freezetime", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- We're done! --//
