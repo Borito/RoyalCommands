@@ -65,6 +65,14 @@ public class ConfManager {
     }
 
     /**
+     * Reloads the configuration from file.
+     */
+    public void reload() {
+        if (pconfl == null) return;
+        pconf = YamlConfiguration.loadConfiguration(pconfl);
+    }
+
+    /**
      * Creates configuration file if it doesn't exist.
      *
      * @return If file was created
