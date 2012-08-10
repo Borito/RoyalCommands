@@ -30,6 +30,7 @@ public class CmdFixChunk implements CommandExecutor {
             }
             Player p = (Player) cs;
             Chunk c = p.getLocation().getChunk();
+            if (!c.isLoaded()) c.load(true);
             boolean worked = p.getWorld().refreshChunk(c.getX(), c.getZ());
             c.unload();
             c.load();
