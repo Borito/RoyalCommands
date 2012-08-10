@@ -27,12 +27,13 @@ public class CmdBanned implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
+            OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
+            if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
             if (!t.isBanned()) {
-                cs.sendMessage(ChatColor.GREEN + t.getName() + ChatColor.WHITE + " is not banned.");
+                cs.sendMessage(ChatColor.GRAY + t.getName() + ChatColor.BLUE + " is not banned.");
                 return true;
             }
-            cs.sendMessage(ChatColor.RED + t.getName() + ChatColor.WHITE + " is banned.");
+            cs.sendMessage(ChatColor.GRAY + t.getName() + ChatColor.RED + " is banned.");
             return true;
         }
         return false;
