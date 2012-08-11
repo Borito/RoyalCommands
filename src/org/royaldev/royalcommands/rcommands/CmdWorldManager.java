@@ -168,8 +168,16 @@ public class CmdWorldManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "No such world!");
                     return true;
                 }
-                WorldCreator wc = new WorldCreator(name);
-                World w = wc.createWorld();
+                World w;
+                try {
+                    w = RoyalCommands.wm.loadWorld(name);
+                } catch (IllegalArgumentException e) {
+                    cs.sendMessage(ChatColor.RED + "No such world!");
+                    return true;
+                } catch (NullPointerException e) {
+                    cs.sendMessage(ChatColor.RED + "Could not read world folders!");
+                    return true;
+                }
                 cs.sendMessage(ChatColor.BLUE + "Loaded world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
                 return true;
             } else if (command.equals("info")) {
