@@ -223,6 +223,23 @@ public class CmdWorldManager implements CommandExecutor {
                     return true;
                 }
                 return true;
+            } else if (command.equals("who")) {
+                for (World w : plugin.getServer().getWorlds()) {
+                    StringBuilder sb = new StringBuilder(RUtils.getMVWorldName(w));
+                    sb.append(": ");
+                    if (w.getPlayers().isEmpty()) {
+                        cs.sendMessage(ChatColor.RED + "No players in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.RED + ".");
+                        continue;
+                    }
+                    for (Player p : w.getPlayers()) {
+                        sb.append(ChatColor.GRAY);
+                        sb.append(p.getName());
+                        sb.append(ChatColor.RESET);
+                        sb.append(", ");
+                    }
+                    cs.sendMessage(sb.substring(0, sb.length() - 4));
+                }
+                return true;
             } else {
                 cs.sendMessage(ChatColor.RED + "Invalid subcommand!");
                 return true;
