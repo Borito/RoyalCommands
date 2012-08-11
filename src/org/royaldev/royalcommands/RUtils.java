@@ -734,7 +734,8 @@ public class RUtils {
 
     public static String getMVWorldName(World w) {
         if (w == null) throw new NullPointerException("w can't be null!");
-        if (!RoyalCommands.multiverseNames || RoyalCommands.mvc == null) return w.getName();
+        if (!RoyalCommands.multiverseNames || RoyalCommands.mvc == null)
+            return w.getName();
         return RoyalCommands.mvc.getMVWorldManager().getMVWorld(w).getColoredWorldString();
     }
 }
