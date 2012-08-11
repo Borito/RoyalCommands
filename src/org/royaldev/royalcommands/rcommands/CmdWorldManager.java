@@ -192,6 +192,19 @@ public class CmdWorldManager implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Name: " + ChatColor.GRAY + w.getName());
                 cs.sendMessage(ChatColor.BLUE + "Environment: " + ChatColor.GRAY + w.getEnvironment().name());
                 return true;
+            } else if (command.equals("tp") || command.equals("teleport")) {
+                if (!(cs instanceof Player)) {
+                    cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                    return true;
+                }
+                if (args.length < 2) {
+                    cs.sendMessage(ChatColor.RED + "Not enough arguments! Try " + ChatColor.GRAY + "/" + label + " help" + ChatColor.RED + " for help.");
+                    return true;
+                }
+                Player p = (Player) cs;
+                String world = args[1];
+                p.performCommand("tpw " + world);
+                return true;
             } else {
                 cs.sendMessage(ChatColor.RED + "Invalid subcommand!");
                 return true;
