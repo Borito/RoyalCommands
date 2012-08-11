@@ -88,17 +88,17 @@ public class WorldManager {
                 continue;
             }
             log.info("Setting flags on world " + ws + " as specified in worlds.yml.");
-            w.setSpawnFlags(config.getBoolean(path + "spawnmonsters"), config.getBoolean(path + "spawnanimals"));
-            w.setKeepSpawnInMemory(config.getBoolean("keepspawnloaded"));
-            w.setPVP(config.getBoolean(path + "pvp"));
-            w.setMonsterSpawnLimit(config.getInteger(path + "monsterspawnlimit"));
-            w.setAnimalSpawnLimit(config.getInteger(path + "animalspawnlimit"));
-            w.setWaterAnimalSpawnLimit(config.getInteger(path + "wateranimalspawnlimit"));
-            w.setTicksPerAnimalSpawns(config.getInteger(path + "animalspawnticks"));
-            w.setTicksPerMonsterSpawns(config.getInteger(path + "monsterspawnticks"));
+            w.setSpawnFlags(config.getBoolean(path + "spawnmonsters", true), config.getBoolean(path + "spawnanimals", true));
+            w.setKeepSpawnInMemory(config.getBoolean("keepspawnloaded", true));
+            w.setPVP(config.getBoolean(path + "pvp", true));
+            w.setMonsterSpawnLimit(config.getInteger(path + "monsterspawnlimit", 70));
+            w.setAnimalSpawnLimit(config.getInteger(path + "animalspawnlimit", 15));
+            w.setWaterAnimalSpawnLimit(config.getInteger(path + "wateranimalspawnlimit", 5));
+            w.setTicksPerAnimalSpawns(config.getInteger(path + "animalspawnticks", 400));
+            w.setTicksPerMonsterSpawns(config.getInteger(path + "monsterspawnticks", 1));
             Difficulty d;
             try {
-                d = Difficulty.valueOf(config.getString(path + "difficulty").toUpperCase());
+                d = Difficulty.valueOf(config.getString(path + "difficulty", "normal").toUpperCase());
             } catch (Exception e) {
                 d = Difficulty.NORMAL;
             }

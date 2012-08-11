@@ -218,6 +218,87 @@ public class ConfManager {
     }
 
     /**
+     * Gets a boolean from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Boolean or null if path does not exist or if config doesn't exist
+     */
+    public boolean getBoolean(String path, boolean def) {
+        if (pconf == null) return def;
+        return pconf.getBoolean(path, def);
+    }
+
+    /**
+     * Gets an integer from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Integer or null if path does not exist or if config doesn't exist
+     */
+    public Integer getInteger(String path, int def) {
+        if (pconf == null) return def;
+        return pconf.getInt(path, def);
+    }
+
+    /**
+     * Gets an object from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Object or null if path does not exist or if config doesn't exist
+     */
+    public Object get(String path, Object def) {
+        if (pconf == null) return def;
+        return pconf.get(path, def);
+    }
+
+    /**
+     * Gets a long from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Long or null if path does not exist or if config doesn't exist
+     */
+    public Long getLong(String path, long def) {
+        if (pconf == null) return def;
+        return pconf.getLong(path, def);
+    }
+
+    /**
+     * Gets a double from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Double or null if path does not exist or if config doesn't exist
+     */
+    public Double getDouble(String path, double def) {
+        if (pconf == null) return def;
+        return pconf.getDouble(path, def);
+    }
+
+    /**
+     * Gets a string from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return String or null if path does not exist or if config doesn't exist
+     */
+    public String getString(String path, String def) {
+        if (pconf == null) return def;
+        return pconf.getString(def);
+    }
+
+    /**
+     * Gets a float from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return Float or null if path does not exist or if config doesn't exist or if not valid float
+     */
+    public Float getFloat(String path, float def) {
+        if (pconf == null) return def;
+        try {
+            return Float.valueOf(pconf.getString(path));
+        } catch (Exception e) {
+            return def;
+        }
+    }
+
+    /**
      * Gets a string list from config
      *
      * @param path Path in the yml to fetch from
@@ -324,7 +405,7 @@ public class ConfManager {
      * <p/>
      * Equivalent to exists()
      *
-     * @return boolean of existance
+     * @return boolean of existence
      */
     public boolean getConfExists() {
         return pconf != null;
@@ -335,7 +416,7 @@ public class ConfManager {
      * <p/>
      * Equivalent to getConfExists()
      *
-     * @return boolean of existance
+     * @return boolean of existence
      */
     public boolean exists() {
         return pconf != null;
