@@ -211,7 +211,17 @@ public class CmdWorldManager implements CommandExecutor {
                 }
                 Player p = (Player) cs;
                 String world = args[1];
-                p.performCommand("tpw " + world);
+                World w = plugin.getServer().getWorld(world);
+                if (w == null) {
+                    cs.sendMessage(ChatColor.RED + "That world does not exist!");
+                    return true;
+                }
+                p.sendMessage(ChatColor.BLUE + "Teleporting you to world " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + ".");
+                String error = RUtils.teleport(p, CmdSpawn.getWorldSpawn(w));
+                if (!error.isEmpty()) {
+                    p.sendMessage(ChatColor.RED + error);
+                    return true;
+                }
                 return true;
             } else {
                 cs.sendMessage(ChatColor.RED + "Invalid subcommand!");
