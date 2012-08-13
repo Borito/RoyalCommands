@@ -40,7 +40,7 @@ public class CmdMotd implements CommandExecutor {
             s = (cs instanceof Player) ? s.replace("{dispname}", ((Player) cs).getDisplayName()) : s.replace("{dispname}", cs.getName());
             if (onlinenum != null) s = s.replace("{players}", onlinenum);
             s = s.replace("{playerlist}", ps);
-            s = (cs instanceof Player) ? s.replace("{world}", ((Player) cs).getWorld().getName()) : s.replace("{world}", "No World");
+            s = (cs instanceof Player) ? s.replace("{world}", RUtils.getMVWorldName(((Player) cs).getWorld())) : s.replace("{world}", "No World");
             if (maxonl != null) s = s.replace("{maxplayers}", maxonl);
             s = (plugin.getServer().getServerName() != null || !plugin.getServer().getServerName().equals("")) ? s.replace("{servername}", plugin.getServer().getServerName()) : s.replace("{servername}", "this server");
             cs.sendMessage(s);
