@@ -32,8 +32,8 @@ public class CmdFacepalm implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player is not online!");
                 return true;
             }
-            if (plugin.isAuthorized(victim, "rcmds.exempt.facepalm")) {
-                cs.sendMessage(ChatColor.RED + "You cannot facepalm at that player!");
+            if (!RUtils.canActAgainst(cs, victim, "facepalm")) {
+                RUtils.dispNoPerms(cs, ChatColor.RED + "You cannot facepalm at that player!");
                 return true;
             }
             plugin.getServer().broadcastMessage(ChatColor.YELLOW + cs.getName() + ChatColor.AQUA + " has facepalmed at " + ChatColor.YELLOW + victim.getName() + ChatColor.AQUA + ".");

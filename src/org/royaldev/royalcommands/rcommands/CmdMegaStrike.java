@@ -46,13 +46,13 @@ public class CmdMegaStrike implements CommandExecutor {
                     p.getWorld().strikeLightning(bb.getLocation());
                 return true;
             } else {
-                if (!plugin.isAuthorized(cs, "rcmds.others.megastrike")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
-                    return true;
-                }
                 Player target = plugin.getServer().getPlayer(args[0]);
                 if (target == null || plugin.isVanished(target, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
+                if (!RUtils.canActAgainst(cs, target, "megastrike")) {
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Megasmiting " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");

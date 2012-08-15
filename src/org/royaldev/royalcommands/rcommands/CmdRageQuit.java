@@ -31,17 +31,17 @@ public class CmdRageQuit implements CommandExecutor {
                 }
             }
             if (args.length == 1) {
-                if (!plugin.isAuthorized(cs, "rcmds.others.ragequit")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
-                    return true;
-                }
                 Player victim = plugin.getServer().getPlayer(args[0]);
                 if (victim == null || plugin.isVanished(victim, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
+                if (!RUtils.canActAgainst(cs, victim, "ragequit")) {
+                    cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                    return true;
+                }
                 plugin.getServer().broadcastMessage(ChatColor.DARK_RED + victim.getName() + ChatColor.RED + " has ragequit!");
-                victim.kickPlayer(ChatColor.DARK_RED + "RAAAGGGEEEE!!!");
+                RUtils.silentKick(victim, ChatColor.DARK_RED + "RAAAGGGEEEE!!!");
                 return true;
             }
         }

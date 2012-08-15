@@ -56,7 +56,7 @@ public class CmdMute implements CommandExecutor {
 
                 }
                 PConfManager pcm = new PConfManager(t);
-                if (plugin.isAuthorized(t, "rcmds.exempt.mute")) {
+                if (!RUtils.canActAgainst(cs, t, "mute")) {
                     cs.sendMessage(ChatColor.RED + "You cannot mute that player!");
                     return true;
                 }

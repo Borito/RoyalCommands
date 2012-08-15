@@ -37,7 +37,7 @@ public class CmdListHome implements CommandExecutor {
             else {
                 t = plugin.getServer().getPlayer(args[0]);
                 if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-                if (plugin.isAuthorized(t, "rcmds.exempt.listhome")) {
+                if (!RUtils.canActAgainst(cs, t.getName(), "listhome")) {
                     cs.sendMessage(ChatColor.RED + "You can't list that player's homes!");
                     return true;
                 }

@@ -43,7 +43,7 @@ public class CmdHarm implements CommandExecutor {
                 return true;
             }
 
-            if (plugin.isAuthorized(victim, "rcmds.exempt.harm")) {
+            if (!RUtils.canActAgainst(cs, victim, "harm")) {
                 cs.sendMessage(ChatColor.RED + "You may not harm that player.");
                 return true;
             }

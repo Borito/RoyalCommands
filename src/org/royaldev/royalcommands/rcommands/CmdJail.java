@@ -61,7 +61,7 @@ public class CmdJail implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.jail")) {
+            if (!RUtils.canActAgainst(cs, t, "jail")) {
                 cs.sendMessage(ChatColor.RED + "You cannot jail that player.");
                 return true;
             }

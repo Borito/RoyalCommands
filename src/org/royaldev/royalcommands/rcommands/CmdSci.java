@@ -35,7 +35,7 @@ public class CmdSci implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player is not online!");
                     return true;
                 }
-                if (plugin.isAuthorized(target, "rcmds.exempt.sci")) {
+                if (!RUtils.canActAgainst(cs, target, "sci")) {
                     cs.sendMessage(ChatColor.RED + "You cannot alter that player's inventory!");
                     return true;
                 }

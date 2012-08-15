@@ -36,7 +36,7 @@ public class CmdSlap implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
                 return true;
             }
-            if (plugin.isAuthorized(victim, "rcmds.exempt.slap")) {
+            if (!RUtils.canActAgainst(cs, victim, "slap")) {
                 cs.sendMessage(ChatColor.RED + "You may not slap that player.");
                 return true;
             }

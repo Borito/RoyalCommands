@@ -27,7 +27,9 @@ public class CmdQuit implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
-            ((Player) cs).kickPlayer("You have left the game.");
+            Player p = (Player) cs;
+            plugin.getServer().broadcastMessage(ChatColor.GRAY + p.getName() + ChatColor.BLUE + " has quit.");
+            RUtils.silentKick(p, "You have left the game.");
             return true;
         }
         return false;

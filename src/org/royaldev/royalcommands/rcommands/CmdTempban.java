@@ -38,7 +38,7 @@ public class CmdTempban implements CommandExecutor {
             }
             if (t.isOnline()) {
                 Player t2 = (Player) t;
-                if (plugin.isAuthorized(t2, "rcmds.exempt.ban")) {
+                if (!RUtils.canActAgainst(cs, t2, "ban")) {
                     cs.sendMessage(ChatColor.RED + "You cannot ban that player!");
                     return true;
                 }

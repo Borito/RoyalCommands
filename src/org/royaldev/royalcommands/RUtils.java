@@ -738,4 +738,63 @@ public class RUtils {
             return w.getName();
         return RoyalCommands.mvc.getMVWorldManager().getMVWorld(w).getColoredWorldString();
     }
+
+    /**
+     * Checks to see if the cs is authorized to act against t
+     *
+     * @param cs   CommandSender to check for
+     * @param t    Player to check against
+     * @param perm rcmds.others.perm
+     * @return true if cs can act against t, false if not
+     */
+    public static boolean canActAgainst(final CommandSender cs, final Player t, final String perm) {
+        if (cs.equals(t)) return true;
+        RoyalCommands plugin = RoyalCommands.instance;
+        String group;
+        try {
+            group = RoyalCommands.permission.getPrimaryGroup(t);
+        } catch (UnsupportedOperationException e) {
+            group = "";
+        }
+        if (group == null) group = "";
+        if (plugin.isAuthorized(cs, "rcmds.others." + perm)) return true;
+        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group))
+            return true;
+        if (plugin.isAuthorized(cs, "rcmds.others." + perm + "." + t.getName()))
+            return true;
+        return false;
+    }
+
+    /**
+     * Checks to see if the cs is authorized to act against t
+     *
+     * @param cs   CommandSender to check for
+     * @param t    Player to check against
+     * @param perm rcmds.others.perm
+     * @return true if cs can act against t, false if not
+     */
+    public static boolean canActAgainst(final CommandSender cs, final String t, final String perm) {
+        if (cs.getName().equals(t)) return true;
+        RoyalCommands plugin = RoyalCommands.instance;
+        String group;
+        try {
+            Player p = plugin.getServer().getPlayer(t);
+            group = RoyalCommands.permission.getPrimaryGroup(p);
+        } catch (UnsupportedOperationException e) {
+            group = "";
+        } catch (NullPointerException e) {
+            group = "";
+        }
+        if (group == null) group = "";
+        if (plugin.isAuthorized(cs, "rcmds.others." + perm)) return true;
+        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group))
+            return true;
+        if (plugin.isAuthorized(cs, "rcmds.others." + perm + "." + t))
+            return true;
+        return false;
+    }
+
+    public static void silentKick(final Player t, final String reason) {
+        t.kickPlayer(reason + "\00-silent");
+    }
 }

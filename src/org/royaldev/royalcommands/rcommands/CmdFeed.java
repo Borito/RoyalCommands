@@ -35,7 +35,7 @@ public class CmdFeed implements CommandExecutor {
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
-            if (!plugin.isAuthorized(cs, "rcmds.others.feed")) {
+            if (!RUtils.canActAgainst(cs, t, "feed")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

@@ -50,14 +50,17 @@ public class CmdBan implements CommandExecutor {
             if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = new PConfManager(t);
             if (!pcm.getConfExists()) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                pcm.createFile();
+                if (!pcm.getConfExists()) {
+                    cs.sendMessage(ChatColor.RED + "Couldn't make userdata file for that player!");
+                    return true;
+                }
+            }
+            if (!RUtils.canActAgainst(cs, t.getName(), "ban")) {
+                RUtils.dispNoPerms(cs, ChatColor.RED + "You can't ban that player!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.ban")) {
-                cs.sendMessage(ChatColor.RED + "You can't ban that player!");
-                return true;
-            }
-            String banreason = (args.length > 1) ? plugin.getFinalArg(args, 1) : plugin.banMessage;
+            String banreason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : plugin.banMessage;
             banreason = RUtils.colorize(banreason);
             pcm.setString(banreason, "banreason");
             pcm.setString(cs.getName(), "banner");

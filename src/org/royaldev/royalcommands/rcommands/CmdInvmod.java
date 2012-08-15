@@ -36,7 +36,7 @@ public class CmdInvmod implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.invmod")) {
+            if (!RUtils.canActAgainst(cs, t, "invmod")) {
                 cs.sendMessage(ChatColor.RED + "You cannot modify that player's inventory.");
                 return true;
             }
