@@ -18,6 +18,8 @@ import java.io.Serializable;
  */
 public class SerializableCraftEnchantment implements Serializable {
 
+    static final long serialVersionUID = 6021879788394423350L;
+
     /**
      * ID of the enchantment
      */

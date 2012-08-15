@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class SerializableCraftInventory implements Serializable {
 
+    static final long serialVersionUID = 9206795899161571450L;
+
     /**
      * Name of the inventory
      */

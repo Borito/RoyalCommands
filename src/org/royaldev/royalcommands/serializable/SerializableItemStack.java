@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.serializable;
 
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,6 +19,8 @@ import java.util.Map;
  * @since 0.2.4pre
  */
 public class SerializableItemStack implements Serializable {
+
+    static final long serialVersionUID = -5056202252395200062L;
 
     /**
      * Amount of items in the ItemStack - defaults to 0
@@ -39,6 +42,7 @@ public class SerializableItemStack implements Serializable {
      * Material data on this ItemStack - defaults to 0
      */
     private byte materialData = 0;
+    private SerializableNBTTagCompound tag;
 
     /**
      * Serializable ItemStack for saving to files.
@@ -53,6 +57,7 @@ public class SerializableItemStack implements Serializable {
             enchantments.put(new SerializableCraftEnchantment(e), i.getEnchantments().get(e));
         type = i.getTypeId();
         materialData = i.getData().getData();
+        tag = new SerializableNBTTagCompound(((CraftItemStack) i).getHandle().getTag());
     }
 
     /**
@@ -61,10 +66,11 @@ public class SerializableItemStack implements Serializable {
      * @return Original ItemStack
      */
     public ItemStack getItemStack() {
-        ItemStack i = new ItemStack(type, amount, durability, materialData);
+        CraftItemStack cis = new CraftItemStack(type, amount, durability, materialData);
         for (SerializableCraftEnchantment sce : enchantments.keySet())
-            i.addUnsafeEnchantment(sce.getEnchantment(), enchantments.get(sce));
-        return i;
+            cis.addUnsafeEnchantment(sce.getEnchantment(), enchantments.get(sce));
+        if (tag != null) cis.getHandle().setTag(tag.getNBTTagCompound());
+        return cis;
     }
 
 }
