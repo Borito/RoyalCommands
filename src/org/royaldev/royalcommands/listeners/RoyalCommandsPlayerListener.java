@@ -423,4 +423,14 @@ public class RoyalCommandsPlayerListener implements Listener {
                 RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
         }
     }
+
+    @EventHandler
+    public void silentKicks(PlayerKickEvent e) {
+        if (e.isCancelled()) return;
+        String reason = e.getReason();
+        if (!reason.endsWith("\00-silent")) return;
+        e.setLeaveMessage(null);
+        e.setReason(reason.replace("\00-silent", ""));
+    }
+
 }
