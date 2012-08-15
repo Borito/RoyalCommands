@@ -757,11 +757,12 @@ public class RUtils {
             group = "";
         }
         if (group == null) group = "";
+        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group)) return true;
+        if (plugin.isAuthorized(cs, "rcmds.others." + perm + "." + t.getName())) return true;
         if (plugin.isAuthorized(cs, "rcmds.others." + perm)) return true;
-        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group))
-            return true;
-        if (plugin.isAuthorized(cs, "rcmds.others." + perm + "." + t.getName()))
-            return true;
+        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others.*." + group)) return true;
+        if (plugin.isAuthorized(cs, "rcmds.others.*." + t.getName())) return true;
+        if (plugin.isAuthorized(cs, "rcmds.others.*")) return true;
         return false;
     }
 
@@ -786,11 +787,12 @@ public class RUtils {
             group = "";
         }
         if (group == null) group = "";
+        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group)) return true;
+        if (plugin.isAuthorized(cs, "rcmds.others." + perm + "." + t)) return true;
         if (plugin.isAuthorized(cs, "rcmds.others." + perm)) return true;
-        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group))
-            return true;
-        if (plugin.isAuthorized(cs, "rcmds.others." + perm + "." + t))
-            return true;
+        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others.*." + group)) return true;
+        if (plugin.isAuthorized(cs, "rcmds.others.*." + t)) return true;
+        if (plugin.isAuthorized(cs, "rcmds.others.*")) return true;
         return false;
     }
 
