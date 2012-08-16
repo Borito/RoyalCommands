@@ -226,6 +226,7 @@ public class MonitorListener implements Listener {
         if (e.getClickedBlock().getState() instanceof Chest) {
             Chest c = (Chest) e.getClickedBlock().getState();
             final Inventory i = plugin.getServer().createInventory(c.getInventory().getHolder(), c.getInventory().getSize());
+            i.setContents(c.getInventory().getContents());
             e.getPlayer().openInventory(i);
             e.getPlayer().sendMessage(ChatColor.BLUE + "Opened chest in read-only mode; you can't make changes.");
         }
