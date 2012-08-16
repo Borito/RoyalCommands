@@ -24,7 +24,7 @@ public class TagAPIListener implements Listener {
             e.setTag(dispname);
             return;
         }
-        if (!plugin.nickPrefix.equals(""))
+        if (!plugin.nickPrefix.equals("") && dispname.startsWith(plugin.nickPrefix))
             dispname = dispname.substring(plugin.nickPrefix.length());
         e.setTag(dispname);
     }
