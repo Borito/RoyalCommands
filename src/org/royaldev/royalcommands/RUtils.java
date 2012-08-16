@@ -96,16 +96,13 @@ public class RUtils {
      */
     public static String[] wrapText(String text, int len) {
         // return empty array for null text
-        if (text == null)
-            return new String[]{};
+        if (text == null) return new String[]{};
 
         // return text if len is zero or less
-        if (len <= 0)
-            return new String[]{text};
+        if (len <= 0) return new String[]{text};
 
         // return text if less than length
-        if (text.length() <= len)
-            return new String[]{text};
+        if (text.length() <= len) return new String[]{text};
         char[] chars = text.toCharArray();
         Vector lines = new Vector();
         StringBuilder line = new StringBuilder();
@@ -338,30 +335,8 @@ public class RUtils {
         if (toDate.after(fromDate)) future = true;
 
         StringBuilder sb = new StringBuilder();
-        int[] types = new int[]
-                {
-                        Calendar.YEAR,
-                        Calendar.MONTH,
-                        Calendar.DAY_OF_MONTH,
-                        Calendar.HOUR_OF_DAY,
-                        Calendar.MINUTE,
-                        Calendar.SECOND
-                };
-        String[] names = new String[]
-                {
-                        "year",
-                        "years",
-                        "month",
-                        "months",
-                        "day",
-                        "days",
-                        "hour",
-                        "hours",
-                        "minute",
-                        "minutes",
-                        "second",
-                        "seconds"
-                };
+        int[] types = new int[]{Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND};
+        String[] names = new String[]{"year", "years", "month", "months", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds"};
         for (int i = 0; i < types.length; i++) {
             int diff = dateDiff(types[i], fromDate, toDate, future);
             if (diff > 0)
@@ -710,7 +685,7 @@ public class RUtils {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("RoyalCommands");
         if (plugin == null)
             throw new NullPointerException("Could not get the RoyalCommands plugin.");
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("RoyalCommands"), r);
+        RoyalCommands.instance.getServer().getScheduler().scheduleSyncDelayedTask(RoyalCommands.instance, r);
     }
 
     /**

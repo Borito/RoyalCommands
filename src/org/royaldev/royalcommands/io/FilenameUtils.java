@@ -456,9 +456,7 @@ public class FilenameUtils {
      * @return true if the filenames are equal, null equals null
      * @since 1.3
      */
-    public static boolean equals(
-            String filename1, String filename2,
-            boolean normalized, IOCase caseSensitivity) {
+    public static boolean equals(String filename1, String filename2, boolean normalized, IOCase caseSensitivity) {
 
         if (filename1 == null || filename2 == null) {
             return filename1 == null && filename2 == null;
@@ -467,8 +465,7 @@ public class FilenameUtils {
             filename1 = normalize(filename1);
             filename2 = normalize(filename2);
             if (filename1 == null || filename2 == null) {
-                throw new NullPointerException(
-                        "Error normalizing one or both of the file names");
+                throw new NullPointerException("Error normalizing one or both of the file names");
             }
         }
         if (caseSensitivity == null) {

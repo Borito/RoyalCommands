@@ -57,16 +57,14 @@ public class EndianUtils {
      * @return the value read
      */
     public static long readSwappedLong(byte[] data, int offset) {
-        long low =
-                ((data[offset] & 0xff)) +
-                        ((data[offset + 1] & 0xff) << 8) +
-                        ((data[offset + 2] & 0xff) << 16) +
-                        ((data[offset + 3] & 0xff) << 24);
-        long high =
-                ((data[offset + 4] & 0xff)) +
-                        ((data[offset + 5] & 0xff) << 8) +
-                        ((data[offset + 6] & 0xff) << 16) +
-                        ((data[offset + 7] & 0xff) << 24);
+        long low = ((data[offset] & 0xff)) +
+                ((data[offset + 1] & 0xff) << 8) +
+                ((data[offset + 2] & 0xff) << 16) +
+                ((data[offset + 3] & 0xff) << 24);
+        long high = ((data[offset + 4] & 0xff)) +
+                ((data[offset + 5] & 0xff) << 8) +
+                ((data[offset + 6] & 0xff) << 16) +
+                ((data[offset + 7] & 0xff) << 24);
         return (high << 32) + (0xffffffffL & low);
     }
 
@@ -78,10 +76,8 @@ public class EndianUtils {
      * @return the value just read
      * @throws IOException in case of an I/O problem
      */
-    public static short readSwappedShort(InputStream input)
-            throws IOException {
-        return (short) (((read(input) & 0xff)) +
-                ((read(input) & 0xff) << 8));
+    public static short readSwappedShort(InputStream input) throws IOException {
+        return (short) (((read(input) & 0xff)) + ((read(input) & 0xff) << 8));
     }
 
     /**
@@ -92,13 +88,11 @@ public class EndianUtils {
      * @return the value just read
      * @throws IOException in case of an I/O problem
      */
-    public static int readSwappedUnsignedShort(InputStream input)
-            throws IOException {
+    public static int readSwappedUnsignedShort(InputStream input) throws IOException {
         int value1 = read(input);
         int value2 = read(input);
 
-        return (((value1 & 0xff)) +
-                ((value2 & 0xff) << 8));
+        return (((value1 & 0xff)) + ((value2 & 0xff) << 8));
     }
 
     /**
@@ -109,8 +103,7 @@ public class EndianUtils {
      * @return the value just read
      * @throws IOException in case of an I/O problem
      */
-    public static int readSwappedInteger(InputStream input)
-            throws IOException {
+    public static int readSwappedInteger(InputStream input) throws IOException {
         int value1 = read(input);
         int value2 = read(input);
         int value3 = read(input);
@@ -130,8 +123,7 @@ public class EndianUtils {
      * @return the value just read
      * @throws IOException in case of an I/O problem
      */
-    public static long readSwappedLong(InputStream input)
-            throws IOException {
+    public static long readSwappedLong(InputStream input) throws IOException {
         byte[] bytes = new byte[8];
         for (int i = 0; i < 8; i++) {
             bytes[i] = (byte) read(input);
@@ -147,8 +139,7 @@ public class EndianUtils {
      * @return the value just read
      * @throws IOException in case of an I/O problem
      */
-    public static float readSwappedFloat(InputStream input)
-            throws IOException {
+    public static float readSwappedFloat(InputStream input) throws IOException {
         return Float.intBitsToFloat(readSwappedInteger(input));
     }
 
@@ -160,8 +151,7 @@ public class EndianUtils {
      * @return the value just read
      * @throws IOException in case of an I/O problem
      */
-    public static double readSwappedDouble(InputStream input)
-            throws IOException {
+    public static double readSwappedDouble(InputStream input) throws IOException {
         return Double.longBitsToDouble(readSwappedLong(input));
     }
 
@@ -172,8 +162,7 @@ public class EndianUtils {
      * @return the byte
      * @throws IOException if the end of file is reached
      */
-    private static int read(InputStream input)
-            throws IOException {
+    private static int read(InputStream input) throws IOException {
         int value = input.read();
 
         if (-1 == value) {

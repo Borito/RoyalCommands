@@ -22,8 +22,7 @@ public class CmdDelHome implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("delhome")) {
             if (!plugin.isAuthorized(cs, "rcmds.delhome")) {
                 RUtils.dispNoPerms(cs);

@@ -32,9 +32,7 @@ import java.util.List;
  * @see FileFilterUtils#or(IOFileFilter...)
  * @since 1.0
  */
-public class OrFileFilter
-        extends AbstractFileFilter
-        implements ConditionalFileFilter, Serializable {
+public class OrFileFilter extends AbstractFileFilter implements ConditionalFileFilter, Serializable {
 
     /**
      * The list of file filters.

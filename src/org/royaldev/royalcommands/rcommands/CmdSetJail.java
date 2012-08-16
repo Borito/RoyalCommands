@@ -22,8 +22,7 @@ public class CmdSetJail implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("setjail")) {
             if (!plugin.isAuthorized(cs, "rcmds.setjail")) {
                 RUtils.dispNoPerms(cs);
@@ -31,8 +30,7 @@ public class CmdSetJail implements CommandExecutor {
             }
 
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED
-                        + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
                 return true;
             }
 
@@ -50,8 +48,7 @@ public class CmdSetJail implements CommandExecutor {
             Float locPitch = p.getLocation().getPitch();
             String locW = p.getWorld().getName();
 
-            File pconfl = new File(plugin.getDataFolder() + File.separator
-                    + "jails.yml");
+            File pconfl = new File(plugin.getDataFolder() + File.separator + "jails.yml");
             if (!pconfl.exists()) {
                 try {
                     pconfl.createNewFile();
@@ -59,8 +56,7 @@ public class CmdSetJail implements CommandExecutor {
                     e1.printStackTrace();
                 }
             }
-            FileConfiguration pconf = YamlConfiguration
-                    .loadConfiguration(pconfl);
+            FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
             pconf.set("jails." + args[0] + ".set", true);
             pconf.set("jails." + args[0] + ".x", locX);
             pconf.set("jails." + args[0] + ".y", locY);
@@ -73,8 +69,7 @@ public class CmdSetJail implements CommandExecutor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            p.sendMessage(ChatColor.BLUE + "Jail \"" + ChatColor.GRAY + args[0]
-                    + ChatColor.BLUE + "\" set.");
+            p.sendMessage(ChatColor.BLUE + "Jail \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + "\" set.");
             return true;
         }
         return false;

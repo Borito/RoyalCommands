@@ -61,13 +61,12 @@ public class RoyalCommandsPlayerListener implements Listener {
         ConfigurationSection cmdCds = plugin.getConfig().getConfigurationSection("command_cooldowns");
         if (cmdCds == null) return;
         boolean contains = cmdCds.getKeys(false).contains(command);
-        if (plugin.cooldownAliases)
-            if (plugin.getCommand(command) != null)
-                for (String alias : plugin.getCommand(command).getAliases())
-                    if (cmdCds.getKeys(false).contains(alias)) {
-                        contains = true;
-                        break;
-                    }
+        if (plugin.cooldownAliases) if (plugin.getCommand(command) != null)
+            for (String alias : plugin.getCommand(command).getAliases())
+                if (cmdCds.getKeys(false).contains(alias)) {
+                    contains = true;
+                    break;
+                }
         if (contains) {
             long cooldown = cmdCds.getLong(command);
             new PConfManager(p).setLong(new Date().getTime() + (cooldown * 1000), "command_cooldowns." + command);
@@ -315,8 +314,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         for (String s : cmds) {
             if (s.toLowerCase().trim().startsWith("c:"))
                 event.getPlayer().chat(s.trim().substring(2));
-            else
-                event.getPlayer().performCommand(s.trim());
+            else event.getPlayer().performCommand(s.trim());
         }
     }
 

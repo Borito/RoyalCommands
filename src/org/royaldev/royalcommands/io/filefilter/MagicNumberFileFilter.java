@@ -65,8 +65,7 @@ import java.util.Arrays;
  * @see FileFilterUtils#magicNumberFileFilter(String, long)
  * @since 2.0
  */
-public class MagicNumberFileFilter extends AbstractFileFilter implements
-        Serializable {
+public class MagicNumberFileFilter extends AbstractFileFilter implements Serializable {
 
     /**
      * The serialization version unique identifier.

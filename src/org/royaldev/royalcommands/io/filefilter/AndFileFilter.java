@@ -32,9 +32,7 @@ import java.util.List;
  * @see FileFilterUtils#and(IOFileFilter...)
  * @since 1.0
  */
-public class AndFileFilter
-        extends AbstractFileFilter
-        implements ConditionalFileFilter, Serializable {
+public class AndFileFilter extends AbstractFileFilter implements ConditionalFileFilter, Serializable {
 
     /**
      * The list of file filters.

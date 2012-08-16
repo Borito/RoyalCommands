@@ -170,8 +170,7 @@ public class FileFilterUtils {
      * @throws IllegalArgumentException if the filter is {@code null}
      *                                  or <code>files</code> contains a {@code null} value.
      */
-    private static <T extends Collection<File>> T filter(IOFileFilter filter,
-                                                         Iterable<File> files, T acceptedFiles) {
+    private static <T extends Collection<File>> T filter(IOFileFilter filter, Iterable<File> files, T acceptedFiles) {
         if (filter == null) {
             throw new IllegalArgumentException("file filter is null");
         }

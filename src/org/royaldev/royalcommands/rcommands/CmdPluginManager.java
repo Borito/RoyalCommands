@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -15,6 +14,7 @@ import org.bukkit.plugin.UnknownDependencyException;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.UnZip;
+import org.royaldev.royalcommands.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

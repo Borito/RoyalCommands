@@ -17,8 +17,7 @@ public class CmdUnban implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("unban")) {
             if (!plugin.isAuthorized(cs, "rcmds.unban")) {
                 RUtils.dispNoPerms(cs);
@@ -28,20 +27,14 @@ public class CmdUnban implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer t = plugin.getServer().getOfflinePlayer(
-                    args[0].trim());
+            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0].trim());
             if (!t.isBanned()) {
                 cs.sendMessage(ChatColor.RED + "That player isn't banned!");
                 return true;
             }
             t.setBanned(false);
-            cs.sendMessage(ChatColor.BLUE + "You have unbanned "
-                    + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            plugin.getServer().broadcast(
-                    ChatColor.BLUE + "The player " + ChatColor.GRAY
-                            + cs.getName() + ChatColor.BLUE + " has unbanned "
-                            + ChatColor.GRAY + t.getName() + ChatColor.BLUE
-                            + ".", "rcmds.see.unban");
+            cs.sendMessage(ChatColor.BLUE + "You have unbanned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            plugin.getServer().broadcast(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has unbanned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".", "rcmds.see.unban");
             return true;
         }
         return false;

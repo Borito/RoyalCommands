@@ -250,8 +250,7 @@ public class IOUtils {
      * @throws UnsupportedCharsetException thrown instead of {@link UnsupportedEncodingException} in version 2.2 if the encoding is not
      *                                     supported.
      */
-    public static String toString(InputStream input, String encoding)
-            throws IOException {
+    public static String toString(InputStream input, String encoding) throws IOException {
         return toString(input, Charsets.toCharset(encoding));
     }
 
@@ -399,8 +398,7 @@ public class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 1.1
      */
-    public static void write(byte[] data, OutputStream output)
-            throws IOException {
+    public static void write(byte[] data, OutputStream output) throws IOException {
         if (data != null) {
             output.write(data);
         }
@@ -500,8 +498,7 @@ public class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 1.1
      */
-    public static void write(char[] data, OutputStream output)
-            throws IOException {
+    public static void write(char[] data, OutputStream output) throws IOException {
         write(data, output, Charset.defaultCharset());
     }
 
@@ -546,8 +543,7 @@ public class IOUtils {
      *                                     supported.
      * @since 1.1
      */
-    public static void write(char[] data, OutputStream output, String encoding)
-            throws IOException {
+    public static void write(char[] data, OutputStream output, String encoding) throws IOException {
         write(data, output, Charsets.toCharset(encoding));
     }
 
@@ -582,8 +578,7 @@ public class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 2.0
      */
-    public static void write(CharSequence data, OutputStream output)
-            throws IOException {
+    public static void write(CharSequence data, OutputStream output) throws IOException {
         write(data, output, Charset.defaultCharset());
     }
 
@@ -659,8 +654,7 @@ public class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 1.1
      */
-    public static void write(String data, OutputStream output)
-            throws IOException {
+    public static void write(String data, OutputStream output) throws IOException {
         write(data, output, Charset.defaultCharset());
     }
 
@@ -701,8 +695,7 @@ public class IOUtils {
      *                                     supported.
      * @since 1.1
      */
-    public static void write(String data, OutputStream output, String encoding)
-            throws IOException {
+    public static void write(String data, OutputStream output, String encoding) throws IOException {
         write(data, output, Charsets.toCharset(encoding));
     }
 
@@ -720,8 +713,7 @@ public class IOUtils {
      * @deprecated replaced by write(CharSequence, Writer)
      */
     @Deprecated
-    public static void write(StringBuffer data, Writer output)
-            throws IOException {
+    public static void write(StringBuffer data, Writer output) throws IOException {
         if (data != null) {
             output.write(data.toString());
         }
@@ -742,8 +734,7 @@ public class IOUtils {
      * @deprecated replaced by write(CharSequence, OutputStream)
      */
     @Deprecated
-    public static void write(StringBuffer data, OutputStream output)
-            throws IOException {
+    public static void write(StringBuffer data, OutputStream output) throws IOException {
         write(data, output, (String) null);
     }
 
@@ -822,8 +813,7 @@ public class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 1.3
      */
-    public static long copyLarge(InputStream input, OutputStream output)
-            throws IOException {
+    public static long copyLarge(InputStream input, OutputStream output) throws IOException {
         return copyLarge(input, output, new byte[DEFAULT_BUFFER_SIZE]);
     }
 
@@ -843,8 +833,7 @@ public class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 2.2
      */
-    public static long copyLarge(InputStream input, OutputStream output, byte[] buffer)
-            throws IOException {
+    public static long copyLarge(InputStream input, OutputStream output, byte[] buffer) throws IOException {
         long count = 0;
         int n;
         while (EOF != (n = input.read(buffer))) {
@@ -869,8 +858,7 @@ public class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 1.1
      */
-    public static void copy(InputStream input, Writer output)
-            throws IOException {
+    public static void copy(InputStream input, Writer output) throws IOException {
         copy(input, output, Charset.defaultCharset());
     }
 
@@ -1012,8 +1000,7 @@ public class IOUtils {
      * @throws IOException          if an I/O error occurs
      * @since 1.1
      */
-    public static void copy(Reader input, OutputStream output)
-            throws IOException {
+    public static void copy(Reader input, OutputStream output) throws IOException {
         copy(input, output, Charset.defaultCharset());
     }
 

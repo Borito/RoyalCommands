@@ -94,8 +94,7 @@ public class XmlStreamWriter extends Writer {
      * @param len  The number of characters to write
      * @throws IOException if an error occurs detecting the encoding
      */
-    private void detectEncoding(char[] cbuf, int off, int len)
-            throws IOException {
+    private void detectEncoding(char[] cbuf, int off, int len) throws IOException {
         int size = len;
         StringBuffer xmlProlog = xmlPrologWriter.getBuffer();
         if (xmlProlog.length() + len > BUFFER_SIZE) {
@@ -110,8 +109,7 @@ public class XmlStreamWriter extends Writer {
                 int xmlPrologEnd = xmlProlog.indexOf("?>");
                 if (xmlPrologEnd > 0) {
                     // ok, full XML prolog written: let's extract encoding
-                    Matcher m = ENCODING_PATTERN.matcher(xmlProlog.substring(0,
-                            xmlPrologEnd));
+                    Matcher m = ENCODING_PATTERN.matcher(xmlProlog.substring(0, xmlPrologEnd));
                     if (m.find()) {
                         encoding = m.group(1).toUpperCase();
                         encoding = encoding.substring(1, encoding.length() - 1);

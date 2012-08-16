@@ -22,8 +22,7 @@ public class CmdMessage implements CommandExecutor {
     public static HashMap<CommandSender, CommandSender> replydb = new HashMap<CommandSender, CommandSender>();
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label,
-                             String[] args) {
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("message")) {
             if (!plugin.isAuthorized(cs, "rcmds.message")) {
                 RUtils.dispNoPerms(cs);
@@ -54,12 +53,8 @@ public class CmdMessage implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You entered no message!");
                 return true;
             }
-            t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName()
-                    + ChatColor.GRAY + " -> " + ChatColor.BLUE + "You"
-                    + ChatColor.GRAY + "] " + m);
-            cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You"
-                    + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName()
-                    + ChatColor.GRAY + "] " + m);
+            t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + "You" + ChatColor.GRAY + "] " + m);
+            cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You" + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName() + ChatColor.GRAY + "] " + m);
             Player[] ps = plugin.getServer().getOnlinePlayers();
             for (Player p1 : ps) {
                 if (new PConfManager(p1).getBoolean("spy")) {

@@ -212,8 +212,7 @@ public class Tailer implements Runnable {
      * @param bufSize     buffer size.
      * @return The new tailer
      */
-    public static Tailer create(File file, TailerListener listener, long delayMillis, boolean end, boolean reOpen,
-                                int bufSize) {
+    public static Tailer create(File file, TailerListener listener, long delayMillis, boolean end, boolean reOpen, int bufSize) {
         Tailer tailer = new Tailer(file, listener, delayMillis, end, reOpen, bufSize);
         Thread thread = new Thread(tailer);
         thread.setDaemon(true);

@@ -171,8 +171,7 @@ public class FileUtils {
      * @param recursive  if true all subdirectories are searched as well
      * @return an collection of java.io.File with the matching files
      */
-    public static Collection<File> listFiles(
-            File directory, String[] extensions, boolean recursive) {
+    public static Collection<File> listFiles(File directory, String[] extensions, boolean recursive) {
         IOFileFilter filter;
         if (extensions == null) {
             filter = TrueFileFilter.INSTANCE;
@@ -180,8 +179,7 @@ public class FileUtils {
             String[] suffixes = toSuffixes(extensions);
             filter = new SuffixFileFilter(suffixes);
         }
-        return listFiles(directory, filter,
-                recursive ? TrueFileFilter.INSTANCE : FalseFileFilter.INSTANCE);
+        return listFiles(directory, filter, recursive ? TrueFileFilter.INSTANCE : FalseFileFilter.INSTANCE);
     }
 
     /**
@@ -216,8 +214,7 @@ public class FileUtils {
      * @return a filter that accepts directories
      */
     private static IOFileFilter setUpEffectiveDirFilter(IOFileFilter dirFilter) {
-        return dirFilter == null ? FalseFileFilter.INSTANCE : FileFilterUtils.and(dirFilter,
-                DirectoryFileFilter.INSTANCE);
+        return dirFilter == null ? FalseFileFilter.INSTANCE : FileFilterUtils.and(dirFilter, DirectoryFileFilter.INSTANCE);
     }
 
     /**
@@ -245,8 +242,7 @@ public class FileUtils {
      * @see org.royaldev.royalcommands.io.filefilter.FileFilterUtils
      * @see org.royaldev.royalcommands.io.filefilter.NameFileFilter
      */
-    public static Collection<File> listFiles(
-            File directory, IOFileFilter fileFilter, IOFileFilter dirFilter) {
+    public static Collection<File> listFiles(File directory, IOFileFilter fileFilter, IOFileFilter dirFilter) {
         validateListFilesParameters(directory, fileFilter);
 
         IOFileFilter effFileFilter = setUpEffectiveFileFilter(fileFilter);
@@ -254,8 +250,7 @@ public class FileUtils {
 
         //Find files
         Collection<File> files = new java.util.LinkedList<File>();
-        innerListFiles(files, directory,
-                FileFilterUtils.or(effFileFilter, effDirFilter), false);
+        innerListFiles(files, directory, FileFilterUtils.or(effFileFilter, effDirFilter), false);
         return files;
     }
 
@@ -268,8 +263,7 @@ public class FileUtils {
      * @param filter                the filter to apply to files and directories.
      * @param includeSubDirectories indicates if will include the subdirectories themselves
      */
-    private static void innerListFiles(Collection<File> files, File directory,
-                                       IOFileFilter filter, boolean includeSubDirectories) {
+    private static void innerListFiles(Collection<File> files, File directory, IOFileFilter filter, boolean includeSubDirectories) {
         File[] found = directory.listFiles((FileFilter) filter);
 
         if (found != null) {
@@ -321,8 +315,7 @@ public class FileUtils {
         }
 
         if (!directory.delete()) {
-            String message =
-                    "Unable to delete directory " + directory + ".";
+            String message = "Unable to delete directory " + directory + ".";
             throw new IOException(message);
         }
     }
@@ -387,8 +380,7 @@ public class FileUtils {
                 if (!filePresent) {
                     throw new FileNotFoundException("File does not exist: " + file);
                 }
-                String message =
-                        "Unable to delete file: " + file;
+                String message = "Unable to delete file: " + file;
                 throw new IOException(message);
             }
         }
