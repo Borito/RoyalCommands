@@ -750,7 +750,8 @@ public class RUtils {
     public static boolean canActAgainst(final CommandSender cs, final Player t, final String perm) {
         if (cs.equals(t)) return true;
         RoyalCommands plugin = RoyalCommands.instance;
-        String group;
+        return !plugin.isAuthorized(t, "rcmds.exempt." + perm) && plugin.isAuthorized(cs, "rcmds.others." + perm);
+        /*String group;
         try {
             group = RoyalCommands.permission.getPrimaryGroup(t);
         } catch (UnsupportedOperationException e) {
@@ -763,7 +764,7 @@ public class RUtils {
         if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others.*." + group)) return true;
         if (plugin.isAuthorized(cs, "rcmds.others.*." + t.getName())) return true;
         if (plugin.isAuthorized(cs, "rcmds.others.*")) return true;
-        return false;
+        return false;*/
     }
 
     /**
@@ -777,7 +778,8 @@ public class RUtils {
     public static boolean canActAgainst(final CommandSender cs, final String t, final String perm) {
         if (cs.getName().equals(t)) return true;
         RoyalCommands plugin = RoyalCommands.instance;
-        String group;
+        return !plugin.isAuthorized(plugin.getServer().getOfflinePlayer(t), "rcmds.exempt." + perm) && plugin.isAuthorized(cs, "rcmds.others." + perm);
+        /*String group;
         try {
             Player p = plugin.getServer().getPlayer(t);
             group = RoyalCommands.permission.getPrimaryGroup(p);
@@ -787,13 +789,17 @@ public class RUtils {
             group = "";
         }
         if (group == null) group = "";
-        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group)) return true;
-        if (plugin.isAuthorized(cs, "rcmds.others." + perm + "." + t)) return true;
-        if (plugin.isAuthorized(cs, "rcmds.others." + perm)) return true;
-        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others.*." + group)) return true;
-        if (plugin.isAuthorized(cs, "rcmds.others.*." + t)) return true;
-        if (plugin.isAuthorized(cs, "rcmds.others.*")) return true;
-        return false;
+        boolean canAct = false;
+        boolean hasMasterPerm = false;
+        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group)) canAct = true;
+        if (plugin.isAuthorized(cs, "rcmds.others." + perm + ".p." + t)) canAct =  true;
+        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others.*." + group)) canAct =  true;
+        if (plugin.isAuthorized(cs, "rcmds.others.*.p." + t)) canAct =  true;
+        if (plugin.isAuthorized(cs, "rcmds.others.*")) hasMasterPerm = true;
+        if (plugin.isAuthorized(cs, "rcmds.others." + perm)) hasMasterPerm = true;
+        if (canAct) return canAct;
+        if (!canAct && hasMasterPerm) return false; // What if it's not given, not negated?
+        return true;*/
     }
 
     public static void silentKick(final Player t, final String reason) {
