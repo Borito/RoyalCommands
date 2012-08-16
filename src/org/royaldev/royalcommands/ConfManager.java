@@ -280,7 +280,7 @@ public class ConfManager {
      */
     public String getString(String path, String def) {
         if (pconf == null) return def;
-        String s = pconf.getString(path, def);
+        return pconf.getString(path, def);
     }
 
     /**
