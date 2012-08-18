@@ -170,6 +170,7 @@ public class RoyalCommands extends JavaPlugin {
     public String whoFormat = null;
     public String nickPrefix = null;
     public String whoGroupFormat = null;
+    public String whitelistFormat = null;
 
     //-- Integers --//
 
@@ -389,6 +390,7 @@ public class RoyalCommands extends JavaPlugin {
         whoFormat = getConfig().getString("who_format", "{prefix}{dispname}");
         nickPrefix = RUtils.colorize(getConfig().getString("nick_prefix", "*"));
         whoGroupFormat = getConfig().getString("who_group_format", "{prefix}{group}{suffix}");
+        whitelistFormat = RUtils.colorize(getConfig().getString("whitelist_format", "You are not whitelisted on this server!"));
 
         defaultStack = getConfig().getInt("default_stack_size", 64);
         spawnmobLimit = getConfig().getInt("spawnmob_limit", 15);

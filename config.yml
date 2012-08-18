@@ -291,3 +291,6 @@ dump_use_inv: true
 
 # Use Multiverse world names? If Multiverse-Core is not installed, this makes no difference.
 multiverse_world_names: true
+
+# Message to use if player is denied by the whitelist.
+whitelist_message: "You are not whitelisted on this server!"

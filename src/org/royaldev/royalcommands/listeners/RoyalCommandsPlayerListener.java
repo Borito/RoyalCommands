@@ -87,7 +87,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             e.getPlayer().sendMessage(ChatColor.RED + "You moved! Teleport cancelled!");
             CmdTeleport.waitingToTele.remove(e.getPlayer().getName());
         }
-    }*/
+    } YML is your friend*/
+    // TODO: Use userdata instead, fool.
 
     @EventHandler
     public void afk(PlayerMoveEvent e) {
@@ -98,7 +99,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void whitelist(PlayerLoginEvent e) {
         if (!plugin.useWhitelist) return;
         if (!plugin.whitelist.contains(e.getPlayer().getName()))
-            e.disallow(Result.KICK_WHITELIST, "You are not whitelisted on this server!");
+            e.disallow(Result.KICK_WHITELIST, plugin.whitelistFormat);
     }
 
     @EventHandler
