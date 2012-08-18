@@ -67,6 +67,7 @@ public class SerializableItemStack implements Serializable {
      */
     public ItemStack getItemStack() {
         CraftItemStack cis = new CraftItemStack(type, amount, durability, materialData);
+        cis.setDurability(durability);
         for (SerializableCraftEnchantment sce : enchantments.keySet())
             cis.addUnsafeEnchantment(sce.getEnchantment(), enchantments.get(sce));
         if (tag != null) cis.getHandle().setTag(tag.getNBTTagCompound());
