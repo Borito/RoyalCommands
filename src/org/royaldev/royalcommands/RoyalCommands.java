@@ -786,6 +786,7 @@ public class RoyalCommands extends JavaPlugin {
             for (OfflinePlayer op : getServer().getOfflinePlayers()) {
                 PConfManager pcm = new PConfManager(op);
                 if (!pcm.exists()) continue;
+                getLogger().info("Converting userdata for " + op.getName() + "...");
                 H2PConfManager h2pcm;
                 try {
                     h2pcm = new H2PConfManager(op);
@@ -817,10 +818,10 @@ public class RoyalCommands extends JavaPlugin {
                     } catch (SQLException ignored) {
                     }
                 }
-                getLogger().info("Converted userdata for " + op.getName() + ".");
             }
             useH2 = true;
             h2s.clear();
+            ymls.clear();
             PConfManager.updateH2Status();
             getLogger().info("Userdata conversion complete. Please restart with convert set to false.");
         }
