@@ -157,7 +157,7 @@ public class CmdPluginManager implements CommandExecutor {
                 pm.enablePlugin(p);
                 if (p.isEnabled())
                     cs.sendMessage(ChatColor.BLUE + "Successfully enabled " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + "!");
-                else cs.sendMessage(ChatColor.RED + "Could not enable that plugin.");
+                else cs.sendMessage(ChatColor.RED + "Could not enable " + ChatColor.GRAY + p.getName() + ChatColor.RED + ".");
                 return true;
             } else if (subcmd.equalsIgnoreCase("reload")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.reload")) {

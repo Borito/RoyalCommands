@@ -2,12 +2,12 @@ package org.royaldev.royalcommands;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.royaldev.royalcommands.json.JSONObject;
+import org.royaldev.royalcommands.playermanagers.H2PConfManager;
+import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 /**
@@ -18,316 +18,194 @@ import java.util.List;
  */
 public class PConfManager {
 
-    private FileConfiguration pconf = null;
-    private File pconfl = null;
+    private static boolean useH2 = RoyalCommands.instance.useH2;
 
-    /**
-     * Player configuration manager
-     *
-     * @param p Player to manage
-     */
-    public PConfManager(OfflinePlayer p) {
-        File dataFolder = RoyalCommands.dataFolder;
-        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.getName().toLowerCase() + ".yml");
-        if (!pconfl.exists()) return;
-        pconf = YamlConfiguration.loadConfiguration(pconfl);
+    private H2PConfManager h2pcm;
+    private YMLPConfManager ymlpcm;
+
+    public PConfManager(OfflinePlayer t) {
+        if (useH2) {
+            try {
+                synchronized (RoyalCommands.instance.h2s) {
+                    Map<String, H2PConfManager> h2s = RoyalCommands.instance.h2s;
+                    if (h2s.containsKey(t.getName())) h2pcm = h2s.get(t.getName());
+                    else {
+                        h2pcm = new H2PConfManager(t);
+                        RoyalCommands.instance.h2s.put(t.getName(), h2pcm);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm = new YMLPConfManager(t);
     }
 
-    /**
-     * Player configuration manager.
-     *
-     * @param p Player to manage
-     */
-    public PConfManager(String p) {
-        File dataFolder = RoyalCommands.dataFolder;
-        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.toLowerCase() + ".yml");
-        if (!pconfl.exists()) return;
-        pconf = YamlConfiguration.loadConfiguration(pconfl);
+    public PConfManager(String t) {
+        if (useH2) {
+            try {
+                synchronized (RoyalCommands.instance.h2s) {
+                    Map<String, H2PConfManager> h2s = RoyalCommands.instance.h2s;
+                    if (h2s.containsKey(t)) h2pcm = h2s.get(t);
+                    else {
+                        h2pcm = new H2PConfManager(t);
+                        RoyalCommands.instance.h2s.put(t, h2pcm);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm = new YMLPConfManager(t);
     }
 
-    /**
-     * Creates configuration file if it doesn't exist.
-     *
-     * @return If file was created
-     */
-    public boolean createFile() {
-        if (pconf != null) return false;
-        try {
-            pconfl.getParentFile().mkdirs();
-            boolean success = pconfl.createNewFile();
-            pconf = YamlConfiguration.loadConfiguration(pconfl);
-            return success;
-        } catch (Exception e) {
-            return false;
-        }
+    public static void updateH2Status() {
+        useH2 = RoyalCommands.instance.useH2;
     }
 
-    /**
-     * Sets a string in config
-     *
-     * @param value String to set
-     * @param path  Path in the yml to set
-     */
-    public void setString(String value, String path) {
-        if (pconf == null) return;
-        pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public Object getRealManager() {
+        if (useH2) return h2pcm;
+        else return ymlpcm;
     }
 
-    /**
-     * Sets a long in config
-     *
-     * @param value Long to set
-     * @param path  Path in the yml to set
-     */
-    public void setLong(long value, String path) {
-        if (pconf == null) return;
-        pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets a double in config
-     *
-     * @param value Double to set
-     * @param path  Path in the yml to set
-     */
-    public void setDouble(double value, String path) {
-        if (pconf == null) return;
-        pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets an object in config
-     *
-     * @param value An object
-     * @param path  Path in the yml to set
-     */
-    public void set(Object value, String path) {
-        if (pconf == null) return;
-        pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets an integer in config
-     *
-     * @param value Integer to set
-     * @param path  Path in the yml to set
-     */
-    public void setInteger(Integer value, String path) {
-        if (pconf == null) return;
-        pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets a string list in config
-     *
-     * @param value String list to set
-     * @param path  Path in the yml to set
-     */
-    public void setStringList(List<String> value, String path) {
-        if (pconf == null) return;
-        pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets a configuration section in the config
-     *
-     * @param value ConfigurationSection to set
-     * @param path  Path in the yml to set
-     */
-    public void setConfigurationSection(ConfigurationSection value, String path) {
-        if (pconf == null) return;
-        pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets a boolean in config
-     *
-     * @param value Boolean to set
-     * @param path  Path in the yml to set
-     */
-    public void setBoolean(Boolean value, String path) {
-        if (pconf == null) return;
-        pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets a float in config
-     *
-     * @param value Float to set
-     * @param path  Path in the yml to set
-     */
-    public void setFloat(Float value, String path) {
-        if (pconf == null) return;
-        pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets a string list from config
-     *
-     * @param path Path in the yml to fetch from
-     * @return String list or null if path does not exist or if config doesn't exist
-     */
-    public List<String> getStringList(String path) {
-        if (pconf == null) return null;
-        return pconf.getStringList(path);
-    }
-
-    /**
-     * Gets a boolean from config
-     *
-     * @param path Path in the yml to fetch from
-     * @return Boolean or null if path does not exist or if config doesn't exist
-     */
-    public boolean getBoolean(String path) {
-        return pconf != null && pconf.getBoolean(path);
-    }
-
-    /**
-     * Gets an integer from config
-     *
-     * @param path Path in the yml to fetch from
-     * @return Integer or null if path does not exist or if config doesn't exist
-     */
-    public Integer getInteger(String path) {
-        if (pconf == null) return null;
-        return pconf.getInt(path);
-    }
-
-    /**
-     * Gets an object from config
-     *
-     * @param path Path in the yml to fetch from
-     * @return Object or null if path does not exist or if config doesn't exist
-     */
-    public Object get(String path) {
-        if (pconf == null) return null;
-        return pconf.get(path);
-    }
-
-    /**
-     * Gets a long from config
-     *
-     * @param path Path in the yml to fetch from
-     * @return Long or null if path does not exist or if config doesn't exist
-     */
-    public Long getLong(String path) {
-        if (pconf == null) return null;
-        return pconf.getLong(path);
-    }
-
-    /**
-     * Gets a double from config
-     *
-     * @param path Path in the yml to fetch from
-     * @return Double or null if path does not exist or if config doesn't exist
-     */
-    public Double getDouble(String path) {
-        if (pconf == null) return null;
-        return pconf.getDouble(path);
-    }
-
-    /**
-     * Gets a string from config
-     *
-     * @param path Path in the yml to fetch from
-     * @return String or null if path does not exist or if config doesn't exist
-     */
-    public String getString(String path) {
-        if (pconf == null) return null;
-        return pconf.getString(path);
-    }
-
-    /**
-     * Gets a float from config
-     *
-     * @param path Path in the yml to fetch from
-     * @return Float or null if path does not exist or if config doesn't exist or if not valid float
-     */
-    public Float getFloat(String path) {
-        if (pconf == null) return null;
-        try {
-            return Float.valueOf(pconf.getString(path));
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /**
-     * Gets a ConfigurationSection from config
-     *
-     * @param path Path in the yml to fetch from
-     * @return ConfigurationSection or null if the path does not exist or if config doesn't exist
-     */
-    public ConfigurationSection getConfigurationSection(String path) {
-        if (pconf == null) return null;
-        return pconf.getConfigurationSection(path);
-    }
-
-    /**
-     * Checks to see if config exists.
-     * <p/>
-     * Equivalent to exists()
-     *
-     * @return boolean of existence
-     */
-    public boolean getConfExists() {
-        return pconf != null;
-    }
-
-    /**
-     * Checks to see if config exists.
-     * <p/>
-     * Equivalent to getConfExists()
-     *
-     * @return boolean of existence
-     */
     public boolean exists() {
-        return pconf != null;
+        return useH2 || ymlpcm.exists();
+    }
+
+    public boolean getConfExists() {
+        return exists();
+    }
+
+    public boolean createFile() {
+        return useH2 || ymlpcm.createFile();
+    }
+
+    public String getString(String node) {
+        if (useH2) return h2pcm.getString(node);
+        else return ymlpcm.getString(node);
+    }
+
+    public boolean getBoolean(String node) {
+        if (useH2) return h2pcm.getBoolean(node);
+        else return ymlpcm.getBoolean(node);
+    }
+
+    public Long getLong(String node) {
+        if (useH2) return h2pcm.getLong(node);
+        else return ymlpcm.getLong(node);
+    }
+
+    public Float getFloat(String node) {
+        if (useH2) return h2pcm.getFloat(node);
+        else return ymlpcm.getFloat(node);
+    }
+
+    public Double getDouble(String node) {
+        if (useH2) return h2pcm.getDouble(node);
+        else return ymlpcm.getDouble(node);
+    }
+
+    public List<String> getStringList(String node) {
+        if (useH2) return h2pcm.getStringList(node);
+        else return ymlpcm.getStringList(node);
+    }
+
+    public Integer getInteger(String node) {
+        if (useH2) return h2pcm.getInteger(node);
+        else return ymlpcm.getInteger(node);
+    }
+
+    public Object get(String node) {
+        if (useH2) return h2pcm.get(node);
+        else return ymlpcm.get(node);
+    }
+
+    public ConfigurationSection getConfigurationSection(String path) {
+        if (useH2) return null;
+        else return ymlpcm.getConfigurationSection(path);
+    }
+
+    public JSONObject getJSONObject(String path) {
+        if (useH2) return h2pcm.getJSONObject(path);
+        else return null;
+    }
+
+    public void setString(String value, String path) {
+        if (useH2) {
+            try {
+                h2pcm.set(value, path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm.setString(value, path);
+    }
+
+    public void setBoolean(boolean value, String path) {
+        if (useH2) {
+            try {
+                h2pcm.set(value, path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm.set(value, path); // Got lazy
+    }
+
+    public void setLong(long value, String path) {
+        if (useH2) {
+            try {
+                h2pcm.set(value, path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm.set(value, path);
+    }
+
+    public void setDouble(double value, String path) {
+        if (useH2) {
+            try {
+                h2pcm.set(value, path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm.set(value, path);
+    }
+
+    public void setInteger(int value, String path) {
+        if (useH2) {
+            try {
+                h2pcm.set(value, path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm.set(value, path);
+    }
+
+    public void setFloat(float value, String path) {
+        if (useH2) {
+            try {
+                h2pcm.set(value, path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm.set(value, path);
+    }
+
+    public void setStringList(List<String> value, String path) {
+        if (useH2) {
+            try {
+                h2pcm.set(value, path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm.set(value, path);
+    }
+
+    public void set(Object value, String path) {
+        if (useH2) {
+            try {
+                h2pcm.set(value, path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm.set(value, path);
     }
 
 }

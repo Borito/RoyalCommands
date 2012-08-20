@@ -294,3 +294,25 @@ multiverse_world_names: true
 
 # Message to use if player is denied by the whitelist.
 whitelist_message: "You are not whitelisted on this server!"
+
+# Use a H2 database instead of YML files for userdata?
+# If this is true, fill out the h2 part of the config.
+# I /strongly/ advise you keep this as true. During my
+# testing, rCmds' processing times were:
+#  - YML: 102.00ms
+#  -  H2:   4.53ms
+# That's a ~95.5% decrease in processing times. The
+# choice is yours, though.
+use_h2: true
+
+h2:
+  # Path relative to plugins/RoyalCommands - automatically appends .h2.db
+  path: "userdata"
+  # Username to use for the database
+  user: "rcmds"
+  # Password to use for the database
+  pass: "sdmcr"
+  # Convert data from YML to H2? Set this to true and it will automagically
+  # convert all userdata from YML to H2. You should then come back and set
+  # this to false.
+  convert: false

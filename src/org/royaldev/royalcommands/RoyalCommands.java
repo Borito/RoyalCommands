@@ -33,6 +33,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -40,6 +41,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
+import org.royaldev.royalcommands.json.JSONException;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
@@ -47,6 +49,8 @@ import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.opencsv.CSVReader;
+import org.royaldev.royalcommands.playermanagers.H2PConfManager;
+import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
@@ -66,9 +70,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,6 +94,8 @@ public class RoyalCommands extends JavaPlugin {
     public static WorldManager wm;
 
     public static RoyalCommands instance;
+
+    public final Map<String, H2PConfManager> h2s = new HashMap<String, H2PConfManager>();
 
     public ConfManager whl;
     public Logger log = Logger.getLogger("Minecraft");
@@ -155,6 +164,8 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean changeNameTag = null;
     public Boolean dumpCreateChest = null;
     public Boolean dumpUseInv = null;
+    public Boolean useH2 = null;
+    public Boolean h2Convert = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
@@ -171,6 +182,9 @@ public class RoyalCommands extends JavaPlugin {
     public String nickPrefix = null;
     public String whoGroupFormat = null;
     public String whitelistFormat = null;
+    public String h2Path = null;
+    public String h2User = null;
+    public String h2Pass = null;
 
     //-- Integers --//
 
@@ -380,6 +394,8 @@ public class RoyalCommands extends JavaPlugin {
         changeNameTag = getConfig().getBoolean("change_nametag", false);
         dumpCreateChest = getConfig().getBoolean("dump_create_chest", true);
         dumpUseInv = getConfig().getBoolean("dump_use_inv", true);
+        useH2 = getConfig().getBoolean("use_h2", true);
+        h2Convert = getConfig().getBoolean("h2.convert", false);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
@@ -391,6 +407,9 @@ public class RoyalCommands extends JavaPlugin {
         nickPrefix = RUtils.colorize(getConfig().getString("nick_prefix", "*"));
         whoGroupFormat = getConfig().getString("who_group_format", "{prefix}{group}{suffix}");
         whitelistFormat = RUtils.colorize(getConfig().getString("whitelist_format", "You are not whitelisted on this server!"));
+        h2Path = getConfig().getString("h2.path", "userdata");
+        h2User = getConfig().getString("h2.user", "rcmds");
+        h2Pass = getConfig().getString("h2.pass", "sdmcr");
 
         defaultStack = getConfig().getInt("default_stack_size", 64);
         spawnmobLimit = getConfig().getInt("spawnmob_limit", 15);
@@ -745,6 +764,52 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdPluginManager(this), "pluginmanager", this);
         registerCommand(new CmdFreezeTime(this), "freezetime", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
+
+        //-- Config converter (YML -> H2) --//
+        if (h2Convert) {
+            useH2 = false;
+            PConfManager.updateH2Status();
+            for (OfflinePlayer op : getServer().getOfflinePlayers()) {
+                PConfManager pcm = new PConfManager(op);
+                if (!pcm.exists()) continue;
+                H2PConfManager h2pcm;
+                try {
+                    h2pcm = new H2PConfManager(op);
+                } catch (SQLException e) {
+                    getLogger().warning("Could not convert userdata for " + op.getName() + ": " + e.getMessage());
+                    continue;
+                } catch (JSONException e) {
+                    getLogger().warning("Could not convert userdata for " + op.getName() + ": " + e.getMessage());
+                    continue;
+                }
+                Set<String> data = ((YMLPConfManager) pcm.getRealManager()).getConfigurationSection("").getKeys(true);
+                for (String key : data) {
+                    Object value = pcm.get(key);
+                    if (value instanceof MemorySection) {
+                        MemorySection ms = (MemorySection) value;
+                        Set<String> keys = ms.getKeys(true);
+                        for (String s : keys) {
+                            try {
+                                h2pcm.set(ms.get(s), ms.getCurrentPath() + "." + s);
+                            } catch (JSONException ignored) {
+                            } catch (SQLException ignored) {
+                            }
+                        }
+                        continue;
+                    }
+                    try {
+                        h2pcm.set(value, key);
+                    } catch (JSONException ignored) {
+                    } catch (SQLException ignored) {
+                    }
+                }
+                getLogger().info("Converted userdata for " + op.getName() + ".");
+            }
+            useH2 = true;
+            h2s.clear();
+            PConfManager.updateH2Status();
+            getLogger().info("Userdata conversion complete. Please restart with convert set to false.");
+        }
 
         //-- We're done! --//
 

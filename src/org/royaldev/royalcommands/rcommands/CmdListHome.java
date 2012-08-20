@@ -10,7 +10,11 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.json.JSONArray;
+import org.royaldev.royalcommands.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class CmdListHome implements CommandExecutor {
@@ -48,21 +52,45 @@ public class CmdListHome implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "No such player!");
                 return true;
             }
-            ConfigurationSection cfgs = pcm.getConfigurationSection("home");
-            if (cfgs == null) {
-                cs.sendMessage(ChatColor.RED + "No homes found!");
+            if (!plugin.useH2) {
+                ConfigurationSection cfgs = pcm.getConfigurationSection("home");
+                if (cfgs == null) {
+                    cs.sendMessage(ChatColor.RED + "No homes found!");
+                    return true;
+                }
+                final Map<String, Object> opts = cfgs.getValues(false);
+                if (opts.keySet().isEmpty()) {
+                    cs.sendMessage(ChatColor.RED + "No homes found!");
+                    return true;
+                }
+                String homes = opts.keySet().toString();
+                homes = homes.substring(1, homes.length() - 1);
+                cs.sendMessage(ChatColor.BLUE + "Homes:");
+                cs.sendMessage(homes);
+                return true;
+            } else {
+                JSONObject cfgs = pcm.getJSONObject("home");
+                if (cfgs == null) {
+                    cs.sendMessage(ChatColor.RED + "No homes found!");
+                    return true;
+                }
+                if (RUtils.getSize(cfgs.keys()) < 1) {
+                    cs.sendMessage(ChatColor.RED + "No homes found!");
+                    return true;
+                }
+                JSONArray ja = cfgs.names();
+                List<String> hs = new ArrayList<String>();
+                for (int i = 0; i < ja.length(); i++) {
+                    Object o = ja.opt(i);
+                    if (o == null || !(o instanceof String)) continue;
+                    hs.add((String) o);
+                }
+                String homes = hs.toString();
+                homes = homes.substring(1, homes.length() - 1);
+                cs.sendMessage(ChatColor.BLUE + "Homes:");
+                cs.sendMessage(homes);
                 return true;
             }
-            final Map<String, Object> opts = cfgs.getValues(false);
-            if (opts.keySet().isEmpty()) {
-                cs.sendMessage(ChatColor.RED + "No homes found!");
-                return true;
-            }
-            String homes = opts.keySet().toString();
-            homes = homes.substring(1, homes.length() - 1);
-            cs.sendMessage(ChatColor.BLUE + "Homes:");
-            cs.sendMessage(homes);
-            return true;
         }
         return false;
     }

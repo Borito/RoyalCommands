@@ -31,6 +31,7 @@ import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -780,5 +781,20 @@ public class RUtils {
 
     public static void silentKick(final Player t, final String reason) {
         t.kickPlayer(reason + "\00-silent");
+    }
+
+    /**
+     * Gets the size of an iterator.
+     *
+     * @param i Iterator
+     * @return Size
+     */
+    public static int getSize(Iterator i) {
+        int size = 0;
+        while (i.hasNext()) {
+            size++;
+            i.next();
+        }
+        return size;
     }
 }

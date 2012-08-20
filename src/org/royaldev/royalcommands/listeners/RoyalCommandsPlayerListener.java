@@ -281,6 +281,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (pcm.get("ignoredby") == null) return;
         Set<Player> recpts = e.getRecipients();
         ArrayList<String> ignores = (ArrayList<String>) pcm.getStringList("ignoredby");
+        if (ignores == null) return;
         Set<Player> ignore = new HashSet<Player>();
         for (Player pl : recpts)
             for (String ignoree : ignores)
@@ -289,15 +290,17 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerMove(PlayerMoveEvent event) {
+    public void afkWatch(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
-        if (AFKUtils.isAfk(event.getPlayer())) {
-            AFKUtils.unsetAfk(event.getPlayer());
-            plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
-            return;
-        }
-        if (new PConfManager(event.getPlayer()).getBoolean("frozen"))
-            event.setCancelled(true);
+        if (!AFKUtils.isAfk(event.getPlayer())) return;
+        AFKUtils.unsetAfk(event.getPlayer());
+        plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void freezeWatch(PlayerMoveEvent e) {
+        if (e.isCancelled()) return;
+        if (new PConfManager(e.getPlayer()).getBoolean("frozen")) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

@@ -2,6 +2,7 @@ name: RoyalCommands
 main: org.royaldev.royalcommands.RoyalCommands
 version: 0.2.5pre
 website: http://dev.royaldev.org/
+description: A general plugin containing all the commands a discerning server admin could want.
 author: jkcclemens
 depend: [Vault]
 softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard]

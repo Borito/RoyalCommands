@@ -38,7 +38,7 @@ public class CmdAssign implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You can't remove commands from air!");
                     return true;
                 }
-                new PConfManager(p).setStringList(null, "assign." + hand.getTypeId());
+                new PConfManager(p).set(null, "assign." + hand.getTypeId());
                 p.sendMessage(ChatColor.BLUE + "All commands removed from " + ChatColor.GRAY + hand.getType().toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
                 return true;
             }
@@ -52,10 +52,10 @@ public class CmdAssign implements CommandExecutor {
             java.util.List<String> cmds = pcm.getStringList("assign." + hand.getTypeId());
             if (cmds == null) {
                 cmds = new ArrayList<String>();
-                cmds.add(plugin.getFinalArg(args, 0));
-            } else cmds.add(plugin.getFinalArg(args, 0));
+                cmds.add(RoyalCommands.getFinalArg(args, 0));
+            } else cmds.add(RoyalCommands.getFinalArg(args, 0));
             pcm.setStringList(cmds, "assign." + hand.getTypeId());
-            String message = (plugin.getFinalArg(args, 0).toLowerCase().startsWith("c:")) ? ChatColor.BLUE + "Added message " + ChatColor.GRAY + plugin.getFinalArg(args, 0).substring(2) + ChatColor.BLUE + " to that item." : ChatColor.BLUE + "Added command " + ChatColor.GRAY + "/" + plugin.getFinalArg(args, 0) + ChatColor.BLUE + " to that item.";
+            String message = (RoyalCommands.getFinalArg(args, 0).toLowerCase().startsWith("c:")) ? ChatColor.BLUE + "Added message " + ChatColor.GRAY + plugin.getFinalArg(args, 0).substring(2) + ChatColor.BLUE + " to that item." : ChatColor.BLUE + "Added command " + ChatColor.GRAY + "/" + plugin.getFinalArg(args, 0) + ChatColor.BLUE + " to that item.";
             p.sendMessage(message);
             return true;
         }
