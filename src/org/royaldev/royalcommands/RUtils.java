@@ -25,6 +25,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -796,5 +800,29 @@ public class RUtils {
             i.next();
         }
         return size;
+    }
+
+    public static boolean downloadFile(String s, String saveto) {
+        try {
+            URL website = new URL(s);
+            ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+            File save = new File(saveto);
+            if (!save.exists()) {
+                save.getParentFile().mkdirs();
+                save.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(saveto);
+            while (fos.getChannel().transferFrom(rbc, 0, 1 << 24) > 0) {
+            }
+            fos.flush();
+            fos.close();
+            rbc.close();
+            return true;
+        } catch (MalformedURLException e) {
+            RoyalCommands.instance.getLogger().severe("Could not download h2.jar: " + e.getMessage());
+        } catch (IOException e) {
+            RoyalCommands.instance.getLogger().severe("Could not download h2.jar: " + e.getMessage());
+        }
+        return false;
     }
 }

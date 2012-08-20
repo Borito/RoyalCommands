@@ -547,6 +547,15 @@ public class RoyalCommands extends JavaPlugin {
 
         wm = new WorldManager();
 
+        //-- Download external libraries --//
+
+        if (!new File("lib/h2.jar").exists()) {
+            getLogger().info("Downloading H2 driver...");
+            if (RUtils.downloadFile("http://cdn.royaldev.org/plugindeps/h2.jar", "lib" + File.separator + "h2.jar"))
+                getLogger().info("Finished downloading.");
+            else getLogger().severe("Could not download h2.jar!");
+        }
+
         //-- Hidendra's Metrics --//
 
         try {
@@ -766,6 +775,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Config converter (YML -> H2) --//
+
         if (h2Convert) {
             useH2 = false;
             PConfManager.updateH2Status();

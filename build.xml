@@ -36,6 +36,10 @@
     <target name="dist" depends="compile">
         <mkdir dir="${dist}"/>
         <jar jarfile="${dist}/lib/${label}.jar">
+            <manifest>
+                <attribute name="Built-By" value="${user.name}"/>
+                <attribute name="Class-Path" value="../lib/h2.jar"/>
+            </manifest>
             <fileset dir="${build}"/>
             <fileset file="plugin.yml"/>
             <fileset file="config.yml"/>
