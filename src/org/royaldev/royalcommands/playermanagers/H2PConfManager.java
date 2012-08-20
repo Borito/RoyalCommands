@@ -187,8 +187,8 @@ public class H2PConfManager {
     public List<String> getStringList(String path) {
         Object o = get(path, null);
         if (o == null) return null;
-        String s = toStringy(o);
-        if (s.equals("")) return null;
+        String s = o.toString();
+        if (s.trim().equals("")) return null;
         JSONArray ja;
         try {
             ja = new JSONArray(s);
