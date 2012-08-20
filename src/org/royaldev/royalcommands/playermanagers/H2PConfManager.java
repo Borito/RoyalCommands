@@ -97,8 +97,8 @@ public class H2PConfManager {
         rs.last();
         if (rs.getRow() > 0) return false;
         JSONObject jo = new JSONObject();
-        jo.put("name", name);
-        jo.put("dispname", name);
+        jo.put("name", t.getName());
+        jo.put("dispname", t.getName());
         String options = jo.toString();
         stmt = c.prepareStatement("INSERT INTO `userdata` (name, options) VALUES (?, ?);");
         stmt.setString(1, name);
