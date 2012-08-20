@@ -33,6 +33,7 @@ public class H2PConfManager {
     private final Logger log = RoyalCommands.instance.getLogger();
     private JSONObject options;
     private OfflinePlayer t;
+    private String name;
 
     /**
      * Player configuration manager
@@ -41,6 +42,7 @@ public class H2PConfManager {
      */
     public H2PConfManager(OfflinePlayer p) throws SQLException, JSONException {
         t = p;
+        name = t.getName().toLowerCase();
         try {
             Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException e) {
@@ -51,7 +53,7 @@ public class H2PConfManager {
         c.createStatement().execute("CREATE TABLE IF NOT EXISTS `userdata` (id int NOT NULL AUTO_INCREMENT, name text NOT NULL, options text);");
         createEntry();
         stmt = c.prepareStatement("SELECT options FROM `userdata` WHERE `name` = ?;");
-        stmt.setString(1, t.getName());
+        stmt.setString(1, name);
         ResultSet rs = stmt.executeQuery();
         rs.last();
         options = new JSONObject(rs.getString("options"));
@@ -65,6 +67,7 @@ public class H2PConfManager {
      */
     public H2PConfManager(String p) throws SQLException, JSONException {
         t = Bukkit.getOfflinePlayer(p);
+        name = t.getName().toLowerCase();
         try {
             Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException e) {
@@ -75,7 +78,7 @@ public class H2PConfManager {
         c.createStatement().execute("CREATE TABLE IF NOT EXISTS `userdata` (id int NOT NULL AUTO_INCREMENT, name text NOT NULL, options text);");
         createEntry();
         stmt = c.prepareStatement("SELECT `options` FROM `userdata` WHERE `name` = ?;");
-        stmt.setString(1, t.getName());
+        stmt.setString(1, name);
         ResultSet rs = stmt.executeQuery();
         rs.last();
         options = new JSONObject(rs.getString("options"));
@@ -89,16 +92,16 @@ public class H2PConfManager {
      */
     private boolean createEntry() throws SQLException, JSONException {
         stmt = c.prepareStatement("SELECT 1 FROM `userdata` WHERE `name`=?;");
-        stmt.setString(1, t.getName());
+        stmt.setString(1, name);
         ResultSet rs = stmt.executeQuery();
         rs.last();
         if (rs.getRow() > 0) return false;
         JSONObject jo = new JSONObject();
-        jo.put("name", t.getName());
-        jo.put("dispname", t.getName());
+        jo.put("name", name);
+        jo.put("dispname", name);
         String options = jo.toString();
         stmt = c.prepareStatement("INSERT INTO `userdata` (name, options) VALUES (?, ?);");
-        stmt.setString(1, t.getName());
+        stmt.setString(1, name);
         stmt.setString(2, options);
         stmt.execute();
         stmt.close();
@@ -173,7 +176,7 @@ public class H2PConfManager {
 
         stmt = c.prepareStatement("UPDATE `userdata` SET `options`=? WHERE `name`=?;");
         stmt.setString(1, options.toString());
-        stmt.setString(2, t.getName());
+        stmt.setString(2, name);
         stmt.execute();
         stmt.close();
     }
