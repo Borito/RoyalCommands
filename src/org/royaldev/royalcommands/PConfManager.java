@@ -37,7 +37,16 @@ public class PConfManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else ymlpcm = new YMLPConfManager(t);
+        } else {
+            synchronized (RoyalCommands.instance.ymls) {
+                Map<String, YMLPConfManager> ymls = RoyalCommands.instance.ymls;
+                if (ymls.containsKey(t.getName())) ymlpcm = ymls.get(t.getName());
+                else {
+                    ymlpcm = new YMLPConfManager(t);
+                    RoyalCommands.instance.ymls.put(t.getName(), ymlpcm);
+                }
+            }
+        }
     }
 
     public PConfManager(String t) {
@@ -54,7 +63,16 @@ public class PConfManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else ymlpcm = new YMLPConfManager(t);
+        } else {
+            synchronized (RoyalCommands.instance.ymls) {
+                Map<String, YMLPConfManager> ymls = RoyalCommands.instance.ymls;
+                if (ymls.containsKey(t)) ymlpcm = ymls.get(t);
+                else {
+                    ymlpcm = new YMLPConfManager(t);
+                    RoyalCommands.instance.ymls.put(t, ymlpcm);
+                }
+            }
+        }
     }
 
     public static void updateH2Status() {

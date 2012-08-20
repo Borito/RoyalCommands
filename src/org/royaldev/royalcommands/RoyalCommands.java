@@ -96,6 +96,7 @@ public class RoyalCommands extends JavaPlugin {
     public static RoyalCommands instance;
 
     public final Map<String, H2PConfManager> h2s = new HashMap<String, H2PConfManager>();
+    public final Map<String, YMLPConfManager> ymls = new HashMap<String, YMLPConfManager>();
 
     public ConfManager whl;
     public Logger log = Logger.getLogger("Minecraft");
