@@ -42,6 +42,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.json.JSONException;
+import org.royaldev.royalcommands.json.JSONObject;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
@@ -56,18 +57,15 @@ import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.WarnWatcher;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.sql.SQLException;
@@ -307,25 +305,14 @@ public class RoyalCommands extends JavaPlugin {
         return currentVersion == null || currentVersion >= minVersion;
     }
 
-    // updateCheck() from MilkBowl's Vault
-    public String updateCheck(String currentVersion) throws Exception {
-        String pluginUrlString = "http://dev.bukkit.org/server-mods/royalcommands/files.rss";
-        try {
-            URL url = new URL(pluginUrlString);
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
-            doc.getDocumentElement().normalize();
-            NodeList nodes = doc.getElementsByTagName("item");
-            Node firstNode = nodes.item(0);
-            if (firstNode.getNodeType() == 1) {
-                Element firstElement = (Element) firstNode;
-                NodeList firstElementTagName = firstElement.getElementsByTagName("title");
-                Element firstNameElement = (Element) firstElementTagName.item(0);
-                NodeList firstNodes = firstNameElement.getChildNodes();
-                return firstNodes.item(0).getNodeValue();
-            }
-        } catch (Exception ignored) {
+    public JSONObject getNewestVersions() throws IOException, JSONException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(new URL("http://cdn.royaldev.org/rcmdsversion.php").openStream()));
+        String input;
+        StringBuilder data = new StringBuilder();
+        while ((input = br.readLine()) != null) {
+            data.append(input);
         }
-        return currentVersion;
+        return new JSONObject(data.toString());
     }
 
     //-- Static methods --//
@@ -572,12 +559,12 @@ public class RoyalCommands extends JavaPlugin {
 
         if (!new File("lib/h2.jar").exists() && useH2) {
             getLogger().info("Downloading H2 driver...");
-            if (RUtils.downloadFile("http://cdn.royaldev.org/plugindeps/h2.jar", "lib" + File.separator + "h2.jar"))
+            if (RUtils.downloadFile("http://cdn.royaldev.org/plugindeps/h2.jar", "lib" + File.separator + "h2.jar")) {
                 getLogger().info("Finished downloading.");
-            else getLogger().severe("Could not download h2.jar!");
-            getLogger().info("Please restart CraftBukkit to load the H2 driver! Disabling plugin.");
-            setEnabled(false);
-            return;
+                getLogger().info("Please restart CraftBukkit to load the H2 driver! Disabling plugin.");
+                setEnabled(false);
+                return;
+            } else getLogger().severe("Could not download h2.jar!");
         }
 
         //-- Check CB version --//
@@ -586,7 +573,7 @@ public class RoyalCommands extends JavaPlugin {
             log.severe("[RoyalCommands] This version of CraftBukkit is too old to run RoyalCommands!");
             log.severe("[RoyalCommands] This version of RoyalCommands needs at least CraftBukkit " + minVersion + ".");
             log.severe("[RoyalCommands] Disabling plugin. You can turn this check off in the config.");
-            getPluginLoader().disablePlugin(this);
+            setEnabled(false);
             return;
         }
 
@@ -598,18 +585,26 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Schedule tasks --//
 
-        // yet again, borrowed from MilkBowl
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
                 try {
-                    newVersion = updateCheck(version);
-                    String oldVersion = version;
-                    Integer nVI = Integer.valueOf(newVersion.replaceAll("\\D+", ""));
-                    Integer oVI = Integer.valueOf(version.replaceAll("\\D+", ""));
-                    if (nVI > oVI || (oldVersion.contains("pre") && nVI.equals(oVI))) {
-                        log.warning(newVersion + " is out! You are running v" + oldVersion);
-                        log.warning("Update RoyalCommands at: http://dev.bukkit.org/server-mods/royalcommands");
+                    JSONObject jo = getNewestVersions();
+                    String stable = jo.getString("stable");
+                    String dev = jo.getString("dev");
+                    String currentVersion = getDescription().getVersion().toLowerCase();
+                    if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("pre")) {
+                        getLogger().warning("A newer version of RoyalCommands is available!");
+                        getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
+                        getLogger().warning("Development builds are available at http://ci.royaldev.org/");
+                    } else if (!stable.equalsIgnoreCase(currentVersion) && !currentVersion.equalsIgnoreCase(dev)) {
+                        getLogger().warning("A newer version of RoyalCommands is available!");
+                        getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
+                        getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
+                    } else if (!stable.equalsIgnoreCase(currentVersion) && currentVersion.replace("pre", "").equalsIgnoreCase(stable)) {
+                        getLogger().warning("A newer version of RoyalCommands is available!");
+                        getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
+                        getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
                     }
                 } catch (Exception ignored) {
                     // ignore exceptions
