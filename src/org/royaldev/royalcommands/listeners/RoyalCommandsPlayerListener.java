@@ -93,7 +93,6 @@ public class RoyalCommandsPlayerListener implements Listener {
             pcm.setLong(-1L, "teleport_warmup");
         }
     }
-    // TODO: Use userdata instead, fool.
 
     @EventHandler
     public void afk(PlayerMoveEvent e) {

@@ -29,15 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked, unused")
@@ -438,6 +430,15 @@ public class RUtils {
         return "";
     }
 
+    private final static Map<String, Integer> teleRunners = new HashMap<String, Integer>();
+
+    public static void cancelTeleportRunner(final Player p) {
+        synchronized (teleRunners) {
+            if (teleRunners.containsKey(p.getName()))
+                Bukkit.getScheduler().cancelTask(teleRunners.get(p.getName()));
+        }
+    }
+
     /**
      * Makes a scheduled Bukkit task for watching a player when he's warming up for teleport.
      *
@@ -447,21 +448,31 @@ public class RUtils {
      */
     public static int makeTeleportRunner(final Player p, final Location t) {
         final PConfManager pcm = new PConfManager(p);
+        pcm.setLong(new Date().getTime(), "teleport_warmup");
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 Long l = pcm.getLong("teleport_warmup");
-                if (l == null) return;
+                if (l == null || l < 0) {
+                    cancelTeleportRunner(p);
+                    return;
+                }
                 int toAdd = RoyalCommands.instance.teleportWarmup * 1000;
                 l = l + toAdd;
                 long c = new Date().getTime();
                 if (l < c) {
+                    p.sendMessage(ChatColor.BLUE + "Teleporting...");
                     String error = teleport(p, t);
                     if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
+                    cancelTeleportRunner(p);
                 }
             }
         };
-        return Bukkit.getScheduler().scheduleSyncRepeatingTask(RoyalCommands.instance, r, 0, 10);
+        int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(RoyalCommands.instance, r, 0, 10);
+        synchronized (teleRunners) {
+            teleRunners.put(p.getName(), id);
+        }
+        return id;
     }
 
     /**
@@ -473,21 +484,31 @@ public class RUtils {
      */
     public static int makeTeleportRunner(final Player p, final Entity t) {
         final PConfManager pcm = new PConfManager(p);
+        pcm.setLong(new Date().getTime(), "teleport_warmup");
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 Long l = pcm.getLong("teleport_warmup");
-                if (l == null) return;
+                if (l == null || l < 0) {
+                    cancelTeleportRunner(p);
+                    return;
+                }
                 int toAdd = RoyalCommands.instance.teleportWarmup * 1000;
                 l = l + toAdd;
                 long c = new Date().getTime();
                 if (l < c) {
+                    p.sendMessage(ChatColor.BLUE + "Teleporting...");
                     String error = teleport(p, t);
                     if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
+                    cancelTeleportRunner(p);
                 }
             }
         };
-        return Bukkit.getScheduler().scheduleSyncRepeatingTask(RoyalCommands.instance, r, 0, 10);
+        int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(RoyalCommands.instance, r, 0, 10);
+        synchronized (teleRunners) {
+            teleRunners.put(p.getName(), id);
+        }
+        return id;
     }
 
     /**
