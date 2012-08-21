@@ -315,3 +315,8 @@ h2:
   # convert all userdata from YML to H2. You should then come back and set
   # this to false.
   convert: false
+
+# Make players stay still for a set amount of time before teleporting?
+# Time is in seconds.
+# 0 to disable
+teleport_warmup: 0

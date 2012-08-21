@@ -82,6 +82,10 @@ import java.util.regex.Pattern;
 
 public class RoyalCommands extends JavaPlugin {
 
+    /*
+    * TODO: MV/WM world names in /tpw and others
+     */
+
     //--- Globals ---//
 
     public static Permission permission = null;
@@ -191,6 +195,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public Integer spawnmobLimit = null;
     public Integer helpAmount = null;
+    public Integer teleportWarmup = null;
     public static Integer defaultStack = null;
 
     //-- Doubles --//
@@ -415,6 +420,7 @@ public class RoyalCommands extends JavaPlugin {
         defaultStack = getConfig().getInt("default_stack_size", 64);
         spawnmobLimit = getConfig().getInt("spawnmob_limit", 15);
         helpAmount = getConfig().getInt("help_lines", 5);
+        teleportWarmup = getConfig().getInt("teleport_warmup", 0);
 
         maxNear = getConfig().getDouble("max_near_radius", 2000D);
         defaultNear = getConfig().getDouble("default_near_radius", 50D);

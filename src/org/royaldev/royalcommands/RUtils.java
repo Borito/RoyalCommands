@@ -438,23 +438,57 @@ public class RUtils {
         return "";
     }
 
-    /*
-     * If teleport warmup is on, determines if the player can teleport.
+    /**
+     * Makes a scheduled Bukkit task for watching a player when he's warming up for teleport.
      *
-     * @param p Player to determine teleportation status for
-     * @return true if player can teleport, false if otherwise
+     * @param p Player to teleport when warmup is finished
+     * @param t Location to teleport to when warmup is finished
+     * @return ID of Bukkit task
      */
-    /*public static boolean teleWait(Player p) {
-        if (RoyalCommands.teleWarmup < 1) return true;
-        synchronized (CmdTeleport.waitingToTele) {
-            if (!CmdTeleport.waitingToTele.contains(p.getName())) {
-                CmdTeleport.waitingToTele.add(p.getName());
-                p.sendMessage(ChatColor.BLUE + "Please wait for " + ChatColor.GRAY + RoyalCommands.teleWarmup + " seconds" + ChatColor.BLUE + " before teleporting.");
-                return false;
-            } else CmdTeleport.waitingToTele.remove(p.getName());
-        }
-        return true;
-    }*/
+    public static int makeTeleportRunner(final Player p, final Location t) {
+        final PConfManager pcm = new PConfManager(p);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Long l = pcm.getLong("teleport_warmup");
+                if (l == null) return;
+                int toAdd = RoyalCommands.instance.teleportWarmup * 1000;
+                l = l + toAdd;
+                long c = new Date().getTime();
+                if (l < c) {
+                    String error = teleport(p, t);
+                    if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
+                }
+            }
+        };
+        return Bukkit.getScheduler().scheduleSyncRepeatingTask(RoyalCommands.instance, r, 0, 10);
+    }
+
+    /**
+     * Makes a scheduled Bukkit task for watching a player when he's warming up for teleport.
+     *
+     * @param p Player to teleport when warmup is finished
+     * @param t Entity to teleport to when warmup is finished
+     * @return ID of Bukkit task
+     */
+    public static int makeTeleportRunner(final Player p, final Entity t) {
+        final PConfManager pcm = new PConfManager(p);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Long l = pcm.getLong("teleport_warmup");
+                if (l == null) return;
+                int toAdd = RoyalCommands.instance.teleportWarmup * 1000;
+                l = l + toAdd;
+                long c = new Date().getTime();
+                if (l < c) {
+                    String error = teleport(p, t);
+                    if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
+                }
+            }
+        };
+        return Bukkit.getScheduler().scheduleSyncRepeatingTask(RoyalCommands.instance, r, 0, 10);
+    }
 
     /**
      * Teleports a player without registering it in /back.

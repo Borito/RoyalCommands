@@ -79,15 +79,20 @@ public class RoyalCommandsPlayerListener implements Listener {
         new PConfManager(p).setDouble((seconds * 1000) + new Date().getTime(), "teleport_cooldown");
     }
 
-/*  Hey! I'd love to do this, but it's easily bypassed.
     @EventHandler
     public void teleWarmup(PlayerMoveEvent e) {
-        synchronized (CmdTeleport.waitingToTele) {
-            if (!CmdTeleport.waitingToTele.contains(e.getPlayer().getName())) return;
-            e.getPlayer().sendMessage(ChatColor.RED + "You moved! Teleport cancelled!");
-            CmdTeleport.waitingToTele.remove(e.getPlayer().getName());
+        Player p = e.getPlayer();
+        PConfManager pcm = new PConfManager(p);
+        Long l = pcm.getLong("teleport_warmup");
+        if (l == null) return;
+        int toAdd = plugin.teleportWarmup * 1000;
+        l = l + toAdd;
+        long c = new Date().getTime();
+        if (l > c) {
+            p.sendMessage(ChatColor.RED + "You moved! Teleport cancelled!");
+            pcm.setLong(-1L, "teleport_warmup");
         }
-    } YML is your friend*/
+    }
     // TODO: Use userdata instead, fool.
 
     @EventHandler

@@ -16,8 +16,6 @@ public class CmdTeleport implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    //public static final List<String> waitingToTele = new ArrayList<String>();
-
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("teleport")) {
@@ -43,11 +41,16 @@ public class CmdTeleport implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            p.sendMessage(ChatColor.BLUE + "Teleporting you to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            String error = RUtils.teleport(p, t);
-            if (!error.isEmpty()) {
-                p.sendMessage(ChatColor.RED + error);
-                return true;
+            if (plugin.teleportWarmup > 0) {
+                p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + plugin.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
+                RUtils.makeTeleportRunner(p, t);
+            } else {
+                p.sendMessage(ChatColor.BLUE + "Teleporting you to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                String error = RUtils.teleport(p, t);
+                if (!error.isEmpty()) {
+                    p.sendMessage(ChatColor.RED + error);
+                    return true;
+                }
             }
             return true;
         }
