@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,37 +29,37 @@ public class CmdReply implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            if (CmdMessage.replydb.containsKey(cs)) {
-                CommandSender t = CmdMessage.replydb.get(cs);
-                if (!CmdMessage.replydb.containsKey(t)) {
-                    CmdMessage.replydb.put(t, cs);
-                } else if (CmdMessage.replydb.containsKey(t)) {
-                    if (CmdMessage.replydb.get(t) != cs) {
-                        CmdMessage.replydb.remove(t);
-                        CmdMessage.replydb.put(t, cs);
-                    }
-                }
-                if ((t instanceof Player) && !((Player) t).isOnline()) {
-                    cs.sendMessage(ChatColor.RED + "That player is offline!");
+            synchronized (CmdMessage.replydb) {
+                if (!CmdMessage.replydb.containsKey(cs.getName())) {
+                    cs.sendMessage(ChatColor.RED + "You have no one to reply to!");
                     return true;
                 }
-                String m = plugin.getFinalArg(args, 0).trim();
-                cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You" + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName() + ChatColor.GRAY + "] " + m);
-                t.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + "You" + ChatColor.GRAY + "] " + m);
-                Player[] ps = plugin.getServer().getOnlinePlayers();
-                for (Player p1 : ps) {
-                    if (new PConfManager(p1).getBoolean("spy")) {
-                        if (t == p1 || cs == p1) {
-                            continue;
-                        }
-                        p1.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + t.getName() + ChatColor.GRAY + "] " + m);
-                    }
-                }
-                return true;
-            } else {
-                cs.sendMessage(ChatColor.RED + "You have no one to reply to!");
+            }
+
+            String target = CmdMessage.replydb.get(cs.getName());
+            OfflinePlayer t = plugin.getServer().getOfflinePlayer(target);
+
+            if (!t.isOnline()) {
+                cs.sendMessage(ChatColor.RED + "That player is offline!");
                 return true;
             }
+
+            synchronized (CmdMessage.replydb) {
+                CmdMessage.replydb.put(t.getName(), cs.getName());
+            }
+
+            Player p = (Player) t;
+            String m = RoyalCommands.getFinalArg(args, 0).trim();
+            cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You" + ChatColor.GRAY + " -> " + ChatColor.BLUE + p.getName() + ChatColor.GRAY + "] " + m);
+            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + "You" + ChatColor.GRAY + "] " + m);
+            Player[] ps = plugin.getServer().getOnlinePlayers();
+            for (Player p1 : ps) {
+                if (new PConfManager(p1).getBoolean("spy")) {
+                    if (t == p1 || cs == p1) continue;
+                    p1.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + p.getName() + ChatColor.GRAY + "] " + m);
+                }
+            }
+            return true;
         }
         return false;
     }

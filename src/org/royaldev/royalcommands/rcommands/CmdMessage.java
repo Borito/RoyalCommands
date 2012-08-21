@@ -19,7 +19,7 @@ public class CmdMessage implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    public static HashMap<CommandSender, CommandSender> replydb = new HashMap<CommandSender, CommandSender>();
+    public final static HashMap<String, String> replydb = new HashMap<String, String>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -32,7 +32,7 @@ public class CmdMessage implements CommandExecutor {
                 return false;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
-            String m = plugin.getFinalArg(args, 1).trim();
+            String m = RoyalCommands.getFinalArg(args, 1).trim();
             if (t == null || t.getName().trim().equals("")) {
                 cs.sendMessage(ChatColor.RED + "That player is not online!");
                 return true;
@@ -41,14 +41,14 @@ public class CmdMessage implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (!replydb.containsKey(t)) {
-                replydb.put(t, cs);
-            } else if (replydb.containsKey(t)) {
-                if (replydb.get(t) != cs) {
-                    replydb.remove(t);
-                    replydb.put(t, cs);
-                }
+            /*if (!replydb.containsKey(t.getName())) replydb.put(t.getName(), cs.getName());
+            else if (replydb.containsKey(t.getName()) && !replydb.get(t.getName()).equals(cs.getName()))
+                replydb.put(t.getName(), cs.getName());*/
+            synchronized (replydb) {
+                replydb.put(t.getName(), cs.getName());
+                replydb.put(cs.getName(), t.getName());
             }
+
             if (m == null || m.equals("")) {
                 cs.sendMessage(ChatColor.RED + "You entered no message!");
                 return true;
