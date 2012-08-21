@@ -554,18 +554,6 @@ public class RoyalCommands extends JavaPlugin {
 
         wm = new WorldManager();
 
-        //-- Download external libraries --//
-
-        if (!new File("lib/h2.jar").exists() && useH2) {
-            getLogger().info("Downloading H2 driver...");
-            if (RUtils.downloadFile("http://cdn.royaldev.org/plugindeps/h2.jar", "lib" + File.separator + "h2.jar"))
-                getLogger().info("Finished downloading.");
-            else getLogger().severe("Could not download h2.jar!");
-            getLogger().info("Please restart CraftBukkit to load the H2 driver! Disabling plugin.");
-            setEnabled(false);
-            return;
-        }
-
         //-- Hidendra's Metrics --//
 
         try {
@@ -579,6 +567,18 @@ public class RoyalCommands extends JavaPlugin {
 
         loadConfiguration();
         reloadConfigVals();
+
+        //-- Download external libraries --//
+
+        if (!new File("lib/h2.jar").exists() && useH2) {
+            getLogger().info("Downloading H2 driver...");
+            if (RUtils.downloadFile("http://cdn.royaldev.org/plugindeps/h2.jar", "lib" + File.separator + "h2.jar"))
+                getLogger().info("Finished downloading.");
+            else getLogger().severe("Could not download h2.jar!");
+            getLogger().info("Please restart CraftBukkit to load the H2 driver! Disabling plugin.");
+            setEnabled(false);
+            return;
+        }
 
         //-- Check CB version --//
 
