@@ -48,7 +48,7 @@ public class H2PConfManager {
         } catch (ClassNotFoundException e) {
             log.severe("Could not find H2 driver! Please make sure that h2.jar is in your classpath.");
         }
-        String path = RoyalCommands.instance.getDataFolder() + File.separator + RoyalCommands.instance.h2Path;
+        String path = RoyalCommands.instance.getDataFolder().getAbsolutePath() + File.separator + RoyalCommands.instance.h2Path;
         c = DriverManager.getConnection("jdbc:h2:" + path + ";AUTO_RECONNECT=TRUE", RoyalCommands.instance.h2User, RoyalCommands.instance.h2Pass);
         c.createStatement().execute("CREATE TABLE IF NOT EXISTS `userdata` (id int NOT NULL AUTO_INCREMENT, name text NOT NULL, options text);");
         createEntry();
@@ -73,7 +73,7 @@ public class H2PConfManager {
         } catch (ClassNotFoundException e) {
             log.severe("Could not find H2 driver! Please make sure that h2.jar is in your classpath.");
         }
-        String path = RoyalCommands.instance.getDataFolder() + File.separator + RoyalCommands.instance.h2Path;
+        String path = RoyalCommands.instance.getDataFolder().getAbsolutePath() + File.separator + RoyalCommands.instance.h2Path;
         c = DriverManager.getConnection("jdbc:h2:" + path + ";AUTO_RECONNECT=TRUE", RoyalCommands.instance.h2User, RoyalCommands.instance.h2Pass);
         c.createStatement().execute("CREATE TABLE IF NOT EXISTS `userdata` (id int NOT NULL AUTO_INCREMENT, name text NOT NULL, options text);");
         createEntry();
