@@ -251,29 +251,6 @@ public class RoyalCommands extends JavaPlugin {
         return hid;
     }
 
-    public void createDefault(File f, String def) {
-        if (!f.exists()) {
-            try {
-                boolean success = f.createNewFile();
-                if (success) {
-                    try {
-                        FileWriter fstream = new FileWriter(f.getAbsolutePath());
-                        BufferedWriter out = new BufferedWriter(fstream);
-                        out.write(def);
-                        out.close();
-                    } catch (Exception e) {
-                        log.severe("[RoyalCommands] Could not write to a config.");
-                        e.printStackTrace();
-                    }
-                    log.info("[RoyalCommands] Created config file.");
-                }
-            } catch (Exception e) {
-                log.severe("[RoyalCommands] Failed to create file!");
-                e.printStackTrace();
-            }
-        }
-    }
-
     public boolean isAuthorized(final OfflinePlayer p, final String node) {
         String world = getServer().getWorlds().get(0).getName();
         return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || (RoyalCommands.permission.has(world, p.getName(), "rcmds.admin") || RoyalCommands.permission.has(world, p.getName(), node));
@@ -285,34 +262,6 @@ public class RoyalCommands extends JavaPlugin {
 
     public boolean isAuthorized(final CommandSender player, final String node) {
         return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
-    }
-
-    public void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
-        if (RoyalCommands.disabledCommands.contains(command)) return;
-        jp.getCommand(command).setExecutor(ce);
-    }
-
-    public boolean versionCheck() {
-        // If someone happens to be looking through this and knows a better way, let me know.
-        if (!checkVersion) return true;
-        Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
-        Matcher m = p.matcher(getServer().getVersion());
-        if (!m.matches() || m.groupCount() < 1) {
-            log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
-            return true;
-        }
-        Integer currentVersion = RUtils.getInt(m.group(1));
-        return currentVersion == null || currentVersion >= minVersion;
-    }
-
-    public JSONObject getNewestVersions() throws IOException, JSONException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(new URL("http://cdn.royaldev.org/rcmdsversion.php").openStream()));
-        String input;
-        StringBuilder data = new StringBuilder();
-        while ((input = br.readLine()) != null) {
-            data.append(input);
-        }
-        return new JSONObject(data.toString());
     }
 
     //-- Static methods --//
@@ -355,6 +304,55 @@ public class RoyalCommands extends JavaPlugin {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) economy = economyProvider.getProvider();
         return (economy != null);
+    }
+
+    private void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
+        if (RoyalCommands.disabledCommands.contains(command)) return;
+        jp.getCommand(command).setExecutor(ce);
+    }
+
+    private void createDefault(File f, String def) {
+        if (!f.exists()) {
+            try {
+                boolean success = f.createNewFile();
+                if (success) {
+                    try {
+                        FileWriter fstream = new FileWriter(f.getAbsolutePath());
+                        BufferedWriter out = new BufferedWriter(fstream);
+                        out.write(def);
+                        out.close();
+                    } catch (Exception e) {
+                        log.severe("[RoyalCommands] Could not write to a config.");
+                        e.printStackTrace();
+                    }
+                    log.info("[RoyalCommands] Created config file.");
+                }
+            } catch (Exception e) {
+                log.severe("[RoyalCommands] Failed to create file!");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean versionCheck() {
+        // If someone happens to be looking through this and knows a better way, let me know.
+        if (!checkVersion) return true;
+        Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
+        Matcher m = p.matcher(getServer().getVersion());
+        if (!m.matches() || m.groupCount() < 1) {
+            log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
+            return true;
+        }
+        Integer currentVersion = RUtils.getInt(m.group(1));
+        return currentVersion == null || currentVersion >= minVersion;
+    }
+
+    private JSONObject getNewestVersions() throws IOException, JSONException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(new URL("http://cdn.royaldev.org/rcmdsversion.php").openStream()));
+        StringBuilder data = new StringBuilder();
+        String input;
+        while ((input = br.readLine()) != null) data.append(input);
+        return new JSONObject(data.toString());
     }
 
     //--- Reload configuration values ---//
@@ -545,9 +543,10 @@ public class RoyalCommands extends JavaPlugin {
 
         try {
             ml = new MetricsLite(this);
-            ml.start();
+            if (!ml.start())
+                getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
         } catch (Exception ignore) {
-            log.warning("[RoyalCommands] Could not start Metrics!");
+            getLogger().warning("Could not start Metrics!");
         }
 
         //-- Get configs --//
@@ -561,7 +560,7 @@ public class RoyalCommands extends JavaPlugin {
             getLogger().info("Downloading H2 driver...");
             if (RUtils.downloadFile("http://cdn.royaldev.org/plugindeps/h2.jar", "lib" + File.separator + "h2.jar")) {
                 getLogger().info("Finished downloading.");
-                getLogger().info("Please restart CraftBukkit to load the H2 driver! Disabling plugin.");
+                getLogger().warning("Please restart CraftBukkit to load the H2 driver! Disabling plugin.");
                 setEnabled(false);
                 return;
             } else getLogger().severe("Could not download h2.jar!");
