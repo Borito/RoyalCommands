@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public class ItemNameManager {
 
-    // Aliases, ID, Data
+    // <Aliases, <ID, Data>>
     private final Map<String[], Map<Integer, Integer>> items = new HashMap<String[], Map<Integer, Integer>>();
 
     public ItemNameManager(Iterable<String[]> values) {
