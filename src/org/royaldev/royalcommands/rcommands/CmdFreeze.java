@@ -29,28 +29,28 @@ public class CmdFreeze implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t != null) {
-                if (!RUtils.canActAgainst(cs, t, "freeze")) {
+            Player victim = plugin.getServer().getPlayer(args[0]);
+            if (victim != null) {
+                if (plugin.isAuthorized(victim, "rcmds.exempt.freeze")) {
                     cs.sendMessage(ChatColor.RED + "You can't freeze that player!");
                     return true;
                 }
-                PConfManager pcm = new PConfManager(t);
+                PConfManager pcm = new PConfManager(victim);
                 if (!pcm.getBoolean("frozen")) {
                     pcm.setBoolean(true, "frozen");
-                    cs.sendMessage(ChatColor.BLUE + "You have frozen " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + "!");
-                    t.sendMessage(ChatColor.RED + "You have been frozen!");
+                    cs.sendMessage(ChatColor.BLUE + "You have frozen " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + "!");
+                    victim.sendMessage(ChatColor.RED + "You have been frozen!");
                     return true;
                 } else {
                     pcm.setBoolean(false, "frozen");
-                    cs.sendMessage(ChatColor.BLUE + "You have thawed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + "!");
-                    t.sendMessage(ChatColor.BLUE + "You have been thawed!");
+                    cs.sendMessage(ChatColor.BLUE + "You have thawed " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + "!");
+                    victim.sendMessage(ChatColor.BLUE + "You have been thawed!");
                     return true;
                 }
             } else {
-                OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
-                PConfManager pcm = new PConfManager(t2);
-                if (t2.isOp()) {
+                OfflinePlayer victim2 = plugin.getServer().getOfflinePlayer(args[0].trim());
+                PConfManager pcm = new PConfManager(victim2);
+                if (victim2.isOp()) {
                     cs.sendMessage(ChatColor.RED + "You can't freeze that player!");
                     return true;
                 }
@@ -60,11 +60,11 @@ public class CmdFreeze implements CommandExecutor {
                 }
                 if (!pcm.getBoolean("frozen")) {
                     pcm.setBoolean(true, "frozen");
-                    cs.sendMessage(ChatColor.BLUE + "You have frozen " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + "!");
+                    cs.sendMessage(ChatColor.BLUE + "You have frozen " + ChatColor.GRAY + victim2.getName() + ChatColor.BLUE + "!");
                     return true;
                 } else {
                     pcm.setBoolean(false, "frozen");
-                    cs.sendMessage(ChatColor.BLUE + "You have thawed " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + "!");
+                    cs.sendMessage(ChatColor.BLUE + "You have thawed " + ChatColor.GRAY + victim2.getName() + ChatColor.BLUE + "!");
                     return true;
                 }
             }

@@ -35,13 +35,17 @@ public class CmdClearInventory implements CommandExecutor {
             }
         }
         if (args.length == 1) {
+            if (!plugin.isAuthorized(cs, "rcmds.others.clearinventory")) {
+                RUtils.dispNoPerms(cs);
+                return true;
+            }
             Player target = plugin.getServer().getPlayer(args[0].trim());
             if (target == null || plugin.isVanished(target, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player is not online!");
                 return true;
             }
-            if (!RUtils.canActAgainst(cs, target, "clearinventory")) {
-                RUtils.dispNoPerms(cs, ChatColor.RED + "You cannot alter that player's inventory!");
+            if (plugin.isAuthorized(target, "rcmds.exempt.clearinventory")) {
+                cs.sendMessage(ChatColor.RED + "You cannot alter that player's inventory!");
                 return true;
             }
             cs.sendMessage(ChatColor.BLUE + "You have cleared the inventory of " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");

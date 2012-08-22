@@ -37,12 +37,16 @@ public class CmdBackpack implements CommandExecutor {
             }
             Player p = (Player) cs;
             if (args.length > 0) {
+                if (!plugin.isAuthorized(p, "rcmds.others.backpack")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null || plugin.isVanished(t, p)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (!RUtils.canActAgainst(cs, t, "backpack")) {
+                if (plugin.isAuthorized(t, "rcmds.exempt.backpack")) {
                     RUtils.dispNoPerms(cs, ChatColor.RED + "You cannot access that player's backpack!");
                     return true;
                 }

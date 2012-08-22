@@ -25,7 +25,7 @@ public class CmdKillAll implements CommandExecutor {
             }
             Player[] ps = plugin.getServer().getOnlinePlayers();
             for (Player p : ps) {
-                if (plugin.isVanished(p, cs) || !RUtils.canActAgainst(cs, p, "kill"))
+                if (plugin.isVanished(p, cs) || plugin.isAuthorized(p, "rcmds.exempt.kill"))
                     continue;
                 if (cs instanceof Player) {
                     if (p == cs) continue;

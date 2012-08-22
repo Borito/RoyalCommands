@@ -39,7 +39,7 @@ public class CmdStarve implements CommandExecutor {
                 return true;
             }
             Player victim = plugin.getServer().getPlayer(args[0]);
-            if (!RUtils.canActAgainst(cs, victim, "starve")) {
+            if (plugin.isAuthorized(victim, "rcmds.exempt.starve")) {
                 cs.sendMessage(ChatColor.RED + "You may not starve that player.");
                 return true;
             }

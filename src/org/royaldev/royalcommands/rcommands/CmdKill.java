@@ -33,7 +33,7 @@ public class CmdKill implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.canActAgainst(cs, t, "kill")) {
+            if (plugin.isAuthorized(t, "rcmds.exempt.kill")) {
                 cs.sendMessage(ChatColor.RED + "You cannot kill that player!");
                 return true;
             }

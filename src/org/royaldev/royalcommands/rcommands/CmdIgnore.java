@@ -38,7 +38,7 @@ public class CmdIgnore implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.canActAgainst(cs, t, "ignore")) {
+            if (plugin.isAuthorized(t, "rcmds.exempt.ignore")) {
                 cs.sendMessage(ChatColor.RED + "You cannot ignore that player!");
                 return true;
             }

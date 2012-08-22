@@ -24,13 +24,13 @@ public class CmdBuddha implements CommandExecutor {
                 return true;
             }
             if (args.length > 0) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.buddha")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null || plugin.isVanished(t, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                    return true;
-                }
-                if (!RUtils.canActAgainst(cs, t, "buddha")) {
-                    RUtils.dispNoPerms(cs);
                     return true;
                 }
                 PConfManager pcm = new PConfManager(t);

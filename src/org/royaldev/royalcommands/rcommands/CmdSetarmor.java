@@ -38,13 +38,17 @@ public class CmdSetarmor implements CommandExecutor {
             Player player;
 
             if (args.length > 1) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.setarmor")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 player = plugin.getServer().getPlayer(args[1]);
                 if (player == null || plugin.isVanished(player, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (!RUtils.canActAgainst(cs, player, "setarmor")) {
-                    RUtils.dispNoPerms(cs);
+                if (plugin.isAuthorized(player, "rcmds.exempt.setarmor")) {
+                    cs.sendMessage(ChatColor.RED + "You can't modify that player's armor!");
                     return true;
                 }
             } else player = (Player) cs;

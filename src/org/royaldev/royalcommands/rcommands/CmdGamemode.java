@@ -41,8 +41,12 @@ public class CmdGamemode implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (!RUtils.canActAgainst(cs, t, "gamemode")) {
-                    RUtils.dispNoPerms(cs);
+                if (!t.equals(cs) && !plugin.isAuthorized(cs, "rcmds.others.gamemode")) {
+                    cs.sendMessage(ChatColor.RED + "You can't change other players' gamemodes!");
+                    return true;
+                }
+                if (!t.equals(cs) && plugin.isAuthorized(t, "rcmds.exempt.gamemode")) {
+                    cs.sendMessage(ChatColor.RED + "You cannot change that player's gamemode.");
                     return true;
                 }
                 GameMode toSet = (t.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
@@ -57,7 +61,7 @@ public class CmdGamemode implements CommandExecutor {
                     }
                 }
                 t.setGameMode(toSet);
-                if (!cs.equals(t))
+                if (cs instanceof Player && !cs.equals(t))
                     cs.sendMessage(ChatColor.BLUE + "You have changed " + ChatColor.GRAY + t.getName() + "\'s" + ChatColor.BLUE + " game mode to " + ChatColor.GRAY + toSet.name().toLowerCase() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.BLUE + "Your game mode has been changed to " + ChatColor.GRAY + toSet.name().toLowerCase() + ChatColor.BLUE + ".");
                 return true;

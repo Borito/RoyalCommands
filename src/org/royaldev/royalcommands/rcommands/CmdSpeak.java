@@ -28,7 +28,9 @@ public class CmdSpeak implements CommandExecutor {
                 return false;
             }
 
-            Player victim = plugin.getServer().getPlayer(args[0]);
+            Player victim;
+
+            victim = plugin.getServer().getPlayer(args[0]);
 
             if (victim == null || plugin.isVanished(victim, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
@@ -38,11 +40,11 @@ public class CmdSpeak implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You may not send commands!");
                 return true;
             }
-            if (!RUtils.canActAgainst(cs, victim, "speak")) {
+            if (plugin.isAuthorized(victim, "rcmds.exempt.speak")) {
                 cs.sendMessage(ChatColor.RED + "You may not make that player speak.");
                 return true;
             }
-            victim.chat(RoyalCommands.getFinalArg(args, 1));
+            victim.chat(plugin.getFinalArg(args, 1));
             plugin.log.info(cs.getName() + " has spoofed a message from " + victim.getName() + "!");
             return true;
         }

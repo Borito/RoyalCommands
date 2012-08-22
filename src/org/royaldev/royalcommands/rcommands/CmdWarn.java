@@ -40,13 +40,13 @@ public class CmdWarn implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.canActAgainst(cs, op.getName(), "warn")) {
+            if (plugin.isAuthorized(op, "rcmds.exempt.warn")) {
                 RUtils.dispNoPerms(cs, ChatColor.RED + "You can't warn that player!");
                 return true;
             }
             List<String> warns = pcm.getStringList("warns");
             if (warns == null) warns = new ArrayList<String>();
-            String reason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : plugin.defaultWarn;
+            String reason = (args.length > 1) ? plugin.getFinalArg(args, 1) : plugin.defaultWarn;
             reason = RUtils.colorize(reason);
             if (reason.contains("\u00b5")) {
                 cs.sendMessage(ChatColor.RED + "Reason cannot contain micro sign!");

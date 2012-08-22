@@ -30,14 +30,14 @@ public class CmdListWarns implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
+            if (args.length > 1 && !plugin.isAuthorized(cs, "rcmds.others.listwarns")) {
+                RUtils.dispNoPerms(cs, "You're not allowed to view other players' warnings.");
+                return true;
+            }
             String target = (args.length > 0) ? args[0] : cs.getName();
             PConfManager pcm = new PConfManager(target);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                return true;
-            }
-            if (args.length > 1 && !RUtils.canActAgainst(cs, target, "listwarns")) {
-                RUtils.dispNoPerms(cs, "You're not allowed to view other players' warnings.");
                 return true;
             }
             List<String> warns = pcm.getStringList("warns");

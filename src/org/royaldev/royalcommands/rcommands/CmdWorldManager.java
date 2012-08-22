@@ -83,7 +83,6 @@ public class CmdWorldManager implements CommandExecutor {
                 if (args.length > 5) wc = wc.generator(args[5]);
                 World w = wc.createWorld();
                 w.save();
-                RoyalCommands.wm.addToLoadedWorlds(w);
                 cs.sendMessage(ChatColor.BLUE + "World " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + " created successfully.");
                 return true;
             } else if (command.equals("unload")) {
@@ -97,10 +96,10 @@ public class CmdWorldManager implements CommandExecutor {
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Unloading world...");
-                if (args.length > 2 && args[2].equalsIgnoreCase("true"))
+                if (args.length > 2 && Boolean.getBoolean(args[2].toLowerCase()))
                     for (Player p : w.getPlayers())
                         p.kickPlayer("Your world is being unloaded!");
-                boolean success = RoyalCommands.wm.unloadWorld(w);
+                boolean success = plugin.getServer().unloadWorld(w, true);
                 if (success)
                     cs.sendMessage(ChatColor.BLUE + "World unloaded successfully!");
                 else cs.sendMessage(ChatColor.RED + "Could not unload that world.");
@@ -119,7 +118,7 @@ public class CmdWorldManager implements CommandExecutor {
                 if (args.length > 2 && Boolean.getBoolean(args[2].toLowerCase()))
                     for (Player p : w.getPlayers())
                         p.kickPlayer("Your world is being unloaded!");
-                boolean success = RoyalCommands.wm.unloadWorld(w);
+                boolean success = plugin.getServer().unloadWorld(w, true);
                 if (success)
                     cs.sendMessage(ChatColor.BLUE + "World unloaded successfully!");
                 else {
@@ -133,10 +132,9 @@ public class CmdWorldManager implements CommandExecutor {
                 } catch (IOException e) {
                     success = false;
                 }
-                if (success) {
+                if (success)
                     cs.sendMessage(ChatColor.BLUE + "Successfully deleted world!");
-                    RoyalCommands.wm.removeFromLoadedWorlds(w);
-                } else cs.sendMessage(ChatColor.RED + "Could not delete world.");
+                else cs.sendMessage(ChatColor.RED + "Could not delete world.");
                 return true;
             } else if (command.equals("list")) {
                 cs.sendMessage(ChatColor.BLUE + "Worlds:");
@@ -155,8 +153,6 @@ public class CmdWorldManager implements CommandExecutor {
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info" + ChatColor.BLUE + " - Displays available world types and environments; if you are a player, displays information about your world.");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " help" + ChatColor.BLUE + " - Displays this help.");
                 cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the loaded worlds.");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " tp [name]" + ChatColor.BLUE + " - Teleports to the specified world.");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " who" + ChatColor.BLUE + " - Lists the players in each world.");
                 return true;
             } else if (command.equals("load")) {
                 if (args.length < 2) {
@@ -236,19 +232,19 @@ public class CmdWorldManager implements CommandExecutor {
                         continue;
                     }
                     for (Player p : w.getPlayers()) {
-                        if (plugin.isVanished(p, cs)) continue;
                         sb.append(ChatColor.GRAY);
                         sb.append(p.getName());
                         sb.append(ChatColor.RESET);
                         sb.append(", ");
                     }
-                    cs.sendMessage(sb.substring(0, sb.length() - 4)); // "\u00a7r, " = 4
+                    cs.sendMessage(sb.substring(0, sb.length() - 4));
                 }
                 return true;
             } else {
                 cs.sendMessage(ChatColor.RED + "Invalid subcommand!");
                 return true;
             }
+
         }
         return false;
     }

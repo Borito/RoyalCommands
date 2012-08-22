@@ -30,15 +30,14 @@ public class CmdNick implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
-            if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
+            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
+            if (!t.equals(cs) && !plugin.isAuthorized(cs, "rcmds.others.nick")) {
+                RUtils.dispNoPerms(cs);
+                return true;
+            }
             PConfManager pcm = new PConfManager(t);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
-                return true;
-            }
-            if (!RUtils.canActAgainst(cs, t.getName(), "nick")) {
-                RUtils.dispNoPerms(cs);
                 return true;
             }
             if (args[1].equalsIgnoreCase("off")) {

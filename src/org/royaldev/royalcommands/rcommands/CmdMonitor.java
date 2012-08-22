@@ -68,7 +68,7 @@ public class CmdMonitor implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You cannot monitor yourself!");
                     return true;
                 }
-                if (!RUtils.canActAgainst(cs, t, "monitor")) {
+                if (plugin.isAuthorized(t, "rcmds.exempt.monitor")) {
                     cs.sendMessage(ChatColor.RED + "You can't monitor that player!");
                     return true;
                 }

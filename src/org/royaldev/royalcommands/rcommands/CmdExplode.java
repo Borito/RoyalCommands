@@ -78,8 +78,8 @@ public class CmdExplode implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (!RUtils.canActAgainst(cs, t, "explode")) {
-                    RUtils.dispNoPerms(cs, ChatColor.RED + "You may not explode that player!");
+                if (plugin.isAuthorized(t, "rcmds.exempt.explode")) {
+                    cs.sendMessage(ChatColor.RED + "You may not explode that player!");
                     return true;
                 }
                 if (args.length == 2) {

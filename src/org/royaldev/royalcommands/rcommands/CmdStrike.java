@@ -38,13 +38,17 @@ public class CmdStrike implements CommandExecutor {
                 p.getWorld().strikeLightning(bb.getLocation());
                 return true;
             }
+            if (!plugin.isAuthorized(cs, "rcmds.others.strike")) {
+                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                return true;
+            }
             Player target = plugin.getServer().getPlayer(args[0].trim());
             if (target == null || plugin.isVanished(target, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.canActAgainst(cs, target, "strike")) {
-                cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+            if (plugin.isAuthorized(target, "rcmds.exempt.strike")) {
+                cs.sendMessage(ChatColor.RED + "You can't strike that player!");
                 return true;
             }
             cs.sendMessage(ChatColor.BLUE + "Smiting " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");

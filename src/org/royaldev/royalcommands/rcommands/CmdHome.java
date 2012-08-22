@@ -7,6 +7,8 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
@@ -48,36 +50,43 @@ public class CmdHome implements CommandExecutor {
             if (args.length > 0) name = args[0];
 
             File pconfl;
-            PConfManager pcm;
-            if (name.contains(":") && RUtils.canActAgainst(cs, name.split(":")[0], "home")) {
+            if (name.contains(":") && plugin.isAuthorized(cs, "rcmds.others.home")) {
                 if (!new PConfManager(name.split(":")[0]).exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
                 OfflinePlayer op = plugin.getServer().getOfflinePlayer(name.split(":")[0]);
-                pcm = new PConfManager(name.split(":")[0].toLowerCase());
+                if (op.isOp() || (op.isOnline() && plugin.isAuthorized((Player) op, "rcmds.exempt.home"))) {
+                    cs.sendMessage(ChatColor.RED + "You cannot go to that player's house!");
+                    return true;
+                }
+                pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + name.split(":")[0].toLowerCase() + ".yml");
                 name = name.split(":")[1];
-            } else pcm = new PConfManager(cs.getName().toLowerCase());
-            if (!pcm.exists()) {
-                cs.sendMessage(ChatColor.RED + "That home doesn't exist!");
-                return true;
+            } else {
+                pconfl = new File(plugin.getDataFolder() + File.separator + "userdata" + File.separator + cs.getName().toLowerCase() + ".yml");
             }
-            homeSet = (args.length > 0) ? pcm.getBoolean("home." + name + ".set") : pcm.getBoolean("home.home.set");
-            if (homeSet) {
-                if (args.length > 0) {
-                    homeX = pcm.getDouble("home." + name + ".x");
-                    homeY = pcm.getDouble("home." + name + ".y");
-                    homeZ = pcm.getDouble("home." + name + ".z");
-                    homeYaw = Float.parseFloat(pcm.getString("home." + name + ".yaw"));
-                    homePitch = Float.parseFloat(pcm.getString("home." + name + ".pitch"));
-                    homeW = plugin.getServer().getWorld(pcm.getString("home." + name + ".w"));
+            if (pconfl.exists()) {
+                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
+                homeSet = (args.length > 0) ? pconf.getBoolean("home." + name + ".set") : pconf.getBoolean("home.home.set");
+                if (homeSet) {
+                    if (args.length > 0) {
+                        homeX = pconf.getDouble("home." + name + ".x");
+                        homeY = pconf.getDouble("home." + name + ".y");
+                        homeZ = pconf.getDouble("home." + name + ".z");
+                        homeYaw = Float.parseFloat(pconf.getString("home." + name + ".yaw"));
+                        homePitch = Float.parseFloat(pconf.getString("home." + name + ".pitch"));
+                        homeW = plugin.getServer().getWorld(pconf.getString("home." + name + ".w"));
+                    } else {
+                        homeX = pconf.getDouble("home.home.x");
+                        homeY = pconf.getDouble("home.home.y");
+                        homeZ = pconf.getDouble("home.home.z");
+                        homeYaw = Float.parseFloat(pconf.getString("home.home.yaw"));
+                        homePitch = Float.parseFloat(pconf.getString("home.home.pitch"));
+                        homeW = plugin.getServer().getWorld(pconf.getString("home.home.w"));
+                    }
                 } else {
-                    homeX = pcm.getDouble("home.home.x");
-                    homeY = pcm.getDouble("home.home.y");
-                    homeZ = pcm.getDouble("home.home.z");
-                    homeYaw = Float.parseFloat(pcm.getString("home.home.yaw"));
-                    homePitch = Float.parseFloat(pcm.getString("home.home.pitch"));
-                    homeW = plugin.getServer().getWorld(pcm.getString("home.home.w"));
+                    cs.sendMessage(ChatColor.RED + "You don't have that home set!");
+                    return true;
                 }
             }
             if (homeW == null) {

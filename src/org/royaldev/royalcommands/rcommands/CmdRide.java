@@ -47,7 +47,7 @@ public class CmdRide implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You cannot ride yourself.");
                     return true;
                 }
-                if (!RUtils.canActAgainst(cs, t, "ride")) {
+                if (plugin.isAuthorized(t, "rcmds.exempt.ride")) {
                     cs.sendMessage(ChatColor.RED + "You cannot ride that player!");
                     return true;
                 }

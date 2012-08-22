@@ -101,13 +101,17 @@ public class CmdWarp implements CommandExecutor {
                 return true;
             }
             if (args.length > 1) {
+                if (!plugin.isAuthorized(cs, "rcmds.others.warp")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
                 Player t = plugin.getServer().getPlayer(args[1]);
                 if (t == null || plugin.isVanished(t, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                if (!RUtils.canActAgainst(cs, t, "warp")) {
-                    RUtils.dispNoPerms(cs);
+                if (plugin.isAuthorized(t, "rcmds.exempt.warp")) {
+                    cs.sendMessage(ChatColor.RED + "You cannot warp that player!");
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Warping " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");

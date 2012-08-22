@@ -32,7 +32,7 @@ public class CmdKick implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.canActAgainst(cs, t, "kick")) {
+            if (plugin.isAuthorized(t, "rcmds.exempt.kick")) {
                 cs.sendMessage(ChatColor.RED + "You cannot kick that player!");
                 return true;
             }
