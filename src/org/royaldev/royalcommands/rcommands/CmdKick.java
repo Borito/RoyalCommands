@@ -41,7 +41,7 @@ public class CmdKick implements CommandExecutor {
                 t.kickPlayer(plugin.kickMessage);
                 return true;
             } else if (args.length > 1) {
-                String kickMessage = RUtils.colorize(plugin.getFinalArg(args, 1));
+                String kickMessage = RUtils.colorize(RoyalCommands.getFinalArg(args, 1));
                 plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been kicked for " + ChatColor.GRAY + kickMessage + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.kick");
                 t.kickPlayer(kickMessage);
                 return true;

@@ -25,7 +25,7 @@ public class CmdBroadcast implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            String message = RUtils.colorize(plugin.getFinalArg(args, 0));
+            String message = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
             String format = plugin.bcastFormat;
             message = format + message;
             plugin.getServer().broadcastMessage(message);

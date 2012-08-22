@@ -23,7 +23,7 @@ public class CmdKickAll implements CommandExecutor {
                 return true;
             }
             String kickreason = plugin.kickMessage;
-            if (args.length > 0) kickreason = plugin.getFinalArg(args, 0);
+            if (args.length > 0) kickreason = RoyalCommands.getFinalArg(args, 0);
             kickreason = RUtils.colorize(kickreason);
             Player p = null;
             if (cs instanceof Player) p = (Player) cs;

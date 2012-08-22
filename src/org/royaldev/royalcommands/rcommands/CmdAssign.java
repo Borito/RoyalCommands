@@ -55,7 +55,7 @@ public class CmdAssign implements CommandExecutor {
                 cmds.add(RoyalCommands.getFinalArg(args, 0));
             } else cmds.add(RoyalCommands.getFinalArg(args, 0));
             pcm.setStringList(cmds, "assign." + hand.getTypeId());
-            String message = (RoyalCommands.getFinalArg(args, 0).toLowerCase().startsWith("c:")) ? ChatColor.BLUE + "Added message " + ChatColor.GRAY + plugin.getFinalArg(args, 0).substring(2) + ChatColor.BLUE + " to that item." : ChatColor.BLUE + "Added command " + ChatColor.GRAY + "/" + plugin.getFinalArg(args, 0) + ChatColor.BLUE + " to that item.";
+            String message = (RoyalCommands.getFinalArg(args, 0).toLowerCase().startsWith("c:")) ? ChatColor.BLUE + "Added message " + ChatColor.GRAY + RoyalCommands.getFinalArg(args, 0).substring(2) + ChatColor.BLUE + " to that item." : ChatColor.BLUE + "Added command " + ChatColor.GRAY + "/" + RoyalCommands.getFinalArg(args, 0) + ChatColor.BLUE + " to that item.";
             p.sendMessage(message);
             return true;
         }

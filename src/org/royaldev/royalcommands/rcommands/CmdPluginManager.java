@@ -475,7 +475,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "No such plugin!");
                     return true;
                 }
-                String tag = (args.length > 2) ? plugin.getFinalArg(args, 2) : p.getName();
+                String tag = (args.length > 2) ? RoyalCommands.getFinalArg(args, 2) : p.getName();
                 try {
                     tag = URLEncoder.encode(tag, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
@@ -511,7 +511,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Please specify a search term!");
                     return true;
                 }
-                String search = plugin.getFinalArg(args, 1);
+                String search = RoyalCommands.getFinalArg(args, 1);
                 try {
                     search = URLEncoder.encode(search, "UTF-8");
                 } catch (UnsupportedEncodingException e) {

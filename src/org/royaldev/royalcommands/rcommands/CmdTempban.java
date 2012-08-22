@@ -59,7 +59,7 @@ public class CmdTempban implements CommandExecutor {
                 return true;
             }
             long curTime = new Date().getTime();
-            String banreason = (args.length > 2) ? plugin.getFinalArg(args, 2) : RUtils.formatDateDiff(curTime + (time * 1000)).substring(1);
+            String banreason = (args.length > 2) ? RoyalCommands.getFinalArg(args, 2) : RUtils.formatDateDiff(curTime + (time * 1000)).substring(1);
             t.setBanned(true);
             pcm.setLong((time * 1000) + curTime, "bantime");
             pcm.setString(banreason, "banreason");
