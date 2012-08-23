@@ -270,6 +270,7 @@ public class H2PConfManager {
     }
 
     public JSONObject getJSONObject(String path) {
+        if (path.equals("")) return options;
         Object o = get(path, null);
         if (o == null) return null;
         if (o instanceof JSONObject) return (JSONObject) o;

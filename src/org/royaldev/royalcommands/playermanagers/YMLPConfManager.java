@@ -47,6 +47,20 @@ public class YMLPConfManager {
     }
 
     /**
+     * Forces the file to save with current userdata.
+     *
+     * @return true if saved, false if otherwise
+     */
+    public boolean forceSave() {
+        try {
+            pconf.save(pconfl);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
      * Creates configuration file if it doesn't exist.
      *
      * @return If file was created

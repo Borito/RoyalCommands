@@ -41,6 +41,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
+import org.royaldev.royalcommands.json.JSONArray;
 import org.royaldev.royalcommands.json.JSONException;
 import org.royaldev.royalcommands.json.JSONObject;
 import org.royaldev.royalcommands.listeners.MonitorListener;
@@ -169,6 +170,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean dumpUseInv = null;
     public Boolean useH2 = null;
     public Boolean h2Convert = null;
+    public Boolean ymlConvert = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
@@ -387,6 +389,7 @@ public class RoyalCommands extends JavaPlugin {
         dumpUseInv = getConfig().getBoolean("dump_use_inv", true);
         useH2 = getConfig().getBoolean("use_h2", true);
         h2Convert = getConfig().getBoolean("h2.convert", false);
+        ymlConvert = getConfig().getBoolean("yml_convert", false);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
@@ -823,7 +826,55 @@ public class RoyalCommands extends JavaPlugin {
             h2s.clear();
             ymls.clear();
             PConfManager.updateH2Status();
-            getLogger().info("Userdata conversion complete. Please restart with convert set to false.");
+            getLogger().info("YML -> H2 userdata conversion complete. Please restart with convert set to false.");
+        }
+
+        //-- Config converter (H2 -> YML) --//
+
+        if (ymlConvert) {
+            useH2 = true;
+            PConfManager.updateH2Status();
+            for (OfflinePlayer op : getServer().getOfflinePlayers()) {
+                PConfManager pcm = new PConfManager(op);
+                getLogger().info("Converting userdata for " + op.getName() + "...");
+                YMLPConfManager ymlpcm = new YMLPConfManager(op);
+                if (!ymlpcm.exists()) if (!ymlpcm.createFile()) continue;
+                JSONArray names = ((H2PConfManager) pcm.getRealManager()).getJSONObject("").names();
+                for (int i = 0; i < names.length(); i++) {
+                    String key = names.optString(i);
+                    if (key == null) continue;
+                    Object value = pcm.get(key);
+                    if (value instanceof JSONObject) {
+                        JSONObject jo = (JSONObject) value;
+                        JSONArray ks = jo.names();
+                        for (int x = 0; x < ks.length(); x++) {
+                            String k = ks.optString(x);
+                            if (k == null) continue;
+                            String path = key + "." + k;
+                            Object v = jo.opt(k);
+                            if (v instanceof JSONObject) { // I really don't want to nest this much
+                                JSONObject j = (JSONObject) v;
+                                JSONArray js = j.names();
+                                for (int z = 0; z < js.length(); z++) {
+                                    String q = js.optString(z);
+                                    if (q == null) continue;
+                                    ymlpcm.set(j.opt(q), path + "." + q);
+                                }
+                                continue;
+                            }
+                            ymlpcm.set(v, path);
+                        }
+                        continue;
+                    }
+                    ymlpcm.set(value, key);
+                }
+                ymlpcm.forceSave();
+            }
+            useH2 = false;
+            h2s.clear();
+            ymls.clear();
+            PConfManager.updateH2Status();
+            getLogger().info("H2 -> YML userdata conversion complete. Please restart with convert set to false.");
         }
 
         //-- We're done! --//

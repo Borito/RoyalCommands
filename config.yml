@@ -316,6 +316,9 @@ h2:
   # this to false.
   convert: false
 
+# Convert H2 to YML?
+yml_convert: false
+
 # Make players stay still for a set amount of time before teleporting?
 # Time is in seconds.
 # 0 to disable
