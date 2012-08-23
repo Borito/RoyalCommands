@@ -9,6 +9,9 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CmdIgnore implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -43,7 +46,8 @@ public class CmdIgnore implements CommandExecutor {
                 return true;
             }
             PConfManager pcm = new PConfManager(t);
-            java.util.List<String> players = pcm.getStringList("ignoredby");
+            List<String> players = pcm.getStringList("ignoredby");
+            if (players == null) players = new ArrayList<String>();
             for (String ignored : players) {
                 if (ignored.toLowerCase().equals(cs.getName().toLowerCase())) {
                     players.remove(ignored);
