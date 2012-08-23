@@ -38,7 +38,7 @@ public class CmdDelHome implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That home does not exist!");
                 return true;
             }
-            pcm.set("home." + args[0], null);
+            pcm.set(null, "home." + args[0]);
             cs.sendMessage(ChatColor.BLUE + "The home \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + "\" has been deleted.");
             return true;
         }

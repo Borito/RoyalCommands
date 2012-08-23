@@ -56,7 +56,7 @@ public class CmdHome implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer op = plugin.getServer().getOfflinePlayer(name.split(":")[0]);
-                if (op.isOp() || (op.isOnline() && plugin.isAuthorized((Player) op, "rcmds.exempt.home"))) {
+                if (plugin.isAuthorized(op, "rcmds.exempt.home")) {
                     cs.sendMessage(ChatColor.RED + "You cannot go to that player's house!");
                     return true;
                 }
@@ -90,9 +90,15 @@ public class CmdHome implements CommandExecutor {
                 }
             }
             if (homeW == null) {
+                System.out.println("homeW: " + homeW);
                 cs.sendMessage(ChatColor.RED + "World doesn't exist!");
             }
             if (homeX == null || homeY == null || homeZ == null || homeYaw == null || homePitch == null) {
+                System.out.println("homeX: " + homeX);
+                System.out.println("homeY: " + homeY);
+                System.out.println("homeZ: " + homeZ);
+                System.out.println("homeYaw: " + homeYaw);
+                System.out.println("homePitch: " + homePitch);
                 cs.sendMessage(ChatColor.RED + "Home was saved incorrectly!");
                 return true;
             }

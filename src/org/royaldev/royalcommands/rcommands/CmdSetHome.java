@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.json.JSONObject;
 
 public class CmdSetHome implements CommandExecutor {
 
@@ -37,10 +38,15 @@ public class CmdSetHome implements CommandExecutor {
     }
 
     private int getCurrentHomes(Player p) {
-        //ConfigurationSection pconf = new PConfManager(p).getConfigurationSection("home");
-        ConfigurationSection pconf = null;
-        if (pconf == null) return 0;
-        return pconf.getValues(false).keySet().size();
+        if (plugin.useH2) {
+            JSONObject jo = new PConfManager(p).getJSONObject("home");
+            if (jo == null) return 0;
+            return RUtils.getSize(jo.keys());
+        } else {
+            ConfigurationSection pconf = new PConfManager(p).getConfigurationSection("home");
+            if (pconf == null) return 0;
+            return pconf.getValues(false).keySet().size();
+        }
     }
 
     @Override
