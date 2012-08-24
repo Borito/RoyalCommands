@@ -742,10 +742,10 @@ public class RUtils {
                 p.kickPlayer(reason);
             }
         };
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("RoyalCommands");
+        Plugin plugin = RoyalCommands.instance;
         if (plugin == null)
             throw new NullPointerException("Could not get the RoyalCommands plugin.");
-        RoyalCommands.instance.getServer().getScheduler().scheduleSyncDelayedTask(RoyalCommands.instance, r);
+        RoyalCommands.instance.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
     }
 
     /**
@@ -759,83 +759,19 @@ public class RUtils {
      */
     public static ItemStack getItemFromAlias(String alias, int amount) throws InvalidItemNameException, NullPointerException {
         ItemStack toRet;
-        if (RoyalCommands.inm != null) {
-            toRet = RUtils.getItem(RoyalCommands.inm.getIDFromAlias(alias), amount);
-            if (toRet == null)
-                throw new InvalidItemNameException(alias + " is not a valid alias!");
-        } else throw new NullPointerException("ItemNameManager is not loaded!");
+        if (RoyalCommands.inm == null)
+            throw new NullPointerException("ItemNameManager is not loaded!");
+        toRet = RUtils.getItem(RoyalCommands.inm.getIDFromAlias(alias), amount);
+        if (toRet == null)
+            throw new InvalidItemNameException(alias + " is not a valid alias!");
         return toRet;
     }
 
     public static String getMVWorldName(World w) {
         if (w == null) throw new NullPointerException("w can't be null!");
-        if (!RoyalCommands.multiverseNames || RoyalCommands.mvc == null) {
+        if (!RoyalCommands.multiverseNames || RoyalCommands.mvc == null)
             return RoyalCommands.wm.getConfig().getString("worlds." + w.getName() + ".displayname", w.getName());
-        }
         return RoyalCommands.mvc.getMVWorldManager().getMVWorld(w).getColoredWorldString();
-    }
-
-    /**
-     * Checks to see if the cs is authorized to act against t
-     *
-     * @param cs   CommandSender to check for
-     * @param t    Player to check against
-     * @param perm rcmds.others.perm
-     * @return true if cs can act against t, false if not
-     */
-    public static boolean canActAgainst(final CommandSender cs, final Player t, final String perm) {
-        if (cs.equals(t)) return true;
-        RoyalCommands plugin = RoyalCommands.instance;
-        return !plugin.isAuthorized(t, "rcmds.exempt." + perm) && plugin.isAuthorized(cs, "rcmds.others." + perm);
-        /*String group;
-        try {
-            group = RoyalCommands.permission.getPrimaryGroup(t);
-        } catch (UnsupportedOperationException e) {
-            group = "";
-        }
-        if (group == null) group = "";
-        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group)) return true;
-        if (plugin.isAuthorized(cs, "rcmds.others." + perm + "." + t.getName())) return true;
-        if (plugin.isAuthorized(cs, "rcmds.others." + perm)) return true;
-        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others.*." + group)) return true;
-        if (plugin.isAuthorized(cs, "rcmds.others.*." + t.getName())) return true;
-        if (plugin.isAuthorized(cs, "rcmds.others.*")) return true;
-        return false;*/
-    }
-
-    /**
-     * Checks to see if the cs is authorized to act against t
-     *
-     * @param cs   CommandSender to check for
-     * @param t    Player to check against
-     * @param perm rcmds.others.perm
-     * @return true if cs can act against t, false if not
-     */
-    public static boolean canActAgainst(final CommandSender cs, final String t, final String perm) {
-        if (cs.getName().equals(t)) return true;
-        RoyalCommands plugin = RoyalCommands.instance;
-        return !plugin.isAuthorized(plugin.getServer().getOfflinePlayer(t), "rcmds.exempt." + perm) && plugin.isAuthorized(cs, "rcmds.others." + perm);
-        /*String group;
-        try {
-            Player p = plugin.getServer().getPlayer(t);
-            group = RoyalCommands.permission.getPrimaryGroup(p);
-        } catch (UnsupportedOperationException e) {
-            group = "";
-        } catch (NullPointerException e) {
-            group = "";
-        }
-        if (group == null) group = "";
-        boolean canAct = false;
-        boolean hasMasterPerm = false;
-        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others." + perm + "." + group)) canAct = true;
-        if (plugin.isAuthorized(cs, "rcmds.others." + perm + ".p." + t)) canAct =  true;
-        if (!group.equals("") && plugin.isAuthorized(cs, "rcmds.others.*." + group)) canAct =  true;
-        if (plugin.isAuthorized(cs, "rcmds.others.*.p." + t)) canAct =  true;
-        if (plugin.isAuthorized(cs, "rcmds.others.*")) hasMasterPerm = true;
-        if (plugin.isAuthorized(cs, "rcmds.others." + perm)) hasMasterPerm = true;
-        if (canAct) return canAct;
-        if (!canAct && hasMasterPerm) return false; // What if it's not given, not negated?
-        return true;*/
     }
 
     public static void silentKick(final Player t, final String reason) {
@@ -874,9 +810,9 @@ public class RUtils {
             rbc.close();
             return true;
         } catch (MalformedURLException e) {
-            RoyalCommands.instance.getLogger().severe("Could not download h2.jar: " + e.getMessage());
+            RoyalCommands.instance.getLogger().severe("Could not download " + s + ": " + e.getMessage());
         } catch (IOException e) {
-            RoyalCommands.instance.getLogger().severe("Could not download h2.jar: " + e.getMessage());
+            RoyalCommands.instance.getLogger().severe("Could not download " + s + ": " + e.getMessage());
         }
         return false;
     }
