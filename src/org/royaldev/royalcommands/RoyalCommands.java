@@ -762,7 +762,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdTrade(this), "trade", this);
         registerCommand(new CmdFurnace(this), "furnace", this);
         registerCommand(new CmdEnchant(this), "enchant", this);
-        registerCommand(new CmdWhitelist(this), "whitelist", this);
+        registerCommand(new CmdWhitelist(this), "wl", this);
         registerCommand(new CmdFireball(this), "fireball", this);
         registerCommand(new CmdFly(this), "fly", this);
         registerCommand(new CmdPlayerTime(this), "playertime", this);

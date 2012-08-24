@@ -580,10 +580,10 @@ commands:
     description: Toggles creative flymode for yourself or a player
     usage: /<command> (player)
 
-  whitelist:
+  wl:
     description: Manages the dynamic whitelist.
     usage: /<command> [check/add/remove] [player]
-    aliases: [wl]
+    aliases: [whitelist]
 
   playertime:
     description: Changes player time. If not time specified, resets it.
