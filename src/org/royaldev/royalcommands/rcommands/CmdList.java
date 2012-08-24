@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.apache.commons.lang.text.StrBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO: Fix [AFK] not showing
+// TODO: Fix [AFK] not showing - fixed?
 
 public class CmdList implements CommandExecutor {
 
@@ -58,13 +59,17 @@ public class CmdList implements CommandExecutor {
     public static String[] getGroupList(CommandSender cs) {
         Player[] pl = plugin.getServer().getOnlinePlayers();
         Map<String, List<String>> groups = new HashMap<String, List<String>>();
-        StringBuilder sb = new StringBuilder();
+        StrBuilder sb = new StrBuilder();
         for (Player p : pl) {
             String group = RoyalCommands.permission.getPrimaryGroup(p);
             List<String> inGroup = (groups.containsKey(group)) ? groups.get(group) : new ArrayList<String>();
             if (plugin.isVanished(p) && plugin.isAuthorized(cs, "rcmds.seehidden"))
                 inGroup.add(ChatColor.GRAY + "[HIDDEN]" + ChatColor.RESET + formatPrepend(p));
-            else if (!plugin.isVanished(p)) inGroup.add(formatPrepend(p));
+            else if (!plugin.isVanished(p)) {
+                if (AFKUtils.isAfk(p))
+                    inGroup.add(ChatColor.GRAY + "[AFK]" + ChatColor.RESET + formatPrepend(p));
+                else inGroup.add(formatPrepend(p));
+            }
             groups.put(group, inGroup);
         }
         List<String> toRet = new ArrayList<String>();
@@ -80,11 +85,11 @@ public class CmdList implements CommandExecutor {
                 sb.append(", ");
             }
             if (sb.length() < 2) {
-                sb = new StringBuilder();
+                sb.clear();
                 continue;
             }
             toRet.add(sb.toString().substring(0, sb.length() - 2));
-            sb = new StringBuilder();
+            sb.clear();
         }
         for (String s : toRet) if (s == null) toRet.remove(s);
         return toRet.toArray(new String[toRet.size()]);
