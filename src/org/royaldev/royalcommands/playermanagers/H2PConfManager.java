@@ -47,6 +47,7 @@ public class H2PConfManager {
             Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException e) {
             log.severe("Could not find H2 driver! Please make sure that h2.jar is in your classpath.");
+            return;
         }
         String path = RoyalCommands.instance.getDataFolder().getAbsolutePath() + File.separator + RoyalCommands.instance.h2Path;
         c = DriverManager.getConnection("jdbc:h2:" + path + ";AUTO_RECONNECT=TRUE", RoyalCommands.instance.h2User, RoyalCommands.instance.h2Pass);
@@ -72,6 +73,7 @@ public class H2PConfManager {
             Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException e) {
             log.severe("Could not find H2 driver! Please make sure that h2.jar is in your classpath.");
+            return;
         }
         String path = RoyalCommands.instance.getDataFolder().getAbsolutePath() + File.separator + RoyalCommands.instance.h2Path;
         c = DriverManager.getConnection("jdbc:h2:" + path + ";AUTO_RECONNECT=TRUE", RoyalCommands.instance.h2User, RoyalCommands.instance.h2Pass);
