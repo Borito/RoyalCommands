@@ -4,7 +4,6 @@ import org.apache.commons.lang.ArrayUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class ItemNameManager {
 
@@ -19,13 +18,13 @@ public class ItemNameManager {
             try {
                 id = Integer.valueOf(s[0]);
             } catch (NumberFormatException e) {
-                Logger.getLogger("Minecraft").warning("[RoyalCommands] ID in IDs file is invalid: " + s[0]);
+                RoyalCommands.instance.getLogger().warning("ID in IDs file is invalid: " + s[0]);
                 id = -1;
             }
             try {
                 data = Integer.valueOf(s[1]);
             } catch (NumberFormatException e) {
-                Logger.getLogger("Minecraft").warning("[RoyalCommands] Data in IDs file is invalid: " + s[1]);
+                RoyalCommands.instance.getLogger().warning("Data in IDs file is invalid: " + s[1]);
                 data = -1;
             }
             Map<Integer, Integer> stuff = new HashMap<Integer, Integer>();
