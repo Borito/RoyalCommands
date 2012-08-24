@@ -29,6 +29,13 @@ public class ConfManager {
      */
     public ConfManager(String filename) {
         File dataFolder = RoyalCommands.dataFolder;
+        synchronized (RoyalCommands.instance.confs) {
+            if (RoyalCommands.instance.confs.containsKey(filename)) {
+                pconf = RoyalCommands.instance.confs.get(filename);
+                pconfl = new File(dataFolder + File.separator + filename);
+                return;
+            }
+        }
         pconfl = new File(dataFolder + File.separator + filename);
         if (!pconfl.exists()) {
             try {
@@ -40,6 +47,9 @@ public class ConfManager {
             }
         }
         pconf = YamlConfiguration.loadConfiguration(pconfl);
+        synchronized (RoyalCommands.instance.confs) {
+            RoyalCommands.instance.confs.put(filename, pconf);
+        }
     }
 
     /**
@@ -51,7 +61,14 @@ public class ConfManager {
      */
     public ConfManager(File file) {
         File dataFolder = RoyalCommands.dataFolder;
-        File pconfl = new File(dataFolder + File.separator + file.getName());
+        synchronized (RoyalCommands.instance.confs) {
+            if (RoyalCommands.instance.confs.containsKey(file.getName())) {
+                pconf = RoyalCommands.instance.confs.get(file.getName());
+                pconfl = new File(dataFolder + File.separator + file.getName());
+                return;
+            }
+        }
+        pconfl = new File(dataFolder + File.separator + file.getName());
         if (!pconfl.exists()) {
             try {
                 pconfl.getParentFile().mkdirs();
@@ -62,6 +79,9 @@ public class ConfManager {
             }
         }
         pconf = YamlConfiguration.loadConfiguration(pconfl);
+        synchronized (RoyalCommands.instance.confs) {
+            RoyalCommands.instance.confs.put(file.getName(), pconf);
+        }
     }
 
     /**

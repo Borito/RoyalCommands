@@ -34,6 +34,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -100,6 +101,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public final Map<String, H2PConfManager> h2s = new HashMap<String, H2PConfManager>();
     public final Map<String, YMLPConfManager> ymls = new HashMap<String, YMLPConfManager>();
+    public final Map<String, FileConfiguration> confs = new HashMap<String, FileConfiguration>();
 
     public ConfManager whl;
     public Logger log = Logger.getLogger("Minecraft");
