@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands;
 
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -815,5 +816,24 @@ public class RUtils {
             RoyalCommands.instance.getLogger().severe("Could not download " + s + ": " + e.getMessage());
         }
         return false;
+    }
+
+    /**
+     * Gets a world via its real name, Multiverse name, or WorldManager name.
+     *
+     * @param name Name of world to get
+     * @return World or null if none exists
+     */
+    public static World getWorld(String name) {
+        World w;
+        w = Bukkit.getWorld(name);
+        if (w != null) return w;
+        if (RoyalCommands.mvc != null) {
+            MultiverseWorld mvw = RoyalCommands.mvc.getMVWorldManager().getMVWorld(name);
+            w = (mvw == null) ? null : mvw.getCBWorld();
+            if (w != null) return w;
+        }
+        w = RoyalCommands.wm.getWorld(name);
+        return w;
     }
 }

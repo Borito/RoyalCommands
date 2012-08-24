@@ -128,7 +128,6 @@ public class WorldManager {
                 log.warning("Could not manage world " + ws + ": No such world");
                 continue;
             }
-            log.info("Setting flags on world " + ws + " as specified in worlds.yml.");
             w.setSpawnFlags(config.getBoolean(path + "spawnmonsters", true), config.getBoolean(path + "spawnanimals", true));
             w.setKeepSpawnInMemory(config.getBoolean("keepspawnloaded", true));
             w.setPVP(config.getBoolean(path + "pvp", true));
@@ -184,7 +183,7 @@ public class WorldManager {
         File[] fs = Bukkit.getServer().getWorldContainer().listFiles();
         if (fs == null) throw new NullPointerException("Could not read world files");
         for (File f : fs) {
-            if (f.getName().equals(name)) contains = true;
+            if (f.getName().equalsIgnoreCase(name)) contains = true;
         }
         if (!contains) throw new IllegalArgumentException("No such world!");
         WorldCreator wc = new WorldCreator(name);
@@ -251,6 +250,42 @@ public class WorldManager {
             config.setBoolean(false, path + "freezetime");
             config.setBoolean(true, path + "loadatstartup");
         }
+    }
+
+    /**
+     * Gets a world based on its alias (case-insensitive).
+     *
+     * @param name Alias of world
+     * @return World or null if no matching alias
+     */
+    public World getWorld(String name) {
+        World w;
+        for (String s : loadedWorlds) {
+            String path = "worlds." + s + ".";
+            if (config.getString(path + "displayname", "").equalsIgnoreCase(name)) {
+                w = Bukkit.getWorld(s);
+                return w;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets a world based on its alias (case-sensitive).
+     *
+     * @param name Alias of world
+     * @return World or null if no matching alias
+     */
+    public World getCaseSensitiveWorld(String name) {
+        World w;
+        for (String s : loadedWorlds) {
+            String path = "worlds." + s + ".";
+            if (config.getString(path + "displayname", "").equals(name)) {
+                w = Bukkit.getWorld(s);
+                return w;
+            }
+        }
+        return null;
     }
 
 }

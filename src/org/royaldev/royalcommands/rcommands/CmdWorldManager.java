@@ -140,7 +140,7 @@ public class CmdWorldManager implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Worlds:");
                 String worlds = "";
                 for (World w : plugin.getServer().getWorlds())
-                    worlds = (worlds.equals("")) ? worlds.concat(ChatColor.GRAY + w.getName()) : worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + w.getName());
+                    worlds = (worlds.equals("")) ? worlds.concat(ChatColor.GRAY + RUtils.getMVWorldName(w)) : worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + RUtils.getMVWorldName(w));
                 cs.sendMessage(worlds);
                 return true;
             } else if (command.equals("help")) {

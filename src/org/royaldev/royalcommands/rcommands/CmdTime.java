@@ -114,15 +114,15 @@ public class CmdTime implements CommandExecutor {
                 target = ((Player) cs).getWorld().getName();
             if (args.length > 1) target = args[1];
             if (target.equalsIgnoreCase("all")) target = "*";
-            if (plugin.getServer().getWorld(target) == null && !target.equals("*")) {
+            if (RUtils.getWorld(target) == null && !target.equals("*")) {
                 cs.sendMessage(ChatColor.RED + "No such world!");
                 return true;
             }
-            World w = (!target.equals("*")) ? plugin.getServer().getWorld(target) : null;
+            World w = (!target.equals("*")) ? RUtils.getWorld(target) : null;
             Long ticks = getValidTime(args[0]);
             if (ticks == null) {
-                if (plugin.getServer().getWorld(args[0]) != null) {
-                    w = plugin.getServer().getWorld(args[0]);
+                if (RUtils.getWorld(args[0]) != null) {
+                    w = RUtils.getWorld(args[0]);
                     ticks = w.getTime();
                     Map<String, String> times = getRealTime(ticks);
                     cs.sendMessage(ChatColor.BLUE + "The current time in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + " is " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
