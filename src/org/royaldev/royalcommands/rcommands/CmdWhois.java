@@ -53,7 +53,7 @@ public class CmdWhois implements CommandExecutor {
             long timestamp = RUtils.getTimeStamp(t, "seen");
             String lastseen = (timestamp < 0) ? "unknown" : RUtils.formatDateDiff(timestamp);
             cs.sendMessage(ChatColor.BLUE + "Last seen:" + ChatColor.GRAY + ((t.isOnline()) ? " now" : lastseen));
-            cs.sendMessage(ChatColor.BLUE + "First played: " + ChatColor.GRAY + RUtils.formatDateDiff(t.getFirstPlayed()));
+            cs.sendMessage(ChatColor.BLUE + "First played:" + ChatColor.GRAY + RUtils.formatDateDiff(t.getFirstPlayed()));
             if (t.isOnline()) {
                 Player p = (Player) t;
                 cs.sendMessage(ChatColor.BLUE + "Health/Hunger/Saturation: " + ChatColor.GRAY + p.getHealth() / 2 + ChatColor.BLUE + "/" + ChatColor.GRAY + p.getFoodLevel() / 2 + ChatColor.BLUE + "/" + ChatColor.GRAY + p.getSaturation() / 2);
