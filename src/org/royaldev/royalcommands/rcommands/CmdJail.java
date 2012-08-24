@@ -6,14 +6,12 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.ConfManager;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,26 +32,23 @@ public class CmdJail implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
+            ConfManager cm = new ConfManager("jails.yml");
 
             if (args.length < 1) {
-                File pconfl2 = new File(plugin.getDataFolder() + File.separator + "jails.yml");
-                if (pconfl2.exists()) {
-                    FileConfiguration pconf1 = YamlConfiguration.loadConfiguration(pconfl2);
-                    if (pconf1.get("jails") == null) {
-                        cs.sendMessage(ChatColor.RED + "There are no jails!");
-                        return true;
-                    }
-                    final Map<String, Object> opts = pconf1.getConfigurationSection("jails").getValues(false);
-                    if (opts.keySet().isEmpty()) {
-                        cs.sendMessage(ChatColor.RED + "There are no jails!");
-                        return true;
-                    }
-                    String jails = opts.keySet().toString();
-                    jails = jails.substring(1, jails.length() - 1);
-                    cs.sendMessage(ChatColor.BLUE + "Jails:");
-                    cs.sendMessage(jails);
+                if (!cm.exists() || cm.get("jails") == null) {
+                    cs.sendMessage(ChatColor.RED + "There are no jails!");
                     return true;
                 }
+                final Map<String, Object> opts = cm.getConfigurationSection("jails").getValues(false);
+                if (opts.keySet().isEmpty()) {
+                    cs.sendMessage(ChatColor.RED + "There are no jails!");
+                    return true;
+                }
+                String jails = opts.keySet().toString();
+                jails = jails.substring(1, jails.length() - 1);
+                cs.sendMessage(ChatColor.BLUE + "Jails:");
+                cs.sendMessage(jails);
+                return true;
             }
 
             Player t = plugin.getServer().getPlayer(args[0].trim());
@@ -99,39 +94,36 @@ public class CmdJail implements CommandExecutor {
             Float jailPitch;
             World jailW;
 
-            File pconfl = new File(plugin.getDataFolder() + File.separator + "jails.yml");
-            if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                if (args.length < 1) {
-                    if (pconf.get("jails") == null) {
-                        cs.sendMessage(ChatColor.RED + "There are no jails!");
-                        return true;
-                    }
-                    final Map<String, Object> opts = pconf.getConfigurationSection("jails").getValues(false);
-                    if (opts.keySet().isEmpty()) {
-                        cs.sendMessage(ChatColor.RED + "There are no jails!");
-                        return true;
-                    }
-                    String jails = opts.keySet().toString();
-                    jails = jails.substring(1, jails.length() - 1);
-                    cs.sendMessage(ChatColor.BLUE + "Jails:");
-                    cs.sendMessage(jails);
-                    return true;
-                }
-                jailSet = pconf.getBoolean("jails." + args[1] + ".set");
-                if (jailSet) {
-                    jailX = pconf.getDouble("jails." + args[1] + ".x");
-                    jailY = pconf.getDouble("jails." + args[1] + ".y");
-                    jailZ = pconf.getDouble("jails." + args[1] + ".z");
-                    jailYaw = Float.parseFloat(pconf.getString("jails." + args[1] + ".yaw"));
-                    jailPitch = Float.parseFloat(pconf.getString("jails." + args[1] + ".pitch"));
-                    jailW = plugin.getServer().getWorld(pconf.getString("jails." + args[1] + ".w"));
-                } else {
-                    cs.sendMessage(ChatColor.RED + "That jail does not exist.");
-                    return true;
-                }
-            } else {
+            if (!cm.exists()) {
                 cs.sendMessage(ChatColor.RED + "No jails set!");
+                return true;
+            }
+            if (args.length < 1) {
+                if (cm.get("jails") == null) {
+                    cs.sendMessage(ChatColor.RED + "There are no jails!");
+                    return true;
+                }
+                final Map<String, Object> opts = cm.getConfigurationSection("jails").getValues(false);
+                if (opts.keySet().isEmpty()) {
+                    cs.sendMessage(ChatColor.RED + "There are no jails!");
+                    return true;
+                }
+                String jails = opts.keySet().toString();
+                jails = jails.substring(1, jails.length() - 1);
+                cs.sendMessage(ChatColor.BLUE + "Jails:");
+                cs.sendMessage(jails);
+                return true;
+            }
+            jailSet = cm.getBoolean("jails." + args[1] + ".set");
+            if (jailSet) {
+                jailX = cm.getDouble("jails." + args[1] + ".x");
+                jailY = cm.getDouble("jails." + args[1] + ".y");
+                jailZ = cm.getDouble("jails." + args[1] + ".z");
+                jailYaw = Float.parseFloat(cm.getString("jails." + args[1] + ".yaw"));
+                jailPitch = Float.parseFloat(cm.getString("jails." + args[1] + ".pitch"));
+                jailW = plugin.getServer().getWorld(cm.getString("jails." + args[1] + ".w"));
+            } else {
+                cs.sendMessage(ChatColor.RED + "That jail does not exist.");
                 return true;
             }
             Location jailLoc = new Location(jailW, jailX, jailY, jailZ, jailYaw, jailPitch);
