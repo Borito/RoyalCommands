@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.Set;
+
 public class CmdBanList implements CommandExecutor {
 
     private RoyalCommands plugin;
@@ -23,7 +25,12 @@ public class CmdBanList implements CommandExecutor {
                 return true;
             }
             cs.sendMessage(ChatColor.BLUE + "All banned players:");
-            for (OfflinePlayer op : plugin.getServer().getBannedPlayers())
+            Set<OfflinePlayer> banList = plugin.getServer().getBannedPlayers();
+            if (banList.isEmpty()) {
+                cs.sendMessage(ChatColor.RED + "There are no banned players!");
+                return true;
+            }
+            for (OfflinePlayer op : banList)
                 cs.sendMessage(ChatColor.GRAY + op.getName());
             return true;
         }
