@@ -782,6 +782,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdPluginManager(this), "pluginmanager", this);
         registerCommand(new CmdFreezeTime(this), "freezetime", this);
         registerCommand(new CmdBanInfo(this), "baninfo", this);
+        registerCommand(new CmdBanList(this), "banlist", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Config converter (YML -> H2) --//

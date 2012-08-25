@@ -666,6 +666,11 @@ commands:
     usage: /<command> [player]
     aliases: [bi]
 
+  banlist:
+    description: Lists all banned players.
+    usage: /<command>
+    aliases: [bl]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1073,6 +1078,9 @@ permissions:
     default: op
   rcmds.baninfo:
     description: Allows you to view info about bans.
+    default: op
+  rcmds.banlist:
+    description: Allows you to see all banned players.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1543,6 +1551,7 @@ permissions:
       rcmds.usage: true
       rcmds.pluginmanager.*: true
       rcmds.baninfo: true
+      rcmds.banlist: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1798,6 +1807,7 @@ permissions:
       rcmds.backpack: true
       rcmds.usage: true
       rcmds.baninfo: true
+      rcmds.banlist: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
