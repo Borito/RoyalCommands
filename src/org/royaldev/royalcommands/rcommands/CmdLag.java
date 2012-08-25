@@ -46,7 +46,7 @@ public class CmdLag implements CommandExecutor {
             final double started = System.currentTimeMillis();
             final double startedticks = world.getFullTime();
 
-            cs.sendMessage(ChatColor.YELLOW + "This measures in-game time, so please do not change the time for " + ChatColor.GRAY + expsecs + ChatColor.YELLOW + " seconds.");
+            cs.sendMessage(ChatColor.BLUE + "This measures in-game time, so please do not change the time for " + ChatColor.GRAY + expsecs + ChatColor.BLUE + " seconds.");
 
             Runnable getlag = new Runnable() {
                 public void run() {

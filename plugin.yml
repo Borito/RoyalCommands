@@ -661,6 +661,11 @@ commands:
     usage: /<command> [world]
     aliases: [ft]
 
+  baninfo:
+    description: Get information about a ban.
+    usage: /<command> [player]
+    aliases: [bi]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -690,9 +695,6 @@ permissions:
     default: op
   rcmds.starve:
     description: Allows you to starve another player
-    default: op
-  rcmds.banned:
-    description: Allows you to check if a player is banned
     default: op
   rcmds.setarmor:
     description: Allows you to set your armor
@@ -810,9 +812,6 @@ permissions:
     default: op
   rcmds.feed:
     description: Allows you to feed yourself.
-    default: op
-  rcmds.banreason:
-    description: Allows you to check a player's ban reason.
     default: op
   rcmds.setspawn:
     description: Allows you to set the spawn of the world.
@@ -961,9 +960,6 @@ permissions:
   rcmds.ride:
     description: Allows you to ride on other players.
     default: op
-  rcmds.whobanned:
-    description: Allows you to who banned a player.
-    default: op
   rcmds.tppos:
     description: Allows you to teleport to a coordinate point.
     default: op
@@ -1074,6 +1070,9 @@ permissions:
     default: op
   rcmds.usage:
     description: Allows you to view the usage of other commands.
+    default: op
+  rcmds.baninfo:
+    description: Allows you to view info about bans.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1417,7 +1416,6 @@ permissions:
       rcmds.slap: true
       rcmds.harm: true
       rcmds.starve: true
-      rcmds.banned: true
       rcmds.setarmor: true
       rcmds.getip: true
       rcmds.compareip: true
@@ -1457,7 +1455,6 @@ permissions:
       rcmds.heal: true
       rcmds.unban: true
       rcmds.feed: true
-      rcmds.banreason: true
       rcmds.setspawn: true
       rcmds.god: true
       rcmds.spawn: true
@@ -1507,7 +1504,6 @@ permissions:
       rcmds.hug: true
       rcmds.explode: true
       rcmds.ride: true
-      rcmds.whobanned: true
       rcmds.tppos: true
       rcmds.ignore: true
       rcmds.coords: true
@@ -1546,6 +1542,7 @@ permissions:
       rcmds.backpack: true
       rcmds.usage: true
       rcmds.pluginmanager.*: true
+      rcmds.baninfo: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1675,7 +1672,6 @@ permissions:
       rcmds.slap: true
       rcmds.harm: true
       rcmds.starve: true
-      rcmds.banned: true
       rcmds.setarmor: true
       rcmds.getip: true
       rcmds.compareip: true
@@ -1715,7 +1711,6 @@ permissions:
       rcmds.heal: true
       rcmds.unban: true
       rcmds.feed: true
-      rcmds.banreason: true
       rcmds.setspawn: true
       rcmds.god: true
       rcmds.spawn: true
@@ -1765,7 +1760,6 @@ permissions:
       rcmds.hug: true
       rcmds.explode: true
       rcmds.ride: true
-      rcmds.whobanned: true
       rcmds.tppos: true
       rcmds.ignore: true
       rcmds.coords: true
@@ -1803,6 +1797,7 @@ permissions:
       rcmds.garbagecollector: true
       rcmds.backpack: true
       rcmds.usage: true
+      rcmds.baninfo: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

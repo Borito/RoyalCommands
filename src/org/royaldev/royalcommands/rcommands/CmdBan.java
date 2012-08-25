@@ -11,6 +11,8 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.Date;
+
 public class CmdBan implements CommandExecutor {
 
     RoyalCommands plugin;
@@ -57,10 +59,12 @@ public class CmdBan implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You can't ban that player!");
                 return true;
             }
-            String banreason = (args.length > 1) ? plugin.getFinalArg(args, 1) : plugin.banMessage;
+            String banreason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : plugin.banMessage;
             banreason = RUtils.colorize(banreason);
             pcm.setString(banreason, "banreason");
             pcm.setString(cs.getName(), "banner");
+            pcm.setLong(new Date().getTime(), "bannedat");
+            pcm.set(null, "bantime");
             cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             banPlayer(t, cs, banreason);
             return true;
