@@ -41,7 +41,7 @@ public class CmdRageQuit implements CommandExecutor {
                     return true;
                 }
                 plugin.getServer().broadcastMessage(ChatColor.DARK_RED + victim.getName() + ChatColor.RED + " has ragequit!");
-                victim.kickPlayer(ChatColor.DARK_RED + "RAAAGGGEEEE!!!");
+                RUtils.silentKick(victim, ChatColor.DARK_RED + "RAAAGGGEEEE!!!");
                 return true;
             }
         }
