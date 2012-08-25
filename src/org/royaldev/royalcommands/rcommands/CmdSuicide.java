@@ -5,6 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -28,6 +30,7 @@ public class CmdSuicide implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
+            p.setLastDamageCause(new EntityDamageByEntityEvent(p, p, EntityDamageEvent.DamageCause.SUICIDE, 0));
             p.setHealth(0);
             plugin.getServer().broadcastMessage(ChatColor.RED + "The player " + ChatColor.GRAY + p.getDisplayName() + ChatColor.RED + " committed suicide.");
             return true;
