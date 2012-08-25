@@ -24,16 +24,16 @@ public class CmdMem implements CommandExecutor {
                 return true;
             }
 
-            double memUsed = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576;
-            double memMax = Runtime.getRuntime().maxMemory() / 1048576;
+            double memUsed = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576D;
+            double memMax = Runtime.getRuntime().maxMemory() / 1048576D;
             double memFree = memMax - memUsed;
-            double percfree = (100 / memMax) * memFree;
+            double percfree = (100D / memMax) * memFree;
             ChatColor color;
-            if (percfree >= 60) color = ChatColor.GREEN;
-            else if (percfree >= 35) color = ChatColor.YELLOW;
+            if (percfree >= 60D) color = ChatColor.GREEN;
+            else if (percfree >= 35D) color = ChatColor.YELLOW;
             else color = ChatColor.RED;
             DecimalFormat df = new DecimalFormat("00.00");
-            cs.sendMessage(color + df.format(percfree) + "% " + ChatColor.WHITE + "free (" + color + memUsed + ChatColor.WHITE + " MB/" + memMax + " MB)");
+            cs.sendMessage(color + df.format(percfree) + "% " + ChatColor.BLUE + "free (" + color + memUsed + ChatColor.BLUE + " MB/" + memMax + " MB)");
             return true;
         }
         return false;

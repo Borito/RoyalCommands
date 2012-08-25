@@ -27,7 +27,6 @@ public class CmdVip implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            // add, check, remove, list - list too stressful atm
             String command = args[0];
             if (command.equalsIgnoreCase("add")) {
                 if (args.length < 2) {

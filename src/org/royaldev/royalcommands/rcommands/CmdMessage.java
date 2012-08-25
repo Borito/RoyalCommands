@@ -41,9 +41,6 @@ public class CmdMessage implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            /*if (!replydb.containsKey(t.getName())) replydb.put(t.getName(), cs.getName());
-            else if (replydb.containsKey(t.getName()) && !replydb.get(t.getName()).equals(cs.getName()))
-                replydb.put(t.getName(), cs.getName());*/
             synchronized (replydb) {
                 replydb.put(t.getName(), cs.getName());
                 replydb.put(cs.getName(), t.getName());

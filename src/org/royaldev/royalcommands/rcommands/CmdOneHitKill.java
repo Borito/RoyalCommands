@@ -35,7 +35,7 @@ public class CmdOneHitKill implements CommandExecutor {
                         return true;
                     }
                     Boolean ohk = pcm.getBoolean("ohk");
-                    if (!ohk) {
+                    if (ohk == null || !ohk) {
                         pcm.setBoolean(true, "ohk");
                         cs.sendMessage(ChatColor.BLUE + "You have enabled onehitkill mode for " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
                         return true;
@@ -51,7 +51,7 @@ public class CmdOneHitKill implements CommandExecutor {
                     return true;
                 }
                 Boolean ohk = pcm.getBoolean("ohk");
-                if (!ohk) {
+                if (ohk == null || !ohk) {
                     pcm.setBoolean(true, "ohk");
                     cs.sendMessage(ChatColor.BLUE + "You have enabled onehitkill mode for " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
                     p.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has enabled onehitkill for you.");
