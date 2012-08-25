@@ -42,7 +42,10 @@ public class SerializableItemStack implements Serializable {
      * Material data on this ItemStack - defaults to 0
      */
     private byte materialData = 0;
-    private SerializableNBTTagCompound tag;
+    /**
+     * The tag on the ItemStack, commonly used for written book data - defaults to null
+     */
+    private SerializableNBTTagCompound tag = null;
 
     /**
      * Serializable ItemStack for saving to files.
