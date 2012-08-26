@@ -28,7 +28,7 @@ import static org.royaldev.royalcommands.Converters.*;
  */
 public class H2PConfManager {
 
-    private Connection c;
+    private Connection c = RoyalCommands.instance.c;
     private PreparedStatement stmt;
     private final Logger log = RoyalCommands.instance.getLogger();
     private JSONObject options;
@@ -50,7 +50,8 @@ public class H2PConfManager {
             return;
         }
         String path = RoyalCommands.instance.getDataFolder().getAbsolutePath() + File.separator + RoyalCommands.instance.h2Path;
-        c = DriverManager.getConnection("jdbc:h2:" + path + ";AUTO_RECONNECT=TRUE", RoyalCommands.instance.h2User, RoyalCommands.instance.h2Pass);
+        if (c == null)
+            c = DriverManager.getConnection("jdbc:h2:" + path + ";AUTO_RECONNECT=TRUE", RoyalCommands.instance.h2User, RoyalCommands.instance.h2Pass);
         c.createStatement().execute("CREATE TABLE IF NOT EXISTS `userdata` (id int NOT NULL AUTO_INCREMENT, name text NOT NULL, options text);");
         createEntry();
         stmt = c.prepareStatement("SELECT options FROM `userdata` WHERE `name` = ?;");
@@ -76,7 +77,8 @@ public class H2PConfManager {
             return;
         }
         String path = RoyalCommands.instance.getDataFolder().getAbsolutePath() + File.separator + RoyalCommands.instance.h2Path;
-        c = DriverManager.getConnection("jdbc:h2:" + path + ";AUTO_RECONNECT=TRUE", RoyalCommands.instance.h2User, RoyalCommands.instance.h2Pass);
+        if (c == null)
+            c = DriverManager.getConnection("jdbc:h2:" + path + ";AUTO_RECONNECT=TRUE", RoyalCommands.instance.h2User, RoyalCommands.instance.h2Pass);
         c.createStatement().execute("CREATE TABLE IF NOT EXISTS `userdata` (id int NOT NULL AUTO_INCREMENT, name text NOT NULL, options text);");
         createEntry();
         stmt = c.prepareStatement("SELECT `options` FROM `userdata` WHERE `name` = ?;");

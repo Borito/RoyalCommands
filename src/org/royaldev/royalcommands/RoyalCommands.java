@@ -70,6 +70,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,6 +85,7 @@ public class RoyalCommands extends JavaPlugin {
 
     /*
     * TODO: MV/WM world names in /tpw and others
+    * TODO: Add time/weather global announcement
      */
 
     //--- Globals ---//
@@ -108,6 +110,8 @@ public class RoyalCommands extends JavaPlugin {
     public String version = null;
     public String newVersion = null;
     public MetricsLite ml = null;
+
+    public Connection c = null;
 
     //--- Privates ---//
 
@@ -893,6 +897,19 @@ public class RoyalCommands extends JavaPlugin {
         //-- Cancel scheduled tasks --//
 
         getServer().getScheduler().cancelTasks(this);
+
+        //-- Restart the H2 database if being used --//
+
+        try {
+            if (useH2 && c != null) c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //-- Remove userdata handlers --//
+
+        h2s.clear();
+        ymls.clear();
 
         //-- We're done! --//
 
