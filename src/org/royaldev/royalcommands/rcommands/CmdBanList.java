@@ -24,7 +24,6 @@ public class CmdBanList implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "All banned players:");
             Set<OfflinePlayer> banList = plugin.getServer().getBannedPlayers();
             if (banList.isEmpty()) {
                 cs.sendMessage(ChatColor.RED + "There are no banned players!");
