@@ -419,6 +419,12 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String teleport(Player p, Location l) {
+        synchronized (teleRunners) {
+            if (RoyalCommands.instance.teleportWarmup > 0 && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+                makeTeleportRunner(p, l);
+                return "";
+            }
+        }
         if (!RoyalCommands.safeTeleport) {
             CmdBack.backdb.put(p, p.getLocation());
             p.teleport(l);
@@ -435,8 +441,10 @@ public class RUtils {
 
     public static void cancelTeleportRunner(final Player p) {
         synchronized (teleRunners) {
-            if (teleRunners.containsKey(p.getName()))
+            if (teleRunners.containsKey(p.getName())) {
                 Bukkit.getScheduler().cancelTask(teleRunners.get(p.getName()));
+                teleRunners.remove(p.getName());
+            }
         }
     }
 
@@ -447,7 +455,8 @@ public class RUtils {
      * @param t Location to teleport to when warmup is finished
      * @return ID of Bukkit task
      */
-    public static int makeTeleportRunner(final Player p, final Location t) {
+    private static int makeTeleportRunner(final Player p, final Location t) {
+        p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + RoyalCommands.instance.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
         final PConfManager pcm = new PConfManager(p);
         pcm.setLong(new Date().getTime(), "teleport_warmup");
         Runnable r = new Runnable() {
@@ -483,7 +492,8 @@ public class RUtils {
      * @param t Entity to teleport to when warmup is finished
      * @return ID of Bukkit task
      */
-    public static int makeTeleportRunner(final Player p, final Entity t) {
+    private static int makeTeleportRunner(final Player p, final Entity t) {
+        p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + RoyalCommands.instance.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
         final PConfManager pcm = new PConfManager(p);
         pcm.setLong(new Date().getTime(), "teleport_warmup");
         Runnable r = new Runnable() {
@@ -520,7 +530,12 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String silentTeleport(Player p, Location l) {
-        //if (!teleWait(p)) return "";
+        synchronized (teleRunners) {
+            if (RoyalCommands.instance.teleportWarmup > 0 && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+                makeTeleportRunner(p, l);
+                return "";
+            }
+        }
         if (!RoyalCommands.safeTeleport) p.teleport(l);
         else {
             Location toTele = getSafeLocation(l);
@@ -538,7 +553,12 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String teleport(Player p, Entity e) {
-        //if (!teleWait(p)) return "";
+        synchronized (teleRunners) {
+            if (RoyalCommands.instance.teleportWarmup > 0 && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+                makeTeleportRunner(p, e);
+                return "";
+            }
+        }
         if (!RoyalCommands.safeTeleport) {
             CmdBack.backdb.put(p, p.getLocation());
             p.teleport(e);
@@ -559,6 +579,12 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String silentTeleport(Player p, Entity e) {
+        synchronized (teleRunners) {
+            if (RoyalCommands.instance.teleportWarmup > 0 && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+                makeTeleportRunner(p, e);
+                return "";
+            }
+        }
         if (p == null || e == null) return "Player/entity was null!";
         if (!RoyalCommands.safeTeleport) p.teleport(e);
         else {
@@ -762,7 +788,7 @@ public class RUtils {
         ItemStack toRet;
         if (RoyalCommands.inm == null)
             throw new NullPointerException("ItemNameManager is not loaded!");
-        toRet = RUtils.getItem(RoyalCommands.inm.getIDFromAlias(alias), amount);
+        toRet = getItem(RoyalCommands.inm.getIDFromAlias(alias), amount);
         if (toRet == null)
             throw new InvalidItemNameException(alias + " is not a valid alias!");
         return toRet;

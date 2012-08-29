@@ -41,16 +41,11 @@ public class CmdTeleport implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            if (plugin.teleportWarmup > 0) {
-                p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + plugin.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
-                RUtils.makeTeleportRunner(p, t);
-            } else {
-                p.sendMessage(ChatColor.BLUE + "Teleporting you to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-                String error = RUtils.teleport(p, t);
-                if (!error.isEmpty()) {
-                    p.sendMessage(ChatColor.RED + error);
-                    return true;
-                }
+            p.sendMessage(ChatColor.BLUE + "Teleporting you to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            String error = RUtils.teleport(p, t);
+            if (!error.isEmpty()) {
+                p.sendMessage(ChatColor.RED + error);
+                return true;
             }
             return true;
         }
