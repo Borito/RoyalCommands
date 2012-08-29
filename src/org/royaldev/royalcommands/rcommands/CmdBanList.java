@@ -30,8 +30,15 @@ public class CmdBanList implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "There are no banned players!");
                 return true;
             }
-            for (OfflinePlayer op : banList)
-                cs.sendMessage(ChatColor.GRAY + op.getName());
+            cs.sendMessage(ChatColor.BLUE + "There are " + ChatColor.GRAY + banList.size() + ChatColor.BLUE + " banned players:");
+            StringBuilder sb = new StringBuilder();
+            for (OfflinePlayer op : banList) {
+                sb.append(ChatColor.GRAY);
+                sb.append(op.getName());
+                sb.append(ChatColor.RESET);
+                sb.append(", ");
+            }
+            cs.sendMessage(sb.substring(0, sb.length() - 4));
             return true;
         }
         return false;
