@@ -17,6 +17,41 @@ public class CmdGamemode implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    /**
+     * Gets a GameMode from a string. Can be in word format ("creative") or number format ("1").
+     *
+     * @param s String representing GameMode
+     * @return GameMode
+     */
+    public GameMode getGameMode(String s) {
+        if (s == null) return null;
+        GameMode toRet;
+        try {
+            toRet = GameMode.valueOf(s.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            try {
+                Integer i = Integer.valueOf(s);
+                if (i > 2 || i < 0) return null;
+                switch (i) {
+                    case 0:
+                        toRet = GameMode.SURVIVAL;
+                        break;
+                    case 1:
+                        toRet = GameMode.CREATIVE;
+                        break;
+                    case 2:
+                        toRet = GameMode.ADVENTURE;
+                        break;
+                    default:
+                        toRet = null;
+                }
+            } catch (NumberFormatException e2) {
+                return null;
+            }
+        }
+        return toRet;
+    }
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gamemode")) {
@@ -51,14 +86,13 @@ public class CmdGamemode implements CommandExecutor {
                 }
                 GameMode toSet = (t.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
                 if (args.length > 1) {
-                    String wantedMode = args[1];
-                    try {
-                        toSet = GameMode.valueOf(wantedMode.toUpperCase());
-                    } catch (IllegalArgumentException e) {
+                    GameMode result = getGameMode(args[1]);
+                    if (result == null) {
                         cs.sendMessage(ChatColor.RED + "Invalid gamemode!");
-                        cs.sendMessage(ChatColor.GRAY + "creative" + ChatColor.RESET + "," + ChatColor.GRAY + " survival" + ChatColor.RESET + ", " + ChatColor.GRAY + "adventure");
+                        cs.sendMessage(ChatColor.GRAY + RUtils.join(GameMode.values(), ChatColor.RESET + ", " + ChatColor.GRAY));
                         return true;
                     }
+                    toSet = result;
                 }
                 t.setGameMode(toSet);
                 if (cs instanceof Player && !cs.equals(t))
