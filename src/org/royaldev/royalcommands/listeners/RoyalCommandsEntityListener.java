@@ -53,11 +53,13 @@ public class RoyalCommandsEntityListener implements Listener {
         if (ed instanceof LivingEntity) {
             LivingEntity le = (LivingEntity) ed;
             le.damage(le.getHealth() * 1000);
+            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1));
         }
         if (ed instanceof EnderDragonPart) {
             EnderDragonPart ldp = (EnderDragonPart) ed;
             LivingEntity le = ldp.getParent();
             le.damage(le.getHealth() * 1000);
+            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1));
         }
     }
 
@@ -90,7 +92,10 @@ public class RoyalCommandsEntityListener implements Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Player p = (Player) event.getEntity();
-        if (new PConfManager(p).getBoolean("godmode")) event.setFoodLevel(20);
+        if (new PConfManager(p).getBoolean("godmode")) {
+            event.setFoodLevel(20);
+            p.setSaturation(20F);
+        }
     }
 
 }

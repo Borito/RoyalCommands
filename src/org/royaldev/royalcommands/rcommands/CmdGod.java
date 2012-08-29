@@ -34,6 +34,7 @@ public class CmdGod implements CommandExecutor {
                 PConfManager pcm = new PConfManager(t);
                 t.setHealth(20);
                 t.setFoodLevel(20);
+                t.setSaturation(20F);
                 if (!pcm.getBoolean("godmode")) {
                     cs.sendMessage(ChatColor.BLUE + "You have enabled godmode for yourself.");
                     pcm.setBoolean(true, "godmode");
@@ -68,6 +69,7 @@ public class CmdGod implements CommandExecutor {
                     } else {
                         t.setHealth(20);
                         t.setFoodLevel(20);
+                        t.setSaturation(20F);
                         t.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " has disabled godmode for you!");
                     }
                     cs.sendMessage(ChatColor.BLUE + "You have disabled godmode for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
