@@ -182,11 +182,12 @@ public class WorldManager {
         boolean contains = false;
         File[] fs = Bukkit.getServer().getWorldContainer().listFiles();
         if (fs == null) throw new NullPointerException("Could not read world files");
-        for (File f : fs) {
-            if (f.getName().equalsIgnoreCase(name)) contains = true;
-        }
+        for (File f : fs) if (f.getName().equalsIgnoreCase(name)) contains = true;
         if (!contains) throw new IllegalArgumentException("No such world!");
         WorldCreator wc = new WorldCreator(name);
+        String generator = config.getString("worlds." + name + ".generator", "DefaultGen");
+        if (generator.equals("DefaultGen")) generator = null;
+        wc.generator(generator);
         World w = wc.createWorld();
         synchronized (loadedWorlds) {
             loadedWorlds.add(w.getName());
@@ -246,6 +247,7 @@ public class WorldManager {
             config.setString(w.getWorldType().name(), path + "worldtype");
             config.setString(w.getEnvironment().name(), path + "environment");
             config.setString(Bukkit.getServer().getDefaultGameMode().name(), path + "gamemode");
+            if (w.getGenerator() == null) config.setString("DefaultGen", path + "generator");
             config.setLong(w.getSeed(), path + "seed");
             config.setBoolean(false, path + "freezetime");
             config.setBoolean(true, path + "loadatstartup");
