@@ -420,8 +420,10 @@ public class RUtils {
      */
     public static String teleport(Player p, Location l) {
         synchronized (teleRunners) {
-            if (RoyalCommands.instance.teleportWarmup > 0 && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+            if (RoyalCommands.instance.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, l);
+                return "";
+            } else if (RoyalCommands.instance.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
                 return "";
             }
         }
@@ -438,6 +440,7 @@ public class RUtils {
     }
 
     private final static Map<String, Integer> teleRunners = new HashMap<String, Integer>();
+    private final static List<String> teleAllowed = new ArrayList<String>();
 
     public static void cancelTeleportRunner(final Player p) {
         synchronized (teleRunners) {
@@ -456,6 +459,9 @@ public class RUtils {
      * @return ID of Bukkit task
      */
     private static int makeTeleportRunner(final Player p, final Location t) {
+        synchronized (teleRunners) {
+            if (teleRunners.containsKey(p.getName())) cancelTeleportRunner(p);
+        }
         p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + RoyalCommands.instance.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
         final PConfManager pcm = new PConfManager(p);
         pcm.setLong(new Date().getTime(), "teleport_warmup");
@@ -472,7 +478,9 @@ public class RUtils {
                 long c = new Date().getTime();
                 if (l < c) {
                     p.sendMessage(ChatColor.BLUE + "Teleporting...");
+                    teleAllowed.add(p.getName());
                     String error = teleport(p, t);
+                    teleAllowed.remove(p.getName());
                     if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
                     cancelTeleportRunner(p);
                 }
@@ -493,6 +501,9 @@ public class RUtils {
      * @return ID of Bukkit task
      */
     private static int makeTeleportRunner(final Player p, final Entity t) {
+        synchronized (teleRunners) {
+            if (teleRunners.containsKey(p.getName())) cancelTeleportRunner(p);
+        }
         p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + RoyalCommands.instance.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
         final PConfManager pcm = new PConfManager(p);
         pcm.setLong(new Date().getTime(), "teleport_warmup");
@@ -509,7 +520,9 @@ public class RUtils {
                 long c = new Date().getTime();
                 if (l < c) {
                     p.sendMessage(ChatColor.BLUE + "Teleporting...");
+                    teleAllowed.add(p.getName());
                     String error = teleport(p, t);
+                    teleAllowed.remove(p.getName());
                     if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
                     cancelTeleportRunner(p);
                 }
@@ -531,8 +544,10 @@ public class RUtils {
      */
     public static String silentTeleport(Player p, Location l) {
         synchronized (teleRunners) {
-            if (RoyalCommands.instance.teleportWarmup > 0 && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+            if (RoyalCommands.instance.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, l);
+                return "";
+            } else if (RoyalCommands.instance.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
                 return "";
             }
         }
@@ -554,8 +569,10 @@ public class RUtils {
      */
     public static String teleport(Player p, Entity e) {
         synchronized (teleRunners) {
-            if (RoyalCommands.instance.teleportWarmup > 0 && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+            if (RoyalCommands.instance.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, e);
+                return "";
+            } else if (RoyalCommands.instance.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
                 return "";
             }
         }
@@ -579,13 +596,15 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String silentTeleport(Player p, Entity e) {
+        if (p == null || e == null) return "Player/entity was null!";
         synchronized (teleRunners) {
-            if (RoyalCommands.instance.teleportWarmup > 0 && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+            if (RoyalCommands.instance.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, e);
+                return "";
+            } else if (RoyalCommands.instance.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
                 return "";
             }
         }
-        if (p == null || e == null) return "Player/entity was null!";
         if (!RoyalCommands.safeTeleport) p.teleport(e);
         else {
             Location toTele = getSafeLocation(e);
