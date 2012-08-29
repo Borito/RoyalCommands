@@ -1246,6 +1246,9 @@ permissions:
   rcmds.exempt.backpack:
     description: Makes the player immune to /backpack.
     default: false
+  rcmds.exempt.teleportwarmup:
+    description: Makes the player exempt to teleport warmups.
+    default: false
 
   rcmds.exempt.autoafk:
     description: Makes the player immune to auto AFK.
@@ -1657,6 +1660,7 @@ permissions:
       rcmds.exempt.setarmor: true
       rcmds.exempt.monitor: true
       rcmds.exempt.backpack: true
+      rcmds.exempt.teleportwarmup: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
