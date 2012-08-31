@@ -177,6 +177,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean useH2 = null;
     public Boolean h2Convert = null;
     public Boolean ymlConvert = null;
+    public Boolean wmShowEmptyWorlds = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
@@ -396,6 +397,7 @@ public class RoyalCommands extends JavaPlugin {
         useH2 = getConfig().getBoolean("use_h2", true);
         h2Convert = getConfig().getBoolean("h2.convert", false);
         ymlConvert = getConfig().getBoolean("yml_convert", false);
+        wmShowEmptyWorlds = getConfig().getBoolean("worldmanager.who.show_empty_worlds", false);
 
         banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));

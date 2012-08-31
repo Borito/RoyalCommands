@@ -231,7 +231,8 @@ public class CmdWorldManager implements CommandExecutor {
                     StringBuilder sb = new StringBuilder(RUtils.getMVWorldName(w));
                     sb.append(": ");
                     if (w.getPlayers().isEmpty()) {
-                        cs.sendMessage(ChatColor.RED + "No players in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.RED + ".");
+                        if (plugin.wmShowEmptyWorlds)
+                            cs.sendMessage(ChatColor.RED + "No players in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.RED + ".");
                         continue;
                     }
                     for (Player p : w.getPlayers()) {

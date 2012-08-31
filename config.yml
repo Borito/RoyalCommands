@@ -323,3 +323,11 @@ yml_convert: false
 # Time is in seconds.
 # 0 to disable
 teleport_warmup: 0
+
+###
+# WorldManager #
+###
+
+worldmanager:
+  who:
+    show_empty_worlds: false
