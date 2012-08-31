@@ -118,7 +118,7 @@ public class CmdWorldManager implements CommandExecutor {
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Unloading world...");
-                if (args.length > 2 && Boolean.getBoolean(args[2].toLowerCase()))
+                if (args.length > 2 && args[2].equalsIgnoreCase("true"))
                     for (Player p : w.getPlayers())
                         p.kickPlayer("Your world is being unloaded!");
                 boolean success = plugin.getServer().unloadWorld(w, true);
