@@ -46,6 +46,7 @@ public class MonitorListener implements Listener {
     public void onMove(PlayerMoveEvent e) {
         if (!CmdMonitor.monitors.containsValue(e.getPlayer().getName())) return;
         Player p = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
         e.getPlayer().hidePlayer(p);
     }
