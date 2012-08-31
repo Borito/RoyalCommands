@@ -31,6 +31,7 @@ public class CmdUsage implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "No such command!");
                 return true;
             }
+            cs.sendMessage(pc.getPlugin().getName());
             cs.sendMessage(pc.getDescription());
             cs.sendMessage(pc.getUsage());
             return true;
