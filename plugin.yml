@@ -671,6 +671,16 @@ commands:
     usage: /<command>
     aliases: [bl]
 
+  flyspeed:
+    description: Changes the speed you fly at.
+    usage: /<command> [speed]
+    aliases: [fs]
+
+  walkspeed:
+    description: Changes the speed you walk at.
+    usage: /<command> [speed]
+    aliases: [ws]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1317,6 +1327,9 @@ permissions:
   rcmds.others.backpack:
     description: Allows the player to /backpack other players.
     default: op
+  rcmds.others.ping:
+    description: Allows the player to /ping other players.
+    default: op
 
   rcmds.seehidden:
     description: Allows the player to see hidden players in /list (VanishNoPacket).
@@ -1581,6 +1594,7 @@ permissions:
       rcmds.others.buddha: true
       rcmds.others.setarmor: true
       rcmds.others.backpack: true
+      rcmds.others.ping: true
 
   rcmds.see.*:
     description: Gives every see permission.
