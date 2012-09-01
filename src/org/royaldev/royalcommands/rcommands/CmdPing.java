@@ -41,7 +41,7 @@ public class CmdPing implements CommandExecutor {
                 }
                 int ping = ((CraftPlayer) p).getHandle().ping;
                 String possessive = (p.getName().endsWith("s")) ? "'" : "'s";
-                p.sendMessage(ChatColor.GRAY + p.getName() + possessive + ChatColor.BLUE + " ping: " + ChatColor.GRAY + ping + "ms");
+                cs.sendMessage(ChatColor.GRAY + p.getName() + possessive + ChatColor.BLUE + " ping: " + ChatColor.GRAY + ping + "ms");
                 return true;
             }
             Player p = (Player) cs;
