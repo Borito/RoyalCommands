@@ -390,7 +390,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer() == null) return;
         PConfManager pcm = new PConfManager(event.getPlayer());
-        if (!pcm.exists()) {
+        if (!pcm.exists() || (plugin.useH2 && pcm.getJSONObject("").names().length() == 0)) {
             log.info("[RoyalCommands] Creating userdata for " + event.getPlayer().getName() + ".");
             String dispname = event.getPlayer().getDisplayName();
             if (dispname == null || dispname.trim().equals(""))
