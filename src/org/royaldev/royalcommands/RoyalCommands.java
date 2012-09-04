@@ -36,7 +36,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -84,8 +83,8 @@ import java.util.regex.Pattern;
 public class RoyalCommands extends JavaPlugin {
 
     /*
-    * TODO: MV/WM world names in /tpw and others
     * TODO: Add time/weather global announcement
+    * TODO: Group spawns
      */
 
     //--- Globals ---//
@@ -94,9 +93,11 @@ public class RoyalCommands extends JavaPlugin {
     public static Economy economy = null;
     public static Chat chat = null;
     public static Map<String, Map<String, Object>> commands = null;
-    public static Plugin[] plugins = null;
     public static File dataFolder;
     public static ItemNameManager inm;
+    /**
+     * This can be used as an API feature. Get WM data from this field.
+     */
     public static WorldManager wm;
 
     public static RoyalCommands instance;
@@ -544,7 +545,6 @@ public class RoyalCommands extends JavaPlugin {
         whl = new ConfManager("whitelist.yml");
 
         commands = getDescription().getCommands();
-        plugins = getServer().getPluginManager().getPlugins();
 
         version = getDescription().getVersion();
 

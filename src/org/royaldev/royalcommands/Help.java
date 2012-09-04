@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class Help {
             helpdb.put(cmd, desc);
         }
         if (RoyalCommands.otherHelp) {
-            for (Plugin p : RoyalCommands.plugins) {
+            for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
                 if (p == null) continue;
                 if ((p instanceof RoyalCommands) || !p.isEnabled()) continue;
                 if (p.getDescription() == null || p.getDescription().getCommands() == null)
