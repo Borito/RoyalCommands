@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -82,6 +83,9 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void teleWarmup(PlayerMoveEvent e) {
         Player p = e.getPlayer();
+        Location to = e.getTo();
+        Location from = e.getFrom();
+        if (to.getX() == from.getX() && to.getY() == from.getY() && to.getZ() == from.getZ()) return;
         PConfManager pcm = new PConfManager(p);
         Long l = pcm.getLong("teleport_warmup");
         if (l == null) return;
