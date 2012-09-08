@@ -85,7 +85,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         Player p = e.getPlayer();
         Location to = e.getTo();
         Location from = e.getFrom();
-        if (to.getX() == from.getX() && to.getY() == from.getY() && to.getZ() == from.getZ()) return;
+        if (to.getX() == from.getX() && to.getY() == from.getY() && to.getZ() == from.getZ())
+            return;
         PConfManager pcm = new PConfManager(p);
         Long l = pcm.getLong("teleport_warmup");
         if (l == null) return;

@@ -41,6 +41,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
+import org.royaldev.royalcommands.api.RApiMain;
 import org.royaldev.royalcommands.json.JSONArray;
 import org.royaldev.royalcommands.json.JSONException;
 import org.royaldev.royalcommands.json.JSONObject;
@@ -84,7 +85,6 @@ public class RoyalCommands extends JavaPlugin {
 
     /*
     * TODO: Add time/weather global announcement
-    * TODO: Group spawns
      */
 
     //--- Globals ---//
@@ -123,6 +123,8 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     private final SignListener signListener = new SignListener(this);
     private final MonitorListener monitorListener = new MonitorListener(this);
+
+    private RApiMain api;
 
     //--- Dependencies ---//
 
@@ -224,6 +226,11 @@ public class RoyalCommands extends JavaPlugin {
     public Float maxExplodePower = null;
 
     //--- Public methods ---//
+
+    @SuppressWarnings("unused")
+    public RApiMain getAPI() {
+        return api;
+    }
 
     @SuppressWarnings("unused")
     public boolean canBuild(Player p, Location l) {
@@ -914,6 +921,10 @@ public class RoyalCommands extends JavaPlugin {
 
         h2s.clear();
         ymls.clear();
+
+        //-- Make the API --//
+
+        api = new RApiMain();
 
         //-- We're done! --//
 

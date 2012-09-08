@@ -66,7 +66,7 @@ public class Converters {
         return (short) 0;
     }
 
-    public static int toByte(Object o) {
+    public static byte toByte(Object o) {
         if (o instanceof Number) {
             return ((Number) o).byteValue();
         }

@@ -247,7 +247,8 @@ public class WorldManager {
             config.setString(w.getWorldType().name(), path + "worldtype");
             config.setString(w.getEnvironment().name(), path + "environment");
             config.setString(Bukkit.getServer().getDefaultGameMode().name(), path + "gamemode");
-            if (w.getGenerator() == null) config.setString("DefaultGen", path + "generator");
+            if (w.getGenerator() == null)
+                config.setString("DefaultGen", path + "generator");
             config.setLong(w.getSeed(), path + "seed");
             config.setBoolean(false, path + "freezetime");
             config.setBoolean(true, path + "loadatstartup");
