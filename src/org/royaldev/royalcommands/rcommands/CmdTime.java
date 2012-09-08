@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -108,6 +109,8 @@ public class CmdTime implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
+            if (args.length > 0 && args[0].equalsIgnoreCase("set"))
+                ArrayUtils.removeElement(args, "set");
             String target = "";
             if (!(cs instanceof Player) && args.length < 2) target = "*";
             else if ((cs instanceof Player) && args.length < 2)
