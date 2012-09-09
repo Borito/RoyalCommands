@@ -302,7 +302,7 @@ whitelist_message: "You are not whitelisted on this server!"
 # During my tests, YML took 5.905ms to load data, and H2
 # took 4.538ms. That's about a 23.149% decrease in processing
 # times, but it's not really that much.
-use_h2: true
+use_h2: false
 
 h2:
   # Path relative to plugins/RoyalCommands - automatically appends .h2.db
