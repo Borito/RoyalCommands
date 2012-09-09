@@ -82,7 +82,7 @@ import java.util.regex.Pattern;
 public class RoyalCommands extends JavaPlugin {
 
     /*
-    * TODO: Add time/weather global announcement
+    * TODO: Add weather global announcement
      */
 
     //--- Globals ---//
@@ -93,9 +93,6 @@ public class RoyalCommands extends JavaPlugin {
     public static Map<String, Map<String, Object>> commands = null;
     public static File dataFolder;
     public static ItemNameManager inm;
-    /**
-     * This can be used as an API feature. Get WM data from this field.
-     */
     public static WorldManager wm;
 
     public static RoyalCommands instance;
@@ -541,6 +538,7 @@ public class RoyalCommands extends JavaPlugin {
 
     //--- onEnable() ---//
 
+    @Override
     public void onEnable() {
 
         //-- Set globals --//
@@ -907,6 +905,7 @@ public class RoyalCommands extends JavaPlugin {
 
     //--- onDisable() ---//
 
+    @Override
     public void onDisable() {
 
         //-- Cancel scheduled tasks --//
