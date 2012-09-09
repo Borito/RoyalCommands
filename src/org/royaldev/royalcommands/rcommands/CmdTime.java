@@ -110,7 +110,7 @@ public class CmdTime implements CommandExecutor {
                 return false;
             }
             if (args.length > 0 && args[0].equalsIgnoreCase("set"))
-                ArrayUtils.removeElement(args, "set");
+                args = (String[]) ArrayUtils.remove(args, 0);
             String target = "";
             if (!(cs instanceof Player) && args.length < 2) target = "*";
             else if ((cs instanceof Player) && args.length < 2)
