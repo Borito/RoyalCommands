@@ -3,7 +3,7 @@ package org.royaldev.royalcommands.api;
 /**
  * The main API class. Other API classes can be found here.
  * <p/>
- * <strong>DO NOT CONSTRUCT THIS METHOD.</strong> Use <code>getAPI()</code> in RoyalCommands instead.
+ * <strong>DO NOT CONSTRUCT THIS.</strong> Use <code>getAPI()</code> in RoyalCommands instead.
  */
 public class RApiMain {
 

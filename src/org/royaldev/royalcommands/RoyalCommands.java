@@ -401,7 +401,7 @@ public class RoyalCommands extends JavaPlugin {
         changeNameTag = getConfig().getBoolean("change_nametag", false);
         dumpCreateChest = getConfig().getBoolean("dump_create_chest", true);
         dumpUseInv = getConfig().getBoolean("dump_use_inv", true);
-        useH2 = getConfig().getBoolean("use_h2", true);
+        useH2 = getConfig().getBoolean("use_h2", false);
         h2Convert = getConfig().getBoolean("h2.convert", false);
         ymlConvert = getConfig().getBoolean("yml_convert", false);
         wmShowEmptyWorlds = getConfig().getBoolean("worldmanager.who.show_empty_worlds", false);
@@ -896,6 +896,10 @@ public class RoyalCommands extends JavaPlugin {
             getLogger().info("H2 -> YML userdata conversion complete. Please restart with convert set to false.");
         }
 
+        //-- Make the API --//
+
+        api = new RApiMain();
+
         //-- We're done! --//
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
@@ -921,10 +925,6 @@ public class RoyalCommands extends JavaPlugin {
 
         h2s.clear();
         ymls.clear();
-
-        //-- Make the API --//
-
-        api = new RApiMain();
 
         //-- We're done! --//
 
