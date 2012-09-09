@@ -46,6 +46,14 @@ command_log_blacklist:
 # Reset /backpack on death?
 reset_backpack_death: false
 
+# Should /dump create a new chest or dump into an existing chest?
+# Checks if player can build via WorldGuard, and checks if player can access chest via
+# LWC.
+dump_create_chest: true
+
+# Should /dump use chests from inventory if dump_create_chest is true?
+dump_use_inv: true
+
 ###
 # MOTD #
 ###
@@ -97,6 +105,9 @@ welcome_message: "&5Welcome {name} to the server!"
 # Broadcast format (no variables support, just color codes) - message follows this immediately after this
 bcast_format: "&b[&aBroadcast&b]&a "
 
+# Message to use if player is denied by the whitelist.
+whitelist_message: "You are not whitelisted on this server!"
+
 # /who format ({prefix}, {suffix}, {name}, {dispname}, and {group} supported, as well at text and color codes
 who_format: "{prefix}{dispname}"
 
@@ -113,6 +124,9 @@ who_group_format: "{prefix}{group}{suffix}"
 
 # Enable the welcome message for new players?
 enable_welcome_message: true
+
+# Broadcast time changes via /time?
+broadcast_time_changes: false
 
 ###
 # Block management #
@@ -203,6 +217,11 @@ back_on_death: true
 # Make teleports try to find ground for the teleported player, rather than teleport into midair?
 safe_teleport: true
 
+# Make players stay still for a set amount of time before teleporting?
+# Time is in seconds.
+# 0 to disable
+teleport_warmup: 0
+
 ###
 # Command cooldowns #
 ###
@@ -278,22 +297,19 @@ nick_prefix: "*"
 change_nametag: false
 
 ###
-# Update to 0.2.5 #
+# Worlds & WorldManager #
 ###
 
-# Should /dump create a new chest or dump into an existing chest?
-# Checks if player can build via WorldGuard, and checks if player can access chest via
-# LWC.
-dump_create_chest: true
-
-# Should /dump use chests from inventory if dump_create_chest is true?
-dump_use_inv: true
+worldmanager:
+  who:
+    show_empty_worlds: false
 
 # Use Multiverse world names? If Multiverse-Core is not installed, this makes no difference.
 multiverse_world_names: true
 
-# Message to use if player is denied by the whitelist.
-whitelist_message: "You are not whitelisted on this server!"
+###
+# Userdata handling #
+###
 
 # Use a H2 database instead of YML files for userdata?
 # If this is true, fill out the h2 part of the config.
@@ -318,19 +334,3 @@ h2:
 
 # Convert H2 to YML?
 yml_convert: false
-
-# Make players stay still for a set amount of time before teleporting?
-# Time is in seconds.
-# 0 to disable
-teleport_warmup: 0
-
-###
-# WorldManager #
-###
-
-worldmanager:
-  who:
-    show_empty_worlds: false
-
-# Broadcast time AND weather changes via /time and /weather?
-broadcast_time_changes: false
