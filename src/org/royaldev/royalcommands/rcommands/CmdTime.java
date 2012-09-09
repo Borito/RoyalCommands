@@ -139,12 +139,18 @@ public class CmdTime implements CommandExecutor {
                 for (World ws : plugin.getServer().getWorlds()) {
                     if (plugin.smoothTime) smoothTimeChange(ticks, ws);
                     else ws.setTime(ticks);
+                    for (Player p : ws.getPlayers())
+                        p.sendMessage(ChatColor.BLUE + "The time was changed to " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ") by " + ChatColor.GRAY + cs.getName() + " in " + RUtils.getMVWorldName(w) + ChatColor.BLUE + ".");
                 }
                 cs.sendMessage(ChatColor.BLUE + "Set time in all worlds to " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
             } else {
                 if (plugin.smoothTime) smoothTimeChange(ticks, w);
                 else w.setTime(ticks);
                 cs.sendMessage(ChatColor.BLUE + "Set time in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + " to " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
+                if (plugin.timeBroadcast) {
+                    for (Player p : w.getPlayers())
+                        p.sendMessage(ChatColor.BLUE + "The time was changed to " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ") by " + ChatColor.GRAY + cs.getName() + " in " + RUtils.getMVWorldName(w) + ChatColor.BLUE + ".");
+                }
             }
             return true;
 

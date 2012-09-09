@@ -331,3 +331,6 @@ teleport_warmup: 0
 worldmanager:
   who:
     show_empty_worlds: false
+
+# Broadcast time AND weather changes via /time and /weather?
+broadcast_time_changes: false

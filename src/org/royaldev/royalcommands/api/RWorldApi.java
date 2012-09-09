@@ -41,6 +41,7 @@ public class RWorldApi {
 
     /**
      * This will get the WorldManager where WM tasks such as loading worlds can be performed.
+     *
      * @return WorldManager or null if RoyalCommands has not run its onEnable()
      */
     public WorldManager getWorldManager() {
