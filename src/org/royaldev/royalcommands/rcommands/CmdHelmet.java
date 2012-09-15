@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 
 public class CmdHelmet implements CommandExecutor {
 
@@ -48,6 +49,17 @@ public class CmdHelmet implements CommandExecutor {
                 return true;
             }
             ItemStack stack = RUtils.getItem(name, 1);
+            if (stack == null) {
+                try {
+                    stack = RUtils.getItemFromAlias(name, 1);
+                } catch (InvalidItemNameException e) {
+                    cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                    return true;
+                } catch (NullPointerException e) {
+                    cs.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
+                    return true;
+                }
+            }
             if (stack == null) {
                 p.sendMessage(ChatColor.RED + "Invalid item name!");
                 return true;
