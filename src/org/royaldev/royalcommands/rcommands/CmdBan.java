@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -52,8 +53,12 @@ public class CmdBan implements CommandExecutor {
             if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = new PConfManager(t);
             if (!pcm.getConfExists()) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                return true;
+                if (args.length > 1 && args[1].equalsIgnoreCase("true")) {
+                    args = (String[]) ArrayUtils.remove(args, 1);
+                } else {
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
             }
             if (plugin.isAuthorized(t, "rcmds.exempt.ban")) {
                 cs.sendMessage(ChatColor.RED + "You can't ban that player!");
