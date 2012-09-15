@@ -266,7 +266,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public boolean isAuthorized(final OfflinePlayer p, final String node) {
         String world = getServer().getWorlds().get(0).getName();
-        return !(p instanceof Player) || (RoyalCommands.permission.has(world, p.getName(), "rcmds.admin") || RoyalCommands.permission.has(world, p.getName(), node));
+        return !(p instanceof Player) && !(p != null) || (RoyalCommands.permission.has(world, p.getName(), "rcmds.admin") || RoyalCommands.permission.has(world, p.getName(), node));
     }
 
     public boolean isAuthorized(final Player player, final String node) {
@@ -274,13 +274,13 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public boolean isAuthorized(final CommandSender player, final String node) {
-        return !(player instanceof Player) || (RoyalCommands.permission.has((Player) player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+        return !(player instanceof Player) && !(player instanceof OfflinePlayer) || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
     //-- Static methods --//
 
     public static boolean hasPerm(final CommandSender player, final String node) {
-        return !(player instanceof Player) || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
+        return !(player instanceof Player) && !(player instanceof OfflinePlayer) || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
     }
 
     /**
