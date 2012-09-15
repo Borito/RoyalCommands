@@ -83,8 +83,8 @@ public class CmdHome implements CommandExecutor {
                 return true;
             }
             if (homeW == null) {
-                System.out.println("homeW: " + homeW);
                 cs.sendMessage(ChatColor.RED + "World doesn't exist!");
+                return true;
             }
             if (homeX == null || homeY == null || homeZ == null || homeYaw == null || homePitch == null) {
                 System.out.println("homeX: " + homeX);
