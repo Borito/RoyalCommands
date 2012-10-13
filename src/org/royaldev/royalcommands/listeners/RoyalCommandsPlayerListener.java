@@ -395,12 +395,12 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer() == null) return;
         PConfManager pcm = new PConfManager(event.getPlayer());
-        if (!pcm.exists() || (plugin.useH2 && pcm.getJSONObject("").names().length() == 0)) {
+        if (!pcm.exists() || (plugin.useH2 && pcm.getJSONObject("").length() < 1)) {
             log.info("[RoyalCommands] Creating userdata for " + event.getPlayer().getName() + ".");
             String dispname = event.getPlayer().getDisplayName();
             if (dispname == null || dispname.trim().equals(""))
                 dispname = event.getPlayer().getName();
-            boolean success = pcm.createFile();
+            boolean success = plugin.useH2 || pcm.createFile();
             if (!success)
                 log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
             else {

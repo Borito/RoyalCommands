@@ -331,7 +331,7 @@ public class YMLPConfManager {
      * @return boolean of existence
      */
     public boolean getConfExists() {
-        return pconf != null;
+        return pconf != null && pconfl.exists();
     }
 
     /**
@@ -342,7 +342,7 @@ public class YMLPConfManager {
      * @return boolean of existence
      */
     public boolean exists() {
-        return pconf != null;
+        return pconf != null && pconfl.exists();
     }
 
 }
