@@ -139,8 +139,9 @@ public class CmdTime implements CommandExecutor {
                 for (World ws : plugin.getServer().getWorlds()) {
                     if (plugin.smoothTime) smoothTimeChange(ticks, ws);
                     else ws.setTime(ticks);
-                    for (Player p : ws.getPlayers())
-                        p.sendMessage(ChatColor.BLUE + "The time was changed to " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ") by " + ChatColor.GRAY + cs.getName() + " in " + RUtils.getMVWorldName(ws) + ChatColor.BLUE + ".");
+                    if (plugin.timeBroadcast)
+                        for (Player p : ws.getPlayers())
+                            p.sendMessage(ChatColor.BLUE + "The time was changed to " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ") by " + ChatColor.GRAY + cs.getName() + " in " + RUtils.getMVWorldName(ws) + ChatColor.BLUE + ".");
                 }
                 cs.sendMessage(ChatColor.BLUE + "Set time in all worlds to " + ChatColor.GRAY + ticks + " ticks" + ChatColor.BLUE + " (" + ChatColor.GRAY + times.get("24h") + ChatColor.BLUE + "/" + ChatColor.GRAY + times.get("12h") + ChatColor.BLUE + ").");
             } else {
