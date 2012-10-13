@@ -4,14 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.ConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.io.File;
-import java.io.IOException;
 
 public class CmdSetWarp implements CommandExecutor {
 
@@ -48,24 +44,17 @@ public class CmdSetWarp implements CommandExecutor {
             String locW = p.getWorld().getName();
             String name = args[0].toLowerCase();
 
-            File pconfl = new File(plugin.getDataFolder() + File.separator + "warps.yml");
-            if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                pconf.set("warps." + name + ".set", true);
-                pconf.set("warps." + name + ".x", locX);
-                pconf.set("warps." + name + ".y", locY);
-                pconf.set("warps." + name + ".z", locZ);
-                pconf.set("warps." + name + ".pitch", locPitch.toString());
-                pconf.set("warps." + name + ".yaw", locYaw.toString());
-                pconf.set("warps." + name + ".w", locW);
-                try {
-                    pconf.save(pconfl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                p.sendMessage(ChatColor.BLUE + "Warp \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");
-                return true;
-            }
+            ConfManager warps = new ConfManager("warps.yml");
+            if (!warps.exists()) warps.createFile();
+            warps.set(true, "warps." + name + ".set");
+            warps.set(locX, "warps." + name + ".x");
+            warps.set(locY, "warps." + name + ".y");
+            warps.set(locZ, "warps." + name + ".z");
+            warps.set(locPitch.toString(), "warps." + name + ".pitch");
+            warps.set(locYaw.toString(), "warps." + name + ".yaw");
+            warps.set(locW, "warps." + name + ".w");
+            p.sendMessage(ChatColor.BLUE + "Warp \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");
+            return true;
         }
         return false;
     }
