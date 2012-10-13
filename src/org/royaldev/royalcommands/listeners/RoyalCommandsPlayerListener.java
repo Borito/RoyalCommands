@@ -392,6 +392,12 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
+    public void showMotd(PlayerJoinEvent e) {
+        if (!plugin.motdLogin) return;
+        CmdMotd.showMotd(e.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer() == null) return;
         PConfManager pcm = new PConfManager(event.getPlayer());
@@ -426,7 +432,6 @@ public class RoyalCommandsPlayerListener implements Listener {
             playerip = playerip.replace("/", "");
             pcm.setString(playerip, "ip");
         }
-        if (plugin.motdLogin) CmdMotd.showMotd(event.getPlayer());
         if (plugin.sendToSpawn) {
             if (plugin.stsBack)
                 RUtils.teleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
