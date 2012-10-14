@@ -8,8 +8,13 @@ RoyalCommands is a general plugin with lots of commands. Yeah, that's my descrip
 RoyalCommands is coded in IntelliJ with the following libraries:
 
  * Bukkit
+ * CraftBukkit
  * Vault
  * VanishNoPacket
+ * Multiverse-Core
+ * TagAPI
+ * WorldGuard
+ * LWC
 
 ### Contact
 
