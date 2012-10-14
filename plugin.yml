@@ -684,7 +684,7 @@ commands:
   accountstatus:
     description: Checks to see if a name is premium.
     usage: /<command> [name]
-    aliases: [as, ispremium, iscracked]
+    aliases: [accs, ispremium, iscracked]
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
