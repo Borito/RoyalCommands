@@ -81,6 +81,13 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler
+    public void whitelistMessage(PlayerLoginEvent e) {
+        if (!plugin.getServer().hasWhitelist()) return;
+        if (e.getResult() != Result.KICK_WHITELIST) return;
+        if (!e.getPlayer().isWhitelisted()) e.disallow(Result.KICK_WHITELIST, plugin.whitelistFormat);
+    }
+
+    @EventHandler
     public void teleWarmup(PlayerMoveEvent e) {
         Player p = e.getPlayer();
         Location to = e.getTo();
