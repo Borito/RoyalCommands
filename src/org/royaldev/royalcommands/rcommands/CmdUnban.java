@@ -30,16 +30,12 @@ public class CmdUnban implements CommandExecutor {
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0].trim());
             PConfManager pcm = new PConfManager(t);
-            if (!t.hasPlayedBefore() || !pcm.exists()) {
-                cs.sendMessage(ChatColor.RED + "That player has never played before!");
-                return true;
-            }
             if (!t.isBanned()) {
                 cs.sendMessage(ChatColor.RED + "That player isn't banned!");
                 return true;
             }
             t.setBanned(false);
-            pcm.set(null, "bantime");
+            if (pcm.exists()) pcm.set(null, "bantime");
             cs.sendMessage(ChatColor.BLUE + "You have unbanned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             plugin.getServer().broadcast(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has unbanned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".", "rcmds.see.unban");
             return true;
