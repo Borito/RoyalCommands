@@ -21,10 +21,10 @@
     <target name="compile" depends="init">
         <javac srcdir="${src}" destdir="${build}" includeantruntime="false" debug="true">
             <classpath>
-                <pathelement location="lib/bukkit-1.1-R1-SNAPSHOT.jar"/>
+                <pathelement location="lib/bukkit.jar"/>
+                <pathelement location="lib/craftbukkit.jar"/>
                 <pathelement location="lib/Vault.jar"/>
                 <pathelement location="lib/VanishNoPacket.jar"/>
-                <pathelement location="lib/craftbukkit-1.1-R2-SNAPSHOT.jar"/>
                 <pathelement location="lib/TagAPI.jar"/>
                 <pathelement location="lib/WorldGuard.jar"/>
                 <pathelement location="lib/LWC.jar"/>
