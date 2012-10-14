@@ -36,14 +36,14 @@ public class CmdAccountStatus implements CommandExecutor {
             OfflinePlayer p = plugin.getServer().getPlayer(name);
             if (p == null) p = plugin.getServer().getOfflinePlayer(name);
             name = p.getName(); // this allows one to use a player online by typing the first letters
-            URL u = null;
+            URL u;
             try {
                 u = new URL("https://minecraft.net/haspaid.jsp?user=" + name);
             } catch (MalformedURLException ignored) {
                 cs.sendMessage(ChatColor.RED + "An unthinkable error happened. Please let the developer know.");
                 return true;
             }
-            boolean isPremium = false;
+            boolean isPremium;
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(u.openStream()));
                 isPremium = br.readLine().equalsIgnoreCase("true");
