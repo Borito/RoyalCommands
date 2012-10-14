@@ -56,6 +56,8 @@ public class CmdWhois implements CommandExecutor {
             cs.sendMessage(ChatColor.BLUE + "First played:" + ChatColor.GRAY + RUtils.formatDateDiff(t.getFirstPlayed()));
             if (t.isOnline()) {
                 Player p = (Player) t;
+                cs.sendMessage(ChatColor.BLUE + "Gamemode: " + ChatColor.GRAY + p.getGameMode().name().toLowerCase());
+                cs.sendMessage(ChatColor.BLUE + "Can fly: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(p.getAllowFlight()));
                 cs.sendMessage(ChatColor.BLUE + "Health/Hunger/Saturation: " + ChatColor.GRAY + p.getHealth() / 2 + ChatColor.BLUE + "/" + ChatColor.GRAY + p.getFoodLevel() / 2 + ChatColor.BLUE + "/" + ChatColor.GRAY + p.getSaturation() / 2);
                 cs.sendMessage(ChatColor.BLUE + "Total Exp/Exp %/Level: " + ChatColor.GRAY + p.getTotalExperience() + ChatColor.BLUE + "/" + ChatColor.GRAY + df.format(p.getExp() * 100) + "%" + ChatColor.BLUE + "/" + ChatColor.GRAY + p.getLevel());
                 cs.sendMessage(ChatColor.BLUE + "Item in hand: " + ChatColor.GRAY + RUtils.getItemName(p.getItemInHand()));
