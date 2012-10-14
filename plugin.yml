@@ -681,6 +681,11 @@ commands:
     usage: /<command> [speed]
     aliases: [ws]
 
+  accountstatus:
+    description: Checks to see if a name is premium.
+    usage: /<command> [name]
+    aliases: [as, ispremium, iscracked]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1097,6 +1102,9 @@ permissions:
     default: op
   rcmds.walkspeed:
     description: Allows you to change your walking speed.
+    default: op
+  rcmds.accountstatus:
+    description: Allows you to check if a player name is premium.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1576,6 +1584,7 @@ permissions:
       rcmds.banlist: true
       rcmds.flyspeed: true
       rcmds.walkspeed: true
+      rcmds.accountstatus: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1836,6 +1845,7 @@ permissions:
       rcmds.banlist: true
       rcmds.flyspeed: true
       rcmds.walkspeed: true
+      rcmds.accountstatus: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
