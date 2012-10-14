@@ -34,9 +34,7 @@ public class CmdWarp implements CommandExecutor {
         ConfManager cm = new ConfManager("warps.yml");
         if (!cm.exists()) return null;
         warpSet = cm.getBoolean("warps." + name + ".set");
-        if (warpSet != null && !warpSet) {
-            return null;
-        }
+        if (warpSet != null && !warpSet) return null;
         warpX = cm.getDouble("warps." + name + ".x");
         warpY = cm.getDouble("warps." + name + ".y");
         warpZ = cm.getDouble("warps." + name + ".z");
