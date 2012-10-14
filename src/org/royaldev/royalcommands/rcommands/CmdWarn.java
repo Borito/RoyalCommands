@@ -46,14 +46,14 @@ public class CmdWarn implements CommandExecutor {
             }
             List<String> warns = pcm.getStringList("warns");
             if (warns == null) warns = new ArrayList<String>();
-            String reason = (args.length > 1) ? plugin.getFinalArg(args, 1) : plugin.defaultWarn;
+            String reason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : plugin.defaultWarn;
             reason = RUtils.colorize(reason);
             if (reason.contains("\u00b5")) {
                 cs.sendMessage(ChatColor.RED + "Reason cannot contain micro sign!");
                 return true;
             }
             warns.add(reason + "\u00b5" + new Date().getTime());
-            if (plugin.warnActions != null && plugin.warnActions.get(String.valueOf(warns.size())) != null) {
+            if (plugin.warnActions != null && plugin.warnActions.getKeys(true).contains(String.valueOf(warns.size())) && plugin.warnActions.get(String.valueOf(warns.size())) != null) {
                 String action = plugin.warnActions.getString(String.valueOf(warns.size())).substring(1).replace("{reason}", reason).replace("{player}", op.getName());
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), action);
             }
