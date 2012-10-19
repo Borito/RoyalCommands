@@ -85,7 +85,6 @@ public class WorldManager {
 
     public WorldManager() {
         if (!config.exists()) config.createFile();
-        Bukkit.getPluginManager().registerEvents(new WorldWatcher(), RoyalCommands.instance);
         if (config.getConfigurationSection("worlds") != null) {
             synchronized (configuredWorlds) {
                 for (String key : config.getConfigurationSection("worlds").getKeys(false)) {
@@ -93,9 +92,20 @@ public class WorldManager {
                 }
             }
         }
-        for (World w : Bukkit.getWorlds()) loadedWorlds.add(w.getName());
+        for (World w : Bukkit.getWorlds()) {
+            if (loadedWorlds.contains(w.getName())) continue;
+            loadedWorlds.add(w.getName());
+        }
         addNewToConfig();
         setupWorlds();
+        for (String s : loadedWorlds) {
+            if (!configuredWorlds.contains(s)) continue;
+            World w = Bukkit.getWorld(s);
+            if (w == null) continue;
+            boolean isStorming = config.getBoolean("worlds." + w.getName() + ".is_storming_if_weather_false", false);
+            w.setStorm(isStorming);
+        }
+        Bukkit.getPluginManager().registerEvents(new WorldWatcher(), RoyalCommands.instance);
     }
 
     public ConfManager getConfig() {
@@ -179,11 +189,11 @@ public class WorldManager {
      * @throws NullPointerException     If could not read the world container's files
      */
     public World loadWorld(String name) throws IllegalArgumentException, NullPointerException {
-        boolean contains = false;
-        File[] fs = Bukkit.getServer().getWorldContainer().listFiles();
-        if (fs == null) throw new NullPointerException("Could not read world files");
-        for (File f : fs) if (f.getName().equalsIgnoreCase(name)) contains = true;
-        if (!contains) throw new IllegalArgumentException("No such world!");
+        if (Bukkit.getServer().getWorldContainer() == null)
+            throw new NullPointerException("Could not read world files!");
+        File world = new File(Bukkit.getServer().getWorldContainer(), name);
+        if (!world.exists()) throw new IllegalArgumentException("No such world!");
+        if (!world.isDirectory()) throw new IllegalArgumentException("World is not a directory!");
         WorldCreator wc = new WorldCreator(name);
         String generator = config.getString("worlds." + name + ".generator", "DefaultGen");
         if (generator.equals("DefaultGen")) generator = null;
