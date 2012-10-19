@@ -26,6 +26,7 @@ public class CmdRcmds implements CommandExecutor {
 
             plugin.reloadConfig();
             plugin.reloadConfigVals();
+            RoyalCommands.wm.reloadConfig();
 
             cs.sendMessage(ChatColor.BLUE + "RoyalCommands " + ChatColor.GRAY + "v" + plugin.version + ChatColor.BLUE + " reloaded.");
             return true;
