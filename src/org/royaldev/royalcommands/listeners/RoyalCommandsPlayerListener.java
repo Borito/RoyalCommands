@@ -31,6 +31,7 @@ import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 import org.royaldev.royalcommands.rcommands.CmdBackpack;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
@@ -78,6 +79,29 @@ public class RoyalCommandsPlayerListener implements Listener {
         double seconds = plugin.gTeleCd;
         if (seconds <= 0) return;
         new PConfManager(p).setDouble((seconds * 1000) + new Date().getTime(), "teleport_cooldown");
+    }
+
+    @EventHandler
+    public void lastPosition(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        PConfManager pcm = new PConfManager(p);
+        Location l = p.getLocation();
+        String lastPos = "lastposition.";
+        pcm.setDouble(l.getX(), lastPos + "x");
+        pcm.setDouble(l.getY(), lastPos + "y");
+        pcm.setDouble(l.getZ(), lastPos + "z");
+        pcm.setFloat(l.getPitch(), lastPos + "pitch");
+        pcm.setFloat(l.getYaw(), lastPos + "yaw");
+        pcm.setString(l.getWorld().getName(), lastPos + "world");
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void saveData(PlayerQuitEvent e) {
+        PConfManager pcm = new PConfManager(e.getPlayer());
+        Object rm = pcm.getRealManager();
+        if (!(rm instanceof YMLPConfManager)) return;
+        YMLPConfManager ypcm = (YMLPConfManager) rm;
+        ypcm.forceSave();
     }
 
     @EventHandler
