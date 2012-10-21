@@ -23,13 +23,13 @@ public class CmdTrade implements CommandExecutor {
     }
 
     public static void sendTradeRequest(Player target, Player sender) {
-        tradedb.put(sender, target);
+        tradedb.put(sender.getName(), target.getName());
         target.sendMessage(ChatColor.GRAY + sender.getName() + ChatColor.BLUE + " has requested to trade with you.");
         target.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/trade " + sender.getName() + ChatColor.BLUE + " to accept.");
     }
 
-    public static HashMap<Player, Player> tradedb = new HashMap<Player, Player>();
-    public static HashMap<HashMap<Player, Player>, CraftInventory> trades = new HashMap<HashMap<Player, Player>, CraftInventory>();
+    public static HashMap<String, String> tradedb = new HashMap<String, String>();
+    public static HashMap<HashMap<String, String>, CraftInventory> trades = new HashMap<HashMap<String, String>, CraftInventory>();
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("trade")) {
@@ -56,25 +56,25 @@ public class CmdTrade implements CommandExecutor {
                 return true;
             }
             CraftInventory inv;
-            for (HashMap<Player, Player> set : trades.keySet()) {
-                if ((set.containsKey(t) && set.get(t).equals(p)) || (set.containsKey(p) && set.get(p).equals(t))) {
+            for (HashMap<String, String> set : trades.keySet()) {
+                if ((set.containsKey(t.getName()) && set.get(t.getName()).equals(p.getName())) || (set.containsKey(p.getName()) && set.get(p.getName()).equals(t.getName()))) {
                     inv = trades.get(set);
                     p.sendMessage(ChatColor.BLUE + "Resumed trading with " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     p.openInventory(inv);
                     return true;
                 }
             }
-            if (tradedb.containsKey(t)) {
+            if (tradedb.containsKey(t.getName())) {
                 EntityPlayer ep = ((CraftPlayer) p).getHandle();
                 inv = new CraftInventory(new PlayerInventory(ep));
                 inv.clear();
                 p.sendMessage(ChatColor.BLUE + "Opened trading interface.");
                 p.openInventory(inv);
                 t.openInventory(inv);
-                HashMap<Player, Player> trade = new HashMap<Player, Player>();
-                trade.put(p, t);
+                HashMap<String, String> trade = new HashMap<String, String>();
+                trade.put(p.getName(), t.getName());
                 trades.put(trade, inv);
-                tradedb.remove(t);
+                tradedb.remove(t.getName());
                 return true;
             } else {
                 sendTradeRequest(t, p);
