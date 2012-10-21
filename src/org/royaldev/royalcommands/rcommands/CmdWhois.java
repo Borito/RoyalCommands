@@ -2,7 +2,9 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -62,6 +64,17 @@ public class CmdWhois implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Total Exp/Exp %/Level: " + ChatColor.GRAY + p.getTotalExperience() + ChatColor.BLUE + "/" + ChatColor.GRAY + df.format(p.getExp() * 100) + "%" + ChatColor.BLUE + "/" + ChatColor.GRAY + p.getLevel());
                 cs.sendMessage(ChatColor.BLUE + "Item in hand: " + ChatColor.GRAY + RUtils.getItemName(p.getItemInHand()));
                 cs.sendMessage(ChatColor.BLUE + "Alive for:" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() - p.getTicksLived() * 50));
+                Location l = p.getLocation();
+                cs.sendMessage(ChatColor.BLUE + "Last position: " + "(" + ChatColor.GRAY + l.getX() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getY() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getZ() + ")");
+                cs.sendMessage(ChatColor.BLUE + "Last world: " + ChatColor.GRAY + RUtils.getMVWorldName(l.getWorld()) + ChatColor.BLUE + "(" + ChatColor.GRAY + l.getWorld().getName() + ChatColor.BLUE + ")");
+            } else {
+                String lP = "lastposition.";
+                World w = plugin.getServer().getWorld(pcm.getString(lP + "world"));
+                if (w != null) {
+                    Location l = new Location(w, pcm.getDouble(lP + "x"), pcm.getDouble(lP + "y"), pcm.getDouble(lP + "z"));
+                    cs.sendMessage(ChatColor.BLUE + "Last position: " + "(" + ChatColor.GRAY + l.getX() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getY() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getZ() + ")");
+                    cs.sendMessage(ChatColor.BLUE + "Last world: " + ChatColor.GRAY + RUtils.getMVWorldName(l.getWorld()) + ChatColor.BLUE + "(" + ChatColor.GRAY + l.getWorld().getName() + ChatColor.BLUE + ")");
+                }
             }
             cs.sendMessage(ChatColor.BLUE + "=====================");
             return true;
