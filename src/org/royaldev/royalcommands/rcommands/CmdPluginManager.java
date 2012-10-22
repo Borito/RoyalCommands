@@ -64,14 +64,14 @@ public class CmdPluginManager implements CommandExecutor {
         return currentVersion;
     }
 
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean onCommand(final CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("pluginmanager")) {
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
             String subcmd = args[0];
-            PluginManager pm = plugin.getServer().getPluginManager();
+            final PluginManager pm = plugin.getServer().getPluginManager();
             if (subcmd.equalsIgnoreCase("load")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.load")) {
                     RUtils.dispNoPerms(cs);
@@ -448,18 +448,24 @@ public class CmdPluginManager implements CommandExecutor {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
-                for (Plugin p : pm.getPlugins()) {
-                    String version = p.getDescription().getVersion();
-                    if (version == null) continue;
-                    String checked;
-                    try {
-                        checked = updateCheck(p.getName(), version);
-                    } catch (Exception e) {
-                        continue;
+                final Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Plugin p : pm.getPlugins()) {
+                            String version = p.getDescription().getVersion();
+                            if (version == null) continue;
+                            String checked;
+                            try {
+                                checked = updateCheck(p.getName(), version);
+                            } catch (Exception e) {
+                                continue;
+                            }
+                            if (checked.contains(version)) continue;
+                            cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.BLUE + " may have an update. C: " + ChatColor.GRAY + version + ChatColor.BLUE + " N: " + ChatColor.GRAY + checked);
+                        }
                     }
-                    if (checked.contains(version)) continue;
-                    cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.BLUE + " may have an update. C: " + ChatColor.GRAY + version + ChatColor.BLUE + " N: " + ChatColor.GRAY + checked);
-                }
+                };
+                plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, r);
                 cs.sendMessage(ChatColor.BLUE + "Finished checking for updates.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("updatecheck")) {
