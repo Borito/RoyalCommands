@@ -16,6 +16,7 @@ public class ItemNameManager {
 
     public ItemNameManager(Iterable<String[]> values) {
         for (String[] s : values) {
+            if (s.length < 1) continue;
             int id;
             int data;
             String[] aliases = s[2].split(",");
