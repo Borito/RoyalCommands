@@ -24,7 +24,9 @@ public class ItemNameManager {
             try {
                 aliases = s[2].split(",");
             } catch (IndexOutOfBoundsException e) {
-                Logger.getLogger("Minecraft").warning("[RoyalCommands] Values passed in ItemNameManager invalid: " + ArrayUtils.toString(values));
+                Logger l = Logger.getLogger("Minecraft");
+                l.warning("[RoyalCommands] Values passed in ItemNameManager invalid: ");
+                for (String ss : s) l.warning("[RoyalCommands] - " + ss);
                 continue;
             }
             try {
