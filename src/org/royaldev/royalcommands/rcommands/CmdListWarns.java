@@ -41,7 +41,7 @@ public class CmdListWarns implements CommandExecutor {
                 return true;
             }
             List<String> warns = pcm.getStringList("warns");
-            if (warns.isEmpty()) {
+            if (warns == null || warns.isEmpty()) {
                 cs.sendMessage(ChatColor.GRAY + target + ChatColor.BLUE + " has no warnings!");
                 return true;
             }

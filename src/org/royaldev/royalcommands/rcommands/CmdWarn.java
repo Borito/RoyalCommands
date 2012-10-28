@@ -54,8 +54,12 @@ public class CmdWarn implements CommandExecutor {
             }
             warns.add(reason + "\u00b5" + new Date().getTime());
             if (plugin.warnActions != null && plugin.warnActions.getKeys(true).contains(String.valueOf(warns.size())) && plugin.warnActions.get(String.valueOf(warns.size())) != null) {
-                String action = plugin.warnActions.getString(String.valueOf(warns.size())).substring(1).replace("{reason}", reason).replace("{player}", op.getName());
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), action);
+                try {
+                    String action = plugin.warnActions.getString(String.valueOf(warns.size())).substring(1).replace("{reason}", reason).replace("{player}", op.getName());
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), action);
+                } catch (StringIndexOutOfBoundsException ignored) {
+                    // catch OOBE, debug further later (no OOBE should happen here)
+                }
             }
             if (op.isOnline()) {
                 Player t = (Player) op;
