@@ -44,7 +44,7 @@ public class CmdSpeak implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You may not make that player speak.");
                 return true;
             }
-            victim.chat(plugin.getFinalArg(args, 1));
+            victim.chat(RoyalCommands.getFinalArg(args, 1));
             plugin.log.info(cs.getName() + " has spoofed a message from " + victim.getName() + "!");
             return true;
         }
