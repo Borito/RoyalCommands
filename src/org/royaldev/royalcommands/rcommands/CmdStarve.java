@@ -38,19 +38,19 @@ public class CmdStarve implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "The damage you entered is not within 1 and 20!");
                 return true;
             }
-            Player victim = plugin.getServer().getPlayer(args[0]);
-            if (plugin.isAuthorized(victim, "rcmds.exempt.starve")) {
+            Player t = plugin.getServer().getPlayer(args[0]);
+            if (!cs.getName().equalsIgnoreCase(t.getName()) && plugin.isAuthorized(t, "rcmds.exempt.starve")) {
                 cs.sendMessage(ChatColor.RED + "You may not starve that player.");
                 return true;
             }
-            if (victim == null || plugin.isVanished(victim, cs)) {
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
                 return true;
             }
-            int starveLevel = victim.getFoodLevel() - toStarve;
-            victim.setFoodLevel(starveLevel);
-            victim.sendMessage(ChatColor.RED + "You have just been starved by " + ChatColor.BLUE + cs.getName() + ChatColor.RED + "!");
-            cs.sendMessage(ChatColor.BLUE + "You just starved " + ChatColor.RED + victim.getName() + ChatColor.BLUE + "!");
+            int starveLevel = t.getFoodLevel() - toStarve;
+            t.setFoodLevel(starveLevel);
+            t.sendMessage(ChatColor.RED + "You have just been starved by " + ChatColor.BLUE + cs.getName() + ChatColor.RED + "!");
+            cs.sendMessage(ChatColor.BLUE + "You just starved " + ChatColor.RED + t.getName() + ChatColor.BLUE + "!");
             return true;
         }
         return false;

@@ -26,8 +26,8 @@ public class CmdHarm implements CommandExecutor {
             if (args.length < 2) {
                 return false;
             }
-            Player victim = plugin.getServer().getPlayer(args[0].trim());
-            if (victim == null || plugin.isVanished(victim, cs)) {
+            Player t = plugin.getServer().getPlayer(args[0].trim());
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That person is not online!");
                 return true;
             }
@@ -43,13 +43,13 @@ public class CmdHarm implements CommandExecutor {
                 return true;
             }
 
-            if (plugin.isAuthorized(victim, "rcmds.exempt.harm")) {
+            if (!cs.getName().equalsIgnoreCase(t.getName()) && plugin.isAuthorized(t, "rcmds.exempt.harm")) {
                 cs.sendMessage(ChatColor.RED + "You may not harm that player.");
                 return true;
             }
-            victim.damage(toDamage);
-            victim.sendMessage(ChatColor.RED + "You have just been damaged by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + "!");
-            cs.sendMessage(ChatColor.BLUE + "You just damaged " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + "!");
+            t.damage(toDamage);
+            t.sendMessage(ChatColor.RED + "You have just been damaged by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + "!");
+            cs.sendMessage(ChatColor.BLUE + "You just damaged " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + "!");
             return true;
         }
         return false;
