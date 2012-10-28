@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,8 +34,8 @@ public class CmdMobIgnore implements CommandExecutor {
                 Boolean isHidden = pcm.getBoolean("mobignored");
                 if (isHidden == null) isHidden = false;
                 pcm.setBoolean(!isHidden, "mobignored");
-                if (isHidden) cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore off.");
-                else cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore on.");
+                String status = BooleanUtils.toStringOnOff(isHidden);
+                cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore " + ChatColor.GRAY + status + ChatColor.BLUE + ".");
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
@@ -46,13 +47,9 @@ public class CmdMobIgnore implements CommandExecutor {
             Boolean isHidden = pcm.getBoolean("mobignored");
             if (isHidden == null) isHidden = false;
             pcm.setBoolean(!isHidden, "mobignored");
-            if (isHidden) {
-                cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore off for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-                t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " toggled mob ignore off for you.");
-            } else {
-                cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore on for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-                t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " toggled mob ignore on for you.");
-            }
+            String status = BooleanUtils.toStringOnOff(isHidden);
+            cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore " + ChatColor.GRAY + status + ChatColor.BLUE + " for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " toggled mob ignore " + ChatColor.GRAY + status + ChatColor.BLUE + " for you.");
             return true;
         }
         return false;
