@@ -40,12 +40,24 @@ public class MonitorListener implements Listener {
         plugin = instance;
     }
 
+    private Player getVP(Player p) {
+        String name = CmdMonitor.viewees.get(p.getName());
+        if (name == null) return null;
+        return plugin.getServer().getPlayer(name);
+    }
+
+    private Player getMP(Player p) {
+        String name = CmdMonitor.monitors.get(p.getName());
+        if (name == null) return null;
+        return plugin.getServer().getPlayer(name);
+    }
+
     public static List<String> openInvs = new ArrayList<String>();
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         if (!CmdMonitor.monitors.containsValue(e.getPlayer().getName())) return;
-        Player p = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        Player p = getVP(e.getPlayer());
         if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
         e.getPlayer().hidePlayer(p);
@@ -54,7 +66,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onChangeHold(PlayerItemHeldEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        Player t = getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
         t.setItemInHand(e.getPlayer().getInventory().getItem(e.getNewSlot()));
@@ -63,7 +75,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onBlockViewee(BlockPlaceEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        Player t = getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
         t.setItemInHand(e.getPlayer().getItemInHand());
@@ -72,7 +84,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onItemDropViewee(PlayerDropItemEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        Player t = getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
         t.setItemInHand(e.getPlayer().getItemInHand());
@@ -81,7 +93,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onItemPickupViewee(PlayerPickupItemEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        Player t = getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
         t.setItemInHand(e.getPlayer().getItemInHand());
@@ -92,7 +104,7 @@ public class MonitorListener implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(p.getName()));
+        Player t = getVP(p);
         if (t == null) return;
         if (p.getHealth() < 1) return;
         t.setHealth(p.getHealth());
@@ -103,7 +115,7 @@ public class MonitorListener implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(p.getName()));
+        Player t = getVP(p);
         if (t == null) return;
         if (p.getHealth() < 1) return;
         if (p.getHealth() < t.getHealth()) return;
@@ -115,7 +127,7 @@ public class MonitorListener implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(p.getName()));
+        Player t = getVP(p);
         if (t == null) return;
         if (p.getFoodLevel() < 1) return;
         t.setFoodLevel(p.getFoodLevel());
@@ -127,7 +139,7 @@ public class MonitorListener implements Listener {
         if (!(e.getPlayer() instanceof Player)) return;
         Player p = (Player) e.getPlayer();
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(p.getName()));
+        Player t = getVP(p);
         if (t == null) return;
         Inventory i = e.getInventory();
         if (i.getType().equals(InventoryType.WORKBENCH)) {
@@ -163,7 +175,8 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onInvCloseViewee(InventoryCloseEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        if (!(e.getPlayer() instanceof Player)) return;
+        Player t = getVP((Player) e.getPlayer());
         if (t == null) return;
         t.closeInventory();
         openInvs.remove(t.getName());
@@ -172,7 +185,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onTele(PlayerTeleportEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player p = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        Player p = getVP(e.getPlayer());
         if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
         e.getPlayer().hidePlayer(p);
@@ -203,7 +216,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void joinViewee(PlayerJoinEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = plugin.getServer().getPlayer(CmdMonitor.viewees.get(e.getPlayer().getName()));
+        Player t = getVP(e.getPlayer());
         if (t == null) return;
         t.hidePlayer(e.getPlayer());
     }
