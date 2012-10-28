@@ -1,14 +1,18 @@
 package org.royaldev.royalcommands;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.bukkit.Material;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ItemNameManager {
 
     // <Aliases, <ID, Data>>
     private final Map<String[], Map<Integer, Integer>> items = new HashMap<String[], Map<Integer, Integer>>();
+    private final List<Integer> ids = new ArrayList<Integer>();
 
     public ItemNameManager(Iterable<String[]> values) {
         for (String[] s : values) {
@@ -29,10 +33,19 @@ public class ItemNameManager {
             }
             Map<Integer, Integer> stuff = new HashMap<Integer, Integer>();
             stuff.put(id, data);
+            ids.add(id);
             synchronized (items) {
                 items.put(aliases, stuff);
             }
         }
+    }
+
+    public boolean aliasExists(int i) {
+        return ids.contains(i);
+    }
+
+    public boolean aliasExists(Material m) {
+        return ids.contains(m.getId());
     }
 
     public String getIDFromAlias(String alias) {
