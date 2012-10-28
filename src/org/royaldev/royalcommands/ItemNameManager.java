@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class ItemNameManager {
 
@@ -19,7 +20,13 @@ public class ItemNameManager {
             if (s.length < 1) continue;
             int id;
             int data;
-            String[] aliases = s[2].split(",");
+            String[] aliases;
+            try {
+                aliases = s[2].split(",");
+            } catch (IndexOutOfBoundsException e) {
+                Logger.getLogger("Minecraft").warning("[RoyalCommands] Values passed in ItemNameManager invalid: " + ArrayUtils.toString(values));
+                continue;
+            }
             try {
                 id = Integer.valueOf(s[0]);
             } catch (NumberFormatException e) {
