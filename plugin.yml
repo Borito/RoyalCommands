@@ -43,10 +43,6 @@ commands:
     usage: /<command> [player] [damage]
     aliases: [strv]
 
-  banned:
-    description: Returns if a player is banned.
-    usage: /<command> [player]
-
   setarmor:
     description: Sets your armor to a certain type.
     usage: /<command> [material]
@@ -237,11 +233,6 @@ commands:
     description: Toggles godmode on a player or the player himself.
     usage: /<command> (player)
     aliases: [tgm, godmode]
-
-  banreason:
-    description: Displays the reason why a user was banned.
-    usage: /<command> [player]
-    aliases: [br, banr, breason]
 
   setspawn:
     description: Sets the spawn of the world the player is standing in.
@@ -465,11 +456,6 @@ commands:
     usage: /<command> [player]
     aliases: [mount, eject]
 
-  whobanned:
-    description: Displays who banned the specified player.
-    usage: /<command> [player]
-    aliases: [whoban, wbanned, banwho, bannedwho, wban]
-
   tppos:
     description: Teleports you to a specific coordinate point.
     usage: /<command> [x] [y] [z] (world)
@@ -664,7 +650,7 @@ commands:
   baninfo:
     description: Get information about a ban.
     usage: /<command> [player]
-    aliases: [bi]
+    aliases: [bi, whobanned, whoban, wbanned, banwho, bannedwho, wban, banreason, br, banr, breason, banned]
 
   banlist:
     description: Lists all banned players.

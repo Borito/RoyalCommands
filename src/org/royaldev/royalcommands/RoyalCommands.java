@@ -663,7 +663,6 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdSlap(this), "slap", this);
         registerCommand(new CmdHarm(this), "harm", this);
         registerCommand(new CmdStarve(this), "starve", this);
-        registerCommand(new CmdBanned(this), "banned", this);
         registerCommand(new CmdSetarmor(this), "setarmor", this);
         registerCommand(new CmdGetIP(this), "getip", this);
         registerCommand(new CmdCompareIP(this), "compareip", this);
@@ -704,7 +703,6 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdHeal(this), "heal", this);
         registerCommand(new CmdFeed(this), "feed", this);
         registerCommand(new CmdGod(this), "god", this);
-        registerCommand(new CmdBanreason(this), "banreason", this);
         registerCommand(new CmdSetSpawn(this), "setspawn", this);
         registerCommand(new CmdSpawn(this), "spawn", this);
         registerCommand(new CmdBanIP(this), "banip", this);
@@ -751,7 +749,6 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdHug(this), "hug", this);
         registerCommand(new CmdExplode(this), "explode", this);
         registerCommand(new CmdRide(this), "ride", this);
-        registerCommand(new CmdWhoBanned(this), "whobanned", this);
         registerCommand(new CmdTppos(this), "tppos", this);
         registerCommand(new CmdIgnore(this), "ignore", this);
         registerCommand(new CmdHelp(this), "help", this);
