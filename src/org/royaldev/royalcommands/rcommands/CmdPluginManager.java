@@ -583,7 +583,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Please only specify jar files!");
                     return true;
                 }
-                if (toDelete.contains("/")) {
+                if (toDelete.contains(File.separator)) {
                     cs.sendMessage(ChatColor.RED + "Please don't try to leave the plugins directory!");
                     return true;
                 }
