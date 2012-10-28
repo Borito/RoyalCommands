@@ -63,17 +63,30 @@ public class CmdIngot2Block implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "Your hand is empty!");
                 return true;
             }
-            if (hand.getType() == Material.IRON_INGOT)
-                i2b(p, hand, Material.IRON_INGOT, Material.IRON_BLOCK);
-            else if (hand.getType() == Material.GOLD_INGOT)
-                i2b(p, hand, Material.GOLD_INGOT, Material.GOLD_BLOCK);
-            else if (hand.getType() == Material.DIAMOND)
-                i2b(p, hand, Material.DIAMOND, Material.DIAMOND_BLOCK);
-            else if (hand.getType() == Material.INK_SACK && hand.getDurability() == 4)
-                i2b(p, hand, Material.INK_SACK, Material.LAPIS_BLOCK, (short) 4);
-            else if (hand.getType() == Material.GOLD_NUGGET)
-                i2b(p, hand, Material.GOLD_NUGGET, Material.GOLD_INGOT);
-            else cs.sendMessage(ChatColor.RED + "That cannot be made into blocks!");
+            switch (hand.getType()) {
+                case IRON_INGOT:
+                    i2b(p, hand, Material.IRON_INGOT, Material.IRON_BLOCK);
+                    break;
+                case GOLD_INGOT:
+                    i2b(p, hand, Material.GOLD_INGOT, Material.GOLD_BLOCK);
+                    break;
+                case DIAMOND:
+                    i2b(p, hand, Material.DIAMOND, Material.DIAMOND_BLOCK);
+                    break;
+                case GOLD_NUGGET:
+                    i2b(p, hand, Material.GOLD_NUGGET, Material.GOLD_INGOT);
+                    break;
+                case EMERALD:
+                    i2b(p, hand, Material.EMERALD, Material.EMERALD_BLOCK);
+                    break;
+                case INK_SACK:
+                    if (hand.getDurability() == 4) {
+                        i2b(p, hand, Material.INK_SACK, Material.LAPIS_BLOCK, (short) 4);
+                        break;
+                    }
+                default:
+                    cs.sendMessage(ChatColor.RED + "That cannot be made into blocks!");
+            }
             return true;
         }
         return false;
