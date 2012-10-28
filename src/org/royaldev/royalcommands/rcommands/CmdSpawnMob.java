@@ -82,12 +82,20 @@ public class CmdSpawnMob implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Setting amount to " + ChatColor.GRAY + plugin.spawnmobLimit + ChatColor.RED + ".");
                     i = plugin.spawnmobLimit;
                 }
-                for (int a = 0; a < i; a++) p.getWorld().spawnEntity(l, c);
-                cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + i + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
+                try {
+                    for (int a = 0; a < i; a++) p.getWorld().spawnEntity(l, c);
+                    cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + i + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
+                } catch (Exception e) {
+                    cs.sendMessage(ChatColor.RED + "Uh-oh! This mob is not currently working with this command.");
+                }
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + "1" + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
-            p.getWorld().spawnEntity(l, c);
+            try {
+                cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + "1" + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
+                p.getWorld().spawnEntity(l, c);
+            } catch (Exception e) {
+                cs.sendMessage(ChatColor.RED + "Uh-oh! This mob is not currently working with this command.");
+            }
             return true;
         }
         return false;
