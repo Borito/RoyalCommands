@@ -463,10 +463,10 @@ public class CmdPluginManager implements CommandExecutor {
                             if (checked.contains(version)) continue;
                             cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.BLUE + " may have an update. C: " + ChatColor.GRAY + version + ChatColor.BLUE + " N: " + ChatColor.GRAY + checked);
                         }
+                        cs.sendMessage(ChatColor.BLUE + "Finished checking for updates.");
                     }
                 };
                 plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, r);
-                cs.sendMessage(ChatColor.BLUE + "Finished checking for updates.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("updatecheck")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.updatecheck")) {
