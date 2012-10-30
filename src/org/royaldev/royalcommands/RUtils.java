@@ -898,10 +898,15 @@ public class RUtils {
         repld = repld.replace("{name}", p.getName()).replace("{dispname}", p.getDisplayName()).replace("{world}", getMVWorldName(p.getWorld()));
         try {
             repld = repld.replace("{group}", RoyalCommands.permission.getPrimaryGroup(p));
+        } catch (Exception ignored) {
+        }
+        try {
             repld = repld.replace("{prefix}", RoyalCommands.chat.getPlayerPrefix(p));
+        } catch (Exception ignored) {
+        }
+        try {
             repld = repld.replace("{suffix}", RoyalCommands.chat.getPlayerSuffix(p));
         } catch (Exception e) {
-            // ignore
         }
         return repld;
     }
