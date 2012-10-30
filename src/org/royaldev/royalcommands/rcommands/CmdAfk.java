@@ -42,11 +42,11 @@ public class CmdAfk implements CommandExecutor {
             }
             if (!AFKUtils.isAfk(p)) {
                 AFKUtils.setAfk(p, new Date().getTime());
-                plugin.getServer().broadcastMessage(p.getName() + " is now AFK.");
+                plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.afkFormat, p)));
                 return true;
             }
             AFKUtils.unsetAfk(p);
-            plugin.getServer().broadcastMessage(p.getName() + " is no longer AFK.");
+            plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.returnFormat, p)));
             return true;
         }
         return false;

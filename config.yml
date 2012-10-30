@@ -118,6 +118,14 @@ simple_list: true
 # Only variables are {prefix}, {group}, and {suffix}
 who_group_format: "{prefix}{group}{suffix}"
 
+# The format of the message used in /afk and auto-AFK.
+# Variables allowed are {prefix}, {suffix}, {group}, {name}, {dispname}, {world}
+afk_format: "{dispname} is now AFK."
+
+# The format of the message used when returning from AFK.
+# Variables are the same as afk_format.
+return_format: "{dispname} is no longer AFK."
+
 ###
 # Message options #
 ###

@@ -196,6 +196,8 @@ public class RoyalCommands extends JavaPlugin {
     public String h2Path = null;
     public String h2User = null;
     public String h2Pass = null;
+    public String afkFormat = null;
+    public String returnFormat = null;
 
     //-- Integers --//
 
@@ -417,6 +419,8 @@ public class RoyalCommands extends JavaPlugin {
         h2Path = getConfig().getString("h2.path", "userdata");
         h2User = getConfig().getString("h2.user", "rcmds");
         h2Pass = getConfig().getString("h2.pass", "sdmcr");
+        afkFormat = getConfig().getString("afk_format", "{dispname} is now AFK.");
+        returnFormat = getConfig().getString("return_format", "{dispname} is no longer AFK.");
 
         defaultStack = getConfig().getInt("default_stack_size", 64);
         spawnmobLimit = getConfig().getInt("spawnmob_limit", 15);

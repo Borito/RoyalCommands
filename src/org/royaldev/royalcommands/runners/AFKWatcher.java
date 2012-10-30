@@ -33,7 +33,7 @@ public class AFKWatcher implements Runnable {
                 long lastMove = AFKUtils.getLastMove(p);
                 if ((lastMove + (afkAutoTime * 1000)) < currentTime) {
                     AFKUtils.setAfk(p, currentTime);
-                    plugin.getServer().broadcastMessage(p.getName() + " is now AFK.");
+                    plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.afkFormat, p)));
                     continue;
                 }
             }

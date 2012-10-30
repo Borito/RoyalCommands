@@ -892,4 +892,17 @@ public class RUtils {
         w = RoyalCommands.wm.getWorld(name);
         return w;
     }
+
+    public static String replaceVars(final String orig, final Player p) {
+        String repld = orig;
+        repld = repld.replace("{name}", p.getName()).replace("{dispname}", p.getDisplayName()).replace("{world}", getMVWorldName(p.getWorld()));
+        try {
+            repld = repld.replace("{group}", RoyalCommands.permission.getPrimaryGroup(p));
+            repld = repld.replace("{prefix}", RoyalCommands.chat.getPlayerPrefix(p));
+            repld = repld.replace("{suffix}", RoyalCommands.chat.getPlayerSuffix(p));
+        } catch (Exception e) {
+            // ignore
+        }
+        return repld;
+    }
 }
