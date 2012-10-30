@@ -271,7 +271,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         AFKUtils.setLastMove(p, new Date().getTime());
         if (AFKUtils.isAfk(p)) {
             AFKUtils.unsetAfk(p);
-            plugin.getServer().broadcastMessage(p.getName() + " is no longer AFK.");
+            plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.returnFormat, p)));
         }
         PConfManager pcm = new PConfManager(p);
         if (pcm.getBoolean("muted")) {
@@ -334,7 +334,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (event.isCancelled()) return;
         if (!AFKUtils.isAfk(event.getPlayer())) return;
         AFKUtils.unsetAfk(event.getPlayer());
-        plugin.getServer().broadcastMessage(event.getPlayer().getName() + " is no longer AFK.");
+        plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.returnFormat, event.getPlayer())));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
