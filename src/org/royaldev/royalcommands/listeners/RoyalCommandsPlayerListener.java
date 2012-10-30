@@ -428,6 +428,18 @@ public class RoyalCommandsPlayerListener implements Listener {
         CmdMotd.showMotd(e.getPlayer());
     }
 
+    @EventHandler
+    public void welcomeNewPlayers(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        if (plugin.useWelcome && !p.hasPlayedBefore()) {
+            String welcomemessage = plugin.welcomeMessage;
+            welcomemessage = welcomemessage.replace("{name}", p.getName());
+            welcomemessage = welcomemessage.replace("{dispname}", p.getDisplayName());
+            welcomemessage = welcomemessage.replace("{world}", p.getWorld().getName());
+            plugin.getServer().broadcastMessage(welcomemessage);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer() == null) return;
@@ -447,13 +459,6 @@ public class RoyalCommandsPlayerListener implements Listener {
                 pcm.setString("", "banreason");
                 pcm.setBoolean(true, "allow-tp");
                 log.info("[RoyalCommands] Userdata creation finished.");
-            }
-            if (plugin.useWelcome) {
-                String welcomemessage = plugin.welcomeMessage;
-                welcomemessage = welcomemessage.replace("{name}", event.getPlayer().getName());
-                welcomemessage = welcomemessage.replace("{dispname}", dispname);
-                welcomemessage = welcomemessage.replace("{world}", event.getPlayer().getWorld().getName());
-                plugin.getServer().broadcastMessage(welcomemessage);
             }
             if (plugin.stsNew)
                 RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
