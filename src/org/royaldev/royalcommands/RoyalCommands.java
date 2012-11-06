@@ -198,6 +198,12 @@ public class RoyalCommands extends JavaPlugin {
     public String h2Pass = null;
     public String afkFormat = null;
     public String returnFormat = null;
+    public String igKickFormat = null;
+    public String kickFormat = null;
+    public String igBanFormat = null;
+    public String banFormat = null;
+    public String igTempbanFormat = null;
+    public String tempbanFormat = null;
 
     //-- Integers --//
 
@@ -373,80 +379,87 @@ public class RoyalCommands extends JavaPlugin {
     //--- Reload configuration values ---//
 
     public void reloadConfigVals() {
-        showcommands = getConfig().getBoolean("view_commands", true);
-        disablegetip = getConfig().getBoolean("disable_getip", false);
-        useWelcome = getConfig().getBoolean("enable_welcome_message", true);
-        buildPerm = getConfig().getBoolean("use_build_perm", false);
-        backDeath = getConfig().getBoolean("back_on_death", true);
-        motdLogin = getConfig().getBoolean("motd_on_login", true);
-        dropExtras = getConfig().getBoolean("drop_extras", false);
-        kitPerms = getConfig().getBoolean("use_exclusive_kit_perms", false);
-        explodeFire = getConfig().getBoolean("explode_fire", false);
-        sendToSpawn = getConfig().getBoolean("send_to_spawn", false);
-        stsBack = getConfig().getBoolean("sts_back", false);
-        stsNew = getConfig().getBoolean("send_to_spawn_new", true);
-        otherHelp = getConfig().getBoolean("other_plugins_in_help", true);
-        customHelp = getConfig().getBoolean("use_custom_help", false);
-        useVNP = getConfig().getBoolean("use_vanish", true);
-        cooldownAliases = getConfig().getBoolean("cooldowns_match_aliases", true);
-        useWhitelist = getConfig().getBoolean("use_whitelist", false);
-        smoothTime = getConfig().getBoolean("use_smooth_time", true);
-        requireHelm = getConfig().getBoolean("helm_require_item", false);
-        safeTeleport = getConfig().getBoolean("safe_teleport", true);
-        checkVersion = getConfig().getBoolean("version_check", true);
-        simpleList = getConfig().getBoolean("simple_list", true);
-        multiverseNames = getConfig().getBoolean("multiverse_world_names", true);
-        backpackReset = getConfig().getBoolean("reset_backpack_death", false);
-        changeNameTag = getConfig().getBoolean("change_nametag", false);
-        dumpCreateChest = getConfig().getBoolean("dump_create_chest", true);
-        dumpUseInv = getConfig().getBoolean("dump_use_inv", true);
-        useH2 = getConfig().getBoolean("use_h2", false);
-        h2Convert = getConfig().getBoolean("h2.convert", false);
-        ymlConvert = getConfig().getBoolean("yml_convert", false);
-        wmShowEmptyWorlds = getConfig().getBoolean("worldmanager.who.show_empty_worlds", false);
-        timeBroadcast = getConfig().getBoolean("broadcast_time_changes", false);
+        FileConfiguration c = getConfig();
+        showcommands = c.getBoolean("view_commands", true);
+        disablegetip = c.getBoolean("disable_getip", false);
+        useWelcome = c.getBoolean("enable_welcome_message", true);
+        buildPerm = c.getBoolean("use_build_perm", false);
+        backDeath = c.getBoolean("back_on_death", true);
+        motdLogin = c.getBoolean("motd_on_login", true);
+        dropExtras = c.getBoolean("drop_extras", false);
+        kitPerms = c.getBoolean("use_exclusive_kit_perms", false);
+        explodeFire = c.getBoolean("explode_fire", false);
+        sendToSpawn = c.getBoolean("send_to_spawn", false);
+        stsBack = c.getBoolean("sts_back", false);
+        stsNew = c.getBoolean("send_to_spawn_new", true);
+        otherHelp = c.getBoolean("other_plugins_in_help", true);
+        customHelp = c.getBoolean("use_custom_help", false);
+        useVNP = c.getBoolean("use_vanish", true);
+        cooldownAliases = c.getBoolean("cooldowns_match_aliases", true);
+        useWhitelist = c.getBoolean("use_whitelist", false);
+        smoothTime = c.getBoolean("use_smooth_time", true);
+        requireHelm = c.getBoolean("helm_require_item", false);
+        safeTeleport = c.getBoolean("safe_teleport", true);
+        checkVersion = c.getBoolean("version_check", true);
+        simpleList = c.getBoolean("simple_list", true);
+        multiverseNames = c.getBoolean("multiverse_world_names", true);
+        backpackReset = c.getBoolean("reset_backpack_death", false);
+        changeNameTag = c.getBoolean("change_nametag", false);
+        dumpCreateChest = c.getBoolean("dump_create_chest", true);
+        dumpUseInv = c.getBoolean("dump_use_inv", true);
+        useH2 = c.getBoolean("use_h2", false);
+        h2Convert = c.getBoolean("h2.convert", false);
+        ymlConvert = c.getBoolean("yml_convert", false);
+        wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
+        timeBroadcast = c.getBoolean("broadcast_time_changes", false);
 
-        banMessage = RUtils.colorize(getConfig().getString("default_ban_message", "&4Banhammered!"));
-        noBuildMessage = RUtils.colorize(getConfig().getString("no_build_message", "&cYou don't have permission to build!"));
-        kickMessage = RUtils.colorize(getConfig().getString("default_kick_message", "Kicked from server."));
-        defaultWarn = RUtils.colorize(getConfig().getString("default_warn_message", "You have been warned."));
-        welcomeMessage = RUtils.colorize(getConfig().getString("welcome_message", "&5Welcome {name} to the server!"));
-        bcastFormat = RUtils.colorize(getConfig().getString("bcast_format", "&b[&aBroadcast&b]&a "));
-        whoFormat = getConfig().getString("who_format", "{prefix}{dispname}");
-        nickPrefix = RUtils.colorize(getConfig().getString("nick_prefix", "*"));
-        whoGroupFormat = getConfig().getString("who_group_format", "{prefix}{group}{suffix}");
-        whitelistFormat = RUtils.colorize(getConfig().getString("whitelist_format", "You are not whitelisted on this server!"));
-        h2Path = getConfig().getString("h2.path", "userdata");
-        h2User = getConfig().getString("h2.user", "rcmds");
-        h2Pass = getConfig().getString("h2.pass", "sdmcr");
-        afkFormat = getConfig().getString("afk_format", "{dispname} is now AFK.");
-        returnFormat = getConfig().getString("return_format", "{dispname} is no longer AFK.");
+        banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
+        noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
+        kickMessage = RUtils.colorize(c.getString("default_kick_message", "Kicked from server."));
+        defaultWarn = RUtils.colorize(c.getString("default_warn_message", "You have been warned."));
+        welcomeMessage = RUtils.colorize(c.getString("welcome_message", "&5Welcome {name} to the server!"));
+        bcastFormat = RUtils.colorize(c.getString("bcast_format", "&b[&aBroadcast&b]&a "));
+        whoFormat = c.getString("who_format", "{prefix}{dispname}");
+        nickPrefix = RUtils.colorize(c.getString("nick_prefix", "*"));
+        whoGroupFormat = c.getString("who_group_format", "{prefix}{group}{suffix}");
+        whitelistFormat = RUtils.colorize(c.getString("whitelist_format", "You are not whitelisted on this server!"));
+        h2Path = c.getString("h2.path", "userdata");
+        h2User = c.getString("h2.user", "rcmds");
+        h2Pass = c.getString("h2.pass", "sdmcr");
+        afkFormat = c.getString("afk_format", "{dispname} is now AFK.");
+        returnFormat = c.getString("return_format", "{dispname} is no longer AFK.");
+        igKickFormat = c.getString("ingame_kick_format", "&7{kdispname}&c was kicked by &7{dispname}&c for &7{reason}&c.");
+        kickFormat = c.getString("kick_format", "&4Kicked&r: {reason}&r\nBy {dispname}");
+        igBanFormat = c.getString("ingame_ban_format", "&7{kdispname}&c was banned by &7{dispname}&c for &7{reason}&c.");
+        banFormat = c.getString("ban_format", "&4Banned&r: {reason}&r\nBy {dispname}");
+        igTempbanFormat = c.getString("ingame_tempban_format", "&7{kdispname}&c was tempbanned by &7{dispname}&c for &7{length}&c for &7{reason}&c.");
+        tempbanFormat = c.getString("tempban_format", "&4Tempbanned&r: {length}&r\nFor {reason}&r by {dispname}");
 
-        defaultStack = getConfig().getInt("default_stack_size", 64);
-        spawnmobLimit = getConfig().getInt("spawnmob_limit", 15);
-        helpAmount = getConfig().getInt("help_lines", 5);
-        teleportWarmup = getConfig().getInt("teleport_warmup", 0);
+        defaultStack = c.getInt("default_stack_size", 64);
+        spawnmobLimit = c.getInt("spawnmob_limit", 15);
+        helpAmount = c.getInt("help_lines", 5);
+        teleportWarmup = c.getInt("teleport_warmup", 0);
 
-        maxNear = getConfig().getDouble("max_near_radius", 2000D);
-        defaultNear = getConfig().getDouble("default_near_radius", 50D);
-        gTeleCd = getConfig().getDouble("global_teleport_cooldown", 0D);
+        maxNear = c.getDouble("max_near_radius", 2000D);
+        defaultNear = c.getDouble("default_near_radius", 50D);
+        gTeleCd = c.getDouble("global_teleport_cooldown", 0D);
 
-        explodePower = (float) getConfig().getDouble("explode_power", 4F);
-        maxExplodePower = (float) getConfig().getDouble("max_explode_power", 10F);
+        explodePower = (float) c.getDouble("explode_power", 4F);
+        maxExplodePower = (float) c.getDouble("max_explode_power", 10F);
 
-        afkKickTime = getConfig().getLong("afk_kick_time", 120L);
-        afkAutoTime = getConfig().getLong("auto_afk_time", 300L);
-        warnExpireTime = getConfig().getLong("warns_expire_after", 604800L);
+        afkKickTime = c.getLong("afk_kick_time", 120L);
+        afkAutoTime = c.getLong("auto_afk_time", 300L);
+        warnExpireTime = c.getLong("warns_expire_after", 604800L);
 
-        muteCmds = getConfig().getStringList("mute_blocked_commands");
-        blockedItems = getConfig().getStringList("blocked_spawn_items");
-        motd = getConfig().getStringList("motd");
-        commandCooldowns = getConfig().getStringList("command_cooldowns");
-        disabledCommands = getConfig().getStringList("disabled_commands");
-        logBlacklist = getConfig().getStringList("command_log_blacklist");
+        muteCmds = c.getStringList("mute_blocked_commands");
+        blockedItems = c.getStringList("blocked_spawn_items");
+        motd = c.getStringList("motd");
+        commandCooldowns = c.getStringList("command_cooldowns");
+        disabledCommands = c.getStringList("disabled_commands");
+        logBlacklist = c.getStringList("command_log_blacklist");
 
-        homeLimits = getConfig().getConfigurationSection("home_limits");
-        warnActions = getConfig().getConfigurationSection("actions_on_warn");
+        homeLimits = c.getConfigurationSection("home_limits");
+        warnActions = c.getConfigurationSection("actions_on_warn");
 
         if (whl.exists()) whitelist = whl.getStringList("whitelist");
 

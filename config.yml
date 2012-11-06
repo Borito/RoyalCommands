@@ -132,6 +132,18 @@ return_format: "{dispname} is no longer AFK."
 # {dispname}  = Display name of person used /kick
 ingame_kick_format: "&7{kdispname}&c was kicked by &7{dispname}&c for &7{reason}&c."
 
+# The format to be shown when kicked.
+# \n is a newline
+kick_format: "&4Kicked&r: {reason}&r\nBy {dispname}"
+
+ingame_ban_format: "&7{kdispname}&c was banned by &7{dispname}&c for &7{reason}&c."
+
+ban_format: "&4Banned&r: {reason}&r\nBy {dispname}"
+
+ingame_tempban_format: "&7{kdispname}&c was tempbanned by &7{dispname}&c for &7{length}&c for &7{reason}&c."
+
+tempban_format: "&4Tempbanned&r: {length}&r\nFor {reason}&r by {dispname}"
+
 ###
 # Message options #
 ###

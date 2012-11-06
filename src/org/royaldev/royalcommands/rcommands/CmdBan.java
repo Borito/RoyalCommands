@@ -34,8 +34,8 @@ public class CmdBan implements CommandExecutor {
     public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
         reason = RUtils.colorize(reason);
         t.setBanned(true);
-        Bukkit.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + reason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
-        if (t.isOnline()) ((Player) t).kickPlayer(reason);
+        Bukkit.getServer().broadcast(RUtils.getInGameMessage(RoyalCommands.instance.igBanFormat, reason, t, cs), "rcmds.see.ban");
+        if (t.isOnline()) ((Player) t).kickPlayer(RUtils.getMessage(RoyalCommands.instance.banFormat, reason, cs));
     }
 
     @Override

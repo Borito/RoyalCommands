@@ -933,4 +933,60 @@ public class RUtils {
         }
         return repld;
     }
+
+    /**
+     * Gets the message shown to other players on the server when someone is disconnected (kicked).
+     *
+     * @param format Format of the message
+     * @param reason Reason for disconnect
+     * @param kicked Person disconnected
+     * @param kicker Person who caused disconnect
+     * @return Formatted string
+     */
+    public static String getInGameMessage(final String format, final String reason, final OfflinePlayer kicked, final CommandSender kicker) {
+        if (reason == null || kicked == null || kicker == null) return null;
+        String message = format;
+        message = colorize(message);
+        if (kicked.isOnline())
+            message = message.replace("{kdispname}", ((Player) kicked).getDisplayName());
+        else
+            message = message.replace("{kdispname}", kicked.getName());
+        message = message.replace("{kname}", kicked.getName());
+        message = message.replace("{name}", kicker.getName());
+        if (kicker instanceof Player)
+            message = message.replace("{dispname}", ((Player) kicker).getDisplayName());
+        else
+            message = message.replace("{dispname}", kicker.getName());
+        message = message.replace("{reason}", reason);
+        return message;
+    }
+
+    /**
+     * Gets the message shown to a player on disconnect.
+     *
+     * @param message Format of the message
+     * @param reason  Reason for disconnect.
+     * @param kicker  Person who caused disconnect.
+     * @return Formatted string
+     */
+    public static String getMessage(final String message, final String reason, final CommandSender kicker) {
+        String format = message;
+        format = colorize(format);
+        if (kicker instanceof Player)
+            format = format.replace("{dispname}", ((Player) kicker).getDisplayName());
+        else
+            format = format.replace("{dispname}", kicker.getName());
+        format = format.replace("{name}", kicker.getName());
+        format = format.replace("{reason}", reason);
+        return format;
+    }
+
+    public static String getMessage(final String message, final String reason, final String kicker) {
+        String format = message;
+        format = colorize(format);
+        format = format.replace("{dispname}", kicker);
+        format = format.replace("{name}", kicker);
+        format = format.replace("{reason}", reason);
+        return format;
+    }
 }

@@ -388,9 +388,20 @@ public class RoyalCommandsPlayerListener implements Listener {
             return;
         }
         // Get the banreason from the player's userdata file
-        String kickMessage = pcm.getString("banreason"); // Returns string or null
+        String reason = pcm.getString("banreason"); // Returns string or null
         // Check if there was none, and if there wasn't, set it to default ban message.
-        if (kickMessage == null) kickMessage = plugin.banMessage;
+        if (reason == null) reason = plugin.banMessage;
+        String kicker = pcm.getString("banner");
+        if (kicker == null) kicker = "Unknown";
+        String kickMessage;
+        if (pcm.get("bantime") != null) { // if tempban
+            kickMessage = RUtils.getMessage(plugin.tempbanFormat, reason, kicker);
+            long bannedAt = pcm.getLong("bannedat");
+            long banTime = pcm.getLong("bantime");
+            long timeLeft = banTime - bannedAt; // in ms
+            kickMessage = kickMessage.replace("{length}", RUtils.formatDateDiff(timeLeft + bannedAt).substring(1));
+        } else
+            kickMessage = RUtils.getMessage(plugin.banFormat, reason, kicker);
         // Set the kick message to the ban reason
         event.setKickMessage(kickMessage);
         // Disallow the event

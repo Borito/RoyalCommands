@@ -26,7 +26,7 @@ public class CmdTempban implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (args.length < 3) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
@@ -44,24 +44,28 @@ public class CmdTempban implements CommandExecutor {
             long time;
             try {
                 time = Long.valueOf(args[1]);
-            } catch (Exception e) {
-                cs.sendMessage(ChatColor.RED + "Invalid time!");
+            } catch (NumberFormatException e) {
+                cs.sendMessage(ChatColor.RED + "The amount of time specified was not a number!");
                 return true;
             }
-            if (time < 1) {
-                cs.sendMessage(ChatColor.RED + "Time must be greater than zero!");
+            if (time <= 0L) {
+                cs.sendMessage(ChatColor.RED + "The amount of time must be greater than zero seconds!");
                 return true;
             }
             long curTime = new Date().getTime();
-            String banreason = (args.length > 2) ? RoyalCommands.getFinalArg(args, 2) : RUtils.formatDateDiff(curTime + (time * 1000)).substring(1);
+            String banreason = RoyalCommands.getFinalArg(args, 2);
             t.setBanned(true);
-            pcm.setLong((time * 1000) + curTime, "bantime");
+            pcm.setLong((time * 1000L) + curTime, "bantime");
             pcm.setLong(curTime, "bannedat");
             pcm.setString(banreason, "banreason");
             pcm.setString(cs.getName(), "banner");
             cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + banreason + ChatColor.BLUE + ".");
-            plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been banned for " + ChatColor.GRAY + banreason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.ban");
-            if (t.isOnline()) ((Player) t).kickPlayer("Banned for " + banreason);
+            String igMessage = RUtils.getInGameMessage(plugin.igTempbanFormat, banreason, t, cs);
+            igMessage = igMessage.replace("{length}", RUtils.formatDateDiff((time * 1000L) + curTime).substring(1));
+            plugin.getServer().broadcast(igMessage, "rcmds.see.ban");
+            String message = RUtils.getMessage(plugin.tempbanFormat, banreason, cs);
+            message = message.replace("{length}", RUtils.formatDateDiff((time * 1000L) + curTime).substring(1));
+            if (t.isOnline()) ((Player) t).kickPlayer(message);
             return true;
         }
         return false;

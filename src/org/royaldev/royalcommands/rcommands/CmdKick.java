@@ -37,13 +37,13 @@ public class CmdKick implements CommandExecutor {
                 return true;
             }
             if (args.length == 1) {
-                plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been kicked for " + ChatColor.GRAY + plugin.kickMessage + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.kick");
-                t.kickPlayer(plugin.kickMessage);
+                plugin.getServer().broadcast(RUtils.getInGameMessage(plugin.igKickFormat, plugin.kickMessage, t, cs), "rcmds.see.kick");
+                t.kickPlayer(RUtils.getMessage(plugin.kickFormat, plugin.kickMessage, cs));
                 return true;
             } else if (args.length > 1) {
                 String kickMessage = RUtils.colorize(RoyalCommands.getFinalArg(args, 1));
-                plugin.getServer().broadcast(ChatColor.RED + "The player " + ChatColor.GRAY + t.getName() + ChatColor.RED + " has been kicked for " + ChatColor.GRAY + kickMessage + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".", "rcmds.see.kick");
-                t.kickPlayer(kickMessage);
+                plugin.getServer().broadcast(RUtils.getInGameMessage(plugin.igKickFormat, kickMessage, t, cs), "rcmds.see.kick");
+                t.kickPlayer(RUtils.getMessage(plugin.kickFormat, kickMessage, cs));
                 return true;
             }
         }
