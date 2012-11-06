@@ -126,6 +126,12 @@ afk_format: "{dispname} is now AFK."
 # Variables are the same as afk_format.
 return_format: "{dispname} is no longer AFK."
 
+# The format for ingame kick messages. Put a "k" in front of a variable name to specify
+# that it's for the person who was kicked.
+# {kdispname} = Display name of person who was kicked
+# {dispname}  = Display name of person used /kick
+ingame_kick_format: "&7{kdispname}&c was kicked by &7{dispname}&c for &7{reason}&c."
+
 ###
 # Message options #
 ###

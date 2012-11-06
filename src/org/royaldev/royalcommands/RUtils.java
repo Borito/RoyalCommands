@@ -16,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.royaldev.royalchat.RoyalChatAPI;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
@@ -893,6 +894,24 @@ public class RUtils {
         return w;
     }
 
+    public static String getRChatPrefix(final Player p) {
+        try {
+            Class.forName("org.royaldev.royalchat.RoyalChatAPI");
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+        return RoyalChatAPI.getPrefix(p);
+    }
+
+    public static String getRChatSuffix(final Player p) {
+        try {
+            Class.forName("org.royaldev.royalchat.RoyalChatAPI");
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+        return RoyalChatAPI.getSuffix(p);
+    }
+
     public static String replaceVars(final String orig, final Player p) {
         String repld = orig;
         repld = repld.replace("{name}", p.getName()).replace("{dispname}", p.getDisplayName()).replace("{world}", getMVWorldName(p.getWorld()));
@@ -903,10 +922,14 @@ public class RUtils {
         try {
             repld = repld.replace("{prefix}", RoyalCommands.chat.getPlayerPrefix(p));
         } catch (Exception ignored) {
+            String prefix = getRChatPrefix(p);
+            if (prefix != null) repld = repld.replace("{prefix}", prefix);
         }
         try {
             repld = repld.replace("{suffix}", RoyalCommands.chat.getPlayerSuffix(p));
-        } catch (Exception e) {
+        } catch (Exception ignored) {
+            String suffix = getRChatSuffix(p);
+            if (suffix != null) repld = repld.replace("{suffix}", suffix);
         }
         return repld;
     }
