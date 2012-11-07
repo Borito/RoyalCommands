@@ -204,6 +204,7 @@ public class RoyalCommands extends JavaPlugin {
     public String banFormat = null;
     public String igTempbanFormat = null;
     public String tempbanFormat = null;
+    public String igUnbanFormat = null;
 
     //-- Integers --//
 
@@ -434,6 +435,7 @@ public class RoyalCommands extends JavaPlugin {
         banFormat = c.getString("ban_format", "&4Banned&r: {reason}&r\nBy {dispname}");
         igTempbanFormat = c.getString("ingame_tempban_format", "&7{kdispname}&c was tempbanned by &7{dispname}&c for &7{length}&c for &7{reason}&c.");
         tempbanFormat = c.getString("tempban_format", "&4Tempbanned&r: {length}&r\nFor {reason}&r by {dispname}");
+        igUnbanFormat = c.getString("ingame_unban_message", "&7{kdispname}&9 was unbanned by &7{dispname}&9.");
 
         defaultStack = c.getInt("default_stack_size", 64);
         spawnmobLimit = c.getInt("spawnmob_limit", 15);

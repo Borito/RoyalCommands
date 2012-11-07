@@ -144,6 +144,8 @@ ingame_tempban_format: "&7{kdispname}&c was tempbanned by &7{dispname}&c for &7{
 
 tempban_format: "&4Tempbanned&r: {length}&r\nFor {reason}&r by {dispname}"
 
+ingame_unban_format: "&7{kdispname}&9 was unbanned by &7{dispname}&9."
+
 ###
 # Message options #
 ###

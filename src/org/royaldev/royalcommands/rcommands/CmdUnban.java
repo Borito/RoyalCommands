@@ -37,7 +37,8 @@ public class CmdUnban implements CommandExecutor {
             t.setBanned(false);
             if (pcm.exists()) pcm.set(null, "bantime");
             cs.sendMessage(ChatColor.BLUE + "You have unbanned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            plugin.getServer().broadcast(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has unbanned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".", "rcmds.see.unban");
+            String message = RUtils.getInGameMessage(plugin.igUnbanFormat, "", t, cs); // "" because there is no reason for unbans
+            plugin.getServer().broadcast(message, "rcmds.see.unban");
             return true;
         }
         return false;
