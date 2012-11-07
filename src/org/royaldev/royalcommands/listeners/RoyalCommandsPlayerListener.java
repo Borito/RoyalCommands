@@ -398,6 +398,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (pcm.get("bantime") != null && !RUtils.isTimeStampValid(p, "bantime")) {
             // Set them unbanned
             p.setBanned(false);
+            // Allow the event
+            event.allow();
             // Stop the method
             return;
         }
