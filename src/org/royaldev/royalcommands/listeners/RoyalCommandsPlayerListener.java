@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -79,6 +80,19 @@ public class RoyalCommandsPlayerListener implements Listener {
         double seconds = plugin.gTeleCd;
         if (seconds <= 0) return;
         new PConfManager(p).setDouble((seconds * 1000) + new Date().getTime(), "teleport_cooldown");
+    }
+
+    @EventHandler
+    public void worldPerms(PlayerTeleportEvent e) {
+        if (e.isCancelled()) return;
+        if (!plugin.worldAccessPerm) return;
+        World from = e.getFrom().getWorld();
+        World to = e.getTo().getWorld();
+        if (!from.equals(to)) return;
+        Player p = e.getPlayer();
+        if (plugin.isAuthorized(p, "rcmds.worldaccess." + to.getName())) return;
+        e.setTo(e.getFrom());
+        p.sendMessage(ChatColor.RED + "You do not have permission to access the world \"" + RUtils.getMVWorldName(to) + ".\"");
     }
 
     @EventHandler

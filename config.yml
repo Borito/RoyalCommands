@@ -250,6 +250,9 @@ safe_teleport: true
 # 0 to disable
 teleport_warmup: 0
 
+# Require rcmds.worldaccess.worldname to access a world?
+enable_worldaccess_perm: false
+
 ###
 # Command cooldowns #
 ###

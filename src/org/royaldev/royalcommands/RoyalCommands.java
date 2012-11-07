@@ -177,6 +177,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean ymlConvert = null;
     public Boolean wmShowEmptyWorlds = null;
     public Boolean timeBroadcast = null;
+    public Boolean worldAccessPerm = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
@@ -413,6 +414,7 @@ public class RoyalCommands extends JavaPlugin {
         ymlConvert = c.getBoolean("yml_convert", false);
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         timeBroadcast = c.getBoolean("broadcast_time_changes", false);
+        worldAccessPerm = c.getBoolean("enable_worldaccess_perm", false);
 
         banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
