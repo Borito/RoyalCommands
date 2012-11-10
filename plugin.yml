@@ -672,6 +672,11 @@ commands:
     usage: /<command> [name]
     aliases: [accs, ispremium, iscracked]
 
+  playersearch:
+    description: Searches for a player.
+    usage: /<command> [search query]
+    aliases: [ps]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1091,6 +1096,9 @@ permissions:
     default: op
   rcmds.accountstatus:
     description: Allows you to check if a player name is premium.
+    default: op
+  rcmds.playersearch:
+    description: Allows you to search for a player.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1571,6 +1579,7 @@ permissions:
       rcmds.flyspeed: true
       rcmds.walkspeed: true
       rcmds.accountstatus: true
+      rcmds.playersearch: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1832,6 +1841,7 @@ permissions:
       rcmds.flyspeed: true
       rcmds.walkspeed: true
       rcmds.accountstatus: true
+      rcmds.playersearch: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
