@@ -330,6 +330,14 @@ public class RoyalCommands extends JavaPlugin {
         return (economy != null);
     }
 
+    /**
+     * Registers a command in the server. If the command isn't defined in plugin.yml
+     * the NPE is caught, and a warning line is sent to the console.
+     *
+     * @param ce      CommandExecutor to be registered
+     * @param command Command name as specified in plugin.yml
+     * @param jp      Plugin to register under
+     */
     private void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
         if (RoyalCommands.disabledCommands.contains(command.toLowerCase())) return;
         try {

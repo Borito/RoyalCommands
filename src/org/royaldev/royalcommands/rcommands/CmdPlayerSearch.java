@@ -34,7 +34,7 @@ public class CmdPlayerSearch implements CommandExecutor {
                 public void run() {
                     int found = 0;
                     for (OfflinePlayer op : ops) {
-                        if (!op.getName().contains(search)) continue;
+                        if (!op.getName().toLowerCase().contains(search.toLowerCase())) continue;
                         PConfManager pcm = new PConfManager(op);
                         if (!pcm.exists()) continue;
                         Long seen = pcm.getLong("seen");
