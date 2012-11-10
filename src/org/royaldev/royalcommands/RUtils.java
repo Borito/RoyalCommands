@@ -989,4 +989,12 @@ public class RUtils {
         format = format.replace("{reason}", reason);
         return format;
     }
+
+    public static boolean isIPBanned(Player p) {
+        return Bukkit.getIPBans().contains(p.getAddress().getAddress().toString().replace("/", ""));
+    }
+
+    public static boolean isIPBanned(String ip) {
+        return Bukkit.getIPBans().contains(ip);
+    }
 }

@@ -384,10 +384,20 @@ public class RoyalCommandsPlayerListener implements Listener {
             event.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH) // run after others
+    public void ipBans(PlayerLoginEvent e) {
+        String ip = e.getAddress().toString().replace("/", "");
+        if (!RUtils.isIPBanned(ip)) return;
+        String message = plugin.ipBanFormat;
+        message = message.replace("{ip}", ip);
+        e.disallow(Result.KICK_BANNED, message);
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerLogin(PlayerLoginEvent event) {
         // Define the player
         Player p = event.getPlayer();
+        if (RUtils.isIPBanned(p)) return;
         // If player is null, stop
         if (p == null) return;
         // Create new config manager for player

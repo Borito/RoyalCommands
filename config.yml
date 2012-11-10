@@ -146,6 +146,9 @@ tempban_format: "&4Tempbanned&r: {length}&r\nFor {reason}&r by {dispname}"
 
 ingame_unban_format: "&7{kdispname}&9 was unbanned by &7{dispname}&9."
 
+# Note that no banner is known for this type of ban. You cannot use {(disp)name} here.
+ipban_format: "&4IP Banned&r: &7{ip}&r has been banned from this server."
+
 ###
 # Message options #
 ###
