@@ -331,8 +331,12 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
-        if (RoyalCommands.disabledCommands.contains(command)) return;
-        jp.getCommand(command).setExecutor(ce);
+        if (RoyalCommands.disabledCommands.contains(command.toLowerCase())) return;
+        try {
+            jp.getCommand(command).setExecutor(ce);
+        } catch (NullPointerException e) {
+            getLogger().warning("Could not register command \"" + command + "\" - not registered in plugin.yml (" + e.getMessage() + ")");
+        }
     }
 
     private void createDefault(File f, String def) {
