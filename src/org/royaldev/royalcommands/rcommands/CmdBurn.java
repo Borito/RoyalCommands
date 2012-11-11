@@ -27,8 +27,7 @@ public class CmdBurn implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            String pname = args[0];
-            Player t = plugin.getServer().getPlayer(pname.trim());
+            Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
@@ -37,27 +36,15 @@ public class CmdBurn implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You cannot burn that player!");
                 return true;
             }
-            if (args.length == 1) {
-                cs.sendMessage(ChatColor.BLUE + "You have set " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " on fire for " + ChatColor.GRAY + "5" + ChatColor.BLUE + " seconds.");
-                t.setFireTicks(100);
+            int len = 5;
+            if (args.length > 1) len = RUtils.timeFormatToSeconds(args[1]);
+            if (len <= 0) {
+                cs.sendMessage(ChatColor.RED + "Invalid time format.");
                 return true;
             }
-            if (args.length == 2) {
-                Integer len;
-                try {
-                    len = Integer.parseInt(args[1].trim());
-                } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "Invalid number!");
-                    return true;
-                }
-                if (len == null || len < 1) {
-                    cs.sendMessage(ChatColor.RED + "Invalid number!");
-                    return true;
-                }
-                cs.sendMessage(ChatColor.BLUE + "You have set " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " on fire for " + ChatColor.GRAY + len + ChatColor.BLUE + " seconds.");
-                t.setFireTicks(len * 20);
-                return true;
-            }
+            cs.sendMessage(ChatColor.BLUE + "You have set " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " on fire for " + ChatColor.GRAY + RUtils.formatDateDiff((len * 1000) + System.currentTimeMillis()).substring(1) + ChatColor.BLUE + ".");
+            t.setFireTicks(len * 20);
+            return true;
         }
         return false;
     }
