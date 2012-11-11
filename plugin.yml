@@ -145,7 +145,7 @@ commands:
 
   mute:
     description: Stop a user from speaking.
-    usage: /<command> [player] (seconds)
+    usage: /<command> [player] (time)
     aliases: [silence]
 
   kick:
@@ -326,7 +326,7 @@ commands:
 
   burn:
     description: Sets a player on fire for a set amount of time.
-    usage: /<command> [player] (seconds)
+    usage: /<command> [player] (time)
     aliases: [ignite, enflame]
 
   kickall:
