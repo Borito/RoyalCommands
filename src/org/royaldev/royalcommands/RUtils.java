@@ -1037,7 +1037,7 @@ public class RUtils {
                 nums += c;
                 continue;
             }
-            if (nums.isEmpty()) continue;
+            if (nums.isEmpty()) return -1; // this will happen if someone enters 5dd3h, etc. (invalid format)
             switch (c) {
                 case 'd':
                     num = Integer.valueOf(nums);
