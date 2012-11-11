@@ -92,17 +92,14 @@ public class CmdWeather implements CommandExecutor {
             }
             if (args.length == 1) {
                 Player p = (Player) cs;
-                changeWeather(p, args[0].trim());
+                changeWeather(p, args[0]);
                 return true;
-            } else if (args.length == 2) {
+            } else if (args.length > 1) {
                 Player p = (Player) cs;
-                String conds = args[0].trim();
-                String slength = args[1].trim();
-                int length;
-                try {
-                    length = Integer.parseInt(slength);
-                } catch (Exception e) {
-                    p.sendMessage(ChatColor.RED + "The time specified was invalid!");
+                String conds = args[0];
+                int length = RUtils.timeFormatToSeconds(args[1]);
+                if (length <= 0) {
+                    cs.sendMessage(ChatColor.RED + "Invalid time specified.");
                     return true;
                 }
                 changeWeather(p, conds, length);

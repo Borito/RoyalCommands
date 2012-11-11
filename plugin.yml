@@ -111,7 +111,7 @@ commands:
 
   weather:
     description: Changes the weather.
-    usage: /<command> [conditions] (seconds)
+    usage: /<command> [conditions] (time)
 
   fixchunk:
     description: Fixes a voided chunk (world holes) by reloading it.
