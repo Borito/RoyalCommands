@@ -38,10 +38,10 @@ public class CmdPlayerSearch implements CommandExecutor {
                         PConfManager pcm = new PConfManager(op);
                         if (!pcm.exists()) continue;
                         Long seen = pcm.getLong("seen");
-                        if (seen == null) continue;
+                        if (seen == null || seen < 1L) continue;
                         found++;
-                        String lastseen = RUtils.formatDateDiff(seen);
-                        cs.sendMessage(ChatColor.BLUE + String.valueOf(found) + ". " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + " - Last seen" + ChatColor.GRAY + lastseen);
+                        String lastseen = (op.isOnline()) ? " now" : RUtils.formatDateDiff(seen);
+                        cs.sendMessage(ChatColor.BLUE + String.valueOf(found) + ". " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + " - Last seen" + ChatColor.GRAY + lastseen + ChatColor.BLUE + " ago.");
                     }
                     cs.sendMessage(ChatColor.BLUE + "Search completed. " + ChatColor.GRAY + found + ChatColor.BLUE + " results found.");
                 }

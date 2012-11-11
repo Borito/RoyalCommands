@@ -43,6 +43,10 @@ public class CmdSeen implements CommandExecutor {
                 return true;
             }
             long seen = pcm.getLong("seen");
+            if (seen < 1L) {
+                cs.sendMessage(ChatColor.RED + "I don't know when that player was last seen!");
+                return true;
+            }
             String lastseen = RUtils.formatDateDiff(seen);
             cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " was last seen" + ChatColor.GRAY + lastseen + ChatColor.BLUE + " ago.");
             return true;

@@ -675,7 +675,7 @@ commands:
   playersearch:
     description: Searches for a player.
     usage: /<command> [search query]
-    aliases: [ps]
+    aliases: [ps, psearch]
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
