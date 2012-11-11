@@ -41,15 +41,9 @@ public class CmdTempban implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You cannot ban that player!");
                 return true;
             }
-            long time;
-            try {
-                time = Long.valueOf(args[1]);
-            } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED + "The amount of time specified was not a number!");
-                return true;
-            }
+            long time = (long) RUtils.timeFormatToSeconds(args[1]);
             if (time <= 0L) {
-                cs.sendMessage(ChatColor.RED + "The amount of time must be greater than zero seconds!");
+                cs.sendMessage(ChatColor.RED + "Invalid amount of time specified!");
                 return true;
             }
             long curTime = new Date().getTime();

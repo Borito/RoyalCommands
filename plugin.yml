@@ -502,7 +502,7 @@ commands:
 
   tempban:
     description: Temporarily bans a player.
-    usage: /<command> [player] [seconds] [reason]
+    usage: /<command> [player] [time] [reason]
     aliases: [tban, temporarilyban]
 
   tptoggle:

@@ -997,4 +997,72 @@ public class RUtils {
     public static boolean isIPBanned(String ip) {
         return Bukkit.getIPBans().contains(ip);
     }
+
+    private static boolean isInt(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean isInt(char c) {
+        try {
+            Integer.parseInt(String.valueOf(c));
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns the amount of seconds from a string like "5d4h3m2s"
+     *
+     * @param format String like "4d3h2m1s"
+     * @return -1 if no numbers or incorrect format, the number provided if no letters, and the seconds if correct format
+     */
+    public static int timeFormatToSeconds(String format) {
+        format = format.toLowerCase();
+        if (!format.contains("d") && !format.contains("h") && !format.contains("m") && !format.contains("s")) {
+            if (isInt(format)) return Integer.valueOf(format);
+            return -1;
+        }
+        String nums = "";
+        int num;
+        int seconds = 0;
+        for (int i = 0; i < format.length(); i++) {
+            char c = format.charAt(i);
+            if (isInt(c)) {
+                nums += c;
+                continue;
+            }
+            if (nums.isEmpty()) continue;
+            switch (c) {
+                case 'd':
+                    num = Integer.valueOf(nums);
+                    seconds += num * 86400;
+                    nums = "";
+                    break;
+                case 'h':
+                    num = Integer.valueOf(nums);
+                    seconds += num * 3600;
+                    nums = "";
+                    break;
+                case 'm':
+                    num = Integer.valueOf(nums);
+                    seconds += num * 60;
+                    nums = "";
+                    break;
+                case 's':
+                    num = Integer.valueOf(nums);
+                    seconds += num;
+                    nums = "";
+                    break;
+                default:
+                    return -1;
+            }
+        }
+        return seconds;
+    }
 }
