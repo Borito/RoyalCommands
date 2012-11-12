@@ -1017,14 +1017,14 @@ public class RUtils {
     }
 
     /**
-     * Returns the amount of seconds from a string like "5d4h3m2s"
+     * Returns the amount of seconds from a string like "6y5d4h3m2s"
      *
-     * @param format String like "4d3h2m1s"
+     * @param format String like "5y4d3h2m1s"
      * @return -1 if no numbers or incorrect format, the number provided if no letters, and the seconds if correct format
      */
     public static int timeFormatToSeconds(String format) {
         format = format.toLowerCase();
-        if (!format.contains("d") && !format.contains("h") && !format.contains("m") && !format.contains("s")) {
+        if (!format.contains("y") && !format.contains("d") && !format.contains("h") && !format.contains("m") && !format.contains("s")) {
             if (isInt(format)) return Integer.valueOf(format);
             return -1;
         }
@@ -1039,6 +1039,11 @@ public class RUtils {
             }
             if (nums.isEmpty()) return -1; // this will happen if someone enters 5dd3h, etc. (invalid format)
             switch (c) {
+                case 'y':
+                    num = Integer.valueOf(nums);
+                    seconds += num * 31556926;
+                    nums = "";
+                    break;
                 case 'd':
                     num = Integer.valueOf(nums);
                     seconds += num * 86400;
