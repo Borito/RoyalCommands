@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
 import net.minecraft.server.NBTTagString;
 import org.bukkit.ChatColor;
@@ -43,10 +44,18 @@ public class CmdLore implements CommandExecutor {
                 return true;
             }
             net.minecraft.server.ItemStack nmsis = ((CraftItemStack) is).getHandle();
-            NBTTagList nbttl = new NBTTagList("Lore");
+            NBTTagCompound tag = nmsis.tag.getCompound("display");
+            NBTTagList nbttl = (tag.getList("Lore") == null) ? new NBTTagList("Lore") : tag.getList("Lore");
+            if (loreText.equalsIgnoreCase("clear")) {
+                tag.set("Lore", new NBTTagList("Lore"));
+                nmsis.tag.set("display", tag);
+                cs.sendMessage(ChatColor.BLUE + "Reset the lore on your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + ".");
+                return true;
+            }
             String[] lores = loreText.split("\\n");
             for (String l : lores) nbttl.add(new NBTTagString("", RUtils.colorize(l)));
-            nmsis.tag.set("Lore", nbttl);
+            tag.set("Lore", nbttl);
+            nmsis.tag.set("display", tag);
             cs.sendMessage(ChatColor.BLUE + "Set the lore on your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + ".");
             return true;
         }
