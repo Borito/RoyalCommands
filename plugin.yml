@@ -686,6 +686,11 @@ commands:
     description: Renames an item.
     usage: /<command> [name]
 
+  lore:
+    description: Sets lore on an item.
+    usage: /<command> [name]
+    aliases: [setlore]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1114,6 +1119,9 @@ permissions:
     default: op
   rcmds.rename:
     description: Allows you to rename an item.
+    default: op
+  rcmds.lore:
+    description: Allows you to set lore on an item.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1601,6 +1609,7 @@ permissions:
       rcmds.playersearch: true
       rcmds.deafen: true
       rcmds.rename: true
+      rcmds.lore: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1866,6 +1875,7 @@ permissions:
       rcmds.playersearch: true
       rcmds.deafen: true
       rcmds.rename: true
+      rcmds.lore: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

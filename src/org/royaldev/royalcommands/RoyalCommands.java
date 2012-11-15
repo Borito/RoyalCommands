@@ -832,6 +832,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdPlayerSearch(this), "playersearch", this);
         registerCommand(new CmdDeafen(this), "deafen", this);
         registerCommand(new CmdRename(this), "rename", this);
+        registerCommand(new CmdLore(this), "lore", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Config converter (YML -> H2) --//
