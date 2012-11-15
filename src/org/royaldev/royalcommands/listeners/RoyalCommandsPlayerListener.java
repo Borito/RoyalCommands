@@ -83,6 +83,18 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler
+    public void deafenMessages(AsyncPlayerChatEvent e) {
+        if (e.isCancelled()) return;
+        for (Player t : e.getRecipients()) {
+            PConfManager pcm = new PConfManager(t);
+            Boolean isDeaf = pcm.getBoolean("deaf");
+            if (isDeaf == null || !isDeaf) continue;
+            if (e.getPlayer().getName().equals(t.getName())) continue; // don't remove own messages
+            e.getRecipients().remove(t); // remove deaf player from recipients set
+        }
+    }
+
+    @EventHandler
     public void worldPerms(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
         if (!plugin.worldAccessPerm) return;

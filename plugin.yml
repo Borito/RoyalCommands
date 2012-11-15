@@ -677,6 +677,15 @@ commands:
     usage: /<command> [search query]
     aliases: [ps, psearch]
 
+  deafen:
+    description: Toggles whether a player can see messages.
+    usage: /<command> (player)
+    aliases: [deaf, ignoreall]
+
+  rename:
+    description: Renames an item.
+    usage: /<command> [name]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1100,6 +1109,12 @@ permissions:
   rcmds.playersearch:
     description: Allows you to search for a player.
     default: op
+  rcmds.deafen:
+    description: Allows you to deafen a player.
+    default: op
+  rcmds.rename:
+    description: Allows you to rename an item.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1264,8 +1279,8 @@ permissions:
   rcmds.exempt.backpack:
     description: Makes the player immune to /backpack.
     default: false
-  rcmds.exempt.teleportwarmup:
-    description: Makes the player exempt to teleport warmups.
+  rcmds.exempt.deafen:
+    description: Makes the player immune to /deafen.
     default: false
 
   rcmds.exempt.autoafk:
@@ -1283,6 +1298,10 @@ permissions:
     default: false
   rcmds.exempt.cooldown.teleports:
     description: Makes the player exempt to teleport cooldowns.
+    default: false
+
+  rcmds.exempt.teleportwarmup:
+    description: Makes the player exempt to teleport warmups.
     default: false
 
   rcmds.exempt.limit.spawnmob:
@@ -1580,6 +1599,8 @@ permissions:
       rcmds.walkspeed: true
       rcmds.accountstatus: true
       rcmds.playersearch: true
+      rcmds.deafen: true
+      rcmds.rename: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1687,6 +1708,7 @@ permissions:
       rcmds.exempt.monitor: true
       rcmds.exempt.backpack: true
       rcmds.exempt.teleportwarmup: true
+      rcmds.exempt.deafen: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -1842,6 +1864,8 @@ permissions:
       rcmds.walkspeed: true
       rcmds.accountstatus: true
       rcmds.playersearch: true
+      rcmds.deafen: true
+      rcmds.rename: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
