@@ -283,13 +283,21 @@ public class RUtils {
      *
      * @param p     OfflinePlayer to check for
      * @param title Path of timestamp to check
-     * @return true if the timestamp has not been passed, false if otherwie
+     * @return true if the timestamp has not been passed, false if otherwise
      */
     public static boolean isTimeStampValid(OfflinePlayer p, String title) {
         PConfManager pcm = new PConfManager(p);
         if (pcm.get(title) == null) return false;
         long time = new Date().getTime();
         long overall = pcm.getLong(title);
+        return time < overall;
+    }
+
+    public static boolean isTimeStampValidAddTime(OfflinePlayer p, String title) {
+        PConfManager pcm = new PConfManager(p);
+        if (pcm.get(title) == null) return false;
+        long time = new Date().getTime();
+        long overall = (pcm.getLong(title) * 1000L) + time;
         return time < overall;
     }
 
@@ -1068,6 +1076,6 @@ public class RUtils {
                     return -1;
             }
         }
-        return seconds;
+        return seconds; // must add +1 to make parseTimeFormat() or whatever be accurate
     }
 }

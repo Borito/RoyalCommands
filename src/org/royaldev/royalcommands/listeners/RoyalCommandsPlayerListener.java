@@ -301,12 +301,20 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
         PConfManager pcm = new PConfManager(p);
         if (pcm.getBoolean("muted")) {
-            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValid(p, "mutetime"))
+            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime")) {
                 pcm.setBoolean(false, "muted");
+                return;
+            }
+            String howLong = "";
+            if (pcm.get("mutetime") != null && pcm.get("mutedat") != null) {
+                long mutedAt = pcm.getLong("mutedat");
+                long muteTime = pcm.getLong("mutetime") * 1000L;
+                howLong = " for " + ChatColor.GRAY + RUtils.formatDateDiff(muteTime + mutedAt).substring(1) + ChatColor.RED;
+            }
+            p.sendMessage(ChatColor.RED + "You are muted and cannot speak" + howLong + ".");
+            plugin.log.info("[RoyalCommands] " + p.getName() + " is muted but tried to say \"" + event.getMessage() + "\"");
             event.setFormat("");
             event.setCancelled(true);
-            p.sendMessage(ChatColor.RED + "You are muted.");
-            plugin.log.info("[RoyalCommands] " + p.getName() + " tried to speak, but has been muted.");
         }
     }
 
@@ -434,10 +442,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         String kickMessage;
         if (pcm.get("bantime") != null) { // if tempban
             kickMessage = RUtils.getMessage(plugin.tempbanFormat, reason, kicker);
-            long bannedAt = pcm.getLong("bannedat");
             long banTime = pcm.getLong("bantime");
-            long timeLeft = banTime - bannedAt; // in ms
-            kickMessage = kickMessage.replace("{length}", RUtils.formatDateDiff(timeLeft + bannedAt).substring(1));
+            kickMessage = kickMessage.replace("{length}", RUtils.formatDateDiff(banTime).substring(1));
         } else
             kickMessage = RUtils.getMessage(plugin.banFormat, reason, kicker);
         // Set the kick message to the ban reason

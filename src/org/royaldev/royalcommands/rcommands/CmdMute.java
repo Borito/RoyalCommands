@@ -55,6 +55,7 @@ public class CmdMute implements CommandExecutor {
             }
             pcm.setBoolean(!isMuted, "muted");
             if (muteTime > 0L && !isMuted) pcm.setLong(muteTime, "mutetime");
+            pcm.setLong(System.currentTimeMillis(), "mutedat");
             String timePeriod = (muteTime > 0L && !isMuted) ? " for " + ChatColor.GRAY + RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1) : "";
             cs.sendMessage(ChatColor.BLUE + "You have toggled mute " + ChatColor.GRAY + BooleanUtils.toStringOnOff(!isMuted) + ChatColor.BLUE + " for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + timePeriod + ChatColor.BLUE + ".");
             if (t.isOnline()) {
