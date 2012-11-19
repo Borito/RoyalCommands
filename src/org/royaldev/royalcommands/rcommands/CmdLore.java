@@ -44,7 +44,8 @@ public class CmdLore implements CommandExecutor {
                 return true;
             }
             net.minecraft.server.ItemStack nmsis = ((CraftItemStack) is).getHandle();
-            NBTTagCompound tag = nmsis.tag.getCompound("display");
+            NBTTagCompound tag = (nmsis.tag == null) ? new NBTTagCompound() : nmsis.tag.getCompound("display");
+            if (tag == null) tag = new NBTTagCompound();
             NBTTagList nbttl = (tag.getList("Lore") == null) ? new NBTTagList("Lore") : tag.getList("Lore");
             if (loreText.equalsIgnoreCase("clear")) {
                 tag.set("Lore", new NBTTagList("Lore"));

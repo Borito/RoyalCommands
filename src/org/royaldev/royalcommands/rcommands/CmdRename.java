@@ -44,9 +44,12 @@ public class CmdRename implements CommandExecutor {
             CraftItemStack css = (CraftItemStack) is;
             net.minecraft.server.ItemStack nms = css.getHandle();
             NBTTagCompound tag;
-            tag = new NBTTagCompound();
-            tag.setCompound("display", new NBTTagCompound());
-            tag.getCompound("display").setString("Name", newName);
+            tag = nms.tag;
+            if (tag == null) tag = new NBTTagCompound();
+            NBTTagCompound display = nms.tag.getCompound("display");
+            if (display == null) display = new NBTTagCompound();
+            display.setString("Name", newName);
+            tag.setCompound("display", display);
             nms.tag = tag;
             cs.sendMessage(ChatColor.BLUE + "Renamed your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
             return true;
