@@ -29,6 +29,7 @@ public class CmdSetSpawn implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
+            String group = (args.length > 0) ? "." + args[0].toLowerCase() : "";
             ConfManager spawns = new ConfManager("spawns.yml");
             float pitch = p.getLocation().getPitch();
             float yaw = p.getLocation().getYaw();
@@ -36,13 +37,14 @@ public class CmdSetSpawn implements CommandExecutor {
             double y = p.getLocation().getY();
             double z = p.getLocation().getZ();
             String w = p.getWorld().getName();
-            p.getWorld().setSpawnLocation((int) x, (int) y, (int) z);
-            spawns.setFloat(pitch, "spawns." + w + ".pitch");
-            spawns.setFloat(yaw, "spawns." + w + ".yaw");
-            spawns.setDouble(x, "spawns." + w + ".x");
-            spawns.setDouble(y, "spawns." + w + ".y");
-            spawns.setDouble(z, "spawns." + w + ".z");
-            cs.sendMessage(ChatColor.BLUE + "The spawn point of " + ChatColor.GRAY + RUtils.getMVWorldName(p.getWorld()) + ChatColor.BLUE + " is set.");
+            if (group.equals("")) p.getWorld().setSpawnLocation((int) x, (int) y, (int) z);
+            spawns.setFloat(pitch, "spawns." + w + group + ".pitch");
+            spawns.setFloat(yaw, "spawns." + w + group + ".yaw");
+            spawns.setDouble(x, "spawns." + w + group + ".x");
+            spawns.setDouble(y, "spawns." + w + group + ".y");
+            spawns.setDouble(z, "spawns." + w + group + ".z");
+            String forGroup = " for group " + ChatColor.GRAY + group + ChatColor.BLUE;
+            cs.sendMessage(ChatColor.BLUE + "The spawn point of " + ChatColor.GRAY + RUtils.getMVWorldName(p.getWorld()) + ChatColor.BLUE + " is set" + forGroup + ".");
             return true;
         }
         return false;

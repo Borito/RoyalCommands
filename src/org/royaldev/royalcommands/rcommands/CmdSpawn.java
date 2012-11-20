@@ -42,6 +42,33 @@ public class CmdSpawn implements CommandExecutor {
         return l;
     }
 
+    /**
+     * Gets the group-specific spawn for a player and a world.
+     *
+     * @param p     Player to get spawn for
+     * @param world World to get spawn for
+     * @return null if no group-specific spawn or Location if existent
+     */
+    private static Location getGroupSpawn(Player p, World world) {
+        ConfManager cm = new ConfManager("spawns.yml");
+        String group = RoyalCommands.permission.getPrimaryGroup(p);
+        if (group == null) return null;
+        group = "." + group.toLowerCase();
+        String w = world.getName();
+        Double x = cm.getDouble("spawns." + w + group + ".x");
+        Double y = cm.getDouble("spawns." + w + group + ".y");
+        Double z = cm.getDouble("spawns." + w + group + ".z");
+        Float yaw = cm.getFloat("spawns." + w + group + ".yaw");
+        Float pitch = cm.getFloat("spawns." + w + group + ".pitch");
+        Location l;
+        try {
+            l = new Location(world, x, y, z, yaw, pitch);
+        } catch (Exception e) {
+            return null;
+        }
+        return l;
+    }
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("spawn")) {
@@ -62,7 +89,8 @@ public class CmdSpawn implements CommandExecutor {
                     return true;
                 }
             } else w = p.getWorld();
-            Location l = getWorldSpawn(w);
+            Location g = getGroupSpawn(p, w);
+            Location l = (g == null) ? getWorldSpawn(w) : g;
             p.sendMessage(ChatColor.BLUE + "Going to spawn in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + ".");
             String error = RUtils.teleport(p, l);
             if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
