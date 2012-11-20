@@ -1,6 +1,9 @@
 package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.NBTTagList;
+import net.minecraft.server.NBTTagString;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -9,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -1104,5 +1108,79 @@ public class RUtils {
             enchants.put(e, lvl);
         }
         return enchants;
+    }
+
+    /**
+     * Renames an ItemStack.
+     *
+     * @param is      ItemStack to rename
+     * @param newName Name to give ItemStack
+     * @return ItemStack with new name
+     */
+    public static ItemStack renameItem(ItemStack is, String newName) {
+        if (newName == null) return is;
+        CraftItemStack cis;
+        try {
+            cis = (CraftItemStack) is;
+        } catch (ClassCastException e) {
+            cis = new CraftItemStack(is);
+        }
+        net.minecraft.server.ItemStack nms = cis.getHandle();
+        NBTTagCompound tag = nms.tag;
+        if (tag == null) tag = new NBTTagCompound();
+        NBTTagCompound display = tag.getCompound("display");
+        if (display == null) display = new NBTTagCompound();
+        display.setString("Name", newName);
+        tag.setCompound("display", display);
+        nms.tag = tag;
+        return cis;
+    }
+
+    /**
+     * Adds lore to an ItemStack.
+     *
+     * @param is      ItemStack to add lore to
+     * @param newLore Lore to add
+     * @return ItemStack with added lore
+     */
+    public static ItemStack addLore(ItemStack is, String newLore) {
+        CraftItemStack cis;
+        try {
+            cis = (CraftItemStack) is;
+        } catch (ClassCastException e) {
+            cis = new CraftItemStack(is);
+        }
+        net.minecraft.server.ItemStack nmsis = cis.getHandle();
+        if (nmsis.tag == null) nmsis.tag = new NBTTagCompound();
+        NBTTagCompound display = nmsis.tag.getCompound("display");
+        if (display == null) display = new NBTTagCompound();
+        NBTTagList nbttl = (display.getList("Lore") == null) ? new NBTTagList("Lore") : display.getList("Lore");
+        String[] lores = newLore.split("\\n");
+        for (String l : lores) nbttl.add(new NBTTagString("", RUtils.colorize(l)));
+        display.set("Lore", nbttl);
+        nmsis.tag.set("display", display);
+        return cis;
+    }
+
+    /**
+     * Clears lore on an ItemStack.
+     *
+     * @param is ItemStack to clear lore from
+     * @return ItemStack with no lore
+     */
+    public static ItemStack clearLore(ItemStack is) {
+        CraftItemStack cis;
+        try {
+            cis = (CraftItemStack) is;
+        } catch (ClassCastException e) {
+            cis = new CraftItemStack(is);
+        }
+        net.minecraft.server.ItemStack nmsis = cis.getHandle();
+        if (nmsis.tag == null) nmsis.tag = new NBTTagCompound();
+        NBTTagCompound display = nmsis.tag.getCompound("display");
+        if (display == null) display = new NBTTagCompound();
+        display.set("Lore", new NBTTagList("Lore"));
+        nmsis.tag.set("display", display);
+        return cis;
     }
 }

@@ -1,12 +1,9 @@
 package org.royaldev.royalcommands.rcommands;
 
-import net.minecraft.server.NBTTagCompound;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
@@ -37,19 +34,8 @@ public class CmdRename implements CommandExecutor {
             Player p = (Player) cs;
             String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
             ItemStack is = p.getItemInHand();
-            if (is == null || is.getType() == Material.AIR) {
-                cs.sendMessage(ChatColor.RED + "You can't rename air!");
-                return true;
-            }
-            CraftItemStack css = (CraftItemStack) is;
-            net.minecraft.server.ItemStack nms = css.getHandle();
-            NBTTagCompound tag = nms.tag;
-            if (tag == null) tag = new NBTTagCompound();
-            NBTTagCompound display = tag.getCompound("display");
-            if (display == null) display = new NBTTagCompound();
-            display.setString("Name", newName);
-            tag.setCompound("display", display);
-            nms.tag = tag;
+            is = RUtils.renameItem(is, newName);
+            p.setItemInHand(is);
             cs.sendMessage(ChatColor.BLUE + "Renamed your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
             return true;
         }

@@ -51,11 +51,15 @@ public class CmdKit implements CommandExecutor {
             }
             List<String> kits = plugin.getConfig().getStringList("kits." + kitname + ".items");
             List<String> enchants = plugin.getConfig().getStringList("kits." + kitname + ".enchantments");
+            List<String> names = plugin.getConfig().getStringList("kits." + kitname + ".names");
+            List<String> lore = plugin.getConfig().getStringList("kits." + kitname + ".lore");
             if (kits == null) {
                 cs.sendMessage(ChatColor.RED + "That kit does not exist!");
                 return true;
             }
             if (enchants == null) enchants = new ArrayList<String>();
+            if (names == null) names = new ArrayList<String>();
+            if (lore == null) lore = new ArrayList<String>();
             if (plugin.kitPerms && !plugin.isAuthorized(cs, "rcmds.kit." + kitname)) {
                 cs.sendMessage(ChatColor.RED + "You don't have permission for that kit!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
@@ -124,6 +128,16 @@ public class CmdKit implements CommandExecutor {
                     item = new ItemStack(id, amount);
                 }
                 if (enchant != null) item.addUnsafeEnchantments(enchant);
+                try {
+                    String name = names.get(index);
+                    if (!name.isEmpty()) item = RUtils.renameItem(item, name);
+                } catch (IndexOutOfBoundsException ignored) {
+                }
+                try {
+                    String lo = lore.get(index);
+                    if (!lo.isEmpty()) item = RUtils.addLore(item, lo);
+                } catch (IndexOutOfBoundsException ignored) {
+                }
                 HashMap<Integer, ItemStack> left = p.getInventory().addItem(item);
                 if (!left.isEmpty()) {
                     for (ItemStack is : left.values()) {
