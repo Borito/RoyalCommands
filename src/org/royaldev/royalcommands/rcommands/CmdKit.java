@@ -5,12 +5,16 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CmdKit implements CommandExecutor {
 
@@ -40,16 +44,18 @@ public class CmdKit implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "No kits defined!");
                 return true;
             }
-            String kitname = args[0].trim();
+            String kitname = args[0];
             if (plugin.getConfig().get("kits." + kitname) == null) {
                 cs.sendMessage(ChatColor.RED + "That kit does not exist!");
                 return true;
             }
-            java.util.List<String> kits = plugin.getConfig().getStringList("kits." + kitname + ".items");
+            List<String> kits = plugin.getConfig().getStringList("kits." + kitname + ".items");
+            List<String> enchants = plugin.getConfig().getStringList("kits." + kitname + ".enchantments");
             if (kits == null) {
                 cs.sendMessage(ChatColor.RED + "That kit does not exist!");
                 return true;
             }
+            if (enchants == null) enchants = new ArrayList<String>();
             if (plugin.kitPerms && !plugin.isAuthorized(cs, "rcmds.kit." + kitname)) {
                 cs.sendMessage(ChatColor.RED + "You don't have permission for that kit!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
@@ -71,6 +77,14 @@ public class CmdKit implements CommandExecutor {
                 return true;
             }
             for (String s : kits) {
+                int index = kits.indexOf(s);
+                String enchantmentString;
+                try {
+                    enchantmentString = enchants.get(index);
+                } catch (IndexOutOfBoundsException e) {
+                    enchantmentString = null;
+                }
+                Map<Enchantment, Integer> enchant = (enchantmentString == null) ? null : RUtils.getEnchantments(enchantmentString);
                 String[] kit = s.trim().split(":");
                 if (kit.length < 2) {
                     cs.sendMessage(ChatColor.RED + "That kit was configured wrong!");
@@ -109,6 +123,7 @@ public class CmdKit implements CommandExecutor {
                 } else {
                     item = new ItemStack(id, amount);
                 }
+                if (enchant != null) item.addUnsafeEnchantments(enchant);
                 HashMap<Integer, ItemStack> left = p.getInventory().addItem(item);
                 if (!left.isEmpty()) {
                     for (ItemStack is : left.values()) {

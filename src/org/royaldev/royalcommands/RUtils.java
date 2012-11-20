@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -1077,5 +1078,31 @@ public class RUtils {
             }
         }
         return seconds; // must add +1 to make parseTimeFormat() or whatever be accurate
+    }
+
+    /**
+     * Gets enchantments from form "name:level,..." (e.g. "damage_all:2,durability:1")
+     *
+     * @param enchant String of enchantment
+     * @return Map of Enchantments and their levels or null if invalid
+     */
+    public static Map<Enchantment, Integer> getEnchantments(String enchant) {
+        final Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+        for (String enc : enchant.split(",")) {
+            enc = enc.replace(" ", "");
+            String[] data = enc.split(":");
+            if (data.length < 2) return null;
+            String name = data[0];
+            int lvl;
+            try {
+                lvl = Integer.parseInt(data[1]);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+            Enchantment e = Enchantment.getByName(name.toUpperCase());
+            if (e == null) return null;
+            enchants.put(e, lvl);
+        }
+        return enchants;
     }
 }

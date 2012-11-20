@@ -75,7 +75,9 @@ use_exclusive_kit_perms: false
 kits:
   # The kit "default" has 10 wood, 5 stone, 25 dirt, and 64 cobblestone. <item>:<amount>
   default:
-    items: ["5:10", "1:5", "3:25", "4:64"]
+    items: ["5:10", "1:5", "3:25", "4:64", "268:1"]
+    # Leave a blank string ("") for no enchants. This list is parallel with the items list
+    enchantments: ["", "", "", "", "damage_all:2,durability:1"]
     # 1 = 1 second
     # 60 = 1 minute
     # 3600 = 1 hour
