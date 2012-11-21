@@ -1101,10 +1101,10 @@ public class RUtils {
             try {
                 lvl = Integer.parseInt(data[1]);
             } catch (NumberFormatException e) {
-                return null;
+                continue;
             }
             Enchantment e = Enchantment.getByName(name.toUpperCase());
-            if (e == null) return null;
+            if (e == null) continue;
             enchants.put(e, lvl);
         }
         return enchants;
@@ -1120,7 +1120,7 @@ public class RUtils {
     public static ItemStack renameItem(ItemStack is, String newName) {
         if (newName == null) return is;
         CraftItemStack cis;
-        try {
+        try { // This allows one to use newly created Bukkit ItemStacks and ItemStacks already with CIS components
             cis = (CraftItemStack) is;
         } catch (ClassCastException e) {
             cis = new CraftItemStack(is);

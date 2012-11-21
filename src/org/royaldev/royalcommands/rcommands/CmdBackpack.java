@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
+import org.royaldev.royalcommands.serializable.SerializableInventory;
 
 import java.io.File;
 import java.util.HashMap;
@@ -18,11 +19,33 @@ public class CmdBackpack implements CommandExecutor {
 
     RoyalCommands plugin;
 
-    public static HashMap<String, SerializableCraftInventory> invs;
+    public static HashMap<String, SerializableInventory> invs;
 
     public CmdBackpack(RoyalCommands instance) {
         plugin = instance;
-        invs = (HashMap<String, SerializableCraftInventory>) RUtils.loadHash(instance.getDataFolder() + File.separator + "backpacks.sav");
+        try {
+            invs = (HashMap<String, SerializableInventory>) RUtils.loadHash(instance.getDataFolder() + File.separator + "backpacks.sav");
+        } catch (Exception e) {
+            invs = new HashMap<String, SerializableInventory>();
+        }
+        if (!invs.keySet().isEmpty()) {
+            String name = (String) invs.keySet().toArray()[0];
+            Object o = invs.get(name);
+            if (o instanceof SerializableCraftInventory) {
+                convertOldBackpacks();
+            }
+        }
+    }
+
+    private void convertOldBackpacks() {
+        plugin.log.info("[RoyalCommands] Converting old backpacks to new system.");
+        invs = new HashMap<String, SerializableInventory>();
+        HashMap<String, SerializableCraftInventory> oldInvs = (HashMap<String, SerializableCraftInventory>) RUtils.loadHash(plugin.getDataFolder() + File.separator + "backpacks.sav");
+        for (String pName : oldInvs.keySet()) {
+            SerializableCraftInventory oldInv = oldInvs.get(pName);
+            invs.put(pName, new SerializableInventory(oldInv.getInventory()));
+        }
+        plugin.log.info("[RoyalCommands] Backpack conversion complete.");
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -51,16 +74,16 @@ public class CmdBackpack implements CommandExecutor {
                     return true;
                 }
                 if (!invs.containsKey(t.getName()))
-                    invs.put(t.getName(), RUtils.convInvToSCI(RUtils.createInv(t, 36, "Backpack")));
-                Inventory i = invs.get(t.getName()).getInventory();
+                    invs.put(t.getName(), new SerializableInventory(36, "Backpack"));
+                Inventory i = invs.get(t.getName()).deserialize();
                 i = RUtils.setHolder(i, t);
                 p.openInventory(i);
                 return true;
             }
             if (!invs.containsKey(p.getName())) {
-                invs.put(p.getName(), RUtils.convInvToSCI(RUtils.createInv(p, 36, "Backpack")));
+                invs.put(p.getName(), new SerializableInventory(36, "Backpack"));
             }
-            Inventory i = invs.get(p.getName()).getInventory();
+            Inventory i = invs.get(p.getName()).deserialize();
             i = RUtils.setHolder(i, p);
             p.openInventory(i);
             return true;
