@@ -111,7 +111,7 @@ public class RoyalCommands extends JavaPlugin {
 
     //--- Privates ---//
 
-    private int minVersion = 2287;
+    private int minVersion = 2406;
 
     private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
     private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
