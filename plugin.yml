@@ -254,7 +254,7 @@ commands:
   list:
     description: Lists the players online and the maximum amount.
     usage: /<command>
-    aliases: [who, players, online, listplayers, playing]
+    aliases: [ls, dir, who, players, online, listplayers, playing]
 
   back:
     description: Takes you to your previous location.
