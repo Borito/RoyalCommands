@@ -1081,7 +1081,7 @@ public class RUtils {
                     return -1;
             }
         }
-        return seconds; // must add +1 to make parseTimeFormat() or whatever be accurate
+        return seconds + 1; // must add +1 to make parseTimeFormat() or whatever be accurate
     }
 
     /**
