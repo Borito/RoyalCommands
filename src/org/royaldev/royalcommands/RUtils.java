@@ -453,12 +453,12 @@ public class RUtils {
             }
         }
         if (!RoyalCommands.safeTeleport) {
-            CmdBack.backdb.put(p, p.getLocation());
+            CmdBack.backdb.put(p.getName(), p.getLocation());
             p.teleport(l);
         } else {
             Location toTele = getSafeLocation(l);
             if (toTele == null) return "There is no ground below.";
-            CmdBack.backdb.put(p, p.getLocation());
+            CmdBack.backdb.put(p.getName(), p.getLocation());
             p.teleport(toTele);
         }
         return "";
@@ -602,12 +602,12 @@ public class RUtils {
             }
         }
         if (!RoyalCommands.safeTeleport) {
-            CmdBack.backdb.put(p, p.getLocation());
+            CmdBack.backdb.put(p.getName(), p.getLocation());
             p.teleport(e);
         } else {
             Location toTele = getSafeLocation(e);
             if (toTele == null) return "There is no ground below.";
-            CmdBack.backdb.put(p, p.getLocation());
+            CmdBack.backdb.put(p.getName(), p.getLocation());
             p.teleport(toTele);
         }
         return "";

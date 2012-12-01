@@ -19,7 +19,7 @@ public class CmdBack implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    public static HashMap<Player, Location> backdb = new HashMap<Player, Location>();
+    public static HashMap<String, Location> backdb = new HashMap<String, Location>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -33,11 +33,11 @@ public class CmdBack implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            if (!backdb.containsKey(p)) {
+            if (!backdb.containsKey(p.getName())) {
                 cs.sendMessage(ChatColor.RED + "You have no place to go back to!");
                 return true;
             }
-            String error = RUtils.teleport(p, backdb.get(p));
+            String error = RUtils.teleport(p, backdb.get(p.getName()));
             if (!error.isEmpty()) {
                 p.sendMessage(ChatColor.RED + error);
                 return true;

@@ -36,7 +36,7 @@ public class SignListener implements Listener {
             if (amount < 0) return null;
             return amount;
         }
-        return (double) -1;
+        return -1D;
     }
 
     @EventHandler
