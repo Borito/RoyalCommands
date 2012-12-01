@@ -85,13 +85,15 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void deafenMessages(AsyncPlayerChatEvent e) {
         if (e.isCancelled()) return;
+        List<Player> toRemove = new ArrayList<Player>();
         for (Player t : e.getRecipients()) {
             PConfManager pcm = new PConfManager(t);
             Boolean isDeaf = pcm.getBoolean("deaf");
             if (isDeaf == null || !isDeaf) continue;
             if (e.getPlayer().getName().equals(t.getName())) continue; // don't remove own messages
-            e.getRecipients().remove(t); // remove deaf player from recipients set
+            toRemove.add(t);
         }
+        e.getRecipients().removeAll(toRemove); // remove deaf players
     }
 
     @EventHandler
