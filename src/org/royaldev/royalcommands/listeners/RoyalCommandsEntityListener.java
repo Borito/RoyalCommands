@@ -85,7 +85,7 @@ public class RoyalCommandsEntityListener implements Listener {
     public void onEntityTarget(EntityTargetEvent event) {
         if (!(event.getTarget() instanceof Player)) return;
         Player p = (Player) event.getTarget();
-        if (new PConfManager(p).getBoolean("mobignored")) event.setCancelled(true);
+        if (new PConfManager(p).getBoolean("mobignored")) event.setTarget(null);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
