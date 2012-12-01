@@ -59,7 +59,12 @@ public class CmdList implements CommandExecutor {
         Map<String, List<String>> groups = new HashMap<String, List<String>>();
         StrBuilder sb = new StrBuilder();
         for (Player p : pl) {
-            String group = RoyalCommands.permission.getPrimaryGroup(p);
+            String group;
+            try {
+                group = RoyalCommands.permission.getPrimaryGroup(p);
+            } catch (NullPointerException e) {
+                group = "No Group";
+            }
             List<String> inGroup = (groups.containsKey(group)) ? groups.get(group) : new ArrayList<String>();
             if (plugin.isVanished(p) && plugin.isAuthorized(cs, "rcmds.seehidden"))
                 inGroup.add(ChatColor.GRAY + "[HIDDEN]" + ChatColor.RESET + formatPrepend(p));
