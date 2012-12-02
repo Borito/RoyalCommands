@@ -31,9 +31,7 @@ public class CmdBackpack implements CommandExecutor {
         if (!invs.keySet().isEmpty()) {
             String name = (String) invs.keySet().toArray()[0];
             Object o = invs.get(name);
-            if (o instanceof SerializableCraftInventory) {
-                convertOldBackpacks();
-            }
+            if (o instanceof SerializableCraftInventory) convertOldBackpacks();
         }
     }
 

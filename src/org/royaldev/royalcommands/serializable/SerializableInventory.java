@@ -232,7 +232,7 @@ public class SerializableInventory implements Inventory, Serializable {
                 }
                 CraftItemStack cis = getCIS(is);
                 NBTTagCompound tag = cis.getHandle().tag;
-                SerializableNBTTagCompound stag = (tag == null) ? null : new SerializableNBTTagCompound(tag);
+                SerializableNBTTagCompound stag = (tag == null) ? new SerializableNBTTagCompound(new NBTTagCompound()) : new SerializableNBTTagCompound(tag);
                 tags.put(i, stag);
                 contents.put(i, is.serialize());
                 Map<SerializableCraftEnchantment, Integer> encs = new HashMap<SerializableCraftEnchantment, Integer>();
