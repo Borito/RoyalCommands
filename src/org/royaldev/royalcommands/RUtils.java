@@ -21,7 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.royaldev.royalchat.RoyalChatAPI;
+import org.royaldev.royalchat.RoyalChat;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
@@ -909,20 +909,26 @@ public class RUtils {
 
     public static String getRChatPrefix(final Player p) {
         try {
-            Class.forName("org.royaldev.royalchat.RoyalChatAPI");
+            Class.forName("org.royaldev.royalchat.DataManager");
         } catch (ClassNotFoundException e) {
             return null;
         }
-        return RoyalChatAPI.getPrefix(p);
+        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
+        String prefix = rc.dm.getPrefix(p);
+        if (prefix.isEmpty()) prefix = null;
+        return prefix;
     }
 
     public static String getRChatSuffix(final Player p) {
         try {
-            Class.forName("org.royaldev.royalchat.RoyalChatAPI");
+            Class.forName("org.royaldev.royalchat.DataManager");
         } catch (ClassNotFoundException e) {
             return null;
         }
-        return RoyalChatAPI.getSuffix(p);
+        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
+        String suffix = rc.dm.getSuffix(p);
+        if (suffix.isEmpty()) suffix = null;
+        return suffix;
     }
 
     public static String replaceVars(final String orig, final Player p) {
