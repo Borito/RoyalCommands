@@ -19,7 +19,35 @@ public class CmdEnchant implements CommandExecutor {
         plugin = instance;
     }
 
-    public void sendEnchantmentList(CommandSender cs) {
+    /**
+     * Gets the real level of an enchantment to be applied to an item.
+     * <p/>
+     * Keep in mind that...
+     * <ul>
+     * <li>-1 is the maximum level of the enchantment</li>
+     * <li>-2 is the maximum <em>short</em> value in Java</li>
+     * <li>0 will return 0 for removal</li>
+     * <li>Any other number will be returned without modification</li>
+     * </ul>
+     *
+     * @param e Enchantment being added
+     * @param i Level supplied (-1, -2, 0, 10, etc.)
+     * @return Real level
+     */
+    private int getRealLevel(Enchantment e, int i) {
+        switch (i) {
+            case -1: // Max level
+                return e.getMaxLevel();
+            case -2: // Max short value
+                return Short.MAX_VALUE;
+            case 0:
+                return 0;
+            default:
+                return i;
+        }
+    }
+
+    private void sendEnchantmentList(CommandSender cs) {
         StringBuilder sb = new StringBuilder();
         for (Enchantment e : Enchantment.values()) {
             sb.append(ChatColor.GRAY);
@@ -52,9 +80,6 @@ public class CmdEnchant implements CommandExecutor {
                 return true;
             }
             Enchantment toAdd = Enchantment.getByName(args[0].toUpperCase());
-            int MAX_LEVEL = -1;
-            int MAX_INT = -2;
-            int REMOVE = 0;
             if (toAdd == null) {
                 if (args[0].equalsIgnoreCase("all")) {
                     int level;
@@ -62,9 +87,9 @@ public class CmdEnchant implements CommandExecutor {
                     else if (args.length > 1 && args[1].equalsIgnoreCase("max")) level = -2;
                     else {
                         try {
-                            level = Integer.parseInt(args[1]);
+                            level = (int) Short.parseShort(args[1]);
                         } catch (NumberFormatException e) {
-                            cs.sendMessage(ChatColor.RED + "The level supplied was not a number or greater than " + Integer.MAX_VALUE + "!");
+                            cs.sendMessage(ChatColor.RED + "The level supplied was not a number or greater than " + Short.MAX_VALUE + "!");
                             return true;
                         }
                         if (level < 0) {
@@ -76,21 +101,37 @@ public class CmdEnchant implements CommandExecutor {
                             return true;
                         }
                     }
-                    if (level == REMOVE) {
+                    if (level == 0) {
                         for (Enchantment e : Enchantment.values()) {
                             if (!hand.containsEnchantment(e)) continue;
                             hand.removeEnchantment(e);
                         }
                         cs.sendMessage(ChatColor.BLUE + "Removed all enchantments from " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + ".");
-                    } else if (level == MAX_LEVEL) {
-                        for (Enchantment e : Enchantment.values()) hand.addUnsafeEnchantment(e, e.getMaxLevel());
-                        cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + "all" + ChatColor.BLUE + " enchantments to " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + " at their maximum levels.");
-                    } else if (level == MAX_INT) {
-                        for (Enchantment e : Enchantment.values()) hand.addUnsafeEnchantment(e, Short.MAX_VALUE);
-                        cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + "all" + ChatColor.BLUE + " enchantments to " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + " at level " + ChatColor.GRAY + Short.MAX_VALUE + ChatColor.BLUE + ".");
                     } else {
-                        for (Enchantment e : Enchantment.values()) hand.addUnsafeEnchantment(e, level);
-                        cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + "all" + ChatColor.BLUE + " enchantments to " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + " at level " + ChatColor.GRAY + level + ChatColor.BLUE + ".");
+                        if (level == -2 && !plugin.isAuthorized(cs, "rcmds.enchant.levels")) {
+                            cs.sendMessage(ChatColor.RED + "You cannot apply levels for enchantments higher than the maximum vanilla level!");
+                            return true;
+                        }
+                        boolean skipped = false;
+                        for (Enchantment e : Enchantment.values()) {
+                            int toApply = getRealLevel(e, level);
+                            if (toApply > e.getMaxLevel() && !plugin.isAuthorized(cs, "rcmds.enchant.levels")) {
+                                skipped = true;
+                                continue;
+                            }
+                            if (!e.canEnchantItem(hand) && !plugin.isAuthorized(cs, "rcmds.enchant.illegal")) {
+                                skipped = true;
+                                continue;
+                            }
+                            hand.addUnsafeEnchantment(e, toApply);
+                        }
+                        if (skipped)
+                            cs.sendMessage(ChatColor.RED + "Some enchantments were not applied because you do not have permission for them.");
+                        String atLevel;
+                        if (level == -1) atLevel = "their maximum levels";
+                        else if (level == -2) atLevel = "the maximum possible level";
+                        else atLevel = "level " + String.valueOf(level);
+                        cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + "all" + ChatColor.BLUE + " to " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + " at " + ChatColor.GRAY + atLevel + ChatColor.BLUE + ".");
                     }
                     return true;
                 }
@@ -117,22 +158,32 @@ public class CmdEnchant implements CommandExecutor {
                     return true;
                 }
             }
-            if (level == REMOVE) {
+            if (level == 0) {
                 if (!hand.containsEnchantment(toAdd)) {
                     cs.sendMessage(ChatColor.RED + "That " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + " does not contain " + ChatColor.GRAY + toAdd.getName().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
                     return true;
                 }
                 hand.removeEnchantment(toAdd);
                 cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + toAdd.getName().toLowerCase().replace("_", " ") + ChatColor.BLUE + " from " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + ".");
-            } else if (level == MAX_LEVEL) {
-                hand.addUnsafeEnchantment(toAdd, toAdd.getMaxLevel());
-                cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + toAdd.getName().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + " at level " + ChatColor.GRAY + toAdd.getMaxLevel() + ChatColor.BLUE + ".");
-            } else if (level == MAX_INT) {
-                hand.addUnsafeEnchantment(toAdd, Short.MAX_VALUE);
-                cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + toAdd.getName().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + " at level " + ChatColor.GRAY + Short.MAX_VALUE + ChatColor.BLUE + ".");
             } else {
-                hand.addUnsafeEnchantment(toAdd, level);
-                cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + toAdd.getName().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + " at level " + ChatColor.GRAY + level + ChatColor.BLUE + ".");
+                int toApply = getRealLevel(toAdd, level);
+                if (toApply > toAdd.getMaxLevel() && !plugin.isAuthorized(cs, "rcmds.enchant.levels")) {
+                    cs.sendMessage(ChatColor.RED + "That level is too high for " + ChatColor.GRAY + toAdd.getName().replace("_", " ").toLowerCase() + ChatColor.RED + ".");
+                    return true;
+                }
+                if (!toAdd.canEnchantItem(hand) && !plugin.isAuthorized(cs, "rcmds.enchant.illegal")) {
+                    cs.sendMessage(ChatColor.RED + "Cannot add " + ChatColor.GRAY + toAdd.getName().replace("_", " ").toLowerCase() + ChatColor.RED + " because it is not for that type of item!");
+                    return true;
+                }
+                if (!plugin.isAuthorized(cs, "rcmds.enchant.illegal"))
+                    for (Enchantment e : hand.getEnchantments().keySet()) {
+                        if (toAdd.conflictsWith(e)) {
+                            cs.sendMessage(ChatColor.RED + "Cannot add " + ChatColor.GRAY + toAdd.getName().replace("_", " ").toLowerCase() + ChatColor.RED + " because it conflicts with " + ChatColor.GRAY + e.getName().replace("_", " ").toLowerCase() + ChatColor.RED + ".");
+                            return true;
+                        }
+                    }
+                hand.addUnsafeEnchantment(toAdd, toApply);
+                cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + toAdd.getName().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + " at level " + ChatColor.GRAY + toApply + ChatColor.BLUE + ".");
             }
             return true;
         }

@@ -47,8 +47,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// TODO: Dynamic tempban times
-
 @SuppressWarnings("unused")
 public class RoyalCommandsPlayerListener implements Listener {
 
@@ -376,7 +374,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void freezeWatch(PlayerMoveEvent e) {
         if (e.isCancelled()) return;
-        if (new PConfManager(e.getPlayer()).getBoolean("frozen")) e.setCancelled(true);
+        if (new PConfManager(e.getPlayer()).getBoolean("frozen")) e.setTo(e.getFrom());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
