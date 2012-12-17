@@ -2,7 +2,7 @@ package org.royaldev.royalcommands.serializable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.inventory.CraftInventory;
+import org.bukkit.craftbukkit.v1_4_5.inventory.CraftInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

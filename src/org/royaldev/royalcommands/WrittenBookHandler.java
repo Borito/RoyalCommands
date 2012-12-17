@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands;
 
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.NBTTagString;
+import net.minecraft.server.v1_4_5.NBTBase;
+import net.minecraft.server.v1_4_5.NBTTagCompound;
+import net.minecraft.server.v1_4_5.NBTTagList;
+import net.minecraft.server.v1_4_5.NBTTagString;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
 
 import java.util.ArrayList;
 import java.util.List;

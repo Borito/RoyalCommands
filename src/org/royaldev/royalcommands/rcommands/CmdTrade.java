@@ -1,13 +1,13 @@
 package org.royaldev.royalcommands.rcommands;
 
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.PlayerInventory;
+import net.minecraft.server.v1_4_5.EntityPlayer;
+import net.minecraft.server.v1_4_5.PlayerInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.craftbukkit.inventory.CraftInventory;
+import org.bukkit.craftbukkit.v1_4_5.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_4_5.inventory.CraftInventory;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;

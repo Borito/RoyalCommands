@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.serializable;
 
-import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.v1_4_5.NBTTagCompound;
 
 import java.io.Serializable;
 

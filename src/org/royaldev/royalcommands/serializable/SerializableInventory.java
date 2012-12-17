@@ -1,9 +1,9 @@
 package org.royaldev.royalcommands.serializable;
 
-import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.v1_4_5.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;

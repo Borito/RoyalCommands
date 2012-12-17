@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.serializable;
 
-import org.bukkit.craftbukkit.enchantments.CraftEnchantment;
+import org.bukkit.craftbukkit.v1_4_5.enchantments.CraftEnchantment;
 import org.bukkit.enchantments.Enchantment;
 
 import java.io.Serializable;

@@ -1,8 +1,8 @@
 package org.royaldev.royalcommands.serializable;
 
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.NBTTagString;
+import net.minecraft.server.v1_4_5.NBTBase;
+import net.minecraft.server.v1_4_5.NBTTagList;
+import net.minecraft.server.v1_4_5.NBTTagString;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
 package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.NBTTagString;
+import net.minecraft.server.v1_4_5.NBTTagCompound;
+import net.minecraft.server.v1_4_5.NBTTagList;
+import net.minecraft.server.v1_4_5.NBTTagString;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,7 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -1131,7 +1131,7 @@ public class RUtils {
         } catch (ClassCastException e) {
             cis = new CraftItemStack(is);
         }
-        net.minecraft.server.ItemStack nms = cis.getHandle();
+        net.minecraft.server.v1_4_5.ItemStack nms = cis.getHandle();
         NBTTagCompound tag = nms.tag;
         if (tag == null) tag = new NBTTagCompound();
         NBTTagCompound display = tag.getCompound("display");
@@ -1156,7 +1156,7 @@ public class RUtils {
         } catch (ClassCastException e) {
             cis = new CraftItemStack(is);
         }
-        net.minecraft.server.ItemStack nmsis = cis.getHandle();
+        net.minecraft.server.v1_4_5.ItemStack nmsis = cis.getHandle();
         if (nmsis.tag == null) nmsis.tag = new NBTTagCompound();
         NBTTagCompound display = nmsis.tag.getCompound("display");
         if (display == null) display = new NBTTagCompound();
@@ -1181,7 +1181,7 @@ public class RUtils {
         } catch (ClassCastException e) {
             cis = new CraftItemStack(is);
         }
-        net.minecraft.server.ItemStack nmsis = cis.getHandle();
+        net.minecraft.server.v1_4_5.ItemStack nmsis = cis.getHandle();
         if (nmsis.tag == null) nmsis.tag = new NBTTagCompound();
         NBTTagCompound display = nmsis.tag.getCompound("display");
         if (display == null) display = new NBTTagCompound();

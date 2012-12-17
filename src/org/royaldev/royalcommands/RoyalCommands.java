@@ -37,6 +37,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
@@ -277,11 +278,11 @@ public class RoyalCommands extends JavaPlugin {
 
     public boolean isAuthorized(final OfflinePlayer p, final String node) {
         String world = getServer().getWorlds().get(0).getName();
-        return !(p instanceof Player) && !(p != null) || (RoyalCommands.permission.has(world, p.getName(), "rcmds.admin") || RoyalCommands.permission.has(world, p.getName(), node));
+        return !(p instanceof Player) && p == null || (RoyalCommands.permission.has(world, p.getName(), "rcmds.admin") || RoyalCommands.permission.has(world, p.getName(), node));
     }
 
     public boolean isAuthorized(final Player player, final String node) {
-        return !(player != null) || (RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), "rcmds.admin") || RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), node));
+        return player == null || (RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), "rcmds.admin") || RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), node));
     }
 
     public boolean isAuthorized(final CommandSender player, final String node) {
@@ -635,7 +636,8 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Schedule tasks --//
 
-        getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+        BukkitScheduler bs = getServer().getScheduler();
+        bs.runTaskTimerAsynchronously(this, new Runnable() {
             @Override
             public void run() {
                 try {
@@ -660,13 +662,11 @@ public class RoyalCommands extends JavaPlugin {
                     // ignore exceptions
                 }
             }
-
         }, 0, 36000);
-
-        getServer().getScheduler().scheduleAsyncRepeatingTask(this, new AFKWatcher(this), 0, 200);
-        getServer().getScheduler().scheduleAsyncRepeatingTask(this, new BanWatcher(this), 20, 600);
-        getServer().getScheduler().scheduleAsyncRepeatingTask(this, new WarnWatcher(this), 20, 12000);
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20, 100);
+        bs.runTaskTimerAsynchronously(this, new AFKWatcher(this), 0, 200);
+        bs.runTaskTimerAsynchronously(this, new BanWatcher(this), 20, 600);
+        bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20, 12000);
+        bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20, 100);
 
         //-- Get dependencies --//
 
