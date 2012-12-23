@@ -23,6 +23,54 @@ public class CmdFirework implements CommandExecutor {
         plugin = instance;
     }
 
+    /**
+     * Takes an array of tags and applies them to a FireworkMeta.
+     *
+     * @param args Array of tags
+     * @param fm   FireworkMeta to apply tags to
+     * @return Modified FireworkMeta
+     * @throws IllegalArgumentException If one tag is invalid
+     */
+    private FireworkMeta applyEffect(String[] args, FireworkMeta fm) throws IllegalArgumentException {
+        FireworkEffect.Builder feb = FireworkEffect.builder();
+        for (String arg : args) {
+            if (arg.startsWith("fade:")) {
+                arg = arg.substring(5);
+                Color c = getColor(arg);
+                if (c == null) throw new IllegalArgumentException("Invalid fade color!");
+                feb.withFade(c);
+            } else if (arg.startsWith("power:")) {
+                arg = arg.substring(6);
+                int power = toInt(arg);
+                if (power < 0 || power > 128) throw new IllegalArgumentException("Power must be between 0 and 128!");
+                fm.setPower(power);
+            } else if (arg.startsWith("color:")) {
+                arg = arg.substring(6);
+                Color c = getColor(arg);
+                if (c == null) throw new IllegalArgumentException("Invalid color!");
+                feb.withColor(c);
+            } else if (arg.startsWith("shape:")) {
+                FireworkEffect.Type t = getShape(arg.substring(6));
+                if (t == null) throw new IllegalArgumentException("Invalid shape!");
+                feb.with(t);
+            } else if (arg.startsWith("effect:")) {
+                arg = arg.substring(7);
+                if (arg.equalsIgnoreCase("flicker") || arg.equalsIgnoreCase("sparkle") || arg.equalsIgnoreCase("twinkle"))
+                    feb.withFlicker();
+                else if (arg.equalsIgnoreCase("trail")) feb.withTrail();
+                else throw new IllegalArgumentException("Invalid effect!");
+            }
+        }
+        FireworkEffect fe;
+        try {
+            fe = feb.build();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error: " + ChatColor.GRAY + e.getMessage());
+        }
+        fm.addEffect(fe);
+        return fm;
+    }
+
     private FireworkEffect.Type getShape(String c) {
         if (c.equalsIgnoreCase("ball") || c.equalsIgnoreCase("small_ball") || c.equalsIgnoreCase("ball_small")) {
             return FireworkEffect.Type.BALL;
@@ -126,67 +174,37 @@ public class CmdFirework implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "The item in hand is not a firework!");
                 return true;
             }
-            FireworkEffect.Builder feb = FireworkEffect.builder();
             FireworkMeta fm = (FireworkMeta) is.getItemMeta();
-            if (args[0].equalsIgnoreCase("clear")) {
+            if (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("remove")) {
+                if (args.length > 1) {
+                    int effectToRemove;
+                    try {
+                        effectToRemove = Integer.parseInt(args[1]);
+                    } catch (NumberFormatException e) {
+                        cs.sendMessage(ChatColor.RED + "The specified effect was not a number!");
+                        return true;
+                    }
+                    effectToRemove--; // the first effect is really 0, but users will enter 1, so remove 1 from user input
+                    if (effectToRemove < 0 || effectToRemove >= fm.getEffectsSize()) {
+                        cs.sendMessage(ChatColor.RED + "No such effect!");
+                        return true;
+                    }
+                    fm.removeEffect(effectToRemove);
+                    is.setItemMeta(fm);
+                    cs.sendMessage(ChatColor.BLUE + "Removed effect " + ChatColor.GRAY + (effectToRemove + 1) + ChatColor.BLUE + ".");
+                    return true;
+                }
                 fm.clearEffects();
                 is.setItemMeta(fm);
                 cs.sendMessage(ChatColor.BLUE + "Cleared all firework effects.");
                 return true;
             }
-            for (String arg : args) {
-                if (arg.startsWith("fade:")) {
-                    arg = arg.substring(5);
-                    Color c = getColor(arg);
-                    if (c == null) {
-                        cs.sendMessage(ChatColor.RED + "Invalid fade color!");
-                        return true;
-                    }
-                    feb.withFade(c);
-                } else if (arg.startsWith("power:")) {
-                    arg = arg.substring(6);
-                    int power = toInt(arg);
-                    if (power < 0 || power > 128) {
-                        cs.sendMessage(ChatColor.RED + "Power must be between 0 and 128!");
-                        return true;
-                    }
-                    fm.setPower(power);
-                } else if (arg.startsWith("color:")) {
-                    arg = arg.substring(6);
-                    Color c = getColor(arg);
-                    if (c == null) {
-                        cs.sendMessage(ChatColor.RED + "Invalid color!");
-                        return true;
-                    }
-                    feb.withColor(c);
-                } else if (arg.startsWith("shape:")) {
-                    FireworkEffect.Type t = getShape(arg.substring(6));
-                    if (t == null) {
-                        cs.sendMessage(ChatColor.RED + "Invalid shape!");
-                        return true;
-                    }
-                    feb.with(t);
-                } else if (arg.startsWith("effect:")) {
-                    arg = arg.substring(7);
-                    if (arg.equalsIgnoreCase("flicker") || arg.equalsIgnoreCase("sparkle") || arg.equalsIgnoreCase("twinkle"))
-                        feb.withFlicker();
-                    else if (arg.equalsIgnoreCase("trail")) feb.withTrail();
-                    else {
-                        cs.sendMessage(ChatColor.RED + "Invalid effect!");
-                        return true;
-                    }
-                } else {
-                    cs.sendMessage(ChatColor.RED + "Unknown tag " + ChatColor.GRAY + arg + ChatColor.RED + ".");
-                }
-            }
-            FireworkEffect fe;
             try {
-                fe = feb.build();
-            } catch (Exception e) {
-                cs.sendMessage(ChatColor.RED + "Error: " + e.getMessage());
+                fm = applyEffect(args, fm);
+            } catch (IllegalArgumentException e) {
+                cs.sendMessage(ChatColor.RED + e.getMessage());
                 return true;
             }
-            fm.addEffect(fe);
             is.setItemMeta(fm);
             cs.sendMessage(ChatColor.BLUE + "Added effect to firework!");
             return true;
