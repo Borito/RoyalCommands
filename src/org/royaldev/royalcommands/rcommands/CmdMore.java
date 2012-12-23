@@ -30,13 +30,32 @@ public class CmdMore implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
-                for (ItemStack i : p.getInventory()) {
-                    if (i == null || i.getType().equals(Material.AIR)) continue;
-                    i.setAmount(64);
+            if (args.length > 0) {
+                if (args[0].equalsIgnoreCase("all")) {
+                    for (ItemStack i : p.getInventory()) {
+                        if (i == null || i.getType().equals(Material.AIR)) continue;
+                        i.setAmount(64);
+                    }
+                    cs.sendMessage(ChatColor.BLUE + "You have been given more of every item in your inventory.");
+                    return true;
+                } else if (args[0].equalsIgnoreCase("inventory")) {
+                    ItemStack hand = p.getItemInHand();
+                    if (hand.getTypeId() == 0) {
+                        cs.sendMessage(ChatColor.RED + "You can't spawn air!");
+                        return true;
+                    }
+                    hand.setAmount(64);
+                    for (int slot = 0; slot < p.getInventory().getSize(); slot++) {
+                        ItemStack i = p.getInventory().getItem(slot);
+                        if (i != null && i.getType() != Material.AIR) continue;
+                        p.getInventory().setItem(slot, hand);
+                    }
+                    cs.sendMessage(ChatColor.BLUE + "Filled inventory with the item in hand!");
+                    return true;
+                } else {
+                    cs.sendMessage(ChatColor.RED + "Invalid argument!");
+                    return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "You have been given more of every item in your inventory.");
-                return true;
             }
             ItemStack hand = p.getItemInHand();
             if (hand.getTypeId() == 0) {
