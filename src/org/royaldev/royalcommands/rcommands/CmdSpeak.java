@@ -10,7 +10,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdSpeak implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdSpeak(RoyalCommands plugin) {
         this.plugin = plugin;

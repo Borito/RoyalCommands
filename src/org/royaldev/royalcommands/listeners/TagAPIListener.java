@@ -8,7 +8,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class TagAPIListener implements Listener {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public TagAPIListener(RoyalCommands instance) {
         plugin = instance;

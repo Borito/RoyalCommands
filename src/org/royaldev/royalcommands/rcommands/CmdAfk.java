@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class CmdAfk implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdAfk(RoyalCommands instance) {
         this.plugin = instance;

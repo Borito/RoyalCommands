@@ -10,7 +10,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdHeal implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdHeal(RoyalCommands plugin) {
         this.plugin = plugin;

@@ -9,7 +9,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdWhitelist implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdWhitelist(RoyalCommands instance) {
         plugin = instance;

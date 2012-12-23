@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CmdIgnore implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdIgnore(RoyalCommands instance) {
         plugin = instance;

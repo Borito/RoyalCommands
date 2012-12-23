@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class AFKWatcher implements Runnable {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public AFKWatcher(RoyalCommands instance) {
         plugin = instance;

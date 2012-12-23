@@ -18,7 +18,7 @@ import java.util.Date;
 
 public class CmdWhois implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdWhois(RoyalCommands instance) {
         plugin = instance;

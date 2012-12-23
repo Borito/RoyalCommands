@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class CmdWorldManager implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdWorldManager(RoyalCommands instance) {
         plugin = instance;
@@ -33,6 +33,10 @@ public class CmdWorldManager implements CommandExecutor {
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
+            }
+            if (!RoyalCommands.useWorldManager) {
+                cs.sendMessage(ChatColor.RED + "WorldManager is disabled!");
+                return true;
             }
             String command = args[0].toLowerCase();
             if (command.equals("create")) {

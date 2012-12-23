@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.io.File;
@@ -157,6 +158,16 @@ public class YMLPConfManager {
         }
     }
 
+    public void setItemStack(ItemStack value, String path) {
+        if (pconf == null) return;
+        pconf.set(path, value);
+        try {
+            pconf.save(pconfl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Sets a string list in config
      *
@@ -262,6 +273,17 @@ public class YMLPConfManager {
     public Object get(String path) {
         if (pconf == null) return null;
         return pconf.get(path);
+    }
+
+    /**
+     * Gets an ItemStack from config
+     *
+     * @param path Path in the yml to fetch from
+     * @return ItemStack or null if path does not exist or if config doesn't exist
+     */
+    public ItemStack getItemStack(String path) {
+        if (pconf == null) return null;
+        return pconf.getItemStack(path);
     }
 
     /**

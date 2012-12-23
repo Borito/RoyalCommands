@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class CmdRules implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdRules(RoyalCommands instance) {
         this.plugin = instance;

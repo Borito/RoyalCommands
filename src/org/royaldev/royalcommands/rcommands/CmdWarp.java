@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class CmdWarp implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdWarp(RoyalCommands plugin) {
         this.plugin = plugin;

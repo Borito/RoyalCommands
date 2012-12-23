@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class CmdListHome implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdListHome(RoyalCommands plugin) {
         this.plugin = plugin;

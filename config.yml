@@ -339,6 +339,7 @@ change_nametag: false
 ###
 
 worldmanager:
+  enabled: true
   who:
     show_empty_worlds: false
 

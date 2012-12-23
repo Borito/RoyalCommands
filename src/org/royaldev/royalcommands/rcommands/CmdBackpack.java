@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
 import org.royaldev.royalcommands.serializable.SerializableInventory;
 
 import java.io.File;
@@ -17,31 +17,36 @@ import java.util.HashMap;
 @SuppressWarnings("unchecked")
 public class CmdBackpack implements CommandExecutor {
 
-    RoyalCommands plugin;
-
-    public static HashMap<String, SerializableInventory> invs;
+    private RoyalCommands plugin;
 
     public CmdBackpack(RoyalCommands instance) {
         plugin = instance;
+        HashMap<String, SerializableInventory> invs;
+        File f = new File(instance.getDataFolder() + File.separator + "backpacks.sav");
+        if (!f.exists()) return;
         try {
-            invs = (HashMap<String, SerializableInventory>) RUtils.loadHash(instance.getDataFolder() + File.separator + "backpacks.sav");
+            invs = (HashMap<String, SerializableInventory>) RUtils.loadHash(f.getPath());
         } catch (Exception e) {
-            invs = new HashMap<String, SerializableInventory>();
+            f.delete();
+            return;
         }
         if (!invs.keySet().isEmpty()) {
             String name = (String) invs.keySet().toArray()[0];
             Object o = invs.get(name);
-            if (o instanceof SerializableCraftInventory) convertOldBackpacks();
+            if (o instanceof SerializableInventory) convertOldBackpacks(invs);
+            f.delete();
         }
     }
 
-    private void convertOldBackpacks() {
+    private void convertOldBackpacks(HashMap<String, SerializableInventory> invs) {
         plugin.log.info("[RoyalCommands] Converting old backpacks to new system.");
-        invs = new HashMap<String, SerializableInventory>();
-        HashMap<String, SerializableCraftInventory> oldInvs = (HashMap<String, SerializableCraftInventory>) RUtils.loadHash(plugin.getDataFolder() + File.separator + "backpacks.sav");
-        for (String pName : oldInvs.keySet()) {
-            SerializableCraftInventory oldInv = oldInvs.get(pName);
-            invs.put(pName, new SerializableInventory(oldInv.getInventory()));
+        for (String name : invs.keySet()) {
+            SerializableInventory si = invs.get(name);
+            if (si == null) continue;
+            Inventory newBackpack = RUtils.getBackpack(name);
+            if (newBackpack == null) newBackpack = RUtils.getEmptyBackpack();
+            newBackpack.setContents(si.getContents());
+            RUtils.saveBackpack(name, newBackpack);
         }
         plugin.log.info("[RoyalCommands] Backpack conversion complete.");
     }
@@ -62,27 +67,21 @@ public class CmdBackpack implements CommandExecutor {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
-                Player t = plugin.getServer().getPlayer(args[0]);
-                if (t == null || plugin.isVanished(t, p)) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                    return true;
-                }
+                OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
+                if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
                 if (plugin.isAuthorized(t, "rcmds.exempt.backpack")) {
                     RUtils.dispNoPerms(cs, ChatColor.RED + "You cannot access that player's backpack!");
                     return true;
                 }
-                if (!invs.containsKey(t.getName()))
-                    invs.put(t.getName(), new SerializableInventory(36, "Backpack"));
-                Inventory i = invs.get(t.getName()).deserialize();
-                i = RUtils.setHolder(i, t);
+                Inventory i = RUtils.getBackpack(t.getName());
+                if (i == null) {
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
                 p.openInventory(i);
                 return true;
             }
-            if (!invs.containsKey(p.getName())) {
-                invs.put(p.getName(), new SerializableInventory(36, "Backpack"));
-            }
-            Inventory i = invs.get(p.getName()).deserialize();
-            i = RUtils.setHolder(i, p);
+            Inventory i = RUtils.getBackpack(p);
             p.openInventory(i);
             return true;
         }

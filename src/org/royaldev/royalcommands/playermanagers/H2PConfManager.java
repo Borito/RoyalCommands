@@ -1,20 +1,28 @@
 package org.royaldev.royalcommands.playermanagers;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.json.JSONArray;
 import org.royaldev.royalcommands.json.JSONException;
 import org.royaldev.royalcommands.json.JSONObject;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static org.royaldev.royalcommands.Converters.*;
@@ -185,6 +193,15 @@ public class H2PConfManager {
         stmt.close();
     }
 
+    public void setItemStack(ItemStack value, String path) throws SQLException, JSONException {
+        if (value == null) value = new ItemStack(Material.AIR);
+        Map<String, Object> item = value.serialize();
+        ItemMeta im = value.getItemMeta();
+        if (im != null) item.put("rcmdstype", im.getClass().getCanonicalName());
+        String ser = new Gson().toJson(item, new TypeToken<Map<String, Object>>() {}.getType());
+        set(ser, path);
+    }
+
     /**
      * Gets a string list from config
      *
@@ -211,6 +228,29 @@ public class H2PConfManager {
             }
         }
         return l;
+    }
+
+    /**
+     * Gets an ItemStack from the config
+     *
+     * @param path Path in the yml to fetch from
+     * @return ItemStack or null if path does not exist or if config doesn't exist
+     */
+    public ItemStack getItemStack(String path) {
+        Type t = new TypeToken<Map<String, Object>>() {
+        }.getType();
+        Object o = get(path);
+        if (o == null) return null;
+        Map<String, Object> item = new Gson().fromJson(o.toString(), t);
+        Object meta = item.get("meta");
+        String type = (String) item.get("rcmdstype");
+        item.remove("rcmdstype");
+        ItemStack is = ItemStack.deserialize(item);
+        if (meta instanceof LinkedHashMap) {
+            LinkedHashMap<String, Object> metas = (LinkedHashMap<String, Object>) meta;
+            ItemMeta im = is.getItemMeta();
+        }
+        return is;
     }
 
     /**

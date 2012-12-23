@@ -16,7 +16,7 @@ import java.util.Date;
 
 public class CmdBan implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdBan(RoyalCommands plugin) {
         this.plugin = plugin;

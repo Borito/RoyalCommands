@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FreezeWatcher implements Runnable {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public FreezeWatcher(RoyalCommands instance) {
         plugin = instance;

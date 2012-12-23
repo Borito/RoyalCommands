@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class CmdKit implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdKit(RoyalCommands instance) {
         this.plugin = instance;

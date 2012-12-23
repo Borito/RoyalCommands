@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 
 public class CmdMem implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdMem(RoyalCommands instance) {
         plugin = instance;

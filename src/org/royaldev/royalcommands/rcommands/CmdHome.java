@@ -14,7 +14,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdHome implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdHome(RoyalCommands plugin) {
         this.plugin = plugin;

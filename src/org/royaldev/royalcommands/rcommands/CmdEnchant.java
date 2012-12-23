@@ -13,7 +13,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdEnchant implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdEnchant(RoyalCommands instance) {
         plugin = instance;

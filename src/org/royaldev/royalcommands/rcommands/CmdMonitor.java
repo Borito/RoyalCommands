@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class CmdMonitor implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdMonitor(RoyalCommands instance) {
         plugin = instance;

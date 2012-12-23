@@ -13,7 +13,7 @@ import org.royaldev.royalcommands.json.JSONObject;
 
 public class CmdSetHome implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdSetHome(RoyalCommands plugin) {
         this.plugin = plugin;

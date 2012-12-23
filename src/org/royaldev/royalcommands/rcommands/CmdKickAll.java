@@ -9,7 +9,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdKickAll implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdKickAll(RoyalCommands instance) {
         this.plugin = instance;

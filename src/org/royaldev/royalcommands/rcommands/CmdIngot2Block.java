@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class CmdIngot2Block implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdIngot2Block(RoyalCommands instance) {
         this.plugin = instance;

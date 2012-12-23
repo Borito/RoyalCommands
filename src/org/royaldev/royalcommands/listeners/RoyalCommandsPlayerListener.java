@@ -24,6 +24,7 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -33,11 +34,9 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
-import org.royaldev.royalcommands.rcommands.CmdBackpack;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -264,9 +263,10 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         if (!plugin.backpackReset) return;
-        if (!CmdBackpack.invs.containsKey(e.getEntity().getName())) return;
-        CmdBackpack.invs.get(e.getEntity().getName()).clear();
-        RUtils.saveHash(CmdBackpack.invs, plugin.getDataFolder() + File.separator + "backpacks.sav");
+        Player p = e.getEntity();
+        Inventory backpack = RUtils.getBackpack(p);
+        backpack.clear();
+        RUtils.saveBackpack(p, backpack);
     }
 
     @EventHandler
@@ -275,9 +275,9 @@ public class RoyalCommandsPlayerListener implements Listener {
         InventoryHolder ih = e.getInventory().getHolder();
         if (!(ih instanceof CommandSender)) return;
         Player p = (Player) ih;
-        if (!CmdBackpack.invs.containsKey(p.getName())) return;
-        CmdBackpack.invs.get(p.getName()).setContents(e.getInventory().getContents());
-        RUtils.saveHash(CmdBackpack.invs, plugin.getDataFolder() + File.separator + "backpacks.sav");
+        Inventory backpack = RUtils.getBackpack(p);
+        backpack.setContents(e.getInventory().getContents());
+        RUtils.saveBackpack(p, backpack);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

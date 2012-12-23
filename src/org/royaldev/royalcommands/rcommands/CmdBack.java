@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class CmdBack implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdBack(RoyalCommands plugin) {
         this.plugin = plugin;

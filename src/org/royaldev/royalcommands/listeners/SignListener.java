@@ -19,7 +19,7 @@ import org.royaldev.royalcommands.rcommands.CmdWeather;
 
 public class SignListener implements Listener {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public SignListener(RoyalCommands instance) {
         this.plugin = instance;

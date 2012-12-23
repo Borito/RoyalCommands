@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class CmdJail implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdJail(RoyalCommands instance) {
         this.plugin = instance;

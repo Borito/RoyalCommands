@@ -13,7 +13,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 @SuppressWarnings("unused")
 public class CmdNick implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdNick(RoyalCommands instance) {
         this.plugin = instance;

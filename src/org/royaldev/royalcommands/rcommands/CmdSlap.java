@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class CmdSlap implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdSlap(RoyalCommands plugin) {
         this.plugin = plugin;

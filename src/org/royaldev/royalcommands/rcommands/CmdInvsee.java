@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class CmdInvsee implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdInvsee(RoyalCommands instance) {
         this.plugin = instance;

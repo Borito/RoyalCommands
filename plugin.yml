@@ -691,6 +691,16 @@ commands:
     usage: /<command> [name]
     aliases: [setlore]
 
+  setuserdata:
+    description: Sets a userdata value for a player.
+    usage: /<command> [name] [node] [value]
+    aliases: [sud, ud, userdata]
+
+  firework:
+    description: Sets effects on fireworks.
+    usage: /<command> [tags]
+    aliases: [fw]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1122,6 +1132,12 @@ permissions:
     default: op
   rcmds.lore:
     description: Allows you to set lore on an item.
+    default: op
+  rcmds.setuserdata:
+    description: Allows you to set userdata.
+    default: op
+  rcmds.firework:
+    description: Allows you to set firework effects.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1610,6 +1626,8 @@ permissions:
       rcmds.deafen: true
       rcmds.rename: true
       rcmds.lore: true
+      rcmds.setuserdata: true
+      rcmds.firework: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1876,6 +1894,8 @@ permissions:
       rcmds.deafen: true
       rcmds.rename: true
       rcmds.lore: true
+      rcmds.setuserdata: true
+      rcmds.firework: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

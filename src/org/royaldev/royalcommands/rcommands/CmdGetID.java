@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class CmdGetID implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdGetID(RoyalCommands instance) {
         this.plugin = instance;

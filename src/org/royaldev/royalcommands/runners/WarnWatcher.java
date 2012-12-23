@@ -10,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class WarnWatcher implements Runnable {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public WarnWatcher(RoyalCommands instance) {
         plugin = instance;

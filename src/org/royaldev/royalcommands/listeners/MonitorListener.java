@@ -34,12 +34,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class MonitorListener implements Listener {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public MonitorListener(RoyalCommands instance) {
         plugin = instance;
     }
-
     private Player getVP(Player p) {
         String name = CmdMonitor.viewees.get(p.getName());
         if (name == null) return null;

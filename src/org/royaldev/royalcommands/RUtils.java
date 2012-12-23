@@ -1,9 +1,6 @@
 package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import net.minecraft.server.v1_4_5.NBTTagCompound;
-import net.minecraft.server.v1_4_5.NBTTagList;
-import net.minecraft.server.v1_4_5.NBTTagString;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,7 +9,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -20,6 +16,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.royaldev.royalchat.RoyalChat;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
@@ -732,7 +729,6 @@ public class RUtils {
      * @return HashMap
      */
     public static HashMap loadHash(String path) {
-
         try {
             if (!new File(path).exists()) {
                 new File(path).createNewFile();
@@ -905,6 +901,30 @@ public class RUtils {
         }
         w = RoyalCommands.wm.getWorld(name);
         return w;
+    }
+
+    public static String getRChatGroupPrefix(final String s) {
+        try {
+            Class.forName("org.royaldev.royalchat.DataManager");
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
+        String prefix = rc.dm.getGroupPrefix(s);
+        if (prefix.isEmpty()) prefix = null;
+        return prefix;
+    }
+
+    public static String getRChatGroupSuffix(final String s) {
+        try {
+            Class.forName("org.royaldev.royalchat.DataManager");
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
+        String suffix = rc.dm.getGroupSuffix(s);
+        if (suffix.isEmpty()) suffix = null;
+        return suffix;
     }
 
     public static String getRChatPrefix(final Player p) {
@@ -1125,21 +1145,10 @@ public class RUtils {
      */
     public static ItemStack renameItem(ItemStack is, String newName) {
         if (newName == null) return is;
-        CraftItemStack cis;
-        try { // This allows one to use newly created Bukkit ItemStacks and ItemStacks already with CIS components
-            cis = (CraftItemStack) is;
-        } catch (ClassCastException e) {
-            cis = new CraftItemStack(is);
-        }
-        net.minecraft.server.v1_4_5.ItemStack nms = cis.getHandle();
-        NBTTagCompound tag = nms.tag;
-        if (tag == null) tag = new NBTTagCompound();
-        NBTTagCompound display = tag.getCompound("display");
-        if (display == null) display = new NBTTagCompound();
-        display.setString("Name", newName);
-        tag.setCompound("display", display);
-        nms.tag = tag;
-        return cis;
+        ItemMeta im = is.getItemMeta();
+        im.setDisplayName(newName);
+        is.setItemMeta(im);
+        return is;
     }
 
     /**
@@ -1150,22 +1159,14 @@ public class RUtils {
      * @return ItemStack with added lore
      */
     public static ItemStack addLore(ItemStack is, String newLore) {
-        CraftItemStack cis;
-        try {
-            cis = (CraftItemStack) is;
-        } catch (ClassCastException e) {
-            cis = new CraftItemStack(is);
-        }
-        net.minecraft.server.v1_4_5.ItemStack nmsis = cis.getHandle();
-        if (nmsis.tag == null) nmsis.tag = new NBTTagCompound();
-        NBTTagCompound display = nmsis.tag.getCompound("display");
-        if (display == null) display = new NBTTagCompound();
-        NBTTagList nbttl = (display.getList("Lore") == null) ? new NBTTagList("Lore") : display.getList("Lore");
-        String[] lores = newLore.split("\\n");
-        for (String l : lores) nbttl.add(new NBTTagString("", RUtils.colorize(l)));
-        display.set("Lore", nbttl);
-        nmsis.tag.set("display", display);
-        return cis;
+        if (newLore == null) return is;
+        ItemMeta im = is.getItemMeta();
+        List<String> lores = im.getLore();
+        if (lores == null) lores = new ArrayList<String>();
+        lores.add(newLore);
+        im.setLore(lores);
+        is.setItemMeta(im);
+        return is;
     }
 
     /**
@@ -1175,18 +1176,50 @@ public class RUtils {
      * @return ItemStack with no lore
      */
     public static ItemStack clearLore(ItemStack is) {
-        CraftItemStack cis;
-        try {
-            cis = (CraftItemStack) is;
-        } catch (ClassCastException e) {
-            cis = new CraftItemStack(is);
+        ItemMeta im = is.getItemMeta();
+        im.setLore(null);
+        is.setItemMeta(im);
+        return is;
+    }
+
+    public static Inventory getEmptyBackpack() {
+        return Bukkit.createInventory(null, 36, "Backpack");
+    }
+
+    public static Inventory getBackpack(Player p) {
+        PConfManager pcm = new PConfManager(p);
+        if (!pcm.exists()) pcm.createFile();
+        Integer invSize = pcm.getInteger("backpack.size");
+        if (invSize == null || invSize < 9) invSize = 36;
+        if (invSize % 9 != 0) invSize = 36;
+        final Inventory i = Bukkit.createInventory(p, invSize, "Backpack");
+        if (pcm.get("backpack.item") == null) return i;
+        for (int slot = 0; slot < invSize; slot++) {
+            ItemStack is = pcm.getItemStack("backpack.item." + slot);
+            if (is == null) continue;
+            i.setItem(slot, is);
         }
-        net.minecraft.server.v1_4_5.ItemStack nmsis = cis.getHandle();
-        if (nmsis.tag == null) nmsis.tag = new NBTTagCompound();
-        NBTTagCompound display = nmsis.tag.getCompound("display");
-        if (display == null) display = new NBTTagCompound();
-        display.set("Lore", new NBTTagList("Lore"));
-        nmsis.tag.set("display", display);
-        return cis;
+        return i;
+    }
+
+    public static Inventory getBackpack(String name) {
+        return getBackpack(new DummyPlayer(name));
+    }
+
+    public static void saveBackpack(String name, Inventory i) {
+        saveBackpack(new DummyPlayer(name), i);
+    }
+
+    public static void saveBackpack(Player p, Inventory i) {
+        PConfManager pcm = new PConfManager(p);
+        for (int slot = 0; slot < i.getSize(); slot++) {
+            ItemStack is = i.getItem(slot);
+            if (is == null) {
+                pcm.setItemStack(null, "backpack.item." + slot);
+                continue;
+            }
+            pcm.setItemStack(is, "backpack.item." + slot);
+        }
+        pcm.setInteger(i.getSize(), "backpack.size");
     }
 }

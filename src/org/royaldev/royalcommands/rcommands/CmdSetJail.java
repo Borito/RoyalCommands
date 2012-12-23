@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class CmdSetJail implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdSetJail(RoyalCommands plugin) {
         this.plugin = plugin;

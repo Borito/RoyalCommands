@@ -9,7 +9,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdRcmds implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdRcmds(RoyalCommands plugin) {
         this.plugin = plugin;

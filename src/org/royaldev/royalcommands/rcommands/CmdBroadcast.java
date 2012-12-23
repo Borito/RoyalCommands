@@ -8,7 +8,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdBroadcast implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdBroadcast(RoyalCommands instance) {
         this.plugin = instance;

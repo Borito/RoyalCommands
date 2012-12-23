@@ -94,7 +94,7 @@ public class RoyalCommands extends JavaPlugin {
     public static Map<String, Map<String, Object>> commands = null;
     public static File dataFolder;
     public static ItemNameManager inm;
-    public static WorldManager wm;
+    public static WorldManager wm = null;
 
     public static RoyalCommands instance;
 
@@ -179,6 +179,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean wmShowEmptyWorlds = null;
     public Boolean timeBroadcast = null;
     public Boolean worldAccessPerm = null;
+    public static Boolean useWorldManager = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
     public static Boolean safeTeleport = null;
@@ -429,6 +430,7 @@ public class RoyalCommands extends JavaPlugin {
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         timeBroadcast = c.getBoolean("broadcast_time_changes", false);
         worldAccessPerm = c.getBoolean("enable_worldaccess_perm", false);
+        useWorldManager = c.getBoolean("worldmanager.enabled", true);
 
         banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
@@ -484,6 +486,7 @@ public class RoyalCommands extends JavaPlugin {
 
         Help.reloadHelp();
 
+        if (wm == null) wm = new WorldManager();
         wm.reloadConfig();
 
         try {
@@ -588,8 +591,6 @@ public class RoyalCommands extends JavaPlugin {
         commands = getDescription().getCommands();
 
         version = getDescription().getVersion();
-
-        wm = new WorldManager();
 
         //-- Hidendra's Metrics --//
 
@@ -833,6 +834,8 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdDeafen(this), "deafen", this);
         registerCommand(new CmdRename(this), "rename", this);
         registerCommand(new CmdLore(this), "lore", this);
+        registerCommand(new CmdSetUserdata(this), "setuserdata", this);
+        registerCommand(new CmdFirework(this), "firework", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Config converter (YML -> H2) --//

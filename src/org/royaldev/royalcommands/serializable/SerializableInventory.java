@@ -1,10 +1,7 @@
 package org.royaldev.royalcommands.serializable;
 
-import net.minecraft.server.v1_4_5.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -14,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -23,40 +19,10 @@ public class SerializableInventory implements Inventory, Serializable {
 
     static final long serialVersionUID = -42L;
     private final Map<Integer, Map<String, Object>> contents = new HashMap<Integer, Map<String, Object>>();
-    // HashMaps hate me? Hashtable is working right now
-    //private final Map<Integer, SerializableNBTTagCompound> tags = new HashMap<Integer, SerializableNBTTagCompound>();
-    private final Hashtable<Integer, SerializableNBTTagCompound> tags = new Hashtable<Integer, SerializableNBTTagCompound>();
-    private final Hashtable<Integer, Map<SerializableCraftEnchantment, Integer>> enchants = new Hashtable<Integer, Map<SerializableCraftEnchantment, Integer>>();
     private int maxStackSize = 64;
     private int size = 27;
     private String name = "Inventory";
     private String title = "Inventory";
-
-    private CraftItemStack getCIS(ItemStack is) {
-        CraftItemStack cis;
-        try {
-            cis = (CraftItemStack) is;
-        } catch (ClassCastException e) {
-            cis = new CraftItemStack(is);
-        }
-        return cis;
-    }
-
-    private ItemStack setTag(ItemStack is, int slot) {
-        if (tags.containsKey(slot)) {
-            CraftItemStack cis = getCIS(is);
-            SerializableNBTTagCompound stag = tags.get(slot);
-            if (stag != null) cis.getHandle().tag = stag.getNBTTagCompound();
-            is = cis;
-        }
-        if (enchants.containsKey(slot)) {
-            Map<SerializableCraftEnchantment, Integer> encs = enchants.get(slot);
-            for (SerializableCraftEnchantment sce : encs.keySet()) {
-                is.addUnsafeEnchantment(sce.getEnchantment(), encs.get(sce));
-            }
-        }
-        return is;
-    }
 
     public SerializableInventory(final int size) {
         if (size % 9 != 0) return;
@@ -116,7 +82,6 @@ public class SerializableInventory implements Inventory, Serializable {
                     i.setItem(in, null);
                     continue;
                 }
-                is = setTag(is, in);
                 i.setItem(in, is);
             }
         }
@@ -166,15 +131,6 @@ public class SerializableInventory implements Inventory, Serializable {
                 contents.put(i, new HashMap<String, Object>());
                 return;
             }
-            CraftItemStack cis = getCIS(itemStack);
-            NBTTagCompound tag = cis.getHandle().tag;
-            SerializableNBTTagCompound stag = (tag == null) ? null : new SerializableNBTTagCompound(tag);
-            tags.put(i, stag);
-            Map<SerializableCraftEnchantment, Integer> encs = new HashMap<SerializableCraftEnchantment, Integer>();
-            for (Enchantment e : itemStack.getEnchantments().keySet()) {
-                encs.put(new SerializableCraftEnchantment(e), itemStack.getEnchantments().get(e));
-            }
-            enchants.put(i, encs);
             contents.put(i, itemStack.serialize());
         }
     }
@@ -230,16 +186,7 @@ public class SerializableInventory implements Inventory, Serializable {
                     contents.put(i, new HashMap<String, Object>());
                     continue;
                 }
-                CraftItemStack cis = getCIS(is);
-                NBTTagCompound tag = cis.getHandle().tag;
-                SerializableNBTTagCompound stag = (tag == null) ? new SerializableNBTTagCompound(new NBTTagCompound()) : new SerializableNBTTagCompound(tag);
-                tags.put(i, stag);
                 contents.put(i, is.serialize());
-                Map<SerializableCraftEnchantment, Integer> encs = new HashMap<SerializableCraftEnchantment, Integer>();
-                for (Enchantment e : is.getEnchantments().keySet()) {
-                    encs.put(new SerializableCraftEnchantment(e), is.getEnchantments().get(e));
-                }
-                enchants.put(i, encs);
             }
         }
     }
@@ -272,6 +219,11 @@ public class SerializableInventory implements Inventory, Serializable {
     @Override
     public boolean contains(ItemStack itemStack, int i) {
         return deserialize().contains(itemStack, i);
+    }
+
+    @Override
+    public boolean containsAtLeast(ItemStack itemStack, int i) {
+        return deserialize().containsAtLeast(itemStack, i);
     }
 
     @Override

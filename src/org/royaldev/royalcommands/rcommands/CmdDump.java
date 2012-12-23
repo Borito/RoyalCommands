@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class CmdDump implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdDump(RoyalCommands instance) {
         plugin = instance;

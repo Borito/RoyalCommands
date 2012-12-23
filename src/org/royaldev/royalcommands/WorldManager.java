@@ -84,6 +84,7 @@ public class WorldManager {
     private final Logger log = RoyalCommands.instance.getLogger();
 
     public WorldManager() {
+        if (!RoyalCommands.useWorldManager) return;
         if (!config.exists()) config.createFile();
         if (config.getConfigurationSection("worlds") != null) {
             synchronized (configuredWorlds) {

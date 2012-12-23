@@ -13,7 +13,7 @@ import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 
 public class CmdHelmet implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdHelmet(RoyalCommands instance) {
         plugin = instance;

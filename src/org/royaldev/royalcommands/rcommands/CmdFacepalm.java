@@ -10,10 +10,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdFacepalm implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
-    public CmdFacepalm(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdFacepalm(RoyalCommands instance) {
+        plugin = instance;
     }
 
     @Override

@@ -13,7 +13,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdSpawn implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdSpawn(RoyalCommands plugin) {
         this.plugin = plugin;

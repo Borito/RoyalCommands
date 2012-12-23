@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CmdEntities implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdEntities(RoyalCommands instance) {
         this.plugin = instance;

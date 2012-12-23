@@ -103,12 +103,16 @@ public class CmdList implements CommandExecutor {
         try {
             format = format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getGroupPrefix(plugin.getServer().getWorlds().get(0), group));
         } catch (Exception e) {
-            format = format.replaceAll("(?i)\\{prefix\\}", "");
+            String prefix = RUtils.getRChatGroupPrefix(group);
+            if (prefix != null) format = format.replace("{prefix}", prefix);
+            else format = format.replace("{prefix}", "");
         }
         try {
             format = format.replaceAll("(?i)\\{suffix\\}", RoyalCommands.chat.getGroupSuffix(plugin.getServer().getWorlds().get(0), group));
         } catch (Exception e) {
-            format = format.replaceAll("(?i)\\{suffix\\}", "");
+            String suffix = RUtils.getRChatGroupSuffix(group);
+            if (suffix != null) format = format.replace("{suffix}", suffix);
+            else format = format.replace("{suffix}", "");
         }
         format = format.replace("{group}", group);
         format = RUtils.colorize(format);
@@ -120,7 +124,9 @@ public class CmdList implements CommandExecutor {
         try {
             format = format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getPlayerPrefix(p));
         } catch (Exception e) {
-            format = format.replaceAll("(?i)\\{prefix\\}", "");
+            String prefix = RUtils.getRChatPrefix(p);
+            if (prefix != null) format = format.replace("{prefix}", prefix);
+            else format = format.replace("{prefix}", "");
         }
         try {
             format = format.replaceAll("(?i)\\{group\\}", RoyalCommands.permission.getPrimaryGroup(p));
@@ -130,7 +136,9 @@ public class CmdList implements CommandExecutor {
         try {
             format = format.replaceAll("(?i)\\{suffix\\}", RoyalCommands.chat.getPlayerSuffix(p));
         } catch (Exception e) {
-            format = format.replaceAll("(?i)\\{suffix\\}", "");
+            String suffix = RUtils.getRChatSuffix(p);
+            if (suffix != null) format = format.replace("{suffix}", suffix);
+            else format = format.replace("{suffix}", "");
         }
         format = format.replaceAll("(?i)\\{name\\}", p.getName());
         format = format.replaceAll("(?i)\\{dispname\\}", p.getDisplayName());

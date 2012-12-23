@@ -12,7 +12,7 @@ import java.text.DecimalFormat;
 
 public class CmdLag implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdLag(RoyalCommands instance) {
         plugin = instance;

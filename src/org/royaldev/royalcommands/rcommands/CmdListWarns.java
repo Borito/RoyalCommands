@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CmdListWarns implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdListWarns(RoyalCommands plugin) {
         this.plugin = plugin;

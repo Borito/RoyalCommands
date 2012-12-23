@@ -7,7 +7,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class BanWatcher implements Runnable {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public BanWatcher(RoyalCommands instance) {
         plugin = instance;

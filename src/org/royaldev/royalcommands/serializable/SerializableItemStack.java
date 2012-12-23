@@ -1,11 +1,14 @@
 package org.royaldev.royalcommands.serializable;
 
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,14 +41,11 @@ public class SerializableItemStack implements Serializable {
      * Map containing enchantments and their respective levels on this ItemStack - defaults to an empty map
      */
     private Map<SerializableCraftEnchantment, Integer> enchantments = new HashMap<SerializableCraftEnchantment, Integer>();
-    /**
-     * Material data on this ItemStack - defaults to 0
-     */
-    private byte materialData = 0;
-    /**
-     * The tag on the ItemStack, commonly used for written book data - defaults to null
-     */
-    private SerializableNBTTagCompound tag = null;
+    private List<String> bookPages = null;
+    private String bookTitle = null;
+    private String bookAuthor = null;
+    private final List<String> lores = new ArrayList<String>();
+    private String displayName = null;
 
     /**
      * Serializable ItemStack for saving to files.
@@ -59,8 +59,15 @@ public class SerializableItemStack implements Serializable {
         for (Enchantment e : i.getEnchantments().keySet())
             enchantments.put(new SerializableCraftEnchantment(e), i.getEnchantments().get(e));
         type = i.getTypeId();
-        materialData = i.getData().getData();
-        tag = new SerializableNBTTagCompound(((CraftItemStack) i).getHandle().getTag());
+        ItemMeta im = i.getItemMeta();
+        if (im instanceof BookMeta) {
+            BookMeta bm = (BookMeta) im;
+            bookPages = bm.getPages();
+            bookAuthor = bm.getAuthor();
+            bookTitle = bm.getTitle();
+        }
+        lores.addAll(im.getLore());
+        displayName = im.getDisplayName();
     }
 
     /**
@@ -69,12 +76,21 @@ public class SerializableItemStack implements Serializable {
      * @return Original ItemStack
      */
     public ItemStack getItemStack() {
-        CraftItemStack cis = new CraftItemStack(type, amount, durability, materialData);
-        if (tag != null) cis.getHandle().setTag(tag.getNBTTagCompound());
-        cis.setDurability(durability);
+        ItemStack is = new ItemStack(type, amount, durability);
+        is.setDurability(durability);
         for (SerializableCraftEnchantment sce : enchantments.keySet())
-            cis.addUnsafeEnchantment(sce.getEnchantment(), enchantments.get(sce));
-        return cis;
+            is.addUnsafeEnchantment(sce.getEnchantment(), enchantments.get(sce));
+        ItemMeta im = is.getItemMeta();
+        if (im instanceof BookMeta) {
+            BookMeta bm = (BookMeta) im;
+            if (bookTitle != null) bm.setTitle(bookTitle);
+            if (bookAuthor != null) bm.setAuthor(bookAuthor);
+            if (bookPages != null) bm.setPages(bookPages);
+        }
+        im.setDisplayName(displayName);
+        im.setLore(lores);
+        is.setItemMeta(im);
+        return is;
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class CmdFurnace implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdFurnace(RoyalCommands instance) {
         plugin = instance;

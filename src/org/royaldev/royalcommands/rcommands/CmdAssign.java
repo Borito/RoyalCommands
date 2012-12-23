@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class CmdAssign implements CommandExecutor {
 
-    RoyalCommands plugin;
+    private RoyalCommands plugin;
 
     public CmdAssign(RoyalCommands instance) {
         this.plugin = instance;

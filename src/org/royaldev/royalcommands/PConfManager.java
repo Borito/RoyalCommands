@@ -2,6 +2,7 @@ package org.royaldev.royalcommands;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.json.JSONObject;
 import org.royaldev.royalcommands.playermanagers.H2PConfManager;
 import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
@@ -223,6 +224,11 @@ public class PConfManager {
         else return ymlpcm.getInteger(node);
     }
 
+    public ItemStack getItemStack(String node) {
+        if (useH2) return h2pcm.getItemStack(node);
+        else return ymlpcm.getItemStack(node);
+    }
+
     /**
      * Gets an object from the userdata.
      *
@@ -334,6 +340,16 @@ public class PConfManager {
                 e.printStackTrace();
             }
         } else ymlpcm.set(value, path);
+    }
+
+    public void setItemStack(ItemStack value, String path) {
+        if (useH2) {
+            try {
+                h2pcm.setItemStack(value, path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else ymlpcm.setItemStack(value, path);
     }
 
     /**
