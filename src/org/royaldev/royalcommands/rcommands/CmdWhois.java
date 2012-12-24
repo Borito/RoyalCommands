@@ -34,8 +34,9 @@ public class CmdWhois implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-            if (!t.hasPlayedBefore()) {
+            OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
+            if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
+            if (!t.isOnline() && !t.hasPlayedBefore()) {
                 cs.sendMessage(ChatColor.RED + "That player has never played before!");
                 return true;
             }
