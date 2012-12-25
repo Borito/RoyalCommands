@@ -31,7 +31,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -41,7 +40,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
-import org.royaldev.royalcommands.json.JSONArray;
 import org.royaldev.royalcommands.json.JSONException;
 import org.royaldev.royalcommands.json.JSONObject;
 import org.royaldev.royalcommands.listeners.MonitorListener;
@@ -51,12 +49,12 @@ import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.opencsv.CSVReader;
-import org.royaldev.royalcommands.playermanagers.H2PConfManager;
 import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
+import org.royaldev.royalcommands.runners.UserdataSaver;
 import org.royaldev.royalcommands.runners.WarnWatcher;
 
 import java.io.BufferedReader;
@@ -70,12 +68,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -98,7 +94,6 @@ public class RoyalCommands extends JavaPlugin {
 
     public static RoyalCommands instance;
 
-    public final Map<String, H2PConfManager> h2s = new HashMap<String, H2PConfManager>();
     public final Map<String, YMLPConfManager> ymls = new HashMap<String, YMLPConfManager>();
     public final Map<String, FileConfiguration> confs = new HashMap<String, FileConfiguration>();
 
@@ -173,12 +168,12 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean changeNameTag = null;
     public Boolean dumpCreateChest = null;
     public Boolean dumpUseInv = null;
-    public Boolean useH2 = null;
     public Boolean h2Convert = null;
     public Boolean ymlConvert = null;
     public Boolean wmShowEmptyWorlds = null;
     public Boolean timeBroadcast = null;
     public Boolean worldAccessPerm = null;
+    public Boolean saveUDOnChange = null; // save userdata every change (true) or every x minutes (false)
     public static Boolean useWorldManager = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
@@ -209,6 +204,7 @@ public class RoyalCommands extends JavaPlugin {
     public String tempbanFormat = null;
     public String igUnbanFormat = null;
     public String ipBanFormat = null;
+    public String saveInterval = null;
 
     //-- Integers --//
 
@@ -424,13 +420,13 @@ public class RoyalCommands extends JavaPlugin {
         changeNameTag = c.getBoolean("change_nametag", false);
         dumpCreateChest = c.getBoolean("dump_create_chest", true);
         dumpUseInv = c.getBoolean("dump_use_inv", true);
-        useH2 = c.getBoolean("use_h2", false);
         h2Convert = c.getBoolean("h2.convert", false);
         ymlConvert = c.getBoolean("yml_convert", false);
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         timeBroadcast = c.getBoolean("broadcast_time_changes", false);
         worldAccessPerm = c.getBoolean("enable_worldaccess_perm", false);
         useWorldManager = c.getBoolean("worldmanager.enabled", true);
+        saveUDOnChange = c.getBoolean("save.save_on_change", false);
 
         banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
@@ -455,6 +451,7 @@ public class RoyalCommands extends JavaPlugin {
         tempbanFormat = c.getString("tempban_format", "&4Tempbanned&r: {length}&r\nFor {reason}&r by {dispname}");
         igUnbanFormat = c.getString("ingame_unban_message", "&7{kdispname}&9 was unbanned by &7{dispname}&9.");
         ipBanFormat = c.getString("ipban_format", "&4IP Banned&r: &7{ip}&r has been banned from this server.");
+        saveInterval = c.getString("save.save_on_interval", "10m");
 
         defaultStack = c.getInt("default_stack_size", 64);
         spawnmobLimit = c.getInt("spawnmob_limit", 15);
@@ -607,18 +604,6 @@ public class RoyalCommands extends JavaPlugin {
         loadConfiguration();
         reloadConfigVals();
 
-        //-- Download external libraries --//
-
-        if (!new File("lib", "h2.jar").exists() && useH2) {
-            getLogger().info("Downloading H2 driver...");
-            if (RUtils.downloadFile("http://cdn.royaldev.org/plugindeps/h2.jar", "lib" + File.separator + "h2.jar")) {
-                getLogger().info("Finished downloading.");
-                getLogger().warning("Please restart CraftBukkit to load the H2 driver! Disabling plugin.");
-                setEnabled(false);
-                return;
-            } else getLogger().severe("Could not download h2.jar!");
-        }
-
         //-- Check CB version --//
 
         if (!versionCheck()) {
@@ -668,6 +653,10 @@ public class RoyalCommands extends JavaPlugin {
         bs.runTaskTimerAsynchronously(this, new BanWatcher(this), 20, 600);
         bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20, 12000);
         bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20, 100);
+
+        int every = RUtils.timeFormatToSeconds(saveInterval);
+        if (every < 1) every = 600; // 600s = 10m
+        bs.runTaskTimerAsynchronously(this, new UserdataSaver(this), 20, every * 20); // tick = 1/20s
 
         //-- Get dependencies --//
 
@@ -838,99 +827,9 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdFirework(this), "firework", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
-        //-- Config converter (YML -> H2) --//
-
-        if (h2Convert) {
-            useH2 = false;
-            PConfManager.updateH2Status();
-            for (OfflinePlayer op : getServer().getOfflinePlayers()) {
-                PConfManager pcm = new PConfManager(op);
-                if (!pcm.exists()) continue;
-                getLogger().info("Converting userdata for " + op.getName() + "...");
-                H2PConfManager h2pcm;
-                try {
-                    h2pcm = new H2PConfManager(op);
-                } catch (SQLException e) {
-                    getLogger().warning("Could not convert userdata for " + op.getName() + ": " + e.getMessage());
-                    continue;
-                } catch (JSONException e) {
-                    getLogger().warning("Could not convert userdata for " + op.getName() + ": " + e.getMessage());
-                    continue;
-                }
-                Set<String> data = ((YMLPConfManager) pcm.getRealManager()).getConfigurationSection("").getKeys(true);
-                for (String key : data) {
-                    Object value = pcm.get(key);
-                    if (value instanceof MemorySection) {
-                        MemorySection ms = (MemorySection) value;
-                        Set<String> keys = ms.getKeys(true);
-                        for (String s : keys) {
-                            try {
-                                h2pcm.set(ms.get(s), ms.getCurrentPath() + "." + s);
-                            } catch (JSONException ignored) {
-                            } catch (SQLException ignored) {
-                            }
-                        }
-                        continue;
-                    }
-                    try {
-                        h2pcm.set(value, key);
-                    } catch (JSONException ignored) {
-                    } catch (SQLException ignored) {
-                    }
-                }
-            }
-            useH2 = true;
-            h2s.clear();
-            ymls.clear();
-            PConfManager.updateH2Status();
-            getLogger().info("YML -> H2 userdata conversion complete. Please restart with convert set to false.");
-        }
-
         //-- Config converter (H2 -> YML) --//
 
-        if (ymlConvert) {
-            useH2 = true;
-            PConfManager.updateH2Status();
-            for (OfflinePlayer op : getServer().getOfflinePlayers()) {
-                PConfManager pcm = new PConfManager(op);
-                getLogger().info("Converting userdata for " + op.getName() + "...");
-                YMLPConfManager ymlpcm = new YMLPConfManager(op);
-                if (!ymlpcm.exists()) if (!ymlpcm.createFile()) continue;
-                JSONArray names = ((H2PConfManager) pcm.getRealManager()).getJSONObject("").names();
-                for (int i = 0; i < names.length(); i++) {
-                    String key = names.optString(i);
-                    if (key == null) continue;
-                    Object value = pcm.get(key);
-                    if (value instanceof JSONObject) {
-                        JSONObject jo = (JSONObject) value;
-                        JSONArray ks = jo.names();
-                        for (int x = 0; x < ks.length(); x++) {
-                            String k = ks.optString(x);
-                            if (k == null) continue;
-                            String path = key + "." + k;
-                            Object v = jo.opt(k);
-                            if (v instanceof JSONObject) { // I really don't want to nest this much
-                                JSONObject j = (JSONObject) v;
-                                JSONArray js = j.names();
-                                for (int z = 0; z < js.length(); z++) {
-                                    String q = js.optString(z);
-                                    if (q == null) continue;
-                                    ymlpcm.set(j.opt(q), path + "." + q);
-                                }
-                                continue;
-                            }
-                            ymlpcm.set(v, path);
-                        }
-                        continue;
-                    }
-                    ymlpcm.set(value, key);
-                }
-                ymlpcm.forceSave();
-            }
-            useH2 = false;
-            h2s.clear();
-            ymls.clear();
-            PConfManager.updateH2Status();
+        if (ymlConvert) { // rewrite based on home convert
             getLogger().info("H2 -> YML userdata conversion complete. Please restart with convert set to false.");
         }
 
@@ -952,17 +851,20 @@ public class RoyalCommands extends JavaPlugin {
 
         getServer().getScheduler().cancelTasks(this);
 
-        //-- Restart the H2 database if being used --//
+        //-- Save inventories --//
 
-        try {
-            if (useH2 && c != null) c.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        WorldManager.il.saveAllInventories();
+
+        //-- Save all userdata if not save on change --//
+
+        if (!saveUDOnChange) {
+            for (YMLPConfManager ymlpcm : ymls.values()) {
+                ymlpcm.forceSave();
+            }
         }
 
         //-- Remove userdata handlers --//
 
-        h2s.clear();
         ymls.clear();
 
         //-- We're done! --//

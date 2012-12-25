@@ -33,7 +33,6 @@ import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
 
@@ -122,11 +121,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void saveData(PlayerQuitEvent e) {
-        PConfManager pcm = new PConfManager(e.getPlayer());
-        Object rm = pcm.getRealManager();
-        if (!(rm instanceof YMLPConfManager)) return;
-        YMLPConfManager ypcm = (YMLPConfManager) rm;
-        ypcm.forceSave();
+        new PConfManager(e.getPlayer()).save();
     }
 
     @EventHandler
@@ -499,12 +494,12 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer() == null) return;
         PConfManager pcm = new PConfManager(event.getPlayer());
-        if (!pcm.exists() || (plugin.useH2 && pcm.getJSONObject("").length() < 1)) {
+        if (!pcm.exists()) {
             log.info("[RoyalCommands] Creating userdata for " + event.getPlayer().getName() + ".");
             String dispname = event.getPlayer().getDisplayName();
             if (dispname == null || dispname.trim().equals(""))
                 dispname = event.getPlayer().getName();
-            boolean success = plugin.useH2 || pcm.createFile();
+            boolean success = pcm.createFile();
             if (!success)
                 log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
             else {

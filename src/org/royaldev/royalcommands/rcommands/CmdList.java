@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class CmdList implements CommandExecutor {
 
-    static RoyalCommands plugin;
+    private static RoyalCommands plugin;
 
     public CmdList(RoyalCommands plugin) {
         CmdList.plugin = plugin;

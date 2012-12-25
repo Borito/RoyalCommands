@@ -29,7 +29,7 @@ public class CmdFirework implements CommandExecutor {
      * @param args Array of tags
      * @param fm   FireworkMeta to apply tags to
      * @return Modified FireworkMeta
-     * @throws IllegalArgumentException If one tag is invalid
+     * @throws IllegalArgumentException If one tag is invalid (message is error to be displayed to user)
      */
     private FireworkMeta applyEffect(String[] args, FireworkMeta fm) throws IllegalArgumentException {
         FireworkEffect.Builder feb = FireworkEffect.builder();
