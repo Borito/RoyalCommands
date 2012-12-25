@@ -32,6 +32,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -49,6 +51,7 @@ import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.opencsv.CSVReader;
+import org.royaldev.royalcommands.playermanagers.H2PConfManager;
 import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
@@ -56,10 +59,12 @@ import org.royaldev.royalcommands.runners.BanWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.UserdataSaver;
 import org.royaldev.royalcommands.runners.WarnWatcher;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -830,6 +835,42 @@ public class RoyalCommands extends JavaPlugin {
         //-- Config converter (H2 -> YML) --//
 
         if (ymlConvert) { // rewrite based on home convert
+            for (OfflinePlayer op : getServer().getOfflinePlayers()) {
+                PConfManager pcm = new PConfManager(op);
+                if (!pcm.exists()) pcm.createFile();
+                getLogger().info("Converting userdata for " + op.getName() + "...");
+                H2PConfManager h2pcm;
+                JSONObject jo;
+                try {
+                    h2pcm = new H2PConfManager(op);
+                    jo = h2pcm.getJSONObject("");
+                } catch (Exception e) {
+                    getLogger().warning("Could not convert userdata for " + op.getName() + ": " + e.getMessage());
+                    continue;
+                }
+                Map<String, Object> h2data = new Gson().fromJson(jo.toString(), new TypeToken<Map<String, Object>>() {}.getType());
+                Yaml yaml = new Yaml();
+                File f = new File(getDataFolder() + File.separator + "userdata" + File.separator + op.getName() + ".yml");
+                try {
+                    if (!f.exists()) {
+                        if (!f.createNewFile()) {
+                            getLogger().warning("Could not create userdata file for " + op.getName() + ".");
+                            continue;
+                        }
+                    }
+                    FileInputStream fis = new FileInputStream(f);
+                    yaml.load(fis);
+                    fis.close();
+                    FileWriter fw = new FileWriter(f);
+                    yaml.dump(h2data, fw);
+                    fw.flush();
+                    fw.close();
+                } catch (IOException e) {
+                    getLogger().warning("Could not convert userdata for " + op.getName() + ": " + e.getMessage());
+                }
+            }
+            saveUDOnChange = true;
+            setEnabled(false);
             getLogger().info("H2 -> YML userdata conversion complete. Please restart with convert set to false.");
         }
 
@@ -858,9 +899,11 @@ public class RoyalCommands extends JavaPlugin {
         //-- Save all userdata if not save on change --//
 
         if (!saveUDOnChange) {
+            getLogger().info("Saving userdata...");
             for (YMLPConfManager ymlpcm : ymls.values()) {
                 ymlpcm.forceSave();
             }
+            getLogger().info("Userdata saved.");
         }
 
         //-- Remove userdata handlers --//

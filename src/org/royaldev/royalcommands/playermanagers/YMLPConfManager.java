@@ -55,6 +55,7 @@ public class YMLPConfManager {
      * @return true if saved, false if otherwise
      */
     public boolean forceSave() {
+        if (pconf == null) return false;
         synchronized (saveLock) { // don't want multi saves
             try {
                 pconf.save(pconfl);
