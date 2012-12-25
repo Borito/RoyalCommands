@@ -3,7 +3,6 @@ package org.royaldev.royalcommands.rcommands;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -66,16 +65,12 @@ public class CmdBiome implements CommandExecutor {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    for (int x = 0; x <= 16 * radius; x++)
-                        for (int y = 0; y <= p.getWorld().getMaxHeight(); y++)
-                            for (int z = 0; z <= 16 * radius; z++) {
-                                Block bl = c.getBlock(x, y, z);
-                                bl.setBiome(b);
-                            }
+                    for (int x = 0; x <= radius; x++)
+                        p.getWorld().setBiome(c.getX() + x, c.getZ() + x, b);
                     p.sendMessage(ChatColor.BLUE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + ChatColor.GRAY + b.name().toLowerCase().replace(" _ ", " ") + ChatColor.BLUE + ".");
                 }
             };
-            plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, r);
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
             return true;
         }
         return false;
