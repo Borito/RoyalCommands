@@ -340,6 +340,18 @@ change_nametag: false
 
 worldmanager:
   enabled: true
+  # This allows inventories to be separated on a per-world basis. Groups must be created
+  # for each group of worlds (a group can consist of only one world). These groups will
+  # have different inventories.
+  inventory_separation:
+    enabled: false
+    # List of groups (can be named whatever)
+    groups:
+      creative:
+      - "world"
+      - "world_nether"
+      survival:
+      - "freebuild"
   who:
     show_empty_worlds: false
 
@@ -350,26 +362,18 @@ multiverse_world_names: true
 # Userdata handling #
 ###
 
-# Use a H2 database instead of YML files for userdata?
-# If this is true, fill out the h2 part of the config.
-# The difference in processing times varies only slightly.
-# H2 is usually ~1-2ms faster than YML.
-# During my tests, YML took 5.905ms to load data, and H2
-# took 4.538ms. That's about a 23.149% decrease in processing
-# times, but it's not really that much.
-use_h2: false
-
-h2:
-  # Path relative to plugins/RoyalCommands - automatically appends .h2.db
-  path: "userdata"
-  # Username to use for the database
-  user: "rcmds"
-  # Password to use for the database
-  pass: "sdmcr"
-  # Convert data from YML to H2? Set this to true and it will automagically
-  # convert all userdata from YML to H2. You should then come back and set
-  # this to false.
-  convert: false
+# Saving options.
+save:
+  # Should userdata be saved whenever it is changed? This may slow down performance, but
+  # it will make sure all changes persist, even after crashes. If this is true, the value
+  # of save_on_interval is ignored.
+  # Default is false
+  save_on_change: false
+  # The interval to save userdata at if save_on_change is false. This will register a
+  # task to save all created (!) userdata every so often based on what is entered here.
+  # If this is changed, the server requires a restart to update this value.
+  # Default is "10m" (10 minutes)
+  save_on_interval: "10m"
 
 # Convert H2 to YML?
 yml_convert: false

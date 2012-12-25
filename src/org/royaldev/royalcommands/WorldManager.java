@@ -12,6 +12,7 @@ import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+import org.royaldev.royalcommands.listeners.InventoryListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -74,10 +75,13 @@ public class WorldManager {
             boolean allowWeather = config.getBoolean("worlds." + w.getName() + ".weather", true);
             if (!allowWeather) e.setCancelled(true);
         }
+
     }
 
     private final List<String> loadedWorlds = new ArrayList<String>();
     private final List<String> configuredWorlds = new ArrayList<String>();
+
+    public static InventoryListener il;
 
     private final ConfManager config = new ConfManager("worlds.yml");
 
@@ -106,6 +110,8 @@ public class WorldManager {
             boolean isStorming = config.getBoolean("worlds." + w.getName() + ".is_storming_if_weather_false", false);
             w.setStorm(isStorming);
         }
+        il = new InventoryListener();
+        Bukkit.getPluginManager().registerEvents(il, RoyalCommands.instance);
         Bukkit.getPluginManager().registerEvents(new WorldWatcher(), RoyalCommands.instance);
     }
 
