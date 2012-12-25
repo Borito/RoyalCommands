@@ -848,7 +848,7 @@ public class RoyalCommands extends JavaPlugin {
                     getLogger().warning("Could not convert userdata for " + op.getName() + ": " + e.getMessage());
                     continue;
                 }
-                Map<String, Object> h2data = new Gson().fromJson(jo.toString(), new TypeToken<Map<String, Object>>() {}.getType());
+                Map<Object, Object> h2data = new Gson().fromJson(jo.toString(), new TypeToken<Map<Object, Object>>() {}.getType());
                 Yaml yaml = new Yaml();
                 File f = new File(getDataFolder() + File.separator + "userdata" + File.separator + op.getName() + ".yml");
                 try {

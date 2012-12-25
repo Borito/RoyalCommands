@@ -42,12 +42,8 @@ public class InventoryListener implements Listener {
         Set<String> s = cs.getKeys(false);
         for (String group : s) {
             List<String> worlds = cs.getStringList(group);
-            if (worlds.contains(w.getName())) {
-                System.out.println("group of " + w.getName() + ": " + group);
-                return group;
-            }
+            if (worlds.contains(w.getName())) return group;
         }
-        System.out.println("group of " + w.getName() + ": null");
         return null;
     }
 
@@ -56,7 +52,6 @@ public class InventoryListener implements Listener {
     }
 
     private void saveInventory(Player p, Inventory i, World w) {
-        System.out.println("saving inv of " + p.getName());
         String group = getWorldGroup(w);
         if (group == null) return;
         PConfManager pcm = new PConfManager(p);
@@ -75,7 +70,6 @@ public class InventoryListener implements Listener {
             if (is != null) pcm.setItemStack(is, "inventory." + group + ".slot.boots");
         }
         pcm.setInteger(i.getSize(), "inventory." + group + ".size");
-        System.out.println("Saved");
     }
 
     private PlayerInventory getInventory(Player p) {
