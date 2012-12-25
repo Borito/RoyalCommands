@@ -3,7 +3,6 @@ package org.royaldev.royalcommands;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.royaldev.royalcommands.json.JSONObject;
 import org.royaldev.royalcommands.playermanagers.H2PConfManager;
 import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 
@@ -18,11 +17,6 @@ import java.util.Map;
  * @see ConfManager
  */
 public class PConfManager {
-
-    /**
-     * config.yml value for using H2 or not
-     */
-    private static boolean useH2 = RoyalCommands.instance.useH2;
 
     /**
      * H2 player manager - will be set if using H2
@@ -41,27 +35,12 @@ public class PConfManager {
      * @param t OfflinePlayer to get manager for
      */
     public PConfManager(OfflinePlayer t) {
-        if (useH2) {
-            try {
-                synchronized (RoyalCommands.instance.h2s) {
-                    Map<String, H2PConfManager> h2s = RoyalCommands.instance.h2s;
-                    if (h2s.containsKey(t.getName())) h2pcm = h2s.get(t.getName());
-                    else {
-                        h2pcm = new H2PConfManager(t);
-                        RoyalCommands.instance.h2s.put(t.getName(), h2pcm);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            synchronized (RoyalCommands.instance.ymls) {
-                Map<String, YMLPConfManager> ymls = RoyalCommands.instance.ymls;
-                if (ymls.containsKey(t.getName())) ymlpcm = ymls.get(t.getName());
-                else {
-                    ymlpcm = new YMLPConfManager(t);
-                    RoyalCommands.instance.ymls.put(t.getName(), ymlpcm);
-                }
+        synchronized (RoyalCommands.instance.ymls) {
+            Map<String, YMLPConfManager> ymls = RoyalCommands.instance.ymls;
+            if (ymls.containsKey(t.getName())) ymlpcm = ymls.get(t.getName());
+            else {
+                ymlpcm = new YMLPConfManager(t);
+                RoyalCommands.instance.ymls.put(t.getName(), ymlpcm);
             }
         }
     }
@@ -74,36 +53,21 @@ public class PConfManager {
      * @param t Name of player to get manager for
      */
     public PConfManager(String t) {
-        if (useH2) {
-            try {
-                synchronized (RoyalCommands.instance.h2s) {
-                    Map<String, H2PConfManager> h2s = RoyalCommands.instance.h2s;
-                    if (h2s.containsKey(t)) h2pcm = h2s.get(t);
-                    else {
-                        h2pcm = new H2PConfManager(t);
-                        RoyalCommands.instance.h2s.put(t, h2pcm);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            synchronized (RoyalCommands.instance.ymls) {
-                Map<String, YMLPConfManager> ymls = RoyalCommands.instance.ymls;
-                if (ymls.containsKey(t)) ymlpcm = ymls.get(t);
-                else {
-                    ymlpcm = new YMLPConfManager(t);
-                    RoyalCommands.instance.ymls.put(t, ymlpcm);
-                }
+        synchronized (RoyalCommands.instance.ymls) {
+            Map<String, YMLPConfManager> ymls = RoyalCommands.instance.ymls;
+            if (ymls.containsKey(t)) ymlpcm = ymls.get(t);
+            else {
+                ymlpcm = new YMLPConfManager(t);
+                RoyalCommands.instance.ymls.put(t, ymlpcm);
             }
         }
     }
 
     /**
-     * Updates the useH2 status from the plugin.
+     * Saves.
      */
-    public static void updateH2Status() {
-        useH2 = RoyalCommands.instance.useH2;
+    public void save() {
+        ymlpcm.forceSave();
     }
 
     /**
@@ -114,8 +78,7 @@ public class PConfManager {
      * @return Object of the real backend configuration manager.
      */
     public Object getRealManager() {
-        if (useH2) return h2pcm;
-        else return ymlpcm;
+        return ymlpcm;
     }
 
     /**
@@ -126,7 +89,7 @@ public class PConfManager {
      * @return true if exists, false if not
      */
     public boolean exists() {
-        return useH2 || ymlpcm.exists();
+        return ymlpcm.exists();
     }
 
     /**
@@ -144,7 +107,7 @@ public class PConfManager {
      * @return true if file created or using H2, false if not
      */
     public boolean createFile() {
-        return useH2 || ymlpcm.createFile();
+        return ymlpcm.createFile();
     }
 
     /**
@@ -154,8 +117,7 @@ public class PConfManager {
      * @return String or null
      */
     public String getString(String node) {
-        if (useH2) return h2pcm.getString(node);
-        else return ymlpcm.getString(node);
+        return ymlpcm.getString(node);
     }
 
     /**
@@ -165,8 +127,7 @@ public class PConfManager {
      * @return Boolean or null
      */
     public boolean getBoolean(String node) {
-        if (useH2) return h2pcm.getBoolean(node);
-        else return ymlpcm.getBoolean(node);
+        return ymlpcm.getBoolean(node);
     }
 
     /**
@@ -176,8 +137,7 @@ public class PConfManager {
      * @return Long or null
      */
     public Long getLong(String node) {
-        if (useH2) return h2pcm.getLong(node);
-        else return ymlpcm.getLong(node);
+        return ymlpcm.getLong(node);
     }
 
     /**
@@ -187,8 +147,7 @@ public class PConfManager {
      * @return Float or null
      */
     public Float getFloat(String node) {
-        if (useH2) return h2pcm.getFloat(node);
-        else return ymlpcm.getFloat(node);
+        return ymlpcm.getFloat(node);
     }
 
     /**
@@ -198,8 +157,7 @@ public class PConfManager {
      * @return Double or null
      */
     public Double getDouble(String node) {
-        if (useH2) return h2pcm.getDouble(node);
-        else return ymlpcm.getDouble(node);
+        return ymlpcm.getDouble(node);
     }
 
     /**
@@ -209,8 +167,7 @@ public class PConfManager {
      * @return String list or null
      */
     public List<String> getStringList(String node) {
-        if (useH2) return h2pcm.getStringList(node);
-        else return ymlpcm.getStringList(node);
+        return ymlpcm.getStringList(node);
     }
 
     /**
@@ -220,13 +177,11 @@ public class PConfManager {
      * @return Integer or null
      */
     public Integer getInteger(String node) {
-        if (useH2) return h2pcm.getInteger(node);
-        else return ymlpcm.getInteger(node);
+        return ymlpcm.getInteger(node);
     }
 
     public ItemStack getItemStack(String node) {
-        if (useH2) return h2pcm.getItemStack(node);
-        else return ymlpcm.getItemStack(node);
+        return ymlpcm.getItemStack(node);
     }
 
     /**
@@ -236,8 +191,7 @@ public class PConfManager {
      * @return Object or null
      */
     public Object get(String node) {
-        if (useH2) return h2pcm.get(node);
-        else return ymlpcm.get(node);
+        return ymlpcm.get(node);
     }
 
     /**
@@ -247,19 +201,7 @@ public class PConfManager {
      * @return ConfigurationSection or null if a) doesn't exist or b) using H2
      */
     public ConfigurationSection getConfigurationSection(String path) {
-        if (useH2) return null;
-        else return ymlpcm.getConfigurationSection(path);
-    }
-
-    /**
-     * Gets a JSONObject from the userdata.
-     *
-     * @param path Path to get JSONObject from
-     * @return JSONObject or null if a) doesn't exist or b) using YML
-     */
-    public JSONObject getJSONObject(String path) {
-        if (useH2) return h2pcm.getJSONObject(path);
-        else return null;
+        return ymlpcm.getConfigurationSection(path);
     }
 
     /**
@@ -269,13 +211,7 @@ public class PConfManager {
      * @param path  Path to set at
      */
     public void setString(String value, String path) {
-        if (useH2) {
-            try {
-                h2pcm.set(value, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else ymlpcm.setString(value, path);
+        ymlpcm.setString(value, path);
     }
 
     /**
@@ -285,13 +221,7 @@ public class PConfManager {
      * @param path  Path to set at
      */
     public void setBoolean(boolean value, String path) {
-        if (useH2) {
-            try {
-                h2pcm.set(value, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else ymlpcm.set(value, path); // Got lazy
+        ymlpcm.set(value, path); // Got lazy
     }
 
     /**
@@ -301,13 +231,7 @@ public class PConfManager {
      * @param path  Path to set at
      */
     public void setLong(long value, String path) {
-        if (useH2) {
-            try {
-                h2pcm.set(value, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else ymlpcm.set(value, path);
+        ymlpcm.set(value, path);
     }
 
     /**
@@ -317,13 +241,7 @@ public class PConfManager {
      * @param path  Path to set at
      */
     public void setDouble(double value, String path) {
-        if (useH2) {
-            try {
-                h2pcm.set(value, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else ymlpcm.set(value, path);
+        ymlpcm.set(value, path);
     }
 
     /**
@@ -333,23 +251,11 @@ public class PConfManager {
      * @param path  Path to set at
      */
     public void setInteger(int value, String path) {
-        if (useH2) {
-            try {
-                h2pcm.set(value, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else ymlpcm.set(value, path);
+        ymlpcm.set(value, path);
     }
 
     public void setItemStack(ItemStack value, String path) {
-        if (useH2) {
-            try {
-                h2pcm.setItemStack(value, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else ymlpcm.setItemStack(value, path);
+        ymlpcm.setItemStack(value, path);
     }
 
     /**
@@ -359,13 +265,7 @@ public class PConfManager {
      * @param path  Path to set at
      */
     public void setFloat(float value, String path) {
-        if (useH2) {
-            try {
-                h2pcm.set(value, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else ymlpcm.set(value, path);
+        ymlpcm.set(value, path);
     }
 
     /**
@@ -375,13 +275,7 @@ public class PConfManager {
      * @param path  Path to set at
      */
     public void setStringList(List<String> value, String path) {
-        if (useH2) {
-            try {
-                h2pcm.set(value, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else ymlpcm.set(value, path);
+        ymlpcm.set(value, path);
     }
 
     /**
@@ -391,13 +285,7 @@ public class PConfManager {
      * @param path  Path to set at
      */
     public void set(Object value, String path) {
-        if (useH2) {
-            try {
-                h2pcm.set(value, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else ymlpcm.set(value, path);
+        ymlpcm.set(value, path);
     }
 
 }

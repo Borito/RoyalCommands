@@ -47,17 +47,22 @@ public class YMLPConfManager {
         pconf = YamlConfiguration.loadConfiguration(pconfl);
     }
 
+    private final Object saveLock = new Object();
+
     /**
      * Forces the file to save with current userdata.
      *
      * @return true if saved, false if otherwise
      */
     public boolean forceSave() {
-        try {
-            pconf.save(pconfl);
-            return true;
-        } catch (IOException e) {
-            return false;
+        synchronized (saveLock) { // don't want multi saves
+            try {
+                pconf.save(pconfl);
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
     }
 
@@ -87,11 +92,7 @@ public class YMLPConfManager {
     public void setString(String value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     /**
@@ -103,11 +104,7 @@ public class YMLPConfManager {
     public void setLong(long value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     /**
@@ -119,11 +116,7 @@ public class YMLPConfManager {
     public void setDouble(double value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     /**
@@ -135,11 +128,7 @@ public class YMLPConfManager {
     public void set(Object value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     /**
@@ -151,21 +140,13 @@ public class YMLPConfManager {
     public void setInteger(Integer value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     public void setItemStack(ItemStack value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     /**
@@ -177,11 +158,7 @@ public class YMLPConfManager {
     public void setStringList(List<String> value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     /**
@@ -193,11 +170,7 @@ public class YMLPConfManager {
     public void setConfigurationSection(ConfigurationSection value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     /**
@@ -209,11 +182,7 @@ public class YMLPConfManager {
     public void setBoolean(Boolean value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     /**
@@ -225,11 +194,7 @@ public class YMLPConfManager {
     public void setFloat(Float value, String path) {
         if (pconf == null) return;
         pconf.set(path, value);
-        try {
-            pconf.save(pconfl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
     }
 
     /**

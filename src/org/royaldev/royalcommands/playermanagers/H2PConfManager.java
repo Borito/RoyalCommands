@@ -162,6 +162,19 @@ public class H2PConfManager {
         return (result == null) ? def : result;
     }
 
+    private final Object saveLock = new Object();
+
+    public void save() throws SQLException, JSONException {
+        synchronized (saveLock) { // don't want to save all at once
+            stmt = c.prepareStatement("UPDATE `userdata` SET `options`=? WHERE `name`=?;");
+            stmt.setString(1, options.toString());
+            stmt.setString(2, name);
+            stmt.execute();
+            stmt.close();
+        }
+    }
+
+
     /**
      * Sets an object in config
      * <p/>
@@ -186,11 +199,7 @@ public class H2PConfManager {
         if (section == options) options.put(key, value);
         section.put(key, value);
 
-        stmt = c.prepareStatement("UPDATE `userdata` SET `options`=? WHERE `name`=?;");
-        stmt.setString(1, options.toString());
-        stmt.setString(2, name);
-        stmt.execute();
-        stmt.close();
+        if (RoyalCommands.instance.saveUDOnChange) save();
     }
 
     public void setItemStack(ItemStack value, String path) throws SQLException, JSONException {
