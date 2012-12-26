@@ -96,14 +96,10 @@ public class InventoryListener implements Listener {
         }
         if (i instanceof PlayerInventory) {
             PlayerInventory pi = (PlayerInventory) i;
-            ItemStack is = pi.getHelmet();
-            if (is != null) pcm.setItemStack(is, "inventory." + group + ".slot.helm");
-            is = pi.getChestplate();
-            if (is != null) pcm.setItemStack(is, "inventory." + group + ".slot.chestplate");
-            is = pi.getLeggings();
-            if (is != null) pcm.setItemStack(is, "inventory." + group + ".slot.leggings");
-            is = pi.getBoots();
-            if (is != null) pcm.setItemStack(is, "inventory." + group + ".slot.boots");
+            pcm.setItemStack(pi.getHelmet(), "inventory." + group + ".slot.helm");
+            pcm.setItemStack(pi.getChestplate(), "inventory." + group + ".slot.chestplate");
+            pcm.setItemStack(pi.getLeggings(), "inventory." + group + ".slot.leggings");
+            pcm.setItemStack(pi.getBoots(), "inventory." + group + ".slot.boots");
         }
         pcm.setInteger(i.getSize(), "inventory." + group + ".size");
         if (RoyalCommands.instance.separateXP) {
