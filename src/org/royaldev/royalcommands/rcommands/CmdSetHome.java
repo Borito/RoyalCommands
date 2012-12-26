@@ -39,7 +39,8 @@ public class CmdSetHome implements CommandExecutor {
     private int getCurrentHomes(Player p) {
         ConfigurationSection pconf = new PConfManager(p).getConfigurationSection("home");
         if (pconf == null) return 0;
-        return pconf.getValues(false).keySet().size();    }
+        return pconf.getValues(false).keySet().size();
+    }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {

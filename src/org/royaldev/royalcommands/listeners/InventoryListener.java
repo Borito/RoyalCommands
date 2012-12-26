@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -26,6 +27,7 @@ import java.util.Set;
 public class InventoryListener implements Listener {
 
     public void saveAllInventories() {
+        if (!RoyalCommands.instance.separateInv) return;
         for (Player p : RoyalCommands.instance.getServer().getOnlinePlayers()) {
             saveInventory(p, p.getInventory());
         }
@@ -48,10 +50,12 @@ public class InventoryListener implements Listener {
     }
 
     private void saveInventory(Player p, Inventory i) {
+        if (!RoyalCommands.instance.separateInv) return;
         saveInventory(p, i, p.getWorld());
     }
 
     private void saveInventory(Player p, Inventory i, World w) {
+        if (!RoyalCommands.instance.separateInv) return;
         String group = getWorldGroup(w);
         if (group == null) return;
         PConfManager pcm = new PConfManager(p);
@@ -70,6 +74,10 @@ public class InventoryListener implements Listener {
             if (is != null) pcm.setItemStack(is, "inventory." + group + ".slot.boots");
         }
         pcm.setInteger(i.getSize(), "inventory." + group + ".size");
+        if (RoyalCommands.instance.separateXP) {
+            pcm.setFloat(p.getExp(), "inventory." + group + ".xp");
+            pcm.setInteger(p.getLevel(), "inventory." + group + ".xplevel");
+        }
     }
 
     private PlayerInventory getInventory(Player p) {
@@ -86,15 +94,24 @@ public class InventoryListener implements Listener {
             if (is == null) continue;
             i.setItem(slot, is);
         }
-        p.getInventory().setHelmet(pcm.getItemStack("inventory." + group + ".slot.helm"));
-        p.getInventory().setChestplate(pcm.getItemStack("inventory." + group + ".slot.chestplate"));
-        p.getInventory().setLeggings(pcm.getItemStack("inventory." + group + ".slot.leggings"));
-        p.getInventory().setBoots(pcm.getItemStack("inventory." + group + ".slot.boots"));
+        i.setHelmet(pcm.getItemStack("inventory." + group + ".slot.helm"));
+        i.setChestplate(pcm.getItemStack("inventory." + group + ".slot.chestplate"));
+        i.setLeggings(pcm.getItemStack("inventory." + group + ".slot.leggings"));
+        i.setBoots(pcm.getItemStack("inventory." + group + ".slot.boots"));
+        if (RoyalCommands.instance.separateXP) {
+            Float xp = pcm.getFloat("inventory." + group + ".xp");
+            Integer xpLevel = pcm.getInteger("inventory." + group + ".xplevel");
+            if (xp != null) p.setExp(xp);
+            else p.setExp(0F);
+            if (xpLevel != null) p.setLevel(xpLevel);
+            else p.setLevel(0);
+        }
         return i;
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+        if (!RoyalCommands.instance.separateInv) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return; // only serve those configured
         getInventory(p); // sets inv of player
@@ -102,6 +119,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
+        if (!RoyalCommands.instance.separateInv) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
@@ -109,6 +127,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
+        if (!RoyalCommands.instance.separateInv) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
@@ -123,6 +142,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
+        if (!RoyalCommands.instance.separateInv) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
@@ -130,6 +150,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
+        if (!RoyalCommands.instance.separateInv) return;
         Player p = e.getPlayer();
         if (p.getGameMode() == GameMode.CREATIVE) return; // this doesn't affect us
         if (getWorldGroup(p.getWorld()) == null) return;
@@ -137,10 +158,20 @@ public class InventoryListener implements Listener {
     }
 
     @EventHandler
+    public void onXP(PlayerExpChangeEvent e) {
+        if (!RoyalCommands.instance.separateInv) return;
+        Player p = e.getPlayer();
+        if (getWorldGroup(p.getWorld()) == null) return;
+        saveInventory(p, p.getInventory());
+    }
+
+    @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
+        if (!RoyalCommands.instance.separateInv) return;
         if (!(e.getPlayer() instanceof Player)) return;
         Player p = (Player) e.getPlayer();
-        if (!e.getInventory().getHolder().equals(p.getInventory().getHolder())) return; // only save their inv when they close /their/ inv
+        if (!e.getInventory().getHolder().equals(p.getInventory().getHolder()))
+            return; // only save their inv when they close /their/ inv
         String group = getWorldGroup(p.getWorld());
         if (group == null) return; // only manage worlds that are in the config
         saveInventory(p, p.getInventory());
@@ -148,6 +179,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent e) {
+        if (!RoyalCommands.instance.separateInv) return;
         Player p = e.getPlayer();
         String group = getWorldGroup(p.getWorld()); // get world group (new world)
         if (group == null) return; // only serve those configured

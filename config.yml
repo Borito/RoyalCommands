@@ -345,6 +345,7 @@ worldmanager:
   # have different inventories.
   inventory_separation:
     enabled: false
+    separate_xp: true
     # List of groups (can be named whatever)
     groups:
       creative:

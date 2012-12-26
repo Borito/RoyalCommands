@@ -179,6 +179,8 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean timeBroadcast = null;
     public Boolean worldAccessPerm = null;
     public Boolean saveUDOnChange = null; // save userdata every change (true) or every x minutes (false)
+    public Boolean separateInv = null;
+    public Boolean separateXP = null;
     public static Boolean useWorldManager = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
@@ -432,6 +434,8 @@ public class RoyalCommands extends JavaPlugin {
         worldAccessPerm = c.getBoolean("enable_worldaccess_perm", false);
         useWorldManager = c.getBoolean("worldmanager.enabled", true);
         saveUDOnChange = c.getBoolean("save.save_on_change", false);
+        separateInv = c.getBoolean("worldmanager.inventory_separation.enabled", false);
+        separateXP = c.getBoolean("worldmanager.inventory_separation.separate_xp", true);
 
         banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
@@ -850,7 +854,7 @@ public class RoyalCommands extends JavaPlugin {
                 }
                 Map<Object, Object> h2data = new Gson().fromJson(jo.toString(), new TypeToken<Map<Object, Object>>() {}.getType());
                 Yaml yaml = new Yaml();
-                File f = new File(getDataFolder() + File.separator + "userdata" + File.separator + op.getName() + ".yml");
+                File f = new File(getDataFolder() + File.separator + "userdata" + File.separator + op.getName().toLowerCase() + ".yml");
                 try {
                     if (!f.exists()) {
                         if (!f.createNewFile()) {
