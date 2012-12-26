@@ -346,6 +346,7 @@ worldmanager:
   inventory_separation:
     enabled: false
     separate_xp: true
+    separate_ender_chests: true
     # List of groups (can be named whatever)
     groups:
       creative:

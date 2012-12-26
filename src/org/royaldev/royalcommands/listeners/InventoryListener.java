@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -47,6 +50,35 @@ public class InventoryListener implements Listener {
             if (worlds.contains(w.getName())) return group;
         }
         return null;
+    }
+
+    private void saveEnderInventory(Player p, Inventory i) {
+        if (!RoyalCommands.instance.separateInv || !RoyalCommands.instance.separateEnder) return;
+        World w = p.getWorld();
+        String group = getWorldGroup(w);
+        if (group == null) return;
+        PConfManager pcm = new PConfManager(p);
+        for (int slot = 0; slot < i.getSize(); slot++) {
+            pcm.setItemStack(i.getItem(slot), "inventory." + group + ".ender.slot." + slot);
+        }
+        pcm.setInteger(i.getSize(), "inventory." + group + ".ender.size");
+    }
+
+    private Inventory getEnderInventory(Player p) {
+        World w = p.getWorld();
+        String group = getWorldGroup(w);
+        if (group == null) return null;
+        PConfManager pcm = new PConfManager(p);
+        if (!pcm.exists()) pcm.createFile();
+        Integer invSize = pcm.getInteger("inventory." + group + ".ender.size");
+        final Inventory i = Bukkit.createInventory(p, invSize);
+        if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
+        for (int slot = 0; slot < invSize; slot++) {
+            ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
+            if (is == null) continue;
+            i.setItem(slot, is);
+        }
+        return i;
     }
 
     private void saveInventory(Player p, Inventory i) {
@@ -166,10 +198,30 @@ public class InventoryListener implements Listener {
     }
 
     @EventHandler
+    public void onEnderChestClose(InventoryCloseEvent e) {
+        if (!(e.getPlayer() instanceof Player)) return;
+        Player p = (Player) e.getPlayer();
+        Inventory i = e.getInventory();
+        if (i.getType() != InventoryType.ENDER_CHEST) return;
+        saveEnderInventory(p, i);
+    }
+
+    @EventHandler
+    public void onEnderChestOpen(InventoryOpenEvent e) {
+        if (!(e.getPlayer() instanceof Player)) return;
+        Player p = (Player) e.getPlayer();
+        Inventory i = e.getInventory();
+        if (i.getType() != InventoryType.ENDER_CHEST) return;
+        Inventory ender = getEnderInventory(p);
+        i.setContents(ender.getContents());
+    }
+
+    @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
         if (!RoyalCommands.instance.separateInv) return;
         if (!(e.getPlayer() instanceof Player)) return;
         Player p = (Player) e.getPlayer();
+        if (e.getInventory().getType() != InventoryType.PLAYER) return;
         if (!e.getInventory().getHolder().equals(p.getInventory().getHolder()))
             return; // only save their inv when they close /their/ inv
         String group = getWorldGroup(p.getWorld());
