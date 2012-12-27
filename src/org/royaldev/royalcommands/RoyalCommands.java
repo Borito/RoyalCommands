@@ -598,7 +598,7 @@ public class RoyalCommands extends JavaPlugin {
 
         commands = getDescription().getCommands();
 
-        version = getDescription().getVersion() + "-${env.BUILD_NUMBER}";
+        version = getDescription().getVersion();
 
         //-- Hidendra's Metrics --//
 
