@@ -90,6 +90,10 @@ public class CmdWarp implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "No such warp!");
                     return true;
                 }
+                if (plugin.warpPermissions && !plugin.isAuthorized(cs, "rcmds.warp." + args[0].toLowerCase())) {
+                    cs.sendMessage(ChatColor.RED + "You do not have permission for that warp!");
+                    return true;
+                }
                 cs.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
                 String error = RUtils.teleport(p, warpLoc);
                 if (!error.isEmpty()) {
@@ -116,6 +120,10 @@ public class CmdWarp implements CommandExecutor {
                 Location warpLoc = pWarp(t, args[0].toLowerCase());
                 if (warpLoc == null) {
                     cs.sendMessage(ChatColor.RED + "No such warp!");
+                    return true;
+                }
+                if (plugin.warpPermissions && !plugin.isAuthorized(t, "rcmds.warp." + args[0].toLowerCase())) {
+                    cs.sendMessage(ChatColor.RED + "That player does not have permission for that warp!");
                     return true;
                 }
                 String error = RUtils.teleport(t, warpLoc);
