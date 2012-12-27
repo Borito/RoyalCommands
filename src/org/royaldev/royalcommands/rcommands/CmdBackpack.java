@@ -27,7 +27,8 @@ public class CmdBackpack implements CommandExecutor {
         try {
             invs = (HashMap<String, SerializableInventory>) RUtils.loadHash(f.getPath());
         } catch (Exception e) {
-            f.delete();
+            f.renameTo(new File(instance.getDataFolder() + File.separator + "old_backpacks.sav"));
+            if (f.exists()) f.delete();
             return;
         }
         if (!invs.keySet().isEmpty()) {

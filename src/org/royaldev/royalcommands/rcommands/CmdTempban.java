@@ -46,6 +46,7 @@ public class CmdTempban implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "Invalid amount of time specified!");
                 return true;
             }
+            time++; // fix for always being a second short
             long curTime = new Date().getTime();
             String banreason = RoyalCommands.getFinalArg(args, 2);
             t.setBanned(true);
