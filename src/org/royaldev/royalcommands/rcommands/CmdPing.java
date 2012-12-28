@@ -1,11 +1,8 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -25,6 +22,9 @@ public class CmdPing implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
+            cs.sendMessage("Pong!");
+            return true;
+            /*
             if (!(cs instanceof Player) && args.length < 1) {
                 cs.sendMessage("Pong!");
                 return true;
@@ -48,6 +48,7 @@ public class CmdPing implements CommandExecutor {
             int ping = ((CraftPlayer) p).getHandle().ping;
             p.sendMessage(ChatColor.BLUE + "Your ping: " + ChatColor.GRAY + ping + "ms");
             return true;
+            */
         }
         return false;
     }
