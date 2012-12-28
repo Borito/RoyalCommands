@@ -1,14 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import net.minecraft.server.v1_4_6.EntityPlayer;
-import net.minecraft.server.v1_4_6.PlayerInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_4_6.inventory.CraftInventory;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -29,7 +26,7 @@ public class CmdTrade implements CommandExecutor {
     }
 
     public static HashMap<String, String> tradedb = new HashMap<String, String>();
-    public static HashMap<HashMap<String, String>, CraftInventory> trades = new HashMap<HashMap<String, String>, CraftInventory>();
+    public static HashMap<HashMap<String, String>, Inventory> trades = new HashMap<HashMap<String, String>, Inventory>();
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("trade")) {
@@ -55,7 +52,7 @@ public class CmdTrade implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You can't trade with yourself!");
                 return true;
             }
-            CraftInventory inv;
+            Inventory inv;
             for (HashMap<String, String> set : trades.keySet()) {
                 if ((set.containsKey(t.getName()) && set.get(t.getName()).equals(p.getName())) || (set.containsKey(p.getName()) && set.get(p.getName()).equals(t.getName()))) {
                     inv = trades.get(set);
@@ -65,9 +62,7 @@ public class CmdTrade implements CommandExecutor {
                 }
             }
             if (tradedb.containsKey(t.getName())) {
-                EntityPlayer ep = ((CraftPlayer) p).getHandle();
-                inv = new CraftInventory(new PlayerInventory(ep));
-                inv.clear();
+                inv = plugin.getServer().createInventory(null, 36, "Trade");
                 p.sendMessage(ChatColor.BLUE + "Opened trading interface.");
                 p.openInventory(inv);
                 t.openInventory(inv);
