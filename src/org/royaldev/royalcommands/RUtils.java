@@ -21,7 +21,6 @@ import org.bukkit.plugin.Plugin;
 import org.royaldev.royalchat.RoyalChat;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
-import org.royaldev.royalcommands.serializable.SerializableCraftInventory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -757,16 +756,6 @@ public class RUtils {
         final Inventory i = Bukkit.getServer().createInventory(handler, size, name);
         i.clear();
         return i;
-    }
-
-    /**
-     * Converts a normal inventory into a serializable one.
-     *
-     * @param i Inventory to convert
-     * @return SerializableCraftInventory from Inventory
-     */
-    public static SerializableCraftInventory convInvToSCI(Inventory i) {
-        return new SerializableCraftInventory(i);
     }
 
     /**
