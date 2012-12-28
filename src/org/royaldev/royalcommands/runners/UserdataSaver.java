@@ -14,8 +14,10 @@ public class UserdataSaver implements Runnable {
     @Override
     public void run() {
         if (plugin.saveUDOnChange) return;
-        for (YMLPConfManager ymlpcm : plugin.ymls.values()) {
-            ymlpcm.forceSave();
+        synchronized (plugin.ymls) {
+            for (YMLPConfManager ymlpcm : plugin.ymls.values()) {
+                ymlpcm.forceSave();
+            }
         }
     }
 

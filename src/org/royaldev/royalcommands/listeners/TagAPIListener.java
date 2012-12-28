@@ -16,6 +16,7 @@ public class TagAPIListener implements Listener {
 
     @EventHandler
     public void onTag(PlayerReceiveNameTagEvent e) {
+        if (e.isModified()) return;
         if (e.getNamedPlayer() == null) return;
         PConfManager pcm = new PConfManager(e.getNamedPlayer());
         String dispname = pcm.getString("dispname");
