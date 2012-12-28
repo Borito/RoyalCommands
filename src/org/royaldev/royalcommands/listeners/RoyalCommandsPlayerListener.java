@@ -98,7 +98,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!plugin.worldAccessPerm) return;
         World from = e.getFrom().getWorld();
         World to = e.getTo().getWorld();
-        if (!from.equals(to)) return;
+        if (from.equals(to)) return;
         Player p = e.getPlayer();
         if (plugin.isAuthorized(p, "rcmds.worldaccess." + to.getName())) return;
         e.setTo(e.getFrom());
