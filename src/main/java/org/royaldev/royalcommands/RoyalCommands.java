@@ -644,7 +644,7 @@ public class RoyalCommands extends JavaPlugin {
                     String stable = jo.getString("stable");
                     String dev = jo.getString("dev");
                     String currentVersion = getDescription().getVersion().toLowerCase();
-                    if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("pre")) {
+                    if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
                         getLogger().warning("A newer version of RoyalCommands is available!");
                         getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
                         getLogger().warning("Development builds are available at http://ci.royaldev.org/");
