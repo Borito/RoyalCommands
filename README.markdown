@@ -25,6 +25,16 @@ RoyalCommands is coded in IntelliJ with the following libraries:
 
 Changes pushed to GitHub will be auto-compiled on [Jenkins](http://ci.royaldev.org).
 
+### Compiling
+
+Maven 3 must be installed to compile RoyalCommands.
+
+```$ mvn clean package```
+
+If you want to install RoyalCommands into your local Maven repository:
+
+```$ mvn clean install```
+
 ### Looking to submit a Pull Request?
 
 Make sure it follows these regulations:
