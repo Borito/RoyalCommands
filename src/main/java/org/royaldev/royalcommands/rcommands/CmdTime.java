@@ -25,6 +25,7 @@ public class CmdTime implements CommandExecutor {
 
     public static void smoothTimeChange(long time, final World world) {
         if (time > 24000) time = time % 24000L;
+        if (time < 0) time = 0; //Clamp to 0 to prevent loop
         final long ftime = time;
         final Runnable r = new Runnable() {
             @Override
