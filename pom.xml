@@ -19,7 +19,6 @@
                 <directory>${basedir}/src/main/resources/</directory>
                 <includes>
                     <include>*.yml</include>
-                    <include>LICENSE</include>
                     <include>items.csv</include>
                 </includes>
             </resource>
