@@ -8,6 +8,11 @@ depend: [Vault]
 softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard]
 
 commands:
+
+  rocket:
+    description: Launches the player vertically.
+    usage: /<command> <player>
+
   level:
     description: Levels your experience up one level.
     usage: /<command>
