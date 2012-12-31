@@ -21,7 +21,6 @@
                     <include>*.yml</include>
                     <include>LICENSE</include>
                     <include>items.csv</include>
-                    <include>README.markdown</include>
                 </includes>
             </resource>
         </resources>
