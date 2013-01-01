@@ -73,7 +73,7 @@ public class CmdExplode implements CommandExecutor {
                 }
             }
             if (args.length > 0) {
-                Player t = plugin.getServer().getPlayer(args[0].trim());
+                Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null || plugin.isVanished(t, cs)) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
@@ -83,7 +83,7 @@ public class CmdExplode implements CommandExecutor {
                     return true;
                 }
                 if (args.length == 2) {
-                    if (args[1].trim().equalsIgnoreCase("power")) {
+                    if (args[1].equalsIgnoreCase("power")) {
                         if (!(cs instanceof Player)) {
                             cs.sendMessage(cmd.getDescription());
                             return false;

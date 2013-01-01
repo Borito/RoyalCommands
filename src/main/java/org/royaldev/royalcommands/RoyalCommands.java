@@ -692,8 +692,7 @@ public class RoyalCommands extends JavaPlugin {
             pm.registerEvents(new TagAPIListener(this), this);
 
         //-- Register commands --//
-        
-        registerCommand(new CmdRocket(this), "rocket", this);
+
         registerCommand(new CmdLevel(this), "level", this);
         registerCommand(new CmdSetlevel(this), "setlevel", this);
         registerCommand(new CmdSci(this), "sci", this);
@@ -839,6 +838,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdLore(this), "lore", this);
         registerCommand(new CmdSetUserdata(this), "setuserdata", this);
         registerCommand(new CmdFirework(this), "firework", this);
+        registerCommand(new CmdRocket(this), "rocket", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Config converter (H2 -> YML) --//

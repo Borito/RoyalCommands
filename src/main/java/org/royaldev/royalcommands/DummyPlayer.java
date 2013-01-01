@@ -605,17 +605,17 @@ public class DummyPlayer implements Player {
         return 0;
     }
 
-	@Override
-	public void setMaxHealth(int i) {
+    @Override
+    public void setMaxHealth(int i) {
 
-	}
+    }
 
-	@Override
-	public void resetMaxHealth() {
+    @Override
+    public void resetMaxHealth() {
 
-	}
+    }
 
-	@Override
+    @Override
     public double getEyeHeight() {
         return 0;
     }

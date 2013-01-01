@@ -32,7 +32,7 @@ public class CmdGetIP implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(args[0].trim());
+            OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = new PConfManager(oplayer);
             if (pcm.exists())
                 cs.sendMessage(ChatColor.GRAY + oplayer.getName() + ": " + pcm.getString("ip"));

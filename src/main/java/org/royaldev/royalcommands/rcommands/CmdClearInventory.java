@@ -39,7 +39,7 @@ public class CmdClearInventory implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            Player target = plugin.getServer().getPlayer(args[0].trim());
+            Player target = plugin.getServer().getPlayer(args[0]);
             if (target == null || plugin.isVanished(target, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player is not online!");
                 return true;

@@ -42,7 +42,7 @@ public class CmdStrike implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
                 return true;
             }
-            Player target = plugin.getServer().getPlayer(args[0].trim());
+            Player target = plugin.getServer().getPlayer(args[0]);
             if (target == null || plugin.isVanished(target, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;

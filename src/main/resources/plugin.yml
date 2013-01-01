@@ -8,11 +8,6 @@ depend: [Vault]
 softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard]
 
 commands:
-
-  rocket:
-    description: Launches the player vertically.
-    usage: /<command> <player>
-
   level:
     description: Levels your experience up one level.
     usage: /<command>
@@ -706,6 +701,10 @@ commands:
     usage: /<command> [tags]
     aliases: [fw]
 
+  rocket:
+    description: Launches the player vertically.
+    usage: /<command> <player>
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1144,6 +1143,9 @@ permissions:
   rcmds.firework:
     description: Allows you to set firework effects.
     default: op
+  rcmds.rocket:
+    description: Allows you to shoot a player into the sky.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1310,6 +1312,9 @@ permissions:
     default: false
   rcmds.exempt.deafen:
     description: Makes the player immune to /deafen.
+    default: false
+  rcmds.exempt.rocket:
+    description: Makes the player immune to /rocket.
     default: false
 
   rcmds.exempt.autoafk:
@@ -1633,6 +1638,7 @@ permissions:
       rcmds.lore: true
       rcmds.setuserdata: true
       rcmds.firework: true
+      rcmds.rocket: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1741,6 +1747,7 @@ permissions:
       rcmds.exempt.backpack: true
       rcmds.exempt.teleportwarmup: true
       rcmds.exempt.deafen: true
+      rcmds.exempt.rocket: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -1901,6 +1908,7 @@ permissions:
       rcmds.lore: true
       rcmds.setuserdata: true
       rcmds.firework: true
+      rcmds.rocket: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

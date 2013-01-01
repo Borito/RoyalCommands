@@ -29,7 +29,7 @@ public class CmdRocket implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player t = plugin.getServer().getPlayer(args[0].trim());
+            Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
@@ -38,8 +38,8 @@ public class CmdRocket implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You cannot rocket that player!");
                 return true;
             }
-            t.setVelocity(new Vector(0, 4, 0));
-            cs.sendMessage(ChatColor.BLUE + "You have rocketed " + ChatColor.GRAY + t.getDisplayName() + ChatColor.BLUE + ".");
+            t.setVelocity(new Vector(t.getVelocity().getX(), 4, t.getVelocity().getZ()));
+            cs.sendMessage(ChatColor.BLUE + "You have rocketed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             return true;
         }
         return false;

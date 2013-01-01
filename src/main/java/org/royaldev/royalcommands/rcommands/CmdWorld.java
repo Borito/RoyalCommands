@@ -38,7 +38,7 @@ public class CmdWorld implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Worlds: " + worlds);
                 return true;
             }
-            World w = plugin.getServer().getWorld(args[0].trim());
+            World w = plugin.getServer().getWorld(args[0]);
             if (w == null) {
                 cs.sendMessage(ChatColor.RED + "That world does not exist!");
                 List<World> ws = plugin.getServer().getWorlds();

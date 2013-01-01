@@ -51,7 +51,7 @@ public class CmdEntities implements CommandExecutor {
                 Player p = (Player) cs;
                 Double radius;
                 try {
-                    radius = Double.parseDouble(args[0].trim());
+                    radius = Double.parseDouble(args[0]);
                 } catch (Exception e) {
                     cs.sendMessage(ChatColor.RED + "That was not a valid number!");
                     return true;

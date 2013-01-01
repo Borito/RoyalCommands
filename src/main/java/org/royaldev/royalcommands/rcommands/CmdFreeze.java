@@ -48,7 +48,7 @@ public class CmdFreeze implements CommandExecutor {
                     return true;
                 }
             } else {
-                OfflinePlayer victim2 = plugin.getServer().getOfflinePlayer(args[0].trim());
+                OfflinePlayer victim2 = plugin.getServer().getOfflinePlayer(args[0]);
                 PConfManager pcm = new PConfManager(victim2);
                 if (victim2.isOp()) {
                     cs.sendMessage(ChatColor.RED + "You can't freeze that player!");

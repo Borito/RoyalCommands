@@ -38,7 +38,7 @@ public class CmdHelp implements CommandExecutor {
                     tpage = 1;
                 } else {
                     try {
-                        tpage = Integer.valueOf(args[0].trim());
+                        tpage = Integer.valueOf(args[0]);
                     } catch (Exception e) {
                         cs.sendMessage(ChatColor.RED + "The page number was invalid!");
                         return true;

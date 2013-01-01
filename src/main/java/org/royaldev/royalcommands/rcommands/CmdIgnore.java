@@ -34,7 +34,7 @@ public class CmdIgnore implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            String name = args[0].trim().toLowerCase();
+            String name = args[0].toLowerCase();
 
             Player t = plugin.getServer().getPlayer(name);
             if (t == null || plugin.isVanished(t, cs)) {

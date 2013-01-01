@@ -77,7 +77,7 @@ public class CmdGod implements CommandExecutor {
                     return true;
                 }
             }
-            OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0].trim());
+            OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = new PConfManager(t2);
             if (!pcm.getBoolean("godmode")) {
                 if (!pcm.exists()) {

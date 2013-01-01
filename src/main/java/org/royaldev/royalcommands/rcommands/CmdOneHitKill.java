@@ -26,9 +26,9 @@ public class CmdOneHitKill implements CommandExecutor {
                 return true;
             }
             if (args.length > 0) {
-                Player t = plugin.getServer().getPlayer(args[0].trim());
+                Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null || plugin.isVanished(t, cs)) {
-                    OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0].trim());
+                    OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
                     PConfManager pcm = new PConfManager(op);
                     if (!pcm.exists()) {
                         cs.sendMessage(ChatColor.RED + "That player does not exist!");
@@ -44,7 +44,7 @@ public class CmdOneHitKill implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "You have disabled onehitkill mode for " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
                     return true;
                 }
-                Player p = plugin.getServer().getPlayer(args[0].trim());
+                Player p = plugin.getServer().getPlayer(args[0]);
                 PConfManager pcm = new PConfManager(p);
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
