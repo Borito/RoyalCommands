@@ -32,16 +32,7 @@ public class YMLPConfManager {
         File dataFolder = RoyalCommands.dataFolder;
         pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.getName().toLowerCase() + ".yml");
         if (!pconfl.exists()) return;
-        try {
-            pconf = YamlConfiguration.loadConfiguration(pconfl);
-        } catch (IllegalArgumentException e) {
-            try {
-                pconfl.delete();
-                pconfl.createNewFile();
-            } catch (IOException ignored) {
-            }
-            pconf = YamlConfiguration.loadConfiguration(pconfl);
-        }
+        pconf = YamlConfiguration.loadConfiguration(pconfl);
     }
 
     /**
@@ -53,16 +44,7 @@ public class YMLPConfManager {
         File dataFolder = RoyalCommands.dataFolder;
         pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.toLowerCase() + ".yml");
         if (!pconfl.exists()) return;
-        try {
-            pconf = YamlConfiguration.loadConfiguration(pconfl);
-        } catch (IllegalArgumentException e) {
-            try {
-                pconfl.delete();
-                pconfl.createNewFile();
-            } catch (IOException ignored) {
-            }
-            pconf = YamlConfiguration.loadConfiguration(pconfl);
-        }
+        pconf = YamlConfiguration.loadConfiguration(pconfl);
     }
 
     private final Object saveLock = new Object();
