@@ -112,7 +112,7 @@ public class WorldManager {
             boolean isStorming = config.getBoolean("worlds." + w.getName() + ".is_storming_if_weather_false", false);
             w.setStorm(isStorming);
         }
-        il = new InventoryListener();
+        il = new InventoryListener(RoyalCommands.instance);
         Bukkit.getPluginManager().registerEvents(il, RoyalCommands.instance);
         Bukkit.getPluginManager().registerEvents(new WorldWatcher(), RoyalCommands.instance);
     }

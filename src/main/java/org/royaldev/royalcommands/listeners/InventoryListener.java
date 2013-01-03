@@ -22,17 +22,25 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 public class InventoryListener implements Listener {
 
+    private final RoyalCommands plugin;
+
+    public InventoryListener(RoyalCommands instance) {
+        plugin = instance;
+    }
+
     public void saveAllInventories() {
-        if (!RoyalCommands.instance.separateInv) return;
-        for (Player p : RoyalCommands.instance.getServer().getOnlinePlayers()) {
+        if (!plugin.separateInv) return;
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
             saveInventory(p, p.getInventory());
         }
     }
@@ -44,7 +52,7 @@ public class InventoryListener implements Listener {
      * @return String of group name or null if no group
      */
     private String getWorldGroup(World w) {
-        ConfigurationSection cs = RoyalCommands.instance.getConfig().getConfigurationSection("worldmanager.inventory_separation.groups");
+        ConfigurationSection cs = plugin.getConfig().getConfigurationSection("worldmanager.inventory_separation.groups");
         Set<String> s = cs.getKeys(false);
         for (String group : s) {
             List<String> worlds = cs.getStringList(group);
@@ -54,7 +62,7 @@ public class InventoryListener implements Listener {
     }
 
     private void saveEnderInventory(Player p, Inventory i) {
-        if (!RoyalCommands.instance.separateInv || !RoyalCommands.instance.separateEnder) return;
+        if (!plugin.separateInv || !plugin.separateEnder) return;
         World w = p.getWorld();
         String group = getWorldGroup(w);
         if (group == null) return;
@@ -83,12 +91,12 @@ public class InventoryListener implements Listener {
     }
 
     private void saveInventory(Player p, Inventory i) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         saveInventory(p, i, p.getWorld());
     }
 
     private void saveInventory(Player p, Inventory i, World w) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         String group = getWorldGroup(w);
         if (group == null) return;
         PConfManager pcm = new PConfManager(p);
@@ -103,7 +111,7 @@ public class InventoryListener implements Listener {
             pcm.setItemStack(pi.getBoots(), "inventory." + group + ".slot.boots");
         }
         pcm.setInteger(i.getSize(), "inventory." + group + ".size");
-        if (RoyalCommands.instance.separateXP) {
+        if (plugin.separateXP) {
             pcm.setFloat(p.getExp(), "inventory." + group + ".xp");
             pcm.setInteger(p.getLevel(), "inventory." + group + ".xplevel");
         }
@@ -127,7 +135,7 @@ public class InventoryListener implements Listener {
         i.setChestplate(pcm.getItemStack("inventory." + group + ".slot.chestplate"));
         i.setLeggings(pcm.getItemStack("inventory." + group + ".slot.leggings"));
         i.setBoots(pcm.getItemStack("inventory." + group + ".slot.boots"));
-        if (RoyalCommands.instance.separateXP) {
+        if (plugin.separateXP) {
             Float xp = pcm.getFloat("inventory." + group + ".xp");
             Integer xpLevel = pcm.getInteger("inventory." + group + ".xplevel");
             if (xp != null) p.setExp(xp);
@@ -140,7 +148,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return; // only serve those configured
         getInventory(p); // sets inv of player
@@ -148,7 +156,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
@@ -156,7 +164,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
@@ -171,7 +179,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
@@ -179,7 +187,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         Player p = e.getPlayer();
         if (p.getGameMode() == GameMode.CREATIVE) return; // this doesn't affect us
         if (getWorldGroup(p.getWorld()) == null) return;
@@ -188,7 +196,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onXP(PlayerExpChangeEvent e) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
@@ -216,7 +224,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         if (!(e.getPlayer() instanceof Player)) return;
         Player p = (Player) e.getPlayer();
         if (e.getInventory().getType() != InventoryType.PLAYER) return;
@@ -231,11 +239,24 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent e) {
-        if (!RoyalCommands.instance.separateInv) return;
+        if (!plugin.separateInv) return;
         Player p = e.getPlayer();
         String group = getWorldGroup(p.getWorld()); // get world group (new world)
         if (group == null) return; // only serve those configured
         saveInventory(p, p.getInventory(), e.getFrom()); // save old inventory
         getInventory(p); // sets inv of player
+    }
+
+    @EventHandler
+    public void potionEffects(PlayerChangedWorldEvent e) {
+        if (!plugin.separateInv) return;
+        if (!plugin.removePotionEffects) return;
+        Player p = e.getPlayer();
+        Collection<PotionEffect> potionEffects = p.getActivePotionEffects();
+        if (potionEffects.isEmpty()) return;
+        for (PotionEffect pe : potionEffects) {
+            if (!p.hasPotionEffect(pe.getType())) continue;
+            p.removePotionEffect(pe.getType());
+        }
     }
 }

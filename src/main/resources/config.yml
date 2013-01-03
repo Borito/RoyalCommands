@@ -350,6 +350,7 @@ worldmanager:
     enabled: false
     separate_xp: true
     separate_ender_chests: true
+    remove_potion_effects: true
     # List of groups (can be named whatever)
     groups:
       creative:

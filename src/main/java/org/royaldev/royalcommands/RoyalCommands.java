@@ -183,6 +183,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean separateXP = null;
     public Boolean separateEnder = null;
     public Boolean warpPermissions = null;
+    public Boolean removePotionEffects = null;
     public static Boolean useWorldManager = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
@@ -440,6 +441,7 @@ public class RoyalCommands extends JavaPlugin {
         separateXP = c.getBoolean("worldmanager.inventory_separation.separate_xp", true);
         separateEnder = c.getBoolean("worldmanager.inventory_separation.separate_ender_chests", true);
         warpPermissions = c.getBoolean("warp_permissions", false);
+        removePotionEffects = c.getBoolean("remove_potion_effects", true);
 
         banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
