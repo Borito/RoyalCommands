@@ -56,8 +56,13 @@ public class CmdHome implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You cannot go to that player's house!");
                     return true;
                 }
-                pcm = new PConfManager(name.split(":")[0]);
-                name = name.split(":")[1];
+                String[] ss = name.split(":");
+                if (ss.length < 2) {
+                    cs.sendMessage(ChatColor.RED + "You must include the name of the player and home (player:home).");
+                    return true;
+                }
+                pcm = new PConfManager(ss[0]);
+                name = ss[1];
             } else {
                 pcm = new PConfManager(cs.getName());
             }
