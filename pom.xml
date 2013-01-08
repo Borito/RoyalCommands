@@ -79,7 +79,7 @@
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>Vault</artifactId>
-            <version>RELEASE</version>
+            <version>1.2.23-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -112,15 +112,15 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.griefcraft.lwc</groupId>
-            <artifactId>LWC</artifactId>
+            <groupId>com.griefcraft</groupId>
+            <artifactId>lwc</artifactId>
             <version>LATEST</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.royaldev.royalchat</groupId>
-            <artifactId>RoyalChat</artifactId>
+            <groupId>org.royaldev</groupId>
+            <artifactId>royalchat</artifactId>
             <version>LATEST</version>
             <type>jar</type>
             <scope>compile</scope>
