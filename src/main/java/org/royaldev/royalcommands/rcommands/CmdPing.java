@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.bukkit.ChatColor;
 
 public class CmdPing implements CommandExecutor {
 
@@ -22,7 +23,7 @@ public class CmdPing implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            cs.sendMessage("Pong!");
+            cs.sendMessage(ChatColor.BLUE + "Pong!");
             return true;
             /*
             if (!(cs instanceof Player) && args.length < 1) {
