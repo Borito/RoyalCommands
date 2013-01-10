@@ -705,6 +705,10 @@ commands:
     description: Launches the player vertically.
     usage: /<command> <player>
 
+  effect:
+    description: Apply custom potion effects on players.
+    usage: /<command> [target] [effecttags]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1146,6 +1150,9 @@ permissions:
   rcmds.rocket:
     description: Allows you to shoot a player into the sky.
     default: op
+  rcmds.effect:
+    description: Allows you to apply custom potion effects on players.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1315,6 +1322,9 @@ permissions:
     default: false
   rcmds.exempt.rocket:
     description: Makes the player immune to /rocket.
+    default: false
+  rcmds.exempt.effect:
+    description: Makes the player immune to /effect.
     default: false
 
   rcmds.exempt.autoafk:
@@ -1639,6 +1649,7 @@ permissions:
       rcmds.setuserdata: true
       rcmds.firework: true
       rcmds.rocket: true
+      rcmds.effect: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1748,6 +1759,7 @@ permissions:
       rcmds.exempt.teleportwarmup: true
       rcmds.exempt.deafen: true
       rcmds.exempt.rocket: true
+      rcmds.exempt.effect: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -1909,6 +1921,7 @@ permissions:
       rcmds.setuserdata: true
       rcmds.firework: true
       rcmds.rocket: true
+      rcmds.effect: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
