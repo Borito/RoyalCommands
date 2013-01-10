@@ -1,13 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -20,22 +18,6 @@ public class CmdBan implements CommandExecutor {
 
     public CmdBan(RoyalCommands plugin) {
         this.plugin = plugin;
-    }
-
-    /**
-     * Bans a player. Message is not sent to banned player or person who banned.
-     * Message is broadcasted to those with rcmds.see.ban
-     * Kicks banned player if they're online
-     *
-     * @param t      Player to ban
-     * @param cs     CommandSender who issued the ban
-     * @param reason Reason for the ban
-     */
-    public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
-        reason = RUtils.colorize(reason);
-        t.setBanned(true);
-        Bukkit.getServer().broadcast(RUtils.getInGameMessage(RoyalCommands.instance.igBanFormat, reason, t, cs), "rcmds.see.ban");
-        if (t.isOnline()) ((Player) t).kickPlayer(RUtils.getMessage(RoyalCommands.instance.banFormat, reason, cs));
     }
 
     @Override
@@ -71,7 +53,7 @@ public class CmdBan implements CommandExecutor {
             pcm.setLong(new Date().getTime(), "bannedat");
             pcm.set(null, "bantime");
             cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            banPlayer(t, cs, banreason);
+            RUtils.banPlayer(t, cs, banreason);
             return true;
         }
         return false;

@@ -57,6 +57,13 @@ dump_use_inv: true
 # Should warps be limited by permissions? rcmds.warp.warpname
 warp_permissions: false
 
+# Commands to be issued before a player is kicked when banned. These only run on
+# permabans. All commands are sent by the player that did the banning, unless the command
+# is prefixed with "@" - those are sent from console.
+on_ban:
+  - "@lwc admin purge {name}" # Does /lwc admin purge {name} in the console.
+  - "me ultrabanned {name}" # Does /me ultrabanned {name} from the banner.
+
 ###
 # MOTD #
 ###

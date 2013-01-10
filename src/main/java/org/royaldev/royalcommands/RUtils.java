@@ -1211,4 +1211,45 @@ public class RUtils {
         }
         pcm.setInteger(i.getSize(), "backpack.size");
     }
+
+    /**
+     * Bans a player. Message is not sent to banned player or person who banned.
+     * Message is broadcasted to those with rcmds.see.ban
+     * Kicks banned player if they're online.
+     * <p/>
+     * This is only used for permabans.
+     *
+     * @param t      Player to ban
+     * @param cs     CommandSender who issued the ban
+     * @param reason Reason for the ban
+     */
+    public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
+        reason = RUtils.colorize(reason);
+        t.setBanned(true);
+        String inGameFormat = RoyalCommands.instance.igBanFormat;
+        String outFormat = RoyalCommands.instance.banFormat;
+        executeBanActions(t, cs, reason);
+        Bukkit.getServer().broadcast(RUtils.getInGameMessage(inGameFormat, reason, t, cs), "rcmds.see.ban");
+        if (t.isOnline()) ((Player) t).kickPlayer(RUtils.getMessage(outFormat, reason, cs));
+    }
+
+    private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {
+        if (!RoyalCommands.instance.getConfig().getKeys(false).contains("on_ban")) return; // default values are not welcome here
+        List<String> banActions = RoyalCommands.instance.onBanActions;
+        if (banActions == null || banActions.isEmpty()) return;
+        for (String command : banActions) {
+            if (command.trim().isEmpty()) continue;
+            boolean fromConsole = command.startsWith("@");
+            if (fromConsole) command = command.substring(1);
+
+            command = command.replace("{name}", banned.getName());
+            command = command.replace("{dispname}", (banned.isOnline()) ? ((Player) banned).getDisplayName() : banned.getName());
+            command = command.replace("{banner}", banner.getName());
+            command = command.replace("{bannerdispname}", (banner instanceof Player) ? ((Player) banner).getDisplayName() : banner.getName());
+            command = command.replace("{reason}", reason);
+
+            CommandSender sendFrom = (fromConsole) ? Bukkit.getConsoleSender() : banner;
+            Bukkit.dispatchCommand(sendFrom, command);
+        }
+    }
 }

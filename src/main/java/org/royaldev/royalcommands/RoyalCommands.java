@@ -140,6 +140,7 @@ public class RoyalCommands extends JavaPlugin {
     public List<String> commandCooldowns = new ArrayList<String>();
     public List<String> whitelist = new ArrayList<String>();
     public List<String> logBlacklist = new ArrayList<String>();
+    public List<String> onBanActions = new ArrayList<String>();
     public static List<String> disabledCommands = new ArrayList<String>();
 
     //-- ConfigurationSections --//
@@ -489,6 +490,7 @@ public class RoyalCommands extends JavaPlugin {
         motd = c.getStringList("motd");
         commandCooldowns = c.getStringList("command_cooldowns");
         disabledCommands = c.getStringList("disabled_commands");
+        onBanActions = c.getStringList("on_ban");
         logBlacklist = c.getStringList("command_log_blacklist");
 
         homeLimits = c.getConfigurationSection("home_limits");
@@ -841,6 +843,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdSetUserdata(this), "setuserdata", this);
         registerCommand(new CmdFirework(this), "firework", this);
         registerCommand(new CmdRocket(this), "rocket", this);
+        registerCommand(new CmdEffect(this), "effect", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Config converter (H2 -> YML) --//
