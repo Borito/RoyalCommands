@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.bukkit.ChatColor;
 
 public class CmdPing implements CommandExecutor {
 

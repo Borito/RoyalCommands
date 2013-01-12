@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,15 +37,24 @@ public class CmdHelmet implements CommandExecutor {
             Player p = (Player) cs;
             PConfManager pcm = new PConfManager(p);
             String name = args[0];
-            if (name.trim().equalsIgnoreCase("none")) {
-                p.getInventory().setHelmet(null);
+            if (name.equalsIgnoreCase("none")) {
+                ItemStack helm = p.getInventory().getHelmet();
                 if (plugin.requireHelm) {
                     if (pcm.getString("helmet") != null) {
                         ItemStack stack = RUtils.getItem(pcm.getString("helmet"), 1);
+                        if (stack == null) {
+                            cs.sendMessage(ChatColor.RED + "You have no helmet!");
+                            return true;
+                        }
+                        if (helm == null || helm.getType() == Material.AIR || helm.getType() != stack.getType()) {
+                            p.sendMessage(ChatColor.RED + "You have already removed your helmet!");
+                            pcm.set(null, "helmet");
+                            return true;
+                        }
                         p.getInventory().addItem(stack);
-                        pcm.set(null, "helmet");
                     }
                 }
+                p.getInventory().setHelmet(null);
                 p.sendMessage(ChatColor.BLUE + "Removed your helmet.");
                 return true;
             }

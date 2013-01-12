@@ -1234,7 +1234,8 @@ public class RUtils {
     }
 
     private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {
-        if (!RoyalCommands.instance.getConfig().getKeys(false).contains("on_ban")) return; // default values are not welcome here
+        if (!RoyalCommands.instance.getConfig().getKeys(false).contains("on_ban"))
+            return; // default values are not welcome here
         List<String> banActions = RoyalCommands.instance.onBanActions;
         if (banActions == null || banActions.isEmpty()) return;
         for (String command : banActions) {
