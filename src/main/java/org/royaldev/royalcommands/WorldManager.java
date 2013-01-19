@@ -206,8 +206,13 @@ public class WorldManager {
         WorldCreator wc = new WorldCreator(name);
         String generator = config.getString("worlds." + name + ".generator", "DefaultGen");
         if (generator.equals("DefaultGen")) generator = null;
-        wc.generator(generator);
-        World w = wc.createWorld();
+        World w;
+        try {
+            wc.generator(generator);
+            w = wc.createWorld();
+        } catch (Exception e) { // catch silly generators using old code
+            throw new IllegalArgumentException("Generator is using old code!");
+        }
         synchronized (loadedWorlds) {
             loadedWorlds.add(w.getName());
         }
