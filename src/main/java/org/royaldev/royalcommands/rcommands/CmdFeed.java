@@ -31,7 +31,7 @@ public class CmdFeed implements CommandExecutor {
                 Player t = (Player) cs;
                 t.sendMessage(ChatColor.BLUE + "You have fed yourself!");
                 t.setFoodLevel(20);
-                t.setSaturation(20);
+                t.setSaturation(20F);
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
@@ -46,7 +46,7 @@ public class CmdFeed implements CommandExecutor {
             cs.sendMessage(ChatColor.BLUE + "You have fed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             t.sendMessage(ChatColor.BLUE + "You have been fed by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + "!");
             t.setFoodLevel(20);
-            t.setSaturation(20);
+            t.setSaturation(20F);
             return true;
         }
         return false;
