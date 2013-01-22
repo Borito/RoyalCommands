@@ -175,7 +175,7 @@ public class SignListener implements Listener {
                 if (!did) return;
             }
 
-            p.setHealth(20);
+            p.setHealth(p.getMaxHealth());
         }
 
         //Weather signs

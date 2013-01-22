@@ -32,7 +32,7 @@ public class CmdGod implements CommandExecutor {
                 }
                 Player t = (Player) cs;
                 PConfManager pcm = new PConfManager(t);
-                t.setHealth(20);
+                t.setHealth(t.getMaxHealth());
                 t.setFoodLevel(20);
                 t.setSaturation(20F);
                 if (!pcm.getBoolean("godmode")) {
@@ -59,7 +59,7 @@ public class CmdGod implements CommandExecutor {
                             cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                             return true;
                         }
-                        t.setHealth(20);
+                        t.setHealth(t.getMaxHealth());
                         t.setFoodLevel(20);
                         t.setSaturation(20F);
                         t.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has enabled godmode for you!");
@@ -67,7 +67,7 @@ public class CmdGod implements CommandExecutor {
                         pcm.setBoolean(true, "godmode");
                         return true;
                     } else {
-                        t.setHealth(20);
+                        t.setHealth(t.getMaxHealth());
                         t.setFoodLevel(20);
                         t.setSaturation(20F);
                         t.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " has disabled godmode for you!");
@@ -85,20 +85,22 @@ public class CmdGod implements CommandExecutor {
                     return true;
                 }
                 if (t2.isOnline()) {
-                    ((Player) t2).setHealth(20);
-                    ((Player) t2).setFoodLevel(20);
-                    ((Player) t2).setSaturation(20F);
-                    ((Player) t2).sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has enabled godmode for you!");
+                    Player pl = (Player) t2;
+                    pl.setHealth(pl.getMaxHealth());
+                    pl.setFoodLevel(20);
+                    pl.setSaturation(20F);
+                    pl.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has enabled godmode for you!");
                 }
                 cs.sendMessage(ChatColor.BLUE + "You have enabled godmode for " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
                 pcm.setBoolean(true, "godmode");
                 return true;
             } else {
                 if (t2.isOnline()) {
-                    ((Player) t2).setHealth(20);
-                    ((Player) t2).setFoodLevel(20);
-                    ((Player) t2).setSaturation(20F);
-                    ((Player) t2).sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " has disabled godmode for you!");
+                    Player pl = (Player) t2;
+                    pl.setHealth(pl.getMaxHealth());
+                    pl.setFoodLevel(20);
+                    pl.setSaturation(20F);
+                    pl.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " has disabled godmode for you!");
                 }
                 cs.sendMessage(ChatColor.BLUE + "You have disabled godmode for " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
                 pcm.setBoolean(false, "godmode");

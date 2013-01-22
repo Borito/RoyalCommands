@@ -30,7 +30,7 @@ public class CmdHeal implements CommandExecutor {
                 }
                 Player t = (Player) cs;
                 t.sendMessage(ChatColor.BLUE + "You have healed yourself!");
-                t.setHealth(20);
+                t.setHealth(t.getMaxHealth());
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
@@ -40,7 +40,7 @@ public class CmdHeal implements CommandExecutor {
             }
             cs.sendMessage(ChatColor.BLUE + "You have healed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             t.sendMessage(ChatColor.BLUE + "You have been healed by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + "!");
-            t.setHealth(20);
+            t.setHealth(t.getMaxHealth());
             return true;
         }
         return false;
