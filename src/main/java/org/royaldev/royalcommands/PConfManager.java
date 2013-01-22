@@ -3,7 +3,6 @@ package org.royaldev.royalcommands;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.royaldev.royalcommands.playermanagers.H2PConfManager;
 import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 
 import java.util.List;
@@ -17,11 +16,6 @@ import java.util.Map;
  * @see ConfManager
  */
 public class PConfManager {
-
-    /**
-     * H2 player manager - will be set if using H2
-     */
-    private H2PConfManager h2pcm;
     /**
      * YML player manager - will be set if using YML
      */
@@ -73,7 +67,6 @@ public class PConfManager {
     /**
      * Returns the backend configuration manager.
      * <p/>
-     * If using H2, cast to {@link H2PConfManager}, else cast to {@link YMLPConfManager}.
      *
      * @return Object of the real backend configuration manager.
      */

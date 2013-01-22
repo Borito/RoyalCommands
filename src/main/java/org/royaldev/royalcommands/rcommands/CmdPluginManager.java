@@ -14,7 +14,6 @@ import org.bukkit.plugin.UnknownDependencyException;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.UnZip;
-import org.royaldev.royalcommands.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -428,7 +427,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "Decompressing zip...");
                     UnZip.decompress(f.getAbsolutePath(), f.getParent());
                 }
-                for (File fi : FileUtils.listFiles(f.getParentFile(), null, recursive)) {
+                for (File fi : RUtils.listFiles(f.getParentFile(), recursive)) {
                     if (!fi.getName().endsWith(".jar")) continue;
 //                  String extraFile = (f.getParent().equals(fi.getParent())) ? "" : fi.getParentFile().getName() + File.separator;
                     cs.sendMessage(ChatColor.BLUE + "Moving " + ChatColor.GRAY + fi.getName() + ChatColor.BLUE + " to plugins folder...");
@@ -437,10 +436,7 @@ public class CmdPluginManager implements CommandExecutor {
                         cs.sendMessage(ChatColor.RED + "Couldn't move " + ChatColor.GRAY + fi.getName() + ChatColor.RED + "!");
                 }
                 cs.sendMessage(ChatColor.BLUE + "Removing temporary folder...");
-                try {
-                    FileUtils.deleteDirectory(f.getParentFile());
-                } catch (IOException ignored) {
-                }
+                RUtils.deleteDirectory(f.getParentFile());
                 cs.sendMessage(ChatColor.BLUE + "Downloaded plugin. Use " + ChatColor.GRAY + "/" + label + " load" + ChatColor.BLUE + " to enable it.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("updatecheckall")) {
@@ -466,7 +462,7 @@ public class CmdPluginManager implements CommandExecutor {
                         cs.sendMessage(ChatColor.BLUE + "Finished checking for updates.");
                     }
                 };
-                plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, r);
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
                 return true;
             } else if (subcmd.equalsIgnoreCase("updatecheck")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.updatecheck")) {

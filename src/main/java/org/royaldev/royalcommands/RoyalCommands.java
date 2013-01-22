@@ -42,8 +42,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
-import org.royaldev.royalcommands.json.JSONException;
-import org.royaldev.royalcommands.json.JSONObject;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
@@ -51,7 +49,6 @@ import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.opencsv.CSVReader;
-import org.royaldev.royalcommands.playermanagers.H2PConfManager;
 import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
@@ -59,12 +56,10 @@ import org.royaldev.royalcommands.runners.BanWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.UserdataSaver;
 import org.royaldev.royalcommands.runners.WarnWatcher;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -185,6 +180,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean separateEnder = null;
     public Boolean warpPermissions = null;
     public Boolean removePotionEffects = null;
+    public Boolean updateCheck = null;
     public static Boolean useWorldManager = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
@@ -392,12 +388,12 @@ public class RoyalCommands extends JavaPlugin {
         return currentVersion == null || currentVersion >= minVersion;
     }
 
-    private JSONObject getNewestVersions() throws IOException, JSONException {
+    private Map<String, String> getNewestVersions() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(new URL("http://cdn.royaldev.org/rcmdsversion.php").openStream()));
         StringBuilder data = new StringBuilder();
         String input;
         while ((input = br.readLine()) != null) data.append(input);
-        return new JSONObject(data.toString());
+        return new Gson().fromJson(data.toString(), new TypeToken<Map<String, String>>() {}.getType());
     }
 
     //--- Reload configuration values ---//
@@ -443,6 +439,7 @@ public class RoyalCommands extends JavaPlugin {
         separateEnder = c.getBoolean("worldmanager.inventory_separation.separate_ender_chests", true);
         warpPermissions = c.getBoolean("warp_permissions", false);
         removePotionEffects = c.getBoolean("remove_potion_effects", true);
+        updateCheck = c.getBoolean("update_check", false);
 
         banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
@@ -643,10 +640,11 @@ public class RoyalCommands extends JavaPlugin {
         bs.runTaskTimerAsynchronously(this, new Runnable() {
             @Override
             public void run() {
+                if (!updateCheck) return;
                 try {
-                    JSONObject jo = getNewestVersions();
-                    String stable = jo.getString("stable");
-                    String dev = jo.getString("dev");
+                    Map<String, String> jo = getNewestVersions();
+                    String stable = jo.get("stable");
+                    String dev = jo.get("dev");
                     String currentVersion = getDescription().getVersion().toLowerCase();
                     if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
                         getLogger().warning("A newer version of RoyalCommands is available!");
@@ -656,7 +654,7 @@ public class RoyalCommands extends JavaPlugin {
                         getLogger().warning("A newer version of RoyalCommands is available!");
                         getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
                         getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
-                    } else if (!stable.equalsIgnoreCase(currentVersion) && currentVersion.replace("pre", "").equalsIgnoreCase(stable)) {
+                    } else if (!stable.equalsIgnoreCase(currentVersion) && currentVersion.replace("-SNAPSHOT", "").equalsIgnoreCase(stable)) {
                         getLogger().warning("A newer version of RoyalCommands is available!");
                         getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
                         getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
@@ -845,48 +843,6 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdRocket(this), "rocket", this);
         registerCommand(new CmdEffect(this), "effect", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
-
-        //-- Config converter (H2 -> YML) --//
-
-        if (ymlConvert) { // rewrite based on home convert
-            for (OfflinePlayer op : getServer().getOfflinePlayers()) {
-                PConfManager pcm = new PConfManager(op);
-                if (!pcm.exists()) pcm.createFile();
-                getLogger().info("Converting userdata for " + op.getName() + "...");
-                H2PConfManager h2pcm;
-                JSONObject jo;
-                try {
-                    h2pcm = new H2PConfManager(op);
-                    jo = h2pcm.getJSONObject("");
-                } catch (Exception e) {
-                    getLogger().warning("Could not convert userdata for " + op.getName() + ": " + e.getMessage());
-                    continue;
-                }
-                Map<Object, Object> h2data = new Gson().fromJson(jo.toString(), new TypeToken<Map<Object, Object>>() {}.getType());
-                Yaml yaml = new Yaml();
-                File f = new File(getDataFolder() + File.separator + "userdata" + File.separator + op.getName().toLowerCase() + ".yml");
-                try {
-                    if (!f.exists()) {
-                        if (!f.createNewFile()) {
-                            getLogger().warning("Could not create userdata file for " + op.getName() + ".");
-                            continue;
-                        }
-                    }
-                    FileInputStream fis = new FileInputStream(f);
-                    yaml.load(fis);
-                    fis.close();
-                    FileWriter fw = new FileWriter(f);
-                    yaml.dump(h2data, fw);
-                    fw.flush();
-                    fw.close();
-                } catch (IOException e) {
-                    getLogger().warning("Could not convert userdata for " + op.getName() + ": " + e.getMessage());
-                }
-            }
-            saveUDOnChange = true;
-            setEnabled(false);
-            getLogger().info("H2 -> YML userdata conversion complete. Please restart with convert set to false.");
-        }
 
         //-- Make the API --//
 

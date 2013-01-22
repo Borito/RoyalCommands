@@ -1253,4 +1253,53 @@ public class RUtils {
             Bukkit.dispatchCommand(sendFrom, command);
         }
     }
+
+    /**
+     * Recursively deletes a directory.
+     *
+     * @param f Directory to delete
+     * @return If all files were deleted, true, else false
+     */
+    public static boolean deleteDirectory(File f) {
+        boolean success = true;
+        if (!f.isDirectory()) return false;
+        File[] files = f.listFiles();
+        if (files == null) return false;
+        for (File delete : files) {
+            if (delete.isDirectory()) {
+                boolean recur = deleteDirectory(delete);
+                if (success) success = recur; // if all has been okay, set to new value.
+                continue;
+            }
+            if (!delete.delete()) {
+                RoyalCommands.instance.getLogger().warning("Could not delete " + delete.getAbsolutePath());
+                success = false;
+            }
+        }
+        if (success) success = f.delete(); // don't delete directory if files still remain
+        return success;
+    }
+
+    /**
+     * Lists files in a directory.
+     *
+     * @param f         Directory to list files in
+     * @param recursive Recursively list files?
+     * @return List of files - never null
+     */
+    public static List<File> listFiles(File f, boolean recursive) {
+        List<File> fs = new ArrayList<File>();
+        if (!f.isDirectory()) return fs;
+        File[] listed = f.listFiles();
+        if (listed == null) return fs;
+        for (File in : listed) {
+            if (in.isDirectory()) {
+                if (!recursive) continue;
+                fs.addAll(listFiles(in, recursive));
+                continue;
+            }
+            fs.add(in);
+        }
+        return fs;
+    }
 }

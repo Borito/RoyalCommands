@@ -31,7 +31,6 @@ public class Help {
                 if (p.getDescription() == null || p.getDescription().getCommands() == null)
                     continue;
                 Map<String, Map<String, Object>> commands = p.getDescription().getCommands();
-                if (commands.keySet() == null) continue;
                 for (String cmd : commands.keySet()) {
                     if (commands.get(cmd) == null || commands.get(cmd).get("description") == null)
                         continue;

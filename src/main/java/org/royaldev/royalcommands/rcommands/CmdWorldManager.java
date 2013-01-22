@@ -10,10 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.io.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
 public class CmdWorldManager implements CommandExecutor {
@@ -133,12 +131,7 @@ public class CmdWorldManager implements CommandExecutor {
                     return true;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Deleting world...");
-                try {
-                    FileUtils.deleteDirectory(w.getWorldFolder());
-                    success = true;
-                } catch (IOException e) {
-                    success = false;
-                }
+                success = RUtils.deleteDirectory(w.getWorldFolder());
                 if (success)
                     cs.sendMessage(ChatColor.BLUE + "Successfully deleted world!");
                 else cs.sendMessage(ChatColor.RED + "Could not delete world.");
@@ -168,9 +161,12 @@ public class CmdWorldManager implements CommandExecutor {
                 }
                 String name = args[1];
                 boolean contains = false;
-                for (File f : plugin.getServer().getWorldContainer().listFiles()) {
-                    if (f.getName().equals(name)) contains = true;
+                File[] fs = plugin.getServer().getWorldContainer().listFiles();
+                if (fs == null) {
+                    cs.sendMessage(ChatColor.RED + "The world directory is invalid!");
+                    return true;
                 }
+                for (File f : fs) if (f.getName().equals(name)) contains = true;
                 if (!contains) {
                     cs.sendMessage(ChatColor.RED + "No such world!");
                     return true;

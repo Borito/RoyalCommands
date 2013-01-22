@@ -81,57 +81,6 @@ public class CSVParser {
     public static final char NULL_CHARACTER = '\0';
 
     /**
-     * Constructs CSVParser using a comma for the separator.
-     */
-    public CSVParser() {
-        this(DEFAULT_SEPARATOR, DEFAULT_QUOTE_CHARACTER, DEFAULT_ESCAPE_CHARACTER);
-    }
-
-    /**
-     * Constructs CSVParser with supplied separator.
-     *
-     * @param separator the delimiter to use for separating entries.
-     */
-    public CSVParser(char separator) {
-        this(separator, DEFAULT_QUOTE_CHARACTER, DEFAULT_ESCAPE_CHARACTER);
-    }
-
-
-    /**
-     * Constructs CSVParser with supplied separator and quote char.
-     *
-     * @param separator the delimiter to use for separating entries
-     * @param quotechar the character to use for quoted elements
-     */
-    public CSVParser(char separator, char quotechar) {
-        this(separator, quotechar, DEFAULT_ESCAPE_CHARACTER);
-    }
-
-    /**
-     * Constructs CSVReader with supplied separator and quote char.
-     *
-     * @param separator the delimiter to use for separating entries
-     * @param quotechar the character to use for quoted elements
-     * @param escape    the character to use for escaping a separator or quote
-     */
-    public CSVParser(char separator, char quotechar, char escape) {
-        this(separator, quotechar, escape, DEFAULT_STRICT_QUOTES);
-    }
-
-    /**
-     * Constructs CSVReader with supplied separator and quote char.
-     * Allows setting the "strict quotes" flag
-     *
-     * @param separator    the delimiter to use for separating entries
-     * @param quotechar    the character to use for quoted elements
-     * @param escape       the character to use for escaping a separator or quote
-     * @param strictQuotes if true, characters outside the quotes are ignored
-     */
-    public CSVParser(char separator, char quotechar, char escape, boolean strictQuotes) {
-        this(separator, quotechar, escape, strictQuotes, DEFAULT_IGNORE_LEADING_WHITESPACE);
-    }
-
-    /**
      * Constructs CSVReader with supplied separator and quote char.
      * Allows setting the "strict quotes" and "ignore leading whitespace" flags
      *
@@ -174,15 +123,11 @@ public class CSVParser {
         return parseLine(nextLine, true);
     }
 
-    public String[] parseLine(String nextLine) throws IOException {
-        return parseLine(nextLine, false);
-    }
-
     /**
      * Parses an incoming String and returns an array of elements.
      *
      * @param nextLine the string to parse
-     * @param multi
+     * @param multi    multi
      * @return the comma-tokenized list of elements, or null if nextLine is null
      * @throws IOException if bad things happen during the read
      */

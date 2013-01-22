@@ -37,6 +37,9 @@ helm_require_item: false
 # Check to see if the version of CraftBukkit you're running is safe?
 version_check: true
 
+# Check for new versions of RoyalCommands?
+update_check: false
+
 # Commands to not show up if command logging is on
 # Please use all lowercase and no preceding /
 command_log_blacklist:

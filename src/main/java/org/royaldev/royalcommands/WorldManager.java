@@ -210,8 +210,8 @@ public class WorldManager {
         try {
             wc.generator(generator);
             w = wc.createWorld();
-        } catch (Exception e) { // catch silly generators using old code
-            throw new IllegalArgumentException("Generator is using old code!");
+        } catch (Exception e) { // catch silly generators using old code (may not actually catch)
+            throw new IllegalArgumentException("Generator (" + generator + ") is using old code: " + e.getMessage());
         }
         synchronized (loadedWorlds) {
             loadedWorlds.add(w.getName());
