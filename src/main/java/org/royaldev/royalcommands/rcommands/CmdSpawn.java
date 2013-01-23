@@ -83,6 +83,10 @@ public class CmdSpawn implements CommandExecutor {
             Player p = (Player) cs;
             World w;
             if (args.length > 0) {
+                if (!plugin.isAuthorized(cs, "rcmds.spawn.other")) {
+                    cs.sendMessage(ChatColor.RED + "You don't have permission to spawn in other worlds.");
+                    return true;
+                }
                 w = plugin.getServer().getWorld(args[0]);
                 if (w == null) {
                     cs.sendMessage(ChatColor.RED + "No such world!");
