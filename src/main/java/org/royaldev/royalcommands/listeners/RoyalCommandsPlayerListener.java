@@ -16,6 +16,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -237,8 +238,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
         }
         if (pcm.getBoolean("muted")) {
-            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValid(p, "mutetime"))
-                pcm.setBoolean(false, "muted");
+            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime")) pcm.setBoolean(false, "muted");
             for (String command : plugin.muteCmds) {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
                     continue;
@@ -374,6 +374,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.isCancelled()) return;
         if (new PConfManager(event.getPlayer()).getBoolean("jailed"))
             event.setCancelled(true);
         Action act = event.getAction();
@@ -387,7 +388,48 @@ public class RoyalCommandsPlayerListener implements Listener {
         for (String s : cmds) {
             if (s.toLowerCase().trim().startsWith("c:"))
                 event.getPlayer().chat(s.trim().substring(2));
-            else event.getPlayer().performCommand(s.trim());
+            else {
+                event.getPlayer().performCommand(s.trim());
+                if (plugin.showcommands) {
+                    String[] parts = s.split(" ");
+                    if (parts.length > 0) {
+                        String command = parts[0].toLowerCase();
+                        if (!plugin.logBlacklist.contains(command.substring(1)))
+                            log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + s);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onAssignHitPlayer(PlayerInteractEntityEvent e) {
+        if (e.isCancelled()) return;
+        if (new PConfManager(e.getPlayer()).getBoolean("jailed"))
+            e.setCancelled(true);
+        ItemStack id = e.getPlayer().getItemInHand();
+        if (id == null) return;
+        int idn = id.getTypeId();
+        if (idn == 0) return;
+        List<String> cmds = new PConfManager(e.getPlayer()).getStringList("assign." + idn);
+        if (cmds == null) return;
+        Player clicked = null;
+        if (e.getRightClicked() instanceof Player) clicked = (Player) e.getRightClicked();
+        for (String s : cmds) {
+            if (clicked != null) s = s.replace("{player}", clicked.getName());
+            if (s.toLowerCase().trim().startsWith("c:"))
+                e.getPlayer().chat(s.trim().substring(2));
+            else {
+                e.getPlayer().performCommand(s.trim());
+                if (plugin.showcommands) {
+                    String[] parts = s.split(" ");
+                    if (parts.length > 0) {
+                        String command = parts[0].toLowerCase();
+                        if (!plugin.logBlacklist.contains(command.substring(1)))
+                            log.info("[PLAYER_COMMAND] " + e.getPlayer().getName() + ": " + s);
+                    }
+                }
+            }
         }
     }
 
