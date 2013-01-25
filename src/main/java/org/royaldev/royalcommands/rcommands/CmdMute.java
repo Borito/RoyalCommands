@@ -33,9 +33,12 @@ public class CmdMute implements CommandExecutor {
             OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
             if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = new PConfManager(t);
-            if (!pcm.exists() || !t.hasPlayedBefore()) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                return true;
+            if (!pcm.exists()) {
+                if (!t.isOnline() && !t.hasPlayedBefore()) {
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
+                pcm.createFile();
             }
             if (cs.getName().equalsIgnoreCase(t.getName())) {
                 cs.sendMessage(ChatColor.RED + "You can't mute yourself!");
@@ -55,6 +58,7 @@ public class CmdMute implements CommandExecutor {
             }
             pcm.setBoolean(!isMuted, "muted");
             if (muteTime > 0L && !isMuted) pcm.setLong(muteTime, "mutetime");
+            else if (isMuted) pcm.set(null, "mutetime");
             pcm.setLong(System.currentTimeMillis(), "mutedat");
             String timePeriod = (muteTime > 0L && !isMuted) ? " for " + ChatColor.GRAY + RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1) : "";
             cs.sendMessage(ChatColor.BLUE + "You have toggled mute " + ChatColor.GRAY + BooleanUtils.toStringOnOff(!isMuted) + ChatColor.BLUE + " for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + timePeriod + ChatColor.BLUE + ".");
