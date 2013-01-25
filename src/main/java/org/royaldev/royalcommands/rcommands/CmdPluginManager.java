@@ -352,92 +352,100 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "http://dev.bukkit.org/server-mods/" + ChatColor.GRAY + "royalcommands" + ChatColor.RED + "/");
                     return true;
                 }
-                boolean recursive = args.length > 2 && args[2].equalsIgnoreCase("true");
-                cs.sendMessage(ChatColor.BLUE + "Getting download link...");
-                String pluginUrlString = "http://dev.bukkit.org/server-mods/" + args[1].toLowerCase() + "/files.rss";
-                String file;
-                try {
-                    URL url = new URL(pluginUrlString);
-                    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
-                    doc.getDocumentElement().normalize();
-                    NodeList nodes = doc.getElementsByTagName("item");
-                    Node firstNode = nodes.item(0);
-                    if (firstNode.getNodeType() == 1) {
-                        Element firstElement = (Element) firstNode;
-                        NodeList firstElementTagName = firstElement.getElementsByTagName("link");
-                        Element firstNameElement = (Element) firstElementTagName.item(0);
-                        NodeList firstNodes = firstNameElement.getChildNodes();
-                        String link = firstNodes.item(0).getNodeValue();
-                        URL dpage = new URL(link);
-                        BufferedReader br = new BufferedReader(new InputStreamReader(dpage.openStream()));
-                        String inputLine;
-                        StringBuilder content = new StringBuilder();
-                        while ((inputLine = br.readLine()) != null)
-                            content.append(inputLine);
-                        br.close();
-                        file = StringUtils.substringBetween(content.toString(), "<li class=\"user-action user-action-download\"><span><a href=\"", "\">Download</a></span></li>");
-                    } else throw new Exception();
-                } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "Could not fetch download link! Either this plugin has no downloads, or you specified an invalid tag.");
-                    cs.sendMessage(ChatColor.RED + "Tag: http://dev.bukkit.org/server-mods/" + ChatColor.GRAY + "plugin-name" + ChatColor.RED + "/");
-                    return true;
-                }
-                BufferedInputStream bis;
-                try {
-                    bis = new BufferedInputStream(new URL(file).openStream());
-                } catch (MalformedURLException e) {
-                    cs.sendMessage(ChatColor.RED + "The received download link was invalid!");
-                    return true;
-                } catch (IOException e) {
-                    cs.sendMessage(ChatColor.RED + "An internal input/output error occurred. Please try again.");
-                    return true;
-                }
-                Pattern p = Pattern.compile("https?://dev\\.bukkit\\.org/media/files[\\d/]+([\\w\\W]+)");
-                Matcher m = p.matcher(file);
-                m.find();
-                String fileName = m.group(1).trim();
-                cs.sendMessage(ChatColor.BLUE + "Creating temporary folder...");
-                File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
-                while (f.getParentFile().exists())
-                    f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
-                if (!fileName.endsWith(".zip") && !fileName.endsWith(".jar")) {
-                    cs.sendMessage(ChatColor.RED + "The file wasn't a zip or jar file, so it was not downloaded.");
-                    cs.sendMessage(ChatColor.RED + "Filename: " + ChatColor.GRAY + fileName);
-                    return true;
-                }
-                f.getParentFile().mkdirs();
-                BufferedOutputStream bos;
-                try {
-                    bos = new BufferedOutputStream(new FileOutputStream(f));
-                } catch (FileNotFoundException e) {
-                    cs.sendMessage(ChatColor.RED + "The temporary download folder was not found. Make sure that " + ChatColor.GRAY + System.getProperty("java.io.tmpdir") + ChatColor.RED + " is writable.");
-                    return true;
-                }
-                int b;
-                cs.sendMessage(ChatColor.BLUE + "Downloading file " + ChatColor.GRAY + fileName + ChatColor.BLUE + "...");
-                try {
-                    while ((b = bis.read()) != -1) bos.write(b);
-                    bos.flush();
-                    bos.close();
-                } catch (IOException e) {
-                    cs.sendMessage(ChatColor.RED + "An internal input/output error occurred. Please try again.");
-                    return true;
-                }
-                if (fileName.endsWith(".zip")) {
-                    cs.sendMessage(ChatColor.BLUE + "Decompressing zip...");
-                    UnZip.decompress(f.getAbsolutePath(), f.getParent());
-                }
-                for (File fi : RUtils.listFiles(f.getParentFile(), recursive)) {
-                    if (!fi.getName().endsWith(".jar")) continue;
-//                  String extraFile = (f.getParent().equals(fi.getParent())) ? "" : fi.getParentFile().getName() + File.separator;
-                    cs.sendMessage(ChatColor.BLUE + "Moving " + ChatColor.GRAY + fi.getName() + ChatColor.BLUE + " to plugins folder...");
-                    boolean s = fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
-                    if (!s)
-                        cs.sendMessage(ChatColor.RED + "Couldn't move " + ChatColor.GRAY + fi.getName() + ChatColor.RED + "!");
-                }
-                cs.sendMessage(ChatColor.BLUE + "Removing temporary folder...");
-                RUtils.deleteDirectory(f.getParentFile());
-                cs.sendMessage(ChatColor.BLUE + "Downloaded plugin. Use " + ChatColor.GRAY + "/" + label + " load" + ChatColor.BLUE + " to enable it.");
+                final boolean recursive = args.length > 2 && args[2].equalsIgnoreCase("true");
+                final String tag = args[1].toLowerCase();
+                final String commandUsed = label;
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        cs.sendMessage(ChatColor.BLUE + "Getting download link...");
+                        String pluginUrlString = "http://dev.bukkit.org/server-mods/" + tag + "/files.rss";
+                        String file;
+                        try {
+                            URL url = new URL(pluginUrlString);
+                            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
+                            doc.getDocumentElement().normalize();
+                            NodeList nodes = doc.getElementsByTagName("item");
+                            Node firstNode = nodes.item(0);
+                            if (firstNode.getNodeType() == 1) {
+                                Element firstElement = (Element) firstNode;
+                                NodeList firstElementTagName = firstElement.getElementsByTagName("link");
+                                Element firstNameElement = (Element) firstElementTagName.item(0);
+                                NodeList firstNodes = firstNameElement.getChildNodes();
+                                String link = firstNodes.item(0).getNodeValue();
+                                URL dpage = new URL(link);
+                                BufferedReader br = new BufferedReader(new InputStreamReader(dpage.openStream()));
+                                String inputLine;
+                                StringBuilder content = new StringBuilder();
+                                while ((inputLine = br.readLine()) != null)
+                                    content.append(inputLine);
+                                br.close();
+                                file = StringUtils.substringBetween(content.toString(), "<li class=\"user-action user-action-download\"><span><a href=\"", "\">Download</a></span></li>");
+                            } else throw new Exception();
+                        } catch (Exception e) {
+                            cs.sendMessage(ChatColor.RED + "Could not fetch download link! Either this plugin has no downloads, or you specified an invalid tag.");
+                            cs.sendMessage(ChatColor.RED + "Tag: http://dev.bukkit.org/server-mods/" + ChatColor.GRAY + "plugin-name" + ChatColor.RED + "/");
+                            return;
+                        }
+                        BufferedInputStream bis;
+                        try {
+                            bis = new BufferedInputStream(new URL(file).openStream());
+                        } catch (MalformedURLException e) {
+                            cs.sendMessage(ChatColor.RED + "The received download link was invalid!");
+                            return;
+                        } catch (IOException e) {
+                            cs.sendMessage(ChatColor.RED + "An internal input/output error occurred. Please try again.");
+                            return;
+                        }
+                        Pattern p = Pattern.compile("https?://dev\\.bukkit\\.org/media/files[\\d/]+([\\w\\W]+)");
+                        Matcher m = p.matcher(file);
+                        m.find();
+                        String fileName = m.group(1).trim();
+                        cs.sendMessage(ChatColor.BLUE + "Creating temporary folder...");
+                        File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
+                        while (f.getParentFile().exists())
+                            f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
+                        if (!fileName.endsWith(".zip") && !fileName.endsWith(".jar")) {
+                            cs.sendMessage(ChatColor.RED + "The file wasn't a zip or jar file, so it was not downloaded.");
+                            cs.sendMessage(ChatColor.RED + "Filename: " + ChatColor.GRAY + fileName);
+                            return;
+                        }
+                        f.getParentFile().mkdirs();
+                        BufferedOutputStream bos;
+                        try {
+                            bos = new BufferedOutputStream(new FileOutputStream(f));
+                        } catch (FileNotFoundException e) {
+                            cs.sendMessage(ChatColor.RED + "The temporary download folder was not found. Make sure that " + ChatColor.GRAY + System.getProperty("java.io.tmpdir") + ChatColor.RED + " is writable.");
+                            return;
+                        }
+                        int b;
+                        cs.sendMessage(ChatColor.BLUE + "Downloading file " + ChatColor.GRAY + fileName + ChatColor.BLUE + "...");
+                        try {
+                            while ((b = bis.read()) != -1) bos.write(b);
+                            bos.flush();
+                            bos.close();
+                        } catch (IOException e) {
+                            cs.sendMessage(ChatColor.RED + "An internal input/output error occurred. Please try again.");
+                            return;
+                        }
+                        if (fileName.endsWith(".zip")) {
+                            cs.sendMessage(ChatColor.BLUE + "Decompressing zip...");
+                            UnZip.decompress(f.getAbsolutePath(), f.getParent());
+                        }
+                        for (File fi : RUtils.listFiles(f.getParentFile(), recursive)) {
+                            if (!fi.getName().endsWith(".jar")) continue;
+//                          String extraFile = (f.getParent().equals(fi.getParent())) ? "" : fi.getParentFile().getName() + File.separator;
+                            cs.sendMessage(ChatColor.BLUE + "Moving " + ChatColor.GRAY + fi.getName() + ChatColor.BLUE + " to plugins folder...");
+                            boolean s = fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
+                            if (!s)
+                                cs.sendMessage(ChatColor.RED + "Couldn't move " + ChatColor.GRAY + fi.getName() + ChatColor.RED + "!");
+                        }
+                        cs.sendMessage(ChatColor.BLUE + "Removing temporary folder...");
+                        RUtils.deleteDirectory(f.getParentFile());
+                        cs.sendMessage(ChatColor.BLUE + "Downloaded plugin. Use " + ChatColor.GRAY + "/" + commandUsed + " load" + ChatColor.BLUE + " to enable it.");
+                    }
+                };
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
                 return true;
             } else if (subcmd.equalsIgnoreCase("updatecheckall")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.updatecheckall")) {

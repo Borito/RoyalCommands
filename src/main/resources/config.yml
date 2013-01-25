@@ -390,6 +390,3 @@ save:
   # If this is changed, the server requires a restart to update this value.
   # Default is "10m" (10 minutes)
   save_on_interval: "10m"
-
-# Convert H2 to YML?
-yml_convert: false
