@@ -87,7 +87,9 @@ public class CmdDump implements CommandExecutor {
                 }
                 int chestAt = -1;
                 for (int i = 0; i < p.getInventory().getContents().length; i++) {
-                    if (p.getInventory().getContents()[i].getType().equals(Material.CHEST)) {
+                    ItemStack is = p.getInventory().getContents()[i];
+                    if (is == null) continue;
+                    if (is.getType() == Material.CHEST) {
                         chestAt = i;
                         break;
                     }
