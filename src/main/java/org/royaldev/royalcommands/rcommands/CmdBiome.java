@@ -66,7 +66,11 @@ public class CmdBiome implements CommandExecutor {
                 @Override
                 public void run() {
                     for (int x = 0; x <= radius; x++)
-                        p.getWorld().setBiome(c.getX() + x, c.getZ() + x, b);
+                        for (int cx = 0; cx < 16; cx++)
+                            for (int cz = 0; cz < 16; cz++)
+                                for (int cy = 0; cy < c.getWorld().getMaxHeight(); cy++)
+                                    c.getBlock(cx, cy, cz).setBiome(b);
+                    //          p.getWorld().setBiome(c.getX() + x, c.getZ() + x, b);  bukkit why does your stuff not work*/
                     p.sendMessage(ChatColor.BLUE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + ChatColor.GRAY + b.name().toLowerCase().replace(" _ ", " ") + ChatColor.BLUE + ".");
                 }
             };
