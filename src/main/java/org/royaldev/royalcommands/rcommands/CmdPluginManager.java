@@ -366,7 +366,8 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 final boolean recursive = args.length > 2 && args[2].equalsIgnoreCase("true");
-                final String tag = args[1].toLowerCase();
+                String customTag = getCustomTag(args[1]);
+                final String tag = (customTag == null) ? args[1].toLowerCase() : customTag;
                 final String commandUsed = label;
                 Runnable r = new Runnable() {
                     @Override
@@ -390,8 +391,7 @@ public class CmdPluginManager implements CommandExecutor {
                                 BufferedReader br = new BufferedReader(new InputStreamReader(dpage.openStream()));
                                 String inputLine;
                                 StringBuilder content = new StringBuilder();
-                                while ((inputLine = br.readLine()) != null)
-                                    content.append(inputLine);
+                                while ((inputLine = br.readLine()) != null) content.append(inputLine);
                                 br.close();
                                 file = StringUtils.substringBetween(content.toString(), "<li class=\"user-action user-action-download\"><span><a href=\"", "\">Download</a></span></li>");
                             } else throw new Exception();
@@ -416,7 +416,7 @@ public class CmdPluginManager implements CommandExecutor {
                         String fileName = m.group(1).trim();
                         cs.sendMessage(ChatColor.BLUE + "Creating temporary folder...");
                         File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
-                        while (f.getParentFile().exists())
+                        while (f.getParentFile().exists()) // make sure we get our own directory
                             f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
                         if (!fileName.endsWith(".zip") && !fileName.endsWith(".jar")) {
                             cs.sendMessage(ChatColor.RED + "The file wasn't a zip or jar file, so it was not downloaded.");
