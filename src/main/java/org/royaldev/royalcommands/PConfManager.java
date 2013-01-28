@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands;
 
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -173,8 +174,24 @@ public class PConfManager {
         return ymlpcm.getInteger(node);
     }
 
+    /**
+     * Gets an ItemStack from the userdata.
+     *
+     * @param node Path to get integer from
+     * @return ItemStack or null
+     */
     public ItemStack getItemStack(String node) {
         return ymlpcm.getItemStack(node);
+    }
+
+    /**
+     * Gets a Location from the userdata.
+     *
+     * @param node Path to get integer from
+     * @return Location or null
+     */
+    public Location getLocation(String node) {
+        return ymlpcm.getLocation(node);
     }
 
     /**
@@ -269,6 +286,16 @@ public class PConfManager {
      */
     public void setStringList(List<String> value, String path) {
         ymlpcm.set(value, path);
+    }
+
+    /**
+     * Sets a Location in the userdata.
+     *
+     * @param value Location to set
+     * @param path  Path to set at
+     */
+    public void setLocation(Location value, String path) {
+        ymlpcm.setLocation(value, path);
     }
 
     /**

@@ -1,5 +1,7 @@
 package org.royaldev.royalcommands.playermanagers;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -187,6 +189,23 @@ public class YMLPConfManager {
     }
 
     /**
+     * Sets a location in config
+     *
+     * @param value Location to set
+     * @param path  Path in the yml to set
+     */
+    public void setLocation(Location value, String path) {
+        if (pconf == null) return;
+        pconf.set(path + ".w", value.getWorld().getName());
+        pconf.set(path + ".x", value.getX());
+        pconf.set(path + ".y", value.getY());
+        pconf.set(path + ".z", value.getZ());
+        pconf.set(path + ".pitch", value.getPitch());
+        pconf.set(path + ".yaw", value.getYaw());
+        if (RoyalCommands.instance.saveUDOnChange) forceSave();
+    }
+
+    /**
      * Sets a float in config
      *
      * @param value Float to set
@@ -228,6 +247,26 @@ public class YMLPConfManager {
     public Integer getInteger(String path) {
         if (pconf == null) return null;
         return pconf.getInt(path);
+    }
+
+    /**
+     * Gets a Location from config
+     * <p/>
+     * This <strong>will</strong> throw an exception if the saved Location is invalid or missing parts.
+     *
+     * @param path Path in the yml to fetch from
+     * @return Location or null if path does not exist or if config doesn't exist
+     */
+    public Location getLocation(String path) {
+        if (pconf == null) return null;
+        if (pconf.get(path) == null) return null;
+        String world = pconf.getString(path + ".w");
+        double x = pconf.getDouble(path + ".x");
+        double y = pconf.getDouble(path + ".y");
+        double z = pconf.getDouble(path + ".z");
+        float pitch = getFloat(path + ".pitch");
+        float yaw = getFloat(path + ".yaw");
+        return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
     }
 
     /**

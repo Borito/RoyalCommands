@@ -3,6 +3,7 @@ package org.royaldev.royalcommands;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -450,10 +451,14 @@ public class RUtils {
         }
         if (!RoyalCommands.safeTeleport) {
             CmdBack.backdb.put(p.getName(), p.getLocation());
+            Chunk c = l.getChunk();
+            if (!c.isLoaded()) c.load(true);
             p.teleport(l);
         } else {
             Location toTele = getSafeLocation(l);
             if (toTele == null) return "There is no ground below.";
+            Chunk c = toTele.getChunk();
+            if (!c.isLoaded()) c.load(true);
             CmdBack.backdb.put(p.getName(), p.getLocation());
             p.teleport(toTele);
         }
