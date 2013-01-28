@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
@@ -46,8 +47,20 @@ public class CmdPluginManager implements CommandExecutor {
         plugin = instance;
     }
 
+    private String getCustomTag(String name) {
+        ConfigurationSection cs = plugin.getConfig().getConfigurationSection("custom_plugin_tags");
+        if (cs == null) return null;
+        for (String key : cs.getKeys(false)) {
+            if (!key.equalsIgnoreCase(name)) continue;
+            return cs.getString(key);
+        }
+        return null;
+    }
+
     public String updateCheck(String name, String currentVersion) throws Exception {
-        String pluginUrlString = "http://dev.bukkit.org/server-mods/" + name.toLowerCase() + "/files.rss";
+        String tag = getCustomTag(name);
+        if (tag == null) tag = name.toLowerCase();
+        String pluginUrlString = "http://dev.bukkit.org/server-mods/" + tag + "/files.rss";
         URL url = new URL(pluginUrlString);
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
         doc.getDocumentElement().normalize();

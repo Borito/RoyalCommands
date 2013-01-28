@@ -67,6 +67,11 @@ on_ban:
   - "@lwc admin purge {name}" # Does /lwc admin purge {name} in the console.
   - "me ultrabanned {name}" # Does /me ultrabanned {name} from the banner.
 
+# Specify custom update tags for plugins to be checked in PluginManager updates.
+# PluginName: "tag-on-bukkitdev"
+custom_plugin_tags:
+  #ExamplePlugin: "example-plugin"
+
 ###
 # MOTD #
 ###
