@@ -107,13 +107,15 @@ public class RoyalCommands extends JavaPlugin {
 
     //--- Privates ---//
 
-    private int minVersion = 2406;
+    private final int minVersion = 2406;
 
     private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
     private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     private final SignListener signListener = new SignListener(this);
     private final MonitorListener monitorListener = new MonitorListener(this);
+
+    private final Pattern versionPattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local)?(\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
 
     private RApiMain api;
 
@@ -606,8 +608,7 @@ public class RoyalCommands extends JavaPlugin {
         //-- Hidendra's Metrics --//
 
         try {
-            Pattern p = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local)?(\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
-            Matcher matcher = p.matcher(getDescription().getVersion());
+            Matcher matcher = versionPattern.matcher(version);
             matcher.matches();
             String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
             String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
@@ -657,10 +658,19 @@ public class RoyalCommands extends JavaPlugin {
             public void run() {
                 if (!updateCheck) return;
                 try {
+                    Matcher m = versionPattern.matcher(version);
+                    m.matches();
+                    StringBuilder useVersion = new StringBuilder();
+                    if (m.group(1) != null) useVersion.append(m.group(1)); // add base version #
+                    if (m.group(2) != null) useVersion.append(m.group(2)); // add SNAPSHOT status
+                    /*
+                    This does not need to compare build numbers. Everyone would be out of date all the time if it did.
+                    This method will compare root versions.
+                     */
                     Map<String, String> jo = getNewestVersions();
                     String stable = jo.get("stable");
                     String dev = jo.get("dev");
-                    String currentVersion = getDescription().getVersion().toLowerCase();
+                    String currentVersion = useVersion.toString().toLowerCase();
                     if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
                         getLogger().warning("A newer version of RoyalCommands is available!");
                         getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
@@ -678,15 +688,15 @@ public class RoyalCommands extends JavaPlugin {
                     // ignore exceptions
                 }
             }
-        }, 0, 36000);
-        bs.runTaskTimerAsynchronously(this, new AFKWatcher(this), 0, 200);
-        bs.runTaskTimerAsynchronously(this, new BanWatcher(this), 20, 600);
-        bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20, 12000);
-        bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20, 100);
+        }, 0L, 36000L);
+        bs.runTaskTimerAsynchronously(this, new AFKWatcher(this), 0L, 200L);
+        bs.runTaskTimerAsynchronously(this, new BanWatcher(this), 20L, 600L);
+        bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20L, 12000L);
+        bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20L, 100L);
 
-        int every = RUtils.timeFormatToSeconds(saveInterval);
-        if (every < 1) every = 600; // 600s = 10m
-        bs.runTaskTimerAsynchronously(this, new UserdataSaver(this), 20, every * 20); // tick = 1/20s
+        long every = RUtils.timeFormatToSeconds(saveInterval);
+        if (every < 1L) every = 600L; // 600s = 10m
+        bs.runTaskTimerAsynchronously(this, new UserdataSaver(this), 20L, every * 20L); // tick = 1/20s
 
         //-- Get dependencies --//
 
