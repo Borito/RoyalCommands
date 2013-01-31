@@ -101,7 +101,7 @@ public class RoyalCommands extends JavaPlugin {
     public Logger log = Logger.getLogger("Minecraft");
     public String version = null;
     public String newVersion = null;
-    public MetricsLite ml = null;
+    public Metrics m = null;
 
     public Connection c = null;
 
@@ -606,8 +606,23 @@ public class RoyalCommands extends JavaPlugin {
         //-- Hidendra's Metrics --//
 
         try {
-            ml = new MetricsLite(this);
-            if (!ml.start())
+            Pattern p = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local)?(\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
+            Matcher matcher = p.matcher(getDescription().getVersion());
+            matcher.matches();
+            String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
+            String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
+            m = new Metrics(this);
+            Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
+            g.addPlotter(
+                    new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
+                        @Override
+                        public int getValue() {
+                            return 1; // this value doesn't matter
+                        }
+                    }
+            ); // add the donut graph with major version inside and build outside
+            m.addGraph(g); // add the graph
+            if (!m.start())
                 getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
         } catch (Exception ignore) {
             getLogger().warning("Could not start Metrics!");
