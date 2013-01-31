@@ -625,6 +625,7 @@ public class RoyalCommands extends JavaPlugin {
             m.addGraph(g); // add the graph
             if (!m.start())
                 getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
+            else getLogger().info("Metrics enabled. Thank you!");
         } catch (Exception ignore) {
             getLogger().warning("Could not start Metrics!");
         }
