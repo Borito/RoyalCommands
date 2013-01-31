@@ -703,11 +703,16 @@ commands:
 
   rocket:
     description: Launches the player vertically.
-    usage: /<command> <player>
+    usage: /<command> [name]
 
   effect:
     description: Apply custom potion effects on players.
-    usage: /<command> [target] [effecttags]
+    usage: /<command> [name] [effecttags]
+
+  banhistory:
+    description: Views the ban history of the player.
+    usage: /<command> [name] [ban#]
+    aliases: [bh]
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -1152,6 +1157,9 @@ permissions:
     default: op
   rcmds.effect:
     description: Allows you to apply custom potion effects on players.
+    default: op
+  rcmds.banhistory:
+    description: Allows you to view ban history of players.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1655,6 +1663,7 @@ permissions:
       rcmds.firework: true
       rcmds.rocket: true
       rcmds.effect: true
+      rcmds.banhistory: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1927,6 +1936,7 @@ permissions:
       rcmds.firework: true
       rcmds.rocket: true
       rcmds.effect: true
+      rcmds.banhistory: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

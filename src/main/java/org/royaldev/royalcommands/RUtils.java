@@ -385,7 +385,7 @@ public class RUtils {
      */
     public static String colorize(String text) {
         if (text == null) return null;
-        return text.replaceAll("(&([a-f0-9k-or]))", "\u00A7$2");
+        return text.replaceAll("(&([a-f0-9k-or]))", ChatColor.COLOR_CHAR + "$2");
     }
 
     /**
@@ -1218,6 +1218,31 @@ public class RUtils {
     }
 
     /**
+     * Writes a string containing all the vital ban information about a player to a list of previous bans in the
+     * player's userdata.
+     *
+     * @param t Player to write ban history of
+     */
+    public static void writeBanHistory(OfflinePlayer t) {
+        if (!t.isBanned()) return;
+        PConfManager pcm = new PConfManager(t);
+        if (!pcm.exists()) pcm.createFile();
+        List<String> prevBans = pcm.getStringList("prevbans");
+        if (prevBans == null) prevBans = new ArrayList<String>();
+        // banner,banreason,bannedat,istempban
+        StringBuilder sb = new StringBuilder();
+        sb.append(pcm.getString("banner"));
+        sb.append("\u00b5");
+        sb.append(pcm.getString("banreason"));
+        sb.append("\u00b5");
+        sb.append(pcm.getString("bannedat"));
+        sb.append("\u00b5");
+        sb.append(pcm.get("bantime") != null);
+        prevBans.add(sb.toString());
+        pcm.setStringList(prevBans, "prevbans");
+    }
+
+    /**
      * Bans a player. Message is not sent to banned player or person who banned.
      * Message is broadcasted to those with rcmds.see.ban
      * Kicks banned player if they're online.
@@ -1229,13 +1254,14 @@ public class RUtils {
      * @param reason Reason for the ban
      */
     public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
-        reason = RUtils.colorize(reason);
+        reason = colorize(reason);
         t.setBanned(true);
+        writeBanHistory(t);
         String inGameFormat = RoyalCommands.instance.igBanFormat;
         String outFormat = RoyalCommands.instance.banFormat;
         executeBanActions(t, cs, reason);
-        Bukkit.getServer().broadcast(RUtils.getInGameMessage(inGameFormat, reason, t, cs), "rcmds.see.ban");
-        if (t.isOnline()) ((Player) t).kickPlayer(RUtils.getMessage(outFormat, reason, cs));
+        Bukkit.getServer().broadcast(getInGameMessage(inGameFormat, reason, t, cs), "rcmds.see.ban");
+        if (t.isOnline()) ((Player) t).kickPlayer(getMessage(outFormat, reason, cs));
     }
 
     private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {

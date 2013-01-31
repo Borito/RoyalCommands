@@ -842,6 +842,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdFirework(this), "firework", this);
         registerCommand(new CmdRocket(this), "rocket", this);
         registerCommand(new CmdEffect(this), "effect", this);
+        registerCommand(new CmdBanHistory(this), "banhistory", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//
