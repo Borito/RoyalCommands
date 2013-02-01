@@ -115,7 +115,7 @@ public class RoyalCommands extends JavaPlugin {
     private final SignListener signListener = new SignListener(this);
     private final MonitorListener monitorListener = new MonitorListener(this);
 
-    private final Pattern versionPattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local)?(\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
+    private final Pattern versionPattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
 
     private RApiMain api;
 
@@ -610,8 +610,12 @@ public class RoyalCommands extends JavaPlugin {
         try {
             Matcher matcher = versionPattern.matcher(version);
             matcher.matches();
+            // 1 = base version
+            // 2 = -SNAPSHOT
+            // 5 = build #
             String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
-            String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
+            String build = (matcher.group(5) == null) ? "local build" : matcher.group(5);
+            if (matcher.group(2) == null) build = "release";
             m = new Metrics(this);
             Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
             g.addPlotter(
