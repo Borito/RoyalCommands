@@ -51,7 +51,12 @@ public class CmdSpawn implements CommandExecutor {
      */
     private static Location getGroupSpawn(Player p, World world) {
         ConfManager cm = new ConfManager("spawns.yml");
-        String group = RoyalCommands.permission.getPrimaryGroup(p);
+        String group;
+        try {
+            group = RoyalCommands.permission.getPrimaryGroup(p);
+        } catch (UnsupportedOperationException e) {
+            group = null;
+        }
         if (group == null) return null;
         group = "." + group.toLowerCase();
         String w = world.getName();
