@@ -29,12 +29,12 @@ public class CmdSetUserdata implements CommandExecutor {
             String name = args[0];
             String node = args[1];
             String value = RoyalCommands.getFinalArg(args, 2);
-            PConfManager pcm = new PConfManager(name);
+            PConfManager pcm = plugin.getUserdata(name);
             if (!pcm.exists() || !plugin.getServer().getOfflinePlayer(name).hasPlayedBefore()) {
                 cs.sendMessage(ChatColor.RED + "No such player!");
                 return true;
             }
-            pcm.set(value, node);
+            pcm.set(node, value);
             cs.sendMessage(ChatColor.BLUE + "Set " + ChatColor.GRAY + node + ChatColor.BLUE + " to " + ChatColor.GRAY + value + ChatColor.BLUE + " for the userdata of " + ChatColor.GRAY + name + ChatColor.BLUE + ".");
             return true;
         }

@@ -1,7 +1,7 @@
 package org.royaldev.royalcommands.runners;
 
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 
 public class UserdataSaver implements Runnable {
 
@@ -13,10 +13,9 @@ public class UserdataSaver implements Runnable {
 
     @Override
     public void run() {
-        if (plugin.saveUDOnChange) return;
         synchronized (plugin.ymls) {
-            for (YMLPConfManager ymlpcm : plugin.ymls.values()) {
-                ymlpcm.forceSave();
+            for (PConfManager pcm : plugin.ymls.values()) {
+                pcm.forceSave();
             }
         }
     }

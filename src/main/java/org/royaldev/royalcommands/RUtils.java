@@ -288,7 +288,7 @@ public class RUtils {
      * @return true if the timestamp has not been passed, false if otherwise
      */
     public static boolean isTimeStampValid(OfflinePlayer p, String title) {
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
         if (pcm.get(title) == null) return false;
         long time = new Date().getTime();
         long overall = pcm.getLong(title);
@@ -296,7 +296,7 @@ public class RUtils {
     }
 
     public static boolean isTimeStampValidAddTime(OfflinePlayer p, String title) {
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
         if (pcm.get(title) == null) return false;
         long time = new Date().getTime();
         long overall = (pcm.getLong(title) * 1000L) + time;
@@ -311,8 +311,8 @@ public class RUtils {
      * @param title   Path to timestamp
      */
     public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
-        PConfManager pcm = new PConfManager(p);
-        pcm.setLong((seconds * 1000) + new Date().getTime(), title);
+        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        pcm.set(title, (seconds * 1000) + new Date().getTime());
     }
 
     /**
@@ -323,7 +323,7 @@ public class RUtils {
      * @return timestamp or -1 if there was no such timestamp
      */
     public static long getTimeStamp(OfflinePlayer p, String title) {
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
         if (pcm.get(title) == null) return -1;
         return pcm.getLong(title);
     }
@@ -373,7 +373,7 @@ public class RUtils {
      * @return true or false
      */
     public static boolean isTeleportAllowed(OfflinePlayer p) {
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
         return pcm.get("allow-tp") == null || pcm.getBoolean("allow-tp");
     }
 
@@ -489,8 +489,8 @@ public class RUtils {
             if (teleRunners.containsKey(p.getName())) cancelTeleportRunner(p);
         }
         p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + RoyalCommands.instance.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
-        final PConfManager pcm = new PConfManager(p);
-        pcm.setLong(new Date().getTime(), "teleport_warmup");
+        final PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        pcm.set("teleport_warmup", new Date().getTime());
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -531,8 +531,8 @@ public class RUtils {
             if (teleRunners.containsKey(p.getName())) cancelTeleportRunner(p);
         }
         p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + RoyalCommands.instance.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
-        final PConfManager pcm = new PConfManager(p);
-        pcm.setLong(new Date().getTime(), "teleport_warmup");
+        final PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        pcm.set("teleport_warmup", new Date().getTime());
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -1181,9 +1181,9 @@ public class RUtils {
     }
 
     public static Inventory getBackpack(Player p) {
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
         if (!pcm.exists()) pcm.createFile();
-        Integer invSize = pcm.getInteger("backpack.size");
+        Integer invSize = pcm.getInt("backpack.size");
         if (invSize == null || invSize < 9) invSize = 36;
         if (invSize % 9 != 0) invSize = 36;
         final Inventory i = Bukkit.createInventory(p, invSize, "Backpack");
@@ -1205,16 +1205,16 @@ public class RUtils {
     }
 
     public static void saveBackpack(Player p, Inventory i) {
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
         for (int slot = 0; slot < i.getSize(); slot++) {
             ItemStack is = i.getItem(slot);
             if (is == null) {
-                pcm.setItemStack(null, "backpack.item." + slot);
+                pcm.set("backpack.item." + slot, null);
                 continue;
             }
-            pcm.setItemStack(is, "backpack.item." + slot);
+            pcm.set("backpack.item." + slot, is);
         }
-        pcm.setInteger(i.getSize(), "backpack.size");
+        pcm.set("backpack.size", i.getSize());
     }
 
     /**
@@ -1225,7 +1225,7 @@ public class RUtils {
      */
     public static void writeBanHistory(OfflinePlayer t) {
         if (!t.isBanned()) return;
-        PConfManager pcm = new PConfManager(t);
+        PConfManager pcm = RoyalCommands.instance.getUserdata(t);
         if (!pcm.exists()) pcm.createFile();
         List<String> prevBans = pcm.getStringList("prevbans");
         if (prevBans == null) prevBans = new ArrayList<String>();
@@ -1239,7 +1239,7 @@ public class RUtils {
         sb.append("\u00b5");
         sb.append(pcm.get("bantime") != null);
         prevBans.add(sb.toString());
-        pcm.setStringList(prevBans, "prevbans");
+        pcm.set("prevbans", prevBans);
     }
 
     /**

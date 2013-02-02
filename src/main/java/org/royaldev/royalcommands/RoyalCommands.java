@@ -49,7 +49,6 @@ import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.opencsv.CSVReader;
-import org.royaldev.royalcommands.playermanagers.YMLPConfManager;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
@@ -94,8 +93,8 @@ public class RoyalCommands extends JavaPlugin {
 
     public static RoyalCommands instance;
 
-    public final Map<String, YMLPConfManager> ymls = new HashMap<String, YMLPConfManager>();
-    public final Map<String, FileConfiguration> confs = new HashMap<String, FileConfiguration>();
+    public final Map<String, PConfManager> ymls = new HashMap<String, PConfManager>();
+    public final Map<String, ConfManager> confs = new HashMap<String, ConfManager>();
 
     public ConfManager whl;
     public Logger log = Logger.getLogger("Minecraft");
@@ -176,7 +175,6 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean wmShowEmptyWorlds = null;
     public Boolean timeBroadcast = null;
     public Boolean worldAccessPerm = null;
-    public Boolean saveUDOnChange = null; // save userdata every change (true) or every x minutes (false)
     public Boolean separateInv = null;
     public Boolean separateXP = null;
     public Boolean separateEnder = null;
@@ -249,6 +247,45 @@ public class RoyalCommands extends JavaPlugin {
     @SuppressWarnings("unused")
     public boolean canBuild(Player p, Location l) {
         return wg == null || wg.canBuild(p, l);
+    }
+
+    /**
+     * Gets a userdata manager for a player. If one has already been created, it will be returned instead of making a
+     * new one.
+     *
+     * @param p OfflinePlayer to get userdata manager of
+     * @return PConfManager - never null
+     */
+    public PConfManager getUserdata(OfflinePlayer p) {
+        return getUserdata(p.getName());
+    }
+
+    /**
+     * Gets a userdata manager for a player. If one has already been created, it will be returned instead of making a
+     * new one.
+     *
+     * @param s Name of player
+     * @return PConfManager - never null
+     */
+    public PConfManager getUserdata(String s) {
+        if (ymls.containsKey(s)) return ymls.get(s);
+        PConfManager pcm = new PConfManager(s);
+        ymls.put(s, pcm);
+        return pcm;
+    }
+
+    /**
+     * Gets a configuration manager for a file. If one has already been created, it will be returned instead of making a
+     * new one.
+     *
+     * @param path Path of file relative to /plugins/RoyalCommands/
+     * @return ConfManager - never null
+     */
+    public ConfManager getConf(String path) {
+        if (confs.containsKey(path)) return confs.get(path);
+        ConfManager cm = new ConfManager(path);
+        confs.put(path, cm);
+        return cm;
     }
 
     public boolean canBuild(Player p, Block b) {
@@ -435,7 +472,6 @@ public class RoyalCommands extends JavaPlugin {
         timeBroadcast = c.getBoolean("broadcast_time_changes", false);
         worldAccessPerm = c.getBoolean("enable_worldaccess_perm", false);
         useWorldManager = c.getBoolean("worldmanager.enabled", true);
-        saveUDOnChange = c.getBoolean("save.save_on_change", false);
         separateInv = c.getBoolean("worldmanager.inventory_separation.enabled", false);
         separateXP = c.getBoolean("worldmanager.inventory_separation.separate_xp", true);
         separateEnder = c.getBoolean("worldmanager.inventory_separation.separate_ender_chests", true);
@@ -897,15 +933,12 @@ public class RoyalCommands extends JavaPlugin {
 
         WorldManager.il.saveAllInventories();
 
-        //-- Save all userdata if not save on change --//
+        //-- Save all userdata --//
 
-        if (!saveUDOnChange) {
-            getLogger().info("Saving userdata...");
-            for (YMLPConfManager ymlpcm : ymls.values()) {
-                ymlpcm.forceSave();
-            }
-            getLogger().info("Userdata saved.");
-        }
+        getLogger().info("Saving userdata...");
+        for (PConfManager pcm : ymls.values()) pcm.forceSave();
+        for (ConfManager cm : confs.values()) cm.forceSave();
+        getLogger().info("Userdata saved.");
 
         //-- Remove userdata handlers --//
 

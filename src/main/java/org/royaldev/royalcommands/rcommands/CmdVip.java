@@ -34,7 +34,7 @@ public class CmdVip implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
-                PConfManager pcm = new PConfManager(t);
+                PConfManager pcm = plugin.getUserdata(t);
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
@@ -43,7 +43,7 @@ public class CmdVip implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player is already in the VIP list.");
                     return true;
                 }
-                pcm.setBoolean(true, "vip");
+                pcm.set("vip", true);
                 cs.sendMessage(ChatColor.BLUE + "Successfully added " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to the VIP list.");
                 return true;
             } else if (command.equalsIgnoreCase("remove")) {
@@ -52,7 +52,7 @@ public class CmdVip implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
-                PConfManager pcm = new PConfManager(t);
+                PConfManager pcm = plugin.getUserdata(t);
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
@@ -61,7 +61,7 @@ public class CmdVip implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player is not in the VIP list.");
                     return true;
                 }
-                pcm.setBoolean(false, "vip");
+                pcm.set("vip", false);
                 cs.sendMessage(ChatColor.BLUE + "Successfully removed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to the VIP list.");
                 return true;
             } else if (command.equalsIgnoreCase("check")) {
@@ -70,7 +70,7 @@ public class CmdVip implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
-                PConfManager pcm = new PConfManager(t);
+                PConfManager pcm = plugin.getUserdata(t);
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;

@@ -35,7 +35,7 @@ public class CmdHelmet implements CommandExecutor {
                 return false;
             }
             Player p = (Player) cs;
-            PConfManager pcm = new PConfManager(p);
+            PConfManager pcm = plugin.getUserdata(p);
             String name = args[0];
             if (name.equalsIgnoreCase("none")) {
                 ItemStack helm = p.getInventory().getHelmet();
@@ -48,7 +48,7 @@ public class CmdHelmet implements CommandExecutor {
                         }
                         if (helm == null || helm.getType() == Material.AIR || helm.getType() != stack.getType()) {
                             p.sendMessage(ChatColor.RED + "You have already removed your helmet!");
-                            pcm.set(null, "helmet");
+                            pcm.set("helmet", null);
                             return true;
                         }
                         p.getInventory().addItem(stack);
@@ -79,7 +79,7 @@ public class CmdHelmet implements CommandExecutor {
                     p.sendMessage(ChatColor.RED + "You don't have that item!");
                     return true;
                 }
-                pcm.setString(stack.getType().name(), "helmet");
+                pcm.set("helmet", stack.getType().name());
                 p.getInventory().remove(stack);
             }
             p.getInventory().setHelmet(stack);

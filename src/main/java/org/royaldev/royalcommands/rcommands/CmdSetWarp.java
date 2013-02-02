@@ -46,13 +46,13 @@ public class CmdSetWarp implements CommandExecutor {
 
             ConfManager warps = new ConfManager("warps.yml");
             if (!warps.exists()) warps.createFile();
-            warps.set(true, "warps." + name + ".set");
-            warps.set(locX, "warps." + name + ".x");
-            warps.set(locY, "warps." + name + ".y");
-            warps.set(locZ, "warps." + name + ".z");
-            warps.set(locPitch.toString(), "warps." + name + ".pitch");
-            warps.set(locYaw.toString(), "warps." + name + ".yaw");
-            warps.set(locW, "warps." + name + ".w");
+            warps.set("warps." + name + ".set", true);
+            warps.set("warps." + name + ".x", locX);
+            warps.set("warps." + name + ".y", locY);
+            warps.set("warps." + name + ".z", locZ);
+            warps.set("warps." + name + ".pitch", locPitch);
+            warps.set("warps." + name + ".yaw", locYaw);
+            warps.set("warps." + name + ".w", locW);
             p.sendMessage(ChatColor.BLUE + "Warp \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");
             return true;
         }

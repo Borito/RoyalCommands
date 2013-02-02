@@ -29,13 +29,13 @@ public class CmdUnban implements CommandExecutor {
                 return false;
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = new PConfManager(t);
+            PConfManager pcm = plugin.getUserdata(t);
             if (!t.isBanned()) {
                 cs.sendMessage(ChatColor.RED + "That player isn't banned!");
                 return true;
             }
             t.setBanned(false);
-            if (pcm.exists()) pcm.set(null, "bantime");
+            if (pcm.exists()) pcm.set("bantime", null);
             cs.sendMessage(ChatColor.BLUE + "You have unbanned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             String message = RUtils.getInGameMessage(plugin.igUnbanFormat, "", t, cs); // "" because there is no reason for unbans
             plugin.getServer().broadcast(message, "rcmds.see.unban");

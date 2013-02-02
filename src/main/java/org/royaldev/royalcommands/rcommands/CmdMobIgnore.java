@@ -30,10 +30,10 @@ public class CmdMobIgnore implements CommandExecutor {
                     return false;
                 }
                 Player p = (Player) cs;
-                PConfManager pcm = new PConfManager(p);
+                PConfManager pcm = plugin.getUserdata(p);
                 Boolean isHidden = pcm.getBoolean("mobignored");
                 if (isHidden == null) isHidden = false;
-                pcm.setBoolean(!isHidden, "mobignored");
+                pcm.set("mobignored", !isHidden);
                 String status = BooleanUtils.toStringOnOff(isHidden);
                 cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore " + ChatColor.GRAY + status + ChatColor.BLUE + ".");
                 return true;
@@ -43,10 +43,10 @@ public class CmdMobIgnore implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist.");
                 return true;
             }
-            PConfManager pcm = new PConfManager(t);
+            PConfManager pcm = plugin.getUserdata(t);
             Boolean isHidden = pcm.getBoolean("mobignored");
             if (isHidden == null) isHidden = false;
-            pcm.setBoolean(!isHidden, "mobignored");
+            pcm.set("mobignored", !isHidden);
             String status = BooleanUtils.toStringOnOff(isHidden);
             cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore " + ChatColor.GRAY + status + ChatColor.BLUE + " for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " toggled mob ignore " + ChatColor.GRAY + status + ChatColor.BLUE + " for you.");

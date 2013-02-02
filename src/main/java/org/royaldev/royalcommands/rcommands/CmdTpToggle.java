@@ -28,13 +28,13 @@ public class CmdTpToggle implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            PConfManager pcm = new PConfManager(p);
+            PConfManager pcm = plugin.getUserdata(p);
             if (pcm.getBoolean("allow-tp")) {
-                pcm.setBoolean(false, "allow-tp");
+                pcm.set("allow-tp", false);
                 cs.sendMessage(ChatColor.BLUE + "Disabled teleportation.");
                 return true;
             }
-            pcm.setBoolean(true, "allow-tp");
+            pcm.set("allow-tp", true);
             cs.sendMessage(ChatColor.BLUE + "Enabled teleportation.");
             return true;
         }

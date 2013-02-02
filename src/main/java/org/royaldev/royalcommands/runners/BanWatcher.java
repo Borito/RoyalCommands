@@ -18,7 +18,7 @@ public class BanWatcher implements Runnable {
         OfflinePlayer[] players = plugin.getServer().getOfflinePlayers();
         for (OfflinePlayer op : players) {
             if (!op.isBanned()) continue;
-            PConfManager pcm = new PConfManager(op);
+            PConfManager pcm = plugin.getUserdata(op);
             if (!pcm.exists()) continue;
             if (pcm.get("bantime") != null && !RUtils.isTimeStampValid(op, "bantime")) {
                 op.setBanned(false);

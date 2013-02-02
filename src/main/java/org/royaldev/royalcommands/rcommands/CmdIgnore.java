@@ -45,19 +45,19 @@ public class CmdIgnore implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You cannot ignore that player!");
                 return true;
             }
-            PConfManager pcm = new PConfManager(t);
+            PConfManager pcm = plugin.getUserdata(t);
             List<String> players = pcm.getStringList("ignoredby");
             if (players == null) players = new ArrayList<String>();
             for (String ignored : players) {
                 if (ignored.toLowerCase().equals(cs.getName().toLowerCase())) {
                     players.remove(ignored);
-                    pcm.setStringList(players, "ignoredby");
+                    pcm.set("ignoredby", players);
                     cs.sendMessage(ChatColor.BLUE + "You have stopped ignoring " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     return true;
                 }
             }
             players.add(cs.getName());
-            pcm.setStringList(players, "ignoredby");
+            pcm.set("ignoredby", players);
             cs.sendMessage(ChatColor.BLUE + "You are now ignoring " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             return true;
         }

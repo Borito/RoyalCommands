@@ -66,20 +66,20 @@ public class InventoryListener implements Listener {
         World w = p.getWorld();
         String group = getWorldGroup(w);
         if (group == null) return;
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         for (int slot = 0; slot < i.getSize(); slot++) {
-            pcm.setItemStack(i.getItem(slot), "inventory." + group + ".ender.slot." + slot);
+            pcm.set("inventory." + group + ".ender.slot." + slot, i.getItem(slot));
         }
-        pcm.setInteger(i.getSize(), "inventory." + group + ".ender.size");
+        pcm.set("inventory." + group + ".ender.size", i.getSize());
     }
 
     private Inventory getEnderInventory(Player p) {
         World w = p.getWorld();
         String group = getWorldGroup(w);
         if (group == null) return null;
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         if (!pcm.exists()) pcm.createFile();
-        Integer invSize = pcm.getInteger("inventory." + group + ".ender.size");
+        Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
         final Inventory i = Bukkit.createInventory(p, invSize);
         if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
         for (int slot = 0; slot < invSize; slot++) {
@@ -99,30 +99,30 @@ public class InventoryListener implements Listener {
         if (!plugin.separateInv) return;
         String group = getWorldGroup(w);
         if (group == null) return;
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         for (int slot = 0; slot < i.getSize(); slot++) {
-            pcm.setItemStack(i.getItem(slot), "inventory." + group + ".slot." + slot);
+            pcm.set("inventory." + group + ".slot." + slot, i.getItem(slot));
         }
         if (i instanceof PlayerInventory) {
             PlayerInventory pi = (PlayerInventory) i;
-            pcm.setItemStack(pi.getHelmet(), "inventory." + group + ".slot.helm");
-            pcm.setItemStack(pi.getChestplate(), "inventory." + group + ".slot.chestplate");
-            pcm.setItemStack(pi.getLeggings(), "inventory." + group + ".slot.leggings");
-            pcm.setItemStack(pi.getBoots(), "inventory." + group + ".slot.boots");
+            pcm.set("inventory." + group + ".slot.helm", pi.getHelmet());
+            pcm.set("inventory." + group + ".slot.chestplate", pi.getChestplate());
+            pcm.set("inventory." + group + ".slot.leggings", pi.getLeggings());
+            pcm.set("inventory." + group + ".slot.boots", pi.getBoots());
         }
-        pcm.setInteger(i.getSize(), "inventory." + group + ".size");
+        pcm.set("inventory." + group + ".size", i.getSize());
         if (plugin.separateXP) {
-            pcm.setFloat(p.getExp(), "inventory." + group + ".xp");
-            pcm.setInteger(p.getLevel(), "inventory." + group + ".xplevel");
+            pcm.set("inventory." + group + ".xp", p.getExp());
+            pcm.set("inventory." + group + ".xplevel", p.getLevel());
         }
     }
 
     private PlayerInventory getInventory(Player p) {
         String group = getWorldGroup(p.getWorld());
         if (group == null) return null;
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         if (!pcm.exists()) pcm.createFile();
-        Integer invSize = pcm.getInteger("inventory." + group + ".size");
+        Integer invSize = pcm.getInt("inventory." + group + ".size");
         final PlayerInventory i = p.getInventory();
         i.clear();
         if (pcm.get("inventory." + group + ".slot") == null) return i;
@@ -137,7 +137,7 @@ public class InventoryListener implements Listener {
         i.setBoots(pcm.getItemStack("inventory." + group + ".slot.boots"));
         if (plugin.separateXP) {
             Float xp = pcm.getFloat("inventory." + group + ".xp");
-            Integer xpLevel = pcm.getInteger("inventory." + group + ".xplevel");
+            Integer xpLevel = pcm.getInt("inventory." + group + ".xplevel");
             if (xp != null) p.setExp(xp);
             else p.setExp(0F);
             if (xpLevel != null) p.setLevel(xpLevel);

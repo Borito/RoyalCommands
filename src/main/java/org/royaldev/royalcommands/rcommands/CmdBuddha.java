@@ -33,13 +33,13 @@ public class CmdBuddha implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                PConfManager pcm = new PConfManager(t);
+                PConfManager pcm = plugin.getUserdata(t);
                 if (!pcm.getBoolean("buddha")) {
-                    pcm.setBoolean(true, "buddha");
+                    pcm.set("buddha", true);
                     t.sendMessage(ChatColor.BLUE + "Buddha mode enabled by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
                     cs.sendMessage(ChatColor.BLUE + "Enabled buddha mode for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 } else {
-                    pcm.setBoolean(false, "buddha");
+                    pcm.set("buddha", false);
                     t.sendMessage(ChatColor.BLUE + "Buddha mode disabled by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
                     cs.sendMessage(ChatColor.BLUE + "Disabled buddha mode for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 }
@@ -50,12 +50,12 @@ public class CmdBuddha implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            PConfManager pcm = new PConfManager(p);
+            PConfManager pcm = plugin.getUserdata(p);
             if (!pcm.getBoolean("buddha")) {
-                pcm.setBoolean(true, "buddha");
+                pcm.set("buddha", true);
                 cs.sendMessage(ChatColor.BLUE + "Enabled buddha mode for yourself.");
             } else {
-                pcm.setBoolean(false, "buddha");
+                pcm.set("buddha", false);
                 cs.sendMessage(ChatColor.BLUE + "Disabled buddha mode for yourself.");
             }
             return true;

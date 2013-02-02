@@ -47,7 +47,7 @@ public class CmdHome implements CommandExecutor {
 
             PConfManager pcm;
             if (name.contains(":") && plugin.isAuthorized(cs, "rcmds.others.home")) {
-                if (!new PConfManager(name.split(":")[0]).exists()) {
+                if (!plugin.getUserdata(name.split(":")[0]).exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
@@ -61,10 +61,10 @@ public class CmdHome implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You must include the name of the player and home (player:home).");
                     return true;
                 }
-                pcm = new PConfManager(ss[0]);
+                pcm = plugin.getUserdata(ss[0]);
                 name = ss[1];
             } else {
-                pcm = new PConfManager(cs.getName());
+                pcm = plugin.getUserdata(cs.getName());
             }
             homeSet = (args.length > 0) ? pcm.getBoolean("home." + name + ".set") : pcm.getBoolean("home.home.set");
             if (homeSet) {

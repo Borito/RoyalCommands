@@ -19,7 +19,7 @@ public class RoyalCommandsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlace(BlockPlaceEvent event) {
-        PConfManager pcm = new PConfManager(event.getPlayer());
+        PConfManager pcm = plugin.getUserdata(event.getPlayer());
         if (pcm.getBoolean("frozen")) event.setCancelled(true);
         if (pcm.getBoolean("jailed")) event.setCancelled(true);
     }
@@ -42,7 +42,7 @@ public class RoyalCommandsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(BlockBreakEvent event) {
-        PConfManager pcm = new PConfManager(event.getPlayer());
+        PConfManager pcm = plugin.getUserdata(event.getPlayer());
         if (pcm.getBoolean("frozen")) event.setCancelled(true);
         if (pcm.getBoolean("jailed")) event.setCancelled(true);
     }

@@ -29,14 +29,14 @@ public class CmdSpy implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            PConfManager pcm = new PConfManager(p);
+            PConfManager pcm = plugin.getUserdata(p);
             if (pcm.get("spy") == null || !pcm.getBoolean("spy")) {
-                pcm.setBoolean(true, "spy");
+                pcm.set("spy", true);
                 cs.sendMessage(ChatColor.BLUE + "Spy mode enabled.");
                 return true;
             }
             if (pcm.getBoolean("spy")) {
-                pcm.setBoolean(false, "spy");
+                pcm.set("spy", false);
                 cs.sendMessage(ChatColor.BLUE + "Spy mode disabled.");
                 return true;
             }

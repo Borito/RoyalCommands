@@ -69,14 +69,14 @@ public class RoyalCommandsPlayerListener implements Listener {
                 }
         if (contains) {
             long cooldown = cmdCds.getLong(command);
-            new PConfManager(p).setLong(new Date().getTime() + (cooldown * 1000), "command_cooldowns." + command);
+            plugin.getUserdata(p).set("command_cooldowns." + command, new Date().getTime() + (cooldown * 1000));
         }
     }
 
     public void setTeleCooldown(OfflinePlayer p) {
         double seconds = plugin.gTeleCd;
         if (seconds <= 0) return;
-        new PConfManager(p).setDouble((seconds * 1000) + new Date().getTime(), "teleport_cooldown");
+        plugin.getUserdata(p).set("teleport_cooldown", (seconds * 1000) + new Date().getTime());
     }
 
     @EventHandler
@@ -84,7 +84,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (e.isCancelled()) return;
         List<Player> toRemove = new ArrayList<Player>();
         for (Player t : e.getRecipients()) {
-            PConfManager pcm = new PConfManager(t);
+            PConfManager pcm = plugin.getUserdata(t);
             Boolean isDeaf = pcm.getBoolean("deaf");
             if (isDeaf == null || !isDeaf) continue;
             if (e.getPlayer().getName().equals(t.getName())) continue; // don't remove own messages
@@ -109,20 +109,20 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void lastPosition(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         Location l = p.getLocation();
         String lastPos = "lastposition.";
-        pcm.setDouble(l.getX(), lastPos + "x");
-        pcm.setDouble(l.getY(), lastPos + "y");
-        pcm.setDouble(l.getZ(), lastPos + "z");
-        pcm.setFloat(l.getPitch(), lastPos + "pitch");
-        pcm.setFloat(l.getYaw(), lastPos + "yaw");
-        pcm.setString(l.getWorld().getName(), lastPos + "world");
+        pcm.set(lastPos + "x", l.getX());
+        pcm.set(lastPos + "y", l.getY());
+        pcm.set(lastPos + "z", l.getZ());
+        pcm.set(lastPos + "pitch", l.getPitch());
+        pcm.set(lastPos + "yaw", l.getYaw());
+        pcm.set(lastPos + "world", l.getWorld().getName());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void saveData(PlayerQuitEvent e) {
-        new PConfManager(e.getPlayer()).save();
+        plugin.getUserdata(e.getPlayer()).forceSave();
     }
 
     @EventHandler
@@ -139,7 +139,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         Location from = e.getFrom();
         if (to.getX() == from.getX() && to.getY() == from.getY() && to.getZ() == from.getZ())
             return;
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         Long l = pcm.getLong("teleport_warmup");
         if (l == null) return;
         int toAdd = plugin.teleportWarmup * 1000;
@@ -147,7 +147,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         long c = new Date().getTime();
         if (l > c) {
             p.sendMessage(ChatColor.RED + "You moved! Teleport cancelled!");
-            pcm.setLong(-1L, "teleport_warmup");
+            pcm.set("teleport_warmup", -1L);
         }
     }
 
@@ -171,7 +171,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             command = plugin.getCommand(command).getName();
         Player p = e.getPlayer();
         if (plugin.isAuthorized(p, "rcmds.exempt.cooldown.commands")) return;
-        Long currentcd = new PConfManager(p).getLong("command_cooldowns." + command);
+        Long currentcd = plugin.getUserdata(p).getLong("command_cooldowns." + command);
         if (currentcd != null) {
             if (currentcd <= new Date().getTime()) {
                 setCooldown(command, p);
@@ -189,7 +189,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (e.isCancelled()) return;
         Player p = e.getPlayer();
         if (plugin.isAuthorized(p, "rcmds.exempt.cooldown.teleports")) return;
-        Long currentcd = new PConfManager(p).getLong("teleport_cooldown");
+        Long currentcd = plugin.getUserdata(p).getLong("teleport_cooldown");
         if (currentcd != null) {
             if (currentcd <= new Date().getTime()) {
                 setTeleCooldown(p);
@@ -205,7 +205,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
-        if (new PConfManager(e.getPlayer()).getBoolean("jailed")) {
+        if (plugin.getUserdata(e.getPlayer()).getBoolean("jailed")) {
             e.getPlayer().sendMessage(ChatColor.RED + "You are jailed and may not teleport.");
             e.setCancelled(true);
         }
@@ -213,7 +213,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        new PConfManager(e.getPlayer()).setLong(new Date().getTime(), "seen");
+        plugin.getUserdata(e.getPlayer()).set("seen", new Date().getTime());
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
         if (AFKUtils.moveTimesContains(e.getPlayer()))
             AFKUtils.removeLastMove(e.getPlayer());
@@ -221,7 +221,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
-        new PConfManager(e.getPlayer()).setLong(new Date().getTime(), "seen");
+        plugin.getUserdata(e.getPlayer()).set("seen", new Date().getTime());
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
         if (AFKUtils.moveTimesContains(e.getPlayer()))
             AFKUtils.removeLastMove(e.getPlayer());
@@ -231,14 +231,14 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (event.isCancelled()) return;
         Player p = event.getPlayer();
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         if (plugin.showcommands) {
             String command = event.getMessage().split(" ")[0].toLowerCase();
             if (!plugin.logBlacklist.contains(command.substring(1)))
                 log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
         }
         if (pcm.getBoolean("muted")) {
-            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime")) pcm.setBoolean(false, "muted");
+            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime")) pcm.set("muted", false);
             for (String command : plugin.muteCmds) {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
                     continue;
@@ -279,8 +279,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void vipLogin(PlayerLoginEvent e) {
         if (e.getResult() != Result.KICK_FULL) return;
         Player p = e.getPlayer();
-        PConfManager pcm = new PConfManager(p);
-        if (!pcm.getConfExists()) return;
+        PConfManager pcm = plugin.getUserdata(p);
         if (p.isBanned()) return;
         if (pcm.get("vip") != null && pcm.getBoolean("vip")) e.allow();
     }
@@ -294,10 +293,10 @@ public class RoyalCommandsPlayerListener implements Listener {
             AFKUtils.unsetAfk(p);
             plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.returnFormat, p)));
         }
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         if (pcm.getBoolean("muted")) {
             if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime")) {
-                pcm.setBoolean(false, "muted");
+                pcm.set("muted", false);
                 return;
             }
             String howLong = "";
@@ -346,7 +345,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler()
     public void onChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         if (pcm.get("ignoredby") == null) return;
         Set<Player> recpts = e.getRecipients();
         ArrayList<String> ignores = (ArrayList<String>) pcm.getStringList("ignoredby");
@@ -369,13 +368,13 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void freezeWatch(PlayerMoveEvent e) {
         if (e.isCancelled()) return;
-        if (new PConfManager(e.getPlayer()).getBoolean("frozen")) e.setTo(e.getFrom());
+        if (plugin.getUserdata(e.getPlayer()).getBoolean("frozen")) e.setTo(e.getFrom());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.isCancelled()) return;
-        if (new PConfManager(event.getPlayer()).getBoolean("jailed"))
+        if (plugin.getUserdata(event.getPlayer()).getBoolean("jailed"))
             event.setCancelled(true);
         Action act = event.getAction();
         if (act.equals(Action.PHYSICAL)) return;
@@ -383,7 +382,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (id == null) return;
         int idn = id.getTypeId();
         if (idn == 0) return;
-        List<String> cmds = new PConfManager(event.getPlayer()).getStringList("assign." + idn);
+        List<String> cmds = plugin.getUserdata(event.getPlayer()).getStringList("assign." + idn);
         if (cmds == null) return;
         for (String s : cmds) {
             if (s.toLowerCase().trim().startsWith("c:"))
@@ -405,13 +404,13 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void onAssignHitPlayer(PlayerInteractEntityEvent e) {
         if (e.isCancelled()) return;
-        if (new PConfManager(e.getPlayer()).getBoolean("jailed"))
+        if (plugin.getUserdata(e.getPlayer()).getBoolean("jailed"))
             e.setCancelled(true);
         ItemStack id = e.getPlayer().getItemInHand();
         if (id == null) return;
         int idn = id.getTypeId();
         if (idn == 0) return;
-        List<String> cmds = new PConfManager(e.getPlayer()).getStringList("assign." + idn);
+        List<String> cmds = plugin.getUserdata(e.getPlayer()).getStringList("assign." + idn);
         if (cmds == null) return;
         Player clicked = null;
         if (e.getRightClicked() instanceof Player) clicked = (Player) e.getRightClicked();
@@ -435,7 +434,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onPInt(PlayerInteractEvent event) {
-        if (new PConfManager(event.getPlayer()).getBoolean("frozen"))
+        if (plugin.getUserdata(event.getPlayer()).getBoolean("frozen"))
             event.setCancelled(true);
         if (plugin.buildPerm) if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build"))
             event.setCancelled(true);
@@ -458,7 +457,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         // If player is null, stop
         if (p == null) return;
         // Create new config manager for player
-        PConfManager pcm = new PConfManager(p);
+        PConfManager pcm = plugin.getUserdata(p);
         // Check if player is banned
         if (!p.isBanned()) return;
         // Check to see that they have a bantime, and that if they do, if the timestamp is invalid.
@@ -494,7 +493,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (e.getResult() != Result.ALLOWED) return;
         Player p = e.getPlayer();
         if (p == null) return;
-        String dispname = new PConfManager(p).getString("dispname");
+        String dispname = plugin.getUserdata(p).getString("dispname");
         if (dispname == null || dispname.equals("")) dispname = p.getName().trim();
         dispname = dispname.trim();
         if (dispname == null) return;
@@ -535,7 +534,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer() == null) return;
-        PConfManager pcm = new PConfManager(event.getPlayer());
+        PConfManager pcm = plugin.getUserdata(event.getPlayer());
         if (!pcm.exists()) {
             log.info("[RoyalCommands] Creating userdata for " + event.getPlayer().getName() + ".");
             String dispname = event.getPlayer().getDisplayName();
@@ -545,11 +544,11 @@ public class RoyalCommandsPlayerListener implements Listener {
             if (!success)
                 log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
             else {
-                pcm.setString(event.getPlayer().getName(), "name");
-                pcm.setString(dispname, "dispname");
-                pcm.setString(event.getPlayer().getAddress().getAddress().toString().replace("/", ""), "ip");
-                pcm.setString("", "banreason");
-                pcm.setBoolean(true, "allow-tp");
+                pcm.set(event.getPlayer().getName(), "name");
+                pcm.set("dispname", dispname);
+                pcm.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
+                pcm.set("banreason", "");
+                pcm.set("allow-tp", true);
                 log.info("[RoyalCommands] Userdata creation finished.");
             }
             if (plugin.stsNew)
@@ -558,7 +557,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
             String playerip = event.getPlayer().getAddress().getAddress().toString();
             playerip = playerip.replace("/", "");
-            pcm.setString(playerip, "ip");
+            pcm.set("ip", playerip);
         }
         if (plugin.sendToSpawn) {
             if (plugin.stsBack)

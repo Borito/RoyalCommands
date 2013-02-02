@@ -84,7 +84,7 @@ public class CmdWorldManager implements CommandExecutor {
                 } else wc = wc.seed(new Random().nextLong());
                 if (args.length > 5) {
                     wc = wc.generator(args[5]);
-                    RoyalCommands.wm.getConfig().setString(args[5], "worlds." + name + ".generator");
+                    RoyalCommands.wm.getConfig().set("worlds." + name + ".generator", args[5]);
                 }
                 World w = wc.createWorld();
                 w.save();

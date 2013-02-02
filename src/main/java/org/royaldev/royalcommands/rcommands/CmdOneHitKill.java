@@ -29,35 +29,35 @@ public class CmdOneHitKill implements CommandExecutor {
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null || plugin.isVanished(t, cs)) {
                     OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
-                    PConfManager pcm = new PConfManager(op);
+                    PConfManager pcm = plugin.getUserdata(op);
                     if (!pcm.exists()) {
                         cs.sendMessage(ChatColor.RED + "That player does not exist!");
                         return true;
                     }
                     Boolean ohk = pcm.getBoolean("ohk");
                     if (ohk == null || !ohk) {
-                        pcm.setBoolean(true, "ohk");
+                        pcm.set("ohk", true);
                         cs.sendMessage(ChatColor.BLUE + "You have enabled onehitkill mode for " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
                         return true;
                     }
-                    pcm.setBoolean(false, "ohk");
+                    pcm.set("ohk", false);
                     cs.sendMessage(ChatColor.BLUE + "You have disabled onehitkill mode for " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
                     return true;
                 }
                 Player p = plugin.getServer().getPlayer(args[0]);
-                PConfManager pcm = new PConfManager(p);
+                PConfManager pcm = plugin.getUserdata(p);
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
                 Boolean ohk = pcm.getBoolean("ohk");
                 if (ohk == null || !ohk) {
-                    pcm.setBoolean(true, "ohk");
+                    pcm.set("ohk", true);
                     cs.sendMessage(ChatColor.BLUE + "You have enabled onehitkill mode for " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
                     p.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has enabled onehitkill for you.");
                     return true;
                 }
-                pcm.setBoolean(false, "ohk");
+                pcm.set("ohk", false);
                 cs.sendMessage(ChatColor.BLUE + "You have disabled onehitkill mode for " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
                 p.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " has disabled your onehitkill.");
                 return true;
@@ -68,14 +68,14 @@ public class CmdOneHitKill implements CommandExecutor {
                     return false;
                 }
                 Player p = (Player) cs;
-                PConfManager pcm = new PConfManager(p);
+                PConfManager pcm = plugin.getUserdata(p);
                 Boolean ohk = pcm.getBoolean("ohk");
                 if (ohk == null || !ohk) {
-                    pcm.setBoolean(true, "ohk");
+                    pcm.set("ohk", true);
                     p.sendMessage(ChatColor.BLUE + "You have enabled onehitkill for yourself.");
                     return true;
                 }
-                pcm.setBoolean(false, "ohk");
+                pcm.set("ohk", false);
                 p.sendMessage(ChatColor.BLUE + "You have disabled onehitkill for yourself.");
                 return true;
             }

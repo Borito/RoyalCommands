@@ -32,7 +32,7 @@ public class CmdBan implements CommandExecutor {
             }
             OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
             if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = new PConfManager(t);
+            PConfManager pcm = plugin.getUserdata(t);
 /*            if (!pcm.getConfExists()) {
                 if (args.length > 1 && args[1].equalsIgnoreCase("true")) {
                     args = (String[]) ArrayUtils.remove(args, 1);
@@ -41,17 +41,17 @@ public class CmdBan implements CommandExecutor {
                     return true;
                 }
             }*/
-            if (!pcm.getConfExists()) pcm.createFile();
+            if (!pcm.exists()) pcm.createFile();
             if (plugin.isAuthorized(t, "rcmds.exempt.ban")) {
                 cs.sendMessage(ChatColor.RED + "You can't ban that player!");
                 return true;
             }
             String banreason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : plugin.banMessage;
             banreason = RUtils.colorize(banreason);
-            pcm.setString(banreason, "banreason");
-            pcm.setString(cs.getName(), "banner");
-            pcm.setLong(new Date().getTime(), "bannedat");
-            pcm.set(null, "bantime");
+            pcm.set("banreason", banreason);
+            pcm.set("banner", cs.getName());
+            pcm.set("bannedat", new Date().getTime());
+            pcm.set("bantime", null);
             cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             RUtils.banPlayer(t, cs, banreason);
             return true;

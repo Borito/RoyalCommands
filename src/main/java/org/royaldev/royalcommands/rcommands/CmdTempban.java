@@ -32,7 +32,7 @@ public class CmdTempban implements CommandExecutor {
             }
             OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
             if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = new PConfManager(t);
+            PConfManager pcm = plugin.getUserdata(t);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                 return true;
@@ -50,10 +50,10 @@ public class CmdTempban implements CommandExecutor {
             long curTime = new Date().getTime();
             String banreason = RoyalCommands.getFinalArg(args, 2);
             t.setBanned(true);
-            pcm.setLong((time * 1000L) + curTime, "bantime");
-            pcm.setLong(curTime, "bannedat");
-            pcm.setString(banreason, "banreason");
-            pcm.setString(cs.getName(), "banner");
+            pcm.set("bantime", (time * 1000L) + curTime);
+            pcm.set("bannedat", curTime);
+            pcm.set("banreason", banreason);
+            pcm.set("banner", cs.getName());
             cs.sendMessage(ChatColor.BLUE + "You have banned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + banreason + ChatColor.BLUE + ".");
             String igMessage = RUtils.getInGameMessage(plugin.igTempbanFormat, banreason, t, cs);
             igMessage = igMessage.replace("{length}", RUtils.formatDateDiff((time * 1000L) + curTime).substring(1));

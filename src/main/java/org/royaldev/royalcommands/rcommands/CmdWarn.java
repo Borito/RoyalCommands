@@ -35,7 +35,7 @@ public class CmdWarn implements CommandExecutor {
             }
             OfflinePlayer op = plugin.getServer().getPlayer(args[0]);
             if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = new PConfManager(op);
+            PConfManager pcm = plugin.getUserdata(op);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
@@ -66,7 +66,7 @@ public class CmdWarn implements CommandExecutor {
                 t.sendMessage(ChatColor.RED + "You have been warned for " + ChatColor.GRAY + reason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
             }
             cs.sendMessage(ChatColor.BLUE + "You have warned " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + reason + ChatColor.BLUE + ".");
-            pcm.setStringList(warns, "warns");
+            pcm.set("warns", warns);
             return true;
         }
         return false;

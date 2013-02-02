@@ -38,11 +38,11 @@ public class CmdSetSpawn implements CommandExecutor {
             double z = p.getLocation().getZ();
             String w = p.getWorld().getName();
             if (group.equals("")) p.getWorld().setSpawnLocation((int) x, (int) y, (int) z);
-            spawns.setFloat(pitch, "spawns." + w + group + ".pitch");
-            spawns.setFloat(yaw, "spawns." + w + group + ".yaw");
-            spawns.setDouble(x, "spawns." + w + group + ".x");
-            spawns.setDouble(y, "spawns." + w + group + ".y");
-            spawns.setDouble(z, "spawns." + w + group + ".z");
+            spawns.set("spawns." + w + group + ".pitch", pitch);
+            spawns.set("spawns." + w + group + ".yaw", yaw);
+            spawns.set("spawns." + w + group + ".x", x);
+            spawns.set("spawns." + w + group + ".y", y);
+            spawns.set("spawns." + w + group + ".z", z);
             String forGroup = " for group " + ChatColor.GRAY + group + ChatColor.BLUE;
             cs.sendMessage(ChatColor.BLUE + "The spawn point of " + ChatColor.GRAY + RUtils.getMVWorldName(p.getWorld()) + ChatColor.BLUE + " is set" + forGroup + ".");
             return true;

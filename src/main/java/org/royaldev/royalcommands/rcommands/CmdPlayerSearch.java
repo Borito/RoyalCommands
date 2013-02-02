@@ -35,7 +35,7 @@ public class CmdPlayerSearch implements CommandExecutor {
                     int found = 0;
                     for (OfflinePlayer op : ops) {
                         if (!op.getName().toLowerCase().contains(search.toLowerCase())) continue;
-                        PConfManager pcm = new PConfManager(op);
+                        PConfManager pcm = plugin.getUserdata(op);
                         if (!pcm.exists()) continue;
                         Long seen = pcm.getLong("seen");
                         if (seen == null || seen < 1L) continue;
@@ -46,7 +46,7 @@ public class CmdPlayerSearch implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "Search completed. " + ChatColor.GRAY + found + ChatColor.BLUE + " results found.");
                 }
             };
-            plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, r);
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
             return true;
         }
         return false;

@@ -150,11 +150,11 @@ public class WorldManager {
             w.setSpawnFlags(config.getBoolean(path + "spawnmonsters", true), config.getBoolean(path + "spawnanimals", true));
             w.setKeepSpawnInMemory(config.getBoolean("keepspawnloaded", true));
             w.setPVP(config.getBoolean(path + "pvp", true));
-            w.setMonsterSpawnLimit(config.getInteger(path + "monsterspawnlimit", 70));
-            w.setAnimalSpawnLimit(config.getInteger(path + "animalspawnlimit", 15));
-            w.setWaterAnimalSpawnLimit(config.getInteger(path + "wateranimalspawnlimit", 5));
-            w.setTicksPerAnimalSpawns(config.getInteger(path + "animalspawnticks", 400));
-            w.setTicksPerMonsterSpawns(config.getInteger(path + "monsterspawnticks", 1));
+            w.setMonsterSpawnLimit(config.getInt(path + "monsterspawnlimit", 70));
+            w.setAnimalSpawnLimit(config.getInt(path + "animalspawnlimit", 15));
+            w.setWaterAnimalSpawnLimit(config.getInt(path + "wateranimalspawnlimit", 5));
+            w.setTicksPerAnimalSpawns(config.getInt(path + "animalspawnticks", 400));
+            w.setTicksPerMonsterSpawns(config.getInt(path + "monsterspawnticks", 1));
             Difficulty d;
             try {
                 d = Difficulty.valueOf(config.getString(path + "difficulty", "normal").toUpperCase());
@@ -254,28 +254,28 @@ public class WorldManager {
             World w = Bukkit.getWorld(ws);
             if (w == null) continue;
             String path = "worlds." + ws + ".";
-            config.setString(ws, path + "displayname");
-            config.setBoolean(w.getAllowMonsters(), path + "spawnmonsters");
-            config.setBoolean(w.getAllowAnimals(), path + "spawnanimals");
-            config.setBoolean(w.getKeepSpawnInMemory(), path + "keepspawnloaded");
-            config.setBoolean(w.canGenerateStructures(), path + "generatestructures");
-            config.setBoolean(w.getPVP(), path + "pvp");
-            config.setBoolean(true, path + "weather");
-            config.setInteger(w.getMaxHeight(), path + "maxheight");
-            config.setInteger(w.getMonsterSpawnLimit(), path + "monsterspawnlimit");
-            config.setInteger(w.getAnimalSpawnLimit(), path + "animalspawnlimit");
-            config.setInteger(w.getWaterAnimalSpawnLimit(), path + "wateranimalspawnlimit");
-            config.setLong(w.getTicksPerAnimalSpawns(), path + "animalspawnticks");
-            config.setLong(w.getTicksPerMonsterSpawns(), path + "monsterspawnticks");
-            config.setString(w.getDifficulty().name(), path + "difficulty");
-            config.setString(w.getWorldType().name(), path + "worldtype");
-            config.setString(w.getEnvironment().name(), path + "environment");
-            config.setString(Bukkit.getServer().getDefaultGameMode().name(), path + "gamemode");
+            config.set(path + "displayname", ws);
+            config.set(path + "spawnmonsters", w.getAllowMonsters());
+            config.set(path + "spawnanimals", w.getAllowAnimals());
+            config.set(path + "keepspawnloaded", w.getKeepSpawnInMemory());
+            config.set(path + "generatestructures", w.canGenerateStructures());
+            config.set(path + "pvp", w.getPVP());
+            config.set(path + "weather", true);
+            config.set(path + "maxheight", w.getMaxHeight());
+            config.set(path + "monsterspawnlimit", w.getMonsterSpawnLimit());
+            config.set(path + "animalspawnlimit", w.getAnimalSpawnLimit());
+            config.set(path + "wateranimalspawnlimit", w.getWaterAnimalSpawnLimit());
+            config.set(path + "animalspawnticks", w.getTicksPerAnimalSpawns());
+            config.set(path + "monsterspawnticks", w.getTicksPerMonsterSpawns());
+            config.set(path + "difficulty", w.getDifficulty().name());
+            config.set(path + "worldtype", w.getWorldType().name());
+            config.set(path + "environment", w.getEnvironment().name());
+            config.set(path + "gamemode", Bukkit.getServer().getDefaultGameMode().name());
             if (w.getGenerator() == null)
-                config.setString("DefaultGen", path + "generator");
-            config.setLong(w.getSeed(), path + "seed");
-            config.setBoolean(false, path + "freezetime");
-            config.setBoolean(true, path + "loadatstartup");
+                config.set(path + "generator", "DefaultGen");
+            config.set(path + "seed", w.getSeed());
+            config.set(path + "freezetime", false);
+            config.set(path + "loadatstartup", true);
         }
     }
 

@@ -37,7 +37,7 @@ public class CmdSetHome implements CommandExecutor {
     }
 
     private int getCurrentHomes(Player p) {
-        ConfigurationSection pconf = new PConfManager(p).getConfigurationSection("home");
+        ConfigurationSection pconf = plugin.getUserdata(p).getConfigurationSection("home");
         if (pconf == null) return 0;
         return pconf.getValues(false).keySet().size();
     }
@@ -60,7 +60,7 @@ public class CmdSetHome implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            PConfManager pcm = new PConfManager(p);
+            PConfManager pcm = plugin.getUserdata(p);
             double locX = p.getLocation().getX();
             double locY = p.getLocation().getY();
             double locZ = p.getLocation().getZ();
@@ -89,21 +89,21 @@ public class CmdSetHome implements CommandExecutor {
                 }
             }
             if (!name.equals("")) {
-                pcm.setBoolean(true, "home." + name + ".set");
-                pcm.setDouble(locX, "home." + name + ".x");
-                pcm.setDouble(locY, "home." + name + ".y");
-                pcm.setDouble(locZ, "home." + name + ".z");
-                pcm.setString(locPitch.toString(), "home." + name + ".pitch");
-                pcm.setString(locYaw.toString(), "home." + name + ".yaw");
-                pcm.setString(locW, "home." + name + ".w");
+                pcm.set("home." + name + ".set", true);
+                pcm.set("home." + name + ".x", locX);
+                pcm.set("home." + name + ".y", locY);
+                pcm.set("home." + name + ".z", locZ);
+                pcm.set("home." + name + ".pitch", locPitch.toString());
+                pcm.set("home." + name + ".yaw", locYaw.toString());
+                pcm.set("home." + name + ".w", locW);
             } else {
-                pcm.setBoolean(true, "home.home.set");
-                pcm.setDouble(locX, "home.home.x");
-                pcm.setDouble(locY, "home.home.y");
-                pcm.setDouble(locZ, "home.home.z");
-                pcm.setString(locPitch.toString(), "home.home.pitch");
-                pcm.setString(locYaw.toString(), "home.home.yaw");
-                pcm.setString(locW, "home.home.w");
+                pcm.set("home.home.set", true);
+                pcm.set("home.home.x", locX);
+                pcm.set("home.home.y", locY);
+                pcm.set("home.home.z", locZ);
+                pcm.set("home.home.pitch", locPitch.toString());
+                pcm.set("home.home.yaw", locYaw.toString());
+                pcm.set("home.home.w", locW);
             }
             if (args.length > 0) {
                 p.sendMessage(ChatColor.BLUE + "Home \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");

@@ -29,7 +29,7 @@ public class CmdClearWarns implements CommandExecutor {
                 return false;
             }
             OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = new PConfManager(op);
+            PConfManager pcm = plugin.getUserdata(op);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
@@ -38,7 +38,7 @@ public class CmdClearWarns implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "There are no warnings for " + ChatColor.GRAY + op.getName() + ChatColor.RED + "!");
                 return true;
             }
-            pcm.set(null, "warns");
+            pcm.set("warns", null);
             cs.sendMessage(ChatColor.BLUE + "You've cleared the warnings of " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
             return true;
         }

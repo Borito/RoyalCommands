@@ -33,7 +33,7 @@ public class CmdBanInfo implements CommandExecutor {
             }
             OfflinePlayer op = plugin.getServer().getPlayer(args[0]);
             if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = new PConfManager(op);
+            PConfManager pcm = plugin.getUserdata(op);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player has never played before!");
                 return true;

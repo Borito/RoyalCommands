@@ -60,10 +60,10 @@ public class CmdJail implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You cannot jail that player.");
                 return true;
             }
-            PConfManager pcm = new PConfManager(t);
+            PConfManager pcm = plugin.getUserdata(t);
             if (args.length < 2) {
                 if (pcm.getBoolean("jailed")) {
-                    pcm.setBoolean(false, "jailed");
+                    pcm.set("jailed", false);
                     cs.sendMessage(ChatColor.BLUE + "You have released " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                     t.sendMessage(ChatColor.BLUE + "You have been released.");
                     if (jaildb.get(t) == null || jaildb.get(t).getWorld() == null) {
@@ -128,7 +128,7 @@ public class CmdJail implements CommandExecutor {
             }
             Location jailLoc = new Location(jailW, jailX, jailY, jailZ, jailYaw, jailPitch);
             if (pcm.getBoolean("jailed")) {
-                pcm.setBoolean(false, "jailed");
+                pcm.set("jailed", false);
                 cs.sendMessage(ChatColor.BLUE + "You have released " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 t.sendMessage(ChatColor.BLUE + "You have been released.");
                 if (jaildb.get(t) == null || jaildb.get(t).getWorld() == null) {
@@ -158,7 +158,7 @@ public class CmdJail implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + error);
                     return true;
                 }
-                pcm.setBoolean(true, "jailed");
+                pcm.set("jailed", true);
                 return true;
             }
         }

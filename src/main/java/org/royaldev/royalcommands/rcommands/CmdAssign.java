@@ -38,12 +38,12 @@ public class CmdAssign implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You can't remove commands from air!");
                     return true;
                 }
-                new PConfManager(p).set(null, "assign." + hand.getTypeId());
+                plugin.getUserdata(p).set("assign." + hand.getTypeId(), null);
                 p.sendMessage(ChatColor.BLUE + "All commands removed from " + ChatColor.GRAY + hand.getType().toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
                 return true;
             }
             Player p = (Player) cs;
-            PConfManager pcm = new PConfManager(p);
+            PConfManager pcm = plugin.getUserdata(p);
             ItemStack hand = p.getItemInHand();
             if (hand == null || hand.getTypeId() == 0) {
                 cs.sendMessage(ChatColor.RED + "You can't assign commands to air!");
@@ -54,7 +54,7 @@ public class CmdAssign implements CommandExecutor {
                 cmds = new ArrayList<String>();
                 cmds.add(RoyalCommands.getFinalArg(args, 0));
             } else cmds.add(RoyalCommands.getFinalArg(args, 0));
-            pcm.setStringList(cmds, "assign." + hand.getTypeId());
+            pcm.set("assign." + hand.getTypeId(), cmds);
             String message = (RoyalCommands.getFinalArg(args, 0).toLowerCase().startsWith("c:")) ? ChatColor.BLUE + "Added message " + ChatColor.GRAY + RoyalCommands.getFinalArg(args, 0).substring(2) + ChatColor.BLUE + " to that item." : ChatColor.BLUE + "Added command " + ChatColor.GRAY + "/" + RoyalCommands.getFinalArg(args, 0) + ChatColor.BLUE + " to that item.";
             p.sendMessage(message);
             return true;

@@ -43,7 +43,7 @@ public class CmdListHome implements CommandExecutor {
                 }
             }
 
-            PConfManager pcm = new PConfManager(t);
+            PConfManager pcm = plugin.getUserdata(t);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "No such player!");
                 return true;

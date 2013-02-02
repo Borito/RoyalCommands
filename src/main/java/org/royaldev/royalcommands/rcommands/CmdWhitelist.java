@@ -45,7 +45,7 @@ public class CmdWhitelist implements CommandExecutor {
                     return true;
                 }
                 plugin.whitelist.add(player);
-                plugin.whl.setStringList(plugin.whitelist, "whitelist");
+                plugin.whl.set("whitelist", plugin.whitelist);
                 reloadWhitelist();
                 cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + player + ChatColor.BLUE + " to whitelist.");
                 return true;
@@ -55,7 +55,7 @@ public class CmdWhitelist implements CommandExecutor {
                     return true;
                 }
                 plugin.whitelist.remove(player);
-                plugin.whl.setStringList(plugin.whitelist, "whitelist");
+                plugin.whl.set("whitelist", plugin.whitelist);
                 reloadWhitelist();
                 cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + player + ChatColor.BLUE + " from whitelist.");
                 return true;
