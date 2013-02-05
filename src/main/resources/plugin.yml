@@ -219,7 +219,7 @@ commands:
   unban:
     description: Removes a ban from a player.
     usage: /<command> [player]
-    aliases: [unbanish]
+    aliases: [unbanish, pardon]
 
   heal:
     description: Heals a player or the player himself.
