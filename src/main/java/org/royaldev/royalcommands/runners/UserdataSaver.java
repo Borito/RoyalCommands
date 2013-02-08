@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.runners;
 
+import org.royaldev.royalcommands.ConfManager;
 import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -16,6 +17,11 @@ public class UserdataSaver implements Runnable {
         synchronized (plugin.ymls) {
             for (PConfManager pcm : plugin.ymls.values()) {
                 pcm.forceSave();
+            }
+        }
+        synchronized (plugin.confs) {
+            for (ConfManager cm : plugin.confs.values()) {
+                cm.forceSave();
             }
         }
     }

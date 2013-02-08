@@ -635,7 +635,7 @@ public class RoyalCommands extends JavaPlugin {
 
         dataFolder = getDataFolder();
 
-        whl = new ConfManager("whitelist.yml");
+        whl = getConf("whitelist.yml");
 
         commands = getDescription().getCommands();
 
@@ -943,6 +943,7 @@ public class RoyalCommands extends JavaPlugin {
         //-- Remove userdata handlers --//
 
         ymls.clear();
+        confs.clear();
 
         //-- We're done! --//
 

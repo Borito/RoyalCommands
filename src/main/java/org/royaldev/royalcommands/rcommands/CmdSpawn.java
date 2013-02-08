@@ -26,7 +26,7 @@ public class CmdSpawn implements CommandExecutor {
      * @return Custom spawn or default spawn if not set
      */
     public static Location getWorldSpawn(World world) {
-        ConfManager cm = new ConfManager("spawns.yml");
+        ConfManager cm = RoyalCommands.instance.getConf("spawns.yml");
         String w = world.getName();
         Double x = cm.getDouble("spawns." + w + ".x");
         Double y = cm.getDouble("spawns." + w + ".y");
@@ -50,7 +50,7 @@ public class CmdSpawn implements CommandExecutor {
      * @return null if no group-specific spawn or Location if existent
      */
     private static Location getGroupSpawn(Player p, World world) {
-        ConfManager cm = new ConfManager("spawns.yml");
+        ConfManager cm = RoyalCommands.instance.getConf("spawns.yml");
         String group;
         try {
             group = RoyalCommands.permission.getPrimaryGroup(p);
@@ -98,8 +98,8 @@ public class CmdSpawn implements CommandExecutor {
                     return true;
                 }
             } else w = p.getWorld();
-            Location g = getGroupSpawn(p, w);
-            Location l = (g == null) ? getWorldSpawn(w) : g;
+            Location l = getGroupSpawn(p, w);
+            if (l == null) l = getWorldSpawn(w);
             p.sendMessage(ChatColor.BLUE + "Going to spawn in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + ".");
             String error = RUtils.teleport(p, l);
             if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);

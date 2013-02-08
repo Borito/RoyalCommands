@@ -85,7 +85,7 @@ public class WorldManager {
 
     public static InventoryListener il;
 
-    private final ConfManager config = new ConfManager("worlds.yml");
+    private final ConfManager config = RoyalCommands.instance.getConf("worlds.yml");
 
     private final Logger log = RoyalCommands.instance.getLogger();
 

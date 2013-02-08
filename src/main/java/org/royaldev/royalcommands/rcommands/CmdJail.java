@@ -32,7 +32,7 @@ public class CmdJail implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            ConfManager cm = new ConfManager("jails.yml");
+            ConfManager cm = plugin.getConf("jails.yml");
 
             if (args.length < 1) {
                 if (!cm.exists() || cm.get("jails") == null) {

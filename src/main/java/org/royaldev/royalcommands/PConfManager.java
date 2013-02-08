@@ -18,7 +18,7 @@ public class PConfManager extends YamlConfiguration {
      *
      * @param p Player to manage
      */
-    public PConfManager(OfflinePlayer p) {
+    PConfManager(OfflinePlayer p) {
         super();
         File dataFolder = RoyalCommands.dataFolder;
         pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.getName().toLowerCase() + ".yml");
@@ -33,7 +33,7 @@ public class PConfManager extends YamlConfiguration {
      *
      * @param p Player to manage
      */
-    public PConfManager(String p) {
+    PConfManager(String p) {
         super();
         File dataFolder = RoyalCommands.dataFolder;
         pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.toLowerCase() + ".yml");
@@ -41,6 +41,13 @@ public class PConfManager extends YamlConfiguration {
             load(pconfl);
         } catch (Exception ignored) {
         }
+    }
+
+    /**
+     * Just to prevent construction outside of package.
+     */
+    @SuppressWarnings("unused")
+    private PConfManager() {
     }
 
     public boolean exists() {

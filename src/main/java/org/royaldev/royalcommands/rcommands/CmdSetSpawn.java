@@ -30,7 +30,7 @@ public class CmdSetSpawn implements CommandExecutor {
             }
             Player p = (Player) cs;
             String group = (args.length > 0) ? "." + args[0].toLowerCase() : "";
-            ConfManager spawns = new ConfManager("spawns.yml");
+            ConfManager spawns = plugin.getConf("spawns.yml");
             float pitch = p.getLocation().getPitch();
             float yaw = p.getLocation().getYaw();
             double x = p.getLocation().getX();
@@ -43,7 +43,7 @@ public class CmdSetSpawn implements CommandExecutor {
             spawns.set("spawns." + w + group + ".x", x);
             spawns.set("spawns." + w + group + ".y", y);
             spawns.set("spawns." + w + group + ".z", z);
-            String forGroup = " for group " + ChatColor.GRAY + group + ChatColor.BLUE;
+            String forGroup = (group.isEmpty()) ? "" : " for group " + ChatColor.GRAY + group + ChatColor.BLUE;
             cs.sendMessage(ChatColor.BLUE + "The spawn point of " + ChatColor.GRAY + RUtils.getMVWorldName(p.getWorld()) + ChatColor.BLUE + " is set" + forGroup + ".");
             return true;
         }

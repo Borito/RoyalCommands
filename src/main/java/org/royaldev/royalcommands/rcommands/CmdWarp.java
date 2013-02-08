@@ -31,7 +31,7 @@ public class CmdWarp implements CommandExecutor {
         Float warpPitch;
         World warpW;
 
-        ConfManager cm = new ConfManager("warps.yml");
+        ConfManager cm = RoyalCommands.instance.getConf("warps.yml");
         if (!cm.exists()) return null;
         warpSet = cm.getBoolean("warps." + name + ".set");
         if (warpSet != null && !warpSet) return null;
@@ -67,7 +67,7 @@ public class CmdWarp implements CommandExecutor {
             }
 
             if (args.length < 1) {
-                ConfManager cm = new ConfManager("warps.yml");
+                ConfManager cm = plugin.getConf("warps.yml");
                 if (!cm.exists() || cm.get("warps") == null) {
                     cs.sendMessage(ChatColor.RED + "There are no warps!");
                     return true;
