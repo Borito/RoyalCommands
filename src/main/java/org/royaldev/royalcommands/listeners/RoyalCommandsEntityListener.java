@@ -35,7 +35,7 @@ public class RoyalCommandsEntityListener implements Listener {
         if (e.getEntity() == null) return;
         Player p = e.getEntity();
         Location pLoc = p.getLocation();
-        CmdBack.backdb.put(p.getName(), pLoc);
+        CmdBack.addBackLocation(p, pLoc);
         if (plugin.isAuthorized(p, "rcmds.back"))
             p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
     }

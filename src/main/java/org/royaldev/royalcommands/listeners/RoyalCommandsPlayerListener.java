@@ -238,7 +238,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
         }
         if (pcm.getBoolean("muted")) {
-            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime")) pcm.set("muted", false);
+            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime", "mutedat")) pcm.set("muted", false);
             for (String command : plugin.muteCmds) {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
                     continue;
@@ -294,8 +294,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.returnFormat, p)));
         }
         PConfManager pcm = plugin.getUserdata(p);
-        if (pcm.getBoolean("muted")) {
-            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime")) {
+        if (pcm.getBoolean("muted", false)) {
+            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime", "mutedat")) {
                 pcm.set("muted", false);
                 return;
             }
@@ -373,7 +373,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.isCancelled()) return;
+        //if (event.isCancelled()) return;
         if (plugin.getUserdata(event.getPlayer()).getBoolean("jailed"))
             event.setCancelled(true);
         Action act = event.getAction();
@@ -394,7 +394,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                     if (parts.length > 0) {
                         String command = parts[0].toLowerCase();
                         if (!plugin.logBlacklist.contains(command.substring(1)))
-                            log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + s);
+                            log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": /" + s);
                     }
                 }
             }
@@ -403,7 +403,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onAssignHitPlayer(PlayerInteractEntityEvent e) {
-        if (e.isCancelled()) return;
+        //if (e.isCancelled()) return;
         if (plugin.getUserdata(e.getPlayer()).getBoolean("jailed"))
             e.setCancelled(true);
         ItemStack id = e.getPlayer().getItemInHand();
@@ -425,7 +425,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                     if (parts.length > 0) {
                         String command = parts[0].toLowerCase();
                         if (!plugin.logBlacklist.contains(command.substring(1)))
-                            log.info("[PLAYER_COMMAND] " + e.getPlayer().getName() + ": " + s);
+                            log.info("[PLAYER_COMMAND] " + e.getPlayer().getName() + ": /" + s);
                     }
                 }
             }
@@ -436,7 +436,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPInt(PlayerInteractEvent event) {
         if (plugin.getUserdata(event.getPlayer()).getBoolean("frozen"))
             event.setCancelled(true);
-        if (plugin.buildPerm) if (!plugin.isAuthorized(event.getPlayer(), "rcmds.build"))
+        if (plugin.buildPerm && !plugin.isAuthorized(event.getPlayer(), "rcmds.build"))
             event.setCancelled(true);
     }
 

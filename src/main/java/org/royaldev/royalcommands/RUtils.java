@@ -295,11 +295,11 @@ public class RUtils {
         return time < overall;
     }
 
-    public static boolean isTimeStampValidAddTime(OfflinePlayer p, String title) {
+    public static boolean isTimeStampValidAddTime(OfflinePlayer p, String timestamp, String timeset) {
         PConfManager pcm = RoyalCommands.instance.getUserdata(p);
-        if (pcm.get(title) == null) return false;
+        if (pcm.get(timestamp) == null || pcm.get(timeset) == null) return false;
         long time = new Date().getTime();
-        long overall = (pcm.getLong(title) * 1000L) + time;
+        long overall = (pcm.getLong(timestamp) * 1000L) + pcm.getLong(timeset);
         return time < overall;
     }
 
@@ -450,7 +450,7 @@ public class RUtils {
             }
         }
         if (!RoyalCommands.safeTeleport) {
-            CmdBack.backdb.put(p.getName(), p.getLocation());
+            CmdBack.addBackLocation(p, p.getLocation());
             Chunk c = l.getChunk();
             if (!c.isLoaded()) c.load(true);
             p.teleport(l);
@@ -459,7 +459,7 @@ public class RUtils {
             if (toTele == null) return "There is no ground below.";
             Chunk c = toTele.getChunk();
             if (!c.isLoaded()) c.load(true);
-            CmdBack.backdb.put(p.getName(), p.getLocation());
+            CmdBack.addBackLocation(p, p.getLocation());
             p.teleport(toTele);
         }
         return "";
@@ -603,12 +603,12 @@ public class RUtils {
             }
         }
         if (!RoyalCommands.safeTeleport) {
-            CmdBack.backdb.put(p.getName(), p.getLocation());
+            CmdBack.addBackLocation(p, p.getLocation());
             p.teleport(e);
         } else {
             Location toTele = getSafeLocation(e);
             if (toTele == null) return "There is no ground below.";
-            CmdBack.backdb.put(p.getName(), p.getLocation());
+            CmdBack.addBackLocation(p, p.getLocation());
             p.teleport(toTele);
         }
         return "";
