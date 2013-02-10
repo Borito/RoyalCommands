@@ -72,6 +72,11 @@ on_ban:
 custom_plugin_tags:
   #ExamplePlugin: "example-plugin"
 
+# Maximum amount of locations to save for /back.
+# Can be utilized with /back location#.
+# Set to 1 for only /back.
+max_back_stack: 5
+
 ###
 # MOTD #
 ###

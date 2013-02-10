@@ -259,6 +259,7 @@ commands:
   back:
     description: Takes you to your previous location.
     usage: /<command>
+    aliases: [backs]
 
   teleport:
     description: Teleports you to a player.

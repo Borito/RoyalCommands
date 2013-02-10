@@ -218,6 +218,7 @@ public class RoyalCommands extends JavaPlugin {
     public Integer spawnmobLimit = null;
     public Integer helpAmount = null;
     public Integer teleportWarmup = null;
+    public Integer maxBackStack = null;
     public static Integer defaultStack = null;
 
     //-- Doubles --//
@@ -508,6 +509,7 @@ public class RoyalCommands extends JavaPlugin {
         spawnmobLimit = c.getInt("spawnmob_limit", 15);
         helpAmount = c.getInt("help_lines", 5);
         teleportWarmup = c.getInt("teleport_warmup", 0);
+        maxBackStack = c.getInt("max_back_stack", 5);
 
         maxNear = c.getDouble("max_near_radius", 2000D);
         defaultNear = c.getDouble("default_near_radius", 50D);
