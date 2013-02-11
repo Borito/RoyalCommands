@@ -37,6 +37,7 @@ public class CmdSpawn implements CommandExecutor {
         try {
             l = new Location(world, x, y, z, yaw, pitch);
         } catch (Exception e) {
+            e.printStackTrace();
             l = world.getSpawnLocation();
         }
         return l;
