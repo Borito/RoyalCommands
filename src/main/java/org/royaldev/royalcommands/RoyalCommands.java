@@ -269,10 +269,12 @@ public class RoyalCommands extends JavaPlugin {
      * @return PConfManager - never null
      */
     public PConfManager getUserdata(String s) {
-        if (ymls.containsKey(s)) return ymls.get(s);
-        PConfManager pcm = new PConfManager(s);
-        ymls.put(s, pcm);
-        return pcm;
+        synchronized (ymls) {
+            if (ymls.containsKey(s)) return ymls.get(s);
+            PConfManager pcm = new PConfManager(s);
+            ymls.put(s, pcm);
+            return pcm;
+        }
     }
 
     /**
@@ -283,10 +285,12 @@ public class RoyalCommands extends JavaPlugin {
      * @return ConfManager - never null
      */
     public ConfManager getConf(String path) {
-        if (confs.containsKey(path)) return confs.get(path);
-        ConfManager cm = new ConfManager(path);
-        confs.put(path, cm);
-        return cm;
+        synchronized (confs) {
+            if (confs.containsKey(path)) return confs.get(path);
+            ConfManager cm = new ConfManager(path);
+            confs.put(path, cm);
+            return cm;
+        }
     }
 
     public boolean canBuild(Player p, Block b) {

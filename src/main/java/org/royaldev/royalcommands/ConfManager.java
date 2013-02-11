@@ -39,14 +39,7 @@ public class ConfManager extends YamlConfiguration {
      * @param file File object for the config
      */
     ConfManager(File file) {
-        super();
-        File dataFolder = RoyalCommands.dataFolder;
-        path = dataFolder + File.separator + file.getName();
-        pconfl = new File(path);
-        try {
-            load(pconfl);
-        } catch (Exception ignored) {
-        }
+        this(file.getName());
     }
 
     /**
@@ -96,7 +89,7 @@ public class ConfManager extends YamlConfiguration {
      * @return Location or null if path does not exist or if config doesn't exist
      */
     public Location getLocation(String path) {
-        if (get(path) == null) return null;
+        if (!isSet(path)) return null;
         String world = getString(path + ".w");
         double x = getDouble(path + ".x");
         double y = getDouble(path + ".y");
@@ -104,6 +97,16 @@ public class ConfManager extends YamlConfiguration {
         float pitch = getFloat(path + ".pitch");
         float yaw = getFloat(path + ".yaw");
         return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+    }
+
+    public Location getLocation(String path, String worldName) {
+        if (!isSet(path)) return null;
+        double x = getDouble(path + ".x");
+        double y = getDouble(path + ".y");
+        double z = getDouble(path + ".z");
+        float pitch = getFloat(path + ".pitch");
+        float yaw = getFloat(path + ".yaw");
+        return new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
     }
 
     /**

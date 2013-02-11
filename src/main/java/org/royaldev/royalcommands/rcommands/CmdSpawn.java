@@ -28,18 +28,8 @@ public class CmdSpawn implements CommandExecutor {
     public static Location getWorldSpawn(World world) {
         ConfManager cm = RoyalCommands.instance.getConf("spawns.yml");
         String w = world.getName();
-        Double x = cm.getDouble("spawns." + w + ".x");
-        Double y = cm.getDouble("spawns." + w + ".y");
-        Double z = cm.getDouble("spawns." + w + ".z");
-        Float yaw = cm.getFloat("spawns." + w + ".yaw");
-        Float pitch = cm.getFloat("spawns." + w + ".pitch");
-        Location l;
-        try {
-            l = new Location(world, x, y, z, yaw, pitch);
-        } catch (Exception e) {
-            e.printStackTrace();
-            l = world.getSpawnLocation();
-        }
+        Location l = cm.getLocation("spawns." + w, world.getName());
+        if (l == null) l = world.getSpawnLocation();
         return l;
     }
 
@@ -58,21 +48,9 @@ public class CmdSpawn implements CommandExecutor {
         } catch (UnsupportedOperationException e) {
             group = null;
         }
-        if (group == null) return null;
+        if (group == null || group.isEmpty()) return null;
         group = "." + group.toLowerCase();
-        String w = world.getName();
-        Double x = cm.getDouble("spawns." + w + group + ".x");
-        Double y = cm.getDouble("spawns." + w + group + ".y");
-        Double z = cm.getDouble("spawns." + w + group + ".z");
-        Float yaw = cm.getFloat("spawns." + w + group + ".yaw");
-        Float pitch = cm.getFloat("spawns." + w + group + ".pitch");
-        Location l;
-        try {
-            l = new Location(world, x, y, z, yaw, pitch);
-        } catch (Exception e) {
-            return null;
-        }
-        return l;
+        return cm.getLocation("spawns." + world.getName() + group, world.getName());
     }
 
     @Override
