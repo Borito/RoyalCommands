@@ -24,15 +24,6 @@ import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,7 +31,6 @@ import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -385,7 +375,7 @@ public class RUtils {
      */
     public static String colorize(String text) {
         if (text == null) return null;
-        return text.replaceAll("(&([a-f0-9k-or]))", ChatColor.COLOR_CHAR + "$2");
+        return text.replaceAll("(?i)&([a-f0-9k-or])", ChatColor.COLOR_CHAR + "$1");
     }
 
     /**
@@ -527,38 +517,7 @@ public class RUtils {
      * @return ID of Bukkit task
      */
     private static int makeTeleportRunner(final Player p, final Entity t) {
-        synchronized (teleRunners) {
-            if (teleRunners.containsKey(p.getName())) cancelTeleportRunner(p);
-        }
-        p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + RoyalCommands.instance.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
-        final PConfManager pcm = RoyalCommands.instance.getUserdata(p);
-        pcm.set("teleport_warmup", new Date().getTime());
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                Long l = pcm.getLong("teleport_warmup");
-                if (l == null || l < 0) {
-                    cancelTeleportRunner(p);
-                    return;
-                }
-                int toAdd = RoyalCommands.instance.teleportWarmup * 1000;
-                l = l + toAdd;
-                long c = new Date().getTime();
-                if (l < c) {
-                    p.sendMessage(ChatColor.BLUE + "Teleporting...");
-                    teleAllowed.add(p.getName());
-                    String error = teleport(p, t);
-                    teleAllowed.remove(p.getName());
-                    if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
-                    cancelTeleportRunner(p);
-                }
-            }
-        };
-        int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(RoyalCommands.instance, r, 0, 10);
-        synchronized (teleRunners) {
-            teleRunners.put(p.getName(), id);
-        }
-        return id;
+        return makeTeleportRunner(p, t.getLocation());
     }
 
     /**
@@ -594,24 +553,8 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String teleport(Player p, Entity e) {
-        synchronized (teleRunners) {
-            if (RoyalCommands.instance.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
-                makeTeleportRunner(p, e);
-                return "";
-            } else if (RoyalCommands.instance.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
-                return "";
-            }
-        }
-        if (!RoyalCommands.safeTeleport) {
-            CmdBack.addBackLocation(p, p.getLocation());
-            p.teleport(e);
-        } else {
-            Location toTele = getSafeLocation(e);
-            if (toTele == null) return "There is no ground below.";
-            CmdBack.addBackLocation(p, p.getLocation());
-            p.teleport(toTele);
-        }
-        return "";
+        if (e == null) return "Entity was null";
+        return teleport(p, e.getLocation());
     }
 
     /**
@@ -622,22 +565,8 @@ public class RUtils {
      * @return Error message if any.
      */
     public static String silentTeleport(Player p, Entity e) {
-        if (p == null || e == null) return "Player/entity was null!";
-        synchronized (teleRunners) {
-            if (RoyalCommands.instance.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
-                makeTeleportRunner(p, e);
-                return "";
-            } else if (RoyalCommands.instance.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
-                return "";
-            }
-        }
-        if (!RoyalCommands.safeTeleport) p.teleport(e);
-        else {
-            Location toTele = getSafeLocation(e);
-            if (toTele == null) return "There is no ground below.";
-            p.teleport(toTele);
-        }
-        return "";
+        if (e == null) return "Entity was null";
+        return silentTeleport(p, e.getLocation());
     }
 
     /**
@@ -672,19 +601,8 @@ public class RUtils {
      * @return Safe location or null if no ground
      */
     public static Location getSafeLocation(Entity e) {
-        Location l = e.getLocation();
-        int unsafeY = l.getBlockY();
-        if (unsafeY < 0) return null;
-        for (int i = unsafeY; i >= 0; i--) {
-            if (i < 0) return null;
-            Block b = l.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ());
-            if (b == null) return null;
-            if (b.getType().equals(Material.AIR)) continue;
-            Location bLoc = b.getLocation();
-            double safeY = l.getY() - (unsafeY - i);
-            return new Location(l.getWorld(), l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
-        }
-        return null;
+        if (e == null) return null;
+        return getSafeLocation(e.getLocation());
     }
 
     /**
@@ -694,7 +612,7 @@ public class RUtils {
      * @return Name of item (formatted)
      */
     public static String getItemName(ItemStack is) {
-        return is.getType().name().toLowerCase().replace("_", " ");
+        return getItemName(is.getType());
     }
 
     /**
@@ -705,46 +623,6 @@ public class RUtils {
      */
     public static String getItemName(Material m) {
         return m.name().toLowerCase().replace("_", " ");
-    }
-
-    /**
-     * Saves a HashMap to a file.
-     *
-     * @param hash HashMap to save
-     * @param path Path to file to save to
-     */
-    public static void saveHash(Object hash, String path) {
-        try {
-            ObjectOutputStream st = new ObjectOutputStream(new FileOutputStream(path));
-            st.writeObject(hash);
-            st.flush();
-            st.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Loads a HashMap from a file.
-     * <p/>
-     * Never returns null.
-     *
-     * @param path Path to file to load from
-     * @return HashMap
-     */
-    public static HashMap loadHash(String path) {
-        try {
-            if (!new File(path).exists()) {
-                new File(path).createNewFile();
-                return new HashMap();
-            }
-            ObjectInputStream st = new ObjectInputStream(new FileInputStream(path));
-            Object o = st.readObject();
-            if (o == null) return new HashMap();
-            return (HashMap) o;
-        } catch (Exception e) {
-            return new HashMap();
-        }
     }
 
     /**
@@ -774,16 +652,6 @@ public class RUtils {
         Inventory ii = createInv(ih, i.getSize(), i.getName());
         ii.setContents(i.getContents());
         return ii;
-    }
-
-    /**
-     * Kicks a player.
-     *
-     * @param p      Player to kick
-     * @param reason Reason for kick
-     */
-    public static void kickPlayer(Player p, String reason) {
-        p.kickPlayer(reason);
     }
 
     /**
@@ -837,45 +705,6 @@ public class RUtils {
 
     public static void silentKick(final Player t, final String reason) {
         t.kickPlayer(reason + "\00-silent");
-    }
-
-    /**
-     * Gets the size of an iterator.
-     *
-     * @param i Iterator
-     * @return Size
-     */
-    public static int getSize(Iterator i) {
-        int size = 0;
-        while (i.hasNext()) {
-            size++;
-            i.next();
-        }
-        return size;
-    }
-
-    public static boolean downloadFile(String s, String saveto) {
-        try {
-            URL website = new URL(s);
-            ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-            File save = new File(saveto);
-            if (!save.exists()) {
-                save.getParentFile().mkdirs();
-                save.createNewFile();
-            }
-            FileOutputStream fos = new FileOutputStream(saveto);
-            while (fos.getChannel().transferFrom(rbc, 0, 1 << 24) > 0) {
-            }
-            fos.flush();
-            fos.close();
-            rbc.close();
-            return true;
-        } catch (MalformedURLException e) {
-            RoyalCommands.instance.getLogger().severe("Could not download " + s + ": " + e.getMessage());
-        } catch (IOException e) {
-            RoyalCommands.instance.getLogger().severe("Could not download " + s + ": " + e.getMessage());
-        }
-        return false;
     }
 
     /**
