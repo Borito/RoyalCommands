@@ -12,14 +12,14 @@ import java.util.logging.Logger;
 public class ItemNameManager {
 
     // <Aliases, <ID, Data>>
-    private final Map<String[], Map<Integer, Integer>> items = new HashMap<String[], Map<Integer, Integer>>();
+    private final Map<String[], Map<Integer, Short>> items = new HashMap<String[], Map<Integer, Short>>();
     private final List<Integer> ids = new ArrayList<Integer>();
 
     public ItemNameManager(Iterable<String[]> values) {
         for (String[] s : values) {
             if (s.length < 1) continue;
             int id;
-            int data;
+            short data;
             String[] aliases;
             try {
                 aliases = s[2].split(",");
@@ -36,12 +36,12 @@ public class ItemNameManager {
                 id = -1;
             }
             try {
-                data = Integer.valueOf(s[1]);
+                data = Short.valueOf(s[1]);
             } catch (NumberFormatException e) {
                 RoyalCommands.instance.getLogger().warning("Data in IDs file is invalid: " + s[1]);
                 data = -1;
             }
-            Map<Integer, Integer> stuff = new HashMap<Integer, Integer>();
+            Map<Integer, Short> stuff = new HashMap<Integer, Short>();
             stuff.put(id, data);
             ids.add(id);
             synchronized (items) {
@@ -74,7 +74,7 @@ public class ItemNameManager {
                 break;
             }
         if (!found) return null;
-        Map.Entry<Integer, Integer> entry = items.get(aliases).entrySet().iterator().next();
+        Map.Entry<Integer, Short> entry = items.get(aliases).entrySet().iterator().next();
         if (data == null || data.isEmpty()) data = String.valueOf(entry.getValue());
         return entry.getKey() + ":" + data;
     }
