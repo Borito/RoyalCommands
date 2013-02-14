@@ -47,6 +47,8 @@ public class CmdSpawn implements CommandExecutor {
             group = RoyalCommands.permission.getPrimaryGroup(p);
         } catch (UnsupportedOperationException e) {
             group = null;
+        } catch (NullPointerException e) {
+            group = null;
         }
         if (group == null || group.isEmpty()) return null;
         group = "." + group.toLowerCase();
