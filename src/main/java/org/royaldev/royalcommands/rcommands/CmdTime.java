@@ -24,16 +24,16 @@ public class CmdTime implements CommandExecutor {
     }
 
     public static void smoothTimeChange(long time, final World world) {
-        if (time > 24000) time = time % 24000L;
-        if (time < 0) time = 0; //Clamp to 0 to prevent loop
+        if (time > 24000L) time = time % 24000L;
+        if (time < 0L) time = 0L; // Clamp to 0 to prevent loop
         final long ftime = time;
         final Runnable r = new Runnable() {
             @Override
             public void run() {
                 for (long i = world.getTime() + 1; i != ftime; i++) {
-                    if (i == 24001) {
-                        i = 0;
-                        if (ftime == 0) break;
+                    if (i == 24001L) {
+                        i = 0L;
+                        if (ftime == 0L) break;
                     }
                     world.setTime(i);
                 }
@@ -66,6 +66,7 @@ public class CmdTime implements CommandExecutor {
 
     public static Map<String, String> getRealTime(long ticks) {
         if (ticks > 24000L) ticks = ticks % 24000L;
+        if (ticks < 0L) ticks = 0L;
         DecimalFormat df = new DecimalFormat("00");
         df.setRoundingMode(RoundingMode.DOWN);
         float thour = 1000F;

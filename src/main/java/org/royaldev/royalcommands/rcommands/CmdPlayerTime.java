@@ -17,15 +17,16 @@ public class CmdPlayerTime implements CommandExecutor {
     }
 
     public static void smoothPlayerTimeChange(long time, final Player p) {
-        if (time > 24000) time = time % 24000L;
+        if (time > 24000L) time = time % 24000L;
+        if (time < 0L) time = 0L; // Clamp to 0 to prevent loop
         final long ftime = time;
         final Runnable r = new Runnable() {
             @Override
             public void run() {
                 for (long i = p.getPlayerTime() + 1; i != ftime; i++) {
-                    if (i == 24001) {
-                        i = 0;
-                        if (ftime == 0) break;
+                    if (i == 24001L) {
+                        i = 0L;
+                        if (ftime == 0L) break;
                     }
                     p.setPlayerTime(i, true);
                 }
