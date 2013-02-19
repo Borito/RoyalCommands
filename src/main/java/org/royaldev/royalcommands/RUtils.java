@@ -19,6 +19,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 import org.royaldev.royalchat.RoyalChat;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
@@ -34,7 +35,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked, unused")
@@ -106,7 +106,7 @@ public class RUtils {
         // return text if less than length
         if (text.length() <= len) return new String[]{text};
         char[] chars = text.toCharArray();
-        Vector lines = new Vector();
+        java.util.Vector lines = new java.util.Vector();
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
 
@@ -443,6 +443,7 @@ public class RUtils {
             CmdBack.addBackLocation(p, p.getLocation());
             Chunk c = l.getChunk();
             if (!c.isLoaded()) c.load(true);
+            p.setVelocity(new Vector(0, 0, 0));
             p.teleport(l);
         } else {
             Location toTele = getSafeLocation(l);
@@ -450,6 +451,7 @@ public class RUtils {
             Chunk c = toTele.getChunk();
             if (!c.isLoaded()) c.load(true);
             CmdBack.addBackLocation(p, p.getLocation());
+            p.setVelocity(new Vector(0, 0, 0));
             p.teleport(toTele);
         }
         return "";
