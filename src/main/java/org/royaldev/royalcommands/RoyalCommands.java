@@ -258,6 +258,7 @@ public class RoyalCommands extends JavaPlugin {
      * @return PConfManager - never null
      */
     public PConfManager getUserdata(OfflinePlayer p) {
+        if (p == null) return null;
         return getUserdata(p.getName());
     }
 
@@ -269,6 +270,7 @@ public class RoyalCommands extends JavaPlugin {
      * @return PConfManager - never null
      */
     public PConfManager getUserdata(String s) {
+        if (s == null) return null;
         synchronized (ymls) {
             if (ymls.containsKey(s)) return ymls.get(s);
             PConfManager pcm = new PConfManager(s);
