@@ -40,7 +40,7 @@ public class CmdRepair implements CommandExecutor {
                     return true;
                 }
                 hand.setDurability((short) 0);
-                cs.sendMessage(ChatColor.BLUE + "Fixed your " + hand.getType().toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+                cs.sendMessage(ChatColor.BLUE + "Fixed your " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + ".");
                 return true;
             }
             if (args.length > 0) {
@@ -51,9 +51,9 @@ public class CmdRepair implements CommandExecutor {
                     if (aPInv != null && aPInv.getTypeId() != 0 && aPInv.getDurability() != (short) 0) {
                         aPInv.setDurability((short) 0);
                         if (items.equals("")) {
-                            items = items.concat(aPInv.getType().toString().toLowerCase().replace("_", " "));
+                            items = items.concat(RUtils.getItemName(aPInv));
                         } else {
-                            items = items.concat(", " + aPInv.getType().toString().toLowerCase().replace("_", " "));
+                            items = items.concat(", " + RUtils.getItemName(aPInv));
                         }
                     }
                 }
