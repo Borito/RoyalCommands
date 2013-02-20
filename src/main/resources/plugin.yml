@@ -715,6 +715,10 @@ commands:
     usage: /<command> [name] [ban#]
     aliases: [bh]
 
+  servertitle:
+    description: Control the server's title shown on the server list.
+    usage: /<command> (clear | set [title])
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1161,6 +1165,15 @@ permissions:
     default: op
   rcmds.banhistory:
     description: Allows you to view ban history of players.
+    default: op
+  rcmds.servertitle.clear:
+    description: Allows you to clear the server title, reverting to default.
+    default: op
+  rcmds.servertitle.set:
+    description: Allows you to set the current server title.
+    default: op
+  rcmds.servertitle.view:
+    description: Allows you to view the current server title.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1665,6 +1678,9 @@ permissions:
       rcmds.rocket: true
       rcmds.effect: true
       rcmds.banhistory: true
+      rcmds.servertitle.clear: true
+      rcmds.servertitle.set: true
+      rcmds.servertitle.view: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1938,6 +1954,9 @@ permissions:
       rcmds.rocket: true
       rcmds.effect: true
       rcmds.banhistory: true
+      rcmds.servertitle.clear: true
+      rcmds.servertitle.set: true
+      rcmds.servertitle.view: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

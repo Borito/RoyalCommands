@@ -4,6 +4,12 @@
 # General section #
 ###
 
+# Current server title (message that shows on server list)
+current-server-title: 'A minecraft server.'
+
+# Default server title (the current-server-title will set to this when cleared)
+default-server-title: 'A minecraft server.'
+
 # Disable /getip and /compareip?
 disable_getip: false
 

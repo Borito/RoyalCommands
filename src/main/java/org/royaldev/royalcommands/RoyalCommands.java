@@ -42,6 +42,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
+import org.royaldev.royalcommands.listeners.MiscListener;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
@@ -112,6 +113,7 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     private final SignListener signListener = new SignListener(this);
+    private final MiscListener miscListener = new MiscListener(this);
     private final MonitorListener monitorListener = new MonitorListener(this);
 
     private final Pattern versionPattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
@@ -212,6 +214,8 @@ public class RoyalCommands extends JavaPlugin {
     public String igUnbanFormat = null;
     public String ipBanFormat = null;
     public String saveInterval = null;
+    public String defaultServerTitle = null;
+    public String currentServerTitle = null;
 
     //-- Integers --//
 
@@ -510,6 +514,8 @@ public class RoyalCommands extends JavaPlugin {
         igUnbanFormat = c.getString("ingame_unban_message", "&7{kdispname}&9 was unbanned by &7{dispname}&9.");
         ipBanFormat = c.getString("ipban_format", "&4IP Banned&r: &7{ip}&r has been banned from this server.");
         saveInterval = c.getString("save.save_on_interval", "10m");
+        defaultServerTitle = c.getString("default-server-title", "A minecraft server.");
+        currentServerTitle = c.getString("current-server-title", "A minecraft server.");
 
         defaultStack = c.getInt("default_stack_size", 64);
         spawnmobLimit = c.getInt("spawnmob_limit", 15);
@@ -763,6 +769,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(entityListener, this);
         pm.registerEvents(blockListener, this);
         pm.registerEvents(signListener, this);
+        pm.registerEvents(miscListener, this);
         pm.registerEvents(monitorListener, this);
         if (ta != null && changeNameTag)
             pm.registerEvents(new TagAPIListener(this), this);
@@ -917,6 +924,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdRocket(this), "rocket", this);
         registerCommand(new CmdEffect(this), "effect", this);
         registerCommand(new CmdBanHistory(this), "banhistory", this);
+        registerCommand(new CmdServerTitle(this), "servertitle", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//
