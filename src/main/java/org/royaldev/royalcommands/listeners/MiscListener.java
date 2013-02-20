@@ -7,14 +7,14 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class MiscListener implements Listener {
-	private RoyalCommands plugin;
-	
-	public MiscListener(RoyalCommands plugin) {
-		this.plugin = plugin;
-	}
-	
-	@EventHandler
-	public void onPing(final ServerListPingEvent event) {
-		event.setMotd(RUtils.colorize(plugin.currentServerTitle));
-	}
+    private RoyalCommands plugin;
+
+    public MiscListener(RoyalCommands plugin) {
+        this.plugin = plugin;
+    }
+
+    @EventHandler
+    public void onPing(final ServerListPingEvent event) {
+        event.setMotd(RUtils.colorize(plugin.currentServerTitle));
+    }
 }
