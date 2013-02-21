@@ -717,7 +717,8 @@ commands:
 
   servertitle:
     description: Control the server's title shown on the server list.
-    usage: /<command> (clear | set [title])
+    usage: /<command> (clear/set [title])
+    aliases: [setmotd, servermotd]
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.

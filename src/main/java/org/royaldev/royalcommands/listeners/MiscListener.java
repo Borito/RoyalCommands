@@ -7,10 +7,10 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public class MiscListener implements Listener {
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
-    public MiscListener(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public MiscListener(RoyalCommands instance) {
+        plugin = instance;
     }
 
     @EventHandler

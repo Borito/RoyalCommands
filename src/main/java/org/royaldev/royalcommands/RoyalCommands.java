@@ -514,8 +514,8 @@ public class RoyalCommands extends JavaPlugin {
         igUnbanFormat = c.getString("ingame_unban_message", "&7{kdispname}&9 was unbanned by &7{dispname}&9.");
         ipBanFormat = c.getString("ipban_format", "&4IP Banned&r: &7{ip}&r has been banned from this server.");
         saveInterval = c.getString("save.save_on_interval", "10m");
-        defaultServerTitle = c.getString("default-server-title", "A minecraft server.");
-        currentServerTitle = c.getString("current-server-title", "A minecraft server.");
+        defaultServerTitle = c.getString("default-server-title", "A Minecraft server.");
+        currentServerTitle = c.getString("current-server-title", "A Minecraft server.");
 
         defaultStack = c.getInt("default_stack_size", 64);
         spawnmobLimit = c.getInt("spawnmob_limit", 15);
