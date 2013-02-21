@@ -42,7 +42,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
-import org.royaldev.royalcommands.listeners.MiscListener;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
@@ -114,7 +113,6 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     private final SignListener signListener = new SignListener(this);
-    private final MiscListener miscListener = new MiscListener(this);
     private final MonitorListener monitorListener = new MonitorListener(this);
 
     private final Pattern versionPattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
@@ -751,7 +749,8 @@ public class RoyalCommands extends JavaPlugin {
         bs.runTaskTimerAsynchronously(this, new BanWatcher(this), 20L, 600L);
         bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20L, 12000L);
         bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20L, 100L);
-        bs.scheduleSyncRepeatingTask(this, new MailRunner(this), 20L, RUtils.timeFormatToSeconds(mailCheckTime) * 20L);
+        long mail = RUtils.timeFormatToSeconds(mailCheckTime);
+        if (mail > 0L) bs.scheduleSyncRepeatingTask(this, new MailRunner(this), 20L, mail * 20L);
 
         long every = RUtils.timeFormatToSeconds(saveInterval);
         if (every < 1L) every = 600L; // 600s = 10m
@@ -773,7 +772,6 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(entityListener, this);
         pm.registerEvents(blockListener, this);
         pm.registerEvents(signListener, this);
-        pm.registerEvents(miscListener, this);
         pm.registerEvents(monitorListener, this);
         if (ta != null && changeNameTag)
             pm.registerEvents(new TagAPIListener(this), this);
@@ -928,7 +926,6 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdRocket(this), "rocket", this);
         registerCommand(new CmdEffect(this), "effect", this);
         registerCommand(new CmdBanHistory(this), "banhistory", this);
-        registerCommand(new CmdServerTitle(this), "servertitle", this);
         registerCommand(new CmdMail(this), "mail", this);
         registerCommand(new CmdSignEdit(this), "signedit", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
