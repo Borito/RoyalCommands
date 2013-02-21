@@ -22,7 +22,7 @@ public class BanWatcher implements Runnable {
             if (!pcm.exists()) continue;
             if (pcm.get("bantime") != null && !RUtils.isTimeStampValid(op, "bantime")) {
                 op.setBanned(false);
-                pcm.set(null, "bantime");
+                pcm.set("bantime", null);
             }
         }
     }

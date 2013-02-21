@@ -69,7 +69,8 @@ public class CmdMail implements CommandExecutor {
                 }
                 Player p = (Player) cs;
                 final PConfManager pcm = plugin.getUserdata(p);
-                pcm.set(null, "mail");
+                if (!pcm.exists()) pcm.createFile();
+                if (pcm.isSet("mail")) pcm.set("mail", null);
                 cs.sendMessage(ChatColor.BLUE + "Your mailbox has been cleared.");
             } else if (args[0].equalsIgnoreCase("send")) {
                 if (!plugin.isAuthorized(cs, "rcmds.mail.send")) {
