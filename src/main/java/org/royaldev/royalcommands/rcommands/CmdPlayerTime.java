@@ -28,9 +28,9 @@ public class CmdPlayerTime implements CommandExecutor {
                         i = 0L;
                         if (ftime == 0L) break;
                     }
-                    p.setPlayerTime(i, true);
+                    p.setPlayerTime(i, false);
                 }
-                p.setPlayerTime(ftime, true);
+                p.setPlayerTime(ftime, false);
             }
         };
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
@@ -68,7 +68,7 @@ public class CmdPlayerTime implements CommandExecutor {
                 return true;
             }
             if (plugin.smoothTime) smoothPlayerTimeChange(time, t);
-            t.setPlayerTime(time, true);
+            t.setPlayerTime(time, false);
             cs.sendMessage(ChatColor.BLUE + "Set " + ChatColor.GRAY + t.getName() + possessive + ChatColor.BLUE + " time to " + ChatColor.GRAY + time + " ticks" + ChatColor.BLUE + ".");
             return true;
         }
