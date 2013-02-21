@@ -724,6 +724,11 @@ commands:
     description: Manages player mail.
     usage: /<command> [read|clear|send [to] [message]]
 
+  signedit:
+    description: Edits the sign a player is currently looking at.
+    usage: /<command> [line#] (new text)
+    aliases: [se, editsign, es]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1185,6 +1190,12 @@ permissions:
     default: op
   rcmds.mail.send:
     description: Allows you to send mail to a player.
+    default: op
+  rcmds.signedit:
+    description: Allows you to edit signs.
+    default: op
+  rcmds.signedit.color:
+    description: Allows you to use colors on signs.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1694,6 +1705,8 @@ permissions:
       rcmds.servertitle.view: true
       rcmds.mail: true
       rcmds.mail.send: true
+      rcmds.signedit: true
+      rcmds.signedit.color: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1972,6 +1985,8 @@ permissions:
       rcmds.servertitle.view: true
       rcmds.mail: true
       rcmds.mail.send: true
+      rcmds.signedit: true
+      rcmds.signedit.color: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

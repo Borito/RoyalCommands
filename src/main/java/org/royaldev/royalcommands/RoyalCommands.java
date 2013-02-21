@@ -930,6 +930,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdBanHistory(this), "banhistory", this);
         registerCommand(new CmdServerTitle(this), "servertitle", this);
         registerCommand(new CmdMail(this), "mail", this);
+        registerCommand(new CmdSignEdit(this), "signedit", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//

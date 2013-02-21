@@ -2,6 +2,7 @@ package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -450,9 +451,7 @@ public class SignListener implements Listener {
                 p.sendMessage(ChatColor.RED + "The cost is invalid!");
                 e.setLine(0, ChatColor.RED + line1);
                 return;
-            } else if (charge >= 0) {
-                e.setLine(2, ChatColor.DARK_GREEN + line3);
-            }
+            } else if (charge >= 0) e.setLine(2, ChatColor.DARK_GREEN + line3);
             if (line2.isEmpty()) {
                 e.setLine(0, ChatColor.RED + line1);
                 p.sendMessage(ChatColor.RED + "No command specified!");
@@ -461,6 +460,15 @@ public class SignListener implements Listener {
             p.sendMessage(ChatColor.BLUE + "Command sign created successfully.");
             e.setLine(0, ChatColor.BLUE + line1);
         }
+    }
+
+    @EventHandler
+    public void colorSigns(SignChangeEvent e) {
+        Block b = e.getBlock();
+        Player p = e.getPlayer();
+        if (!plugin.canAccessChest(p, b)) return;
+        if (!plugin.isAuthorized(p, "rcmds.signedit.color")) return;
+        for (int i = 0; i < 4; i++) e.setLine(i, RUtils.colorize(e.getLine(i)));
     }
 
 }
