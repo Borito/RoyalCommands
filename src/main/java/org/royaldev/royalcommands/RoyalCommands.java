@@ -54,6 +54,7 @@ import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
+import org.royaldev.royalcommands.runners.MailRunner;
 import org.royaldev.royalcommands.runners.UserdataSaver;
 import org.royaldev.royalcommands.runners.WarnWatcher;
 
@@ -216,6 +217,7 @@ public class RoyalCommands extends JavaPlugin {
     public String saveInterval = null;
     public String defaultServerTitle = null;
     public String currentServerTitle = null;
+    public String mailCheckTime = null;
 
     //-- Integers --//
 
@@ -516,6 +518,7 @@ public class RoyalCommands extends JavaPlugin {
         saveInterval = c.getString("save.save_on_interval", "10m");
         defaultServerTitle = c.getString("default-server-title", "A Minecraft server.");
         currentServerTitle = c.getString("current-server-title", "A Minecraft server.");
+        mailCheckTime = c.getString("mail_check_interval", "10m");
 
         defaultStack = c.getInt("default_stack_size", 64);
         spawnmobLimit = c.getInt("spawnmob_limit", 15);
@@ -748,6 +751,7 @@ public class RoyalCommands extends JavaPlugin {
         bs.runTaskTimerAsynchronously(this, new BanWatcher(this), 20L, 600L);
         bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20L, 12000L);
         bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20L, 100L);
+        bs.scheduleSyncRepeatingTask(this, new MailRunner(this), 20L, RUtils.timeFormatToSeconds(mailCheckTime) * 20L);
 
         long every = RUtils.timeFormatToSeconds(saveInterval);
         if (every < 1L) every = 600L; // 600s = 10m
@@ -925,6 +929,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdEffect(this), "effect", this);
         registerCommand(new CmdBanHistory(this), "banhistory", this);
         registerCommand(new CmdServerTitle(this), "servertitle", this);
+        registerCommand(new CmdMail(this), "mail", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//

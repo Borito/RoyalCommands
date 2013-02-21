@@ -720,6 +720,10 @@ commands:
     usage: /<command> (clear/set [title])
     aliases: [setmotd, servermotd]
 
+  mail:
+    description: Manages player mail.
+    usage: /<command> [read|clear|send [to] [message]]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1175,6 +1179,12 @@ permissions:
     default: op
   rcmds.servertitle.view:
     description: Allows you to view the current server title.
+    default: op
+  rcmds.mail:
+    description: Allows you to view and clear your mail.
+    default: op
+  rcmds.mail.send:
+    description: Allows you to send mail to a player.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1682,6 +1692,8 @@ permissions:
       rcmds.servertitle.clear: true
       rcmds.servertitle.set: true
       rcmds.servertitle.view: true
+      rcmds.mail: true
+      rcmds.mail.send: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1958,6 +1970,8 @@ permissions:
       rcmds.servertitle.clear: true
       rcmds.servertitle.set: true
       rcmds.servertitle.view: true
+      rcmds.mail: true
+      rcmds.mail.send: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

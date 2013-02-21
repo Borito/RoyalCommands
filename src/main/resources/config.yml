@@ -400,3 +400,9 @@ save:
   # what is entered here. If this is changed, the server requires a restart to update this value.
   # Default is "10m" (10 minutes)
   save_on_interval: "10m"
+
+###
+# Mail #
+###
+
+mail_check_interval: "10m"

@@ -1164,4 +1164,25 @@ public class RUtils {
         }
         return fs;
     }
+
+    private final static Map<String, Long> mailNotif = new HashMap<String, Long>();
+
+    public static void checkMail(Player p) {
+        synchronized (mailNotif) {
+            PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+            if (!pcm.getStringList("mail").isEmpty()) {
+                Long now = new Date().getTime();
+                if (mailNotif.containsKey(p.getName())) {
+                    Long then = mailNotif.get(p.getName());
+                    if (now - then < 5000) {
+                        return;
+                    }
+                }
+                int count = pcm.getStringList("mail").size();
+                p.sendMessage(ChatColor.BLUE + "Mailbox Size: [" + ChatColor.GRAY + count + ChatColor.BLUE + "]");
+                p.sendMessage(ChatColor.BLUE + "View mail with " + ChatColor.GRAY + "/mail read" + ChatColor.BLUE + ".");
+                mailNotif.put(p.getName(), new Date().getTime());
+            }
+        }
+    }
 }
