@@ -724,6 +724,10 @@ commands:
     usage: /<command> [line#] (new text)
     aliases: [se, editsign, es]
 
+  potion:
+    description: Adds effect to a potion.
+    usage: /<command> [effects]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1182,6 +1186,9 @@ permissions:
     default: op
   rcmds.signedit.color:
     description: Allows you to use colors on signs.
+    default: op
+  rcmds.potion:
+    description: Allows you to add potion effects to a potion.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1690,6 +1697,7 @@ permissions:
       rcmds.mail.send: true
       rcmds.signedit: true
       rcmds.signedit.color: true
+      rcmds.potion: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1967,6 +1975,7 @@ permissions:
       rcmds.mail.send: true
       rcmds.signedit: true
       rcmds.signedit.color: true
+      rcmds.potion: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
