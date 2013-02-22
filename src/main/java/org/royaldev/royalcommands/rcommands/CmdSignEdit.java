@@ -1,7 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -34,19 +33,15 @@ public class CmdSignEdit implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Block b = RUtils.getTarget(p);
-            if (b == null || (b.getType() != Material.SIGN && b.getType() != Material.WALL_SIGN)) {
+            Block b = p.getTargetBlock(null, 100); // RUtils has signs as transparent
+            if (b == null || !(b.getState() instanceof Sign)) {
                 cs.sendMessage(ChatColor.RED + "The block in sight is not a sign!");
                 return true;
             }
-            if (!plugin.canAccessChest(p, b)) {
+            /*if (!plugin.canAccessChest(p, b)) {
                 cs.sendMessage(ChatColor.RED + "You cannot access that sign!");
                 return true;
-            }
-            if (!(b.getState() instanceof Sign)) {
-                cs.sendMessage(ChatColor.RED + "The block in sight is not a sign!");
-                return true;
-            }
+            }*/
             Sign s = (Sign) b.getState();
             int lineNumber;
             try {
@@ -65,7 +60,10 @@ public class CmdSignEdit implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Cleared line " + ChatColor.GRAY + (lineNumber + 1) + ChatColor.BLUE + ".");
                 return true;
             }
-            s.setLine(lineNumber, RoyalCommands.getFinalArg(args, 1));
+            String text = RoyalCommands.getFinalArg(args, 1);
+            if (plugin.isAuthorized(cs, "rcmds.signedit.color")) text = RUtils.colorize(text);
+            s.setLine(lineNumber, text);
+            s.update();
             cs.sendMessage(ChatColor.BLUE + "Set line " + ChatColor.GRAY + (lineNumber + 1) + ChatColor.BLUE + ".");
             return true;
         }
