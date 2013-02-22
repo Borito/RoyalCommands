@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
@@ -11,6 +12,7 @@ import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -67,6 +69,20 @@ public class CmdErase implements CommandExecutor {
                     count++;
                 }
                 cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "mobs" : "mob") + ChatColor.BLUE + ".");
+            } else if (command.equalsIgnoreCase("monsters")) {
+                for (Entity e : entlist) {
+                    if (!(e instanceof Monster)) continue;
+                    e.remove();
+                    count++;
+                }
+                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "monsters" : "monster") + ChatColor.BLUE + ".");
+            } else if (command.equalsIgnoreCase("animals")) {
+                for (Entity e : entlist) {
+                    if (!(e instanceof Animals)) continue;
+                    e.remove();
+                    count++;
+                }
+                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "animals" : "animal") + ChatColor.BLUE + ".");
             } else if (command.equalsIgnoreCase("arrows")) {
                 for (Entity e : entlist) {
                     if (e instanceof Arrow) {
