@@ -37,7 +37,7 @@ public class CmdForce implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You cannot make that player run commands!");
                 return true;
             }
-            String command = plugin.getFinalArg(args, 1).trim();
+            String command = RoyalCommands.getFinalArg(args, 1).trim();
             cs.sendMessage(ChatColor.BLUE + "Executing command " + ChatColor.GRAY + "/" + command + ChatColor.BLUE + " from user " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             t.performCommand(command);
             return true;

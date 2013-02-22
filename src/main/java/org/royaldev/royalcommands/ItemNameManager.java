@@ -2,6 +2,7 @@ package org.royaldev.royalcommands;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +56,11 @@ public class ItemNameManager {
     }
 
     public boolean aliasExists(Material m) {
-        return ids.contains(m.getId());
+        return aliasExists(m.getId());
+    }
+
+    public boolean aliasExists(ItemStack is) {
+        return aliasExists(is.getTypeId());
     }
 
     public String getIDFromAlias(String alias) {

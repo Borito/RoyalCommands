@@ -36,11 +36,11 @@ public class CmdHome implements CommandExecutor {
             Player p = (Player) cs;
 
             boolean homeSet;
-            Double homeX;
-            Double homeY;
-            Double homeZ;
-            Float homeYaw;
-            Float homePitch;
+            double homeX;
+            double homeY;
+            double homeZ;
+            float homeYaw;
+            float homePitch;
             World homeW;
             String name = "";
             if (args.length > 0) name = args[0];
@@ -81,7 +81,7 @@ public class CmdHome implements CommandExecutor {
                     homeZ = pcm.getDouble("home.home.z");
                     homeYaw = Float.parseFloat(pcm.getString("home.home.yaw"));
                     homePitch = Float.parseFloat(pcm.getString("home.home.pitch"));
-                    homeW = plugin.getServer().getWorld(pcm.getString("home.home.w"));
+                    homeW = plugin.getServer().getWorld(pcm.getString("home.home.w", ""));
                 }
             } else {
                 cs.sendMessage(ChatColor.RED + "You don't have that home set!");
@@ -89,15 +89,6 @@ public class CmdHome implements CommandExecutor {
             }
             if (homeW == null) {
                 cs.sendMessage(ChatColor.RED + "World doesn't exist!");
-                return true;
-            }
-            if (homeX == null || homeY == null || homeZ == null || homeYaw == null || homePitch == null) {
-                System.out.println("homeX: " + homeX);
-                System.out.println("homeY: " + homeY);
-                System.out.println("homeZ: " + homeZ);
-                System.out.println("homeYaw: " + homeYaw);
-                System.out.println("homePitch: " + homePitch);
-                cs.sendMessage(ChatColor.RED + "Home was saved incorrectly!");
                 return true;
             }
             Location homeLoc = new Location(homeW, homeX, homeY, homeZ, homeYaw, homePitch);

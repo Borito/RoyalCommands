@@ -35,11 +35,11 @@ public class CmdHarm implements CommandExecutor {
             try {
                 toDamage = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED + "The damage must be a number between 1 and 20!");
+                cs.sendMessage(ChatColor.RED + "The damage must be a number!");
                 return false;
             }
-            if (toDamage > 20 || toDamage <= 0) {
-                cs.sendMessage(ChatColor.RED + "The damage you entered is not within 1 and 20!");
+            if (toDamage > t.getMaxHealth() || toDamage <= 0) {
+                cs.sendMessage(ChatColor.RED + "The damage you entered is not within 1 and " + t.getMaxHealth() + "!");
                 return true;
             }
 

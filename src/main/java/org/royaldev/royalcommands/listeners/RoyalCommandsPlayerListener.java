@@ -238,7 +238,8 @@ public class RoyalCommandsPlayerListener implements Listener {
                 log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
         }
         if (pcm.getBoolean("muted")) {
-            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime", "mutedat")) pcm.set("muted", false);
+            if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime", "mutedat"))
+                pcm.set("muted", false);
             for (String command : plugin.muteCmds) {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
                     continue;
@@ -312,7 +313,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void heMan(AsyncPlayerChatEvent e) {
         if (e.isCancelled()) return;
         if (!e.getMessage().matches("(?i)by the power of gr[ae]yskull!?")) return;
