@@ -32,8 +32,17 @@ public class CmdRank implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
-            String rank = RoyalCommands.permission.getPrimaryGroup(victim);
-            cs.sendMessage(ChatColor.BLUE + "The user " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + " has the group " + ChatColor.GRAY + rank + ChatColor.BLUE + ".");
+            String rank;
+            try {
+                rank = RoyalCommands.permission.getPrimaryGroup(victim);
+            } catch (Exception e) {
+                rank = null;
+            }
+            if (rank == null) {
+                cs.sendMessage(ChatColor.RED + "That player has no rank.");
+                return true;
+            }
+            cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + " has the group " + ChatColor.GRAY + rank + ChatColor.BLUE + ".");
             return true;
         }
         return false;
