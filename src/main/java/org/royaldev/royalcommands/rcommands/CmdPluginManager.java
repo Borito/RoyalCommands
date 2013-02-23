@@ -33,6 +33,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -45,6 +46,40 @@ public class CmdPluginManager implements CommandExecutor {
 
     public CmdPluginManager(RoyalCommands instance) {
         plugin = instance;
+    }
+
+    /**
+     * Gets the names of all plugins that depend on the specified plugin.
+     * <p/>
+     * This will not return plugins that are disabled.
+     *
+     * @param dep Plugin to find dependencies of
+     * @return List of dependencies, may be empty - never null
+     */
+    private List<String> getDependedOnBy(Plugin dep) {
+        return getDependedOnBy(dep.getName());
+    }
+
+    /**
+     * Gets the names of all plugins that depend on the specified plugin.
+     * <p/>
+     * This will not return plugins that are disabled.
+     *
+     * @param name Plugin name to find dependencies of
+     * @return List of dependencies, may be empty - never null
+     */
+    private List<String> getDependedOnBy(String name) {
+        final List<String> dependedOnBy = new ArrayList<String>();
+        for (Plugin pl : plugin.getServer().getPluginManager().getPlugins()) {
+            if (pl == null) continue;
+            if (!pl.isEnabled()) continue;
+            PluginDescriptionFile pdf = pl.getDescription();
+            if (pdf == null) continue;
+            List<String> depends = pdf.getDepend();
+            if (depends == null) continue;
+            for (String depend : depends) if (name.equalsIgnoreCase(depend)) dependedOnBy.add(pl.getName());
+        }
+        return dependedOnBy;
     }
 
     private String getCustomTag(String name) {
@@ -143,6 +178,19 @@ public class CmdPluginManager implements CommandExecutor {
                 if (!p.isEnabled()) {
                     cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.RED + "is already disabled!");
                 }
+                List<String> depOnBy = getDependedOnBy(p);
+                if (!depOnBy.isEmpty()) {
+                    cs.sendMessage(ChatColor.RED + "Could not unload " + ChatColor.GRAY + p.getName() + ChatColor.RED + " because it is depended on by the following:");
+                    StringBuilder sb = new StringBuilder();
+                    for (String dep : depOnBy) {
+                        sb.append(ChatColor.GRAY);
+                        sb.append(dep);
+                        sb.append(ChatColor.RESET);
+                        sb.append(", ");
+                    }
+                    cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
+                    return true;
+                }
                 pm.disablePlugin(p);
                 if (!p.isEnabled())
                     cs.sendMessage(ChatColor.BLUE + "Disabled " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + " successfully!");
@@ -204,6 +252,19 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "No such plugin!");
                     return true;
                 }
+                List<String> depOnBy = getDependedOnBy(p);
+                if (!depOnBy.isEmpty()) {
+                    cs.sendMessage(ChatColor.RED + "Could not unload " + ChatColor.GRAY + p.getName() + ChatColor.RED + " because it is depended on by the following:");
+                    StringBuilder sb = new StringBuilder();
+                    for (String dep : depOnBy) {
+                        sb.append(ChatColor.GRAY);
+                        sb.append(dep);
+                        sb.append(ChatColor.RESET);
+                        sb.append(", ");
+                    }
+                    cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
+                    return true;
+                }
                 File f = new File(plugin.getDataFolder().getParentFile() + File.separator + args[2]);
                 if (!f.exists()) {
                     cs.sendMessage(ChatColor.RED + "That file does not exist!");
@@ -258,8 +319,8 @@ public class CmdPluginManager implements CommandExecutor {
                     String name = p.getName();
                     if (!p.isEnabled()) {
                         name = name + " (disabled)";
-                        disabled = disabled + 1;
-                    } else enabled = enabled + 1;
+                        disabled += 1;
+                    } else enabled += 1;
                     list.append(ChatColor.GRAY);
                     list.append(name);
                     list.append(ChatColor.RESET);
@@ -307,6 +368,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "Soft Dependencies: " + ChatColor.GRAY + RUtils.join(softDep, ChatColor.RESET + ", " + ChatColor.GRAY));
                 if (dep != null && !dep.isEmpty())
                     cs.sendMessage(ChatColor.BLUE + "Dependencies: " + ChatColor.GRAY + RUtils.join(dep, ChatColor.RESET + ", " + ChatColor.GRAY));
+                cs.sendMessage(ChatColor.BLUE + "Enabled: " + ((p.isEnabled()) ? "Yes" : "No"));
                 return true;
             } else if (subcmd.equalsIgnoreCase("commands")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.commands")) {
@@ -526,7 +588,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "Could not check for update!");
                 }
                 return true;
-            } else if (subcmd.equalsIgnoreCase("findtag")) {
+            } else if (subcmd.equalsIgnoreCase("findtag") || subcmd.equalsIgnoreCase("search")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.findtag")) {
                     RUtils.dispNoPerms(cs);
                     return true;
