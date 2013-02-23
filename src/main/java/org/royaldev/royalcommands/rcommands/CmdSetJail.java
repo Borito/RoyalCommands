@@ -44,8 +44,8 @@ public class CmdSetJail implements CommandExecutor {
             double locX = p.getLocation().getX();
             double locY = p.getLocation().getY();
             double locZ = p.getLocation().getZ();
-            Float locYaw = p.getLocation().getYaw();
-            Float locPitch = p.getLocation().getPitch();
+            float locYaw = p.getLocation().getYaw();
+            float locPitch = p.getLocation().getPitch();
             String locW = p.getWorld().getName();
 
             File pconfl = new File(plugin.getDataFolder() + File.separator + "jails.yml");
@@ -61,8 +61,8 @@ public class CmdSetJail implements CommandExecutor {
             pconf.set("jails." + args[0] + ".x", locX);
             pconf.set("jails." + args[0] + ".y", locY);
             pconf.set("jails." + args[0] + ".z", locZ);
-            pconf.set("jails." + args[0] + ".pitch", locPitch.toString());
-            pconf.set("jails." + args[0] + ".yaw", locYaw.toString());
+            pconf.set("jails." + args[0] + ".pitch", locPitch);
+            pconf.set("jails." + args[0] + ".yaw", locYaw);
             pconf.set("jails." + args[0] + ".w", locW);
             try {
                 pconf.save(pconfl);

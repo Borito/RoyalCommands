@@ -17,7 +17,6 @@ public class CmdRocket implements CommandExecutor {
         this.plugin = instance;
     }
 
-
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("rocket")) {

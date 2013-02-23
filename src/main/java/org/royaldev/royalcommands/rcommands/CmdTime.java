@@ -40,7 +40,7 @@ public class CmdTime implements CommandExecutor {
                 world.setTime(ftime);
             }
         };
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
+        plugin.getServer().getScheduler().runTask(plugin, r);
     }
 
     public static Long getValidTime(String time) {

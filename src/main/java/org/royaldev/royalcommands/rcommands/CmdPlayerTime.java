@@ -33,7 +33,7 @@ public class CmdPlayerTime implements CommandExecutor {
                 p.setPlayerTime(ftime, false);
             }
         };
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
+        plugin.getServer().getScheduler().runTask(plugin, r);
     }
 
     @Override

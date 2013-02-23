@@ -21,7 +21,7 @@ public class CmdMail implements CommandExecutor {
     }
 
     public static String[] splitFirst(String source, String splitter) {
-        List<String> rv = new ArrayList<String>();
+        final List<String> rv = new ArrayList<String>();
         int last = 0;
         int next = source.indexOf(splitter, last);
         if (next != -1) {
