@@ -10,6 +10,11 @@ public class NMSHandler implements NMSFace {
     }
 
     @Override
+    public String getVersion() {
+        return "NoSupport";
+    }
+
+    @Override
     public int getPing(Player p) {
         return 0;
     }

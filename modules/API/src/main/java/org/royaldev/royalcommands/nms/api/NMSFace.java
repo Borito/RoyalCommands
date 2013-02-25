@@ -14,6 +14,13 @@ public interface NMSFace {
     public boolean hasSupport();
 
     /**
+     * Gets the version of the NMS support (e.g. v1_4_5).
+     *
+     * @return Version string
+     */
+    public String getVersion();
+
+    /**
      * Gets the ping reported to the server by the client.
      *
      * @param p Player to get ping of

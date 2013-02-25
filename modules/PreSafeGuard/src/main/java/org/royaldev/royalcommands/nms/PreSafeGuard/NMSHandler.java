@@ -11,6 +11,11 @@ public class NMSHandler implements NMSFace {
     }
 
     @Override
+    public String getVersion() {
+        return "PreSafeGuard";
+    }
+
+    @Override
     public int getPing(Player p) {
         if (p instanceof CraftPlayer) return ((CraftPlayer) p).getHandle().ping;
         throw new IllegalArgumentException("Player was not a CraftPlayer!");

@@ -677,7 +677,7 @@ public class RoyalCommands extends JavaPlugin {
             nmsFace = new org.royaldev.royalcommands.nms.NoSupport.NMSHandler();
         }
         if (nmsFace.hasSupport())
-            getLogger().info("Loaded support for " + (versionNMS.equals("PreSafeGuard") ? "v1_4_5_pre" : versionNMS) + ".");
+            getLogger().info("Loaded support for " + nmsFace.getVersion() + ".");
 
         //-- Hidendra's Metrics --//
 
