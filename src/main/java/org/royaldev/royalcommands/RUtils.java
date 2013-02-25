@@ -444,6 +444,7 @@ public class RUtils {
             Chunk c = l.getChunk();
             if (!c.isLoaded()) c.load(true);
             p.setVelocity(new Vector(0, 0, 0));
+            p.setFallDistance(0F);
             p.teleport(l);
         } else {
             Location toTele = getSafeLocation(l);
@@ -452,6 +453,7 @@ public class RUtils {
             if (!c.isLoaded()) c.load(true);
             CmdBack.addBackLocation(p, p.getLocation());
             p.setVelocity(new Vector(0, 0, 0));
+            p.setFallDistance(0F);
             p.teleport(toTele);
         }
         return "";

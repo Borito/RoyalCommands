@@ -40,8 +40,6 @@ public class CmdEnchant implements CommandExecutor {
                 return e.getMaxLevel();
             case -2: // Max short value
                 return Short.MAX_VALUE;
-            case 0:
-                return 0;
             default:
                 return i;
         }

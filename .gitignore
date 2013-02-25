@@ -16,6 +16,7 @@ build.xml
 .*.sw[a-p]
 
 # various other potential build files
+target
 build
 bin
 dist

@@ -48,6 +48,7 @@ import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
+import org.royaldev.royalcommands.nms.api.NMSFace;
 import org.royaldev.royalcommands.opencsv.CSVReader;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
@@ -67,7 +68,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,7 +103,7 @@ public class RoyalCommands extends JavaPlugin {
     public String newVersion = null;
     public Metrics m = null;
 
-    public Connection c = null;
+    public NMSFace nmsFace;
 
     //--- Privates ---//
 
@@ -656,6 +656,29 @@ public class RoyalCommands extends JavaPlugin {
 
         version = getDescription().getVersion();
 
+        //-- Work out NMS magic using mbaxter's glorious methods --//
+
+        // Get full package string of CraftServer.
+        // org.bukkit.craftbukkit.versionstring (or for pre-refactor, just org.bukkit.craftbukkit
+        String packageName = getServer().getClass().getPackage().getName();
+        // Get the last element of the package
+        // If the last element of the package was "craftbukkit" we are now pre-refactor
+        String versionNMS = packageName.substring(packageName.lastIndexOf('.') + 1);
+        if (versionNMS.equals("craftbukkit")) versionNMS = "PreSafeGuard";
+        try {
+            // Check if we have a NMSHandler class at that location.
+            final Class<?> clazz = Class.forName("org.royaldev.royalcommands.nms." + versionNMS + ".NMSHandler");
+            // Make sure it actually implements NMS and set our handler
+            if (NMSFace.class.isAssignableFrom(clazz)) nmsFace = (NMSFace) clazz.getConstructor().newInstance();
+        } catch (final Exception e) {
+            getLogger().severe("Could not find support for this CraftBukkit version.");
+            getLogger().info("The BukkitDev page has links to the newest development builds to fix this.");
+            getLogger().info("http://dev.bukkit.org/server-mods/royalcommands");
+            setEnabled(false);
+            return;
+        }
+        getLogger().info("Loading support for " + (versionNMS.equals("PreSafeGuard") ? "v1_4_5_pre" : versionNMS));
+
         //-- Hidendra's Metrics --//
 
         try {
@@ -929,6 +952,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdMail(this), "mail", this);
         registerCommand(new CmdSignEdit(this), "signedit", this);
         registerCommand(new CmdPotion(this), "potion", this);
+        registerCommand(new CmdSetCharacteristic(this), "setcharacteristic", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//

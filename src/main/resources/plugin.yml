@@ -728,6 +728,11 @@ commands:
     description: Adds effect to a potion.
     usage: /<command> [effects]
 
+  setcharacteristic:
+    description: Sets player characteristics.
+    usage: /<command> [subcommands]
+    aliases: [sc, setchar]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1190,6 +1195,9 @@ permissions:
   rcmds.potion:
     description: Allows you to add potion effects to a potion.
     default: op
+  rcmds.setcharacteristic:
+    description: Allows you to set player characteristics.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1437,6 +1445,9 @@ permissions:
     default: op
   rcmds.others.ping:
     description: Allows the player to /ping other players.
+    default: op
+  rcmds.others.feed:
+    description: Allows the player to /feed other players.
     default: op
 
   rcmds.spawn.other:
@@ -1698,6 +1709,7 @@ permissions:
       rcmds.signedit: true
       rcmds.signedit.color: true
       rcmds.potion: true
+      rcmds.setcharacteristic: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1725,6 +1737,7 @@ permissions:
       rcmds.others.setarmor: true
       rcmds.others.backpack: true
       rcmds.others.ping: true
+      rcmds.others.feed: true
 
   rcmds.see.*:
     description: Gives every see permission.
@@ -1976,6 +1989,7 @@ permissions:
       rcmds.signedit: true
       rcmds.signedit.color: true
       rcmds.potion: true
+      rcmds.setcharacteristic: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
