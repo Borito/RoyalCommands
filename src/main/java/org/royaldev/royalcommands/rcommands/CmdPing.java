@@ -23,8 +23,12 @@ public class CmdPing implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
+            if (!plugin.nmsFace.hasSupport()) {
+                cs.sendMessage(ChatColor.BLUE + "Pong!");
+                return true;
+            }
             if (!(cs instanceof Player) && args.length < 1) {
-                cs.sendMessage("Pong!");
+                cs.sendMessage(ChatColor.BLUE + "Pong!");
                 return true;
             }
             if (args.length > 0) {

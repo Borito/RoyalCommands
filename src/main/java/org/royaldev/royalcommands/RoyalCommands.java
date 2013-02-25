@@ -673,9 +673,18 @@ public class RoyalCommands extends JavaPlugin {
         } catch (final Exception e) {
             getLogger().severe("Could not find support for this CraftBukkit version.");
             getLogger().info("The BukkitDev page has links to the newest development builds to fix this.");
-            getLogger().info("http://dev.bukkit.org/server-mods/royalcommands");
-            setEnabled(false);
-            return;
+            getLogger().info("For now, NMS/CB internal support will be disabled.");
+            try {
+                // Check if we have a NMSHandler class at that location.
+                final Class<?> clazz = Class.forName("org.royaldev.royalcommands.nms.NoSupport.NMSHandler");
+                // Make sure it actually implements NMS and set our handler
+                if (NMSFace.class.isAssignableFrom(clazz)) nmsFace = (NMSFace) clazz.getConstructor().newInstance();
+            } catch (Exception ohGod) {
+                getLogger().severe("Could not find NoSupport!");
+                getLogger().info("Disabling plugin. Please contact the developer.");
+                setEnabled(false);
+                return;
+            }
         }
         getLogger().info("Loading support for " + (versionNMS.equals("PreSafeGuard") ? "v1_4_5_pre" : versionNMS));
 

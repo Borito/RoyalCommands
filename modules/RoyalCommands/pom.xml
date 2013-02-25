@@ -143,6 +143,13 @@
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
+            <artifactId>royalcommands-NMS1_4_6</artifactId>
+            <version>v1_4_6</version>
+            <type>jar</type>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.royaldev</groupId>
             <artifactId>royalcommands-NMS1_4_5</artifactId>
             <version>v1_4_5</version>
             <type>jar</type>
@@ -150,8 +157,8 @@
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
-            <artifactId>royalcommands-NMS1_4_6</artifactId>
-            <version>v1_4_6</version>
+            <artifactId>royalcommands-NoSupport</artifactId>
+            <version>NoSupport</version>
             <type>jar</type>
             <optional>true</optional>
         </dependency>
