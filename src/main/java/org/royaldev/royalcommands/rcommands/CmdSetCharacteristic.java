@@ -59,7 +59,7 @@ public class CmdSetCharacteristic implements CommandExecutor {
             if (subcommand.equalsIgnoreCase("maxhealth")) {
                 Integer i = toInt(args[2]);
                 if (i == null) {
-                    cs.sendMessage(ChatColor.RED + "The max air was not a number!");
+                    cs.sendMessage(ChatColor.RED + "The max health was not a number!");
                     return true;
                 }
                 if (i < 1) {
@@ -79,7 +79,7 @@ public class CmdSetCharacteristic implements CommandExecutor {
             } else if (subcommand.equalsIgnoreCase("exp")) {
                 Float f = toFloat(args[2]);
                 if (f == null) {
-                    cs.sendMessage(ChatColor.RED + "The max air was not a number!");
+                    cs.sendMessage(ChatColor.RED + "The exp was not a number!");
                     return true;
                 }
                 f /= 100F;
