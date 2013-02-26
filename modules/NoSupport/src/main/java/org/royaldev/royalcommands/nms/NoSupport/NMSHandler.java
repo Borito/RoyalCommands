@@ -16,6 +16,6 @@ public class NMSHandler implements NMSFace {
 
     @Override
     public int getPing(Player p) {
-        return 0;
+        throw new UnsupportedOperationException("No NMS support enabled!");
     }
 }

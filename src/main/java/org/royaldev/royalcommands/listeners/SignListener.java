@@ -23,7 +23,7 @@ public class SignListener implements Listener {
     private RoyalCommands plugin;
 
     public SignListener(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     public Double getCharge(String line) {

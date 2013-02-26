@@ -6,7 +6,8 @@ public interface NMSFace {
     /**
      * Checks to see if this is offering NMS/CB internals support.
      * <p/>
-     * Note that if this returns false, calling any method besides this will return the default or null.
+     * Note that if this returns false, calling any method besides this and getVersion() will throw an
+     * {@link UnsupportedOperationException}.
      * If this is true, NMS support is enabled.
      *
      * @return true/false
