@@ -77,6 +77,12 @@ custom_plugin_tags:
 # Set to 1 for only /back.
 max_back_stack: 5
 
+# Smooth time transitions?
+use_smooth_time: true
+
+# Override natural respawn location with the world's spawn?
+override_respawn: true
+
 ###
 # MOTD #
 ###
@@ -319,9 +325,6 @@ global_teleport_cooldown: 0
 
 # Use the dynamic whitelist?
 use_whitelist: false
-
-# Smooth time transitions?
-use_smooth_time: true
 
 ###
 # AFK management #

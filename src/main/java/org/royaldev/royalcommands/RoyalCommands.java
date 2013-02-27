@@ -182,6 +182,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean warpPermissions = null;
     public Boolean removePotionEffects = null;
     public Boolean updateCheck = null;
+    public Boolean overrideRespawn = null;
     public static Boolean useWorldManager = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
@@ -489,6 +490,7 @@ public class RoyalCommands extends JavaPlugin {
         warpPermissions = c.getBoolean("warp_permissions", false);
         removePotionEffects = c.getBoolean("remove_potion_effects", true);
         updateCheck = c.getBoolean("update_check", false);
+        overrideRespawn = c.getBoolean("override_respawn", true);
 
         banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));

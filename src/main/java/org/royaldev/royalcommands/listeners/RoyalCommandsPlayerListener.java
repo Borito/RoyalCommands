@@ -24,6 +24,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -575,6 +576,12 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!reason.endsWith("\00-silent")) return;
         e.setLeaveMessage(null);
         e.setReason(reason.replace("\00-silent", ""));
+    }
+
+    @EventHandler
+    public void leRespawn(PlayerRespawnEvent e) {
+        if (!plugin.overrideRespawn) return;
+        e.setRespawnLocation(CmdSpawn.getWorldSpawn(e.getPlayer().getWorld()));
     }
 
 }
