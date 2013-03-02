@@ -279,7 +279,7 @@ public class RUtils {
      */
     public static boolean isTimeStampValid(OfflinePlayer p, String title) {
         PConfManager pcm = RoyalCommands.instance.getUserdata(p);
-        if (pcm.get(title) == null) return false;
+        if (!pcm.isSet(title)) return false;
         long time = new Date().getTime();
         long overall = pcm.getLong(title);
         return time < overall;
@@ -1013,8 +1013,9 @@ public class RUtils {
         return Bukkit.createInventory(null, 36, "Backpack");
     }
 
-    public static Inventory getBackpack(Player p) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+    public static Inventory getBackpack(String s) {
+        Player p = RoyalCommands.instance.getServer().getPlayer(s); // null doesn't matter here
+        PConfManager pcm = RoyalCommands.instance.getUserdata(s);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("backpack.size");
         if (invSize == null || invSize < 9) invSize = 36;
@@ -1029,16 +1030,16 @@ public class RUtils {
         return i;
     }
 
-    public static Inventory getBackpack(String name) {
-        return getBackpack(new DummyPlayer(name));
-    }
-
-    public static void saveBackpack(String name, Inventory i) {
-        saveBackpack(new DummyPlayer(name), i);
+    public static Inventory getBackpack(Player p) {
+        return getBackpack(p.getName());
     }
 
     public static void saveBackpack(Player p, Inventory i) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        saveBackpack(p.getName(), i);
+    }
+
+    public static void saveBackpack(String s, Inventory i) {
+        PConfManager pcm = RoyalCommands.instance.getUserdata(s);
         for (int slot = 0; slot < i.getSize(); slot++) {
             ItemStack is = i.getItem(slot);
             if (is == null) {
@@ -1100,7 +1101,7 @@ public class RUtils {
     private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {
         if (!RoyalCommands.instance.getConfig().getKeys(false).contains("on_ban"))
             return; // default values are not welcome here
-        List<String> banActions = RoyalCommands.instance.onBanActions;
+        final List<String> banActions = RoyalCommands.instance.onBanActions;
         if (banActions == null || banActions.isEmpty()) return;
         for (String command : banActions) {
             if (command.trim().isEmpty()) continue;
