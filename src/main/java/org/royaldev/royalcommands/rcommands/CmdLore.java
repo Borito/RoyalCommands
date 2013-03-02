@@ -39,7 +39,7 @@ public class CmdLore implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Reset the lore on your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + ".");
                 return true;
             }
-            is = RUtils.addLore(is, loreText);
+            is = RUtils.addLore(is, RUtils.colorize(loreText));
             p.setItemInHand(is);
             cs.sendMessage(ChatColor.BLUE + "Set the lore on your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + ".");
             return true;
