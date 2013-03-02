@@ -466,7 +466,6 @@ public class SignListener implements Listener {
     public void colorSigns(SignChangeEvent e) {
         Block b = e.getBlock();
         Player p = e.getPlayer();
-        if (!plugin.canAccessChest(p, b)) return;
         if (!plugin.isAuthorized(p, "rcmds.signedit.color")) return;
         for (int i = 0; i < 4; i++) e.setLine(i, RUtils.colorize(e.getLine(i)));
     }
