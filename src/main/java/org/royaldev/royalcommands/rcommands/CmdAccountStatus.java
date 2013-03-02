@@ -47,8 +47,9 @@ public class CmdAccountStatus implements CommandExecutor {
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(u.openStream()));
                 isPremium = br.readLine().equalsIgnoreCase("true");
-            } catch (IOException ignored) {
+            } catch (IOException ex) {
                 cs.sendMessage(ChatColor.RED + "Could not read from Minecraft's servers!");
+                cs.sendMessage(ChatColor.RED + ex.getMessage());
                 return true;
             }
             String status = (isPremium) ? "premium" : "not premium";

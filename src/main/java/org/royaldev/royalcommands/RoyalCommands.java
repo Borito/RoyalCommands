@@ -214,8 +214,6 @@ public class RoyalCommands extends JavaPlugin {
     public String igUnbanFormat = null;
     public String ipBanFormat = null;
     public String saveInterval = null;
-    public String defaultServerTitle = null;
-    public String currentServerTitle = null;
     public String mailCheckTime = null;
 
     //-- Integers --//
@@ -516,8 +514,6 @@ public class RoyalCommands extends JavaPlugin {
         igUnbanFormat = c.getString("ingame_unban_message", "&7{kdispname}&9 was unbanned by &7{dispname}&9.");
         ipBanFormat = c.getString("ipban_format", "&4IP Banned&r: &7{ip}&r has been banned from this server.");
         saveInterval = c.getString("save.save_on_interval", "10m");
-        defaultServerTitle = c.getString("default-server-title", "A Minecraft server.");
-        currentServerTitle = c.getString("current-server-title", "A Minecraft server.");
         mailCheckTime = c.getString("mail_check_interval", "10m");
 
         defaultStack = c.getInt("default_stack_size", 64);
@@ -981,9 +977,13 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Save all userdata --//
 
-        getLogger().info("Saving userdata...");
-        for (PConfManager pcm : ymls.values()) pcm.forceSave();
-        for (ConfManager cm : confs.values()) cm.forceSave();
+        getLogger().info("Saving userdata and configurations (" + (ymls.size() + confs.size()) + " files in all)...");
+        synchronized (ymls) {
+            for (PConfManager pcm : ymls.values()) pcm.forceSave();
+        }
+        synchronized (confs) {
+            for (ConfManager cm : confs.values()) cm.forceSave();
+        }
         getLogger().info("Userdata saved.");
 
         //-- Remove userdata handlers --//

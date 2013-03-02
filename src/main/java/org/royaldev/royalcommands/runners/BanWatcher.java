@@ -20,7 +20,7 @@ public class BanWatcher implements Runnable {
             if (!op.isBanned()) continue;
             PConfManager pcm = plugin.getUserdata(op);
             if (!pcm.exists()) continue;
-            if (pcm.get("bantime") != null && !RUtils.isTimeStampValid(op, "bantime")) {
+            if (pcm.isSet("bantime") && !RUtils.isTimeStampValid(op, "bantime")) {
                 op.setBanned(false);
                 pcm.set("bantime", null);
             }
