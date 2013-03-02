@@ -57,6 +57,7 @@ public class CmdSignEdit implements CommandExecutor {
             }
             if (args.length < 2) {
                 s.setLine(lineNumber, "");
+                s.update();
                 cs.sendMessage(ChatColor.BLUE + "Cleared line " + ChatColor.GRAY + (lineNumber + 1) + ChatColor.BLUE + ".");
                 return true;
             }
