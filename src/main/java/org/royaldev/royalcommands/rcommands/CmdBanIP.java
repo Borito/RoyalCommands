@@ -56,6 +56,7 @@ public class CmdBanIP implements CommandExecutor {
                 return true;
             } else {
                 op.setBanned(true);
+                RUtils.writeBanHistory(op);
                 cs.sendMessage(ChatColor.BLUE + "Banned IP of " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + " (" + ChatColor.GRAY + ip + ChatColor.BLUE + ").");
                 return true;
             }

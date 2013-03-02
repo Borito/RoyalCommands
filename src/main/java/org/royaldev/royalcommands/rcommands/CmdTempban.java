@@ -61,6 +61,7 @@ public class CmdTempban implements CommandExecutor {
             String message = RUtils.getMessage(plugin.tempbanFormat, banreason, cs);
             message = message.replace("{length}", RUtils.formatDateDiff((time * 1000L) + curTime).substring(1));
             if (t.isOnline()) ((Player) t).kickPlayer(message);
+            RUtils.writeBanHistory(t);
             return true;
         }
         return false;
