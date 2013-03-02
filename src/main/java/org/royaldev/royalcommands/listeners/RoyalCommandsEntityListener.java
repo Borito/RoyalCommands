@@ -70,6 +70,10 @@ public class RoyalCommandsEntityListener implements Listener {
         if (!plugin.getUserdata(p).getBoolean("buddha")) return;
         if (e.getDamage() >= p.getHealth()) e.setDamage(p.getHealth() - 1);
         if (p.getHealth() == 1) e.setCancelled(true);
+        else if (p.getHealth() - e.getDamage() <= 1) {
+            p.setHealth(1);
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
