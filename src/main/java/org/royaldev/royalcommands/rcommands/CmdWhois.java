@@ -70,7 +70,7 @@ public class CmdWhois implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "Last world: " + ChatColor.GRAY + RUtils.getMVWorldName(l.getWorld()) + ChatColor.BLUE + " (" + ChatColor.GRAY + l.getWorld().getName() + ChatColor.BLUE + ")");
             } else {
                 String lP = "lastposition.";
-                World w = plugin.getServer().getWorld(pcm.getString(lP + "world"));
+                World w = (pcm.isSet(lP + "world")) ? plugin.getServer().getWorld(pcm.getString(lP + "world")) : null;
                 if (w != null) {
                     Location l = new Location(w, pcm.getDouble(lP + "x"), pcm.getDouble(lP + "y"), pcm.getDouble(lP + "z"));
                     cs.sendMessage(ChatColor.BLUE + "Last position: " + "(" + ChatColor.GRAY + l.getX() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getY() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getZ() + ")");
