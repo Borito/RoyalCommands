@@ -176,9 +176,9 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (!p.isEnabled()) {
-                    cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.RED + "is already disabled!");
+                    cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.RED + " is already disabled!");
                 }
-                List<String> depOnBy = getDependedOnBy(p);
+                final List<String> depOnBy = getDependedOnBy(p);
                 if (!depOnBy.isEmpty()) {
                     cs.sendMessage(ChatColor.RED + "Could not unload " + ChatColor.GRAY + p.getName() + ChatColor.RED + " because it is depended on by the following:");
                     StringBuilder sb = new StringBuilder();
@@ -368,7 +368,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(ChatColor.BLUE + "Soft Dependencies: " + ChatColor.GRAY + RUtils.join(softDep, ChatColor.RESET + ", " + ChatColor.GRAY));
                 if (dep != null && !dep.isEmpty())
                     cs.sendMessage(ChatColor.BLUE + "Dependencies: " + ChatColor.GRAY + RUtils.join(dep, ChatColor.RESET + ", " + ChatColor.GRAY));
-                cs.sendMessage(ChatColor.BLUE + "Enabled: " + ((p.isEnabled()) ? "Yes" : "No"));
+                cs.sendMessage(ChatColor.BLUE + "Enabled: " + ChatColor.GRAY + ((p.isEnabled()) ? "Yes" : "No"));
                 return true;
             } else if (subcmd.equalsIgnoreCase("commands")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.commands")) {
