@@ -41,7 +41,7 @@ public class CmdSpawnMob implements CommandExecutor {
                     sb.append(ChatColor.GRAY);
                     sb.append(et.toString().toLowerCase());
                 }
-                cs.sendMessage(sb.substring(3));
+                cs.sendMessage(sb.substring(4));
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
@@ -61,7 +61,7 @@ public class CmdSpawnMob implements CommandExecutor {
                     sb.append(ChatColor.GRAY);
                     sb.append(et.toString().toLowerCase());
                 }
-                cs.sendMessage(sb.substring(3));
+                cs.sendMessage(sb.substring(4));
                 cs.sendMessage(ChatColor.RED + "Invalid mob!");
                 return true;
             }
