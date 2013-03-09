@@ -52,17 +52,18 @@ public class CmdItem implements CommandExecutor {
                     return true;
                 }
             }
-            ItemStack toInv = RUtils.getItem(item, amount);
+            ItemStack toInv;
+            try {
+                toInv = RUtils.getItemFromAlias(item, amount);
+            } catch (InvalidItemNameException e) {
+                toInv = RUtils.getItem(item, amount);
+            } catch (NullPointerException e) {
+                cs.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
+                return true;
+            }
             if (toInv == null) {
-                try {
-                    toInv = RUtils.getItemFromAlias(item, amount);
-                } catch (InvalidItemNameException e) {
-                    cs.sendMessage(ChatColor.RED + "Invalid item name!");
-                    return true;
-                } catch (NullPointerException e) {
-                    cs.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
-                    return true;
-                }
+                cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                return true;
             }
             Integer itemid = toInv.getTypeId();
             if (itemid == 0) {

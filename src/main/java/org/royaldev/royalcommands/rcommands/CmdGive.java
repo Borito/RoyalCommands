@@ -32,17 +32,18 @@ public class CmdGive implements CommandExecutor {
             target.sendMessage(ChatColor.RED + "The amount must be positive!");
             return false;
         }
-        ItemStack stack = RUtils.getItem(itemname, amount);
+        ItemStack stack;
+        try {
+            stack = RUtils.getItemFromAlias(itemname, amount);
+        } catch (InvalidItemNameException e) {
+            stack = RUtils.getItem(itemname, amount);
+        } catch (NullPointerException e) {
+            target.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
+            return false;
+        }
         if (stack == null) {
-            try {
-                stack = RUtils.getItemFromAlias(itemname, amount);
-            } catch (InvalidItemNameException e) {
-                target.sendMessage(ChatColor.RED + "Invalid item name!");
-                return true;
-            } catch (NullPointerException e) {
-                target.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
-                return true;
-            }
+            target.sendMessage(ChatColor.RED + "Invalid item name!");
+            return false;
         }
         Integer itemid = stack.getTypeId();
         if (itemid == 0) {
@@ -86,17 +87,18 @@ public class CmdGive implements CommandExecutor {
                 return true;
             }
             String name = args[1];
-            ItemStack toInv = RUtils.getItem(name, amount);
+            ItemStack toInv;
+            try {
+                toInv = RUtils.getItemFromAlias(name, amount);
+            } catch (InvalidItemNameException e) {
+                toInv = RUtils.getItem(name, amount);
+            } catch (NullPointerException e) {
+                cs.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
+                return true;
+            }
             if (toInv == null) {
-                try {
-                    toInv = RUtils.getItemFromAlias(name, amount);
-                } catch (InvalidItemNameException e) {
-                    cs.sendMessage(ChatColor.RED + "Invalid item name!");
-                    return true;
-                } catch (NullPointerException e) {
-                    cs.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
-                    return true;
-                }
+                cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                return true;
             }
             Integer itemid = toInv.getTypeId();
             if (itemid == 0) {
