@@ -448,7 +448,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!RUtils.isIPBanned(ip)) return;
         String message = plugin.ipBanFormat;
         message = message.replace("{ip}", ip);
-        e.disallow(Result.KICK_BANNED, message);
+        e.disallow(Result.KICK_BANNED, RUtils.colorize(message));
     }
 
     @EventHandler(priority = EventPriority.LOW)
