@@ -1449,6 +1449,9 @@ permissions:
   rcmds.others.feed:
     description: Allows the player to /feed other players.
     default: op
+  rcmds.others.effect:
+    description: Allows the player to /effect other players.
+    default: op
 
   rcmds.spawn.other:
     description: Allows the player to /spawn to different worlds.
@@ -1738,6 +1741,7 @@ permissions:
       rcmds.others.backpack: true
       rcmds.others.ping: true
       rcmds.others.feed: true
+      rcmds.others.effect: true
 
   rcmds.see.*:
     description: Gives every see permission.

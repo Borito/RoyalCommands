@@ -47,6 +47,10 @@ public class CmdEffect implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
+            if (!t.getName().equals(cs.getName()) && !plugin.isAuthorized(cs, "rcmds.others.effect")) {
+                cs.sendMessage(ChatColor.RED + "You cannot apply effects to other players!");
+                return true;
+            }
             if (!t.getName().equals(cs.getName()) && plugin.isAuthorized(t, "rcmds.exempt.effect")) {
                 cs.sendMessage(ChatColor.RED + "You cannot apply effects to that player!");
                 return true;
