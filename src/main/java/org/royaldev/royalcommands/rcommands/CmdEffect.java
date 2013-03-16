@@ -57,6 +57,11 @@ public class CmdEffect implements CommandExecutor {
             }
             args = (String[]) ArrayUtils.subarray(args, 1, args.length);
             for (String arg : args) {
+                if (arg.equalsIgnoreCase("remove") || arg.equalsIgnoreCase("clear")) {
+                    for (PotionEffect pe : t.getActivePotionEffects()) t.removePotionEffect(pe.getType());
+                    cs.sendMessage(ChatColor.BLUE + "Potion effects removed.");
+                    return true;
+                }
                 String[] parts = arg.split(",");
                 if (parts.length < 3) {
                     cs.sendMessage(ChatColor.GRAY + arg + ChatColor.RED + ": Not a complete effect! (name,duration,amplifier(,ambient)) Skipping.");
