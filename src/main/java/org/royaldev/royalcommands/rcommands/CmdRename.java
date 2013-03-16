@@ -33,7 +33,12 @@ public class CmdRename implements CommandExecutor {
             }
             Player p = (Player) cs;
             String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
-            ItemStack is = RUtils.renameItem(p.getItemInHand(), newName);
+            ItemStack hand = p.getItemInHand();
+            if (hand == null) {
+                cs.sendMessage(ChatColor.RED + "You can't rename air!");
+                return true;
+            }
+            ItemStack is = RUtils.renameItem(hand, newName);
             p.setItemInHand(is);
             cs.sendMessage(ChatColor.BLUE + "Renamed your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
             return true;

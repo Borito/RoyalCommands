@@ -34,6 +34,10 @@ public class CmdLore implements CommandExecutor {
             Player p = (Player) cs;
             String loreText = RoyalCommands.getFinalArg(args, 0);
             ItemStack is = p.getItemInHand();
+            if (is == null) {
+                cs.sendMessage(ChatColor.RED + "You can't set lore on air!");
+                return true;
+            }
             if (loreText.equalsIgnoreCase("clear")) {
                 is = RUtils.clearLore(is);
                 cs.sendMessage(ChatColor.BLUE + "Reset the lore on your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + ".");
