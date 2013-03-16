@@ -101,6 +101,10 @@ public class CmdNameEntity implements CommandExecutor {
                 return false;
             }
             String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
+            if (newName.equalsIgnoreCase("reset") || newName.equalsIgnoreCase("clear") || newName.equals("remove")) {
+                setNamingName(cs, "");
+                cs.sendMessage(ChatColor.BLUE + "Right click on the entity you want to remove a custom name from.");
+            }
             setNamingName(cs, newName);
             cs.sendMessage(ChatColor.BLUE + "Right click on the entity you want to rename " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
             return true;

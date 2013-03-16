@@ -598,9 +598,12 @@ public class RoyalCommandsPlayerListener implements Listener {
         String newName = CmdNameEntity.getNamingName(p);
         if (newName == null) return;
         le.setCustomName(newName);
-        le.setCustomNameVisible(true);
+        le.setCustomNameVisible(!newName.isEmpty());
         CmdNameEntity.cancelNaming(p);
-        p.sendMessage(ChatColor.BLUE + "Successfully renamed that " + ChatColor.GRAY + le.getType().name().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
+        if (newName.isEmpty())
+            p.sendMessage(ChatColor.BLUE + "Successfully remove the name from that " + ChatColor.GRAY + le.getType().name().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+        else
+            p.sendMessage(ChatColor.BLUE + "Successfully renamed that " + ChatColor.GRAY + le.getType().name().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
     }
 
 }
