@@ -68,9 +68,10 @@ public class RoyalCommandsEntityListener implements Listener {
         if (!(ent instanceof Player)) return;
         Player p = (Player) ent;
         if (!plugin.getUserdata(p).getBoolean("buddha")) return;
-        if (e.getDamage() >= p.getHealth()) e.setDamage(p.getHealth() - 1);
+        e.setDamage(0);
+        if (e.getDamage() >= p.getHealth()) p.setHealth(1);
         if (p.getHealth() == 1) e.setCancelled(true);
-        else if (p.getHealth() - e.getDamage() <= 1) {
+        if (p.getHealth() - e.getDamage() <= 1) {
             p.setHealth(1);
             e.setCancelled(true);
         }
@@ -95,10 +96,9 @@ public class RoyalCommandsEntityListener implements Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Player p = (Player) event.getEntity();
-        if (plugin.getUserdata(p).getBoolean("godmode")) {
-            event.setFoodLevel(20);
-            p.setSaturation(20F);
-        }
+        if (!plugin.getUserdata(p).getBoolean("godmode")) return;
+        event.setFoodLevel(20);
+        p.setSaturation(20F);
     }
 
 }

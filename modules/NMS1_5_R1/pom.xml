@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.royaldev</groupId>
-    <artifactId>royalcommands-NMS1_4_5</artifactId>
+    <artifactId>royalcommands-NMS1_5_R1</artifactId>
     <packaging>jar</packaging>
-    <name>RoyalCommands v1_4_5</name>
-    <version>v1_4_5</version>
+    <name>RoyalCommands v1_5_R1</name>
+    <version>v1_5_R1</version>
 
     <parent>
         <groupId>org.royaldev</groupId>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.4.5-R0.3-SNAPSHOT</version>
+            <version>1.5-R0.1-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
