@@ -107,7 +107,7 @@ public class RoyalCommands extends JavaPlugin {
 
     //--- Privates ---//
 
-    private final int minVersion = 2406;
+    private final int minVersion = 2645;
 
     private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
     private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
@@ -951,6 +951,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdSignEdit(this), "signedit", this);
         registerCommand(new CmdPotion(this), "potion", this);
         registerCommand(new CmdSetCharacteristic(this), "setcharacteristic", this);
+        registerCommand(new CmdNameEntity(this), "nameentity", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//

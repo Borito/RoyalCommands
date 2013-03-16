@@ -7,6 +7,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,6 +38,7 @@ import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
+import org.royaldev.royalcommands.rcommands.CmdNameEntity;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
 
 import java.util.ArrayList;
@@ -582,6 +585,22 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void leRespawn(PlayerRespawnEvent e) {
         if (!plugin.overrideRespawn) return;
         e.setRespawnLocation(CmdSpawn.getWorldSpawn(e.getPlayer().getWorld()));
+    }
+
+    @EventHandler
+    public void renameEntity(PlayerInteractEntityEvent e) {
+        Player p = e.getPlayer();
+        if (!CmdNameEntity.isNaming(p)) return;
+        Entity rightClicked = e.getRightClicked();
+        if (rightClicked instanceof Player) return;
+        if (!(rightClicked instanceof LivingEntity)) return;
+        LivingEntity le = (LivingEntity) rightClicked;
+        String newName = CmdNameEntity.getNamingName(p);
+        if (newName == null) return;
+        le.setCustomName(newName);
+        le.setCustomNameVisible(true);
+        CmdNameEntity.cancelNaming(p);
+        p.sendMessage(ChatColor.BLUE + "Successfully renamed that " + ChatColor.GRAY + le.getType().name().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
     }
 
 }

@@ -733,6 +733,11 @@ commands:
     usage: /<command> [subcommands]
     aliases: [sc, setchar]
 
+  nameentity:
+    description: Sets an entity's name.
+    usage: /<command> [newname]
+    aliases: [setmobname,renamemob,mobname,mn,ne]
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1197,6 +1202,9 @@ permissions:
     default: op
   rcmds.setcharacteristic:
     description: Allows you to set player characteristics.
+    default: op
+  rcmds.nameentity:
+    description: Allows you to set an entity's name.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1713,6 +1721,7 @@ permissions:
       rcmds.signedit.color: true
       rcmds.potion: true
       rcmds.setcharacteristic: true
+      rcmds.nameentity: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1994,6 +2003,7 @@ permissions:
       rcmds.signedit.color: true
       rcmds.potion: true
       rcmds.setcharacteristic: true
+      rcmds.nameentity: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
