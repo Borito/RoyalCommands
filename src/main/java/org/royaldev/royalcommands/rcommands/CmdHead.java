@@ -52,7 +52,7 @@ public class CmdHead implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.head")) {
+            if (!t.getName().equalsIgnoreCase(p.getName()) && plugin.isAuthorized(t, "rcmds.exempt.head")) {
                 cs.sendMessage(ChatColor.RED + "You cannot spawn that player's head!");
                 return true;
             }
