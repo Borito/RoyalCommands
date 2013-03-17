@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,7 +35,7 @@ public class CmdLore implements CommandExecutor {
             Player p = (Player) cs;
             String loreText = RoyalCommands.getFinalArg(args, 0);
             ItemStack is = p.getItemInHand();
-            if (is == null) {
+            if (is == null || is.getType() == Material.AIR) {
                 cs.sendMessage(ChatColor.RED + "You can't set lore on air!");
                 return true;
             }

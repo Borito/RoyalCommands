@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,7 +35,7 @@ public class CmdRename implements CommandExecutor {
             Player p = (Player) cs;
             String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
             ItemStack hand = p.getItemInHand();
-            if (hand == null) {
+            if (hand == null || hand.getType() == Material.AIR) {
                 cs.sendMessage(ChatColor.RED + "You can't rename air!");
                 return true;
             }
