@@ -971,6 +971,7 @@ public class RUtils {
      * @return ItemStack with new name
      */
     public static ItemStack renameItem(ItemStack is, String newName) {
+        if (is == null) throw new IllegalArgumentException("ItemStack cannot be null!");
         if (newName == null) return is;
         ItemMeta im = is.getItemMeta();
         im.setDisplayName(newName);
@@ -986,6 +987,7 @@ public class RUtils {
      * @return ItemStack with added lore
      */
     public static ItemStack addLore(ItemStack is, String newLore) {
+        if (is == null) throw new IllegalArgumentException("ItemStack cannot be null!");
         if (newLore == null) return is;
         ItemMeta im = is.getItemMeta();
         List<String> lores = im.getLore();
@@ -1003,6 +1005,7 @@ public class RUtils {
      * @return ItemStack with no lore
      */
     public static ItemStack clearLore(ItemStack is) {
+        if (is == null) throw new IllegalArgumentException("ItemStack cannot be null!");
         ItemMeta im = is.getItemMeta();
         im.setLore(null);
         is.setItemMeta(im);
