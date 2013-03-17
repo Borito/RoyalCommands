@@ -952,6 +952,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdPotion(this), "potion", this);
         registerCommand(new CmdSetCharacteristic(this), "setcharacteristic", this);
         registerCommand(new CmdNameEntity(this), "nameentity", this);
+        registerCommand(new CmdHead(this), "head", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//

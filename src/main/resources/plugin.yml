@@ -892,6 +892,12 @@ commands:
     aliases: [setmobname, renamemob, mobname, mn, ne]
     version_added: 0.2.7
 
+  head:
+    description: Sets a head to a player's skin.
+    usage: /<command> [name]
+    aliases: [skull]
+    version_added: 0.2.7
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1361,6 +1367,9 @@ permissions:
   rcmds.nameentity:
     description: Allows you to set an entity's name.
     default: op
+  rcmds.head:
+    description: Allows you to set a head to a player.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1534,6 +1543,9 @@ permissions:
   rcmds.exempt.effect:
     description: Makes the player immune to /effect.
     default: false
+  rcmds.exempt.head:
+    description: Makes the player immune to /head.
+    default: false
 
   rcmds.exempt.autoafk:
     description: Makes the player immune to auto AFK.
@@ -1614,6 +1626,9 @@ permissions:
     default: op
   rcmds.others.effect:
     description: Allows the player to /effect other players.
+    default: op
+  rcmds.others.head:
+    description: Allows the player to /head other players.
     default: op
 
   rcmds.spawn.other:
@@ -1877,6 +1892,7 @@ permissions:
       rcmds.potion: true
       rcmds.setcharacteristic: true
       rcmds.nameentity: true
+      rcmds.head: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1906,6 +1922,7 @@ permissions:
       rcmds.others.ping: true
       rcmds.others.feed: true
       rcmds.others.effect: true
+      rcmds.others.head: true
 
   rcmds.see.*:
     description: Gives every see permission.
@@ -1989,6 +2006,7 @@ permissions:
       rcmds.exempt.deafen: true
       rcmds.exempt.rocket: true
       rcmds.exempt.effect: true
+      rcmds.exempt.head: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -2159,6 +2177,7 @@ permissions:
       rcmds.potion: true
       rcmds.setcharacteristic: true
       rcmds.nameentity: true
+      rcmds.head: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
