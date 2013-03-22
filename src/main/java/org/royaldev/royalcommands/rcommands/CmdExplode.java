@@ -116,7 +116,7 @@ public class CmdExplode implements CommandExecutor {
                 } else {
                     explodePlayer(t);
                 }
-                cs.sendMessage(ChatColor.BLUE + "You have exploded " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + "!");
+                cs.sendMessage(ChatColor.BLUE + "You have exploded " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
                 return true;
             }
         }

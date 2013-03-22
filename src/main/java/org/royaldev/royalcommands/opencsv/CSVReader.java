@@ -62,7 +62,6 @@ public class CSVReader implements Closeable {
      * @param quotechar the character to use for quoted elements
      * @param escape    the character to use for escaping a separator or quote
      */
-
     public CSVReader(Reader reader, char separator, char quotechar, char escape) {
         this(reader, separator, quotechar, escape, DEFAULT_SKIP_LINES, CSVParser.DEFAULT_STRICT_QUOTES);
     }

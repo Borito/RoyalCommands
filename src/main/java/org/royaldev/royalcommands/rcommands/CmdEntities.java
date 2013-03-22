@@ -64,7 +64,7 @@ public class CmdEntities implements CommandExecutor {
                     p.sendMessage(ChatColor.RED + "That radius was too large!");
                     return true;
                 }
-                java.util.List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
+                List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
                 int amount = 0;
                 for (Entity e : ents) {
                     if (e instanceof Player) continue;

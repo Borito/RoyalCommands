@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class CmdTrade implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdTrade(RoyalCommands instance) {
         plugin = instance;
@@ -25,8 +25,28 @@ public class CmdTrade implements CommandExecutor {
         target.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/trade " + sender.getName() + ChatColor.BLUE + " to accept.");
     }
 
-    public static HashMap<String, String> tradedb = new HashMap<String, String>();
-    public static HashMap<HashMap<String, String>, Inventory> trades = new HashMap<HashMap<String, String>, Inventory>();
+    /**
+     * Gets the trade inventory between two players. If no trade inventory has been made, this will return null.
+     * <p/>
+     * Note that the order of the player arguments does not matter. It may be called as
+     * <code>getTradeInv(playerA, playerB)</code> or <code>getTradeInv(playerB, playerA)</code>.
+     *
+     * @param p One player
+     * @param t Other player
+     * @return Inventory or null if no such inventory
+     */
+    public static Inventory getTradeInv(Player p, Player t) {
+        synchronized (trades) {
+            for (final HashMap<String, String> set : trades.keySet()) {
+                if ((set.containsKey(t.getName()) && set.get(t.getName()).equals(p.getName())) || (set.containsKey(p.getName()) && set.get(p.getName()).equals(t.getName())))
+                    return trades.get(set);
+            }
+        }
+        return null;
+    }
+
+    public static final HashMap<String, String> tradedb = new HashMap<String, String>();
+    public static final HashMap<HashMap<String, String>, Inventory> trades = new HashMap<HashMap<String, String>, Inventory>();
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("trade")) {
@@ -52,21 +72,18 @@ public class CmdTrade implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You can't trade with yourself!");
                 return true;
             }
-            Inventory inv;
-            for (HashMap<String, String> set : trades.keySet()) {
-                if ((set.containsKey(t.getName()) && set.get(t.getName()).equals(p.getName())) || (set.containsKey(p.getName()) && set.get(p.getName()).equals(t.getName()))) {
-                    inv = trades.get(set);
-                    p.sendMessage(ChatColor.BLUE + "Resumed trading with " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-                    p.openInventory(inv);
-                    return true;
-                }
+            Inventory inv = getTradeInv(p, t);
+            if (inv != null) {
+                p.sendMessage(ChatColor.BLUE + "Resumed trading with " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                p.openInventory(inv);
+                return true;
             }
             if (tradedb.containsKey(t.getName())) {
                 inv = plugin.getServer().createInventory(null, 36, "Trade");
                 p.sendMessage(ChatColor.BLUE + "Opened trading interface.");
                 p.openInventory(inv);
                 t.openInventory(inv);
-                HashMap<String, String> trade = new HashMap<String, String>();
+                final HashMap<String, String> trade = new HashMap<String, String>();
                 trade.put(p.getName(), t.getName());
                 trades.put(trade, inv);
                 tradedb.remove(t.getName());

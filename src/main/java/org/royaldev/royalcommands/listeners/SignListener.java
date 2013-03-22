@@ -26,7 +26,7 @@ public class SignListener implements Listener {
         plugin = instance;
     }
 
-    public Double getCharge(String line) {
+    private Double getCharge(String line) {
         if (!line.isEmpty()) {
             Double amount;
             try {
