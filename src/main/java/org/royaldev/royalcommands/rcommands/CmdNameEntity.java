@@ -105,6 +105,10 @@ public class CmdNameEntity implements CommandExecutor {
                 setNamingName(cs, "");
                 cs.sendMessage(ChatColor.BLUE + "Right click on the entity you want to remove a custom name from.");
             }
+            if (newName.length() > 32) {
+                cs.sendMessage(ChatColor.RED + "The name must be 32 characters or less!");
+                return true;
+            }
             setNamingName(cs, newName);
             cs.sendMessage(ChatColor.BLUE + "Right click on the entity you want to rename " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
             return true;
