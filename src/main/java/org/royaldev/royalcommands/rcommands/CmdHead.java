@@ -2,6 +2,7 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -41,13 +42,8 @@ public class CmdHead implements CommandExecutor {
                 return true;
             }
             SkullMeta sm = (SkullMeta) head.getItemMeta();
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null) plugin.getServer().getOfflinePlayer(args[0]);
-            if (t == null) { // satisfies IntelliJ
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
-                cs.sendMessage(ChatColor.RED + "Please alert the developer about this error.");
-                return true;
-            }
+            OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
+            if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
             if (!t.getName().equalsIgnoreCase(p.getName()) && !plugin.isAuthorized(cs, "rcmds.others.head")) {
                 RUtils.dispNoPerms(cs);
                 return true;
