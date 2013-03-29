@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,22 +25,42 @@ public class CmdDelHome implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
-                return true;
-            }
-            Player p = (Player) cs;
             if (args.length < 1) {
                 cs.sendMessage(ChatColor.RED + "Type \"" + ChatColor.GRAY + "/delhome home" + ChatColor.RED + "\" to delete your default home.");
                 return true;
             }
-            PConfManager pcm = PConfManager.getPConfManager(p);
-            if (pcm.get("home." + args[0]) == null) {
+            String name = args[0];
+            if (!(cs instanceof Player) && !name.contains(":")) {
+                cs.sendMessage(cmd.getDescription());
+                return false;
+            }
+            PConfManager pcm;
+            if (name.contains(":") && plugin.isAuthorized(cs, "rcmds.others.delhome")) {
+                if (!PConfManager.getPConfManager(name.split(":")[0]).exists()) {
+                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    return true;
+                }
+                OfflinePlayer op = plugin.getServer().getOfflinePlayer(name.split(":")[0]);
+                if (plugin.isAuthorized(op, "rcmds.exempt.delhome")) {
+                    cs.sendMessage(ChatColor.RED + "You cannot delete that player's home!");
+                    return true;
+                }
+                String[] ss = name.split(":");
+                if (ss.length < 2) {
+                    cs.sendMessage(ChatColor.RED + "You must include the name of the player and home (player:home).");
+                    return true;
+                }
+                pcm = PConfManager.getPConfManager(ss[0]);
+                name = ss[1];
+            } else {
+                pcm = PConfManager.getPConfManager(cs.getName());
+            }
+            if (pcm.get("home." + name) == null) {
                 cs.sendMessage(ChatColor.RED + "That home does not exist!");
                 return true;
             }
-            pcm.set("home." + args[0], null);
-            cs.sendMessage(ChatColor.BLUE + "The home \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + "\" has been deleted.");
+            pcm.set("home." + name, null);
+            cs.sendMessage(ChatColor.BLUE + "The home \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" has been deleted.");
             return true;
         }
         return false;

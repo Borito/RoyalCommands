@@ -286,7 +286,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         Player p = e.getPlayer();
         PConfManager pcm = PConfManager.getPConfManager(p);
         if (p.isBanned()) return;
-        if (pcm.get("vip") != null && pcm.getBoolean("vip")) e.allow();
+        if (pcm.getBoolean("vip", false)) e.allow();
     }
 
     @EventHandler(priority = EventPriority.LOW)
