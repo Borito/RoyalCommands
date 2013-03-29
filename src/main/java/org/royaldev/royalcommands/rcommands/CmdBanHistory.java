@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -87,7 +86,7 @@ public class CmdBanHistory implements CommandExecutor {
             String bannedAt = (banDate < 0L) ? "Unknown" : sdf.format(new Date(banDate));
             cs.sendMessage(ChatColor.BLUE + "Banned at " + ChatColor.GRAY + bannedAt);
             boolean isTempBan = baninfo[3].equalsIgnoreCase("true");
-            cs.sendMessage(ChatColor.BLUE + "Was tempban? " + ChatColor.GRAY + BooleanUtils.toStringYesNo(isTempBan));
+            cs.sendMessage(ChatColor.BLUE + "Was tempban? " + ChatColor.GRAY + ((isTempBan) ? "Yes" : "No"));
             return true;
         }
         return false;

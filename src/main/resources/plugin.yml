@@ -910,6 +910,12 @@ commands:
     aliases: [mapadjust]
     version_added: 0.2.8
 
+  deletebanhistory:
+    description: Deletes ban history records.
+    usage: /<command> [player] [ban#]
+    aliases: [dbh, rbh, removebanhistory]
+    version_added: 0.2.8
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1388,6 +1394,9 @@ permissions:
   rcmds.map:
     description: Allows you to adjust maps.
     default: op
+  rcmds.deletebanhistory:
+    description: Allows you to remove ban history records.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1564,6 +1573,9 @@ permissions:
   rcmds.exempt.head:
     description: Makes the player immune to /head.
     default: false
+  rcmds.exempt.delhome:
+    description: Makes the player immune to /delhome.
+    default: false
 
   rcmds.exempt.autoafk:
     description: Makes the player immune to auto AFK.
@@ -1647,6 +1659,9 @@ permissions:
     default: op
   rcmds.others.head:
     description: Allows the player to /head other players.
+    default: op
+  rcmds.others.delhome:
+    description: Allows the player to /delhome other players.
     default: op
 
   rcmds.spawn.other:
@@ -1913,6 +1928,7 @@ permissions:
       rcmds.head: true
       rcmds.findip: true
       rcmds.map: true
+      rcmds.deletebanhistory: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -1943,6 +1959,7 @@ permissions:
       rcmds.others.feed: true
       rcmds.others.effect: true
       rcmds.others.head: true
+      rcmds.others.delhome: true
 
   rcmds.see.*:
     description: Gives every see permission.
@@ -2027,6 +2044,7 @@ permissions:
       rcmds.exempt.rocket: true
       rcmds.exempt.effect: true
       rcmds.exempt.head: true
+      rcmds.exempt.delhome: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -2200,6 +2218,7 @@ permissions:
       rcmds.head: true
       rcmds.findip: true
       rcmds.map: true
+      rcmds.deletebanhistory: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
