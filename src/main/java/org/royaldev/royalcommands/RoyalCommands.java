@@ -909,6 +909,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdNameEntity(this), "nameentity", this);
         registerCommand(new CmdHead(this), "head", this);
         registerCommand(new CmdFindIP(this), "findip", this);
+        registerCommand(new CmdMap(this), "map", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//

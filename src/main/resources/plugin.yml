@@ -904,6 +904,12 @@ commands:
     aliases: [fip]
     version_added: 0.2.8
 
+  map:
+    description: Adjusts maps.
+    usage: /<command> [subcommands]
+    aliases: [mapadjust]
+    version_added: 0.2.8
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1378,6 +1384,9 @@ permissions:
     default: op
   rcmds.findip:
     description: Allows you to find players with matching IPs.
+    default: op
+  rcmds.map:
+    description: Allows you to adjust maps.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1903,6 +1912,7 @@ permissions:
       rcmds.nameentity: true
       rcmds.head: true
       rcmds.findip: true
+      rcmds.map: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2189,6 +2199,7 @@ permissions:
       rcmds.nameentity: true
       rcmds.head: true
       rcmds.findip: true
+      rcmds.map: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
