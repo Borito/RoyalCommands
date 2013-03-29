@@ -39,6 +39,21 @@ public class CmdRename implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You can't rename air!");
                 return true;
             }
+            switch (hand.getType()) {
+                case BREWING_STAND_ITEM:
+                case BREWING_STAND:
+                case DISPENSER:
+                case DROPPER:
+                case FURNACE:
+                case BURNING_FURNACE:
+                case HOPPER:
+                case HOPPER_MINECART:
+                case STORAGE_MINECART:
+                case MONSTER_EGG:
+                case CHEST:
+                    if (newName.length() > 32) newName = newName.substring(0, 32);
+                    cs.sendMessage(ChatColor.BLUE + "The new name has been shortened to " + ChatColor.GRAY + newName + ChatColor.BLUE + " to prevent crashes.");
+            }
             ItemStack is = RUtils.renameItem(hand, newName);
             p.setItemInHand(is);
             cs.sendMessage(ChatColor.BLUE + "Renamed your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
