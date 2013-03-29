@@ -5,7 +5,7 @@ website: http://dev.royaldev.org/
 description: A general plugin containing all the commands a discerning server admin could want.
 author: jkcclemens
 depend: [Vault]
-softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard]
+softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard, Multiverse-Core]
 
 commands:
   level:
@@ -772,7 +772,7 @@ commands:
     version_added: Pre-0.2.7
 
   pluginmanager:
-    description: Manages plugin on the server.
+    description: Manages plugins on the server.
     usage: /<command> [subcommand] (argument)
     aliases: [pm]
     version_added: Pre-0.2.7

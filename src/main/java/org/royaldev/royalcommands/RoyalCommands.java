@@ -910,6 +910,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdHead(this), "head", this);
         registerCommand(new CmdFindIP(this), "findip", this);
         registerCommand(new CmdMap(this), "map", this);
+        registerCommand(new CmdDeleteBanHistory(this), "deletebanhistory", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//
