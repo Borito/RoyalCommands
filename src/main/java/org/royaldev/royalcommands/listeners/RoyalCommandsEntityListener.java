@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 
@@ -48,7 +49,7 @@ public class RoyalCommandsEntityListener implements Listener {
         Entity ed = ev.getEntity();
         if (!(e instanceof Player)) return;
         Player p = (Player) e;
-        if (!plugin.getUserdata(p).getBoolean("ohk")) return;
+        if (!PConfManager.getPConfManager(p).getBoolean("ohk")) return;
         if (ed instanceof LivingEntity) {
             LivingEntity le = (LivingEntity) ed;
             le.damage(le.getHealth() * 1000);
@@ -67,7 +68,7 @@ public class RoyalCommandsEntityListener implements Listener {
         Entity ent = e.getEntity();
         if (!(ent instanceof Player)) return;
         Player p = (Player) ent;
-        if (!plugin.getUserdata(p).getBoolean("buddha")) return;
+        if (!PConfManager.getPConfManager(p).getBoolean("buddha")) return;
         e.setDamage(0);
         if (e.getDamage() >= p.getHealth()) p.setHealth(1);
         if (p.getHealth() == 1) e.setCancelled(true);
@@ -82,21 +83,21 @@ public class RoyalCommandsEntityListener implements Listener {
         Entity ent = e.getEntity();
         if (!(ent instanceof Player)) return;
         Player p = (Player) ent;
-        if (plugin.getUserdata(p).getBoolean("godmode")) e.setCancelled(true);
+        if (PConfManager.getPConfManager(p).getBoolean("godmode")) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityTarget(EntityTargetEvent event) {
         if (!(event.getTarget() instanceof Player)) return;
         Player p = (Player) event.getTarget();
-        if (plugin.getUserdata(p).getBoolean("mobignored")) event.setTarget(null);
+        if (PConfManager.getPConfManager(p).getBoolean("mobignored")) event.setTarget(null);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Player p = (Player) event.getEntity();
-        if (!plugin.getUserdata(p).getBoolean("godmode")) return;
+        if (!PConfManager.getPConfManager(p).getBoolean("godmode")) return;
         event.setFoodLevel(20);
         p.setSaturation(20F);
     }

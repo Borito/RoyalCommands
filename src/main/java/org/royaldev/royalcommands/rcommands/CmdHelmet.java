@@ -35,7 +35,7 @@ public class CmdHelmet implements CommandExecutor {
                 return false;
             }
             Player p = (Player) cs;
-            PConfManager pcm = plugin.getUserdata(p);
+            PConfManager pcm = PConfManager.getPConfManager(p);
             String name = args[0];
             if (name.equalsIgnoreCase("none")) {
                 ItemStack helm = p.getInventory().getHelmet();

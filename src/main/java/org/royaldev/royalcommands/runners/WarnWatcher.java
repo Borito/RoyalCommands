@@ -18,10 +18,10 @@ public class WarnWatcher implements Runnable {
 
     @Override
     public void run() {
-        if (plugin.warnExpireTime < 1) return;
+        if (plugin.warnExpireTime < 1L) return;
         OfflinePlayer[] players = plugin.getServer().getOfflinePlayers();
         for (OfflinePlayer p : players) {
-            PConfManager pcm = plugin.getUserdata(p);
+            PConfManager pcm = PConfManager.getPConfManager(p);
             if (!pcm.exists()) continue;
             if (pcm.get("warns") == null) continue;
             List<String> warns = pcm.getStringList("warns");

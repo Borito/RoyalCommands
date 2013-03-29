@@ -40,7 +40,7 @@ public class CmdWhois implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player has never played before!");
                 return true;
             }
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             DecimalFormat df = new DecimalFormat("#.##");
             String ip = pcm.getString("ip");
             String name = pcm.getString("name");

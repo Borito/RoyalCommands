@@ -29,7 +29,7 @@ public class CmdClearWarns implements CommandExecutor {
                 return false;
             }
             OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = plugin.getUserdata(op);
+            PConfManager pcm = PConfManager.getPConfManager(op);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;

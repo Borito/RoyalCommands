@@ -32,7 +32,7 @@ public class CmdJail implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            ConfManager cm = plugin.getConf("jails.yml");
+            ConfManager cm = ConfManager.getConfManager("jails.yml");
 
             if (args.length < 1) {
                 if (!cm.exists() || cm.get("jails") == null) {
@@ -60,7 +60,7 @@ public class CmdJail implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You cannot jail that player.");
                 return true;
             }
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             if (args.length < 2) {
                 if (pcm.getBoolean("jailed")) {
                     pcm.set("jailed", false);

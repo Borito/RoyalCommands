@@ -6,12 +6,38 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfManager extends YamlConfiguration {
+
+    private static final Map<String, ConfManager> confs = new HashMap<String, ConfManager>();
+
+    public static ConfManager getConfManager(String s) {
+        synchronized (confs) {
+            if (confs.containsKey(s)) return confs.get(s);
+            final ConfManager cm = new ConfManager(s);
+            confs.put(s, cm);
+            return cm;
+        }
+    }
+
+    public static void saveAllManagers() {
+        synchronized (confs) {
+            for (ConfManager cm : confs.values()) cm.forceSave();
+        }
+    }
+
+    public static int managersCreated() {
+        synchronized (confs) {
+            return confs.size();
+        }
+    }
 
     private File pconfl = null;
     private final Object saveLock = new Object();
     private final String path;
+    private final String name;
 
     /**
      * Configuration file manager
@@ -29,6 +55,7 @@ public class ConfManager extends YamlConfiguration {
             load(pconfl);
         } catch (Exception ignored) {
         }
+        name = filename;
     }
 
     /**
@@ -48,6 +75,7 @@ public class ConfManager extends YamlConfiguration {
     @SuppressWarnings("unused")
     private ConfManager() {
         path = "";
+        name = "";
     }
 
     public void reload() {
@@ -126,5 +154,24 @@ public class ConfManager extends YamlConfiguration {
 
     public Float getFloat(String path) {
         return (float) getDouble(path);
+    }
+
+    /**
+     * Removes the reference to this manager without saving.
+     */
+    public void discard() {
+        discard(false);
+    }
+
+    /**
+     * Removes the reference to this manager.
+     *
+     * @param save Save manager before removing references?
+     */
+    public void discard(boolean save) {
+        synchronized (confs) {
+            if (save) forceSave();
+            confs.remove(name);
+        }
     }
 }

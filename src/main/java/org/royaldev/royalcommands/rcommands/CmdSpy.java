@@ -29,7 +29,7 @@ public class CmdSpy implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            PConfManager pcm = plugin.getUserdata(p);
+            PConfManager pcm = PConfManager.getPConfManager(p);
             if (pcm.get("spy") == null || !pcm.getBoolean("spy")) {
                 pcm.set("spy", true);
                 cs.sendMessage(ChatColor.BLUE + "Spy mode enabled.");

@@ -36,8 +36,8 @@ public class CmdCompareIP implements CommandExecutor {
             OfflinePlayer player2;
             player1 = plugin.getServer().getOfflinePlayer(args[0]);
             player2 = plugin.getServer().getOfflinePlayer(args[1]);
-            PConfManager pcm1 = plugin.getUserdata(player1);
-            PConfManager pcm2 = plugin.getUserdata(player2);
+            PConfManager pcm1 = PConfManager.getPConfManager(player1);
+            PConfManager pcm2 = PConfManager.getPConfManager(player2);
             if (pcm1.exists()) {
                 if (pcm2.exists()) {
                     String p1ip = pcm1.getString("ip");

@@ -4,7 +4,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.PConfManager;
-import org.royaldev.royalcommands.RoyalCommands;
 
 public class RPlayerApi {
 
@@ -16,7 +15,7 @@ public class RPlayerApi {
      * @return Name - never null
      */
     public String getDisplayName(Player p) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         String name = pcm.getString("dispname");
         if (name == null) name = p.getName();
         return name;
@@ -39,7 +38,7 @@ public class RPlayerApi {
      * @return A PConfManager - never null
      */
     public PConfManager getConfiguration(OfflinePlayer p) {
-        return RoyalCommands.instance.getUserdata(p);
+        return PConfManager.getPConfManager(p);
     }
 
 }

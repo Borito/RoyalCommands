@@ -66,7 +66,7 @@ public class InventoryListener implements Listener {
         World w = p.getWorld();
         String group = getWorldGroup(w);
         if (group == null) return;
-        PConfManager pcm = plugin.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         for (int slot = 0; slot < i.getSize(); slot++) {
             pcm.set("inventory." + group + ".ender.slot." + slot, i.getItem(slot));
         }
@@ -77,7 +77,7 @@ public class InventoryListener implements Listener {
         World w = p.getWorld();
         String group = getWorldGroup(w);
         if (group == null) return null;
-        PConfManager pcm = plugin.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
         final Inventory i = Bukkit.createInventory(p, invSize);
@@ -99,7 +99,7 @@ public class InventoryListener implements Listener {
         if (!plugin.separateInv) return;
         String group = getWorldGroup(w);
         if (group == null) return;
-        PConfManager pcm = plugin.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         for (int slot = 0; slot < i.getSize(); slot++) {
             pcm.set("inventory." + group + ".slot." + slot, i.getItem(slot));
         }
@@ -120,7 +120,7 @@ public class InventoryListener implements Listener {
     private PlayerInventory getInventory(Player p) {
         String group = getWorldGroup(p.getWorld());
         if (group == null) return null;
-        PConfManager pcm = plugin.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".size");
         final PlayerInventory i = p.getInventory();

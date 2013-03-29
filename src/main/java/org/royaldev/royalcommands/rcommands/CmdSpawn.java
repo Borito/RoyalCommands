@@ -26,7 +26,7 @@ public class CmdSpawn implements CommandExecutor {
      * @return Custom spawn or default spawn if not set
      */
     public static Location getWorldSpawn(World world) {
-        ConfManager cm = RoyalCommands.instance.getConf("spawns.yml");
+        ConfManager cm = ConfManager.getConfManager("spawns.yml");
         String w = world.getName();
         Location l = cm.getLocation("spawns." + w, world.getName());
         if (l == null) l = world.getSpawnLocation();
@@ -41,7 +41,7 @@ public class CmdSpawn implements CommandExecutor {
      * @return null if no group-specific spawn or Location if existent
      */
     private static Location getGroupSpawn(Player p, World world) {
-        ConfManager cm = RoyalCommands.instance.getConf("spawns.yml");
+        ConfManager cm = ConfManager.getConfManager("spawns.yml");
         String group;
         try {
             group = RoyalCommands.permission.getPrimaryGroup(p);

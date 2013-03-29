@@ -48,7 +48,7 @@ public class CmdMail implements CommandExecutor {
                     return true;
                 }
                 Player p = (Player) cs;
-                final PConfManager pcm = plugin.getUserdata(p);
+                final PConfManager pcm = PConfManager.getPConfManager(p);
                 final List<String> mails = pcm.getStringList("mail");
                 if (mails.isEmpty()) {
                     cs.sendMessage(ChatColor.RED + "You have no mail!");
@@ -68,7 +68,7 @@ public class CmdMail implements CommandExecutor {
                     return true;
                 }
                 Player p = (Player) cs;
-                final PConfManager pcm = plugin.getUserdata(p);
+                final PConfManager pcm = PConfManager.getPConfManager(p);
                 if (!pcm.exists()) pcm.createFile();
                 if (pcm.isSet("mail")) pcm.set("mail", null);
                 cs.sendMessage(ChatColor.BLUE + "Your mailbox has been cleared.");
@@ -88,7 +88,7 @@ public class CmdMail implements CommandExecutor {
                 }
                 final String senderName = cs.getName();
                 final String newmail = senderName + ": " + RoyalCommands.getFinalArg(args, 2);
-                final PConfManager pcm = plugin.getUserdata(op.getName());
+                final PConfManager pcm = PConfManager.getPConfManager(op.getName());
                 List<String> mail = pcm.getStringList("mail");
                 mail.add(newmail);
                 pcm.set("mail", mail);

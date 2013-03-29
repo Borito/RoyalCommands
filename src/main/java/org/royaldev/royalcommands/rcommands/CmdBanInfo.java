@@ -33,7 +33,7 @@ public class CmdBanInfo implements CommandExecutor {
             }
             OfflinePlayer op = plugin.getServer().getPlayer(args[0]);
             if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = plugin.getUserdata(op);
+            PConfManager pcm = PConfManager.getPConfManager(op);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player has never played before!");
                 return true;
@@ -43,14 +43,11 @@ public class CmdBanInfo implements CommandExecutor {
                 return true;
             }
             cs.sendMessage(ChatColor.GRAY + op.getName() + ChatColor.BLUE + " is banned!");
-            String banner = pcm.getString("banner");
-            if (banner == null) banner = "Unknown";
+            String banner = pcm.getString("banner", "Unknown");
             cs.sendMessage(ChatColor.BLUE + "Banned by " + ChatColor.GRAY + banner);
-            String banReason = pcm.getString("banreason");
-            if (banReason == null) banReason = "Unknown";
+            String banReason = pcm.getString("banreason", "Unknown");
             cs.sendMessage(ChatColor.BLUE + "Banned for " + ChatColor.GRAY + banReason);
-            Long banDate = pcm.getLong("bannedat");
-            if (banDate == null) banDate = -1L;
+            long banDate = pcm.getLong("bannedat", -1L);
             SimpleDateFormat sdf = new SimpleDateFormat("MMM d, y hh:mm:ss a");
             String bannedAt = (banDate < 0L) ? "Unknown" : sdf.format(new Date(banDate));
             cs.sendMessage(ChatColor.BLUE + "Banned at " + ChatColor.GRAY + bannedAt);

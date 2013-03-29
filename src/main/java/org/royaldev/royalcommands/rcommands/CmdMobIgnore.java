@@ -30,7 +30,7 @@ public class CmdMobIgnore implements CommandExecutor {
                     return false;
                 }
                 Player p = (Player) cs;
-                PConfManager pcm = plugin.getUserdata(p);
+                PConfManager pcm = PConfManager.getPConfManager(p);
                 Boolean isHidden = pcm.getBoolean("mobignored");
                 if (isHidden == null) isHidden = false;
                 pcm.set("mobignored", !isHidden);
@@ -43,7 +43,7 @@ public class CmdMobIgnore implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "That player does not exist.");
                 return true;
             }
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             Boolean isHidden = pcm.getBoolean("mobignored");
             if (isHidden == null) isHidden = false;
             pcm.set("mobignored", !isHidden);

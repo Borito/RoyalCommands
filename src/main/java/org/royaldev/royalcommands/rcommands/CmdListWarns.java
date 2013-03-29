@@ -35,7 +35,7 @@ public class CmdListWarns implements CommandExecutor {
                 return true;
             }
             String target = (args.length > 0) ? args[0] : cs.getName();
-            PConfManager pcm = plugin.getUserdata(target);
+            PConfManager pcm = PConfManager.getPConfManager(target);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;

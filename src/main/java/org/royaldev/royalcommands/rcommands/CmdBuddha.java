@@ -33,7 +33,7 @@ public class CmdBuddha implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
                 }
-                PConfManager pcm = plugin.getUserdata(t);
+                PConfManager pcm = PConfManager.getPConfManager(t);
                 if (!pcm.getBoolean("buddha")) {
                     pcm.set("buddha", true);
                     t.sendMessage(ChatColor.BLUE + "Buddha mode enabled by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
@@ -50,7 +50,7 @@ public class CmdBuddha implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            PConfManager pcm = plugin.getUserdata(p);
+            PConfManager pcm = PConfManager.getPConfManager(p);
             if (!pcm.getBoolean("buddha")) {
                 pcm.set("buddha", true);
                 cs.sendMessage(ChatColor.BLUE + "Enabled buddha mode for yourself.");

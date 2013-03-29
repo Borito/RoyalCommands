@@ -33,7 +33,7 @@ public class CmdMuteAll implements CommandExecutor {
                 if (cs instanceof Player) {
                     if (p == cs) continue;
                 }
-                PConfManager pcm = plugin.getUserdata(p);
+                PConfManager pcm = PConfManager.getPConfManager(p);
                 if (!allMuted) {
                     pcm.set("muted", true);
                     p.sendMessage(ChatColor.RED + "You have been muted!");

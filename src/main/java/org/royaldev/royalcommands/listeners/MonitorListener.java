@@ -15,7 +15,6 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -31,7 +30,6 @@ import org.royaldev.royalcommands.rcommands.CmdMonitor;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("unused")
 public class MonitorListener implements Listener {
 
     private final RoyalCommands plugin;
@@ -60,7 +58,7 @@ public class MonitorListener implements Listener {
         Player p = getVP(e.getPlayer());
         if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
-        e.getPlayer().hidePlayer(p);
+        if (e.getPlayer().canSee(p)) e.getPlayer().hidePlayer(p);
     }
 
     @EventHandler
@@ -69,7 +67,7 @@ public class MonitorListener implements Listener {
         Player t = getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
-        t.setItemInHand(e.getPlayer().getInventory().getItem(e.getNewSlot()));
+        t.getInventory().setHeldItemSlot(e.getNewSlot());
     }
 
     @EventHandler
@@ -78,7 +76,6 @@ public class MonitorListener implements Listener {
         Player t = getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
-        t.setItemInHand(e.getPlayer().getItemInHand());
     }
 
     @EventHandler
@@ -87,7 +84,6 @@ public class MonitorListener implements Listener {
         Player t = getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
-        t.setItemInHand(e.getPlayer().getItemInHand());
     }
 
     @EventHandler
@@ -96,7 +92,6 @@ public class MonitorListener implements Listener {
         Player t = getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
-        t.setItemInHand(e.getPlayer().getItemInHand());
     }
 
     @EventHandler
@@ -142,19 +137,21 @@ public class MonitorListener implements Listener {
         Player t = getVP(p);
         if (t == null) return;
         Inventory i = e.getInventory();
-        if (i.getType().equals(InventoryType.WORKBENCH)) {
-            Block b = RUtils.getTarget(p);
-            if (!b.getType().equals(Material.WORKBENCH)) return;
-            t.openWorkbench(b.getLocation(), false);
+        Block b = RUtils.getTarget(p);
+        switch (i.getType()) {
+            case WORKBENCH:
+                if (!b.getType().equals(Material.WORKBENCH)) return;
+                t.openWorkbench(b.getLocation(), false);
+                break;
+            case ENCHANTING:
+                if (!b.getType().equals(Material.ENCHANTMENT_TABLE)) return;
+                t.openEnchanting(b.getLocation(), false);
+                break;
+            case BREWING:
+            case CRAFTING:
+            case DISPENSER:
+                return;
         }
-        if (i.getType().equals(InventoryType.ENCHANTING)) {
-            Block b = RUtils.getTarget(p);
-            if (!b.getType().equals(Material.ENCHANTMENT_TABLE)) return;
-            t.openEnchanting(b.getLocation(), false);
-        }
-        if (i.getType().equals(InventoryType.BREWING)) return;
-        if (i.getType().equals(InventoryType.CRAFTING)) return;
-        if (i.getType().equals(InventoryType.DISPENSER)) return;
         t.openInventory(e.getInventory());
         openInvs.add(t.getName());
     }

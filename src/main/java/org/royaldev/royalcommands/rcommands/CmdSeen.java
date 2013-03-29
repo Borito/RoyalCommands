@@ -33,7 +33,7 @@ public class CmdSeen implements CommandExecutor {
                 cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " was last seen " + ChatColor.GRAY + "now" + ChatColor.BLUE + ".");
                 return true;
             }
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                 return true;

@@ -29,7 +29,7 @@ public class CmdUnban implements CommandExecutor {
                 return false;
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             if (!t.isBanned()) {
                 cs.sendMessage(ChatColor.RED + "That player isn't banned!");
                 return true;

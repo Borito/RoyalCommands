@@ -32,7 +32,7 @@ public class CmdTempban implements CommandExecutor {
             }
             OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
             if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                 return true;

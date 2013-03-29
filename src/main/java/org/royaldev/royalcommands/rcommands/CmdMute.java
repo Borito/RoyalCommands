@@ -32,7 +32,7 @@ public class CmdMute implements CommandExecutor {
             }
             OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
             if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             if (!pcm.exists()) {
                 if (!t.isOnline() && !t.hasPlayedBefore()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");

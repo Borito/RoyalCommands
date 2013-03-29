@@ -38,7 +38,7 @@ public class CmdDeafen implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You are not allowed to deafen that player!");
                 return true;
             }
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             Boolean isDeaf = pcm.getBoolean("deaf");
             if (isDeaf == null) isDeaf = false;
             pcm.set("deaf", !isDeaf);

@@ -7,11 +7,59 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PConfManager extends YamlConfiguration {
 
+    private static final Map<String, PConfManager> pcms = new HashMap<String, PConfManager>();
+
+    public static PConfManager getPConfManager(OfflinePlayer p) {
+        return getPConfManager(p.getName());
+    }
+
+    public static PConfManager getPConfManager(String s) {
+        synchronized (pcms) {
+            if (pcms.containsKey(s)) return pcms.get(s);
+            final PConfManager pcm = new PConfManager(s);
+            pcms.put(s, pcm);
+            return pcm;
+        }
+    }
+
+    public static boolean isManagerCreated(OfflinePlayer p) {
+        return isManagerCreated(p.getName());
+    }
+
+    public static boolean isManagerCreated(String s) {
+        synchronized (pcms) {
+            return pcms.containsKey(s);
+        }
+    }
+
+    public static void saveAllManagers() {
+        synchronized (pcms) {
+            for (PConfManager pcm : pcms.values()) pcm.forceSave();
+        }
+    }
+
+    public static int managersCreated() {
+        synchronized (pcms) {
+            return pcms.size();
+        }
+    }
+
+    public static Collection<PConfManager> getAllManagers() {
+        synchronized (pcms) {
+            return Collections.synchronizedCollection(pcms.values());
+        }
+    }
+
     private File pconfl = null;
     private final Object saveLock = new Object();
+    private final String playerName;
 
     /**
      * Player configuration manager
@@ -26,6 +74,7 @@ public class PConfManager extends YamlConfiguration {
             load(pconfl);
         } catch (Exception ignored) {
         }
+        playerName = p.getName();
     }
 
     /**
@@ -41,6 +90,7 @@ public class PConfManager extends YamlConfiguration {
             load(pconfl);
         } catch (Exception ignored) {
         }
+        playerName = p;
     }
 
     /**
@@ -48,6 +98,7 @@ public class PConfManager extends YamlConfiguration {
      */
     @SuppressWarnings("unused")
     private PConfManager() {
+        playerName = "";
     }
 
     public boolean exists() {
@@ -108,5 +159,32 @@ public class PConfManager extends YamlConfiguration {
     public Float getFloat(String path) {
         return (float) getDouble(path);
     }
-}
 
+    /**
+     * Gets the name of the player this manager was created for.
+     *
+     * @return Player name
+     */
+    public String getManagerPlayerName() {
+        return playerName;
+    }
+
+    /**
+     * Removes the reference to this manager without saving.
+     */
+    public void discard() {
+        discard(false);
+    }
+
+    /**
+     * Removes the reference to this manager.
+     *
+     * @param save Save manager before removing references?
+     */
+    public void discard(boolean save) {
+        if (save) forceSave();
+        synchronized (pcms) {
+            pcms.remove(playerName);
+        }
+    }
+}

@@ -37,7 +37,7 @@ public class CmdSetHome implements CommandExecutor {
     }
 
     private int getCurrentHomes(Player p) {
-        ConfigurationSection pconf = plugin.getUserdata(p).getConfigurationSection("home");
+        ConfigurationSection pconf = PConfManager.getPConfManager(p).getConfigurationSection("home");
         if (pconf == null) return 0;
         return pconf.getValues(false).keySet().size();
     }
@@ -60,7 +60,7 @@ public class CmdSetHome implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            PConfManager pcm = plugin.getUserdata(p);
+            PConfManager pcm = PConfManager.getPConfManager(p);
             double locX = p.getLocation().getX();
             double locY = p.getLocation().getY();
             double locZ = p.getLocation().getZ();

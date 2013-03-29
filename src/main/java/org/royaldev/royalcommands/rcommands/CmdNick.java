@@ -35,7 +35,7 @@ public class CmdNick implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             if (!pcm.exists()) {
                 cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
                 return true;

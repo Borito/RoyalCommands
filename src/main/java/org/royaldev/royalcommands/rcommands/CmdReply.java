@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -53,7 +54,7 @@ public class CmdReply implements CommandExecutor {
             p.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + "You" + ChatColor.GRAY + "] " + m);
             Player[] ps = plugin.getServer().getOnlinePlayers();
             for (Player p1 : ps) {
-                if (plugin.getUserdata(p1).getBoolean("spy")) {
+                if (PConfManager.getPConfManager(p1).getBoolean("spy")) {
                     if (t == p1 || cs == p1) continue;
                     p1.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + p.getName() + ChatColor.GRAY + "] " + m);
                 }

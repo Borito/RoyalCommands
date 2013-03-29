@@ -31,7 +31,7 @@ public class CmdGod implements CommandExecutor {
                     return false;
                 }
                 Player t = (Player) cs;
-                PConfManager pcm = plugin.getUserdata(t);
+                PConfManager pcm = PConfManager.getPConfManager(t);
                 t.setHealth(t.getMaxHealth());
                 t.setFoodLevel(20);
                 t.setSaturation(20F);
@@ -52,7 +52,7 @@ public class CmdGod implements CommandExecutor {
                     return true;
                 }
                 Player t = plugin.getServer().getPlayer(args[0]);
-                PConfManager pcm = plugin.getUserdata(t);
+                PConfManager pcm = PConfManager.getPConfManager(t);
                 if (t != null) {
                     if (!pcm.getBoolean("godmode")) {
                         if (!pcm.exists()) {
@@ -78,7 +78,7 @@ public class CmdGod implements CommandExecutor {
                 }
             }
             OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = plugin.getUserdata(t2);
+            PConfManager pcm = PConfManager.getPConfManager(t2);
             if (!pcm.getBoolean("godmode")) {
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player doesn't exist!");

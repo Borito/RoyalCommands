@@ -44,7 +44,7 @@ public class CmdSetWarp implements CommandExecutor {
             String locW = p.getWorld().getName();
             String name = args[0].toLowerCase();
 
-            ConfManager warps = plugin.getConf("warps.yml");
+            ConfManager warps = ConfManager.getConfManager("warps.yml");
             if (!warps.exists()) warps.createFile();
             warps.set("warps." + name + ".set", true);
             warps.set("warps." + name + ".x", locX);

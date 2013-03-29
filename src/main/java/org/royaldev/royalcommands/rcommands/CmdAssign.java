@@ -38,12 +38,12 @@ public class CmdAssign implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You can't remove commands from air!");
                     return true;
                 }
-                plugin.getUserdata(p).set("assign." + hand.getTypeId(), null);
+                PConfManager.getPConfManager(p).set("assign." + hand.getTypeId(), null);
                 p.sendMessage(ChatColor.BLUE + "All commands removed from " + ChatColor.GRAY + hand.getType().toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
                 return true;
             }
             Player p = (Player) cs;
-            PConfManager pcm = plugin.getUserdata(p);
+            PConfManager pcm = PConfManager.getPConfManager(p);
             ItemStack hand = p.getItemInHand();
             if (hand == null || hand.getTypeId() == 0) {
                 cs.sendMessage(ChatColor.RED + "You can't assign commands to air!");

@@ -55,7 +55,7 @@ import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.MailRunner;
-import org.royaldev.royalcommands.runners.UserdataSaver;
+import org.royaldev.royalcommands.runners.UserdataRunner;
 import org.royaldev.royalcommands.runners.WarnWatcher;
 
 import java.io.BufferedReader;
@@ -69,7 +69,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -93,9 +92,6 @@ public class RoyalCommands extends JavaPlugin {
     public static WorldManager wm = null;
 
     public static RoyalCommands instance;
-
-    public final Map<String, PConfManager> ymls = new HashMap<String, PConfManager>();
-    public final Map<String, ConfManager> confs = new HashMap<String, ConfManager>();
 
     public ConfManager whl;
     public Logger log = Logger.getLogger("Minecraft");
@@ -183,6 +179,7 @@ public class RoyalCommands extends JavaPlugin {
     public Boolean removePotionEffects = null;
     public Boolean updateCheck = null;
     public Boolean overrideRespawn = null;
+    public Boolean purgeUnusedUserdata = null;
     public static Boolean useWorldManager = null;
     public static Boolean multiverseNames = null;
     public static Boolean otherHelp = null;
@@ -229,6 +226,7 @@ public class RoyalCommands extends JavaPlugin {
     public Double maxNear = null;
     public Double defaultNear = null;
     public Double gTeleCd = null;
+    public Double findIpPercent = null;
 
     //-- Longs --//
 
@@ -251,51 +249,6 @@ public class RoyalCommands extends JavaPlugin {
     @SuppressWarnings("unused")
     public boolean canBuild(Player p, Location l) {
         return wg == null || wg.canBuild(p, l);
-    }
-
-    /**
-     * Gets a userdata manager for a player. If one has already been created, it will be returned instead of making a
-     * new one.
-     *
-     * @param p OfflinePlayer to get userdata manager of
-     * @return PConfManager - never null
-     */
-    public PConfManager getUserdata(OfflinePlayer p) {
-        if (p == null) return null;
-        return getUserdata(p.getName());
-    }
-
-    /**
-     * Gets a userdata manager for a player. If one has already been created, it will be returned instead of making a
-     * new one.
-     *
-     * @param s Name of player
-     * @return PConfManager - never null
-     */
-    public PConfManager getUserdata(String s) {
-        if (s == null) return null;
-        synchronized (ymls) {
-            if (ymls.containsKey(s)) return ymls.get(s);
-            PConfManager pcm = new PConfManager(s);
-            ymls.put(s, pcm);
-            return pcm;
-        }
-    }
-
-    /**
-     * Gets a configuration manager for a file. If one has already been created, it will be returned instead of making a
-     * new one.
-     *
-     * @param path Path of file relative to /plugins/RoyalCommands/
-     * @return ConfManager - never null
-     */
-    public ConfManager getConf(String path) {
-        synchronized (confs) {
-            if (confs.containsKey(path)) return confs.get(path);
-            ConfManager cm = new ConfManager(path);
-            confs.put(path, cm);
-            return cm;
-        }
     }
 
     public boolean canBuild(Player p, Block b) {
@@ -489,6 +442,7 @@ public class RoyalCommands extends JavaPlugin {
         removePotionEffects = c.getBoolean("remove_potion_effects", true);
         updateCheck = c.getBoolean("update_check", false);
         overrideRespawn = c.getBoolean("override_respawn", true);
+        purgeUnusedUserdata = c.getBoolean("save.purge_unused_userdata_handlers", true);
 
         banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
         noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
@@ -525,6 +479,7 @@ public class RoyalCommands extends JavaPlugin {
         maxNear = c.getDouble("max_near_radius", 2000D);
         defaultNear = c.getDouble("default_near_radius", 50D);
         gTeleCd = c.getDouble("global_teleport_cooldown", 0D);
+        findIpPercent = c.getDouble("findip_alert_percentage", 25D);
 
         explodePower = (float) c.getDouble("explode_power", 4F);
         maxExplodePower = (float) c.getDouble("max_explode_power", 10F);
@@ -648,7 +603,7 @@ public class RoyalCommands extends JavaPlugin {
 
         dataFolder = getDataFolder();
 
-        whl = getConf("whitelist.yml");
+        whl = ConfManager.getConfManager("whitelist.yml");
 
         commands = getDescription().getCommands();
 
@@ -775,7 +730,7 @@ public class RoyalCommands extends JavaPlugin {
 
         long every = RUtils.timeFormatToSeconds(saveInterval);
         if (every < 1L) every = 600L; // 600s = 10m
-        bs.runTaskTimerAsynchronously(this, new UserdataSaver(this), 20L, every * 20L); // tick = 1/20s
+        bs.runTaskTimerAsynchronously(this, new UserdataRunner(this), 20L, every * 20L); // tick = 1/20s
 
         //-- Get dependencies --//
 
@@ -953,6 +908,7 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdSetCharacteristic(this), "setcharacteristic", this);
         registerCommand(new CmdNameEntity(this), "nameentity", this);
         registerCommand(new CmdHead(this), "head", this);
+        registerCommand(new CmdFindIP(this), "findip", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//
@@ -979,19 +935,10 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Save all userdata --//
 
-        getLogger().info("Saving userdata and configurations (" + (ymls.size() + confs.size()) + " files in all)...");
-        synchronized (ymls) {
-            for (PConfManager pcm : ymls.values()) pcm.forceSave();
-        }
-        synchronized (confs) {
-            for (ConfManager cm : confs.values()) cm.forceSave();
-        }
+        getLogger().info("Saving userdata and configurations (" + (PConfManager.managersCreated() + ConfManager.managersCreated()) + " files in all)...");
+        PConfManager.saveAllManagers();
+        ConfManager.saveAllManagers();
         getLogger().info("Userdata saved.");
-
-        //-- Remove userdata handlers --//
-
-        ymls.clear();
-        confs.clear();
 
         //-- We're done! --//
 

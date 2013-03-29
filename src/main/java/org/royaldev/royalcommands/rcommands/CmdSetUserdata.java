@@ -29,7 +29,7 @@ public class CmdSetUserdata implements CommandExecutor {
             String name = args[0];
             String node = args[1];
             String value = RoyalCommands.getFinalArg(args, 2);
-            PConfManager pcm = plugin.getUserdata(name);
+            PConfManager pcm = PConfManager.getPConfManager(name);
             if (!pcm.exists() || !plugin.getServer().getOfflinePlayer(name).hasPlayedBefore()) {
                 cs.sendMessage(ChatColor.RED + "No such player!");
                 return true;

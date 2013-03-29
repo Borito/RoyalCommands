@@ -35,7 +35,7 @@ public class CmdFreeze implements CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "You can't freeze that player!");
                     return true;
                 }
-                PConfManager pcm = plugin.getUserdata(victim);
+                PConfManager pcm = PConfManager.getPConfManager(victim);
                 if (!pcm.getBoolean("frozen")) {
                     pcm.set("frozen", true);
                     cs.sendMessage(ChatColor.BLUE + "You have frozen " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + "!");
@@ -49,7 +49,7 @@ public class CmdFreeze implements CommandExecutor {
                 }
             } else {
                 OfflinePlayer victim2 = plugin.getServer().getOfflinePlayer(args[0]);
-                PConfManager pcm = plugin.getUserdata(victim2);
+                PConfManager pcm = PConfManager.getPConfManager(victim2);
                 if (victim2.isOp()) {
                     cs.sendMessage(ChatColor.RED + "You can't freeze that player!");
                     return true;

@@ -33,7 +33,7 @@ public class CmdDelHome implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "Type \"" + ChatColor.GRAY + "/delhome home" + ChatColor.RED + "\" to delete your default home.");
                 return true;
             }
-            PConfManager pcm = plugin.getUserdata(p);
+            PConfManager pcm = PConfManager.getPConfManager(p);
             if (pcm.get("home." + args[0]) == null) {
                 cs.sendMessage(ChatColor.RED + "That home does not exist!");
                 return true;

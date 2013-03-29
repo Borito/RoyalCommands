@@ -45,7 +45,7 @@ public class CmdIgnore implements CommandExecutor {
                 cs.sendMessage(ChatColor.RED + "You cannot ignore that player!");
                 return true;
             }
-            PConfManager pcm = plugin.getUserdata(t);
+            PConfManager pcm = PConfManager.getPConfManager(t);
             List<String> players = pcm.getStringList("ignoredby");
             if (players == null) players = new ArrayList<String>();
             for (String ignored : players) {

@@ -83,6 +83,11 @@ use_smooth_time: true
 # Override natural respawn location with the world's spawn?
 override_respawn: true
 
+# At what percentage interval should /findip alert the command sender about progress?
+# /findip will attempt to be as close to this percent when it sends updates (if this is 25, it will send updates at
+# 25%, 50%, 75%, and 100%)
+findip_alert_percentage: 25.0
+
 ###
 # MOTD #
 ###
@@ -397,6 +402,9 @@ save:
   # what is entered here. If this is changed, the server requires a restart to update this value.
   # Default is "10m" (10 minutes)
   save_on_interval: "10m"
+  # Should userdata handlers created for players that are no longer online be removed when userdata saving is occurring?
+  # This will not delete the userdata, but it will remove the handler, freeing memory.
+  purge_unused_userdata_handlers: true
 
 ###
 # Mail #

@@ -30,7 +30,7 @@ public class CmdSetSpawn implements CommandExecutor {
             }
             Player p = (Player) cs;
             String group = (args.length > 0) ? "." + args[0].toLowerCase() : "";
-            ConfManager spawns = plugin.getConf("spawns.yml");
+            ConfManager spawns = ConfManager.getConfManager("spawns.yml");
             double x = p.getLocation().getX();
             double y = p.getLocation().getY();
             double z = p.getLocation().getZ();

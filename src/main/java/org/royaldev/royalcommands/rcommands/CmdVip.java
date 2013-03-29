@@ -34,7 +34,7 @@ public class CmdVip implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
-                PConfManager pcm = plugin.getUserdata(t);
+                PConfManager pcm = PConfManager.getPConfManager(t);
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
@@ -52,7 +52,7 @@ public class CmdVip implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
-                PConfManager pcm = plugin.getUserdata(t);
+                PConfManager pcm = PConfManager.getPConfManager(t);
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
@@ -70,7 +70,7 @@ public class CmdVip implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
-                PConfManager pcm = plugin.getUserdata(t);
+                PConfManager pcm = PConfManager.getPConfManager(t);
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;

@@ -278,7 +278,7 @@ public class RUtils {
      * @return true if the timestamp has not been passed, false if otherwise
      */
     public static boolean isTimeStampValid(OfflinePlayer p, String title) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         if (!pcm.isSet(title)) return false;
         long time = new Date().getTime();
         long overall = pcm.getLong(title);
@@ -286,7 +286,7 @@ public class RUtils {
     }
 
     public static boolean isTimeStampValidAddTime(OfflinePlayer p, String timestamp, String timeset) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         if (pcm.get(timestamp) == null || pcm.get(timeset) == null) return false;
         long time = new Date().getTime();
         long overall = (pcm.getLong(timestamp) * 1000L) + pcm.getLong(timeset);
@@ -301,7 +301,7 @@ public class RUtils {
      * @param title   Path to timestamp
      */
     public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         pcm.set(title, (seconds * 1000) + new Date().getTime());
     }
 
@@ -313,7 +313,7 @@ public class RUtils {
      * @return timestamp or -1 if there was no such timestamp
      */
     public static long getTimeStamp(OfflinePlayer p, String title) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         if (pcm.get(title) == null) return -1;
         return pcm.getLong(title);
     }
@@ -363,7 +363,7 @@ public class RUtils {
      * @return true or false
      */
     public static boolean isTeleportAllowed(OfflinePlayer p) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         return pcm.get("allow-tp") == null || pcm.getBoolean("allow-tp");
     }
 
@@ -483,7 +483,7 @@ public class RUtils {
             if (teleRunners.containsKey(p.getName())) cancelTeleportRunner(p);
         }
         p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + RoyalCommands.instance.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
-        final PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        final PConfManager pcm = PConfManager.getPConfManager(p);
         pcm.set("teleport_warmup", new Date().getTime());
         Runnable r = new Runnable() {
             @Override
@@ -1018,7 +1018,7 @@ public class RUtils {
 
     public static Inventory getBackpack(String s) {
         Player p = RoyalCommands.instance.getServer().getPlayer(s); // null doesn't matter here
-        PConfManager pcm = RoyalCommands.instance.getUserdata(s);
+        PConfManager pcm = PConfManager.getPConfManager(s);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("backpack.size");
         if (invSize == null || invSize < 9) invSize = 36;
@@ -1042,7 +1042,7 @@ public class RUtils {
     }
 
     public static void saveBackpack(String s, Inventory i) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(s);
+        PConfManager pcm = PConfManager.getPConfManager(s);
         for (int slot = 0; slot < i.getSize(); slot++) {
             ItemStack is = i.getItem(slot);
             if (is == null) {
@@ -1062,7 +1062,7 @@ public class RUtils {
      */
     public static void writeBanHistory(OfflinePlayer t) {
         if (!t.isBanned()) return;
-        PConfManager pcm = RoyalCommands.instance.getUserdata(t);
+        PConfManager pcm = PConfManager.getPConfManager(t);
         if (!pcm.exists()) pcm.createFile();
         List<String> prevBans = pcm.getStringList("prevbans");
         if (prevBans == null) prevBans = new ArrayList<String>();
@@ -1172,7 +1172,7 @@ public class RUtils {
     }
 
     public static void checkMail(Player p) {
-        PConfManager pcm = RoyalCommands.instance.getUserdata(p);
+        PConfManager pcm = PConfManager.getPConfManager(p);
         if (!pcm.getStringList("mail").isEmpty()) {
             int count = pcm.getStringList("mail").size();
             String poss = (count != 1) ? "s" : "";
@@ -1180,5 +1180,19 @@ public class RUtils {
             if (RoyalCommands.instance.isAuthorized(p, "rcmds.mail"))
                 p.sendMessage(ChatColor.BLUE + "View mail with " + ChatColor.GRAY + "/mail read" + ChatColor.BLUE + ".");
         }
+    }
+
+    /**
+     * Gets an OfflinePlayer with support for name completion. If no Player is on that matches the beginning of the
+     * name, the string provided will be used to get an OfflinePlayer to return. If there is a Player, it will be cast
+     * to OfflinePlayer and returned.
+     *
+     * @param name Name of player
+     * @return OfflinePlayer
+     */
+    public static OfflinePlayer getOfflinePlayer(String name) {
+        OfflinePlayer op = RoyalCommands.instance.getServer().getPlayer(name);
+        if (op == null) op = RoyalCommands.instance.getServer().getOfflinePlayer(name);
+        return op;
     }
 }

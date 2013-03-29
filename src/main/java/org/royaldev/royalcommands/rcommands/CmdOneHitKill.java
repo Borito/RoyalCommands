@@ -29,7 +29,7 @@ public class CmdOneHitKill implements CommandExecutor {
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null || plugin.isVanished(t, cs)) {
                     OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
-                    PConfManager pcm = plugin.getUserdata(op);
+                    PConfManager pcm = PConfManager.getPConfManager(op);
                     if (!pcm.exists()) {
                         cs.sendMessage(ChatColor.RED + "That player does not exist!");
                         return true;
@@ -45,7 +45,7 @@ public class CmdOneHitKill implements CommandExecutor {
                     return true;
                 }
                 Player p = plugin.getServer().getPlayer(args[0]);
-                PConfManager pcm = plugin.getUserdata(p);
+                PConfManager pcm = PConfManager.getPConfManager(p);
                 if (!pcm.exists()) {
                     cs.sendMessage(ChatColor.RED + "That player does not exist!");
                     return true;
@@ -68,7 +68,7 @@ public class CmdOneHitKill implements CommandExecutor {
                     return false;
                 }
                 Player p = (Player) cs;
-                PConfManager pcm = plugin.getUserdata(p);
+                PConfManager pcm = PConfManager.getPConfManager(p);
                 Boolean ohk = pcm.getBoolean("ohk");
                 if (ohk == null || !ohk) {
                     pcm.set("ohk", true);
