@@ -21,6 +21,7 @@ public class PConfManager extends YamlConfiguration {
     }
 
     public static PConfManager getPConfManager(String s) {
+        s = s.toLowerCase();
         synchronized (pcms) {
             if (pcms.containsKey(s)) return pcms.get(s);
             final PConfManager pcm = new PConfManager(s);
@@ -42,6 +43,12 @@ public class PConfManager extends YamlConfiguration {
     public static void saveAllManagers() {
         synchronized (pcms) {
             for (PConfManager pcm : pcms.values()) pcm.forceSave();
+        }
+    }
+
+    public static void removeAllManagers() {
+        synchronized (pcms) {
+            for (PConfManager pcm : pcms.values()) pcm.discard(false);
         }
     }
 
