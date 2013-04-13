@@ -29,8 +29,8 @@ public class CmdMegaStrike implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player p = (Player) cs;
             if (args.length < 1) {
+                Player p = (Player) cs;
                 BlockIterator b = new BlockIterator(p, 0);
                 if (!b.hasNext()) {
                     cs.sendMessage(ChatColor.RED + "Cannot megastrike there!");
@@ -42,8 +42,7 @@ public class CmdMegaStrike implements CommandExecutor {
                     bb = b.next();
                     break;
                 }
-                for (int i = 0; i < 15; i++)
-                    p.getWorld().strikeLightning(bb.getLocation());
+                for (int i = 0; i < 15; i++) p.getWorld().strikeLightning(bb.getLocation());
                 return true;
             } else {
                 if (!plugin.isAuthorized(cs, "rcmds.others.megastrike")) {
@@ -57,8 +56,7 @@ public class CmdMegaStrike implements CommandExecutor {
                 }
                 cs.sendMessage(ChatColor.BLUE + "Megasmiting " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
                 target.sendMessage(ChatColor.RED + "You have been megasmited by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
-                for (int i = 0; i < 15; i++)
-                    p.getWorld().strikeLightning(target.getLocation());
+                for (int i = 0; i < 15; i++) target.getWorld().strikeLightning(target.getLocation());
                 return true;
 
             }
