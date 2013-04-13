@@ -25,7 +25,7 @@ public class CmdMegaStrike implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (!(cs instanceof Player)) {
+            if (!(cs instanceof Player) && args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
