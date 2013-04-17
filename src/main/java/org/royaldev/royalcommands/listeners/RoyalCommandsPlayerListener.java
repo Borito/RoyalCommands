@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -407,7 +408,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onAssignHitPlayer(PlayerInteractEntityEvent e) {
+    public void onAssignInteractPlayer(PlayerInteractEntityEvent e) {
         //if (e.isCancelled()) return;
         if (PConfManager.getPConfManager(e.getPlayer()).getBoolean("jailed")) e.setCancelled(true);
         ItemStack id = e.getPlayer().getItemInHand();
@@ -432,6 +433,13 @@ public class RoyalCommandsPlayerListener implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onAssignHitPlayer(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player)) return;
+        Player p = (Player) e.getDamager();
+        onAssignInteractPlayer(new PlayerInteractEntityEvent(p, e.getEntity()));
     }
 
     @EventHandler
