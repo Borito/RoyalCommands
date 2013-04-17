@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +24,7 @@ public class CmdTeleport implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -33,18 +33,18 @@ public class CmdTeleport implements CommandExecutor {
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
-                cs.sendMessage(ChatColor.RED + "That player has teleportation off!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player has teleportation off!");
                 return true;
             }
             Player p = (Player) cs;
-            p.sendMessage(ChatColor.BLUE + "Teleporting you to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Teleporting you to " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             String error = RUtils.teleport(p, t);
             if (!error.isEmpty()) {
-                p.sendMessage(ChatColor.RED + error);
+                p.sendMessage(MessageColor.NEGATIVE + error);
                 return true;
             }
             return true;

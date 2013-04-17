@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -29,7 +30,7 @@ public class CmdRules implements CommandExecutor {
             }
             File rulesf = new File(plugin.getDataFolder() + File.separator + "rules.txt");
             if (!rulesf.exists()) {
-                cs.sendMessage(ChatColor.RED + "The rules.txt file was not found! Tell an admin.");
+                cs.sendMessage(MessageColor.NEGATIVE + "The rules.txt file was not found! Tell an admin.");
                 return true;
             }
             int tpage;
@@ -39,7 +40,7 @@ public class CmdRules implements CommandExecutor {
                 try {
                     tpage = Integer.valueOf(args[0]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "The page number was invalid!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "The page number was invalid!");
                     return true;
                 }
             }
@@ -54,13 +55,13 @@ public class CmdRules implements CommandExecutor {
                     if (line.trim().equals("###")) pages++;
                 }
                 if (tpage > pages || tpage < 1) {
-                    cs.sendMessage(ChatColor.RED + "No such page!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such page!");
                     return true;
                 }
                 if (tpage == pages) {
-                    cs.sendMessage(ChatColor.GOLD + "Page " + ChatColor.GRAY + tpage + ChatColor.GOLD + " of " + ChatColor.GRAY + pages + ChatColor.GOLD + ".");
+                    cs.sendMessage(ChatColor.GOLD + "Page " + MessageColor.NEUTRAL + tpage + ChatColor.GOLD + " of " + MessageColor.NEUTRAL + pages + ChatColor.GOLD + ".");
                 } else {
-                    cs.sendMessage(ChatColor.GOLD + "Page " + ChatColor.GRAY + tpage + ChatColor.GOLD + " of " + ChatColor.GRAY + pages + ChatColor.GOLD + ". " + ChatColor.GRAY + "/" + cmd.getName() + " " + (tpage + 1) + ChatColor.GOLD + " for next page.");
+                    cs.sendMessage(ChatColor.GOLD + "Page " + MessageColor.NEUTRAL + tpage + ChatColor.GOLD + " of " + MessageColor.NEUTRAL + pages + ChatColor.GOLD + ". " + MessageColor.NEUTRAL + "/" + cmd.getName() + " " + (tpage + 1) + ChatColor.GOLD + " for next page.");
                 }
                 int cpage = 0;
                 for (String s : rules) {
@@ -73,7 +74,7 @@ public class CmdRules implements CommandExecutor {
                     }
                 }
             } catch (Exception e) {
-                cs.sendMessage(ChatColor.RED + "The rules.txt file was not found! Tell an admin.");
+                cs.sendMessage(MessageColor.NEGATIVE + "The rules.txt file was not found! Tell an admin.");
                 return true;
             }
             return true;

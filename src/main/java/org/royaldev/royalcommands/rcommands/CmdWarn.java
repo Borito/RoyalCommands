@@ -1,14 +1,15 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,25 +38,25 @@ public class CmdWarn implements CommandExecutor {
             if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(op);
             if (!pcm.exists()) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (plugin.isAuthorized(op, "rcmds.exempt.warn")) {
-                RUtils.dispNoPerms(cs, ChatColor.RED + "You can't warn that player!");
+                RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You can't warn that player!");
                 return true;
             }
             List<String> warns = pcm.getStringList("warns");
             if (warns == null) warns = new ArrayList<String>();
-            String reason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : plugin.defaultWarn;
+            String reason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : Config.defaultWarn;
             reason = RUtils.colorize(reason);
             if (reason.contains("\u00b5")) {
-                cs.sendMessage(ChatColor.RED + "Reason cannot contain micro sign!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Reason cannot contain micro sign!");
                 return true;
             }
             warns.add(reason + "\u00b5" + new Date().getTime());
-            if (plugin.warnActions != null && plugin.warnActions.getKeys(true).contains(String.valueOf(warns.size())) && plugin.warnActions.get(String.valueOf(warns.size())) != null) {
+            if (Config.warnActions != null && Config.warnActions.getKeys(true).contains(String.valueOf(warns.size())) && Config.warnActions.get(String.valueOf(warns.size())) != null) {
                 try {
-                    String action = plugin.warnActions.getString(String.valueOf(warns.size())).substring(1).replace("{reason}", reason).replace("{player}", op.getName());
+                    String action = Config.warnActions.getString(String.valueOf(warns.size())).substring(1).replace("{reason}", reason).replace("{player}", op.getName());
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), action);
                 } catch (StringIndexOutOfBoundsException ignored) {
                     // catch OOBE, debug further later (no OOBE should happen here)
@@ -63,9 +64,9 @@ public class CmdWarn implements CommandExecutor {
             }
             if (op.isOnline()) {
                 Player t = (Player) op;
-                t.sendMessage(ChatColor.RED + "You have been warned for " + ChatColor.GRAY + reason + ChatColor.RED + " by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
+                t.sendMessage(MessageColor.NEGATIVE + "You have been warned for " + MessageColor.NEUTRAL + reason + MessageColor.NEGATIVE + " by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + ".");
             }
-            cs.sendMessage(ChatColor.BLUE + "You have warned " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + " for " + ChatColor.GRAY + reason + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "You have warned " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + reason + MessageColor.POSITIVE + ".");
             pcm.set("warns", warns);
             return true;
         }

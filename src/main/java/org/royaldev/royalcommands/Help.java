@@ -24,7 +24,7 @@ public class Help {
             String desc = commands.get(cmd).get("description").toString();
             helpdb.put(cmd, desc);
         }
-        if (RoyalCommands.otherHelp) {
+        if (Config.otherHelp) {
             for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
                 if (p == null) continue;
                 if ((p instanceof RoyalCommands) || !p.isEnabled()) continue;

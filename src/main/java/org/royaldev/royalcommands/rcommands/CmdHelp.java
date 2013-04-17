@@ -4,7 +4,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.Help;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -27,10 +29,10 @@ public class CmdHelp implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (plugin.customHelp) {
+            if (Config.customHelp) {
                 File rulesf = new File(plugin.getDataFolder() + File.separator + "help.txt");
                 if (!rulesf.exists()) {
-                    cs.sendMessage(ChatColor.RED + "The help.txt file was not found! Tell an admin.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "The help.txt file was not found! Tell an admin.");
                     return true;
                 }
                 int tpage;
@@ -40,7 +42,7 @@ public class CmdHelp implements CommandExecutor {
                     try {
                         tpage = Integer.valueOf(args[0]);
                     } catch (Exception e) {
-                        cs.sendMessage(ChatColor.RED + "The page number was invalid!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "The page number was invalid!");
                         return true;
                     }
                 }
@@ -55,13 +57,13 @@ public class CmdHelp implements CommandExecutor {
                         if (line.trim().equals("###")) pages++;
                     }
                     if (tpage > pages || tpage < 1) {
-                        cs.sendMessage(ChatColor.RED + "No such page!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "No such page!");
                         return true;
                     }
                     if (tpage == pages) {
-                        cs.sendMessage(ChatColor.GOLD + "Page " + ChatColor.GRAY + tpage + ChatColor.GOLD + " of " + ChatColor.GRAY + pages + ChatColor.GOLD + ".");
+                        cs.sendMessage(ChatColor.GOLD + "Page " + MessageColor.NEUTRAL + tpage + ChatColor.GOLD + " of " + MessageColor.NEUTRAL + pages + ChatColor.GOLD + ".");
                     } else {
-                        cs.sendMessage(ChatColor.GOLD + "Page " + ChatColor.GRAY + tpage + ChatColor.GOLD + " of " + ChatColor.GRAY + pages + ChatColor.GOLD + ". " + ChatColor.GRAY + "/" + cmd.getName() + " " + (tpage + 1) + ChatColor.GOLD + " for next page.");
+                        cs.sendMessage(ChatColor.GOLD + "Page " + MessageColor.NEUTRAL + tpage + ChatColor.GOLD + " of " + MessageColor.NEUTRAL + pages + ChatColor.GOLD + ". " + MessageColor.NEUTRAL + "/" + cmd.getName() + " " + (tpage + 1) + ChatColor.GOLD + " for next page.");
                     }
                     int cpage = 0;
                     for (String s : rules) {
@@ -74,7 +76,7 @@ public class CmdHelp implements CommandExecutor {
                         }
                     }
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "The help.txt file was not found! Tell an admin.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "The help.txt file was not found! Tell an admin.");
                     return true;
                 }
                 return true;
@@ -83,26 +85,26 @@ public class CmdHelp implements CommandExecutor {
             int page = 1;
             int wantedPage = 1;
             int pages;
-            if (Help.helpdb.keySet().size() % plugin.helpAmount == 0) {
-                pages = Help.helpdb.keySet().size() / plugin.helpAmount;
+            if (Help.helpdb.keySet().size() % Config.helpAmount == 0) {
+                pages = Help.helpdb.keySet().size() / Config.helpAmount;
             } else {
-                pages = (Help.helpdb.size() / plugin.helpAmount) + 1;
+                pages = (Help.helpdb.size() / Config.helpAmount) + 1;
             }
             if (args.length > 0) {
                 try {
                     wantedPage = Integer.parseInt(args[0]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "That page was invalid!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That page was invalid!");
                     return true;
                 }
             }
             if (wantedPage <= 0 || wantedPage > pages) {
-                cs.sendMessage(ChatColor.RED + "That page was invalid!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That page was invalid!");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "Help page " + ChatColor.GRAY + wantedPage + ChatColor.BLUE + "/" + ChatColor.GRAY + pages + ChatColor.BLUE + ":");
+            cs.sendMessage(MessageColor.POSITIVE + "Help page " + MessageColor.NEUTRAL + wantedPage + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + pages + MessageColor.POSITIVE + ":");
             for (String com : Help.helpdb.keySet()) {
-                if (i == plugin.helpAmount) {
+                if (i == Config.helpAmount) {
                     page++;
                     i = 0;
                 }
@@ -110,8 +112,8 @@ public class CmdHelp implements CommandExecutor {
                 if (page < wantedPage) continue;
                 if (page == wantedPage) {
                     String desc = Help.helpdb.get(com);
-                    cs.sendMessage(ChatColor.BLUE + "/" + com + ChatColor.WHITE + ": " + ChatColor.GRAY + desc);
-                    if (i == plugin.helpAmount) break;
+                    cs.sendMessage(MessageColor.POSITIVE + "/" + com + MessageColor.RESET + ": " + MessageColor.NEUTRAL + desc);
+                    if (i == Config.helpAmount) break;
                 }
             }
             return true;

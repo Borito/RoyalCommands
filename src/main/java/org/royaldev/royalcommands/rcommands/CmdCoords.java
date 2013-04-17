@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,12 +30,12 @@ public class CmdCoords implements CommandExecutor {
             if (args.length < 1) {
                 Player p = (Player) cs;
                 Location l = p.getLocation();
-                cs.sendMessage(ChatColor.BLUE + "x: " + ChatColor.GRAY + l.getX());
-                cs.sendMessage(ChatColor.BLUE + "y: " + ChatColor.GRAY + l.getY());
-                cs.sendMessage(ChatColor.BLUE + "z: " + ChatColor.GRAY + l.getZ());
-                cs.sendMessage(ChatColor.BLUE + "pitch: " + ChatColor.GRAY + l.getPitch());
-                cs.sendMessage(ChatColor.BLUE + "yaw: " + ChatColor.GRAY + l.getYaw());
-                cs.sendMessage(ChatColor.BLUE + "world: " + ChatColor.GRAY + l.getWorld().getName());
+                cs.sendMessage(MessageColor.POSITIVE + "x: " + MessageColor.NEUTRAL + l.getX());
+                cs.sendMessage(MessageColor.POSITIVE + "y: " + MessageColor.NEUTRAL + l.getY());
+                cs.sendMessage(MessageColor.POSITIVE + "z: " + MessageColor.NEUTRAL + l.getZ());
+                cs.sendMessage(MessageColor.POSITIVE + "pitch: " + MessageColor.NEUTRAL + l.getPitch());
+                cs.sendMessage(MessageColor.POSITIVE + "yaw: " + MessageColor.NEUTRAL + l.getYaw());
+                cs.sendMessage(MessageColor.POSITIVE + "world: " + MessageColor.NEUTRAL + l.getWorld().getName());
                 return true;
             }
             if (!plugin.isAuthorized(cs, "rcmds.others.coords")) {
@@ -44,16 +44,16 @@ public class CmdCoords implements CommandExecutor {
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             Location l = t.getLocation();
-            cs.sendMessage(ChatColor.BLUE + "x: " + ChatColor.GRAY + l.getX());
-            cs.sendMessage(ChatColor.BLUE + "y: " + ChatColor.GRAY + l.getY());
-            cs.sendMessage(ChatColor.BLUE + "z: " + ChatColor.GRAY + l.getZ());
-            cs.sendMessage(ChatColor.BLUE + "pitch: " + ChatColor.GRAY + l.getPitch());
-            cs.sendMessage(ChatColor.BLUE + "yaw: " + ChatColor.GRAY + l.getYaw());
-            cs.sendMessage(ChatColor.BLUE + "world: " + ChatColor.GRAY + l.getWorld().getName());
+            cs.sendMessage(MessageColor.POSITIVE + "x: " + MessageColor.NEUTRAL + l.getX());
+            cs.sendMessage(MessageColor.POSITIVE + "y: " + MessageColor.NEUTRAL + l.getY());
+            cs.sendMessage(MessageColor.POSITIVE + "z: " + MessageColor.NEUTRAL + l.getZ());
+            cs.sendMessage(MessageColor.POSITIVE + "pitch: " + MessageColor.NEUTRAL + l.getPitch());
+            cs.sendMessage(MessageColor.POSITIVE + "yaw: " + MessageColor.NEUTRAL + l.getYaw());
+            cs.sendMessage(MessageColor.POSITIVE + "world: " + MessageColor.NEUTRAL + l.getWorld().getName());
             return true;
 
         }

@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.listeners;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.entity.EnderDragonPart;
 import org.bukkit.entity.Entity;
@@ -15,8 +15,9 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 
 @SuppressWarnings("unused")
@@ -31,14 +32,14 @@ public class RoyalCommandsEntityListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDeath(EntityDeathEvent ent) {
         if (!(ent instanceof PlayerDeathEvent)) return;
-        if (!plugin.backDeath) return;
+        if (!Config.backDeath) return;
         PlayerDeathEvent e = (PlayerDeathEvent) ent;
         if (e.getEntity() == null) return;
         Player p = e.getEntity();
         Location pLoc = p.getLocation();
         CmdBack.addBackLocation(p, pLoc);
         if (plugin.isAuthorized(p, "rcmds.back"))
-            p.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/back" + ChatColor.BLUE + " to go back to where you died.");
+            p.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/back" + MessageColor.POSITIVE + " to go back to where you died.");
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

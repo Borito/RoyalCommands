@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -35,7 +35,7 @@ public class CmdDeleteBanHistory implements CommandExecutor {
             if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(op);
             if (!pcm.exists()) {
-                cs.sendMessage(ChatColor.RED + "That player has never played before!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
                 return true;
             }
             int banToRemove;
@@ -43,22 +43,22 @@ public class CmdDeleteBanHistory implements CommandExecutor {
                 banToRemove = Integer.parseInt(args[1]);
                 banToRemove--;
             } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED + "The ban number given was invalid!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The ban number given was invalid!");
                 return true;
             }
             List<String> prevBans = pcm.getStringList("prevbans");
             if (prevBans == null) prevBans = new ArrayList<String>();
             if (prevBans.size() < 1) {
-                cs.sendMessage(ChatColor.RED + "That player has no previous bans.");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player has no previous bans.");
                 return true;
             }
             if (banToRemove > prevBans.size() - 1 || banToRemove < 0) {
-                cs.sendMessage(ChatColor.RED + "No such ban!");
+                cs.sendMessage(MessageColor.NEGATIVE + "No such ban!");
                 return true;
             }
             prevBans.remove(banToRemove);
             pcm.set("prevbans", prevBans);
-            cs.sendMessage(ChatColor.BLUE + "Removed ban " + ChatColor.GRAY + (banToRemove + 1) + ChatColor.BLUE + " from " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Removed ban " + MessageColor.NEUTRAL + (banToRemove + 1) + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

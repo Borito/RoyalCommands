@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -36,17 +36,17 @@ public class CmdMuteAll implements CommandExecutor {
                 PConfManager pcm = PConfManager.getPConfManager(p);
                 if (!allMuted) {
                     pcm.set("muted", true);
-                    p.sendMessage(ChatColor.RED + "You have been muted!");
+                    p.sendMessage(MessageColor.NEGATIVE + "You have been muted!");
                 } else {
                     pcm.set("muted", false);
-                    p.sendMessage(ChatColor.BLUE + "You have been unmuted!");
+                    p.sendMessage(MessageColor.POSITIVE + "You have been unmuted!");
                 }
             }
             if (!allMuted) {
-                cs.sendMessage(ChatColor.BLUE + "You have muted all players.");
+                cs.sendMessage(MessageColor.POSITIVE + "You have muted all players.");
                 allMuted = true;
             } else {
-                cs.sendMessage(ChatColor.BLUE + "You have unmuted all players.");
+                cs.sendMessage(MessageColor.POSITIVE + "You have unmuted all players.");
                 allMuted = false;
             }
             return true;

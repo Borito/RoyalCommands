@@ -7,6 +7,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -21,6 +22,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.royaldev.royalchat.RoyalChat;
+import org.royaldev.royalcommands.configuration.GeneralConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 
@@ -205,19 +208,19 @@ public class RUtils {
      */
     public static boolean chargePlayer(CommandSender cs, double amount) {
         if (RoyalCommands.economy == null) {
-            cs.sendMessage(ChatColor.RED + "No economy! Continuing without charging.");
+            cs.sendMessage(MessageColor.NEGATIVE + "No economy! Continuing without charging.");
             return true;
         }
         if (!RoyalCommands.economy.hasAccount(cs.getName())) {
-            cs.sendMessage(ChatColor.RED + "You don't have a bank account!");
+            cs.sendMessage(MessageColor.NEGATIVE + "You don't have a bank account!");
             return false;
         }
         if (RoyalCommands.economy.getBalance(cs.getName()) < amount) {
-            cs.sendMessage(ChatColor.RED + "You don't have enough money!");
+            cs.sendMessage(MessageColor.NEGATIVE + "You don't have enough money!");
             return false;
         }
         RoyalCommands.economy.withdrawPlayer(cs.getName(), amount);
-        cs.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + RoyalCommands.economy.format(amount) + ChatColor.BLUE + " removed from your account.");
+        cs.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + RoyalCommands.economy.format(amount) + MessageColor.POSITIVE + " removed from your account.");
         return true;
     }
 
@@ -227,7 +230,7 @@ public class RUtils {
      * @param cs CommandSender to send message to
      */
     public static void dispNoPerms(CommandSender cs) {
-        cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+        cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
         log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
     }
 
@@ -417,10 +420,28 @@ public class RUtils {
                 return null;
             }
         }
-        if (amount == null) amount = RoyalCommands.defaultStack;
+        if (amount == null) amount = Config.defaultStack;
         ItemStack stack = new ItemStack(mat, amount);
         if (data != null) stack.setDurability(data);
         return stack;
+    }
+
+    /**
+     * Plays the configured teleport sound at a location.
+     *
+     * @param at Location to play sound at
+     */
+    private static void playTeleportSound(Location at) {
+        if (at == null) throw new IllegalArgumentException("Location cannot be null!");
+        if (!Config.teleportSoundEnabled) return;
+        Sound toPlay;
+        try {
+            toPlay = Sound.valueOf(Config.teleportSoundName);
+        } catch (IllegalArgumentException e) {
+            RoyalCommands.instance.getLogger().warning("A teleport sound was attempted, but teleport_sound.name was not a valid sound name!");
+            return;
+        }
+        at.getWorld().playSound(at, toPlay, Config.teleportSoundVolume, Config.teleportSoundPitch);
     }
 
     /**
@@ -432,20 +453,21 @@ public class RUtils {
      */
     public static String teleport(Player p, Location l) {
         synchronized (teleRunners) {
-            if (RoyalCommands.instance.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, l);
                 return "";
-            } else if (RoyalCommands.instance.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
+            } else if (Config.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
                 return "";
             }
         }
-        if (!RoyalCommands.safeTeleport) {
+        if (!Config.safeTeleport) {
             CmdBack.addBackLocation(p, p.getLocation());
             Chunk c = l.getChunk();
             if (!c.isLoaded()) c.load(true);
             p.setVelocity(new Vector(0, 0, 0));
             p.setFallDistance(0F);
             p.teleport(l);
+            playTeleportSound(l);
         } else {
             Location toTele = getSafeLocation(l);
             if (toTele == null) return "There is no ground below.";
@@ -455,6 +477,7 @@ public class RUtils {
             p.setVelocity(new Vector(0, 0, 0));
             p.setFallDistance(0F);
             p.teleport(toTele);
+            playTeleportSound(l);
         }
         return "";
     }
@@ -482,7 +505,7 @@ public class RUtils {
         synchronized (teleRunners) {
             if (teleRunners.containsKey(p.getName())) cancelTeleportRunner(p);
         }
-        p.sendMessage(ChatColor.BLUE + "Please wait " + ChatColor.GRAY + RoyalCommands.instance.teleportWarmup + ChatColor.BLUE + " seconds for your teleport.");
+        p.sendMessage(MessageColor.POSITIVE + "Please wait " + MessageColor.NEUTRAL + Config.teleportWarmup + MessageColor.POSITIVE + " seconds for your teleport.");
         final PConfManager pcm = PConfManager.getPConfManager(p);
         pcm.set("teleport_warmup", new Date().getTime());
         Runnable r = new Runnable() {
@@ -493,15 +516,15 @@ public class RUtils {
                     cancelTeleportRunner(p);
                     return;
                 }
-                int toAdd = RoyalCommands.instance.teleportWarmup * 1000;
+                int toAdd = Config.teleportWarmup * 1000;
                 l = l + toAdd;
                 long c = new Date().getTime();
                 if (l < c) {
-                    p.sendMessage(ChatColor.BLUE + "Teleporting...");
+                    p.sendMessage(MessageColor.POSITIVE + "Teleporting...");
                     teleAllowed.add(p.getName());
                     String error = teleport(p, t);
                     teleAllowed.remove(p.getName());
-                    if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
+                    if (!error.isEmpty()) p.sendMessage(MessageColor.NEGATIVE + error);
                     cancelTeleportRunner(p);
                 }
             }
@@ -533,14 +556,14 @@ public class RUtils {
      */
     public static String silentTeleport(Player p, Location l) {
         synchronized (teleRunners) {
-            if (RoyalCommands.instance.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, l);
                 return "";
-            } else if (RoyalCommands.instance.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
+            } else if (Config.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
                 return "";
             }
         }
-        if (!RoyalCommands.safeTeleport) p.teleport(l);
+        if (!Config.safeTeleport) p.teleport(l);
         else {
             Location toTele = getSafeLocation(l);
             if (toTele == null) return "There is no ground below.";
@@ -702,7 +725,7 @@ public class RUtils {
 
     public static String getMVWorldName(World w) {
         if (w == null) throw new NullPointerException("w can't be null!");
-        if (!RoyalCommands.multiverseNames || RoyalCommands.mvc == null)
+        if (!Config.multiverseNames || RoyalCommands.mvc == null)
             return RoyalCommands.wm.getConfig().getString("worlds." + w.getName() + ".displayname", w.getName());
         return RoyalCommands.mvc.getMVWorldManager().getMVWorld(w).getColoredWorldString();
     }
@@ -1012,10 +1035,21 @@ public class RUtils {
         return is;
     }
 
+    /**
+     * Gets an empty inventory with a backpack configuration.
+     *
+     * @return Backpack
+     */
     public static Inventory getEmptyBackpack() {
         return Bukkit.createInventory(null, 36, "Backpack");
     }
 
+    /**
+     * Gets a player backpack
+     *
+     * @param s Name of player to get backpack for
+     * @return Backpack - never null
+     */
     public static Inventory getBackpack(String s) {
         Player p = RoyalCommands.instance.getServer().getPlayer(s); // null doesn't matter here
         PConfManager pcm = PConfManager.getPConfManager(s);
@@ -1033,24 +1067,35 @@ public class RUtils {
         return i;
     }
 
+    /**
+     * Gets a player backpack
+     *
+     * @param p Player to get backpack for
+     * @return Backpack - never null
+     */
     public static Inventory getBackpack(Player p) {
         return getBackpack(p.getName());
     }
 
+    /**
+     * Saves player backpacks in a forwards-compatible method, using native Bukkit methods.
+     *
+     * @param p Player to save backpack for
+     * @param i Inventory to save as backpack
+     */
     public static void saveBackpack(Player p, Inventory i) {
         saveBackpack(p.getName(), i);
     }
 
+    /**
+     * Saves player backpacks in a forwards-compatible method, using native Bukkit methods.
+     *
+     * @param s Name of player to save backpack for
+     * @param i Inventory to save as backpack
+     */
     public static void saveBackpack(String s, Inventory i) {
         PConfManager pcm = PConfManager.getPConfManager(s);
-        for (int slot = 0; slot < i.getSize(); slot++) {
-            ItemStack is = i.getItem(slot);
-            if (is == null) {
-                pcm.set("backpack.item." + slot, null);
-                continue;
-            }
-            pcm.set("backpack.item." + slot, is);
-        }
+        for (int slot = 0; slot < i.getSize(); slot++) pcm.set("backpack.item." + slot, i.getItem(slot));
         pcm.set("backpack.size", i.getSize());
     }
 
@@ -1094,8 +1139,8 @@ public class RUtils {
         reason = colorize(reason);
         t.setBanned(true);
         writeBanHistory(t);
-        String inGameFormat = RoyalCommands.instance.igBanFormat;
-        String outFormat = RoyalCommands.instance.banFormat;
+        String inGameFormat = Config.igBanFormat;
+        String outFormat = Config.banFormat;
         executeBanActions(t, cs, reason);
         Bukkit.getServer().broadcast(getInGameMessage(inGameFormat, reason, t, cs), "rcmds.see.ban");
         if (t.isOnline()) ((Player) t).kickPlayer(getMessage(outFormat, reason, cs));
@@ -1104,7 +1149,7 @@ public class RUtils {
     private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {
         if (!RoyalCommands.instance.getConfig().getKeys(false).contains("on_ban"))
             return; // default values are not welcome here
-        final List<String> banActions = RoyalCommands.instance.onBanActions;
+        final List<String> banActions = Config.onBanActions;
         if (banActions == null || banActions.isEmpty()) return;
         for (String command : banActions) {
             if (command.trim().isEmpty()) continue;
@@ -1176,9 +1221,9 @@ public class RUtils {
         if (!pcm.getStringList("mail").isEmpty()) {
             int count = pcm.getStringList("mail").size();
             String poss = (count != 1) ? "s" : "";
-            p.sendMessage(ChatColor.BLUE + "Your mailbox contains " + ChatColor.GRAY + count + ChatColor.BLUE + " message" + poss + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Your mailbox contains " + MessageColor.NEUTRAL + count + MessageColor.POSITIVE + " message" + poss + ".");
             if (RoyalCommands.instance.isAuthorized(p, "rcmds.mail"))
-                p.sendMessage(ChatColor.BLUE + "View mail with " + ChatColor.GRAY + "/mail read" + ChatColor.BLUE + ".");
+                p.sendMessage(MessageColor.POSITIVE + "View mail with " + MessageColor.NEUTRAL + "/mail read" + MessageColor.POSITIVE + ".");
         }
     }
 
@@ -1194,5 +1239,43 @@ public class RUtils {
         OfflinePlayer op = RoyalCommands.instance.getServer().getPlayer(name);
         if (op == null) op = RoyalCommands.instance.getServer().getOfflinePlayer(name);
         return op;
+    }
+
+    public static String getAssignmentPath(ItemStack is) {
+        StringBuilder path = new StringBuilder("assign.");
+        path.append(is.getTypeId());
+        ItemMeta im = is.getItemMeta();
+        if (im != null) {
+            String displayName = im.getDisplayName();
+            if (displayName != null) path.append(".").append(displayName);
+            List<String> lore = im.getLore();
+            if (lore != null && !lore.isEmpty()) {
+                path.append(".");
+                for (String l : lore) {
+                    path.append(l);
+                    path.append("\\x00");
+                }
+            }
+        }
+        // durability
+        path.append(".commands");
+        return path.toString();
+    }
+
+    public static List<String> getAssignment(ItemStack is, GeneralConfManager gcf) {
+        return gcf.getStringList(getAssignmentPath(is));
+    }
+
+    public static void removeAssignment(ItemStack is, GeneralConfManager gcf) {
+        gcf.set(getAssignmentPath(is), null);
+    }
+
+    public static void setAssignment(ItemStack is, List<String> commands, GeneralConfManager gcf) {
+        if (is == null) return;
+        gcf.set(getAssignmentPath(is), commands);
+    }
+
+    public static String getFriendlyEnumName(Enum e) {
+        return e.name().toLowerCase().replaceAll("_", " ");
     }
 }

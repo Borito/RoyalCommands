@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +28,7 @@ public class CmdUsage implements CommandExecutor {
             }
             PluginCommand pc = plugin.getServer().getPluginCommand(args[0]);
             if (pc == null) {
-                cs.sendMessage(ChatColor.RED + "No such command!");
+                cs.sendMessage(MessageColor.NEGATIVE + "No such command!");
                 return true;
             }
             cs.sendMessage(pc.getPlugin().getName());

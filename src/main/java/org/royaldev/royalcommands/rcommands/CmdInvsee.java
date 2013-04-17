@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,7 +29,7 @@ public class CmdInvsee implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -38,7 +38,7 @@ public class CmdInvsee implements CommandExecutor {
                     ItemStack[] pi = invseedb.get(p);
                     invseedb.remove(p);
                     p.getInventory().setContents(pi);
-                    p.sendMessage(ChatColor.BLUE + "Your inventory was restored.");
+                    p.sendMessage(MessageColor.POSITIVE + "Your inventory was restored.");
                     return true;
                 }
                 cs.sendMessage(cmd.getDescription());
@@ -46,21 +46,21 @@ public class CmdInvsee implements CommandExecutor {
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (invseedb.containsKey(p)) {
                 ItemStack[] pi = invseedb.get(p);
                 invseedb.remove(p);
                 p.getInventory().setContents(pi);
-                p.sendMessage(ChatColor.BLUE + "Your inventory was restored.");
+                p.sendMessage(MessageColor.POSITIVE + "Your inventory was restored.");
                 return true;
             }
             invseedb.put(p, p.getInventory().getContents());
             ItemStack[] ti = t.getInventory().getContents();
             p.getInventory().clear();
             p.getInventory().setContents(ti);
-            p.sendMessage(ChatColor.BLUE + "Copied inventory of " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Copied inventory of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

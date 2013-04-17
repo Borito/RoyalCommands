@@ -12,6 +12,7 @@ import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.listeners.InventoryListener;
 
 import java.io.File;
@@ -90,7 +91,7 @@ public class WorldManager {
     private final Logger log = RoyalCommands.instance.getLogger();
 
     public WorldManager() {
-        if (!RoyalCommands.useWorldManager) return;
+        if (!Config.useWorldManager) return;
         if (!config.exists()) config.createFile();
         if (config.getConfigurationSection("worlds") != null) {
             synchronized (configuredWorlds) {

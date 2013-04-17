@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -37,16 +37,16 @@ public class CmdListWarns implements CommandExecutor {
             String target = (args.length > 0) ? args[0] : cs.getName();
             PConfManager pcm = PConfManager.getPConfManager(target);
             if (!pcm.exists()) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             List<String> warns = pcm.getStringList("warns");
             if (warns == null || warns.isEmpty()) {
-                cs.sendMessage(ChatColor.GRAY + target + ChatColor.BLUE + " has no warnings!");
+                cs.sendMessage(MessageColor.NEUTRAL + target + MessageColor.POSITIVE + " has no warnings!");
                 return true;
             }
             for (int i = 0; i < warns.size(); i++)
-                cs.sendMessage(ChatColor.GRAY + "" + (i + 1) + ". " + warns.get(i).split("\\u00b5")[0]);
+                cs.sendMessage(MessageColor.NEUTRAL + "" + (i + 1) + ". " + warns.get(i).split("\\u00b5")[0]);
             return true;
         }
         return false;

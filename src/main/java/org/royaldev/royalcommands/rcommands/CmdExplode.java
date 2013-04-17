@@ -1,11 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -19,12 +20,12 @@ public class CmdExplode implements CommandExecutor {
 
     public void explodePlayer(Player p) {
         if (p == null) return;
-        p.getLocation().getWorld().createExplosion(p.getLocation(), plugin.explodePower, plugin.explodeFire);
+        p.getLocation().getWorld().createExplosion(p.getLocation(), Config.explodePower, Config.explodeFire);
     }
 
     public void explodePlayer(Player p, float power) {
         if (p == null) return;
-        p.getLocation().getWorld().createExplosion(p.getLocation(), power, plugin.explodeFire);
+        p.getLocation().getWorld().createExplosion(p.getLocation(), power, Config.explodeFire);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class CmdExplode implements CommandExecutor {
             if (args.length < 1) {
                 Player p = (Player) cs;
                 Location l = RUtils.getTarget(p).getLocation();
-                p.getWorld().createExplosion(l, plugin.explodePower, plugin.explodeFire);
+                p.getWorld().createExplosion(l, Config.explodePower, Config.explodeFire);
                 return true;
             }
             if (args.length == 2) {
@@ -55,31 +56,31 @@ public class CmdExplode implements CommandExecutor {
                     try {
                         power = Float.parseFloat(args[0]);
                     } catch (Exception e) {
-                        cs.sendMessage(ChatColor.RED + "That wasn't a valid power!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "That wasn't a valid power!");
                         return true;
                     }
                     if (power == null) {
-                        cs.sendMessage(ChatColor.RED + "That wasn't a valid power!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "That wasn't a valid power!");
                         return true;
                     }
-                    if (power > plugin.maxExplodePower) {
-                        cs.sendMessage(ChatColor.RED + "The specified power was higher than the server limit.");
-                        cs.sendMessage(ChatColor.RED + "Setting power to " + ChatColor.GRAY + plugin.maxExplodePower + ChatColor.RED + ".");
-                        power = plugin.maxExplodePower;
+                    if (power > Config.maxExplodePower) {
+                        cs.sendMessage(MessageColor.NEGATIVE + "The specified power was higher than the server limit.");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Setting power to " + MessageColor.NEUTRAL + Config.maxExplodePower + MessageColor.NEGATIVE + ".");
+                        power = Config.maxExplodePower;
                     }
                     Location l = RUtils.getTarget(p).getLocation();
-                    p.getWorld().createExplosion(l, power, plugin.explodeFire);
+                    p.getWorld().createExplosion(l, power, Config.explodeFire);
                     return true;
                 }
             }
             if (args.length > 0) {
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null || plugin.isVanished(t, cs)) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 if (plugin.isAuthorized(t, "rcmds.exempt.explode")) {
-                    cs.sendMessage(ChatColor.RED + "You may not explode that player!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You may not explode that player!");
                     return true;
                 }
                 if (args.length == 2) {
@@ -93,15 +94,15 @@ public class CmdExplode implements CommandExecutor {
                         try {
                             power = Float.parseFloat(args[0]);
                         } catch (Exception e) {
-                            cs.sendMessage(ChatColor.RED + "That wasn't a valid power!");
+                            cs.sendMessage(MessageColor.NEGATIVE + "That wasn't a valid power!");
                             return true;
                         }
                         if (power == null) {
-                            cs.sendMessage(ChatColor.RED + "That wasn't a valid power!");
+                            cs.sendMessage(MessageColor.NEGATIVE + "That wasn't a valid power!");
                             return true;
                         }
                         Location l = RUtils.getTarget(p).getLocation();
-                        p.getWorld().createExplosion(l, power, plugin.explodeFire);
+                        p.getWorld().createExplosion(l, power, Config.explodeFire);
                         return true;
                     }
                     Float power = null;
@@ -116,7 +117,7 @@ public class CmdExplode implements CommandExecutor {
                 } else {
                     explodePlayer(t);
                 }
-                cs.sendMessage(ChatColor.BLUE + "You have exploded " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "You have exploded " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 return true;
             }
         }

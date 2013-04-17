@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,7 +27,7 @@ public class CmdWalkSpeed implements CommandExecutor {
                 return false;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -35,14 +35,14 @@ public class CmdWalkSpeed implements CommandExecutor {
             try {
                 walkSpeed = Float.valueOf(args[0]);
             } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED + "Please enter a valid number!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Please enter a valid number!");
                 return true;
             }
             if (walkSpeed < -1F || walkSpeed > 1F) {
-                cs.sendMessage(ChatColor.RED + "Speed must be between -1 and 1!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Speed must be between -1 and 1!");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "Set your walk speed to " + ChatColor.GRAY + walkSpeed + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Set your walk speed to " + MessageColor.NEUTRAL + walkSpeed + MessageColor.POSITIVE + ".");
             p.setWalkSpeed(walkSpeed);
             return true;
         }

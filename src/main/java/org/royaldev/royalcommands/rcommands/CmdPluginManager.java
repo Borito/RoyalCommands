@@ -1,7 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -125,41 +125,41 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please provide the name of the jar to load!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the jar to load!");
                     return true;
                 }
                 File f = new File(plugin.getDataFolder().getParentFile() + File.separator + args[1]);
                 if (!f.exists()) {
-                    cs.sendMessage(ChatColor.RED + "That file does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That file does not exist!");
                     return true;
                 }
                 if (!f.canRead()) {
-                    cs.sendMessage(ChatColor.RED + "Can't read that file!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Can't read that file!");
                     return true;
                 }
                 Plugin p;
                 try {
                     p = pm.loadPlugin(f);
                     if (p == null) {
-                        cs.sendMessage(ChatColor.RED + "Could not load plugin: plugin was invalid.");
-                        cs.sendMessage(ChatColor.RED + "Make sure it ends with .jar!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Could not load plugin: plugin was invalid.");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Make sure it ends with .jar!");
                         return true;
                     }
                     pm.enablePlugin(p);
                 } catch (InvalidPluginException e) {
-                    cs.sendMessage(ChatColor.RED + "That file is not a plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That file is not a plugin!");
                     return true;
                 } catch (UnknownDependencyException e) {
-                    cs.sendMessage(ChatColor.RED + "Missing dependency: " + e.getMessage());
+                    cs.sendMessage(MessageColor.NEGATIVE + "Missing dependency: " + e.getMessage());
                     return true;
                 } catch (InvalidDescriptionException e) {
-                    cs.sendMessage(ChatColor.RED + "That plugin contained an invalid description!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That plugin contained an invalid description!");
                     return true;
                 }
                 if (p.isEnabled())
-                    cs.sendMessage(ChatColor.BLUE + "Loaded and enabled " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + " successfully.");
+                    cs.sendMessage(MessageColor.POSITIVE + "Loaded and enabled " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " successfully.");
                 else
-                    cs.sendMessage(ChatColor.RED + "Could not load and enable " + ChatColor.GRAY + p.getName() + ChatColor.RED + ".");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not load and enable " + MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + ".");
                 return true;
             } else if (subcmd.equalsIgnoreCase("disable")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.disable")) {
@@ -167,25 +167,25 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to disable!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to disable!");
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
                 if (p == null) {
-                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                     return true;
                 }
                 if (!p.isEnabled()) {
-                    cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.RED + " is already disabled!");
+                    cs.sendMessage(MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + " is already disabled!");
                 }
                 final List<String> depOnBy = getDependedOnBy(p);
                 if (!depOnBy.isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + "Could not unload " + ChatColor.GRAY + p.getName() + ChatColor.RED + " because it is depended on by the following:");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not unload " + MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + " because it is depended on by the following:");
                     StringBuilder sb = new StringBuilder();
                     for (String dep : depOnBy) {
-                        sb.append(ChatColor.GRAY);
+                        sb.append(MessageColor.NEUTRAL);
                         sb.append(dep);
-                        sb.append(ChatColor.RESET);
+                        sb.append(MessageColor.RESET);
                         sb.append(", ");
                     }
                     cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
@@ -193,8 +193,8 @@ public class CmdPluginManager implements CommandExecutor {
                 }
                 pm.disablePlugin(p);
                 if (!p.isEnabled())
-                    cs.sendMessage(ChatColor.BLUE + "Disabled " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + " successfully!");
-                else cs.sendMessage(ChatColor.RED + "Could not disabled that plugin!");
+                    cs.sendMessage(MessageColor.POSITIVE + "Disabled " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " successfully!");
+                else cs.sendMessage(MessageColor.NEGATIVE + "Could not disabled that plugin!");
                 return true;
             } else if (subcmd.equalsIgnoreCase("enable")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.enable")) {
@@ -202,23 +202,23 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to enable!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to enable!");
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
                 if (p == null) {
-                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                     return true;
                 }
                 if (p.isEnabled()) {
-                    cs.sendMessage(ChatColor.RED + "Plugin is already enabled!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Plugin is already enabled!");
                     return true;
                 }
                 pm.enablePlugin(p);
                 if (p.isEnabled())
-                    cs.sendMessage(ChatColor.BLUE + "Successfully enabled " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + "!");
+                    cs.sendMessage(MessageColor.POSITIVE + "Successfully enabled " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + "!");
                 else
-                    cs.sendMessage(ChatColor.RED + "Could not enable " + ChatColor.GRAY + p.getName() + ChatColor.RED + ".");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not enable " + MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + ".");
                 return true;
             } else if (subcmd.equalsIgnoreCase("reload")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.reload")) {
@@ -226,17 +226,17 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to reload!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to reload!");
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
                 if (p == null) {
-                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                     return true;
                 }
                 pm.disablePlugin(p);
                 pm.enablePlugin(p);
-                cs.sendMessage(ChatColor.BLUE + "Reloaded " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Reloaded " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + ".");
                 return true;
             } else if (subcmd.equalsIgnoreCase("update")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.update")) {
@@ -244,22 +244,22 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 3) {
-                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin to update and its filename!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to update and its filename!");
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
                 if (p == null) {
-                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                     return true;
                 }
                 List<String> depOnBy = getDependedOnBy(p);
                 if (!depOnBy.isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + "Could not unload " + ChatColor.GRAY + p.getName() + ChatColor.RED + " because it is depended on by the following:");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not unload " + MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + " because it is depended on by the following:");
                     StringBuilder sb = new StringBuilder();
                     for (String dep : depOnBy) {
-                        sb.append(ChatColor.GRAY);
+                        sb.append(MessageColor.NEUTRAL);
                         sb.append(dep);
-                        sb.append(ChatColor.RESET);
+                        sb.append(MessageColor.RESET);
                         sb.append(", ");
                     }
                     cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
@@ -267,33 +267,33 @@ public class CmdPluginManager implements CommandExecutor {
                 }
                 File f = new File(plugin.getDataFolder().getParentFile() + File.separator + args[2]);
                 if (!f.exists()) {
-                    cs.sendMessage(ChatColor.RED + "That file does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That file does not exist!");
                     return true;
                 }
                 if (!f.canRead()) {
-                    cs.sendMessage(ChatColor.RED + "Can't read that file!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Can't read that file!");
                     return true;
                 }
                 pm.disablePlugin(p);
                 try {
                     p = pm.loadPlugin(f);
                     if (p == null) {
-                        cs.sendMessage(ChatColor.RED + "Could not load plugin: plugin was invalid.");
-                        cs.sendMessage(ChatColor.RED + "Make sure it ends with .jar!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Could not load plugin: plugin was invalid.");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Make sure it ends with .jar!");
                         return true;
                     }
                     pm.enablePlugin(p);
                 } catch (InvalidPluginException e) {
-                    cs.sendMessage(ChatColor.RED + "That file is not a plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That file is not a plugin!");
                     return true;
                 } catch (UnknownDependencyException e) {
-                    cs.sendMessage(ChatColor.RED + "Missing dependency: " + e.getMessage());
+                    cs.sendMessage(MessageColor.NEGATIVE + "Missing dependency: " + e.getMessage());
                     return true;
                 } catch (InvalidDescriptionException e) {
-                    cs.sendMessage(ChatColor.RED + "That plugin contained an invalid description!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That plugin contained an invalid description!");
                     return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Updated " + ChatColor.GRAY + p.getName() + ChatColor.BLUE + " successfully.");
+                cs.sendMessage(MessageColor.POSITIVE + "Updated " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " successfully.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("reloadall")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.reloadall")) {
@@ -304,7 +304,7 @@ public class CmdPluginManager implements CommandExecutor {
                     pm.disablePlugin(p);
                     pm.enablePlugin(p);
                 }
-                cs.sendMessage(ChatColor.BLUE + "Reloaded all plugins!");
+                cs.sendMessage(MessageColor.POSITIVE + "Reloaded all plugins!");
                 return true;
             } else if (subcmd.equalsIgnoreCase("list")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.list")) {
@@ -321,12 +321,12 @@ public class CmdPluginManager implements CommandExecutor {
                         name = name + " (disabled)";
                         disabled += 1;
                     } else enabled += 1;
-                    list.append(ChatColor.GRAY);
+                    list.append(MessageColor.NEUTRAL);
                     list.append(name);
-                    list.append(ChatColor.RESET);
+                    list.append(MessageColor.RESET);
                     list.append(", ");
                 }
-                cs.sendMessage(ChatColor.BLUE + "Plugins (" + ChatColor.GRAY + enabled + ((disabled > 0) ? ChatColor.BLUE + "/" + ChatColor.GRAY + disabled + " disabled" : "") + ChatColor.BLUE + "): " + list.substring(0, list.length() - 4));
+                cs.sendMessage(MessageColor.POSITIVE + "Plugins (" + MessageColor.NEUTRAL + enabled + ((disabled > 0) ? MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + disabled + " disabled" : "") + MessageColor.POSITIVE + "): " + list.substring(0, list.length() - 4));
                 return true;
             } else if (subcmd.equalsIgnoreCase("info")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.info")) {
@@ -334,17 +334,17 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin!");
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
                 if (p == null) {
-                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                     return true;
                 }
                 PluginDescriptionFile pdf = p.getDescription();
                 if (pdf == null) {
-                    cs.sendMessage(ChatColor.RED + "Can't get information from " + ChatColor.GRAY + p.getName() + ChatColor.RED + ".");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Can't get information from " + MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + ".");
                     return true;
                 }
                 String version = pdf.getVersion();
@@ -355,20 +355,20 @@ public class CmdPluginManager implements CommandExecutor {
                 String name = pdf.getName();
                 String desc = pdf.getDescription();
                 if (name != null && !name.isEmpty())
-                    cs.sendMessage(ChatColor.BLUE + "Name: " + ChatColor.GRAY + name);
+                    cs.sendMessage(MessageColor.POSITIVE + "Name: " + MessageColor.NEUTRAL + name);
                 if (version != null && !version.isEmpty())
-                    cs.sendMessage(ChatColor.BLUE + "Version: " + ChatColor.GRAY + version);
+                    cs.sendMessage(MessageColor.POSITIVE + "Version: " + MessageColor.NEUTRAL + version);
                 if (site != null && !site.isEmpty())
-                    cs.sendMessage(ChatColor.BLUE + "Site: " + ChatColor.GRAY + site);
+                    cs.sendMessage(MessageColor.POSITIVE + "Site: " + MessageColor.NEUTRAL + site);
                 if (desc != null && !desc.isEmpty())
-                    cs.sendMessage(ChatColor.BLUE + "Description: " + ChatColor.GRAY + desc.replaceAll("\r?\n", ""));
+                    cs.sendMessage(MessageColor.POSITIVE + "Description: " + MessageColor.NEUTRAL + desc.replaceAll("\r?\n", ""));
                 if (authors != null && !authors.isEmpty())
-                    cs.sendMessage(ChatColor.BLUE + "Author" + ((authors.size() > 1) ? "s" : "") + ": " + ChatColor.GRAY + RUtils.join(authors, ChatColor.RESET + ", " + ChatColor.GRAY));
+                    cs.sendMessage(MessageColor.POSITIVE + "Author" + ((authors.size() > 1) ? "s" : "") + ": " + MessageColor.NEUTRAL + RUtils.join(authors, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
                 if (softDep != null && !softDep.isEmpty())
-                    cs.sendMessage(ChatColor.BLUE + "Soft Dependencies: " + ChatColor.GRAY + RUtils.join(softDep, ChatColor.RESET + ", " + ChatColor.GRAY));
+                    cs.sendMessage(MessageColor.POSITIVE + "Soft Dependencies: " + MessageColor.NEUTRAL + RUtils.join(softDep, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
                 if (dep != null && !dep.isEmpty())
-                    cs.sendMessage(ChatColor.BLUE + "Dependencies: " + ChatColor.GRAY + RUtils.join(dep, ChatColor.RESET + ", " + ChatColor.GRAY));
-                cs.sendMessage(ChatColor.BLUE + "Enabled: " + ChatColor.GRAY + ((p.isEnabled()) ? "Yes" : "No"));
+                    cs.sendMessage(MessageColor.POSITIVE + "Dependencies: " + MessageColor.NEUTRAL + RUtils.join(dep, MessageColor.RESET + ", " + MessageColor.NEUTRAL));
+                cs.sendMessage(MessageColor.POSITIVE + "Enabled: " + MessageColor.NEUTRAL + ((p.isEnabled()) ? "Yes" : "No"));
                 return true;
             } else if (subcmd.equalsIgnoreCase("commands")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.commands")) {
@@ -376,23 +376,23 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin!");
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
                 if (p == null) {
-                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                     return true;
                 }
                 Map<String, Map<String, Object>> commands = p.getDescription().getCommands();
                 if (commands == null) {
-                    cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.RED + " has no registered commands.");
+                    cs.sendMessage(MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + " has no registered commands.");
                     return true;
                 }
                 for (String command : commands.keySet()) {
                     Object odesc = commands.get(command).get("description");
                     String desc = (odesc != null) ? odesc.toString() : "";
-                    cs.sendMessage(ChatColor.GRAY + "/" + command + ((desc.equals("")) ? "" : ChatColor.BLUE + " - " + desc));
+                    cs.sendMessage(MessageColor.NEUTRAL + "/" + command + ((desc.equals("")) ? "" : MessageColor.POSITIVE + " - " + desc));
                 }
                 return true;
             } else if (subcmd.equalsIgnoreCase("help") || subcmd.equals("?")) {
@@ -400,22 +400,22 @@ public class CmdPluginManager implements CommandExecutor {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "RoyalCommands PluginManager Help");
-                cs.sendMessage(ChatColor.BLUE + "================================");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " load [jar]" + ChatColor.BLUE + " - Loads and enables a new plugin");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " disable [plugin]" + ChatColor.BLUE + " - Disables an already loaded plugin");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " enable [plugin]" + ChatColor.BLUE + " - Enables a disabled plugin");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " reload [plugin]" + ChatColor.BLUE + " - Disables then enables a plugin");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " reloadall" + ChatColor.BLUE + " - Reloads every plugin");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " delete [jar]" + ChatColor.BLUE + " - Tries to delete the specified jar");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " update [plugin] [jar]" + ChatColor.BLUE + " - Disables the plugin and loads the new jar");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " commands [plugin]" + ChatColor.BLUE + " - Lists all registered commands and their description of a plugin");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " list" + ChatColor.BLUE + " - Lists all the plugins");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " info [plugin]" + ChatColor.BLUE + " - Displays information about a plugin");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheck [plugin] (tag)" + ChatColor.BLUE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " updatecheckall" + ChatColor.BLUE + " - Attempts to check for newest version of all plugins");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " download [tag] (recursive)" + ChatColor.BLUE + " - Attempts to download a plugin from BukkitDev using its tag - recursive can be \"true\" if you would like the plugin to search for jars in all subdirectories of an archive downloaded");
-                cs.sendMessage("* " + ChatColor.GRAY + "/" + label + " findtag [search]" + ChatColor.BLUE + " - Searches BukkitDev for a tag to use in download");
+                cs.sendMessage(MessageColor.POSITIVE + "RoyalCommands PluginManager Help");
+                cs.sendMessage(MessageColor.POSITIVE + "================================");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " load [jar]" + MessageColor.POSITIVE + " - Loads and enables a new plugin");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " disable [plugin]" + MessageColor.POSITIVE + " - Disables an already loaded plugin");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " enable [plugin]" + MessageColor.POSITIVE + " - Enables a disabled plugin");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " reload [plugin]" + MessageColor.POSITIVE + " - Disables then enables a plugin");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " reloadall" + MessageColor.POSITIVE + " - Reloads every plugin");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " delete [jar]" + MessageColor.POSITIVE + " - Tries to delete the specified jar");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " update [plugin] [jar]" + MessageColor.POSITIVE + " - Disables the plugin and loads the new jar");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " commands [plugin]" + MessageColor.POSITIVE + " - Lists all registered commands and their description of a plugin");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " list" + MessageColor.POSITIVE + " - Lists all the plugins");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " info [plugin]" + MessageColor.POSITIVE + " - Displays information about a plugin");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " updatecheck [plugin] (tag)" + MessageColor.POSITIVE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " updatecheckall" + MessageColor.POSITIVE + " - Attempts to check for newest version of all plugins");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " download [tag] (recursive)" + MessageColor.POSITIVE + " - Attempts to download a plugin from BukkitDev using its tag - recursive can be \"true\" if you would like the plugin to search for jars in all subdirectories of an archive downloaded");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " findtag [search]" + MessageColor.POSITIVE + " - Searches BukkitDev for a tag to use in download");
                 return true;
             } else if (subcmd.equalsIgnoreCase("download")) {
                 if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.download")) {
@@ -423,8 +423,8 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please provide plugin tag!");
-                    cs.sendMessage(ChatColor.RED + "http://dev.bukkit.org/server-mods/" + ChatColor.GRAY + "royalcommands" + ChatColor.RED + "/");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide plugin tag!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "http://dev.bukkit.org/server-mods/" + MessageColor.NEUTRAL + "royalcommands" + MessageColor.NEGATIVE + "/");
                     return true;
                 }
                 final boolean recursive = args.length > 2 && args[2].equalsIgnoreCase("true");
@@ -434,7 +434,7 @@ public class CmdPluginManager implements CommandExecutor {
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
-                        cs.sendMessage(ChatColor.BLUE + "Getting download link...");
+                        cs.sendMessage(MessageColor.POSITIVE + "Getting download link...");
                         String pluginUrlString = "http://dev.bukkit.org/server-mods/" + tag + "/files.rss";
                         String file;
                         try {
@@ -458,31 +458,31 @@ public class CmdPluginManager implements CommandExecutor {
                                 file = StringUtils.substringBetween(content.toString(), "<li class=\"user-action user-action-download\"><span><a href=\"", "\">Download</a></span></li>");
                             } else throw new Exception();
                         } catch (Exception e) {
-                            cs.sendMessage(ChatColor.RED + "Could not fetch download link! Either this plugin has no downloads, or you specified an invalid tag.");
-                            cs.sendMessage(ChatColor.RED + "Tag: http://dev.bukkit.org/server-mods/" + ChatColor.GRAY + "plugin-name" + ChatColor.RED + "/");
+                            cs.sendMessage(MessageColor.NEGATIVE + "Could not fetch download link! Either this plugin has no downloads, or you specified an invalid tag.");
+                            cs.sendMessage(MessageColor.NEGATIVE + "Tag: http://dev.bukkit.org/server-mods/" + MessageColor.NEUTRAL + "plugin-name" + MessageColor.NEGATIVE + "/");
                             return;
                         }
                         BufferedInputStream bis;
                         try {
                             bis = new BufferedInputStream(new URL(file).openStream());
                         } catch (MalformedURLException e) {
-                            cs.sendMessage(ChatColor.RED + "The received download link was invalid!");
+                            cs.sendMessage(MessageColor.NEGATIVE + "The received download link was invalid!");
                             return;
                         } catch (IOException e) {
-                            cs.sendMessage(ChatColor.RED + "An internal input/output error occurred. Please try again.");
+                            cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again.");
                             return;
                         }
                         Pattern p = Pattern.compile("https?://dev\\.bukkit\\.org/media/files[\\d/]+([\\w\\W]+)");
                         Matcher m = p.matcher(file);
                         m.find();
                         String fileName = m.group(1).trim();
-                        cs.sendMessage(ChatColor.BLUE + "Creating temporary folder...");
+                        cs.sendMessage(MessageColor.POSITIVE + "Creating temporary folder...");
                         File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
                         while (f.getParentFile().exists()) // make sure we get our own directory
                             f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
                         if (!fileName.endsWith(".zip") && !fileName.endsWith(".jar")) {
-                            cs.sendMessage(ChatColor.RED + "The file wasn't a zip or jar file, so it was not downloaded.");
-                            cs.sendMessage(ChatColor.RED + "Filename: " + ChatColor.GRAY + fileName);
+                            cs.sendMessage(MessageColor.NEGATIVE + "The file wasn't a zip or jar file, so it was not downloaded.");
+                            cs.sendMessage(MessageColor.NEGATIVE + "Filename: " + MessageColor.NEUTRAL + fileName);
                             return;
                         }
                         f.getParentFile().mkdirs();
@@ -490,34 +490,34 @@ public class CmdPluginManager implements CommandExecutor {
                         try {
                             bos = new BufferedOutputStream(new FileOutputStream(f));
                         } catch (FileNotFoundException e) {
-                            cs.sendMessage(ChatColor.RED + "The temporary download folder was not found. Make sure that " + ChatColor.GRAY + System.getProperty("java.io.tmpdir") + ChatColor.RED + " is writable.");
+                            cs.sendMessage(MessageColor.NEGATIVE + "The temporary download folder was not found. Make sure that " + MessageColor.NEUTRAL + System.getProperty("java.io.tmpdir") + MessageColor.NEGATIVE + " is writable.");
                             return;
                         }
                         int b;
-                        cs.sendMessage(ChatColor.BLUE + "Downloading file " + ChatColor.GRAY + fileName + ChatColor.BLUE + "...");
+                        cs.sendMessage(MessageColor.POSITIVE + "Downloading file " + MessageColor.NEUTRAL + fileName + MessageColor.POSITIVE + "...");
                         try {
                             while ((b = bis.read()) != -1) bos.write(b);
                             bos.flush();
                             bos.close();
                         } catch (IOException e) {
-                            cs.sendMessage(ChatColor.RED + "An internal input/output error occurred. Please try again.");
+                            cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again.");
                             return;
                         }
                         if (fileName.endsWith(".zip")) {
-                            cs.sendMessage(ChatColor.BLUE + "Decompressing zip...");
+                            cs.sendMessage(MessageColor.POSITIVE + "Decompressing zip...");
                             UnZip.decompress(f.getAbsolutePath(), f.getParent());
                         }
                         for (File fi : RUtils.listFiles(f.getParentFile(), recursive)) {
                             if (!fi.getName().endsWith(".jar")) continue;
 //                          String extraFile = (f.getParent().equals(fi.getParent())) ? "" : fi.getParentFile().getName() + File.separator;
-                            cs.sendMessage(ChatColor.BLUE + "Moving " + ChatColor.GRAY + fi.getName() + ChatColor.BLUE + " to plugins folder...");
+                            cs.sendMessage(MessageColor.POSITIVE + "Moving " + MessageColor.NEUTRAL + fi.getName() + MessageColor.POSITIVE + " to plugins folder...");
                             boolean s = fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
                             if (!s)
-                                cs.sendMessage(ChatColor.RED + "Couldn't move " + ChatColor.GRAY + fi.getName() + ChatColor.RED + "!");
+                                cs.sendMessage(MessageColor.NEGATIVE + "Couldn't move " + MessageColor.NEUTRAL + fi.getName() + MessageColor.NEGATIVE + "!");
                         }
-                        cs.sendMessage(ChatColor.BLUE + "Removing temporary folder...");
+                        cs.sendMessage(MessageColor.POSITIVE + "Removing temporary folder...");
                         RUtils.deleteDirectory(f.getParentFile());
-                        cs.sendMessage(ChatColor.BLUE + "Downloaded plugin. Use " + ChatColor.GRAY + "/" + commandUsed + " load" + ChatColor.BLUE + " to enable it.");
+                        cs.sendMessage(MessageColor.POSITIVE + "Downloaded plugin. Use " + MessageColor.NEUTRAL + "/" + commandUsed + " load" + MessageColor.POSITIVE + " to enable it.");
                     }
                 };
                 plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
@@ -540,9 +540,9 @@ public class CmdPluginManager implements CommandExecutor {
                                 continue;
                             }
                             if (checked.contains(version)) continue;
-                            cs.sendMessage(ChatColor.GRAY + p.getName() + ChatColor.BLUE + " may have an update. C: " + ChatColor.GRAY + version + ChatColor.BLUE + " N: " + ChatColor.GRAY + checked);
+                            cs.sendMessage(MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " may have an update. C: " + MessageColor.NEUTRAL + version + MessageColor.POSITIVE + " N: " + MessageColor.NEUTRAL + checked);
                         }
-                        cs.sendMessage(ChatColor.BLUE + "Finished checking for updates.");
+                        cs.sendMessage(MessageColor.POSITIVE + "Finished checking for updates.");
                     }
                 };
                 plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
@@ -553,39 +553,39 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please provide the name of the plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin!");
                     return true;
                 }
                 Plugin p = pm.getPlugin(args[1]);
                 if (p == null) {
-                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                     return true;
                 }
                 String tag = (args.length > 2) ? RoyalCommands.getFinalArg(args, 2) : p.getName();
                 try {
                     tag = URLEncoder.encode(tag, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
-                    cs.sendMessage(ChatColor.RED + "Tell the developer enc1.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Tell the developer enc1.");
                     return true;
                 }
                 if (p == null) {
-                    cs.sendMessage(ChatColor.RED + "No such plugin!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                     return true;
                 }
                 if (p.getDescription() == null) {
-                    cs.sendMessage(ChatColor.RED + "Plugin has no description!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Plugin has no description!");
                     return true;
                 }
                 String version = p.getDescription().getVersion();
                 if (version == null) {
-                    cs.sendMessage(ChatColor.RED + "Plugin has not set a version!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Plugin has not set a version!");
                     return true;
                 }
                 try {
                     String checked = updateCheck(tag, version);
-                    cs.sendMessage(ChatColor.BLUE + "Current version is " + ChatColor.GRAY + version + ChatColor.BLUE + "; newest version is " + ChatColor.GRAY + checked + ChatColor.BLUE + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Current version is " + MessageColor.NEUTRAL + version + MessageColor.POSITIVE + "; newest version is " + MessageColor.NEUTRAL + checked + MessageColor.POSITIVE + ".");
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "Could not check for update!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not check for update!");
                 }
                 return true;
             } else if (subcmd.equalsIgnoreCase("findtag") || subcmd.equalsIgnoreCase("search")) {
@@ -594,28 +594,28 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please specify a search term!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please specify a search term!");
                     return true;
                 }
                 String search = RoyalCommands.getFinalArg(args, 1);
                 try {
                     search = URLEncoder.encode(search, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
-                    cs.sendMessage(ChatColor.RED + "Tell the developer enc1.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Tell the developer enc1.");
                     return true;
                 }
                 URL u;
                 try {
                     u = new URL("http://dev.bukkit.org/search/?scope=projects&search=" + search);
                 } catch (MalformedURLException e) {
-                    cs.sendMessage(ChatColor.RED + "Malformed search term!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Malformed search term!");
                     return true;
                 }
                 BufferedReader br;
                 try {
                     br = new BufferedReader(new InputStreamReader(u.openStream()));
                 } catch (IOException e) {
-                    cs.sendMessage(ChatColor.RED + "Internal input/output error. Please try again.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Internal input/output error. Please try again.");
                     return true;
                 }
                 String inputLine;
@@ -623,21 +623,21 @@ public class CmdPluginManager implements CommandExecutor {
                 try {
                     while ((inputLine = br.readLine()) != null) content.append(inputLine);
                 } catch (IOException e) {
-                    cs.sendMessage(ChatColor.RED + "Internal input/output error. Please try again.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Internal input/output error. Please try again.");
                     return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Project name" + ChatColor.GRAY + " - tag");
+                cs.sendMessage(MessageColor.POSITIVE + "Project name" + MessageColor.NEUTRAL + " - tag");
                 for (int i = 0; i < 5; i++) {
                     String project = StringUtils.substringBetween(content.toString(), " row-joined-to-next\">", "</tr>");
                     String base = StringUtils.substringBetween(project, "<td class=\"col-search-entry\">", "</td>");
                     if (base == null) {
-                        if (i == 0) cs.sendMessage(ChatColor.RED + "No results found.");
+                        if (i == 0) cs.sendMessage(MessageColor.NEGATIVE + "No results found.");
                         return true;
                     }
                     Pattern p = Pattern.compile("<h2><a href=\"/server-mods/([\\W\\w]+)/\">([\\w\\W]+)</a></h2>");
                     Matcher m = p.matcher(base);
                     if (m == null) {
-                        if (i == 0) cs.sendMessage(ChatColor.RED + "No results found.");
+                        if (i == 0) cs.sendMessage(MessageColor.NEGATIVE + "No results found.");
                         return true;
                     }
                     m.find();
@@ -645,7 +645,7 @@ public class CmdPluginManager implements CommandExecutor {
                     String tag = m.group(1);
                     int beglen = StringUtils.substringBefore(content.toString(), base).length();
                     content = new StringBuilder(content.substring(beglen + project.length()));
-                    cs.sendMessage(ChatColor.BLUE + name + ChatColor.GRAY + " - " + tag);
+                    cs.sendMessage(MessageColor.POSITIVE + name + MessageColor.NEUTRAL + " - " + tag);
                 }
                 return true;
             } else if (subcmd.equalsIgnoreCase("delete")) {
@@ -654,32 +654,32 @@ public class CmdPluginManager implements CommandExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Please specify the filename to delete!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please specify the filename to delete!");
                     return true;
                 }
                 String toDelete = args[1];
                 if (!toDelete.endsWith(".jar")) {
-                    cs.sendMessage(ChatColor.RED + "Please only specify jar files!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please only specify jar files!");
                     return true;
                 }
                 if (toDelete.contains(File.separator)) {
-                    cs.sendMessage(ChatColor.RED + "Please don't try to leave the plugins directory!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please don't try to leave the plugins directory!");
                     return true;
                 }
                 File f = new File(plugin.getDataFolder().getParentFile() + File.separator + toDelete);
                 if (!f.exists()) {
-                    cs.sendMessage(ChatColor.RED + "No such file!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such file!");
                     return true;
                 }
                 boolean success = f.delete();
                 if (!success)
-                    cs.sendMessage(ChatColor.RED + "Could not delete " + ChatColor.GRAY + f.getName() + ChatColor.BLUE + ".");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not delete " + MessageColor.NEUTRAL + f.getName() + MessageColor.POSITIVE + ".");
                 else
-                    cs.sendMessage(ChatColor.BLUE + "Deleted " + ChatColor.GRAY + f.getName() + ChatColor.BLUE + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Deleted " + MessageColor.NEUTRAL + f.getName() + MessageColor.POSITIVE + ".");
                 return true;
             } else {
-                cs.sendMessage(ChatColor.RED + "Unknown subcommand!");
-                cs.sendMessage(ChatColor.RED + "Try " + ChatColor.GRAY + "/" + label + " help");
+                cs.sendMessage(MessageColor.NEGATIVE + "Unknown subcommand!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Try " + MessageColor.NEUTRAL + "/" + label + " help");
                 return true;
             }
         }

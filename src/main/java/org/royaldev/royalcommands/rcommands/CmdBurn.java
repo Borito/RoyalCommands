@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,20 +29,20 @@ public class CmdBurn implements CommandExecutor {
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (plugin.isAuthorized(t, "rcmds.exempt.burn")) {
-                cs.sendMessage(ChatColor.RED + "You cannot burn that player!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot burn that player!");
                 return true;
             }
             int len = 5;
             if (args.length > 1) len = RUtils.timeFormatToSeconds(args[1]);
             if (len <= 0) {
-                cs.sendMessage(ChatColor.RED + "Invalid time format.");
+                cs.sendMessage(MessageColor.NEGATIVE + "Invalid time format.");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "You have set " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " on fire for " + ChatColor.GRAY + RUtils.formatDateDiff((len * 1000) + System.currentTimeMillis()).substring(1) + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "You have set " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " on fire for " + MessageColor.NEUTRAL + RUtils.formatDateDiff((len * 1000) + System.currentTimeMillis()).substring(1) + MessageColor.POSITIVE + ".");
             t.setFireTicks(len * 20);
             return true;
         }

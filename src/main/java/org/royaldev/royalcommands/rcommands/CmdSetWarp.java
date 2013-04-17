@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.ConfManager;
+import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -26,7 +26,7 @@ public class CmdSetWarp implements CommandExecutor {
             }
 
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
 
@@ -53,7 +53,7 @@ public class CmdSetWarp implements CommandExecutor {
             warps.set("warps." + name + ".pitch", locPitch);
             warps.set("warps." + name + ".yaw", locYaw);
             warps.set("warps." + name + ".w", locW);
-            p.sendMessage(ChatColor.BLUE + "Warp \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");
+            p.sendMessage(MessageColor.POSITIVE + "Warp \"" + MessageColor.NEUTRAL + name + MessageColor.POSITIVE + "\" set.");
             return true;
         }
         return false;

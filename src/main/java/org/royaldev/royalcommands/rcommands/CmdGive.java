@@ -1,12 +1,13 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
@@ -29,7 +30,7 @@ public class CmdGive implements CommandExecutor {
     public static boolean giveItemStandalone(Player target, RoyalCommands plugin, String itemname, int amount) {
         if (target == null) return false;
         if (amount < 0) {
-            target.sendMessage(ChatColor.RED + "The amount must be positive!");
+            target.sendMessage(MessageColor.NEGATIVE + "The amount must be positive!");
             return false;
         }
         ItemStack stack;
@@ -38,21 +39,21 @@ public class CmdGive implements CommandExecutor {
         } catch (InvalidItemNameException e) {
             stack = RUtils.getItem(itemname, amount);
         } catch (NullPointerException e) {
-            target.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
+            target.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
             return false;
         }
         if (stack == null) {
-            target.sendMessage(ChatColor.RED + "Invalid item name!");
+            target.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
             return false;
         }
         Integer itemid = stack.getTypeId();
         if (itemid == 0) {
-            target.sendMessage(ChatColor.RED + "You cannot spawn air!");
+            target.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
             return false;
         }
-        target.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + RUtils.getItemName(Material.getMaterial(itemid)) + ChatColor.BLUE + " to " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
+        target.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
         HashMap<Integer, ItemStack> left = target.getInventory().addItem(stack);
-        if (!left.isEmpty() && plugin.dropExtras) for (ItemStack item : left.values())
+        if (!left.isEmpty() && Config.dropExtras) for (ItemStack item : left.values())
             target.getWorld().dropItemNaturally(target.getLocation(), item);
         return true;
     }
@@ -70,20 +71,20 @@ public class CmdGive implements CommandExecutor {
             }
             Player target = plugin.getServer().getPlayer(args[0]);
             if (target == null) {
-                cs.sendMessage(ChatColor.RED + "That player is not online!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                 return true;
             }
-            int amount = RoyalCommands.defaultStack;
+            int amount = Config.defaultStack;
             if (args.length == 3) {
                 try {
                     amount = Integer.parseInt(args[2]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "The amount was not a number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "The amount was not a number!");
                     return true;
                 }
             }
             if (amount < 1) {
-                cs.sendMessage(ChatColor.RED + "Invalid amount! You must specify a positive amount.");
+                cs.sendMessage(MessageColor.NEGATIVE + "Invalid amount! You must specify a positive amount.");
                 return true;
             }
             String name = args[1];
@@ -93,28 +94,28 @@ public class CmdGive implements CommandExecutor {
             } catch (InvalidItemNameException e) {
                 toInv = RUtils.getItem(name, amount);
             } catch (NullPointerException e) {
-                cs.sendMessage(ChatColor.RED + "ItemNameManager was not loaded. Let an administrator know.");
+                cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
                 return true;
             }
             if (toInv == null) {
-                cs.sendMessage(ChatColor.RED + "Invalid item name!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
                 return true;
             }
             Integer itemid = toInv.getTypeId();
             if (itemid == 0) {
-                cs.sendMessage(ChatColor.RED + "You cannot spawn air!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                 return true;
             }
-            if (plugin.blockedItems.contains(itemid.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + itemid)) {
-                cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
+            if (Config.blockedItems.contains(itemid.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + itemid)) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
-            if (!left.isEmpty() && plugin.dropExtras) for (ItemStack item : left.values())
+            if (!left.isEmpty() && Config.dropExtras) for (ItemStack item : left.values())
                 target.getWorld().dropItemNaturally(target.getLocation(), item);
-            cs.sendMessage(ChatColor.BLUE + "Giving " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + RUtils.getItemName(Material.getMaterial(itemid)) + ChatColor.BLUE + " to " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
-            target.sendMessage(ChatColor.BLUE + "You have been given " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + RUtils.getItemName(Material.getMaterial(itemid)) + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+            target.sendMessage(MessageColor.POSITIVE + "You have been given " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

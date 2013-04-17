@@ -1,8 +1,9 @@
 package org.royaldev.royalcommands.runners;
 
 import org.bukkit.OfflinePlayer;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +19,7 @@ public class WarnWatcher implements Runnable {
 
     @Override
     public void run() {
-        if (plugin.warnExpireTime < 1L) return;
+        if (Config.warnExpireTime < 1L) return;
         OfflinePlayer[] players = plugin.getServer().getOfflinePlayers();
         for (OfflinePlayer p : players) {
             PConfManager pcm = PConfManager.getPConfManager(p);
@@ -37,7 +38,7 @@ public class WarnWatcher implements Runnable {
                     continue;
                 }
                 long currentTime = new Date().getTime();
-                long timeExpires = timeSet + (plugin.warnExpireTime * 1000);
+                long timeExpires = timeSet + (Config.warnExpireTime * 1000);
                 if (timeExpires <= currentTime) warnsToRemove.add(s);
             }
             warns.removeAll(warnsToRemove);

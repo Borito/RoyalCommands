@@ -1,12 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.BooleanUtils;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -35,17 +35,17 @@ public class CmdMute implements CommandExecutor {
             PConfManager pcm = PConfManager.getPConfManager(t);
             if (!pcm.exists()) {
                 if (!t.isOnline() && !t.hasPlayedBefore()) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 pcm.createFile();
             }
             if (cs.getName().equalsIgnoreCase(t.getName())) {
-                cs.sendMessage(ChatColor.RED + "You can't mute yourself!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't mute yourself!");
                 return true;
             }
             if (plugin.isAuthorized(t, "rcmds.exempt.mute")) {
-                cs.sendMessage(ChatColor.RED + "You can't mute that player!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't mute that player!");
                 return true;
             }
             Boolean isMuted = pcm.getBoolean("muted");
@@ -53,20 +53,20 @@ public class CmdMute implements CommandExecutor {
             long muteTime = 0L;
             if (args.length > 1) muteTime = (long) RUtils.timeFormatToSeconds(args[1]);
             if (muteTime < 0L) {
-                cs.sendMessage(ChatColor.RED + "Invalid time format!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Invalid time format!");
                 return true;
             }
             pcm.set("muted", !isMuted);
             if (muteTime > 0L && !isMuted) pcm.set("mutetime", muteTime);
             else if (isMuted) pcm.set("mutetime", null);
             pcm.set("mutedat", System.currentTimeMillis());
-            String timePeriod = (muteTime > 0L && !isMuted) ? " for " + ChatColor.GRAY + RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1) : "";
-            cs.sendMessage(ChatColor.BLUE + "You have toggled mute " + ChatColor.GRAY + BooleanUtils.toStringOnOff(!isMuted) + ChatColor.BLUE + " for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + timePeriod + ChatColor.BLUE + ".");
+            String timePeriod = (muteTime > 0L && !isMuted) ? " for " + MessageColor.NEUTRAL + RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1) : "";
+            cs.sendMessage(MessageColor.POSITIVE + "You have toggled mute " + MessageColor.NEUTRAL + BooleanUtils.toStringOnOff(!isMuted) + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + timePeriod + MessageColor.POSITIVE + ".");
             if (t.isOnline()) {
                 if (!isMuted) // if is being muted
-                    t.getPlayer().sendMessage(ChatColor.RED + "You have been muted by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + timePeriod + ChatColor.RED + ".");
+                    t.getPlayer().sendMessage(MessageColor.NEGATIVE + "You have been muted by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + timePeriod + MessageColor.NEGATIVE + ".");
                 else
-                    t.getPlayer().sendMessage(ChatColor.BLUE + "You have been unmuted by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + ".");
+                    t.getPlayer().sendMessage(MessageColor.POSITIVE + "You have been unmuted by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
             }
             return true;
         }

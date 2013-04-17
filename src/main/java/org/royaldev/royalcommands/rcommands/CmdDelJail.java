@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -35,7 +35,7 @@ public class CmdDelJail implements CommandExecutor {
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 if (pconf.get("jails." + args[0]) == null) {
-                    cs.sendMessage(ChatColor.RED + "That jail does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That jail does not exist!");
                     return true;
                 }
                 pconf.set("jails." + args[0], null);
@@ -44,7 +44,7 @@ public class CmdDelJail implements CommandExecutor {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                cs.sendMessage(ChatColor.BLUE + "The jail \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + "\" has been deleted.");
+                cs.sendMessage(MessageColor.POSITIVE + "The jail \"" + MessageColor.NEUTRAL + args[0] + MessageColor.POSITIVE + "\" has been deleted.");
                 return true;
             }
         }

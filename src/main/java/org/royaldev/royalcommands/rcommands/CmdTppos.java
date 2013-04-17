@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -25,7 +25,7 @@ public class CmdTppos implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player) && args.length < 5) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 3) {
@@ -36,29 +36,29 @@ public class CmdTppos implements CommandExecutor {
             Double y = RUtils.getDouble(args[1]);
             Double z = RUtils.getDouble(args[2]);
             if (x == null || y == null || z == null) {
-                cs.sendMessage(ChatColor.RED + "One of the coordinates was invalid.");
+                cs.sendMessage(MessageColor.NEGATIVE + "One of the coordinates was invalid.");
                 return true;
             }
             Player p = (cs instanceof Player) ? (Player) cs : null;
             Player toTeleport = (args.length > 4) ? plugin.getServer().getPlayer(args[4]) : p;
             if (toTeleport == null || plugin.isVanished(toTeleport, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             Location pLoc;
             World w = toTeleport.getWorld();
             if (args.length > 3) w = plugin.getServer().getWorld(args[3]);
             if (w == null) {
-                cs.sendMessage(ChatColor.RED + "That world does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That world does not exist!");
                 return true;
             }
             pLoc = new Location(w, x, y, z);
             if (!toTeleport.getName().equals(cs.getName()))
-                cs.sendMessage(ChatColor.BLUE + "Teleporting " + ChatColor.GRAY + toTeleport.getName() + ChatColor.BLUE + " to x: " + ChatColor.GRAY + x + ChatColor.BLUE + ", y: " + ChatColor.GRAY + y + ChatColor.BLUE + ", z: " + ChatColor.GRAY + z + ChatColor.BLUE + " in world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
-            toTeleport.sendMessage(ChatColor.BLUE + "Teleporting you to x: " + ChatColor.GRAY + x + ChatColor.BLUE + ", y: " + ChatColor.GRAY + y + ChatColor.BLUE + ", z: " + ChatColor.GRAY + z + ChatColor.BLUE + " in world " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Teleporting " + MessageColor.NEUTRAL + toTeleport.getName() + MessageColor.POSITIVE + " to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
+            toTeleport.sendMessage(MessageColor.POSITIVE + "Teleporting you to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
             String error = RUtils.teleport(toTeleport, pLoc);
             if (!error.isEmpty()) {
-                toTeleport.sendMessage(ChatColor.RED + error);
+                toTeleport.sendMessage(MessageColor.NEGATIVE + error);
                 return true;
             }
             return true;

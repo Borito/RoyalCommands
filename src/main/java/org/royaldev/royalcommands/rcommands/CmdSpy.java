@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -25,19 +25,19 @@ public class CmdSpy implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             PConfManager pcm = PConfManager.getPConfManager(p);
             if (pcm.get("spy") == null || !pcm.getBoolean("spy")) {
                 pcm.set("spy", true);
-                cs.sendMessage(ChatColor.BLUE + "Spy mode enabled.");
+                cs.sendMessage(MessageColor.POSITIVE + "Spy mode enabled.");
                 return true;
             }
             if (pcm.getBoolean("spy")) {
                 pcm.set("spy", false);
-                cs.sendMessage(ChatColor.BLUE + "Spy mode disabled.");
+                cs.sendMessage(MessageColor.POSITIVE + "Spy mode disabled.");
                 return true;
             }
         }

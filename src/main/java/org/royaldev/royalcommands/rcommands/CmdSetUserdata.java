@@ -1,10 +1,10 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -31,11 +31,11 @@ public class CmdSetUserdata implements CommandExecutor {
             String value = RoyalCommands.getFinalArg(args, 2);
             PConfManager pcm = PConfManager.getPConfManager(name);
             if (!pcm.exists() || !plugin.getServer().getOfflinePlayer(name).hasPlayedBefore()) {
-                cs.sendMessage(ChatColor.RED + "No such player!");
+                cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
                 return true;
             }
             pcm.set(node, value);
-            cs.sendMessage(ChatColor.BLUE + "Set " + ChatColor.GRAY + node + ChatColor.BLUE + " to " + ChatColor.GRAY + value + ChatColor.BLUE + " for the userdata of " + ChatColor.GRAY + name + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Set " + MessageColor.NEUTRAL + node + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + value + MessageColor.POSITIVE + " for the userdata of " + MessageColor.NEUTRAL + name + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

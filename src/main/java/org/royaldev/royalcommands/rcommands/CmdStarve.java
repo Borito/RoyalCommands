@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,26 +31,26 @@ public class CmdStarve implements CommandExecutor {
             try {
                 toStarve = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED + "The damage must be a number between 1 and 20!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The damage must be a number between 1 and 20!");
                 return false;
             }
             if (toStarve > 20 || toStarve <= 0) {
-                cs.sendMessage(ChatColor.RED + "The damage you entered is not within 1 and 20!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The damage you entered is not within 1 and 20!");
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (!cs.getName().equalsIgnoreCase(t.getName()) && plugin.isAuthorized(t, "rcmds.exempt.starve")) {
-                cs.sendMessage(ChatColor.RED + "You may not starve that player.");
+                cs.sendMessage(MessageColor.NEGATIVE + "You may not starve that player.");
                 return true;
             }
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That person is not online!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That person is not online!");
                 return true;
             }
             int starveLevel = t.getFoodLevel() - toStarve;
             t.setFoodLevel(starveLevel);
-            t.sendMessage(ChatColor.RED + "You have just been starved by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + "!");
-            cs.sendMessage(ChatColor.BLUE + "You just starved " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + "!");
+            t.sendMessage(MessageColor.NEGATIVE + "You have just been starved by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + "!");
+            cs.sendMessage(MessageColor.POSITIVE + "You just starved " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + "!");
             return true;
         }
         return false;

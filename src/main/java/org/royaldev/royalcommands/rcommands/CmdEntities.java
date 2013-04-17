@@ -1,11 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -27,22 +28,22 @@ public class CmdEntities implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
-                double radius = plugin.defaultNear;
+                double radius = Config.defaultNear;
                 List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
                 int amount = 0;
                 for (Entity e : ents) {
                     if (e instanceof Player) continue;
                     double dist = p.getLocation().distanceSquared(e.getLocation());
-                    p.sendMessage(ChatColor.GRAY + e.getType().getName() + ": " + ChatColor.WHITE + Math.sqrt(dist));
+                    p.sendMessage(MessageColor.NEUTRAL + e.getType().getName() + ": " + MessageColor.RESET + Math.sqrt(dist));
                     amount++;
                 }
                 if (amount == 0) {
-                    p.sendMessage(ChatColor.RED + "Nothing nearby!");
+                    p.sendMessage(MessageColor.NEGATIVE + "Nothing nearby!");
                     return true;
                 }
                 return true;
@@ -53,15 +54,15 @@ public class CmdEntities implements CommandExecutor {
                 try {
                     radius = Double.parseDouble(args[0]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "That was not a valid number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That was not a valid number!");
                     return true;
                 }
                 if (radius == null || radius < 1) {
-                    cs.sendMessage(ChatColor.RED + "That was not a valid number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That was not a valid number!");
                     return true;
                 }
-                if (radius > plugin.maxNear) {
-                    p.sendMessage(ChatColor.RED + "That radius was too large!");
+                if (radius > Config.maxNear) {
+                    p.sendMessage(MessageColor.NEGATIVE + "That radius was too large!");
                     return true;
                 }
                 List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
@@ -69,11 +70,11 @@ public class CmdEntities implements CommandExecutor {
                 for (Entity e : ents) {
                     if (e instanceof Player) continue;
                     double dist = p.getLocation().distanceSquared(e.getLocation());
-                    p.sendMessage(ChatColor.GRAY + e.getType().getName() + ": " + ChatColor.WHITE + Math.sqrt(dist));
+                    p.sendMessage(MessageColor.NEUTRAL + e.getType().getName() + ": " + MessageColor.RESET + Math.sqrt(dist));
                     amount++;
                 }
                 if (amount == 0) {
-                    p.sendMessage(ChatColor.RED + "Nothing nearby!");
+                    p.sendMessage(MessageColor.NEGATIVE + "Nothing nearby!");
                     return true;
                 }
                 return true;

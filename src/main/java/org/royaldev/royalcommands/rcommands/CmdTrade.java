@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,8 +21,8 @@ public class CmdTrade implements CommandExecutor {
 
     public static void sendTradeRequest(Player target, Player sender) {
         tradedb.put(sender.getName(), target.getName());
-        target.sendMessage(ChatColor.GRAY + sender.getName() + ChatColor.BLUE + " has requested to trade with you.");
-        target.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/trade " + sender.getName() + ChatColor.BLUE + " to accept.");
+        target.sendMessage(MessageColor.NEUTRAL + sender.getName() + MessageColor.POSITIVE + " has requested to trade with you.");
+        target.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/trade " + sender.getName() + MessageColor.POSITIVE + " to accept.");
     }
 
     /**
@@ -55,7 +55,7 @@ public class CmdTrade implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -65,22 +65,22 @@ public class CmdTrade implements CommandExecutor {
             Player p = (Player) cs;
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (t.equals(p)) {
-                cs.sendMessage(ChatColor.RED + "You can't trade with yourself!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't trade with yourself!");
                 return true;
             }
             Inventory inv = getTradeInv(p, t);
             if (inv != null) {
-                p.sendMessage(ChatColor.BLUE + "Resumed trading with " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                p.sendMessage(MessageColor.POSITIVE + "Resumed trading with " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 p.openInventory(inv);
                 return true;
             }
             if (tradedb.containsKey(t.getName())) {
                 inv = plugin.getServer().createInventory(null, 36, "Trade");
-                p.sendMessage(ChatColor.BLUE + "Opened trading interface.");
+                p.sendMessage(MessageColor.POSITIVE + "Opened trading interface.");
                 p.openInventory(inv);
                 t.openInventory(inv);
                 final HashMap<String, String> trade = new HashMap<String, String>();
@@ -90,7 +90,7 @@ public class CmdTrade implements CommandExecutor {
                 return true;
             } else {
                 sendTradeRequest(t, p);
-                p.sendMessage(ChatColor.BLUE + "Sent a trade request to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                p.sendMessage(MessageColor.POSITIVE + "Sent a trade request to " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 return true;
             }
         }

@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
@@ -27,7 +27,7 @@ public class CmdSpawner implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -37,11 +37,11 @@ public class CmdSpawner implements CommandExecutor {
             Player p = (Player) cs;
             Block bb = RUtils.getTarget(p);
             if (bb == null) {
-                cs.sendMessage(ChatColor.RED + "No block found!");
+                cs.sendMessage(MessageColor.NEGATIVE + "No block found!");
                 return true;
             }
             if (!(bb.getState() instanceof CreatureSpawner)) {
-                cs.sendMessage(ChatColor.RED + "That's not a mob spawner!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That's not a mob spawner!");
                 return true;
             }
             CreatureSpawner crs = (CreatureSpawner) bb.getState();
@@ -49,11 +49,11 @@ public class CmdSpawner implements CommandExecutor {
             try {
                 ct = EntityType.valueOf(args[0].toUpperCase());
             } catch (Exception e) {
-                cs.sendMessage(ChatColor.RED + "Invalid mob!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Invalid mob!");
                 return true;
             }
             crs.setSpawnedType(ct);
-            cs.sendMessage(ChatColor.BLUE + "Spawner type set to " + ChatColor.GRAY + crs.getCreatureTypeName().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Spawner type set to " + MessageColor.NEUTRAL + crs.getCreatureTypeName().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

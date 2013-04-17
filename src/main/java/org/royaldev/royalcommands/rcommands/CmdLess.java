@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,7 +26,7 @@ public class CmdLess implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -35,16 +35,16 @@ public class CmdLess implements CommandExecutor {
                     if (i == null || i.getType().equals(Material.AIR)) continue;
                     i.setAmount(1);
                 }
-                cs.sendMessage(ChatColor.BLUE + "All items in your inventory have been reduced to one.");
+                cs.sendMessage(MessageColor.POSITIVE + "All items in your inventory have been reduced to one.");
                 return true;
             }
             ItemStack hand = p.getItemInHand();
             if (hand.getTypeId() == 0) {
-                cs.sendMessage(ChatColor.RED + "You can't spawn air!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
                 return true;
             }
             hand.setAmount(1);
-            cs.sendMessage(ChatColor.BLUE + "All of the item in hand, except for one, has been removed.");
+            cs.sendMessage(MessageColor.POSITIVE + "All of the item in hand, except for one, has been removed.");
             return true;
         }
         return false;

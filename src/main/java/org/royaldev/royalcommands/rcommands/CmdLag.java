@@ -5,6 +5,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -34,7 +35,7 @@ public class CmdLag implements CommandExecutor {
                 try {
                     runfor = Double.valueOf(args[0]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "Please input a valid number.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please input a valid number.");
                     return true;
                 }
             }
@@ -46,7 +47,7 @@ public class CmdLag implements CommandExecutor {
             final double started = System.currentTimeMillis();
             final double startedticks = world.getFullTime();
 
-            cs.sendMessage(ChatColor.BLUE + "This measures in-game time, so please do not change the time for " + ChatColor.GRAY + expsecs + ChatColor.BLUE + " seconds.");
+            cs.sendMessage(MessageColor.POSITIVE + "This measures in-game time, so please do not change the time for " + MessageColor.NEUTRAL + expsecs + MessageColor.POSITIVE + " seconds.");
 
             Runnable getlag = new Runnable() {
                 public void run() {
@@ -61,26 +62,26 @@ public class CmdLag implements CommandExecutor {
                     double rtps = currentticks / ranforsecs;
 
                     if (expticks != currentticks)
-                        cs.sendMessage(ChatColor.RED + "Got " + ChatColor.GRAY + currentticks + "ticks" + ChatColor.RED + " instead of " + ChatColor.GRAY + expticks + "ticks" + ChatColor.RED + "; Bukkit scheduling may be off.");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Got " + MessageColor.NEUTRAL + currentticks + "ticks" + MessageColor.NEGATIVE + " instead of " + MessageColor.NEUTRAL + expticks + "ticks" + MessageColor.NEGATIVE + "; Bukkit scheduling may be off.");
                     long rrtps = Math.round(rtps);
                     DecimalFormat df = new DecimalFormat("00.00");
                     String srtps = df.format(rtps);
                     if (rrtps == 20)
-                        cs.sendMessage(ChatColor.GREEN + "Full throttle" + ChatColor.WHITE + " - " + ChatColor.GREEN + 20 + ChatColor.WHITE + "/20 TPS");
+                        cs.sendMessage(ChatColor.GREEN + "Full throttle" + MessageColor.RESET + " - " + ChatColor.GREEN + 20 + MessageColor.RESET + "/20 TPS");
                     else if (rrtps < 5)
-                        cs.sendMessage(ChatColor.DARK_RED + "Inefficient" + ChatColor.WHITE + " - " + ChatColor.DARK_RED + srtps + ChatColor.WHITE + "/20 TPS");
+                        cs.sendMessage(ChatColor.DARK_RED + "Inefficient" + MessageColor.RESET + " - " + ChatColor.DARK_RED + srtps + MessageColor.RESET + "/20 TPS");
                     else if (rrtps < 10)
-                        cs.sendMessage(ChatColor.RED + "Severe lag" + ChatColor.WHITE + " - " + ChatColor.RED + srtps + ChatColor.WHITE + "/20 TPS");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Severe lag" + MessageColor.RESET + " - " + MessageColor.NEGATIVE + srtps + MessageColor.RESET + "/20 TPS");
                     else if (rrtps < 15)
-                        cs.sendMessage(ChatColor.RED + "Big lag" + ChatColor.WHITE + " - " + ChatColor.RED + srtps + ChatColor.WHITE + "/20 TPS");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Big lag" + MessageColor.RESET + " - " + MessageColor.NEGATIVE + srtps + MessageColor.RESET + "/20 TPS");
                     else if (rrtps <= 19)
-                        cs.sendMessage(ChatColor.YELLOW + "Small lag" + ChatColor.WHITE + " - " + ChatColor.YELLOW + srtps + ChatColor.WHITE + "/20 TPS");
+                        cs.sendMessage(ChatColor.YELLOW + "Small lag" + MessageColor.RESET + " - " + ChatColor.YELLOW + srtps + MessageColor.RESET + "/20 TPS");
                     else if (rrtps > 20)
-                        cs.sendMessage(ChatColor.GOLD + "Overboard" + ChatColor.WHITE + " - " + ChatColor.GOLD + srtps + ChatColor.WHITE + "/20 TPS");
+                        cs.sendMessage(ChatColor.GOLD + "Overboard" + MessageColor.RESET + " - " + ChatColor.GOLD + srtps + MessageColor.RESET + "/20 TPS");
                     else
-                        cs.sendMessage(ChatColor.GRAY + "Unknown" + ChatColor.WHITE + " - " + ChatColor.GRAY + srtps + ChatColor.WHITE + "/20 TPS");
+                        cs.sendMessage(MessageColor.NEUTRAL + "Unknown" + MessageColor.RESET + " - " + MessageColor.NEUTRAL + srtps + MessageColor.RESET + "/20 TPS");
 
-                    cs.sendMessage(ChatColor.BLUE + "Margin of error: " + ChatColor.GRAY + df.format(error) + "%");
+                    cs.sendMessage(MessageColor.POSITIVE + "Margin of error: " + MessageColor.NEUTRAL + df.format(error) + "%");
                 }
             };
 

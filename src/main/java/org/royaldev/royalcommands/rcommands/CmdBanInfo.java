@@ -1,12 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -35,27 +34,27 @@ public class CmdBanInfo implements CommandExecutor {
             if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(op);
             if (!pcm.exists()) {
-                cs.sendMessage(ChatColor.RED + "That player has never played before!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
                 return true;
             }
             if (!op.isBanned()) {
-                cs.sendMessage(ChatColor.GRAY + op.getName() + ChatColor.RED + " is not banned!");
+                cs.sendMessage(MessageColor.NEUTRAL + op.getName() + MessageColor.NEGATIVE + " is not banned!");
                 return true;
             }
-            cs.sendMessage(ChatColor.GRAY + op.getName() + ChatColor.BLUE + " is banned!");
+            cs.sendMessage(MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " is banned!");
             String banner = pcm.getString("banner", "Unknown");
-            cs.sendMessage(ChatColor.BLUE + "Banned by " + ChatColor.GRAY + banner);
+            cs.sendMessage(MessageColor.POSITIVE + "Banned by " + MessageColor.NEUTRAL + banner);
             String banReason = pcm.getString("banreason", "Unknown");
-            cs.sendMessage(ChatColor.BLUE + "Banned for " + ChatColor.GRAY + banReason);
+            cs.sendMessage(MessageColor.POSITIVE + "Banned for " + MessageColor.NEUTRAL + banReason);
             long banDate = pcm.getLong("bannedat", -1L);
             SimpleDateFormat sdf = new SimpleDateFormat("MMM d, y hh:mm:ss a");
             String bannedAt = (banDate < 0L) ? "Unknown" : sdf.format(new Date(banDate));
-            cs.sendMessage(ChatColor.BLUE + "Banned at " + ChatColor.GRAY + bannedAt);
+            cs.sendMessage(MessageColor.POSITIVE + "Banned at " + MessageColor.NEUTRAL + bannedAt);
             boolean isTempBan = pcm.get("bantime") != null;
-            cs.sendMessage(ChatColor.BLUE + "Is tempban? " + ChatColor.GRAY + BooleanUtils.toStringYesNo(isTempBan));
+            cs.sendMessage(MessageColor.POSITIVE + "Is tempban? " + MessageColor.NEUTRAL + ((isTempBan) ? "Yes" : "No"));
             if (!isTempBan) return true;
             String expire = sdf.format(new Date(pcm.getLong("bantime")));
-            cs.sendMessage(ChatColor.BLUE + "Tempban expires on " + ChatColor.GRAY + expire);
+            cs.sendMessage(MessageColor.POSITIVE + "Tempban expires on " + MessageColor.NEUTRAL + expire);
             return true;
         }
         return false;

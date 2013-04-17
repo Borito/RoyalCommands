@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,14 +29,14 @@ public class CmdRename implements CommandExecutor {
                 return false;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
             ItemStack hand = p.getItemInHand();
             if (hand == null || hand.getType() == Material.AIR) {
-                cs.sendMessage(ChatColor.RED + "You can't rename air!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't rename air!");
                 return true;
             }
             switch (hand.getType()) {
@@ -52,11 +52,11 @@ public class CmdRename implements CommandExecutor {
                 case MONSTER_EGG:
                 case CHEST:
                     if (newName.length() > 32) newName = newName.substring(0, 32);
-                    cs.sendMessage(ChatColor.BLUE + "The new name has been shortened to " + ChatColor.GRAY + newName + ChatColor.BLUE + " to prevent crashes.");
+                    cs.sendMessage(MessageColor.POSITIVE + "The new name has been shortened to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + " to prevent crashes.");
             }
             ItemStack is = RUtils.renameItem(hand, newName);
             p.setItemInHand(is);
-            cs.sendMessage(ChatColor.BLUE + "Renamed your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Renamed your " + MessageColor.NEUTRAL + RUtils.getItemName(is) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

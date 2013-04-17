@@ -1,12 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -36,18 +36,18 @@ public class CmdGod implements CommandExecutor {
                 t.setFoodLevel(20);
                 t.setSaturation(20F);
                 if (!pcm.getBoolean("godmode")) {
-                    cs.sendMessage(ChatColor.BLUE + "You have enabled godmode for yourself.");
+                    cs.sendMessage(MessageColor.POSITIVE + "You have enabled godmode for yourself.");
                     pcm.set("godmode", true);
                     return true;
                 } else {
-                    cs.sendMessage(ChatColor.BLUE + "You have disabled godmode for yourself.");
+                    cs.sendMessage(MessageColor.POSITIVE + "You have disabled godmode for yourself.");
                     pcm.set("godmode", false);
                     return true;
                 }
             }
             if (args.length > 0) {
                 if (!plugin.isAuthorized(cs, "rcmds.others.god")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                     plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                     return true;
                 }
@@ -56,23 +56,23 @@ public class CmdGod implements CommandExecutor {
                 if (t != null) {
                     if (!pcm.getBoolean("godmode")) {
                         if (!pcm.exists()) {
-                            cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
+                            cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
                             return true;
                         }
                         t.setHealth(t.getMaxHealth());
                         t.setFoodLevel(20);
                         t.setSaturation(20F);
-                        t.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has enabled godmode for you!");
-                        cs.sendMessage(ChatColor.BLUE + "You have enabled godmode for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                        t.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + " has enabled godmode for you!");
+                        cs.sendMessage(MessageColor.POSITIVE + "You have enabled godmode for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                         pcm.set("godmode", true);
                         return true;
                     } else {
                         t.setHealth(t.getMaxHealth());
                         t.setFoodLevel(20);
                         t.setSaturation(20F);
-                        t.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " has disabled godmode for you!");
+                        t.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + " has disabled godmode for you!");
                     }
-                    cs.sendMessage(ChatColor.BLUE + "You have disabled godmode for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "You have disabled godmode for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                     pcm.set("godmode", false);
                     return true;
                 }
@@ -81,7 +81,7 @@ public class CmdGod implements CommandExecutor {
             PConfManager pcm = PConfManager.getPConfManager(t2);
             if (!pcm.getBoolean("godmode")) {
                 if (!pcm.exists()) {
-                    cs.sendMessage(ChatColor.RED + "That player doesn't exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
                     return true;
                 }
                 if (t2.isOnline()) {
@@ -89,9 +89,9 @@ public class CmdGod implements CommandExecutor {
                     pl.setHealth(pl.getMaxHealth());
                     pl.setFoodLevel(20);
                     pl.setSaturation(20F);
-                    pl.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " has enabled godmode for you!");
+                    pl.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + " has enabled godmode for you!");
                 }
-                cs.sendMessage(ChatColor.BLUE + "You have enabled godmode for " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "You have enabled godmode for " + MessageColor.NEUTRAL + t2.getName() + MessageColor.POSITIVE + ".");
                 pcm.set("godmode", true);
                 return true;
             } else {
@@ -100,9 +100,9 @@ public class CmdGod implements CommandExecutor {
                     pl.setHealth(pl.getMaxHealth());
                     pl.setFoodLevel(20);
                     pl.setSaturation(20F);
-                    pl.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + cs.getName() + ChatColor.RED + " has disabled godmode for you!");
+                    pl.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + " has disabled godmode for you!");
                 }
-                cs.sendMessage(ChatColor.BLUE + "You have disabled godmode for " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "You have disabled godmode for " + MessageColor.NEUTRAL + t2.getName() + MessageColor.POSITIVE + ".");
                 pcm.set("godmode", false);
                 return true;
             }

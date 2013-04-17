@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -27,7 +27,7 @@ public class CmdIgnore implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -38,11 +38,11 @@ public class CmdIgnore implements CommandExecutor {
 
             Player t = plugin.getServer().getPlayer(name);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (plugin.isAuthorized(t, "rcmds.exempt.ignore")) {
-                cs.sendMessage(ChatColor.RED + "You cannot ignore that player!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot ignore that player!");
                 return true;
             }
             PConfManager pcm = PConfManager.getPConfManager(t);
@@ -52,13 +52,13 @@ public class CmdIgnore implements CommandExecutor {
                 if (ignored.toLowerCase().equals(cs.getName().toLowerCase())) {
                     players.remove(ignored);
                     pcm.set("ignoredby", players);
-                    cs.sendMessage(ChatColor.BLUE + "You have stopped ignoring " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "You have stopped ignoring " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                     return true;
                 }
             }
             players.add(cs.getName());
             pcm.set("ignoredby", players);
-            cs.sendMessage(ChatColor.BLUE + "You are now ignoring " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "You are now ignoring " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

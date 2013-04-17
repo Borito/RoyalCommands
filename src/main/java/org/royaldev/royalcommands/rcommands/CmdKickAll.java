@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -22,7 +23,7 @@ public class CmdKickAll implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            String kickreason = plugin.kickMessage;
+            String kickreason = Config.kickMessage;
             if (args.length > 0) kickreason = RoyalCommands.getFinalArg(args, 0);
             kickreason = RUtils.colorize(kickreason);
             Player p = null;

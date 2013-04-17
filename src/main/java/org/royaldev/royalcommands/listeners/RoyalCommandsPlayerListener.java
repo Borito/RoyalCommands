@@ -34,9 +34,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.royaldev.royalcommands.AFKUtils;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
 import org.royaldev.royalcommands.rcommands.CmdNameEntity;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
@@ -65,7 +67,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         ConfigurationSection cmdCds = plugin.getConfig().getConfigurationSection("command_cooldowns");
         if (cmdCds == null) return;
         boolean contains = cmdCds.getKeys(false).contains(command);
-        if (plugin.cooldownAliases) if (plugin.getCommand(command) != null)
+        if (Config.cooldownAliases) if (plugin.getCommand(command) != null)
             for (String alias : plugin.getCommand(command).getAliases())
                 if (cmdCds.getKeys(false).contains(alias)) {
                     contains = true;
@@ -78,7 +80,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     public void setTeleCooldown(OfflinePlayer p) {
-        double seconds = plugin.gTeleCd;
+        double seconds = Config.gTeleCd;
         if (seconds <= 0) return;
         PConfManager.getPConfManager(p).set("teleport_cooldown", (seconds * 1000) + new Date().getTime());
     }
@@ -100,14 +102,14 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void worldPerms(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
-        if (!plugin.worldAccessPerm) return;
+        if (!Config.worldAccessPerm) return;
         World from = e.getFrom().getWorld();
         World to = e.getTo().getWorld();
         if (from.equals(to)) return;
         Player p = e.getPlayer();
         if (plugin.isAuthorized(p, "rcmds.worldaccess." + to.getName())) return;
         e.setTo(e.getFrom());
-        p.sendMessage(ChatColor.RED + "You do not have permission to access the world \"" + RUtils.getMVWorldName(to) + ".\"");
+        p.sendMessage(MessageColor.NEGATIVE + "You do not have permission to access the world \"" + RUtils.getMVWorldName(to) + ".\"");
     }
 
     @EventHandler
@@ -133,7 +135,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void whitelistMessage(PlayerLoginEvent e) {
         if (!plugin.getServer().hasWhitelist()) return;
         if (e.getResult() != Result.KICK_WHITELIST) return;
-        if (!e.getPlayer().isWhitelisted()) e.disallow(Result.KICK_WHITELIST, plugin.whitelistFormat);
+        if (!e.getPlayer().isWhitelisted()) e.disallow(Result.KICK_WHITELIST, Config.whitelistFormat);
     }
 
     @EventHandler
@@ -146,11 +148,11 @@ public class RoyalCommandsPlayerListener implements Listener {
         PConfManager pcm = PConfManager.getPConfManager(p);
         Long l = pcm.getLong("teleport_warmup");
         if (l == null) return;
-        int toAdd = plugin.teleportWarmup * 1000;
+        int toAdd = Config.teleportWarmup * 1000;
         l = l + toAdd;
         long c = new Date().getTime();
         if (l > c) {
-            p.sendMessage(ChatColor.RED + "You moved! Teleport cancelled!");
+            p.sendMessage(MessageColor.NEGATIVE + "You moved! Teleport cancelled!");
             pcm.set("teleport_warmup", -1L);
         }
     }
@@ -162,9 +164,9 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void whitelist(PlayerLoginEvent e) {
-        if (!plugin.useWhitelist) return;
-        if (!plugin.whitelist.contains(e.getPlayer().getName()))
-            e.disallow(Result.KICK_WHITELIST, plugin.whitelistFormat);
+        if (!Config.useWhitelist) return;
+        if (!Config.whitelist.contains(e.getPlayer().getName()))
+            e.disallow(Result.KICK_WHITELIST, Config.whitelistFormat);
     }
 
     @EventHandler
@@ -181,7 +183,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 setCooldown(command, p);
                 return;
             }
-            p.sendMessage(ChatColor.RED + "You can't use that command for" + ChatColor.GRAY + RUtils.formatDateDiff(currentcd) + ChatColor.RED + ".");
+            p.sendMessage(MessageColor.NEGATIVE + "You can't use that command for" + MessageColor.NEUTRAL + RUtils.formatDateDiff(currentcd) + MessageColor.NEGATIVE + ".");
             e.setCancelled(true);
             return;
         }
@@ -199,7 +201,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 setTeleCooldown(p);
                 return;
             }
-            p.sendMessage(ChatColor.RED + "You can't teleport for" + ChatColor.GRAY + RUtils.formatDateDiff(currentcd) + ChatColor.RED + ".");
+            p.sendMessage(MessageColor.NEGATIVE + "You can't teleport for" + MessageColor.NEUTRAL + RUtils.formatDateDiff(currentcd) + MessageColor.NEGATIVE + ".");
             e.setCancelled(true);
             return;
         }
@@ -210,7 +212,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
         if (PConfManager.getPConfManager(e.getPlayer()).getBoolean("jailed")) {
-            e.getPlayer().sendMessage(ChatColor.RED + "You are jailed and may not teleport.");
+            e.getPlayer().sendMessage(MessageColor.NEGATIVE + "You are jailed and may not teleport.");
             e.setCancelled(true);
         }
     }
@@ -236,25 +238,25 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (event.isCancelled()) return;
         Player p = event.getPlayer();
         PConfManager pcm = PConfManager.getPConfManager(p);
-        if (plugin.showcommands) {
+        if (Config.showcommands) {
             String command = event.getMessage().split(" ")[0].toLowerCase();
-            if (!plugin.logBlacklist.contains(command.substring(1)))
+            if (!Config.logBlacklist.contains(command.substring(1)))
                 log.info("[PLAYER_COMMAND] " + p.getName() + ": " + event.getMessage());
         }
         if (pcm.getBoolean("muted")) {
             if (pcm.get("mutetime") != null && !RUtils.isTimeStampValidAddTime(p, "mutetime", "mutedat"))
                 pcm.set("muted", false);
-            for (String command : plugin.muteCmds) {
+            for (String command : Config.muteCmds) {
                 if (!(event.getMessage().toLowerCase().startsWith(command.toLowerCase() + " ") || event.getMessage().equalsIgnoreCase(command.toLowerCase())))
                     continue;
-                p.sendMessage(ChatColor.RED + "You are muted.");
+                p.sendMessage(MessageColor.NEGATIVE + "You are muted.");
                 log.info("[RoyalCommands] " + p.getName() + " tried to use that command, but is muted.");
                 event.setCancelled(true);
             }
         }
 
         if (pcm.getBoolean("jailed")) {
-            p.sendMessage(ChatColor.RED + "You are jailed.");
+            p.sendMessage(MessageColor.NEGATIVE + "You are jailed.");
             log.info("[RoyalCommands] " + p.getName() + " tried to use that command, but is jailed.");
             event.setCancelled(true);
         }
@@ -262,7 +264,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        if (!plugin.backpackReset) return;
+        if (!Config.backpackReset) return;
         Player p = e.getEntity();
         Inventory backpack = RUtils.getBackpack(p);
         backpack.clear();
@@ -296,7 +298,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         AFKUtils.setLastMove(p, new Date().getTime());
         if (AFKUtils.isAfk(p)) {
             AFKUtils.unsetAfk(p);
-            plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.returnFormat, p)));
+            plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.returnFormat, p)));
         }
         PConfManager pcm = PConfManager.getPConfManager(p);
         if (pcm.getBoolean("muted", false)) {
@@ -308,9 +310,9 @@ public class RoyalCommandsPlayerListener implements Listener {
             if (pcm.get("mutetime") != null && pcm.get("mutedat") != null) {
                 long mutedAt = pcm.getLong("mutedat");
                 long muteTime = pcm.getLong("mutetime") * 1000L;
-                howLong = " for " + ChatColor.GRAY + RUtils.formatDateDiff(muteTime + mutedAt).substring(1) + ChatColor.RED;
+                howLong = " for " + MessageColor.NEUTRAL + RUtils.formatDateDiff(muteTime + mutedAt).substring(1) + MessageColor.NEGATIVE;
             }
-            p.sendMessage(ChatColor.RED + "You are muted and cannot speak" + howLong + ".");
+            p.sendMessage(MessageColor.NEGATIVE + "You are muted and cannot speak" + howLong + ".");
             plugin.log.info("[RoyalCommands] " + p.getName() + " is muted but tried to say \"" + event.getMessage() + "\"");
             event.setFormat("");
             event.setCancelled(true);
@@ -367,7 +369,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (event.isCancelled()) return;
         if (!AFKUtils.isAfk(event.getPlayer())) return;
         AFKUtils.unsetAfk(event.getPlayer());
-        plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.returnFormat, event.getPlayer())));
+        plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.returnFormat, event.getPlayer())));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -385,20 +387,18 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (act.equals(Action.PHYSICAL)) return;
         ItemStack id = event.getItem();
         if (id == null) return;
-        int idn = id.getTypeId();
-        if (idn == 0) return;
-        List<String> cmds = PConfManager.getPConfManager(event.getPlayer()).getStringList("assign." + idn);
-        if (cmds == null) return;
+        List<String> cmds = RUtils.getAssignment(id, PConfManager.getPConfManager(event.getPlayer()));
+        if (cmds == null || cmds.isEmpty()) return;
         for (String s : cmds) {
             if (s.toLowerCase().trim().startsWith("c:"))
                 event.getPlayer().chat(s.trim().substring(2));
             else {
                 event.getPlayer().performCommand(s.trim());
-                if (plugin.showcommands) {
+                if (Config.showcommands) {
                     String[] parts = s.split(" ");
                     if (parts.length > 0) {
                         String command = parts[0].toLowerCase();
-                        if (!plugin.logBlacklist.contains(command.substring(1)))
+                        if (!Config.logBlacklist.contains(command.substring(1)))
                             log.info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": /" + s);
                     }
                 }
@@ -409,14 +409,11 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void onAssignHitPlayer(PlayerInteractEntityEvent e) {
         //if (e.isCancelled()) return;
-        if (PConfManager.getPConfManager(e.getPlayer()).getBoolean("jailed"))
-            e.setCancelled(true);
+        if (PConfManager.getPConfManager(e.getPlayer()).getBoolean("jailed")) e.setCancelled(true);
         ItemStack id = e.getPlayer().getItemInHand();
         if (id == null) return;
-        int idn = id.getTypeId();
-        if (idn == 0) return;
-        List<String> cmds = PConfManager.getPConfManager(e.getPlayer()).getStringList("assign." + idn);
-        if (cmds == null) return;
+        List<String> cmds = RUtils.getAssignment(id, PConfManager.getPConfManager(e.getPlayer()));
+        if (cmds == null || cmds.isEmpty()) return;
         Player clicked = null;
         if (e.getRightClicked() instanceof Player) clicked = (Player) e.getRightClicked();
         for (String s : cmds) {
@@ -425,11 +422,11 @@ public class RoyalCommandsPlayerListener implements Listener {
                 e.getPlayer().chat(s.trim().substring(2));
             else {
                 e.getPlayer().performCommand(s.trim());
-                if (plugin.showcommands) {
+                if (Config.showcommands) {
                     String[] parts = s.split(" ");
                     if (parts.length > 0) {
                         String command = parts[0].toLowerCase();
-                        if (!plugin.logBlacklist.contains(command.substring(1)))
+                        if (!Config.logBlacklist.contains(command.substring(1)))
                             log.info("[PLAYER_COMMAND] " + e.getPlayer().getName() + ": /" + s);
                     }
                 }
@@ -439,17 +436,15 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onPInt(PlayerInteractEvent event) {
-        if (PConfManager.getPConfManager(event.getPlayer()).getBoolean("frozen"))
-            event.setCancelled(true);
-        if (plugin.buildPerm && !plugin.isAuthorized(event.getPlayer(), "rcmds.build"))
-            event.setCancelled(true);
+        if (PConfManager.getPConfManager(event.getPlayer()).getBoolean("frozen")) event.setCancelled(true);
+        if (Config.buildPerm && !plugin.isAuthorized(event.getPlayer(), "rcmds.build")) event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH) // run after others
     public void ipBans(PlayerLoginEvent e) {
         String ip = e.getAddress().toString().replace("/", "");
         if (!RUtils.isIPBanned(ip)) return;
-        String message = plugin.ipBanFormat;
+        String message = Config.ipBanFormat;
         message = message.replace("{ip}", ip);
         e.disallow(Result.KICK_BANNED, RUtils.colorize(message));
     }
@@ -477,16 +472,16 @@ public class RoyalCommandsPlayerListener implements Listener {
         // Get the banreason from the player's userdata file
         String reason = pcm.getString("banreason"); // Returns string or null
         // Check if there was none, and if there wasn't, set it to default ban message.
-        if (reason == null) reason = plugin.banMessage;
+        if (reason == null) reason = Config.banMessage;
         String kicker = pcm.getString("banner");
         if (kicker == null) kicker = "Unknown";
         String kickMessage;
         if (pcm.get("bantime") != null) { // if tempban
-            kickMessage = RUtils.getMessage(plugin.tempbanFormat, reason, kicker);
+            kickMessage = RUtils.getMessage(Config.tempbanFormat, reason, kicker);
             long banTime = pcm.getLong("bantime");
             kickMessage = kickMessage.replace("{length}", RUtils.formatDateDiff(banTime).substring(1));
         } else
-            kickMessage = RUtils.getMessage(plugin.banFormat, reason, kicker);
+            kickMessage = RUtils.getMessage(Config.banFormat, reason, kicker);
         // Set the kick message to the ban reason
         event.setKickMessage(kickMessage);
         // Disallow the event
@@ -513,22 +508,22 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (plugin.newVersion == null) return;
         if (!plugin.newVersion.contains(plugin.version) && !plugin.version.contains("pre") && plugin.isAuthorized(p, "rcmds.updates")) {
             String newV = plugin.newVersion.split("RoyalCommands")[1].trim().substring(1);
-            p.sendMessage(ChatColor.BLUE + "RoyalCommands " + ChatColor.GRAY + "v" + newV + ChatColor.BLUE + " is out! You are running " + ChatColor.GRAY + "v" + plugin.version + ChatColor.BLUE + ".");
-            p.sendMessage(ChatColor.BLUE + "Get the new version at " + ChatColor.DARK_AQUA + "http://dev.bukkit.org/server-mods/royalcommands" + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "RoyalCommands " + MessageColor.NEUTRAL + "v" + newV + MessageColor.POSITIVE + " is out! You are running " + MessageColor.NEUTRAL + "v" + plugin.version + MessageColor.POSITIVE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Get the new version at " + ChatColor.DARK_AQUA + "http://dev.bukkit.org/server-mods/royalcommands" + MessageColor.POSITIVE + ".");
         }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void showMotd(PlayerJoinEvent e) {
-        if (!plugin.motdLogin) return;
+        if (!Config.motdLogin) return;
         CmdMotd.showMotd(e.getPlayer());
     }
 
     @EventHandler
     public void welcomeNewPlayers(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (plugin.useWelcome && !p.hasPlayedBefore()) {
-            String welcomemessage = plugin.welcomeMessage;
+        if (Config.useWelcome && !p.hasPlayedBefore()) {
+            String welcomemessage = Config.welcomeMessage;
             welcomemessage = welcomemessage.replace("{name}", p.getName());
             welcomemessage = welcomemessage.replace("{dispname}", p.getDisplayName());
             welcomemessage = welcomemessage.replace("{world}", p.getWorld().getName());
@@ -556,7 +551,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 pcm.set("allow-tp", true);
                 log.info("[RoyalCommands] Userdata creation finished.");
             }
-            if (plugin.stsNew)
+            if (Config.stsNew)
                 RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
         } else {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
@@ -564,8 +559,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             playerip = playerip.replace("/", "");
             pcm.set("ip", playerip);
         }
-        if (plugin.sendToSpawn) {
-            if (plugin.stsBack)
+        if (Config.sendToSpawn) {
+            if (Config.stsBack)
                 RUtils.teleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
             else
                 RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
@@ -583,7 +578,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void leRespawn(PlayerRespawnEvent e) {
-        if (!plugin.overrideRespawn) return;
+        if (!Config.overrideRespawn) return;
         e.setRespawnLocation(CmdSpawn.getWorldSpawn(e.getPlayer().getWorld()));
     }
 
@@ -601,9 +596,9 @@ public class RoyalCommandsPlayerListener implements Listener {
         le.setCustomNameVisible(!newName.isEmpty());
         CmdNameEntity.cancelNaming(p);
         if (newName.isEmpty())
-            p.sendMessage(ChatColor.BLUE + "Successfully removed the name from that " + ChatColor.GRAY + le.getType().name().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Successfully removed the name from that " + MessageColor.NEUTRAL + le.getType().name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
         else
-            p.sendMessage(ChatColor.BLUE + "Successfully renamed that " + ChatColor.GRAY + le.getType().name().toLowerCase().replace("_", " ") + ChatColor.BLUE + " to " + ChatColor.GRAY + newName + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Successfully renamed that " + MessageColor.NEUTRAL + le.getType().name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
     }
 
 }

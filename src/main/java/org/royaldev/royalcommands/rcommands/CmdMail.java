@@ -1,12 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -44,14 +44,14 @@ public class CmdMail implements CommandExecutor {
             }
             if (args[0].equalsIgnoreCase("read")) {
                 if (!(cs instanceof Player)) {
-                    cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                     return true;
                 }
                 Player p = (Player) cs;
                 final PConfManager pcm = PConfManager.getPConfManager(p);
                 final List<String> mails = pcm.getStringList("mail");
                 if (mails.isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + "You have no mail!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You have no mail!");
                     return true;
                 }
                 for (String mail : mails) {
@@ -59,19 +59,19 @@ public class CmdMail implements CommandExecutor {
                     if (splitMail.length < 2) continue;
                     final String user = splitMail[0];
                     final String msg = splitMail[1];
-                    cs.sendMessage(ChatColor.BLUE + "[" + ChatColor.GRAY + user + ChatColor.BLUE + "] " + ChatColor.GRAY + msg);
+                    cs.sendMessage(MessageColor.POSITIVE + "[" + MessageColor.NEUTRAL + user + MessageColor.POSITIVE + "] " + MessageColor.NEUTRAL + msg);
                 }
-                cs.sendMessage(ChatColor.BLUE + "Use " + ChatColor.GRAY + "/mail clear" + ChatColor.BLUE + " to clear your mailbox.");
+                cs.sendMessage(MessageColor.POSITIVE + "Use " + MessageColor.NEUTRAL + "/mail clear" + MessageColor.POSITIVE + " to clear your mailbox.");
             } else if (args[0].equalsIgnoreCase("clear")) {
                 if (!(cs instanceof Player)) {
-                    cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                     return true;
                 }
                 Player p = (Player) cs;
                 final PConfManager pcm = PConfManager.getPConfManager(p);
                 if (!pcm.exists()) pcm.createFile();
                 if (pcm.isSet("mail")) pcm.set("mail", null);
-                cs.sendMessage(ChatColor.BLUE + "Your mailbox has been cleared.");
+                cs.sendMessage(MessageColor.POSITIVE + "Your mailbox has been cleared.");
             } else if (args[0].equalsIgnoreCase("send")) {
                 if (!plugin.isAuthorized(cs, "rcmds.mail.send")) {
                     RUtils.dispNoPerms(cs);
@@ -83,7 +83,7 @@ public class CmdMail implements CommandExecutor {
                 }
                 OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[1]);
                 if (!op.hasPlayedBefore()) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 final String senderName = cs.getName();
@@ -92,7 +92,7 @@ public class CmdMail implements CommandExecutor {
                 List<String> mail = pcm.getStringList("mail");
                 mail.add(newmail);
                 pcm.set("mail", mail);
-                cs.sendMessage(ChatColor.BLUE + "Mail has been sent.");
+                cs.sendMessage(MessageColor.POSITIVE + "Mail has been sent.");
             } else {
                 cs.sendMessage(cmd.getDescription());
                 return false;

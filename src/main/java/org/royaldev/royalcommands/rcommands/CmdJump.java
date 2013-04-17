@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -26,19 +26,19 @@ public class CmdJump implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             Block bb = RUtils.getTarget(p);
             if (bb == null) {
-                cs.sendMessage(ChatColor.RED + "Can't jump there!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Can't jump there!");
                 return true;
             }
             Location bLoc = new Location(p.getWorld(), bb.getLocation().getX() + .5, bb.getLocation().getY() + 1, bb.getLocation().getZ() + .5, p.getLocation().getYaw(), p.getLocation().getPitch());
             String error = RUtils.teleport(p, bLoc);
             if (!error.isEmpty()) {
-                p.sendMessage(ChatColor.RED + error);
+                p.sendMessage(MessageColor.NEGATIVE + error);
                 return true;
             }
             return true;

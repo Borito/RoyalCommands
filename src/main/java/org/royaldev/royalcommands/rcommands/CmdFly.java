@@ -1,7 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.BooleanUtils;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +24,7 @@ public class CmdFly implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player) & args.length < 1) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -32,7 +32,7 @@ public class CmdFly implements CommandExecutor {
                 if (p.getAllowFlight()) p.setAllowFlight(false);
                 else p.setAllowFlight(true);
                 String status = (p.getAllowFlight()) ? "on" : "off";
-                p.sendMessage(ChatColor.BLUE + "Toggled flight to " + ChatColor.GRAY + status + ChatColor.BLUE + ".");
+                p.sendMessage(MessageColor.POSITIVE + "Toggled flight to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
             } else {
                 if (!plugin.isAuthorized(cs, "rcmds.others.fly")) {
                     RUtils.dispNoPerms(cs);
@@ -40,14 +40,14 @@ public class CmdFly implements CommandExecutor {
                 }
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null || plugin.isVanished(t, cs)) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 if (t.getAllowFlight()) t.setAllowFlight(false);
                 else t.setAllowFlight(true);
                 String status = BooleanUtils.toStringOnOff(t.getAllowFlight());
-                cs.sendMessage(ChatColor.BLUE + "Toggled flight to " + ChatColor.GRAY + status + ChatColor.BLUE + " on " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-                t.sendMessage(ChatColor.BLUE + "You have had flight toggled to " + ChatColor.GRAY + status + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Toggled flight to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " on " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+                t.sendMessage(MessageColor.POSITIVE + "You have had flight toggled to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
             }
             return true;
         }

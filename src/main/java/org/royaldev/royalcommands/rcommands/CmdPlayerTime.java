@@ -1,10 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -49,7 +50,7 @@ public class CmdPlayerTime implements CommandExecutor {
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             String possessive = (t.getName().toLowerCase().endsWith("s")) ? "'" : "'s";
@@ -58,18 +59,18 @@ public class CmdPlayerTime implements CommandExecutor {
                 try {
                     time = Integer.valueOf(args[1]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "That time was invalid!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That time was invalid!");
                     return true;
                 }
             }
             if (time == null) {
                 t.resetPlayerTime();
-                cs.sendMessage(ChatColor.BLUE + "Synced " + ChatColor.GRAY + t.getName() + possessive + ChatColor.BLUE + " time with the server's.");
+                cs.sendMessage(MessageColor.POSITIVE + "Synced " + MessageColor.NEUTRAL + t.getName() + possessive + MessageColor.POSITIVE + " time with the server's.");
                 return true;
             }
-            if (plugin.smoothTime) smoothPlayerTimeChange(time, t);
+            if (Config.smoothTime) smoothPlayerTimeChange(time, t);
             t.setPlayerTime(time, false);
-            cs.sendMessage(ChatColor.BLUE + "Set " + ChatColor.GRAY + t.getName() + possessive + ChatColor.BLUE + " time to " + ChatColor.GRAY + time + " ticks" + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Set " + MessageColor.NEUTRAL + t.getName() + possessive + MessageColor.POSITIVE + " time to " + MessageColor.NEUTRAL + time + " ticks" + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

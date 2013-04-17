@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -33,11 +34,11 @@ public class CmdSlap implements CommandExecutor {
             Player victim;
             victim = plugin.getServer().getPlayer(args[0]);
             if (victim == null || plugin.isVanished(victim, cs)) {
-                cs.sendMessage(ChatColor.RED + "That person is not online!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That person is not online!");
                 return true;
             }
             if (plugin.isAuthorized(victim, "rcmds.exempt.slap")) {
-                cs.sendMessage(ChatColor.RED + "You may not slap that player.");
+                cs.sendMessage(MessageColor.NEGATIVE + "You may not slap that player.");
                 return true;
             }
             Random r = new Random();
@@ -46,7 +47,7 @@ public class CmdSlap implements CommandExecutor {
             push.setX(r.nextInt(4) - 2);
             push.setZ(r.nextInt(4) - 2);
             victim.setVelocity(push);
-            plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + ChatColor.WHITE + " slaps " + ChatColor.RED + victim.getName() + ChatColor.WHITE + "!");
+            plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + MessageColor.RESET + " slaps " + MessageColor.NEGATIVE + victim.getName() + MessageColor.RESET + "!");
             return true;
         }
         return false;

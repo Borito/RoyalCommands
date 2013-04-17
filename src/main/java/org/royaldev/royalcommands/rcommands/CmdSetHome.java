@@ -1,14 +1,15 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdSetHome implements CommandExecutor {
 
@@ -27,8 +28,8 @@ public class CmdSetHome implements CommandExecutor {
             group = "";
         }
         if (group == null) group = "";
-        ConfigurationSection players = plugin.homeLimits.getConfigurationSection("players");
-        ConfigurationSection groups = plugin.homeLimits.getConfigurationSection("groups");
+        ConfigurationSection players = Config.homeLimits.getConfigurationSection("players");
+        ConfigurationSection groups = Config.homeLimits.getConfigurationSection("groups");
         Integer limit;
         if (players != null && players.contains(name)) limit = players.getInt(name);
         else if (groups != null && groups.contains(group)) limit = groups.getInt(group);
@@ -51,12 +52,12 @@ public class CmdSetHome implements CommandExecutor {
             }
 
             if (args.length > 0 && !plugin.isAuthorized(cs, "rcmds.sethome.multi")) {
-                RUtils.dispNoPerms(cs, ChatColor.RED + "You don't have permission for multiple homes!");
+                RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You don't have permission for multiple homes!");
                 return true;
             }
 
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -71,7 +72,7 @@ public class CmdSetHome implements CommandExecutor {
             if (args.length > 0) name = args[0];
 
             if (name.contains(":")) {
-                cs.sendMessage(ChatColor.RED + "The name of your home cannot contain \":\"!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The name of your home cannot contain \":\"!");
                 return true;
             }
 
@@ -80,11 +81,11 @@ public class CmdSetHome implements CommandExecutor {
             int curHomes = getCurrentHomes(p);
             if (limit != null && pcm.get("home." + name) != null) {
                 if (limit == 0) {
-                    RUtils.dispNoPerms(cs, ChatColor.RED + "Your home limit is set to " + ChatColor.GRAY + "0" + ChatColor.RED + "!");
-                    cs.sendMessage(ChatColor.RED + "You can't set any homes!");
+                    RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "Your home limit is set to " + MessageColor.NEUTRAL + "0" + MessageColor.NEGATIVE + "!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You can't set any homes!");
                     return true;
                 } else if (curHomes >= limit && limit > -1) {
-                    RUtils.dispNoPerms(cs, ChatColor.RED + "You've reached your max number of homes! (" + ChatColor.GRAY + limit + ChatColor.RED + ")");
+                    RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You've reached your max number of homes! (" + MessageColor.NEUTRAL + limit + MessageColor.NEGATIVE + ")");
                     return true;
                 }
             }
@@ -106,9 +107,9 @@ public class CmdSetHome implements CommandExecutor {
                 pcm.set("home.home.w", locW);
             }
             if (args.length > 0) {
-                p.sendMessage(ChatColor.BLUE + "Home \"" + ChatColor.GRAY + name + ChatColor.BLUE + "\" set.");
+                p.sendMessage(MessageColor.POSITIVE + "Home \"" + MessageColor.NEUTRAL + name + MessageColor.POSITIVE + "\" set.");
             } else {
-                p.sendMessage(ChatColor.BLUE + "Home set.");
+                p.sendMessage(MessageColor.POSITIVE + "Home set.");
             }
             return true;
         }

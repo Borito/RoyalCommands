@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,15 +26,15 @@ public class CmdBanList implements CommandExecutor {
             }
             Set<OfflinePlayer> banList = plugin.getServer().getBannedPlayers();
             if (banList.isEmpty()) {
-                cs.sendMessage(ChatColor.RED + "There are no banned players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "There are no banned players!");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "There are " + ChatColor.GRAY + banList.size() + ChatColor.BLUE + " banned players:");
+            cs.sendMessage(MessageColor.POSITIVE + "There are " + MessageColor.NEUTRAL + banList.size() + MessageColor.POSITIVE + " banned players:");
             StringBuilder sb = new StringBuilder();
             for (OfflinePlayer op : banList) {
-                sb.append(ChatColor.GRAY);
+                sb.append(MessageColor.NEUTRAL);
                 sb.append(op.getName());
-                sb.append(ChatColor.RESET);
+                sb.append(MessageColor.RESET);
                 sb.append(", ");
             }
             cs.sendMessage(sb.substring(0, sb.length() - 4));

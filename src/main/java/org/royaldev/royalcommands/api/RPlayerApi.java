@@ -3,7 +3,7 @@ package org.royaldev.royalcommands.api;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AFKUtils;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class RPlayerApi {
 

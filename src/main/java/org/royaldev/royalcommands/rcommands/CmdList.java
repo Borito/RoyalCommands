@@ -1,12 +1,13 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.text.StrBuilder;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AFKUtils;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -30,7 +31,7 @@ public class CmdList implements CommandExecutor {
         String numPlayers;
         if (canSeeVanished && hid > 0) numPlayers = (all - hid) + "/" + hid;
         else numPlayers = String.valueOf(all - hid);
-        return ChatColor.BLUE + "There are currently " + ChatColor.GRAY + numPlayers + ChatColor.BLUE + " out of " + ChatColor.GRAY + plugin.getServer().getMaxPlayers() + ChatColor.BLUE + " players online.";
+        return MessageColor.POSITIVE + "There are currently " + MessageColor.NEUTRAL + numPlayers + MessageColor.POSITIVE + " out of " + MessageColor.NEUTRAL + plugin.getServer().getMaxPlayers() + MessageColor.POSITIVE + " players online.";
     }
 
     public static String getSimpleList(CommandSender cs) {
@@ -38,16 +39,16 @@ public class CmdList implements CommandExecutor {
         StringBuilder sb = new StringBuilder();
         for (Player p : pl) {
             if (plugin.isVanished(p) && plugin.isAuthorized(cs, "rcmds.seehidden")) {
-                sb.append(ChatColor.GRAY);
+                sb.append(MessageColor.NEUTRAL);
                 sb.append("[HIDDEN]");
-                sb.append(ChatColor.RESET);
+                sb.append(MessageColor.RESET);
                 sb.append(formatPrepend(p));
-                sb.append(ChatColor.RESET);
+                sb.append(MessageColor.RESET);
                 sb.append(", ");
             } else if (!plugin.isVanished(p)) {
-                if (AFKUtils.isAfk(p)) sb.append(ChatColor.GRAY + "[AFK]");
+                if (AFKUtils.isAfk(p)) sb.append(MessageColor.NEUTRAL + "[AFK]");
                 sb.append(formatPrepend(p));
-                sb.append(ChatColor.RESET + ", ");
+                sb.append(MessageColor.RESET + ", ");
             }
         }
         if (sb.length() < 2) return "";
@@ -67,10 +68,10 @@ public class CmdList implements CommandExecutor {
             }
             List<String> inGroup = (groups.containsKey(group)) ? groups.get(group) : new ArrayList<String>();
             if (plugin.isVanished(p) && plugin.isAuthorized(cs, "rcmds.seehidden"))
-                inGroup.add(ChatColor.GRAY + "[HIDDEN]" + ChatColor.RESET + formatPrepend(p));
+                inGroup.add(MessageColor.NEUTRAL + "[HIDDEN]" + MessageColor.RESET + formatPrepend(p));
             else if (!plugin.isVanished(p)) {
                 if (AFKUtils.isAfk(p))
-                    inGroup.add(ChatColor.GRAY + "[AFK]" + ChatColor.RESET + formatPrepend(p));
+                    inGroup.add(MessageColor.NEUTRAL + "[AFK]" + MessageColor.RESET + formatPrepend(p));
                 else inGroup.add(formatPrepend(p));
             }
             groups.put(group, inGroup);
@@ -80,11 +81,11 @@ public class CmdList implements CommandExecutor {
             List<String> inGroup = groups.get(group);
             if (inGroup.size() < 1) continue;
             sb.append(groupPrepend(group));
-            sb.append(ChatColor.RESET);
+            sb.append(MessageColor.RESET);
             sb.append(": ");
             for (String name : inGroup) {
                 sb.append(name);
-                sb.append(ChatColor.RESET);
+                sb.append(MessageColor.RESET);
                 sb.append(", ");
             }
             if (sb.length() < 2) {
@@ -99,7 +100,7 @@ public class CmdList implements CommandExecutor {
     }
 
     public static String groupPrepend(String group) {
-        String format = plugin.whoGroupFormat;
+        String format = Config.whoGroupFormat;
         try {
             format = format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getGroupPrefix(plugin.getServer().getWorlds().get(0), group));
         } catch (Exception e) {
@@ -120,7 +121,7 @@ public class CmdList implements CommandExecutor {
     }
 
     public static String formatPrepend(Player p) {
-        String format = plugin.whoFormat;
+        String format = Config.whoFormat;
         try {
             format = format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getPlayerPrefix(p));
         } catch (Exception e) {
@@ -154,7 +155,7 @@ public class CmdList implements CommandExecutor {
                 return true;
             }
             cs.sendMessage(getNumOnline(cs));
-            if (plugin.simpleList) {
+            if (Config.simpleList) {
                 String pList = getSimpleList(cs);
                 if (pList.equals("")) return true;
                 cs.sendMessage(pList);

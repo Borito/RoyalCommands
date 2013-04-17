@@ -1,18 +1,17 @@
-package org.royaldev.royalcommands;
+package org.royaldev.royalcommands.configuration;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.royaldev.royalcommands.RoyalCommands;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PConfManager extends YamlConfiguration {
+public class PConfManager extends GeneralConfManager {
 
     private static final Map<String, PConfManager> pcms = new HashMap<String, PConfManager>();
 
@@ -47,8 +46,10 @@ public class PConfManager extends YamlConfiguration {
     }
 
     public static void removeAllManagers() {
+        Collection<PConfManager> oldConfs = new ArrayList<PConfManager>();
+        oldConfs.addAll(pcms.values());
         synchronized (pcms) {
-            for (PConfManager pcm : pcms.values()) pcm.discard(false);
+            for (PConfManager pcm : oldConfs) pcm.discard(false);
         }
     }
 
@@ -127,44 +128,6 @@ public class PConfManager extends YamlConfiguration {
             } catch (IOException ignored) {
             }
         }
-    }
-
-    /**
-     * Gets a Location from config
-     * <p/>
-     * This <strong>will</strong> throw an exception if the saved Location is invalid or missing parts.
-     *
-     * @param path Path in the yml to fetch from
-     * @return Location or null if path does not exist or if config doesn't exist
-     */
-    public Location getLocation(String path) {
-        if (get(path) == null) return null;
-        String world = getString(path + ".w");
-        double x = getDouble(path + ".x");
-        double y = getDouble(path + ".y");
-        double z = getDouble(path + ".z");
-        float pitch = getFloat(path + ".pitch");
-        float yaw = getFloat(path + ".yaw");
-        return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
-    }
-
-    /**
-     * Sets a location in config
-     *
-     * @param value Location to set
-     * @param path  Path in the yml to set
-     */
-    public void setLocation(String path, Location value) {
-        set(path + ".w", value.getWorld().getName());
-        set(path + ".x", value.getX());
-        set(path + ".y", value.getY());
-        set(path + ".z", value.getZ());
-        set(path + ".pitch", value.getPitch());
-        set(path + ".yaw", value.getYaw());
-    }
-
-    public Float getFloat(String path) {
-        return (float) getDouble(path);
     }
 
     /**

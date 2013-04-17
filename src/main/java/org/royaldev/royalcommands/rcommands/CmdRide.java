@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +24,7 @@ public class CmdRide implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "Only players are allowed to use this command.");
+                cs.sendMessage(MessageColor.NEGATIVE + "Only players are allowed to use this command.");
                 return true;
             }
             Player p = (Player) cs;
@@ -34,21 +34,21 @@ public class CmdRide implements CommandExecutor {
                     return false;
                 }
                 p.getVehicle().eject();
-                p.sendMessage(ChatColor.BLUE + "You have ejected.");
+                p.sendMessage(MessageColor.POSITIVE + "You have ejected.");
                 return true;
             }
             if (args.length > 0) {
                 Player t = plugin.getServer().getPlayer(args[0]);
                 if (t == null || plugin.isVanished(t, cs)) {
-                    p.sendMessage(ChatColor.RED + "That player does not exist!");
+                    p.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 if (p.equals(t)) {
-                    cs.sendMessage(ChatColor.RED + "You cannot ride yourself.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You cannot ride yourself.");
                     return true;
                 }
                 if (plugin.isAuthorized(t, "rcmds.exempt.ride")) {
-                    cs.sendMessage(ChatColor.RED + "You cannot ride that player!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You cannot ride that player!");
                     return true;
                 }
                 t.setPassenger(p);

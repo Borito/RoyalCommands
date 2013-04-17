@@ -1,11 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -25,12 +26,12 @@ public class CmdNear implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
-                double radius = plugin.defaultNear;
+                double radius = Config.defaultNear;
                 java.util.List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
                 int amount = 0;
                 for (Entity e : ents) {
@@ -38,11 +39,11 @@ public class CmdNear implements CommandExecutor {
                     Player t = (Player) e;
                     if (plugin.isVanished(t, cs)) continue;
                     double dist = p.getLocation().distanceSquared(t.getLocation());
-                    p.sendMessage(ChatColor.GRAY + t.getDisplayName() + ": " + ChatColor.WHITE + Math.sqrt(dist));
+                    p.sendMessage(MessageColor.NEUTRAL + t.getDisplayName() + ": " + MessageColor.RESET + Math.sqrt(dist));
                     amount++;
                 }
                 if (amount == 0) {
-                    p.sendMessage(ChatColor.RED + "No one nearby!");
+                    p.sendMessage(MessageColor.NEGATIVE + "No one nearby!");
                     return true;
                 }
                 return true;
@@ -53,15 +54,15 @@ public class CmdNear implements CommandExecutor {
                 try {
                     radius = Double.parseDouble(args[0]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "That was not a valid number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That was not a valid number!");
                     return true;
                 }
                 if (radius == null || radius < 1) {
-                    cs.sendMessage(ChatColor.RED + "That was not a valid number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That was not a valid number!");
                     return true;
                 }
-                if (radius > plugin.maxNear) {
-                    p.sendMessage(ChatColor.RED + "That radius was too large!");
+                if (radius > Config.maxNear) {
+                    p.sendMessage(MessageColor.NEGATIVE + "That radius was too large!");
                     return true;
                 }
                 java.util.List<Entity> ents = p.getNearbyEntities(radius, radius, radius);
@@ -71,11 +72,11 @@ public class CmdNear implements CommandExecutor {
                     Player t = (Player) e;
                     if (plugin.isVanished(t, cs)) continue;
                     double dist = p.getLocation().distanceSquared(t.getLocation());
-                    p.sendMessage(ChatColor.GRAY + t.getDisplayName() + ": " + ChatColor.WHITE + Math.sqrt(dist));
+                    p.sendMessage(MessageColor.NEUTRAL + t.getDisplayName() + ": " + MessageColor.RESET + Math.sqrt(dist));
                     amount++;
                 }
                 if (amount == 0) {
-                    p.sendMessage(ChatColor.RED + "No one nearby!");
+                    p.sendMessage(MessageColor.NEGATIVE + "No one nearby!");
                     return true;
                 }
                 return true;

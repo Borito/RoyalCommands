@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,7 +40,7 @@ public class CmdAccountStatus implements CommandExecutor {
             try {
                 u = new URL("https://minecraft.net/haspaid.jsp?user=" + name);
             } catch (MalformedURLException ignored) {
-                cs.sendMessage(ChatColor.RED + "An unthinkable error happened. Please let the developer know.");
+                cs.sendMessage(MessageColor.NEGATIVE + "An unthinkable error happened. Please let the developer know.");
                 return true;
             }
             boolean isPremium;
@@ -48,12 +48,12 @@ public class CmdAccountStatus implements CommandExecutor {
                 BufferedReader br = new BufferedReader(new InputStreamReader(u.openStream()));
                 isPremium = br.readLine().equalsIgnoreCase("true");
             } catch (IOException ex) {
-                cs.sendMessage(ChatColor.RED + "Could not read from Minecraft's servers!");
-                cs.sendMessage(ChatColor.RED + ex.getMessage());
+                cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
+                cs.sendMessage(MessageColor.NEGATIVE + ex.getMessage());
                 return true;
             }
             String status = (isPremium) ? "premium" : "not premium";
-            cs.sendMessage(ChatColor.GRAY + name + ChatColor.BLUE + " is " + ChatColor.GRAY + status + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.NEUTRAL + name + MessageColor.POSITIVE + " is " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

@@ -382,7 +382,7 @@ commands:
 
   assign:
     description: Assigns a command to a certain block.
-    usage: /<command> [command]
+    usage: /<command> [command|-#|~]
     aliases: [as, pt, powertool]
     version_added: Pre-0.2.7
 
@@ -1607,7 +1607,7 @@ permissions:
     default: false
 
   rcmds.others.clearinventory:
-    description: Allows the player to clear other peoples' inventories.
+    description: Allows the player to clear other people's inventories.
     default: op
   rcmds.others.megastrike:
     description: Allows the player to /megastrike other players.
@@ -1662,6 +1662,12 @@ permissions:
     default: op
   rcmds.others.delhome:
     description: Allows the player to /delhome other players.
+    default: op
+  rcmds.others.deafen:
+    description: Allows the player to /deafen other players.
+    default: op
+  rcmds.others.listhome:
+    description: Allows the player to /listhome other players.
     default: op
 
   rcmds.spawn.other:
@@ -1960,6 +1966,8 @@ permissions:
       rcmds.others.effect: true
       rcmds.others.head: true
       rcmds.others.delhome: true
+      rcmds.others.deafen: true
+      rcmds.others.listhome: true
 
   rcmds.see.*:
     description: Gives every see permission.

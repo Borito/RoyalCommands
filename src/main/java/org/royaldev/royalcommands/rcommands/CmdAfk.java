@@ -1,11 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AFKUtils;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -32,21 +33,21 @@ public class CmdAfk implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             if (plugin.isVanished(p)) {
-                cs.sendMessage(ChatColor.RED + "You are vanished! The cloak of illusion would be lost if you went AFK!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You are vanished! The cloak of illusion would be lost if you went AFK!");
                 return true;
             }
             if (!AFKUtils.isAfk(p)) {
                 AFKUtils.setAfk(p, new Date().getTime());
-                plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.afkFormat, p)));
+                plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.afkFormat, p)));
                 return true;
             }
             AFKUtils.unsetAfk(p);
-            plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.returnFormat, p)));
+            plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.returnFormat, p)));
             return true;
         }
         return false;

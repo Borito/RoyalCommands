@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,7 +34,7 @@ public class CmdMonitor implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -51,30 +51,30 @@ public class CmdMonitor implements CommandExecutor {
                 p.getInventory().clear();
                 p.getInventory().setContents(invs.get(p.getName()));
                 invs.remove(p.getName());
-                cs.sendMessage(ChatColor.BLUE + "Stopped active monitoring.");
+                cs.sendMessage(MessageColor.POSITIVE + "Stopped active monitoring.");
                 return true;
             }
             String toWatch = (args.length > 0) ? args[0] : "";
             if (toWatch.equals("")) {
-                cs.sendMessage(ChatColor.RED + "Monitoring all players is not yet supported.");
+                cs.sendMessage(MessageColor.NEGATIVE + "Monitoring all players is not yet supported.");
                 cs.sendMessage(cmd.getUsage());
             } else {
                 Player t = plugin.getServer().getPlayer(toWatch);
                 if (t == null || plugin.isVanished(t)) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 if (t.equals(p)) {
-                    cs.sendMessage(ChatColor.RED + "You cannot monitor yourself!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You cannot monitor yourself!");
                     return true;
                 }
                 if (plugin.isAuthorized(t, "rcmds.exempt.monitor")) {
-                    cs.sendMessage(ChatColor.RED + "You can't monitor that player!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You can't monitor that player!");
                     return true;
                 }
                 monitors.put(p.getName(), t.getName());
                 viewees.put(t.getName(), p.getName());
-                cs.sendMessage(ChatColor.BLUE + "You are now monitoring " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "You are now monitoring " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 for (Player pl : plugin.getServer().getOnlinePlayers()) {
                     if (pl.equals(p)) continue;
                     pl.hidePlayer(p);

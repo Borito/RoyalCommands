@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -48,17 +48,17 @@ public class CmdBanIP implements CommandExecutor {
             String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");
             if (ip == null) ip = args[0];
             if (!isValid(ip)) {
-                cs.sendMessage(ChatColor.RED + "Invalid IP (" + ChatColor.GRAY + ip + ChatColor.RED + ").");
+                cs.sendMessage(MessageColor.NEGATIVE + "Invalid IP (" + MessageColor.NEUTRAL + ip + MessageColor.NEGATIVE + ").");
                 return true;
             }
             plugin.getServer().banIP(ip);
             if (!op.hasPlayedBefore()) {
-                cs.sendMessage(ChatColor.BLUE + "Banned IP " + ChatColor.GRAY + ip + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Banned IP " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ".");
                 return true;
             } else {
                 op.setBanned(true);
                 RUtils.writeBanHistory(op);
-                cs.sendMessage(ChatColor.BLUE + "Banned IP of " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + " (" + ChatColor.GRAY + ip + ChatColor.BLUE + ").");
+                cs.sendMessage(MessageColor.POSITIVE + "Banned IP of " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ").");
                 return true;
             }
         }

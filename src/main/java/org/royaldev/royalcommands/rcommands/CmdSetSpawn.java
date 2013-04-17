@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.ConfManager;
+import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -25,7 +25,7 @@ public class CmdSetSpawn implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -38,8 +38,8 @@ public class CmdSetSpawn implements CommandExecutor {
             if (group.equals("")) p.getWorld().setSpawnLocation((int) x, (int) y, (int) z);
             spawns.setLocation("spawns." + w + group, p.getLocation());
             p.getWorld().setSpawnLocation((int) x, (int) y, (int) z);
-            String forGroup = (group.isEmpty()) ? "" : " for group " + ChatColor.GRAY + group + ChatColor.BLUE;
-            cs.sendMessage(ChatColor.BLUE + "The spawn point of " + ChatColor.GRAY + RUtils.getMVWorldName(p.getWorld()) + ChatColor.BLUE + " is set" + forGroup + ".");
+            String forGroup = (group.isEmpty()) ? "" : " for group " + MessageColor.NEUTRAL + group + MessageColor.POSITIVE;
+            cs.sendMessage(MessageColor.POSITIVE + "The spawn point of " + MessageColor.NEUTRAL + RUtils.getMVWorldName(p.getWorld()) + MessageColor.POSITIVE + " is set" + forGroup + ".");
             return true;
         }
         return false;

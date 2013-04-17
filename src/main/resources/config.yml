@@ -128,6 +128,12 @@ kits:
 # Messages #
 ###
 
+colors:
+  positive: BLUE
+  negative: RED
+  neutral: GRAY
+  reset: RESET
+
 # Message to be shown if player does not have rcmds.build
 no_build_message: "&cYou don't have permission to build!"
 
@@ -293,6 +299,12 @@ teleport_warmup: 0
 
 # Require rcmds.worldaccess.worldname to access a world?
 enable_worldaccess_perm: false
+
+teleport_sound:
+  enabled: false
+  sound: ENDERMAN_TELEPORT
+  volume: 1
+  pitch: 1
 
 ###
 # Command cooldowns #

@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,24 +29,24 @@ public class CmdLore implements CommandExecutor {
                 return false;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             String loreText = RoyalCommands.getFinalArg(args, 0);
             ItemStack is = p.getItemInHand();
             if (is == null || is.getType() == Material.AIR) {
-                cs.sendMessage(ChatColor.RED + "You can't set lore on air!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't set lore on air!");
                 return true;
             }
             if (loreText.equalsIgnoreCase("clear")) {
                 is = RUtils.clearLore(is);
-                cs.sendMessage(ChatColor.BLUE + "Reset the lore on your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Reset the lore on your " + MessageColor.NEUTRAL + RUtils.getItemName(is) + MessageColor.POSITIVE + ".");
                 return true;
             }
             is = RUtils.addLore(is, RUtils.colorize(loreText));
             p.setItemInHand(is);
-            cs.sendMessage(ChatColor.BLUE + "Set the lore on your " + ChatColor.GRAY + RUtils.getItemName(is) + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Set the lore on your " + MessageColor.NEUTRAL + RUtils.getItemName(is) + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

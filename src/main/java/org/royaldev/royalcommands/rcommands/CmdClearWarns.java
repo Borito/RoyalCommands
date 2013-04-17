@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -31,15 +31,15 @@ public class CmdClearWarns implements CommandExecutor {
             OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(op);
             if (!pcm.exists()) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (pcm.get("warns") == null || pcm.getStringList("warns").isEmpty()) {
-                cs.sendMessage(ChatColor.RED + "There are no warnings for " + ChatColor.GRAY + op.getName() + ChatColor.RED + "!");
+                cs.sendMessage(MessageColor.NEGATIVE + "There are no warnings for " + MessageColor.NEUTRAL + op.getName() + MessageColor.NEGATIVE + "!");
                 return true;
             }
             pcm.set("warns", null);
-            cs.sendMessage(ChatColor.BLUE + "You've cleared the warnings of " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "You've cleared the warnings of " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

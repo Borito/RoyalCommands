@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,7 +26,7 @@ public class CmdMore implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -36,12 +36,12 @@ public class CmdMore implements CommandExecutor {
                         if (i == null || i.getType().equals(Material.AIR)) continue;
                         i.setAmount(64);
                     }
-                    cs.sendMessage(ChatColor.BLUE + "You have been given more of every item in your inventory.");
+                    cs.sendMessage(MessageColor.POSITIVE + "You have been given more of every item in your inventory.");
                     return true;
                 } else if (args[0].equalsIgnoreCase("inventory")) {
                     ItemStack hand = p.getItemInHand();
                     if (hand.getTypeId() == 0) {
-                        cs.sendMessage(ChatColor.RED + "You can't spawn air!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
                         return true;
                     }
                     hand.setAmount(64);
@@ -50,20 +50,20 @@ public class CmdMore implements CommandExecutor {
                         if (i != null && i.getType() != Material.AIR) continue;
                         p.getInventory().setItem(slot, hand);
                     }
-                    cs.sendMessage(ChatColor.BLUE + "Filled inventory with the item in hand!");
+                    cs.sendMessage(MessageColor.POSITIVE + "Filled inventory with the item in hand!");
                     return true;
                 } else {
-                    cs.sendMessage(ChatColor.RED + "Invalid argument!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid argument!");
                     return true;
                 }
             }
             ItemStack hand = p.getItemInHand();
             if (hand.getTypeId() == 0) {
-                cs.sendMessage(ChatColor.RED + "You can't spawn air!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
                 return true;
             }
             hand.setAmount(64);
-            cs.sendMessage(ChatColor.BLUE + "You have been given more of the item in hand.");
+            cs.sendMessage(MessageColor.POSITIVE + "You have been given more of the item in hand.");
             return true;
         }
         return false;

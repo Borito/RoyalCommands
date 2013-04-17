@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,8 +26,8 @@ public class CmdTeleportRequest implements CommandExecutor {
      */
     public static void sendTpRequest(Player target, CommandSender sender) {
         tprdb.put(target, sender);
-        target.sendMessage(ChatColor.GRAY + sender.getName() + ChatColor.BLUE + " has requested to teleport to you.");
-        target.sendMessage(ChatColor.BLUE + "Type " + ChatColor.GRAY + "/tpaccept" + ChatColor.BLUE + " or " + ChatColor.GRAY + "/tpdeny" + ChatColor.BLUE + ".");
+        target.sendMessage(MessageColor.NEUTRAL + sender.getName() + MessageColor.POSITIVE + " has requested to teleport to you.");
+        target.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/tpaccept" + MessageColor.POSITIVE + " or " + MessageColor.NEUTRAL + "/tpdeny" + MessageColor.POSITIVE + ".");
     }
 
     public static HashMap<Player, CommandSender> tprdb = new HashMap<Player, CommandSender>();
@@ -44,20 +44,20 @@ public class CmdTeleportRequest implements CommandExecutor {
                 return false;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
-                cs.sendMessage(ChatColor.RED + "That player has teleportation off!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player has teleportation off!");
                 return true;
             }
             sendTpRequest(t, cs);
-            cs.sendMessage(ChatColor.BLUE + "Sent request to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Sent request to " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

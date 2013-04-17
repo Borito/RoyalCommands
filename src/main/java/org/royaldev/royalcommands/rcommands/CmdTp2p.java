@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,23 +31,23 @@ public class CmdTp2p implements CommandExecutor {
             Player t1 = plugin.getServer().getPlayer(args[0]);
             Player t2 = plugin.getServer().getPlayer(args[1]);
             if (t1 == null || t2 == null || plugin.isVanished(t1, cs) || plugin.isVanished(t2, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (!RUtils.isTeleportAllowed(t1) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
-                cs.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + t1.getName() + ChatColor.RED + " has teleportation off!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + t1.getName() + MessageColor.NEGATIVE + " has teleportation off!");
                 return true;
             }
             if (!RUtils.isTeleportAllowed(t2) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
-                cs.sendMessage(ChatColor.RED + "The player " + ChatColor.GRAY + t2.getName() + ChatColor.RED + " has teleportation off!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + t2.getName() + MessageColor.NEGATIVE + " has teleportation off!");
                 return true;
             }
             String error = RUtils.teleport(t1, t2);
             if (!error.isEmpty()) {
-                cs.sendMessage(ChatColor.RED + error);
+                cs.sendMessage(MessageColor.NEGATIVE + error);
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "You have teleported " + ChatColor.GRAY + t1.getName() + ChatColor.BLUE + " to " + ChatColor.GRAY + t2.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "You have teleported " + MessageColor.NEUTRAL + t1.getName() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + t2.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

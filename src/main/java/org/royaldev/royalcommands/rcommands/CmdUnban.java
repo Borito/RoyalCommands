@@ -1,13 +1,14 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdUnban implements CommandExecutor {
 
@@ -31,13 +32,13 @@ public class CmdUnban implements CommandExecutor {
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(t);
             if (!t.isBanned()) {
-                cs.sendMessage(ChatColor.RED + "That player isn't banned!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player isn't banned!");
                 return true;
             }
             t.setBanned(false);
             if (pcm.exists()) pcm.set("bantime", null);
-            cs.sendMessage(ChatColor.BLUE + "You have unbanned " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            String message = RUtils.getInGameMessage(plugin.igUnbanFormat, "", t, cs); // "" because there is no reason for unbans
+            cs.sendMessage(MessageColor.POSITIVE + "You have unbanned " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+            String message = RUtils.getInGameMessage(Config.igUnbanFormat, "", t, cs); // "" because there is no reason for unbans
             plugin.getServer().broadcast(message, "rcmds.see.unban");
             return true;
         }

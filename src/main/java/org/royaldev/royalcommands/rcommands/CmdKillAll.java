@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,7 +32,7 @@ public class CmdKillAll implements CommandExecutor {
                 }
                 p.setHealth(0);
             }
-            cs.sendMessage(ChatColor.BLUE + "You have killed all the players.");
+            cs.sendMessage(MessageColor.POSITIVE + "You have killed all the players.");
             return true;
         }
         return false;

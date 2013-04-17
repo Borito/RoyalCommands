@@ -1,12 +1,13 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -32,11 +33,11 @@ public class CmdSci implements CommandExecutor {
             if (args.length < 3) {
                 Player target = plugin.getServer().getPlayer(args[0]);
                 if (target == null || plugin.isVanished(target, cs)) {
-                    cs.sendMessage(ChatColor.RED + "That player is not online!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                     return true;
                 }
                 if (plugin.isAuthorized(target, "rcmds.exempt.sci")) {
-                    cs.sendMessage(ChatColor.RED + "You cannot alter that player's inventory!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You cannot alter that player's inventory!");
                     return true;
                 }
                 String called = args[1];
@@ -53,7 +54,7 @@ public class CmdSci implements CommandExecutor {
                     try {
                         iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
                     } catch (Exception e2) {
-                        cs.sendMessage(ChatColor.RED + "That block does not exist!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "That block does not exist!");
                         return true;
                     }
                 }
@@ -61,36 +62,36 @@ public class CmdSci implements CommandExecutor {
                     ItemStack toInv;
                     if (data != null) {
                         if (Material.getMaterial(iblock) == null) {
-                            cs.sendMessage(ChatColor.RED + "Invalid item ID!");
+                            cs.sendMessage(MessageColor.NEGATIVE + "Invalid item ID!");
                             return true;
                         }
                         int data2;
                         try {
                             data2 = Integer.parseInt(data);
                         } catch (Exception e) {
-                            cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
+                            cs.sendMessage(MessageColor.NEGATIVE + "The metadata was invalid!");
                             return true;
                         }
                         if (data2 < 0) {
-                            cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
+                            cs.sendMessage(MessageColor.NEGATIVE + "The metadata was invalid!");
                             return true;
                         }
-                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), RoyalCommands.defaultStack, (short) data2);
+                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), Config.defaultStack, (short) data2);
                     } else {
-                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), RoyalCommands.defaultStack);
+                        toInv = new ItemStack(Material.getMaterial(iblock).getId(), Config.defaultStack);
                     }
                     target.getInventory().removeItem(toInv);
-                    cs.sendMessage(ChatColor.BLUE + "Removing " + ChatColor.GRAY + RoyalCommands.defaultStack + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " from " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
-                    target.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + RoyalCommands.defaultStack + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " taken.");
+                    cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+                    target.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " taken.");
                     return true;
                 } else {
-                    cs.sendMessage(ChatColor.RED + "You cannot spawn air!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                     return true;
                 }
             } else if (args.length == 3) {
                 Player target = plugin.getServer().getPlayer(args[0]);
                 if (target == null) {
-                    cs.sendMessage(ChatColor.RED + "That player is not online!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                     return true;
                 }
                 String called = args[1];
@@ -104,7 +105,7 @@ public class CmdSci implements CommandExecutor {
                 try {
                     amount = Integer.parseInt(args[2]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "The amount was not a number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "The amount was not a number!");
                     return true;
                 }
                 if (amount < 1) {
@@ -117,34 +118,34 @@ public class CmdSci implements CommandExecutor {
                     try {
                         iblock = Material.getMaterial(called.trim().replace(" ", "_").toUpperCase()).getId();
                     } catch (Exception e2) {
-                        cs.sendMessage(ChatColor.RED + "That block does not exist!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "That block does not exist!");
                         return true;
                     }
                 }
                 if (iblock == 0) {
-                    cs.sendMessage(ChatColor.RED + "You cannot spawn air!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                     return true;
                 }
-                if (plugin.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
-                    cs.sendMessage(ChatColor.RED + "You are not allowed to spawn that item!");
+                if (Config.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
                     plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                     return true;
                 }
                 ItemStack toInv;
                 if (data != null) {
                     if (Material.getMaterial(iblock) == null) {
-                        cs.sendMessage(ChatColor.RED + "Invalid item ID!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Invalid item ID!");
                         return true;
                     }
                     int data2;
                     try {
                         data2 = Integer.parseInt(data);
                     } catch (Exception e) {
-                        cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "The metadata was invalid!");
                         return true;
                     }
                     if (data2 < 0) {
-                        cs.sendMessage(ChatColor.RED + "The metadata was invalid!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "The metadata was invalid!");
                         return true;
                     } else {
                         toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount, (short) data2);
@@ -153,8 +154,8 @@ public class CmdSci implements CommandExecutor {
                     toInv = new ItemStack(Material.getMaterial(iblock).getId(), amount);
                 }
                 target.getInventory().removeItem(toInv);
-                cs.sendMessage(ChatColor.BLUE + "Removing " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " from " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
-                target.sendMessage(ChatColor.BLUE + "You have had " + ChatColor.GRAY + amount + ChatColor.BLUE + " of " + ChatColor.GRAY + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + " taken.");
+                cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+                target.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " taken.");
                 return true;
             }
         }

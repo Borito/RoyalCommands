@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -36,25 +36,25 @@ public class CmdBanHistory implements CommandExecutor {
             if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(op);
             if (!pcm.exists()) {
-                cs.sendMessage(ChatColor.RED + "That player has never played before!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
                 return true;
             }
             List<String> prevBans = pcm.getStringList("prevbans");
             if (prevBans == null) prevBans = new ArrayList<String>();
             if (args.length < 2) {
                 if (prevBans.size() < 1) {
-                    cs.sendMessage(ChatColor.RED + "That player has no previous bans.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player has no previous bans.");
                     return true;
                 }
-                cs.sendMessage(ChatColor.GRAY + op.getName() + ChatColor.BLUE + " has " + ChatColor.GRAY + prevBans.size() + ChatColor.BLUE + " bans.");
-                cs.sendMessage(ChatColor.BLUE + "Please do " + ChatColor.GRAY + "/" + label + " " + op.getName() + " #" + ChatColor.BLUE + " to view a specific ban.");
+                cs.sendMessage(MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " has " + MessageColor.NEUTRAL + prevBans.size() + MessageColor.POSITIVE + " bans.");
+                cs.sendMessage(MessageColor.POSITIVE + "Please do " + MessageColor.NEUTRAL + "/" + label + " " + op.getName() + " #" + MessageColor.POSITIVE + " to view a specific ban.");
                 return true;
             }
             int number;
             try {
                 number = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED + "The ban selected must be a number!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The ban selected must be a number!");
                 return true;
             }
             number -= 1; // lists 'n stuff
@@ -62,18 +62,18 @@ public class CmdBanHistory implements CommandExecutor {
             try {
                 ban = prevBans.get(number);
             } catch (IndexOutOfBoundsException e) {
-                cs.sendMessage(ChatColor.RED + "Invalid ban number!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Invalid ban number!");
                 return true;
             }
             // banner,banreason,bannedat,istempban
             String[] baninfo = ban.split("\\u00b5");
-            cs.sendMessage(ChatColor.BLUE + "Ban log for ban " + ChatColor.GRAY + (number + 1) + ChatColor.BLUE + " of " + ChatColor.GRAY + prevBans.size() + ChatColor.BLUE + " for " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Ban log for ban " + MessageColor.NEUTRAL + (number + 1) + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + prevBans.size() + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");
             String banner = baninfo[0];
             if (banner.equals("null")) banner = "Unknown";
-            cs.sendMessage(ChatColor.BLUE + "Banned by " + ChatColor.GRAY + banner);
+            cs.sendMessage(MessageColor.POSITIVE + "Banned by " + MessageColor.NEUTRAL + banner);
             String banReason = baninfo[1];
             if (banReason.equals("null")) banReason = "Unknown";
-            cs.sendMessage(ChatColor.BLUE + "Banned for " + ChatColor.GRAY + banReason);
+            cs.sendMessage(MessageColor.POSITIVE + "Banned for " + MessageColor.NEUTRAL + banReason);
             String banDateString = baninfo[2];
             if (banDateString.equals("null")) banDateString = "-1";
             long banDate;
@@ -84,9 +84,9 @@ public class CmdBanHistory implements CommandExecutor {
             }
             SimpleDateFormat sdf = new SimpleDateFormat("MMM d, y hh:mm:ss a");
             String bannedAt = (banDate < 0L) ? "Unknown" : sdf.format(new Date(banDate));
-            cs.sendMessage(ChatColor.BLUE + "Banned at " + ChatColor.GRAY + bannedAt);
+            cs.sendMessage(MessageColor.POSITIVE + "Banned at " + MessageColor.NEUTRAL + bannedAt);
             boolean isTempBan = baninfo[3].equalsIgnoreCase("true");
-            cs.sendMessage(ChatColor.BLUE + "Was tempban? " + ChatColor.GRAY + ((isTempBan) ? "Yes" : "No"));
+            cs.sendMessage(MessageColor.POSITIVE + "Was tempban? " + MessageColor.NEUTRAL + ((isTempBan) ? "Yes" : "No"));
             return true;
         }
         return false;

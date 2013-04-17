@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,7 +30,7 @@ public class CmdIngot2Block implements CommandExecutor {
         HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
         if (!left.isEmpty()) for (ItemStack s : left.values())
             p.getWorld().dropItemNaturally(p.getLocation(), s);
-        p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
+        p.sendMessage(MessageColor.POSITIVE + "Made " + MessageColor.NEUTRAL + blocks + " block(s) " + MessageColor.POSITIVE + "and had " + MessageColor.NEUTRAL + remainder + " material(s) " + MessageColor.POSITIVE + "left over.");
     }
 
     public void i2b(Player p, ItemStack hand, Material ingot, Material block, short data) {
@@ -43,7 +43,7 @@ public class CmdIngot2Block implements CommandExecutor {
         HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
         if (!left.isEmpty()) for (ItemStack s : left.values())
             p.getWorld().dropItemNaturally(p.getLocation(), s);
-        p.sendMessage(ChatColor.BLUE + "Made " + ChatColor.GRAY + blocks + " block(s) " + ChatColor.BLUE + "and had " + ChatColor.GRAY + remainder + " material(s) " + ChatColor.BLUE + "left over.");
+        p.sendMessage(MessageColor.POSITIVE + "Made " + MessageColor.NEUTRAL + blocks + " block(s) " + MessageColor.POSITIVE + "and had " + MessageColor.NEUTRAL + remainder + " material(s) " + MessageColor.POSITIVE + "left over.");
     }
 
     @Override
@@ -54,13 +54,13 @@ public class CmdIngot2Block implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             ItemStack hand = p.getItemInHand();
             if (hand == null || hand.getType() == Material.AIR) {
-                cs.sendMessage(ChatColor.RED + "Your hand is empty!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Your hand is empty!");
                 return true;
             }
             switch (hand.getType()) {
@@ -85,7 +85,7 @@ public class CmdIngot2Block implements CommandExecutor {
                         break;
                     }
                 default:
-                    cs.sendMessage(ChatColor.RED + "That cannot be made into blocks!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That cannot be made into blocks!");
             }
             return true;
         }

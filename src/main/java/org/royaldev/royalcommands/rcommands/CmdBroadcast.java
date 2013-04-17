@@ -3,6 +3,7 @@ package org.royaldev.royalcommands.rcommands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -26,7 +27,7 @@ public class CmdBroadcast implements CommandExecutor {
                 return false;
             }
             String message = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
-            String format = plugin.bcastFormat;
+            String format = Config.bcastFormat;
             message = format + message;
             plugin.getServer().broadcastMessage(message);
             return true;

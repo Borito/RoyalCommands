@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -36,17 +37,17 @@ public class CmdKit implements CommandExecutor {
                 return false;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             if (plugin.getConfig().get("kits") == null) {
-                cs.sendMessage(ChatColor.RED + "No kits defined!");
+                cs.sendMessage(MessageColor.NEGATIVE + "No kits defined!");
                 return true;
             }
             String kitname = args[0];
             if (plugin.getConfig().get("kits." + kitname) == null) {
-                cs.sendMessage(ChatColor.RED + "That kit does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That kit does not exist!");
                 return true;
             }
             List<String> kits = plugin.getConfig().getStringList("kits." + kitname + ".items");
@@ -54,21 +55,21 @@ public class CmdKit implements CommandExecutor {
             List<String> names = plugin.getConfig().getStringList("kits." + kitname + ".names");
             List<String> lore = plugin.getConfig().getStringList("kits." + kitname + ".lore");
             if (kits == null) {
-                cs.sendMessage(ChatColor.RED + "That kit does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That kit does not exist!");
                 return true;
             }
             if (enchants == null) enchants = new ArrayList<String>();
             if (names == null) names = new ArrayList<String>();
             if (lore == null) lore = new ArrayList<String>();
-            if (plugin.kitPerms && !plugin.isAuthorized(cs, "rcmds.kit." + kitname)) {
-                cs.sendMessage(ChatColor.RED + "You don't have permission for that kit!");
+            if (Config.kitPerms && !plugin.isAuthorized(cs, "rcmds.kit." + kitname)) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that kit!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown") && !plugin.isAuthorized(cs, "rcmds.exempt.cooldown.kits")) {
                 long ts = RUtils.getTimeStamp(p, "kits." + kitname + ".cooldown");
                 if (ts > 0) {
-                    p.sendMessage(ChatColor.RED + "You can't use that kit for" + ChatColor.GRAY + RUtils.formatDateDiff(ts) + ChatColor.RED + ".");
+                    p.sendMessage(MessageColor.NEGATIVE + "You can't use that kit for" + MessageColor.NEUTRAL + RUtils.formatDateDiff(ts) + MessageColor.NEGATIVE + ".");
                     return true;
                 }
             }
@@ -77,7 +78,7 @@ public class CmdKit implements CommandExecutor {
                 RUtils.setTimeStamp(p, cd, "kits." + kitname + ".cooldown");
             }
             if (kits.size() < 1) {
-                cs.sendMessage(ChatColor.RED + "That kit was configured wrong!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That kit was configured wrong!");
                 return true;
             }
             for (String s : kits) {
@@ -91,7 +92,7 @@ public class CmdKit implements CommandExecutor {
                 Map<Enchantment, Integer> enchant = (enchantmentString == null) ? null : RUtils.getEnchantments(enchantmentString);
                 String[] kit = s.trim().split(":");
                 if (kit.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "That kit was configured wrong!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That kit was configured wrong!");
                     return true;
                 }
                 int id;
@@ -100,13 +101,13 @@ public class CmdKit implements CommandExecutor {
                 try {
                     id = Integer.parseInt(kit[0]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "That kit was configured wrong!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That kit was configured wrong!");
                     return true;
                 }
                 try {
                     amount = Integer.parseInt(kit[1]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "That kit was configured wrong!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That kit was configured wrong!");
                     return true;
                 }
                 try {
@@ -114,11 +115,11 @@ public class CmdKit implements CommandExecutor {
                 } catch (Exception ignored) {
                 }
                 if (id < 1 || amount < 1) {
-                    cs.sendMessage(ChatColor.RED + "That kit was configured wrong!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That kit was configured wrong!");
                     return true;
                 }
                 if (Material.getMaterial(id) == null) {
-                    cs.sendMessage(ChatColor.RED + "Invalid item ID in kit: " + ChatColor.GRAY + id);
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid item ID in kit: " + MessageColor.NEUTRAL + id);
                     return true;
                 }
                 ItemStack item;
@@ -145,7 +146,7 @@ public class CmdKit implements CommandExecutor {
                     }
                 }
             }
-            p.sendMessage(ChatColor.BLUE + "Giving you the kit \"" + ChatColor.GRAY + kitname + ChatColor.BLUE + ".\"");
+            p.sendMessage(MessageColor.POSITIVE + "Giving you the kit \"" + MessageColor.NEUTRAL + kitname + MessageColor.POSITIVE + ".\"");
             return true;
         }
         return false;

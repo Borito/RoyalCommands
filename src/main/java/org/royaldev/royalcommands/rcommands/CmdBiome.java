@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Chunk;
 import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
@@ -21,7 +21,7 @@ public class CmdBiome implements CommandExecutor {
     public void sendBiomeList(CommandSender cs) {
         String biomes = "";
         for (Biome b : Biome.values())
-            biomes = (biomes.equals("")) ? biomes.concat(b.name() + ChatColor.WHITE) : biomes.concat(", " + b.name() + ChatColor.WHITE);
+            biomes = (biomes.equals("")) ? biomes.concat(b.name() + MessageColor.RESET) : biomes.concat(", " + b.name() + MessageColor.RESET);
         cs.sendMessage(biomes);
     }
 
@@ -33,11 +33,11 @@ public class CmdBiome implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
-                cs.sendMessage(ChatColor.BLUE + "Biomes:");
+                cs.sendMessage(MessageColor.POSITIVE + "Biomes:");
                 sendBiomeList(cs);
                 cs.sendMessage(cmd.getDescription());
                 return false;
@@ -47,7 +47,7 @@ public class CmdBiome implements CommandExecutor {
             try {
                 b = Biome.valueOf(args[0].toUpperCase());
             } catch (Exception e) {
-                p.sendMessage(ChatColor.RED + "No such biome!");
+                p.sendMessage(MessageColor.NEGATIVE + "No such biome!");
                 sendBiomeList(p);
                 return true;
             }
@@ -56,7 +56,7 @@ public class CmdBiome implements CommandExecutor {
                 try {
                     rradius = Integer.valueOf(args[1]);
                 } catch (NumberFormatException e) {
-                    cs.sendMessage(ChatColor.RED + "Invalid radius!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid radius!");
                     return true;
                 }
             }
@@ -72,8 +72,9 @@ public class CmdBiome implements CommandExecutor {
                             for (int cz = 0; cz < 16; cz++)
                                 for (int cy = 0; cy < c.getWorld().getMaxHeight(); cy++)
                                     ac.getBlock(cx, cy, cz).setBiome(b);
+                        ac.getWorld().refreshChunk(ac.getX(), ac.getZ());
                     }
-                    p.sendMessage(ChatColor.BLUE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + ChatColor.GRAY + b.name().toLowerCase().replace(" _ ", " ") + ChatColor.BLUE + ".");
+                    p.sendMessage(MessageColor.POSITIVE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + MessageColor.NEUTRAL + b.name().toLowerCase().replace(" _ ", " ") + MessageColor.POSITIVE + ".");
                 }
             };
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);

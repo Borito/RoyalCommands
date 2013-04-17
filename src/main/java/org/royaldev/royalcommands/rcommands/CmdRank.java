@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,7 +29,7 @@ public class CmdRank implements CommandExecutor {
             }
             Player victim = plugin.getServer().getPlayer(args[0]);
             if (victim == null || plugin.isVanished(victim, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             String rank;
@@ -39,10 +39,10 @@ public class CmdRank implements CommandExecutor {
                 rank = null;
             }
             if (rank == null) {
-                cs.sendMessage(ChatColor.RED + "That player has no rank.");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player has no rank.");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "The player " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + " has the group " + ChatColor.GRAY + rank + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + victim.getName() + MessageColor.POSITIVE + " has the group " + MessageColor.NEUTRAL + rank + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

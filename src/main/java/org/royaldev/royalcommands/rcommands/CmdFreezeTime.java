@@ -1,12 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.BooleanUtils;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.ConfManager;
+import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -30,7 +30,7 @@ public class CmdFreezeTime implements CommandExecutor {
             }
             World w = plugin.getServer().getWorld(args[0]);
             if (w == null) {
-                cs.sendMessage(ChatColor.RED + "No such world!");
+                cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                 return true;
             }
             ConfManager cm = RoyalCommands.wm.getConfig();
@@ -38,7 +38,7 @@ public class CmdFreezeTime implements CommandExecutor {
             if (isFrozen == null) isFrozen = false;
             cm.set("worlds." + w.getName() + ".freezetime", !isFrozen);
             cm.set("worlds." + w.getName() + ".frozenat", w.getTime());
-            cs.sendMessage(ChatColor.BLUE + "Turned freezetime on " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + " to " + ChatColor.GRAY + BooleanUtils.toStringOnOff(!isFrozen) + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Turned freezetime on " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + BooleanUtils.toStringOnOff(!isFrozen) + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

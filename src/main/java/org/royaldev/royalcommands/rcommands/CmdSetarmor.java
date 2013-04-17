@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,7 +31,7 @@ public class CmdSetarmor implements CommandExecutor {
             }
 
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
 
@@ -44,11 +44,11 @@ public class CmdSetarmor implements CommandExecutor {
                 }
                 player = plugin.getServer().getPlayer(args[1]);
                 if (player == null || plugin.isVanished(player, cs)) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 if (plugin.isAuthorized(player, "rcmds.exempt.setarmor")) {
-                    cs.sendMessage(ChatColor.RED + "You can't modify that player's armor!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You can't modify that player's armor!");
                     return true;
                 }
             } else player = (Player) cs;
@@ -99,60 +99,60 @@ public class CmdSetarmor implements CommandExecutor {
 
             if (set.equalsIgnoreCase("diamond")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.diamond")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(diamond);
-                    cs.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("gold")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.gold")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(gold);
-                    cs.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("iron")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.iron")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(iron);
-                    cs.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("leather")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.leather")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(leather);
-                    cs.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("chain")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.chain")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(chain);
-                    player.sendMessage(ChatColor.BLUE + "Armor was set to " + set + ".");
+                    player.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("none")) {
                 if (!plugin.isAuthorized(cs, "rcmds.setarmor.none")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that type of material!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
                     player.getInventory().setArmorContents(none);
-                    cs.sendMessage(ChatColor.BLUE + "Armor was cleared.");
+                    cs.sendMessage(MessageColor.POSITIVE + "Armor was cleared.");
                     return true;
                 }
             } else {
-                cs.sendMessage(ChatColor.RED + "The armor type must be diamond, gold, iron, leather, chain, or none.");
+                cs.sendMessage(MessageColor.NEGATIVE + "The armor type must be diamond, gold, iron, leather, chain, or none.");
                 return true;
             }
         }

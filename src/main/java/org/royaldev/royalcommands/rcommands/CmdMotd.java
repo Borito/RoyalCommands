@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -17,7 +18,7 @@ public class CmdMotd implements CommandExecutor {
 
 
     public static void showMotd(CommandSender cs) {
-        String ps = (plugin.simpleList) ? CmdList.getSimpleList(cs) : RUtils.join(CmdList.getGroupList(cs), "\n");
+        String ps = (Config.simpleList) ? CmdList.getSimpleList(cs) : RUtils.join(CmdList.getGroupList(cs), "\n");
         Integer onnum = plugin.getServer().getOnlinePlayers().length;
         int hid = plugin.getNumberVanished();
         String onlinenum;
@@ -33,7 +34,7 @@ public class CmdMotd implements CommandExecutor {
         } catch (Exception e) {
             maxonl = null;
         }
-        for (String s : plugin.motd) {
+        for (String s : Config.motd) {
             if (s == null) continue;
             s = RUtils.colorize(s);
             s = s.replace("{name}", cs.getName());

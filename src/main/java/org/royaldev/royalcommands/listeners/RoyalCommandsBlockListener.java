@@ -5,8 +5,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 @SuppressWarnings("unused")
 public class RoyalCommandsBlockListener implements Listener {
@@ -26,17 +27,17 @@ public class RoyalCommandsBlockListener implements Listener {
 
     @EventHandler
     public void onBlockP(BlockPlaceEvent e) {
-        if (e.isCancelled() || !plugin.buildPerm) return;
+        if (e.isCancelled() || !Config.buildPerm) return;
         if (plugin.isAuthorized(e.getPlayer(), "rcmds.build")) return;
-        e.getPlayer().sendMessage(plugin.noBuildMessage);
+        e.getPlayer().sendMessage(Config.noBuildMessage);
         e.setCancelled(true);
     }
 
     @EventHandler
     public void onBlockB(BlockBreakEvent e) {
-        if (e.isCancelled() || !plugin.buildPerm) return;
+        if (e.isCancelled() || !Config.buildPerm) return;
         if (plugin.isAuthorized(e.getPlayer(), "rcmds.build")) return;
-        e.getPlayer().sendMessage(plugin.noBuildMessage);
+        e.getPlayer().sendMessage(Config.noBuildMessage);
         e.setCancelled(true);
     }
 

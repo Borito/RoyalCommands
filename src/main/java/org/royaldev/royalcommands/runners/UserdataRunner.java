@@ -1,8 +1,9 @@
 package org.royaldev.royalcommands.runners;
 
-import org.royaldev.royalcommands.ConfManager;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class UserdataRunner implements Runnable {
 
@@ -16,7 +17,7 @@ public class UserdataRunner implements Runnable {
     public void run() {
         PConfManager.saveAllManagers();
         ConfManager.saveAllManagers();
-        if (!plugin.purgeUnusedUserdata) return;
+        if (!Config.purgeUnusedUserdata) return;
         Object[] managers = PConfManager.getAllManagers().toArray();
         for (Object o : managers) {
             if (!(o instanceof PConfManager)) continue;

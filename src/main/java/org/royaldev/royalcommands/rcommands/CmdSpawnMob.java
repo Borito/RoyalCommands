@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -27,7 +28,7 @@ public class CmdSpawnMob implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -36,9 +37,9 @@ public class CmdSpawnMob implements CommandExecutor {
                 for (EntityType et : EntityType.values()) {
                     if (!et.isAlive()) continue;
                     if (!et.isSpawnable()) continue;
-                    sb.append(ChatColor.WHITE);
+                    sb.append(MessageColor.RESET);
                     sb.append(", ");
-                    sb.append(ChatColor.GRAY);
+                    sb.append(MessageColor.NEUTRAL);
                     sb.append(et.toString().toLowerCase());
                 }
                 cs.sendMessage(sb.substring(4));
@@ -56,13 +57,13 @@ public class CmdSpawnMob implements CommandExecutor {
                 for (EntityType et : EntityType.values()) {
                     if (!et.isAlive()) continue;
                     if (!et.isSpawnable()) continue;
-                    sb.append(ChatColor.WHITE);
+                    sb.append(MessageColor.RESET);
                     sb.append(", ");
-                    sb.append(ChatColor.GRAY);
+                    sb.append(MessageColor.NEUTRAL);
                     sb.append(et.toString().toLowerCase());
                 }
                 cs.sendMessage(sb.substring(4));
-                cs.sendMessage(ChatColor.RED + "Invalid mob!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Invalid mob!");
                 return true;
             }
             if (args.length > 1) {
@@ -70,31 +71,31 @@ public class CmdSpawnMob implements CommandExecutor {
                 try {
                     i = Integer.parseInt(args[1]);
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "Invalid amount specified!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid amount specified!");
                     return true;
                 }
                 if (i < 0) {
-                    cs.sendMessage(ChatColor.RED + "Invalid amount specified!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid amount specified!");
                     return true;
                 }
-                if (i > plugin.spawnmobLimit && !plugin.isAuthorized(cs, "rcmds.exempt.limit.spawnmob")) {
-                    cs.sendMessage(ChatColor.RED + "The amount specified was larger than the allowed amount.");
-                    cs.sendMessage(ChatColor.RED + "Setting amount to " + ChatColor.GRAY + plugin.spawnmobLimit + ChatColor.RED + ".");
-                    i = plugin.spawnmobLimit;
+                if (i > Config.spawnmobLimit && !plugin.isAuthorized(cs, "rcmds.exempt.limit.spawnmob")) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "The amount specified was larger than the allowed amount.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Setting amount to " + MessageColor.NEUTRAL + Config.spawnmobLimit + MessageColor.NEGATIVE + ".");
+                    i = Config.spawnmobLimit;
                 }
                 try {
                     for (int a = 0; a < i; a++) p.getWorld().spawnEntity(l, c);
-                    cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + i + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Spawned " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + c.getName().toLowerCase() + MessageColor.POSITIVE + ".");
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "Uh-oh! This mob is not currently working with this command.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Uh-oh! This mob is not currently working with this command.");
                 }
                 return true;
             }
             try {
-                cs.sendMessage(ChatColor.BLUE + "Spawned " + ChatColor.GRAY + "1" + ChatColor.BLUE + " of " + ChatColor.GRAY + c.getName().toLowerCase() + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Spawned " + MessageColor.NEUTRAL + "1" + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + c.getName().toLowerCase() + MessageColor.POSITIVE + ".");
                 p.getWorld().spawnEntity(l, c);
             } catch (Exception e) {
-                cs.sendMessage(ChatColor.RED + "Uh-oh! This mob is not currently working with this command.");
+                cs.sendMessage(MessageColor.NEGATIVE + "Uh-oh! This mob is not currently working with this command.");
             }
             return true;
         }

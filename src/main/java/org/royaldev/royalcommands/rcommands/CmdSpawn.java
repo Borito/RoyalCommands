@@ -1,13 +1,13 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.ConfManager;
+import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -63,27 +63,27 @@ public class CmdSpawn implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             World w;
             if (args.length > 0) {
                 if (!plugin.isAuthorized(cs, "rcmds.spawn.other")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission to spawn in other worlds.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to spawn in other worlds.");
                     return true;
                 }
                 w = plugin.getServer().getWorld(args[0]);
                 if (w == null) {
-                    cs.sendMessage(ChatColor.RED + "No such world!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                     return true;
                 }
             } else w = p.getWorld();
             Location l = getGroupSpawn(p, w);
             if (l == null) l = getWorldSpawn(w);
-            p.sendMessage(ChatColor.BLUE + "Going to spawn in " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Going to spawn in " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
             String error = RUtils.teleport(p, l);
-            if (!error.isEmpty()) p.sendMessage(ChatColor.RED + error);
+            if (!error.isEmpty()) p.sendMessage(MessageColor.NEGATIVE + error);
             return true;
         }
         return false;

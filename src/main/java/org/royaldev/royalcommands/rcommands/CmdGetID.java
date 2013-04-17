@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +28,7 @@ public class CmdGetID implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -38,12 +38,12 @@ public class CmdGetID implements CommandExecutor {
             byte data = hand.getData().getData();
             String name = RUtils.getItemName(hand);
             Map<Enchantment, Integer> enchants = hand.getEnchantments();
-            cs.sendMessage(ChatColor.GRAY + name + ChatColor.BLUE + ": " + ChatColor.GRAY + id + ChatColor.BLUE + " (damage: " + ChatColor.GRAY + damage + ChatColor.BLUE + ", materialdata: " + ChatColor.GRAY + data + ChatColor.BLUE + ")");
+            cs.sendMessage(MessageColor.NEUTRAL + name + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + id + MessageColor.POSITIVE + " (damage: " + MessageColor.NEUTRAL + damage + MessageColor.POSITIVE + ", materialdata: " + MessageColor.NEUTRAL + data + MessageColor.POSITIVE + ")");
             if (!enchants.isEmpty()) {
-                cs.sendMessage(ChatColor.BLUE + "Enchantments:");
+                cs.sendMessage(MessageColor.POSITIVE + "Enchantments:");
                 for (Enchantment e : enchants.keySet()) {
                     int lvl = enchants.get(e);
-                    cs.sendMessage(" " + ChatColor.GRAY + e.getName().toLowerCase() + " " + lvl);
+                    cs.sendMessage(" " + MessageColor.NEUTRAL + e.getName().toLowerCase() + " " + lvl);
                 }
             }
             return true;

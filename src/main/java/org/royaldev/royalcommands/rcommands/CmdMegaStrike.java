@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,7 +33,7 @@ public class CmdMegaStrike implements CommandExecutor {
                 Player p = (Player) cs;
                 BlockIterator b = new BlockIterator(p, 0);
                 if (!b.hasNext()) {
-                    cs.sendMessage(ChatColor.RED + "Cannot megastrike there!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Cannot megastrike there!");
                     return true;
                 }
                 Block bb = b.next();
@@ -46,16 +46,16 @@ public class CmdMegaStrike implements CommandExecutor {
                 return true;
             } else {
                 if (!plugin.isAuthorized(cs, "rcmds.others.megastrike")) {
-                    cs.sendMessage(ChatColor.RED + "You don't have permission for that!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                     return true;
                 }
                 Player target = plugin.getServer().getPlayer(args[0]);
                 if (target == null || plugin.isVanished(target, cs)) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Megasmiting " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
-                target.sendMessage(ChatColor.RED + "You have been megasmited by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Megasmiting " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+                target.sendMessage(MessageColor.NEGATIVE + "You have been megasmited by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + ".");
                 for (int i = 0; i < 15; i++) target.getWorld().strikeLightning(target.getLocation());
                 return true;
 

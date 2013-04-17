@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class CmdSetJail implements CommandExecutor {
             }
 
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
 
@@ -69,7 +69,7 @@ public class CmdSetJail implements CommandExecutor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            p.sendMessage(ChatColor.BLUE + "Jail \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + "\" set.");
+            p.sendMessage(MessageColor.POSITIVE + "Jail \"" + MessageColor.NEUTRAL + args[0] + MessageColor.POSITIVE + "\" set.");
             return true;
         }
         return false;

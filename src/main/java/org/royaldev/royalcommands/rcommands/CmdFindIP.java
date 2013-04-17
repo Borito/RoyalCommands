@@ -1,13 +1,14 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -50,9 +51,13 @@ public class CmdFindIP implements CommandExecutor {
             }
             final String ip = args[0].replaceAll("[^\\.\\d]+", "");
             final boolean partial = !isValid(ip);
-            if (partial) cs.sendMessage(ChatColor.BLUE + "Checking for a partial IP address.");
+            if (partial) cs.sendMessage(MessageColor.POSITIVE + "Checking for a partial IP address.");
             final DecimalFormat df = new DecimalFormat("00.00");
             final OfflinePlayer[] offlinePlayers = plugin.getServer().getOfflinePlayers();
+            if (offlinePlayers.length < 1) {
+                cs.sendMessage(MessageColor.NEGATIVE + "No players have played to check IPs for!");
+                return true;
+            }
             final List<String> hasIP = new ArrayList<String>();
             final Runnable r = new Runnable() {
                 @Override
@@ -60,9 +65,11 @@ public class CmdFindIP implements CommandExecutor {
                     int runThrough = 0;
                     for (OfflinePlayer op : offlinePlayers) {
                         runThrough++;
-                        if (runThrough % (int) Math.floor(offlinePlayers.length * (plugin.findIpPercent / 100D)) == 0) {
+                        int modulo = (int) Math.floor(offlinePlayers.length * (Config.findIpPercent / 100D));
+                        if (modulo < 1) modulo = 1;
+                        if (runThrough % modulo == 0) {
                             double percentage = ((double) runThrough / (double) offlinePlayers.length) * 100D;
-                            cs.sendMessage(ChatColor.BLUE + "Searching. " + ChatColor.GRAY + df.format(percentage) + "%" + ChatColor.BLUE + " (" + ChatColor.GRAY + runThrough + ChatColor.BLUE + "/" + ChatColor.GRAY + offlinePlayers.length + ChatColor.BLUE + ") complete.");
+                            cs.sendMessage(MessageColor.POSITIVE + "Searching. " + MessageColor.NEUTRAL + df.format(percentage) + "%" + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + runThrough + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + offlinePlayers.length + MessageColor.POSITIVE + ") complete.");
                         }
                         boolean alreadyPresent = PConfManager.isManagerCreated(op);
                         PConfManager pcm = PConfManager.getPConfManager(op);
@@ -70,15 +77,15 @@ public class CmdFindIP implements CommandExecutor {
                         if (pip == null) continue;
                         if (pip.contains(ip)) {
                             synchronized (hasIP) {
-                                hasIP.add(pcm.getString("name", op.getName()) + ((partial) ? ChatColor.BLUE + ": " + ChatColor.GRAY + pip : ""));
+                                hasIP.add(pcm.getString("name", op.getName()) + ((partial) ? MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + pip : ""));
                             }
                         }
                         if (!alreadyPresent) pcm.discard();
                     }
-                    if (hasIP.isEmpty()) cs.sendMessage(ChatColor.RED + "No players with that IP address were found.");
+                    if (hasIP.isEmpty()) cs.sendMessage(MessageColor.NEGATIVE + "No players with that IP address were found.");
                     else {
-                        cs.sendMessage(ChatColor.BLUE + "The following players matched " + ChatColor.GRAY + ip + ChatColor.BLUE + ":");
-                        for (String name : hasIP) cs.sendMessage("  " + ChatColor.GRAY + name);
+                        cs.sendMessage(MessageColor.POSITIVE + "The following players matched " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ":");
+                        for (String name : hasIP) cs.sendMessage("  " + MessageColor.NEUTRAL + name);
                     }
                 }
             };

@@ -1,11 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.Config;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -24,8 +25,8 @@ public class CmdCompareIP implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (plugin.getConfig().getBoolean("disable_getip")) {
-                cs.sendMessage(ChatColor.RED + "/getip and /compareip have been disabled.");
+            if (Config.disablegetip) {
+                cs.sendMessage(MessageColor.NEGATIVE + "/getip and /compareip have been disabled.");
                 return true;
             }
             if (args.length < 2) {
@@ -43,15 +44,15 @@ public class CmdCompareIP implements CommandExecutor {
                     String p1ip = pcm1.getString("ip");
                     String p2ip = pcm2.getString("ip");
 
-                    cs.sendMessage(ChatColor.GRAY + player1.getName() + ": " + p1ip);
-                    cs.sendMessage(ChatColor.GRAY + player2.getName() + ": " + p2ip);
+                    cs.sendMessage(MessageColor.NEUTRAL + player1.getName() + ": " + p1ip);
+                    cs.sendMessage(MessageColor.NEUTRAL + player2.getName() + ": " + p2ip);
                     return true;
                 } else {
-                    cs.sendMessage(ChatColor.RED + "The player " + player2.getName() + " does not exist.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "The player " + player2.getName() + " does not exist.");
                     return true;
                 }
             } else {
-                cs.sendMessage(ChatColor.RED + "The player " + player1.getName() + " does not exist.");
+                cs.sendMessage(MessageColor.NEGATIVE + "The player " + player1.getName() + " does not exist.");
                 return true;
             }
         }

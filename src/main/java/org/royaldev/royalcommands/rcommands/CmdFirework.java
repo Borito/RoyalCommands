@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
@@ -65,7 +65,7 @@ public class CmdFirework implements CommandExecutor {
         try {
             fe = feb.build();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error: " + ChatColor.GRAY + e.getMessage());
+            throw new IllegalArgumentException("Error: " + MessageColor.NEUTRAL + e.getMessage());
         }
         fm.addEffect(fe);
         return fm;
@@ -165,13 +165,13 @@ public class CmdFirework implements CommandExecutor {
                 return false;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             ItemStack is = p.getItemInHand();
             if (is.getType() != Material.FIREWORK) {
-                cs.sendMessage(ChatColor.RED + "The item in hand is not a firework!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The item in hand is not a firework!");
                 return true;
             }
             FireworkMeta fm = (FireworkMeta) is.getItemMeta();
@@ -181,32 +181,32 @@ public class CmdFirework implements CommandExecutor {
                     try {
                         effectToRemove = Integer.parseInt(args[1]);
                     } catch (NumberFormatException e) {
-                        cs.sendMessage(ChatColor.RED + "The specified effect was not a number!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "The specified effect was not a number!");
                         return true;
                     }
                     effectToRemove--; // the first effect is really 0, but users will enter 1, so remove 1 from user input
                     if (effectToRemove < 0 || effectToRemove >= fm.getEffectsSize()) {
-                        cs.sendMessage(ChatColor.RED + "No such effect!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "No such effect!");
                         return true;
                     }
                     fm.removeEffect(effectToRemove);
                     is.setItemMeta(fm);
-                    cs.sendMessage(ChatColor.BLUE + "Removed effect " + ChatColor.GRAY + (effectToRemove + 1) + ChatColor.BLUE + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Removed effect " + MessageColor.NEUTRAL + (effectToRemove + 1) + MessageColor.POSITIVE + ".");
                     return true;
                 }
                 fm.clearEffects();
                 is.setItemMeta(fm);
-                cs.sendMessage(ChatColor.BLUE + "Cleared all firework effects.");
+                cs.sendMessage(MessageColor.POSITIVE + "Cleared all firework effects.");
                 return true;
             }
             try {
                 fm = applyEffect(args, fm);
             } catch (IllegalArgumentException e) {
-                cs.sendMessage(ChatColor.RED + e.getMessage());
+                cs.sendMessage(MessageColor.NEGATIVE + e.getMessage());
                 return true;
             }
             is.setItemMeta(fm);
-            cs.sendMessage(ChatColor.BLUE + "Added effect to firework!");
+            cs.sendMessage(MessageColor.POSITIVE + "Added effect to firework!");
             return true;
         }
         return false;

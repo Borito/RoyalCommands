@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,19 +36,19 @@ public class CmdSetlevel implements CommandExecutor {
             try {
                 lvl = Integer.valueOf(args[0]);
             } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED + "The level must be a number!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The level must be a number!");
                 return true;
             }
 
             Player t = plugin.getServer().getPlayer((args.length > 1) ? args[1] : cs.getName());
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             t.setLevel(lvl);
             if (!cs.equals(t))
-                cs.sendMessage(ChatColor.BLUE + "Set the level of " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " to " + ChatColor.GRAY + lvl + ChatColor.BLUE + ".");
-            t.sendMessage(ChatColor.BLUE + "Your level has been set to " + ChatColor.GRAY + lvl + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Set the level of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + lvl + MessageColor.POSITIVE + ".");
+            t.sendMessage(MessageColor.POSITIVE + "Your level has been set to " + MessageColor.NEUTRAL + lvl + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

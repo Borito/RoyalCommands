@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,12 +23,12 @@ public class CmdEnchantingTable implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             p.openEnchanting(null, true);
-            p.sendMessage(ChatColor.BLUE + "Opened an enchanting table for you.");
+            p.sendMessage(MessageColor.POSITIVE + "Opened an enchanting table for you.");
             return true;
         }
         return false;

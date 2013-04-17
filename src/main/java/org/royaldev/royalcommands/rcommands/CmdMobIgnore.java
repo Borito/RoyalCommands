@@ -1,12 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.BooleanUtils;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -35,12 +35,12 @@ public class CmdMobIgnore implements CommandExecutor {
                 if (isHidden == null) isHidden = false;
                 pcm.set("mobignored", !isHidden);
                 String status = BooleanUtils.toStringOnOff(isHidden);
-                cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore " + ChatColor.GRAY + status + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Toggled mob ignore " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist.");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist.");
                 return true;
             }
             PConfManager pcm = PConfManager.getPConfManager(t);
@@ -48,8 +48,8 @@ public class CmdMobIgnore implements CommandExecutor {
             if (isHidden == null) isHidden = false;
             pcm.set("mobignored", !isHidden);
             String status = BooleanUtils.toStringOnOff(isHidden);
-            cs.sendMessage(ChatColor.BLUE + "Toggled mob ignore " + ChatColor.GRAY + status + ChatColor.BLUE + " for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            t.sendMessage(ChatColor.GRAY + cs.getName() + ChatColor.BLUE + " toggled mob ignore " + ChatColor.GRAY + status + ChatColor.BLUE + " for you.");
+            cs.sendMessage(MessageColor.POSITIVE + "Toggled mob ignore " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+            t.sendMessage(MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + " toggled mob ignore " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " for you.");
             return true;
         }
         return false;

@@ -1,10 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -31,17 +32,16 @@ public class CmdKits implements CommandExecutor {
             }
             final Map<String, Object> opts = plugin.getConfig().getConfigurationSection("kits").getValues(false);
             if (opts.keySet().isEmpty()) {
-                cs.sendMessage(ChatColor.RED + "No kits found!");
+                cs.sendMessage(MessageColor.NEGATIVE + "No kits found!");
                 return true;
             }
             String kits = "";
             for (String s : opts.keySet()) {
-                if (plugin.kitPerms && plugin.isAuthorized(cs, "rcmds.kit." + s))
+                if (Config.kitPerms && plugin.isAuthorized(cs, "rcmds.kit." + s))
                     kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
-                else if (!plugin.kitPerms)
-                    kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
+                else if (!Config.kitPerms) kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
             }
-            cs.sendMessage(ChatColor.BLUE + "Kits:");
+            cs.sendMessage(MessageColor.POSITIVE + "Kits:");
             if (kits.isEmpty()) return true;
             cs.sendMessage(kits);
             return true;

@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -30,7 +31,7 @@ public class CmdBack implements CommandExecutor {
      * @param toAdd Location to add
      */
     public static void addBackLocation(Player p, Location toAdd) {
-        int maxStack = RoyalCommands.instance.maxBackStack;
+        int maxStack = Config.maxBackStack;
         synchronized (backdb) {
             List<Location> backs = backdb.get(p.getName());
             if (backs == null) backs = new ArrayList<Location>();
@@ -51,23 +52,23 @@ public class CmdBack implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             if (!backdb.containsKey(p.getName())) {
-                cs.sendMessage(ChatColor.RED + "You have no place to go back to!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You have no place to go back to!");
                 return true;
             }
             if (label.equalsIgnoreCase("backs")) {
                 List<Location> backs = backdb.get(p.getName());
-                cs.sendMessage(ChatColor.GRAY + "/back locations:");
+                cs.sendMessage(MessageColor.NEUTRAL + "/back locations:");
                 for (int i = 0; i < backs.size(); i++) {
                     Location l = backs.get(i);
                     if (l == null) continue;
                     Block b = l.getBlock().getRelative(BlockFace.DOWN);
-                    String onTopOf = "on " + ChatColor.GRAY + RUtils.getItemName(b.getType()) + ChatColor.BLUE + " in " + ChatColor.GRAY + b.getBiome().name().toLowerCase().replace("_", " ");
-                    cs.sendMessage(ChatColor.GRAY + "  " + (i + 1) + ": " + ChatColor.BLUE + onTopOf + ChatColor.BLUE + " (" + ChatColor.GRAY + l.getWorld().getName() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getX() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getY() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getZ() + ChatColor.BLUE + ")");
+                    String onTopOf = "on " + MessageColor.NEUTRAL + RUtils.getItemName(b.getType()) + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(b.getBiome());
+                    cs.sendMessage(MessageColor.NEUTRAL + "  " + (i + 1) + ": " + MessageColor.POSITIVE + onTopOf + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + l.getWorld().getName() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + MessageColor.POSITIVE + ")");
                 }
                 return true;
             }
@@ -78,20 +79,20 @@ public class CmdBack implements CommandExecutor {
                     index--;
                 }
             } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED + "The back number was not a valid number!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The back number was not a valid number!");
                 return true;
             }
             List<Location> backs = backdb.get(p.getName());
             if (index < 0 || index >= backs.size()) {
-                cs.sendMessage(ChatColor.RED + "No such back number!");
+                cs.sendMessage(MessageColor.NEGATIVE + "No such back number!");
                 return true;
             }
             String error = RUtils.teleport(p, backs.get(index));
             if (!error.isEmpty()) {
-                p.sendMessage(ChatColor.RED + error);
+                p.sendMessage(MessageColor.NEGATIVE + error);
                 return true;
             }
-            p.sendMessage(ChatColor.BLUE + "Returning to your previous location.");
+            p.sendMessage(MessageColor.POSITIVE + "Returning to your previous location.");
             return true;
         }
         return false;

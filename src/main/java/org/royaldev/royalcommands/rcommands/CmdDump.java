@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -50,39 +51,39 @@ public class CmdDump implements CommandExecutor {
                 return false;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
             Block bl = RUtils.getTarget(p);
-            if (!plugin.dumpCreateChest) {
+            if (!Config.dumpCreateChest) {
                 if (!(bl.getState() instanceof Chest)) {
-                    cs.sendMessage(ChatColor.RED + "That's not a chest!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That's not a chest!");
                     return true;
                 }
                 Chest c = (Chest) bl.getState();
                 if (!plugin.canAccessChest(p, bl)) {
-                    cs.sendMessage(ChatColor.RED + "You cannot access that chest!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You cannot access that chest!");
                     return true;
                 }
                 dumpItems(c, p.getInventory());
-                cs.sendMessage(ChatColor.BLUE + "Items stored.");
+                cs.sendMessage(MessageColor.POSITIVE + "Items stored.");
                 return true;
             }
             Location l = bl.getLocation();
             l.setY(l.getY() + 1);
             Block b = l.getBlock();
             if (b.getTypeId() != 0) {
-                cs.sendMessage(ChatColor.RED + "Please make sure the block above is air.");
+                cs.sendMessage(MessageColor.NEGATIVE + "Please make sure the block above is air.");
                 return true;
             }
             if (!plugin.canBuild(p, b)) {
-                cs.sendMessage(ChatColor.RED + "You're not allowed to create blocks there!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You're not allowed to create blocks there!");
                 return true;
             }
-            if (plugin.dumpUseInv) {
+            if (Config.dumpUseInv) {
                 if (!p.getInventory().contains(Material.CHEST)) {
-                    cs.sendMessage(ChatColor.RED + "You have no chests to use!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You have no chests to use!");
                     return true;
                 }
                 int chestAt = -1;
@@ -95,7 +96,7 @@ public class CmdDump implements CommandExecutor {
                     }
                 }
                 if (chestAt == -1) {
-                    cs.sendMessage(ChatColor.RED + "You have no chests to use!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You have no chests to use!");
                 }
                 ItemStack chests = p.getInventory().getContents()[chestAt];
                 chests.setAmount(chests.getAmount() - 1);
@@ -104,7 +105,7 @@ public class CmdDump implements CommandExecutor {
             b.setType(Material.CHEST);
             Chest c = (Chest) b.getState();
             dumpItems(c, p.getInventory());
-            cs.sendMessage(ChatColor.BLUE + "Items stored.");
+            cs.sendMessage(MessageColor.POSITIVE + "Items stored.");
             return true;
         }
         return false;

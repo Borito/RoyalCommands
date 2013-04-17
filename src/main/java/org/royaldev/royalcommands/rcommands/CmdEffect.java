@@ -1,7 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,9 +23,9 @@ public class CmdEffect implements CommandExecutor {
         StringBuilder sb = new StringBuilder();
         for (PotionEffectType pet : PotionEffectType.values()) {
             if (pet == null) continue;
-            sb.append(ChatColor.GRAY);
+            sb.append(MessageColor.NEUTRAL);
             sb.append(pet.getName());
-            sb.append(ChatColor.RESET);
+            sb.append(MessageColor.RESET);
             sb.append(", ");
         }
         cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
@@ -44,34 +44,34 @@ public class CmdEffect implements CommandExecutor {
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (!t.getName().equals(cs.getName()) && !plugin.isAuthorized(cs, "rcmds.others.effect")) {
-                cs.sendMessage(ChatColor.RED + "You cannot apply effects to other players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot apply effects to other players!");
                 return true;
             }
             if (!t.getName().equals(cs.getName()) && plugin.isAuthorized(t, "rcmds.exempt.effect")) {
-                cs.sendMessage(ChatColor.RED + "You cannot apply effects to that player!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot apply effects to that player!");
                 return true;
             }
             args = (String[]) ArrayUtils.subarray(args, 1, args.length);
             for (String arg : args) {
                 if (arg.equalsIgnoreCase("remove") || arg.equalsIgnoreCase("clear")) {
                     for (PotionEffect pe : t.getActivePotionEffects()) t.removePotionEffect(pe.getType());
-                    cs.sendMessage(ChatColor.BLUE + "Potion effects removed.");
+                    cs.sendMessage(MessageColor.POSITIVE + "Potion effects removed.");
                     return true;
                 }
                 String[] parts = arg.split(",");
                 if (parts.length < 3) {
-                    cs.sendMessage(ChatColor.GRAY + arg + ChatColor.RED + ": Not a complete effect! (name,duration,amplifier(,ambient)) Skipping.");
+                    cs.sendMessage(MessageColor.NEUTRAL + arg + MessageColor.NEGATIVE + ": Not a complete effect! (name,duration,amplifier(,ambient)) Skipping.");
                     continue;
                 }
                 String name = parts[0];
                 PotionEffectType pet = PotionEffectType.getByName(name.toUpperCase());
                 if (pet == null) {
                     sendPotionTypes(cs);
-                    cs.sendMessage(ChatColor.GRAY + arg + ChatColor.RED + ": No such potion effect type!");
+                    cs.sendMessage(MessageColor.NEUTRAL + arg + MessageColor.NEGATIVE + ": No such potion effect type!");
                     continue;
                 }
                 int duration;
@@ -81,12 +81,12 @@ public class CmdEffect implements CommandExecutor {
                     duration = Integer.parseInt(parts[1]);
                     amplifier = Integer.parseInt(parts[2]);
                 } catch (NumberFormatException e) {
-                    cs.sendMessage(ChatColor.RED + "Duration/amplifier was not a number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Duration/amplifier was not a number!");
                     continue;
                 }
                 if (parts.length > 3) ambient = parts[3].equalsIgnoreCase("true");
                 new PotionEffect(pet, duration, amplifier, ambient).apply(t);
-                cs.sendMessage(ChatColor.BLUE + "Applied effect to " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Applied effect to " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 return true;
             }
         }

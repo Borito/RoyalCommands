@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,22 +25,22 @@ public class CmdRepair implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
                 ItemStack hand = p.getItemInHand();
                 if (hand.getTypeId() == 0) {
-                    cs.sendMessage(ChatColor.RED + "You can't repair air!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You can't repair air!");
                     return true;
                 }
                 if (hand.getDurability() == (short) 0) {
-                    cs.sendMessage(ChatColor.RED + "That doesn't need to be repaired!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That doesn't need to be repaired!");
                     return true;
                 }
                 hand.setDurability((short) 0);
-                cs.sendMessage(ChatColor.BLUE + "Fixed your " + ChatColor.GRAY + RUtils.getItemName(hand) + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Fixed your " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
                 return true;
             }
             if (args.length > 0) {
@@ -58,10 +58,10 @@ public class CmdRepair implements CommandExecutor {
                     }
                 }
                 if (!items.equals("")) {
-                    cs.sendMessage(ChatColor.BLUE + "Fixed: " + ChatColor.GRAY + items + ChatColor.BLUE + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Fixed: " + MessageColor.NEUTRAL + items + MessageColor.POSITIVE + ".");
                     return true;
                 }
-                cs.sendMessage(ChatColor.RED + "You have nothing to repair!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You have nothing to repair!");
                 return true;
             }
         }

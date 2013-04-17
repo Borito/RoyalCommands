@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Chunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,7 +25,7 @@ public class CmdFixChunk implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -35,8 +35,8 @@ public class CmdFixChunk implements CommandExecutor {
             c.unload();
             c.load();
             if (worked)
-                cs.sendMessage(ChatColor.BLUE + "The chunk you're standing in has been refreshed!");
-            else cs.sendMessage(ChatColor.RED + "The chunk could not be refreshed.");
+                cs.sendMessage(MessageColor.POSITIVE + "The chunk you're standing in has been refreshed!");
+            else cs.sendMessage(MessageColor.NEGATIVE + "The chunk could not be refreshed.");
             return true;
         }
         return false;

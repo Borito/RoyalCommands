@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -40,10 +40,10 @@ public class CmdPlayerSearch implements CommandExecutor {
                         Long seen = pcm.getLong("seen");
                         if (seen == null || seen < 1L) continue;
                         found++;
-                        String lastseen = (op.isOnline()) ? " now" : RUtils.formatDateDiff(seen) + ChatColor.BLUE + " ago";
-                        cs.sendMessage(ChatColor.BLUE + String.valueOf(found) + ". " + ChatColor.GRAY + op.getName() + ChatColor.BLUE + " - Last seen" + ChatColor.GRAY + lastseen + ChatColor.BLUE + ".");
+                        String lastseen = (op.isOnline()) ? " now" : RUtils.formatDateDiff(seen) + MessageColor.POSITIVE + " ago";
+                        cs.sendMessage(MessageColor.POSITIVE + String.valueOf(found) + ". " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " - Last seen" + MessageColor.NEUTRAL + lastseen + MessageColor.POSITIVE + ".");
                     }
-                    cs.sendMessage(ChatColor.BLUE + "Search completed. " + ChatColor.GRAY + found + ChatColor.BLUE + " results found.");
+                    cs.sendMessage(MessageColor.POSITIVE + "Search completed. " + MessageColor.NEUTRAL + found + MessageColor.POSITIVE + " results found.");
                 }
             };
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);

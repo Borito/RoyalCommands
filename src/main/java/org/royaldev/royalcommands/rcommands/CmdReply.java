@@ -1,12 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -31,7 +31,7 @@ public class CmdReply implements CommandExecutor {
             }
             synchronized (CmdMessage.replydb) {
                 if (!CmdMessage.replydb.containsKey(cs.getName())) {
-                    cs.sendMessage(ChatColor.RED + "You have no one to reply to!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You have no one to reply to!");
                     return true;
                 }
             }
@@ -40,7 +40,7 @@ public class CmdReply implements CommandExecutor {
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(target);
 
             if (!t.isOnline()) {
-                cs.sendMessage(ChatColor.RED + "That player is offline!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player is offline!");
                 return true;
             }
 
@@ -50,13 +50,13 @@ public class CmdReply implements CommandExecutor {
 
             Player p = (Player) t;
             String m = RoyalCommands.getFinalArg(args, 0).trim();
-            cs.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + "You" + ChatColor.GRAY + " -> " + ChatColor.BLUE + p.getName() + ChatColor.GRAY + "] " + m);
-            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + "You" + ChatColor.GRAY + "] " + m);
+            cs.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + p.getName() + MessageColor.NEUTRAL + "] " + m);
+            p.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + "] " + m);
             Player[] ps = plugin.getServer().getOnlinePlayers();
             for (Player p1 : ps) {
                 if (PConfManager.getPConfManager(p1).getBoolean("spy")) {
                     if (t == p1 || cs == p1) continue;
-                    p1.sendMessage(ChatColor.GRAY + "[" + ChatColor.BLUE + cs.getName() + ChatColor.GRAY + " -> " + ChatColor.BLUE + p.getName() + ChatColor.GRAY + "] " + m);
+                    p1.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + p.getName() + MessageColor.NEUTRAL + "] " + m);
                 }
             }
             return true;

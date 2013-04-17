@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,9 +25,9 @@ public class CmdPotion implements CommandExecutor {
         StringBuilder sb = new StringBuilder();
         for (PotionEffectType pet : PotionEffectType.values()) {
             if (pet == null) continue;
-            sb.append(ChatColor.GRAY);
+            sb.append(MessageColor.NEUTRAL);
             sb.append(pet.getName());
-            sb.append(ChatColor.RESET);
+            sb.append(MessageColor.RESET);
             sb.append(", ");
         }
         cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
@@ -36,17 +36,17 @@ public class CmdPotion implements CommandExecutor {
     private PotionEffect getPotionEffect(String s) {
         String[] comp = s.split(",");
         if (comp.length < 3)
-            throw new IllegalArgumentException(ChatColor.GRAY + s + ChatColor.RED + ": Not a complete effect! (name,duration,amplifier(,ambient)) Skipping.");
+            throw new IllegalArgumentException(MessageColor.NEUTRAL + s + MessageColor.NEGATIVE + ": Not a complete effect! (name,duration,amplifier(,ambient)) Skipping.");
         PotionEffectType pet = PotionEffectType.getByName(comp[0].toUpperCase());
         if (pet == null) {
-            throw new IllegalArgumentException(ChatColor.GRAY + s + ChatColor.RED + " is not a valid potion effect type.");
+            throw new IllegalArgumentException(MessageColor.NEUTRAL + s + MessageColor.NEGATIVE + " is not a valid potion effect type.");
         }
         int duration, amplifier;
         try {
             duration = Integer.parseInt(comp[1]);
             amplifier = Integer.parseInt(comp[2]);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(ChatColor.RED + "Duration or amplifier was not an integer.");
+            throw new IllegalArgumentException(MessageColor.NEGATIVE + "Duration or amplifier was not an integer.");
         }
         boolean ambient = comp.length > 3 && comp[3].equalsIgnoreCase("true");
         return new PotionEffect(pet, duration, amplifier, ambient);
@@ -59,7 +59,7 @@ public class CmdPotion implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -70,12 +70,12 @@ public class CmdPotion implements CommandExecutor {
             Player p = (Player) cs;
             ItemStack hand = p.getItemInHand();
             if (!(hand.getItemMeta() instanceof PotionMeta)) {
-                cs.sendMessage(ChatColor.RED + "That item's meta is not potion meta.");
+                cs.sendMessage(MessageColor.NEGATIVE + "That item's meta is not potion meta.");
                 return true;
             }
             PotionMeta pm = (PotionMeta) hand.getItemMeta();
             if (hand.getType() != Material.POTION) {
-                cs.sendMessage(ChatColor.RED + "You must be holding a water bottle or potion!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You must be holding a water bottle or potion!");
                 return true;
             }
             for (String arg : args) {
@@ -83,7 +83,7 @@ public class CmdPotion implements CommandExecutor {
                     arg = arg.substring(5);
                     PotionEffectType pet = PotionEffectType.getByName(arg.toUpperCase());
                     if (pet == null) {
-                        cs.sendMessage(ChatColor.GRAY + arg + ChatColor.RED + " is not a potion effect type.");
+                        cs.sendMessage(MessageColor.NEUTRAL + arg + MessageColor.NEGATIVE + " is not a potion effect type.");
                         continue;
                     }
                     pm.setMainEffect(pet);
@@ -101,17 +101,17 @@ public class CmdPotion implements CommandExecutor {
                     arg = arg.substring(7);
                     PotionEffectType pet = PotionEffectType.getByName(arg.toUpperCase());
                     if (pet == null) {
-                        cs.sendMessage(ChatColor.GRAY + arg + ChatColor.RED + " is not a potion effect type.");
+                        cs.sendMessage(MessageColor.NEUTRAL + arg + MessageColor.NEGATIVE + " is not a potion effect type.");
                         continue;
                     }
                     pm.removeCustomEffect(pet);
                 } else if (arg.startsWith("clear")) {
-                    if (pm.clearCustomEffects()) cs.sendMessage(ChatColor.BLUE + "Cleared all custom effects.");
-                    else cs.sendMessage(ChatColor.RED + "Couldn't clear any custom effects.");
+                    if (pm.clearCustomEffects()) cs.sendMessage(MessageColor.POSITIVE + "Cleared all custom effects.");
+                    else cs.sendMessage(MessageColor.NEGATIVE + "Couldn't clear any custom effects.");
                 }
             }
             hand.setItemMeta(pm);
-            cs.sendMessage(ChatColor.BLUE + "You have set the effects on that potion.");
+            cs.sendMessage(MessageColor.POSITIVE + "You have set the effects on that potion.");
             return true;
         }
         return false;

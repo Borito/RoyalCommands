@@ -2,6 +2,7 @@ package org.royaldev.royalcommands.runners;
 
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AFKUtils;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -20,8 +21,8 @@ public class AFKWatcher implements Runnable {
 
     @Override
     public void run() {
-        long afkKickTime = plugin.afkKickTime;
-        long afkAutoTime = plugin.afkAutoTime;
+        long afkKickTime = Config.afkKickTime;
+        long afkAutoTime = Config.afkAutoTime;
         long currentTime = new Date().getTime();
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             if (p == null) continue;
@@ -33,7 +34,7 @@ public class AFKWatcher implements Runnable {
                 long lastMove = AFKUtils.getLastMove(p);
                 if ((lastMove + (afkAutoTime * 1000)) < currentTime) {
                     AFKUtils.setAfk(p, currentTime);
-                    plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(plugin.afkFormat, p)));
+                    plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.afkFormat, p)));
                     continue;
                 }
             }

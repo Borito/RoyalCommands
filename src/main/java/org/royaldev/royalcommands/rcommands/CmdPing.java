@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +24,7 @@ public class CmdPing implements CommandExecutor {
                 return true;
             }
             if (!plugin.nmsFace.hasSupport() || (!(cs instanceof Player) && args.length < 1)) {
-                cs.sendMessage(ChatColor.BLUE + "Pong!");
+                cs.sendMessage(MessageColor.POSITIVE + "Pong!");
                 return true;
             }
             if (args.length > 0) {
@@ -34,17 +34,17 @@ public class CmdPing implements CommandExecutor {
                 }
                 Player p = plugin.getServer().getPlayer(args[0]);
                 if (p == null || plugin.isVanished(p, cs)) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 int ping = plugin.nmsFace.getPing(p);
                 String possessive = (p.getName().endsWith("s")) ? "'" : "'s";
-                cs.sendMessage(ChatColor.GRAY + p.getName() + possessive + ChatColor.BLUE + " ping: " + ChatColor.GRAY + ping + "ms");
+                cs.sendMessage(MessageColor.NEUTRAL + p.getName() + possessive + MessageColor.POSITIVE + " ping: " + MessageColor.NEUTRAL + ping + "ms");
                 return true;
             }
             Player p = (Player) cs;
             int ping = plugin.nmsFace.getPing(p);
-            p.sendMessage(ChatColor.BLUE + "Your ping: " + ChatColor.GRAY + ping + "ms");
+            p.sendMessage(MessageColor.POSITIVE + "Your ping: " + MessageColor.NEUTRAL + ping + "ms");
             return true;
         }
         return false;

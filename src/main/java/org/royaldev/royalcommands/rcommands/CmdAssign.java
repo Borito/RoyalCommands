@@ -1,23 +1,24 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CmdAssign implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdAssign(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override
@@ -28,34 +29,60 @@ public class CmdAssign implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
                 ItemStack hand = p.getItemInHand();
                 if (hand == null || hand.getTypeId() == 0) {
-                    cs.sendMessage(ChatColor.RED + "You can't remove commands from air!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You can't remove commands from air!");
                     return true;
                 }
-                PConfManager.getPConfManager(p).set("assign." + hand.getTypeId(), null);
-                p.sendMessage(ChatColor.BLUE + "All commands removed from " + ChatColor.GRAY + hand.getType().toString().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+                RUtils.removeAssignment(hand, PConfManager.getPConfManager(p));
+                p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + hand.getType().toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
                 return true;
             }
+            String command = args[0];
             Player p = (Player) cs;
             PConfManager pcm = PConfManager.getPConfManager(p);
             ItemStack hand = p.getItemInHand();
             if (hand == null || hand.getTypeId() == 0) {
-                cs.sendMessage(ChatColor.RED + "You can't assign commands to air!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't assign commands to air!");
                 return true;
             }
-            java.util.List<String> cmds = pcm.getStringList("assign." + hand.getTypeId());
-            if (cmds == null) {
-                cmds = new ArrayList<String>();
-                cmds.add(RoyalCommands.getFinalArg(args, 0));
-            } else cmds.add(RoyalCommands.getFinalArg(args, 0));
-            pcm.set("assign." + hand.getTypeId(), cmds);
-            String message = (RoyalCommands.getFinalArg(args, 0).toLowerCase().startsWith("c:")) ? ChatColor.BLUE + "Added message " + ChatColor.GRAY + RoyalCommands.getFinalArg(args, 0).substring(2) + ChatColor.BLUE + " to that item." : ChatColor.BLUE + "Added command " + ChatColor.GRAY + "/" + RoyalCommands.getFinalArg(args, 0) + ChatColor.BLUE + " to that item.";
+            List<String> cmds = RUtils.getAssignment(hand, pcm);
+            if (cmds == null) cmds = new ArrayList<String>();
+            if (command.matches("\\-\\d+")) {
+                int toRemove;
+                try {
+                    toRemove = Integer.parseInt(command.substring(1));
+                } catch (NumberFormatException e) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "The number specified to remove was not a valid number!");
+                    return true;
+                }
+                if (toRemove <= 0 || toRemove > cmds.size()) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "The number specified does not exist!");
+                    return true;
+                }
+                toRemove--;
+                cmds.remove(toRemove);
+                RUtils.setAssignment(hand, cmds, pcm);
+                cs.sendMessage(MessageColor.POSITIVE + "Removed command " + MessageColor.NEUTRAL + (toRemove + 1) + MessageColor.POSITIVE + ".");
+                return true;
+            } else if (command.equals("~")) {
+                cs.sendMessage(MessageColor.POSITIVE + "Commands on " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ":");
+                if (cmds.isEmpty()) {
+                    cs.sendMessage(MessageColor.NEUTRAL + "None.");
+                    return true;
+                }
+                for (int i = 0; i < cmds.size(); i++)
+                    cs.sendMessage("  " + MessageColor.NEUTRAL + (i + 1) + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + cmds.get(i));
+                return true;
+            }
+            cmds.add(RoyalCommands.getFinalArg(args, 0));
+            RUtils.setAssignment(hand, cmds, pcm);
+            String message = (RoyalCommands.getFinalArg(args, 0).toLowerCase().startsWith("c:")) ? MessageColor.POSITIVE + "Added message " + MessageColor.NEUTRAL + RoyalCommands.getFinalArg(args, 0).substring(2) + MessageColor.POSITIVE + " to that item." : MessageColor.POSITIVE + "Added command " + MessageColor.NEUTRAL + "/" + RoyalCommands.getFinalArg(args, 0) + MessageColor.POSITIVE + " to that item.";
             p.sendMessage(message);
             return true;
         }

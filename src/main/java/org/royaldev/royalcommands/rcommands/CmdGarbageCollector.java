@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,19 +23,19 @@ public class CmdGarbageCollector implements CommandExecutor {
             }
             Runtime r = Runtime.getRuntime();
             long oldMem = r.freeMemory() / 1048576L;
-            cs.sendMessage(ChatColor.BLUE + "Running Java garbage collector...");
+            cs.sendMessage(MessageColor.POSITIVE + "Running Java garbage collector...");
             r.gc();
             int processors = r.availableProcessors();
             long maxMem = r.maxMemory() / 1048576L;
             long newMem = r.freeMemory() / 1048576L;
             if (r.maxMemory() < 0L) {
-                cs.sendMessage(ChatColor.RED + "You may be using CACAO Java, which means that these values may be negative.");
-                cs.sendMessage(ChatColor.RED + "Please switch to another JVM.");
+                cs.sendMessage(MessageColor.NEGATIVE + "You may be using CACAO Java, which means that these values may be negative.");
+                cs.sendMessage(MessageColor.NEGATIVE + "Please switch to another JVM.");
             }
-            cs.sendMessage(ChatColor.BLUE + "Used memory before: " + ChatColor.GRAY + (maxMem - oldMem) + " MB");
-            cs.sendMessage(ChatColor.BLUE + "Current memory: " + ChatColor.GRAY + (maxMem - newMem) + " MB" + ChatColor.BLUE + "/" + ChatColor.GRAY + maxMem + " MB");
-            cs.sendMessage(ChatColor.BLUE + "Memory freed: " + ChatColor.GRAY + (newMem - oldMem) + " MB");
-            cs.sendMessage(ChatColor.BLUE + "Processors available to Java: " + ChatColor.GRAY + processors);
+            cs.sendMessage(MessageColor.POSITIVE + "Used memory before: " + MessageColor.NEUTRAL + (maxMem - oldMem) + " MB");
+            cs.sendMessage(MessageColor.POSITIVE + "Current memory: " + MessageColor.NEUTRAL + (maxMem - newMem) + " MB" + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + maxMem + " MB");
+            cs.sendMessage(MessageColor.POSITIVE + "Memory freed: " + MessageColor.NEUTRAL + (newMem - oldMem) + " MB");
+            cs.sendMessage(MessageColor.POSITIVE + "Processors available to Java: " + MessageColor.NEUTRAL + processors);
             return true;
         }
         return false;

@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,36 +27,36 @@ public class CmdWorld implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
                 List<World> ws = plugin.getServer().getWorlds();
                 String worlds = "";
                 for (World w : ws)
-                    worlds = (worlds.equals("")) ? worlds.concat(ChatColor.GRAY + RUtils.getMVWorldName(w)) : worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + RUtils.getMVWorldName(w));
-                cs.sendMessage(ChatColor.BLUE + "Worlds: " + worlds);
+                    worlds = (worlds.equals("")) ? worlds.concat(MessageColor.NEUTRAL + RUtils.getMVWorldName(w)) : worlds.concat(MessageColor.RESET + ", " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w));
+                cs.sendMessage(MessageColor.POSITIVE + "Worlds: " + worlds);
                 return true;
             }
             World w = plugin.getServer().getWorld(args[0]);
             if (w == null) {
-                cs.sendMessage(ChatColor.RED + "That world does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That world does not exist!");
                 List<World> ws = plugin.getServer().getWorlds();
                 String worlds = "";
                 for (World w2 : ws) {
                     if (worlds.equals(""))
-                        worlds = worlds.concat(ChatColor.GRAY + RUtils.getMVWorldName(w2));
+                        worlds = worlds.concat(MessageColor.NEUTRAL + RUtils.getMVWorldName(w2));
                     else
-                        worlds = worlds.concat(ChatColor.WHITE + ", " + ChatColor.GRAY + RUtils.getMVWorldName(w2));
+                        worlds = worlds.concat(MessageColor.RESET + ", " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w2));
                 }
-                cs.sendMessage(ChatColor.BLUE + "Worlds: " + worlds);
+                cs.sendMessage(MessageColor.POSITIVE + "Worlds: " + worlds);
                 return true;
             }
             Player p = (Player) cs;
-            p.sendMessage(ChatColor.BLUE + "Teleporting you to world " + ChatColor.GRAY + RUtils.getMVWorldName(w) + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Teleporting you to world " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
             String error = RUtils.teleport(p, CmdSpawn.getWorldSpawn(w));
             if (!error.isEmpty()) {
-                p.sendMessage(ChatColor.RED + error);
+                p.sendMessage(MessageColor.NEGATIVE + error);
                 return true;
             }
             return true;

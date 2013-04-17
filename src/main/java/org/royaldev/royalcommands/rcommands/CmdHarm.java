@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,28 +28,28 @@ public class CmdHarm implements CommandExecutor {
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That person is not online!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That person is not online!");
                 return true;
             }
             int toDamage;
             try {
                 toDamage = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                cs.sendMessage(ChatColor.RED + "The damage must be a number!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The damage must be a number!");
                 return false;
             }
             if (toDamage > t.getMaxHealth() || toDamage <= 0) {
-                cs.sendMessage(ChatColor.RED + "The damage you entered is not within 1 and " + t.getMaxHealth() + "!");
+                cs.sendMessage(MessageColor.NEGATIVE + "The damage you entered is not within 1 and " + t.getMaxHealth() + "!");
                 return true;
             }
 
             if (!cs.getName().equalsIgnoreCase(t.getName()) && plugin.isAuthorized(t, "rcmds.exempt.harm")) {
-                cs.sendMessage(ChatColor.RED + "You may not harm that player.");
+                cs.sendMessage(MessageColor.NEGATIVE + "You may not harm that player.");
                 return true;
             }
             t.damage(toDamage);
-            t.sendMessage(ChatColor.RED + "You have just been damaged by " + ChatColor.GRAY + cs.getName() + ChatColor.RED + "!");
-            cs.sendMessage(ChatColor.BLUE + "You just damaged " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + "!");
+            t.sendMessage(MessageColor.NEGATIVE + "You have just been damaged by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + "!");
+            cs.sendMessage(MessageColor.POSITIVE + "You just damaged " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + "!");
             return true;
         }
         return false;

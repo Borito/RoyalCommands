@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,11 +25,11 @@ public class CmdFeed implements CommandExecutor {
             }
             if (args.length < 1) {
                 if (!(cs instanceof Player)) {
-                    cs.sendMessage(ChatColor.RED + "You can't feed the console!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You can't feed the console!");
                     return true;
                 }
                 Player t = (Player) cs;
-                t.sendMessage(ChatColor.BLUE + "You have fed yourself!");
+                t.sendMessage(MessageColor.POSITIVE + "You have fed yourself!");
                 t.setFoodLevel(20);
                 t.setSaturation(20F);
                 return true;
@@ -40,11 +40,11 @@ public class CmdFeed implements CommandExecutor {
                 return true;
             }
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "You have fed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-            t.sendMessage(ChatColor.BLUE + "You have been fed by " + ChatColor.GRAY + cs.getName() + ChatColor.BLUE + "!");
+            cs.sendMessage(MessageColor.POSITIVE + "You have fed " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+            t.sendMessage(MessageColor.POSITIVE + "You have been fed by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + "!");
             t.setFoodLevel(20);
             t.setSaturation(20F);
             return true;

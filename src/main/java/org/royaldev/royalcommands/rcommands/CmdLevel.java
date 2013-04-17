@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,7 +20,7 @@ public class CmdLevel implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("level")) {
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command can only be used by players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command can only be used by players!");
                 return true;
             }
             if (!plugin.isAuthorized(cs, "rcmds.level")) {
@@ -29,7 +29,7 @@ public class CmdLevel implements CommandExecutor {
             }
             Player player = (Player) cs;
             player.setLevel(player.getLevel() + 1);
-            cs.sendMessage(ChatColor.BLUE + "XP level raised by one!");
+            cs.sendMessage(MessageColor.POSITIVE + "XP level raised by one!");
             return true;
         }
         return false;

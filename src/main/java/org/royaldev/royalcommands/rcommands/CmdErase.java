@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,7 +37,7 @@ public class CmdErase implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -51,11 +51,11 @@ public class CmdErase implements CommandExecutor {
                 try {
                     radius = Integer.valueOf(args[1]);
                     if (radius < 0) {
-                        cs.sendMessage(ChatColor.RED + "Invalid radius!");
+                        cs.sendMessage(MessageColor.NEGATIVE + "Invalid radius!");
                         return true;
                     }
                 } catch (Exception e) {
-                    cs.sendMessage(ChatColor.RED + "Invalid radius!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid radius!");
                     return true;
                 }
             }
@@ -68,21 +68,21 @@ public class CmdErase implements CommandExecutor {
                     e.remove();
                     count++;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "mobs" : "mob") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "mobs" : "mob") + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("monsters")) {
                 for (Entity e : entlist) {
                     if (!(e instanceof Monster)) continue;
                     e.remove();
                     count++;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "monsters" : "monster") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "monsters" : "monster") + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("animals")) {
                 for (Entity e : entlist) {
                     if (!(e instanceof Animals)) continue;
                     e.remove();
                     count++;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "animals" : "animal") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "animals" : "animal") + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("arrows")) {
                 for (Entity e : entlist) {
                     if (e instanceof Arrow) {
@@ -90,7 +90,7 @@ public class CmdErase implements CommandExecutor {
                         count++;
                     }
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "arrows" : "arrow") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "arrows" : "arrow") + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("boats")) {
                 for (Entity e : entlist) {
                     if (e instanceof Boat) {
@@ -98,7 +98,7 @@ public class CmdErase implements CommandExecutor {
                         count++;
                     }
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "boats" : "boat") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "boats" : "boat") + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("littnt")) {
                 for (Entity e : entlist) {
                     if (e instanceof TNTPrimed) {
@@ -106,14 +106,14 @@ public class CmdErase implements CommandExecutor {
                         count++;
                     }
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " tnt" + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " tnt" + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("all")) {
                 for (Entity e : entlist) {
                     if (e instanceof Player) continue;
                     e.remove();
                     count++;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "entities" : "entity") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "entities" : "entity") + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("minecarts")) {
                 for (Entity e : entlist) {
                     if (e instanceof Minecart) {
@@ -121,7 +121,7 @@ public class CmdErase implements CommandExecutor {
                         count++;
                     }
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "minecarts" : "minecart") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "minecarts" : "minecart") + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("xp")) {
                 for (Entity e : entlist) {
                     if (e instanceof ExperienceOrb) {
@@ -129,7 +129,7 @@ public class CmdErase implements CommandExecutor {
                         count++;
                     }
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "orbs" : "orb") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "orbs" : "orb") + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("paintings")) {
                 for (Entity e : entlist) {
                     if (e instanceof Painting) {
@@ -137,7 +137,7 @@ public class CmdErase implements CommandExecutor {
                         count++;
                     }
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "paintings" : "painting") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "paintings" : "painting") + MessageColor.POSITIVE + ".");
             } else if (command.equalsIgnoreCase("drops")) {
                 for (Entity e : entlist) {
                     if (e instanceof Item) {
@@ -145,7 +145,7 @@ public class CmdErase implements CommandExecutor {
                         count++;
                     }
                 }
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + count + " " + ((count != 1) ? "drops" : "drop") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "drops" : "drop") + MessageColor.POSITIVE + ".");
             } else {
                 cs.sendMessage(cmd.getDescription());
                 return false;

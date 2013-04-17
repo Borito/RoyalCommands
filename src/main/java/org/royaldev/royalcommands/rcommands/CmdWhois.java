@@ -1,7 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.BooleanUtils;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -9,7 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -37,7 +37,7 @@ public class CmdWhois implements CommandExecutor {
             OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
             if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
             if (!t.isOnline() && !t.hasPlayedBefore()) {
-                cs.sendMessage(ChatColor.RED + "That player has never played before!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
                 return true;
             }
             PConfManager pcm = PConfManager.getPConfManager(t);
@@ -45,39 +45,39 @@ public class CmdWhois implements CommandExecutor {
             String ip = pcm.getString("ip");
             String name = pcm.getString("name");
             String dispname = pcm.getString("dispname");
-            cs.sendMessage(ChatColor.BLUE + "=====================");
-            cs.sendMessage(ChatColor.BLUE + ((t.isOnline()) ? "Whois" : "Whowas") + " for " + ChatColor.GRAY + name);
-            cs.sendMessage(ChatColor.BLUE + "Nickname: " + ChatColor.GRAY + dispname);
-            cs.sendMessage(ChatColor.BLUE + "IP: " + ChatColor.GRAY + ip);
-            cs.sendMessage(ChatColor.BLUE + "Is VIP: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(pcm.getBoolean("vip")));
-            cs.sendMessage(ChatColor.BLUE + "Is muted: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(pcm.getBoolean("muted")));
-            cs.sendMessage(ChatColor.BLUE + "Is frozen: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(pcm.getBoolean("frozen")));
-            cs.sendMessage(ChatColor.BLUE + "Is jailed: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(pcm.getBoolean("jailed")));
+            cs.sendMessage(MessageColor.POSITIVE + "=====================");
+            cs.sendMessage(MessageColor.POSITIVE + ((t.isOnline()) ? "Whois" : "Whowas") + " for " + MessageColor.NEUTRAL + name);
+            cs.sendMessage(MessageColor.POSITIVE + "Nickname: " + MessageColor.NEUTRAL + dispname);
+            cs.sendMessage(MessageColor.POSITIVE + "IP: " + MessageColor.NEUTRAL + ip);
+            cs.sendMessage(MessageColor.POSITIVE + "Is VIP: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("vip")));
+            cs.sendMessage(MessageColor.POSITIVE + "Is muted: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("muted")));
+            cs.sendMessage(MessageColor.POSITIVE + "Is frozen: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("frozen")));
+            cs.sendMessage(MessageColor.POSITIVE + "Is jailed: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("jailed")));
             long timestamp = RUtils.getTimeStamp(t, "seen");
             String lastseen = (timestamp < 0) ? "unknown" : RUtils.formatDateDiff(timestamp);
-            cs.sendMessage(ChatColor.BLUE + "Last seen:" + ChatColor.GRAY + ((t.isOnline()) ? " now" : lastseen));
-            cs.sendMessage(ChatColor.BLUE + "First played:" + ChatColor.GRAY + RUtils.formatDateDiff(t.getFirstPlayed()));
+            cs.sendMessage(MessageColor.POSITIVE + "Last seen:" + MessageColor.NEUTRAL + ((t.isOnline()) ? " now" : lastseen));
+            cs.sendMessage(MessageColor.POSITIVE + "First played:" + MessageColor.NEUTRAL + RUtils.formatDateDiff(t.getFirstPlayed()));
             if (t.isOnline()) {
                 Player p = (Player) t;
-                cs.sendMessage(ChatColor.BLUE + "Gamemode: " + ChatColor.GRAY + p.getGameMode().name().toLowerCase());
-                cs.sendMessage(ChatColor.BLUE + "Can fly: " + ChatColor.GRAY + BooleanUtils.toStringYesNo(p.getAllowFlight()));
-                cs.sendMessage(ChatColor.BLUE + "Health/Hunger/Saturation: " + ChatColor.GRAY + p.getHealth() / 2 + ChatColor.BLUE + "/" + ChatColor.GRAY + p.getFoodLevel() / 2 + ChatColor.BLUE + "/" + ChatColor.GRAY + p.getSaturation() / 2);
-                cs.sendMessage(ChatColor.BLUE + "Total Exp/Exp %/Level: " + ChatColor.GRAY + p.getTotalExperience() + ChatColor.BLUE + "/" + ChatColor.GRAY + df.format(p.getExp() * 100) + "%" + ChatColor.BLUE + "/" + ChatColor.GRAY + p.getLevel());
-                cs.sendMessage(ChatColor.BLUE + "Item in hand: " + ChatColor.GRAY + RUtils.getItemName(p.getItemInHand()));
-                cs.sendMessage(ChatColor.BLUE + "Alive for:" + ChatColor.GRAY + RUtils.formatDateDiff(new Date().getTime() - p.getTicksLived() * 50));
+                cs.sendMessage(MessageColor.POSITIVE + "Gamemode: " + MessageColor.NEUTRAL + p.getGameMode().name().toLowerCase());
+                cs.sendMessage(MessageColor.POSITIVE + "Can fly: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(p.getAllowFlight()));
+                cs.sendMessage(MessageColor.POSITIVE + "Health/Hunger/Saturation: " + MessageColor.NEUTRAL + p.getHealth() / 2 + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + p.getFoodLevel() / 2 + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + p.getSaturation() / 2);
+                cs.sendMessage(MessageColor.POSITIVE + "Total Exp/Exp %/Level: " + MessageColor.NEUTRAL + p.getTotalExperience() + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + df.format(p.getExp() * 100) + "%" + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + p.getLevel());
+                cs.sendMessage(MessageColor.POSITIVE + "Item in hand: " + MessageColor.NEUTRAL + RUtils.getItemName(p.getItemInHand()));
+                cs.sendMessage(MessageColor.POSITIVE + "Alive for:" + MessageColor.NEUTRAL + RUtils.formatDateDiff(new Date().getTime() - p.getTicksLived() * 50));
                 Location l = p.getLocation();
-                cs.sendMessage(ChatColor.BLUE + "Last position: " + "(" + ChatColor.GRAY + l.getX() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getY() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getZ() + ")");
-                cs.sendMessage(ChatColor.BLUE + "Last world: " + ChatColor.GRAY + RUtils.getMVWorldName(l.getWorld()) + ChatColor.BLUE + " (" + ChatColor.GRAY + l.getWorld().getName() + ChatColor.BLUE + ")");
+                cs.sendMessage(MessageColor.POSITIVE + "Last position: " + "(" + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + ")");
+                cs.sendMessage(MessageColor.POSITIVE + "Last world: " + MessageColor.NEUTRAL + RUtils.getMVWorldName(l.getWorld()) + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + l.getWorld().getName() + MessageColor.POSITIVE + ")");
             } else {
                 String lP = "lastposition.";
                 World w = (pcm.isSet(lP + "world")) ? plugin.getServer().getWorld(pcm.getString(lP + "world")) : null;
                 if (w != null) {
                     Location l = new Location(w, pcm.getDouble(lP + "x"), pcm.getDouble(lP + "y"), pcm.getDouble(lP + "z"));
-                    cs.sendMessage(ChatColor.BLUE + "Last position: " + "(" + ChatColor.GRAY + l.getX() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getY() + ChatColor.BLUE + ", " + ChatColor.GRAY + l.getZ() + ")");
-                    cs.sendMessage(ChatColor.BLUE + "Last world: " + ChatColor.GRAY + RUtils.getMVWorldName(l.getWorld()) + ChatColor.BLUE + " (" + ChatColor.GRAY + l.getWorld().getName() + ChatColor.BLUE + ")");
+                    cs.sendMessage(MessageColor.POSITIVE + "Last position: " + "(" + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + ")");
+                    cs.sendMessage(MessageColor.POSITIVE + "Last world: " + MessageColor.NEUTRAL + RUtils.getMVWorldName(l.getWorld()) + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + l.getWorld().getName() + MessageColor.POSITIVE + ")");
                 }
             }
-            cs.sendMessage(ChatColor.BLUE + "=====================");
+            cs.sendMessage(MessageColor.POSITIVE + "=====================");
             return true;
         }
         return false;

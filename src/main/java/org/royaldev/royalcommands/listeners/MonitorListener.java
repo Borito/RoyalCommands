@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.listeners;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -239,7 +239,7 @@ public class MonitorListener implements Listener {
             final Inventory i = plugin.getServer().createInventory(c.getInventory().getHolder(), c.getInventory().getSize());
             i.setContents(c.getInventory().getContents());
             e.getPlayer().openInventory(i);
-            e.getPlayer().sendMessage(ChatColor.BLUE + "Opened chest in read-only mode; you can't make changes.");
+            e.getPlayer().sendMessage(MessageColor.POSITIVE + "Opened chest in read-only mode; you can't make changes.");
         }
         e.setCancelled(true);
     }

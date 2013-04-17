@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -39,11 +39,11 @@ public class CmdSetCharacteristic implements CommandExecutor {
                 return true;
             }
             if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
-                cs.sendMessage(ChatColor.BLUE + "/" + label + " help:");
-                cs.sendMessage(ChatColor.BLUE + "/" + label + ChatColor.GRAY + " [player] maxhealth [half-hearts]");
-                cs.sendMessage(ChatColor.BLUE + "/" + label + ChatColor.GRAY + " [player] maxair [ticks]");
-                cs.sendMessage(ChatColor.BLUE + "/" + label + ChatColor.GRAY + " [player] exp [percentage]");
-                cs.sendMessage(ChatColor.BLUE + "/" + label + ChatColor.GRAY + " [player] canpickupitems [boolean]");
+                cs.sendMessage(MessageColor.POSITIVE + "/" + label + " help:");
+                cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] maxhealth [half-hearts]");
+                cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] maxair [ticks]");
+                cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] exp [percentage]");
+                cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] canpickupitems [boolean]");
                 return true;
             }
             if (args.length < 3) {
@@ -52,47 +52,47 @@ public class CmdSetCharacteristic implements CommandExecutor {
             }
             Player p = plugin.getServer().getPlayer(args[0]);
             if (p == null || plugin.isVanished(p, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             String subcommand = args[1];
             if (subcommand.equalsIgnoreCase("maxhealth")) {
                 Integer i = toInt(args[2]);
                 if (i == null) {
-                    cs.sendMessage(ChatColor.RED + "The max health was not a number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "The max health was not a number!");
                     return true;
                 }
                 if (i < 1) {
-                    cs.sendMessage(ChatColor.RED + "Cannot set maxhealth to less than 1.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Cannot set maxhealth to less than 1.");
                     return true;
                 }
                 p.setMaxHealth(i);
-                cs.sendMessage(ChatColor.BLUE + "Set max health to " + ChatColor.GRAY + i + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Set max health to " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + ".");
             } else if (subcommand.equalsIgnoreCase("maxair")) {
                 Integer i = toInt(args[2]);
                 if (i == null) {
-                    cs.sendMessage(ChatColor.RED + "The max air was not a number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "The max air was not a number!");
                     return true;
                 }
                 p.setMaximumAir(i);
-                cs.sendMessage(ChatColor.BLUE + "Set max air to " + ChatColor.GRAY + i + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Set max air to " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + ".");
             } else if (subcommand.equalsIgnoreCase("exp")) {
                 Float f = toFloat(args[2]);
                 if (f == null) {
-                    cs.sendMessage(ChatColor.RED + "The exp was not a number!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "The exp was not a number!");
                     return true;
                 }
                 f /= 100F;
                 if (f < 0F || f > 1F) {
-                    cs.sendMessage(ChatColor.RED + "Exp must be a percentage between 0 and 100.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Exp must be a percentage between 0 and 100.");
                     return true;
                 }
                 p.setExp(f);
-                cs.sendMessage(ChatColor.BLUE + "Set exp to " + ChatColor.GRAY + (f *= 100F) + "%" + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Set exp to " + MessageColor.NEUTRAL + (f *= 100F) + "%" + MessageColor.POSITIVE + ".");
             } else if (subcommand.equalsIgnoreCase("canpickupitems")) {
                 p.setCanPickupItems(args[2].equalsIgnoreCase("true"));
-                cs.sendMessage(ChatColor.BLUE + "Set can pick up items to " + ChatColor.GRAY + Boolean.toString(p.getCanPickupItems()) + ChatColor.BLUE + ".");
-            } else cs.sendMessage(ChatColor.RED + "No such subcommand!");
+                cs.sendMessage(MessageColor.POSITIVE + "Set can pick up items to " + MessageColor.NEUTRAL + Boolean.toString(p.getCanPickupItems()) + MessageColor.POSITIVE + ".");
+            } else cs.sendMessage(MessageColor.NEGATIVE + "No such subcommand!");
             return true;
         }
         return false;

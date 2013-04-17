@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class CmdClearInventory implements CommandExecutor {
                 }
                 Player p = (Player) cs;
                 p.getInventory().clear();
-                cs.sendMessage(ChatColor.BLUE + "You have cleared your inventory.");
+                cs.sendMessage(MessageColor.POSITIVE + "You have cleared your inventory.");
                 return true;
             }
         }
@@ -41,15 +41,15 @@ public class CmdClearInventory implements CommandExecutor {
             }
             Player target = plugin.getServer().getPlayer(args[0]);
             if (target == null || plugin.isVanished(target, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player is not online!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                 return true;
             }
             if (plugin.isAuthorized(target, "rcmds.exempt.clearinventory")) {
-                cs.sendMessage(ChatColor.RED + "You cannot alter that player's inventory!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot alter that player's inventory!");
                 return true;
             }
-            cs.sendMessage(ChatColor.BLUE + "You have cleared the inventory of " + ChatColor.GRAY + target.getName() + ChatColor.BLUE + ".");
-            target.sendMessage(ChatColor.RED + "Your inventory has been cleared.");
+            cs.sendMessage(MessageColor.POSITIVE + "You have cleared the inventory of " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+            target.sendMessage(MessageColor.NEGATIVE + "Your inventory has been cleared.");
             target.getInventory().clear();
             return true;
         }

@@ -1,9 +1,10 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -16,7 +17,7 @@ public class CmdWhitelist implements CommandExecutor {
     }
 
     public void reloadWhitelist() {
-        plugin.whitelist = plugin.whl.getStringList("whitelist");
+        Config.whitelist = plugin.whl.getStringList("whitelist");
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -26,7 +27,7 @@ public class CmdWhitelist implements CommandExecutor {
                 return true;
             }
             if (plugin.whl == null) {
-                cs.sendMessage(ChatColor.RED + "The whitelist.yml file was invalid! Cannot use whitelist.");
+                cs.sendMessage(MessageColor.NEGATIVE + "The whitelist.yml file was invalid! Cannot use whitelist.");
                 return true;
             }
             if (args.length < 1) {
@@ -40,31 +41,31 @@ public class CmdWhitelist implements CommandExecutor {
             }
             String player = args[1];
             if (command.equalsIgnoreCase("add")) {
-                if (plugin.whitelist.contains(player)) {
-                    cs.sendMessage(ChatColor.RED + "That player is already whitelisted!");
+                if (Config.whitelist.contains(player)) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player is already whitelisted!");
                     return true;
                 }
-                plugin.whitelist.add(player);
-                plugin.whl.set("whitelist", plugin.whitelist);
+                Config.whitelist.add(player);
+                plugin.whl.set("whitelist", Config.whitelist);
                 reloadWhitelist();
-                cs.sendMessage(ChatColor.BLUE + "Added " + ChatColor.GRAY + player + ChatColor.BLUE + " to whitelist.");
+                cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + player + MessageColor.POSITIVE + " to whitelist.");
                 return true;
             } else if (command.equalsIgnoreCase("remove")) {
-                if (!plugin.whitelist.contains(player)) {
-                    cs.sendMessage(ChatColor.RED + "That player is not whitelisted!");
+                if (!Config.whitelist.contains(player)) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player is not whitelisted!");
                     return true;
                 }
-                plugin.whitelist.remove(player);
-                plugin.whl.set("whitelist", plugin.whitelist);
+                Config.whitelist.remove(player);
+                plugin.whl.set("whitelist", Config.whitelist);
                 reloadWhitelist();
-                cs.sendMessage(ChatColor.BLUE + "Removed " + ChatColor.GRAY + player + ChatColor.BLUE + " from whitelist.");
+                cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + player + MessageColor.POSITIVE + " from whitelist.");
                 return true;
             } else if (command.equalsIgnoreCase("check")) {
-                String message = (plugin.whitelist.contains(player)) ? ChatColor.GRAY + player + ChatColor.BLUE + " is in the whitelist." : ChatColor.GRAY + player + ChatColor.RED + " is not in the whitelist.";
+                String message = (Config.whitelist.contains(player)) ? MessageColor.NEUTRAL + player + MessageColor.POSITIVE + " is in the whitelist." : MessageColor.NEUTRAL + player + MessageColor.NEGATIVE + " is not in the whitelist.";
                 cs.sendMessage(message);
                 return true;
             } else {
-                cs.sendMessage(ChatColor.RED + "Unknown subcommand!");
+                cs.sendMessage(MessageColor.NEGATIVE + "Unknown subcommand!");
                 return true;
             }
         }

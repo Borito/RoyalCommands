@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -30,14 +31,14 @@ public class CmdHug implements CommandExecutor {
             Player victim;
             victim = plugin.getServer().getPlayer(args[0]);
             if (victim == null) {
-                cs.sendMessage(ChatColor.RED + "That person is not online!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That person is not online!");
                 return true;
             }
             if (plugin.isVanished(victim, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            plugin.getServer().broadcastMessage(ChatColor.DARK_GREEN + cs.getName() + ChatColor.LIGHT_PURPLE + " hugs " + ChatColor.DARK_GREEN + victim.getName() + ChatColor.LIGHT_PURPLE + "! " + ChatColor.RED + "<3");
+            plugin.getServer().broadcastMessage(ChatColor.DARK_GREEN + cs.getName() + ChatColor.LIGHT_PURPLE + " hugs " + ChatColor.DARK_GREEN + victim.getName() + ChatColor.LIGHT_PURPLE + "! " + MessageColor.NEGATIVE + "<3");
             return true;
         }
         return false;

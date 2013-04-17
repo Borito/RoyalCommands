@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -28,9 +28,9 @@ public class CmdMap implements CommandExecutor {
     private String combineEnums(Enum[] es) {
         StringBuilder sb = new StringBuilder();
         for (Enum e : es) {
-            sb.append(ChatColor.GRAY);
+            sb.append(MessageColor.NEUTRAL);
             sb.append(e.name());
-            sb.append(ChatColor.RESET);
+            sb.append(MessageColor.RESET);
             sb.append(", ");
         }
         return sb.substring(0, sb.length() - 4);
@@ -48,7 +48,7 @@ public class CmdMap implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             Player p = (Player) cs;
@@ -58,24 +58,25 @@ public class CmdMap implements CommandExecutor {
             }
             String subcommand = args[0].toLowerCase();
             if (subcommandMatches(subcommand, "help", "?")) {
-                cs.sendMessage(ChatColor.GRAY + "/" + label + ChatColor.BLUE + " help:");
-                cs.sendMessage("  " + ChatColor.BLUE + "/" + label + ChatColor.GRAY + " scale [scaletype]" + ChatColor.BLUE + " - " + ChatColor.GRAY + "Sets the scale of the map in hand.");
-                cs.sendMessage("  " + ChatColor.BLUE + "/" + label + ChatColor.GRAY + " position [x] [z]" + ChatColor.BLUE + " - " + ChatColor.GRAY + "Sets the center position of the map in hand.");
-                cs.sendMessage("  " + ChatColor.BLUE + "/" + label + ChatColor.GRAY + " info" + ChatColor.BLUE + " - " + ChatColor.GRAY + "Displays information about the map in hand.");
-                cs.sendMessage("  " + ChatColor.BLUE + "/" + label + ChatColor.GRAY + " help" + ChatColor.BLUE + " - " + ChatColor.GRAY + "Displays this help.");
-                //cs.sendMessage("  " + ChatColor.BLUE + "/" + label + ChatColor.GRAY + " subcommand" + ChatColor.BLUE + " - " + ChatColor.GRAY + "Description");
+                cs.sendMessage(MessageColor.NEUTRAL + "/" + label + MessageColor.POSITIVE + " help:");
+                cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " scale [scaletype]" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Sets the scale of the map in hand.");
+                cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " position [x] [z]" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Sets the center position of the map in hand.");
+                cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " world [world]" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Changes the world displayed by the map in hand.");
+                cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " info" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Displays information about the map in hand.");
+                cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " help" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Displays this help.");
+                //cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " subcommand" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Description");
                 return true;
             }
             ItemStack hand = p.getItemInHand();
             if (hand == null || hand.getType() != Material.MAP) {
-                cs.sendMessage(ChatColor.RED + "You must be holding a map to use this subcommand!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You must be holding a map to use this subcommand!");
                 return true;
             }
             MapView mv = plugin.getServer().getMap(hand.getDurability());
             if (subcommandMatches(subcommand, "scale", "scaling", "setscale", "setscaling")) {
                 if (args.length < 2) {
                     cs.sendMessage(combineEnums(MapView.Scale.values()));
-                    cs.sendMessage(ChatColor.RED + "Please specify a scale.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please specify a scale.");
                     return true;
                 }
                 String sscale = args[1].toUpperCase();
@@ -84,16 +85,16 @@ public class CmdMap implements CommandExecutor {
                     mvs = MapView.Scale.valueOf(sscale);
                 } catch (IllegalArgumentException e) {
                     cs.sendMessage(combineEnums(MapView.Scale.values()));
-                    cs.sendMessage(ChatColor.RED + "Invalid scale type.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid scale type.");
                     return true;
                 }
                 mv.setScale(mvs);
                 updateMap(p, mv);
-                cs.sendMessage(ChatColor.BLUE + "Set the scale of map " + ChatColor.GRAY + mv.getId() + ChatColor.BLUE + " to " + ChatColor.GRAY + mvs.name().toLowerCase().replace("_", " ") + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Set the scale of map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + mvs.name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
                 return true;
             } else if (subcommandMatches(subcommand, "reposition", "position", "pos", "repos", "setposition", "setpos", "coords", "coordinates", "setcoords", "setcoordinates")) {
                 if (args.length < 3) {
-                    cs.sendMessage(ChatColor.RED + "Please specify the new X and Z coordinates for the center of the map.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please specify the new X and Z coordinates for the center of the map.");
                     return true;
                 }
                 int x, z;
@@ -101,39 +102,39 @@ public class CmdMap implements CommandExecutor {
                     x = Integer.valueOf(args[1]);
                     z = Integer.valueOf(args[2]);
                 } catch (NumberFormatException e) {
-                    cs.sendMessage(ChatColor.RED + "Those coordinates were invalid!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Those coordinates were invalid!");
                     return true;
                 }
                 mv.setCenterX(x);
                 mv.setCenterZ(z);
                 updateMap(p, mv);
-                cs.sendMessage(ChatColor.BLUE + "Set the center of map " + ChatColor.GRAY + mv.getId() + ChatColor.BLUE + " to " + ChatColor.GRAY + x + ChatColor.BLUE + ", " + ChatColor.GRAY + z + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Set the center of map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + ".");
                 return true;
             } else if (subcommandMatches(subcommand, "world", "setworld")) {
                 if (args.length < 2) {
-                    cs.sendMessage(ChatColor.RED + "Specify the world to set this map to.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Specify the world to set this map to.");
                     return true;
                 }
                 String sworld = args[0];
-                World w = RUtils.getWorld(sworld);
+                World w = plugin.getServer().getWorld(sworld);
                 if (w == null) {
-                    cs.sendMessage(ChatColor.RED + "No such world!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                     return true;
                 }
                 mv.setWorld(w);
                 updateMap(p, mv);
-                cs.sendMessage(ChatColor.BLUE + "Set the world of map " + ChatColor.GRAY + mv.getId() + ChatColor.BLUE + " to " + ChatColor.GRAY + w.getName() + ChatColor.BLUE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Set the world of map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
                 return true;
             } else if (subcommandMatches(subcommand, "info", "getinfo", "information", "getinformation")) {
-                cs.sendMessage(ChatColor.BLUE + "Information about map " + ChatColor.GRAY + mv.getId() + ChatColor.BLUE + ":");
-                cs.sendMessage("  " + ChatColor.BLUE + "Center coordinates: " + ChatColor.GRAY + mv.getCenterX() + ChatColor.BLUE + ", " + ChatColor.GRAY + mv.getCenterZ());
-                cs.sendMessage("  " + ChatColor.BLUE + "World: " + ChatColor.GRAY + mv.getWorld().getName());
-                cs.sendMessage("  " + ChatColor.BLUE + "Scale: " + ChatColor.GRAY + mv.getScale().name().toLowerCase().replace("_", " "));
-                //cs.sendMessage("  " + ChatColor.BLUE + "Char: " + ChatColor.GRAY + "stuff");
+                cs.sendMessage(MessageColor.POSITIVE + "Information about map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + ":");
+                cs.sendMessage("  " + MessageColor.POSITIVE + "Center coordinates: " + MessageColor.NEUTRAL + mv.getCenterX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + mv.getCenterZ());
+                cs.sendMessage("  " + MessageColor.POSITIVE + "World: " + MessageColor.NEUTRAL + mv.getWorld().getName());
+                cs.sendMessage("  " + MessageColor.POSITIVE + "Scale: " + MessageColor.NEUTRAL + mv.getScale().name().toLowerCase().replace("_", " "));
+                //cs.sendMessage("  " + MessageColor.POSITIVE + "Char: " + MessageColor.NEUTRAL + "stuff");
                 return true;
-            //} else if (subcommandMatches(subcommand, "render", "fullrender")) {
+                //} else if (subcommandMatches(subcommand, "render", "fullrender")) {
             } else {
-                cs.sendMessage(ChatColor.RED + "Unknown subcommand. Try " + ChatColor.GRAY + "/" + label + " help" + ChatColor.RED + ".");
+                cs.sendMessage(MessageColor.NEGATIVE + "Unknown subcommand. Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + ".");
                 return true;
             }
         }

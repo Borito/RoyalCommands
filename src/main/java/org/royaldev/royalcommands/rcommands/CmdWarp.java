@@ -1,16 +1,17 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.ConfManager;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.ConfManager;
 
 import java.util.Map;
 
@@ -42,13 +43,13 @@ public class CmdWarp implements CommandExecutor {
         warpPitch = Float.parseFloat(cm.getString("warps." + name + ".pitch"));
         warpW = Bukkit.getServer().getWorld(cm.getString("warps." + name + ".w"));
         if (warpW == null) {
-            p.sendMessage(ChatColor.RED + "World doesn't exist!");
+            p.sendMessage(MessageColor.NEGATIVE + "World doesn't exist!");
             return null;
         }
         try {
             return new Location(warpW, warpX, warpY, warpZ, warpYaw, warpPitch);
         } catch (Exception e) {
-            p.sendMessage(ChatColor.RED + "There are no warps!");
+            p.sendMessage(MessageColor.NEGATIVE + "There are no warps!");
             return null;
         }
     }
@@ -69,17 +70,17 @@ public class CmdWarp implements CommandExecutor {
             if (args.length < 1) {
                 ConfManager cm = ConfManager.getConfManager("warps.yml");
                 if (!cm.exists() || cm.get("warps") == null) {
-                    cs.sendMessage(ChatColor.RED + "There are no warps!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "There are no warps!");
                     return true;
                 }
                 final Map<String, Object> opts = cm.getConfigurationSection("warps").getValues(false);
                 if (opts.keySet().isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + "There are no warps!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "There are no warps!");
                     return true;
                 }
                 String warps = opts.keySet().toString();
                 warps = warps.substring(1, warps.length() - 1);
-                cs.sendMessage(ChatColor.BLUE + "Warps:");
+                cs.sendMessage(MessageColor.POSITIVE + "Warps:");
                 cs.sendMessage(warps);
                 return true;
             }
@@ -87,17 +88,17 @@ public class CmdWarp implements CommandExecutor {
                 Player p = (Player) cs;
                 Location warpLoc = pWarp(p, args[0].toLowerCase());
                 if (warpLoc == null) {
-                    cs.sendMessage(ChatColor.RED + "No such warp!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such warp!");
                     return true;
                 }
-                if (plugin.warpPermissions && !plugin.isAuthorized(cs, "rcmds.warp." + args[0].toLowerCase())) {
-                    cs.sendMessage(ChatColor.RED + "You do not have permission for that warp!");
+                if (Config.warpPermissions && !plugin.isAuthorized(cs, "rcmds.warp." + args[0].toLowerCase())) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "You do not have permission for that warp!");
                     return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Going to warp \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
+                cs.sendMessage(MessageColor.POSITIVE + "Going to warp \"" + MessageColor.NEUTRAL + args[0].toLowerCase() + MessageColor.POSITIVE + ".\"");
                 String error = RUtils.teleport(p, warpLoc);
                 if (!error.isEmpty()) {
-                    p.sendMessage(ChatColor.RED + error);
+                    p.sendMessage(MessageColor.NEGATIVE + error);
                     return true;
                 }
                 return true;
@@ -109,26 +110,26 @@ public class CmdWarp implements CommandExecutor {
                 }
                 Player t = plugin.getServer().getPlayer(args[1]);
                 if (t == null || plugin.isVanished(t, cs)) {
-                    cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 if (plugin.isAuthorized(t, "rcmds.exempt.warp")) {
-                    cs.sendMessage(ChatColor.RED + "You cannot warp that player!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "You cannot warp that player!");
                     return true;
                 }
-                cs.sendMessage(ChatColor.BLUE + "Warping " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + " \"" + ChatColor.GRAY + args[0].toLowerCase() + ChatColor.BLUE + ".\"");
+                cs.sendMessage(MessageColor.POSITIVE + "Warping " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " \"" + MessageColor.NEUTRAL + args[0].toLowerCase() + MessageColor.POSITIVE + ".\"");
                 Location warpLoc = pWarp(t, args[0].toLowerCase());
                 if (warpLoc == null) {
-                    cs.sendMessage(ChatColor.RED + "No such warp!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such warp!");
                     return true;
                 }
-                if (plugin.warpPermissions && !plugin.isAuthorized(t, "rcmds.warp." + args[0].toLowerCase())) {
-                    cs.sendMessage(ChatColor.RED + "That player does not have permission for that warp!");
+                if (Config.warpPermissions && !plugin.isAuthorized(t, "rcmds.warp." + args[0].toLowerCase())) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not have permission for that warp!");
                     return true;
                 }
                 String error = RUtils.teleport(t, warpLoc);
                 if (!error.isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + error);
+                    cs.sendMessage(MessageColor.NEGATIVE + error);
                     return true;
                 }
                 return true;

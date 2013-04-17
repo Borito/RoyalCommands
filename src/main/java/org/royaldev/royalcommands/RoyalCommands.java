@@ -30,8 +30,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
@@ -42,6 +40,8 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
+import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
@@ -49,7 +49,6 @@ import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.nms.api.NMSFace;
-import org.royaldev.royalcommands.opencsv.CSVReader;
 import org.royaldev.royalcommands.rcommands.*;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
@@ -61,15 +60,10 @@ import org.royaldev.royalcommands.runners.WarnWatcher;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -100,6 +94,7 @@ public class RoyalCommands extends JavaPlugin {
     public Metrics m = null;
 
     public NMSFace nmsFace;
+    public Config c;
 
     //--- Privates ---//
 
@@ -123,122 +118,6 @@ public class RoyalCommands extends JavaPlugin {
 
     public static MultiverseCore mvc = null;
 
-    //--- Configuration options ---//
-
-    //-- String lists --//
-
-    public List<String> muteCmds = new ArrayList<String>();
-    public List<String> blockedItems = new ArrayList<String>();
-    public List<String> motd = new ArrayList<String>();
-    public List<String> commandCooldowns = new ArrayList<String>();
-    public List<String> whitelist = new ArrayList<String>();
-    public List<String> logBlacklist = new ArrayList<String>();
-    public List<String> onBanActions = new ArrayList<String>();
-    public static List<String> disabledCommands = new ArrayList<String>();
-
-    //-- ConfigurationSections --//
-
-    public ConfigurationSection homeLimits = null;
-    public ConfigurationSection warnActions = null;
-
-    //-- Booleans --//
-
-    public Boolean showcommands = null;
-    public Boolean disablegetip = null;
-    public Boolean useWelcome = null;
-    public Boolean buildPerm = null;
-    public Boolean backDeath = null;
-    public Boolean motdLogin = null;
-    public Boolean dropExtras = null;
-    public Boolean kitPerms = null;
-    public Boolean explodeFire = null;
-    public Boolean sendToSpawn = null;
-    public Boolean stsBack = null;
-    public Boolean stsNew = null;
-    public Boolean customHelp = null;
-    public Boolean useVNP = null;
-    public Boolean cooldownAliases = null;
-    public Boolean useWhitelist = null;
-    public Boolean smoothTime = null;
-    public Boolean requireHelm = null;
-    public Boolean checkVersion = null;
-    public Boolean simpleList = null;
-    public Boolean backpackReset = null;
-    public Boolean changeNameTag = null;
-    public Boolean dumpCreateChest = null;
-    public Boolean dumpUseInv = null;
-    public Boolean h2Convert = null;
-    public Boolean ymlConvert = null;
-    public Boolean wmShowEmptyWorlds = null;
-    public Boolean timeBroadcast = null;
-    public Boolean worldAccessPerm = null;
-    public Boolean separateInv = null;
-    public Boolean separateXP = null;
-    public Boolean separateEnder = null;
-    public Boolean warpPermissions = null;
-    public Boolean removePotionEffects = null;
-    public Boolean updateCheck = null;
-    public Boolean overrideRespawn = null;
-    public Boolean purgeUnusedUserdata = null;
-    public static Boolean useWorldManager = null;
-    public static Boolean multiverseNames = null;
-    public static Boolean otherHelp = null;
-    public static Boolean safeTeleport = null;
-
-    //-- Strings --//
-
-    public String banMessage = null;
-    public String kickMessage = null;
-    public String defaultWarn = null;
-    public String welcomeMessage = null;
-    public String noBuildMessage = null;
-    public String bcastFormat = null;
-    public String whoFormat = null;
-    public String nickPrefix = null;
-    public String whoGroupFormat = null;
-    public String whitelistFormat = null;
-    public String h2Path = null;
-    public String h2User = null;
-    public String h2Pass = null;
-    public String afkFormat = null;
-    public String returnFormat = null;
-    public String igKickFormat = null;
-    public String kickFormat = null;
-    public String igBanFormat = null;
-    public String banFormat = null;
-    public String igTempbanFormat = null;
-    public String tempbanFormat = null;
-    public String igUnbanFormat = null;
-    public String ipBanFormat = null;
-    public String saveInterval = null;
-    public String mailCheckTime = null;
-
-    //-- Integers --//
-
-    public Integer spawnmobLimit = null;
-    public Integer helpAmount = null;
-    public Integer teleportWarmup = null;
-    public Integer maxBackStack = null;
-    public static Integer defaultStack = null;
-
-    //-- Doubles --//
-
-    public Double maxNear = null;
-    public Double defaultNear = null;
-    public Double gTeleCd = null;
-    public Double findIpPercent = null;
-
-    //-- Longs --//
-
-    public Long afkKickTime = null;
-    public Long afkAutoTime = null;
-    public Long warnExpireTime = null;
-
-    //-- Floats --//
-
-    public Float explodePower = null;
-    public Float maxExplodePower = null;
-
     //--- Public methods ---//
 
     @SuppressWarnings("unused")
@@ -260,7 +139,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public boolean isVanished(Player p) {
-        if (!useVNP) return false;
+        if (!Config.useVNP) return false;
         if (vp == null) {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
             return false;
@@ -268,7 +147,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public boolean isVanished(Player p, CommandSender cs) {
-        if (!useVNP) return false;
+        if (!Config.useVNP) return false;
         if (vp == null) {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
             return false;
@@ -346,7 +225,7 @@ public class RoyalCommands extends JavaPlugin {
      * @param jp      Plugin to register under
      */
     private void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
-        if (RoyalCommands.disabledCommands.contains(command.toLowerCase())) return;
+        if (Config.disabledCommands.contains(command.toLowerCase())) return;
         try {
             jp.getCommand(command).setExecutor(ce);
         } catch (NullPointerException e) {
@@ -379,7 +258,7 @@ public class RoyalCommands extends JavaPlugin {
 
     private boolean versionCheck() {
         // If someone happens to be looking through this and knows a better way, let me know.
-        if (!checkVersion) return true;
+        if (!Config.checkVersion) return true;
         Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
         Matcher m = p.matcher(getServer().getVersion());
         if (!m.matches() || m.groupCount() < 1) {
@@ -396,127 +275,6 @@ public class RoyalCommands extends JavaPlugin {
         String input;
         while ((input = br.readLine()) != null) data.append(input);
         return new Gson().fromJson(data.toString(), new TypeToken<Map<String, String>>() {}.getType());
-    }
-
-    //--- Reload configuration values ---//
-
-    public void reloadConfigVals() {
-        FileConfiguration c = getConfig();
-        showcommands = c.getBoolean("view_commands", true);
-        disablegetip = c.getBoolean("disable_getip", false);
-        useWelcome = c.getBoolean("enable_welcome_message", true);
-        buildPerm = c.getBoolean("use_build_perm", false);
-        backDeath = c.getBoolean("back_on_death", true);
-        motdLogin = c.getBoolean("motd_on_login", true);
-        dropExtras = c.getBoolean("drop_extras", false);
-        kitPerms = c.getBoolean("use_exclusive_kit_perms", false);
-        explodeFire = c.getBoolean("explode_fire", false);
-        sendToSpawn = c.getBoolean("send_to_spawn", false);
-        stsBack = c.getBoolean("sts_back", false);
-        stsNew = c.getBoolean("send_to_spawn_new", true);
-        otherHelp = c.getBoolean("other_plugins_in_help", true);
-        customHelp = c.getBoolean("use_custom_help", false);
-        useVNP = c.getBoolean("use_vanish", true);
-        cooldownAliases = c.getBoolean("cooldowns_match_aliases", true);
-        useWhitelist = c.getBoolean("use_whitelist", false);
-        smoothTime = c.getBoolean("use_smooth_time", true);
-        requireHelm = c.getBoolean("helm_require_item", false);
-        safeTeleport = c.getBoolean("safe_teleport", true);
-        checkVersion = c.getBoolean("version_check", true);
-        simpleList = c.getBoolean("simple_list", true);
-        multiverseNames = c.getBoolean("multiverse_world_names", true);
-        backpackReset = c.getBoolean("reset_backpack_death", false);
-        changeNameTag = c.getBoolean("change_nametag", false);
-        dumpCreateChest = c.getBoolean("dump_create_chest", true);
-        dumpUseInv = c.getBoolean("dump_use_inv", true);
-        h2Convert = c.getBoolean("h2.convert", false);
-        ymlConvert = c.getBoolean("yml_convert", false);
-        wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
-        timeBroadcast = c.getBoolean("broadcast_time_changes", false);
-        worldAccessPerm = c.getBoolean("enable_worldaccess_perm", false);
-        useWorldManager = c.getBoolean("worldmanager.enabled", true);
-        separateInv = c.getBoolean("worldmanager.inventory_separation.enabled", false);
-        separateXP = c.getBoolean("worldmanager.inventory_separation.separate_xp", true);
-        separateEnder = c.getBoolean("worldmanager.inventory_separation.separate_ender_chests", true);
-        warpPermissions = c.getBoolean("warp_permissions", false);
-        removePotionEffects = c.getBoolean("remove_potion_effects", true);
-        updateCheck = c.getBoolean("update_check", false);
-        overrideRespawn = c.getBoolean("override_respawn", true);
-        purgeUnusedUserdata = c.getBoolean("save.purge_unused_userdata_handlers", true);
-
-        banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
-        noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
-        kickMessage = RUtils.colorize(c.getString("default_kick_message", "Kicked from server."));
-        defaultWarn = RUtils.colorize(c.getString("default_warn_message", "You have been warned."));
-        welcomeMessage = RUtils.colorize(c.getString("welcome_message", "&5Welcome {name} to the server!"));
-        bcastFormat = RUtils.colorize(c.getString("bcast_format", "&b[&aBroadcast&b]&a "));
-        whoFormat = c.getString("who_format", "{prefix}{dispname}");
-        nickPrefix = RUtils.colorize(c.getString("nick_prefix", "*"));
-        whoGroupFormat = c.getString("who_group_format", "{prefix}{group}{suffix}");
-        whitelistFormat = RUtils.colorize(c.getString("whitelist_format", "You are not whitelisted on this server!"));
-        h2Path = c.getString("h2.path", "userdata");
-        h2User = c.getString("h2.user", "rcmds");
-        h2Pass = c.getString("h2.pass", "sdmcr");
-        afkFormat = c.getString("afk_format", "{dispname} is now AFK.");
-        returnFormat = c.getString("return_format", "{dispname} is no longer AFK.");
-        igKickFormat = c.getString("ingame_kick_format", "&7{kdispname}&c was kicked by &7{dispname}&c for &7{reason}&c.");
-        kickFormat = c.getString("kick_format", "&4Kicked&r: {reason}&r\nBy {dispname}");
-        igBanFormat = c.getString("ingame_ban_format", "&7{kdispname}&c was banned by &7{dispname}&c for &7{reason}&c.");
-        banFormat = c.getString("ban_format", "&4Banned&r: {reason}&r\nBy {dispname}");
-        igTempbanFormat = c.getString("ingame_tempban_format", "&7{kdispname}&c was tempbanned by &7{dispname}&c for &7{length}&c for &7{reason}&c.");
-        tempbanFormat = c.getString("tempban_format", "&4Tempbanned&r: {length}&r\nFor {reason}&r by {dispname}");
-        igUnbanFormat = c.getString("ingame_unban_message", "&7{kdispname}&9 was unbanned by &7{dispname}&9.");
-        ipBanFormat = c.getString("ipban_format", "&4IP Banned&r: &7{ip}&r has been banned from this server.");
-        saveInterval = c.getString("save.save_on_interval", "10m");
-        mailCheckTime = c.getString("mail_check_interval", "10m");
-
-        defaultStack = c.getInt("default_stack_size", 64);
-        spawnmobLimit = c.getInt("spawnmob_limit", 15);
-        helpAmount = c.getInt("help_lines", 5);
-        teleportWarmup = c.getInt("teleport_warmup", 0);
-        maxBackStack = c.getInt("max_back_stack", 5);
-
-        maxNear = c.getDouble("max_near_radius", 2000D);
-        defaultNear = c.getDouble("default_near_radius", 50D);
-        gTeleCd = c.getDouble("global_teleport_cooldown", 0D);
-        findIpPercent = c.getDouble("findip_alert_percentage", 25D);
-
-        explodePower = (float) c.getDouble("explode_power", 4F);
-        maxExplodePower = (float) c.getDouble("max_explode_power", 10F);
-
-        afkKickTime = c.getLong("afk_kick_time", 120L);
-        afkAutoTime = c.getLong("auto_afk_time", 300L);
-        warnExpireTime = c.getLong("warns_expire_after", 604800L);
-
-        muteCmds = c.getStringList("mute_blocked_commands");
-        blockedItems = c.getStringList("blocked_spawn_items");
-        motd = c.getStringList("motd");
-        commandCooldowns = c.getStringList("command_cooldowns");
-        disabledCommands = c.getStringList("disabled_commands");
-        onBanActions = c.getStringList("on_ban");
-        logBlacklist = c.getStringList("command_log_blacklist");
-
-        homeLimits = c.getConfigurationSection("home_limits");
-        warnActions = c.getConfigurationSection("actions_on_warn");
-
-        if (whl.exists()) whitelist = whl.getStringList("whitelist");
-
-        Help.reloadHelp();
-
-        if (wm == null) wm = new WorldManager();
-        wm.reloadConfig();
-
-        try {
-            Reader in = new FileReader(new File(getDataFolder() + File.separator + "items.csv"));
-            inm = new ItemNameManager(new CSVReader(in).readAll());
-        } catch (FileNotFoundException e) {
-            log.warning("items.csv was not found! Item aliases will not be used.");
-            inm = null;
-        } catch (IOException e) {
-            log.warning("Internal input/output error loading items.csv. Item aliases will not be used.");
-            inm = null;
-        }
-
     }
 
     //--- Load initial configuration ---//
@@ -609,6 +367,15 @@ public class RoyalCommands extends JavaPlugin {
 
         version = getDescription().getVersion();
 
+        //-- Initialize ConfManagers if not made --//
+
+        String[] cms = new String[]{"whitelist.yml", "warps.yml", "publicassignments.yml"};
+        for (String name : cms) {
+            ConfManager cm = ConfManager.getConfManager(name);
+            if (!cm.exists()) cm.createFile();
+            cm.forceSave();
+        }
+
         //-- Work out NMS magic using mbaxter's glorious methods --//
 
         // Get full package string of CraftServer.
@@ -664,7 +431,8 @@ public class RoyalCommands extends JavaPlugin {
         //-- Get configs --//
 
         loadConfiguration();
-        reloadConfigVals();
+        c = new Config(this);
+        c.reloadConfiguration();
 
         //-- Check CB version --//
 
@@ -688,7 +456,7 @@ public class RoyalCommands extends JavaPlugin {
         bs.runTaskTimerAsynchronously(this, new Runnable() {
             @Override
             public void run() {
-                if (!updateCheck) return;
+                if (!Config.updateCheck) return;
                 try {
                     Matcher m = versionPattern.matcher(version);
                     m.matches();
@@ -725,10 +493,10 @@ public class RoyalCommands extends JavaPlugin {
         bs.runTaskTimerAsynchronously(this, new BanWatcher(this), 20L, 600L);
         bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20L, 12000L);
         bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20L, 100L);
-        long mail = RUtils.timeFormatToSeconds(mailCheckTime);
+        long mail = RUtils.timeFormatToSeconds(Config.mailCheckTime);
         if (mail > 0L) bs.scheduleSyncRepeatingTask(this, new MailRunner(this), 20L, mail * 20L);
 
-        long every = RUtils.timeFormatToSeconds(saveInterval);
+        long every = RUtils.timeFormatToSeconds(Config.saveInterval);
         if (every < 1L) every = 600L; // 600s = 10m
         bs.runTaskTimerAsynchronously(this, new UserdataRunner(this), 20L, every * 20L); // tick = 1/20s
 
@@ -749,8 +517,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(blockListener, this);
         pm.registerEvents(signListener, this);
         pm.registerEvents(monitorListener, this);
-        if (ta != null && changeNameTag)
-            pm.registerEvents(new TagAPIListener(this), this);
+        if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(this), this);
 
         //-- Register commands --//
 

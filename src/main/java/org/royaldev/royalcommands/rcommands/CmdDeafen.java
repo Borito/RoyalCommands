@@ -1,12 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.BooleanUtils;
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -29,20 +29,24 @@ public class CmdDeafen implements CommandExecutor {
                 return false;
             }
             String name = (args.length < 1) ? cs.getName() : args[0];
+            if (!name.equalsIgnoreCase(cs.getName()) && !plugin.isAuthorized(cs, "rcmds.others.deafen")) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to deafen other players!");
+                return true;
+            }
             Player t = plugin.getServer().getPlayer(name);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (plugin.isAuthorized(t, "rcmds.exempt.deafen") && !t.getName().equals(cs.getName())) {
-                cs.sendMessage(ChatColor.RED + "You are not allowed to deafen that player!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to deafen that player!");
                 return true;
             }
             PConfManager pcm = PConfManager.getPConfManager(t);
             Boolean isDeaf = pcm.getBoolean("deaf");
             if (isDeaf == null) isDeaf = false;
             pcm.set("deaf", !isDeaf);
-            cs.sendMessage(ChatColor.BLUE + "Toggled deaf " + ChatColor.GRAY + BooleanUtils.toStringOnOff(!isDeaf) + ChatColor.BLUE + " for " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Toggled deaf " + MessageColor.NEUTRAL + BooleanUtils.toStringOnOff(!isDeaf) + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

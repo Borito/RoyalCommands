@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,17 +23,17 @@ public class CmdWeather implements CommandExecutor {
         if (conds.toLowerCase().trim().startsWith("sun")) {
             world.setStorm(false);
             world.setThundering(false);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "sun" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "sun" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + ".");
             return true;
         } else if (conds.toLowerCase().startsWith("rain")) {
             world.setStorm(true);
             world.setThundering(false);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "rain" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "rain" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + ".");
             return true;
         } else if (conds.toLowerCase().startsWith("storm")) {
             world.setStorm(true);
             world.setThundering(true);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "storm" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "storm" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;
@@ -45,7 +45,7 @@ public class CmdWeather implements CommandExecutor {
 
     public static boolean changeWeather(Player p, String conds, int length) {
         if (length < 1) {
-            p.sendMessage(ChatColor.RED + "The time specified was invalid!");
+            p.sendMessage(MessageColor.NEGATIVE + "The time specified was invalid!");
             return false;
         }
         World world = p.getWorld();
@@ -54,22 +54,22 @@ public class CmdWeather implements CommandExecutor {
             world.setStorm(false);
             world.setThundering(false);
             world.setWeatherDuration(length * 20);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "sun" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + " for " + ChatColor.GRAY + length + ChatColor.BLUE + " seconds.");
+            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "sun" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + length + MessageColor.POSITIVE + " seconds.");
             return true;
         } else if (conds.toLowerCase().startsWith("rain")) {
             world.setStorm(true);
             world.setThundering(false);
             world.setWeatherDuration(length * 20);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "rain" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + " for " + ChatColor.GRAY + length + ChatColor.BLUE + " seconds.");
+            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "rain" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + length + MessageColor.POSITIVE + " seconds.");
             return true;
         } else if (conds.toLowerCase().startsWith("storm")) {
             world.setStorm(true);
             world.setThundering(true);
             world.setWeatherDuration(length * 20);
-            p.sendMessage(ChatColor.BLUE + "Set weather to " + ChatColor.GRAY + "storm" + ChatColor.BLUE + " in " + ChatColor.GRAY + wName + ChatColor.BLUE + " for " + ChatColor.GRAY + length + ChatColor.BLUE + " seconds.");
+            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "storm" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + length + MessageColor.POSITIVE + " seconds.");
             return true;
         } else {
-            p.sendMessage(ChatColor.RED + "Invalid condition!");
+            p.sendMessage(MessageColor.NEGATIVE + "Invalid condition!");
             return false;
         }
     }
@@ -87,7 +87,7 @@ public class CmdWeather implements CommandExecutor {
             }
 
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length == 1) {
@@ -99,7 +99,7 @@ public class CmdWeather implements CommandExecutor {
                 String conds = args[0];
                 int length = RUtils.timeFormatToSeconds(args[1]);
                 if (length <= 0) {
-                    cs.sendMessage(ChatColor.RED + "Invalid time specified.");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid time specified.");
                     return true;
                 }
                 changeWeather(p, conds, length);

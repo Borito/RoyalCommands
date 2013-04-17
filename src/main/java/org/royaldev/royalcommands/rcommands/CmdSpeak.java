@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,15 +33,15 @@ public class CmdSpeak implements CommandExecutor {
             victim = plugin.getServer().getPlayer(args[0]);
 
             if (victim == null || plugin.isVanished(victim, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (args[1].startsWith("/")) {
-                cs.sendMessage(ChatColor.RED + "You may not send commands!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You may not send commands!");
                 return true;
             }
             if (plugin.isAuthorized(victim, "rcmds.exempt.speak")) {
-                cs.sendMessage(ChatColor.RED + "You may not make that player speak.");
+                cs.sendMessage(MessageColor.NEGATIVE + "You may not make that player speak.");
                 return true;
             }
             victim.chat(RoyalCommands.getFinalArg(args, 1));

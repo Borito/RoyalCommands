@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,7 +29,7 @@ public class CmdDelWarp implements CommandExecutor {
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
             if (args.length < 1) {
@@ -40,7 +40,7 @@ public class CmdDelWarp implements CommandExecutor {
             if (pconfl.exists()) {
                 FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
                 if (pconf.get("warps." + args[0]) == null) {
-                    cs.sendMessage(ChatColor.RED + "That warp does not exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "That warp does not exist!");
                     return true;
                 }
                 pconf.set("warps." + args[0], null);
@@ -49,7 +49,7 @@ public class CmdDelWarp implements CommandExecutor {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                cs.sendMessage(ChatColor.BLUE + "The warp \"" + ChatColor.GRAY + args[0] + ChatColor.BLUE + "\" has been deleted.");
+                cs.sendMessage(MessageColor.POSITIVE + "The warp \"" + MessageColor.NEUTRAL + args[0] + MessageColor.POSITIVE + "\" has been deleted.");
                 return true;
             }
         }

@@ -1,14 +1,14 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.ConfManager;
-import org.royaldev.royalcommands.PConfManager;
+import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -36,48 +36,48 @@ public class CmdJail implements CommandExecutor {
 
             if (args.length < 1) {
                 if (!cm.exists() || cm.get("jails") == null) {
-                    cs.sendMessage(ChatColor.RED + "There are no jails!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "There are no jails!");
                     return true;
                 }
                 final Map<String, Object> opts = cm.getConfigurationSection("jails").getValues(false);
                 if (opts.keySet().isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + "There are no jails!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "There are no jails!");
                     return true;
                 }
                 String jails = opts.keySet().toString();
                 jails = jails.substring(1, jails.length() - 1);
-                cs.sendMessage(ChatColor.BLUE + "Jails:");
+                cs.sendMessage(MessageColor.POSITIVE + "Jails:");
                 cs.sendMessage(jails);
                 return true;
             }
 
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (plugin.isAuthorized(t, "rcmds.exempt.jail")) {
-                cs.sendMessage(ChatColor.RED + "You cannot jail that player.");
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot jail that player.");
                 return true;
             }
             PConfManager pcm = PConfManager.getPConfManager(t);
             if (args.length < 2) {
                 if (pcm.getBoolean("jailed")) {
                     pcm.set("jailed", false);
-                    cs.sendMessage(ChatColor.BLUE + "You have released " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-                    t.sendMessage(ChatColor.BLUE + "You have been released.");
+                    cs.sendMessage(MessageColor.POSITIVE + "You have released " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+                    t.sendMessage(MessageColor.POSITIVE + "You have been released.");
                     if (jaildb.get(t) == null || jaildb.get(t).getWorld() == null) {
-                        t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
+                        t.sendMessage(MessageColor.NEGATIVE + "Your previous location no longer exists. Sending you to spawn.");
                         String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
                         if (!error.isEmpty()) {
-                            cs.sendMessage(ChatColor.RED + error);
+                            cs.sendMessage(MessageColor.NEGATIVE + error);
                             return true;
                         }
                         return true;
                     }
                     String error = RUtils.silentTeleport(t, jaildb.get(t));
                     if (!error.isEmpty()) {
-                        cs.sendMessage(ChatColor.RED + error);
+                        cs.sendMessage(MessageColor.NEGATIVE + error);
                         return true;
                     }
                     return true;
@@ -95,22 +95,22 @@ public class CmdJail implements CommandExecutor {
             World jailW;
 
             if (!cm.exists()) {
-                cs.sendMessage(ChatColor.RED + "No jails set!");
+                cs.sendMessage(MessageColor.NEGATIVE + "No jails set!");
                 return true;
             }
             if (args.length < 1) {
                 if (cm.get("jails") == null) {
-                    cs.sendMessage(ChatColor.RED + "There are no jails!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "There are no jails!");
                     return true;
                 }
                 final Map<String, Object> opts = cm.getConfigurationSection("jails").getValues(false);
                 if (opts.keySet().isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + "There are no jails!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "There are no jails!");
                     return true;
                 }
                 String jails = opts.keySet().toString();
                 jails = jails.substring(1, jails.length() - 1);
-                cs.sendMessage(ChatColor.BLUE + "Jails:");
+                cs.sendMessage(MessageColor.POSITIVE + "Jails:");
                 cs.sendMessage(jails);
                 return true;
             }
@@ -123,39 +123,39 @@ public class CmdJail implements CommandExecutor {
                 jailPitch = Float.parseFloat(cm.getString("jails." + args[1] + ".pitch"));
                 jailW = plugin.getServer().getWorld(cm.getString("jails." + args[1] + ".w"));
             } else {
-                cs.sendMessage(ChatColor.RED + "That jail does not exist.");
+                cs.sendMessage(MessageColor.NEGATIVE + "That jail does not exist.");
                 return true;
             }
             Location jailLoc = new Location(jailW, jailX, jailY, jailZ, jailYaw, jailPitch);
             if (pcm.getBoolean("jailed")) {
                 pcm.set("jailed", false);
-                cs.sendMessage(ChatColor.BLUE + "You have released " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-                t.sendMessage(ChatColor.BLUE + "You have been released.");
+                cs.sendMessage(MessageColor.POSITIVE + "You have released " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+                t.sendMessage(MessageColor.POSITIVE + "You have been released.");
                 if (jaildb.get(t) == null || jaildb.get(t).getWorld() == null) {
-                    t.sendMessage(ChatColor.RED + "Your previous location no longer exists. Sending you to spawn.");
+                    t.sendMessage(MessageColor.NEGATIVE + "Your previous location no longer exists. Sending you to spawn.");
                     String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
                     if (!error.isEmpty()) {
-                        cs.sendMessage(ChatColor.RED + error);
+                        cs.sendMessage(MessageColor.NEGATIVE + error);
                         return true;
                     }
                     return true;
                 }
                 String error = RUtils.silentTeleport(t, jaildb.get(t));
                 if (!error.isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + error);
+                    cs.sendMessage(MessageColor.NEGATIVE + error);
                     return true;
                 }
                 return true;
             } else {
                 if (jailW == null) {
-                    cs.sendMessage(ChatColor.RED + "World doesn't exist!");
+                    cs.sendMessage(MessageColor.NEGATIVE + "World doesn't exist!");
                 }
-                cs.sendMessage(ChatColor.BLUE + "You have jailed " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
-                t.sendMessage(ChatColor.RED + "You have been jailed.");
+                cs.sendMessage(MessageColor.POSITIVE + "You have jailed " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+                t.sendMessage(MessageColor.NEGATIVE + "You have been jailed.");
                 jaildb.put(t, t.getLocation());
                 String error = RUtils.silentTeleport(t, jailLoc);
                 if (!error.isEmpty()) {
-                    cs.sendMessage(ChatColor.RED + error);
+                    cs.sendMessage(MessageColor.NEGATIVE + error);
                     return true;
                 }
                 pcm.set("jailed", true);

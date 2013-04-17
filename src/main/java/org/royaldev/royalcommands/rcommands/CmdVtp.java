@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,15 +29,15 @@ public class CmdVtp implements CommandExecutor {
             }
             Player victim = plugin.getServer().getPlayer(args[0]);
             if (victim == null) {
-                cs.sendMessage(ChatColor.RED + "That player does not exist!");
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command cannot be used in console.");
+                cs.sendMessage(MessageColor.NEGATIVE + "This command cannot be used in console.");
                 return true;
             }
             Player player = (Player) cs;
-            cs.sendMessage(ChatColor.BLUE + "Teleporting you to player " + ChatColor.GRAY + victim.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Teleporting you to player " + MessageColor.NEUTRAL + victim.getName() + MessageColor.POSITIVE + ".");
             player.teleport(victim); // raw teleports in /vtp
             return true;
         }
