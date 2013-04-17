@@ -1247,19 +1247,19 @@ public class RUtils {
         ItemMeta im = is.getItemMeta();
         if (im != null) {
             String displayName = im.getDisplayName();
-            if (displayName != null) path.append(".").append(displayName);
+            if (displayName != null) path.append(".").append(displayName.replace('.', '\u00B5'));
             List<String> lore = im.getLore();
             if (lore != null && !lore.isEmpty()) {
                 path.append(".");
                 for (String l : lore) {
-                    path.append(l);
+                    path.append(l.replace('.', '\u00B5'));
                     path.append("\u0000");
                 }
             }
         }
         // durability
         path.append(".commands");
-        return path.toString().replace('.', '\u00B5');
+        return path.toString();
     }
 
     public static List<String> getAssignment(ItemStack is, GeneralConfManager gcf) {
