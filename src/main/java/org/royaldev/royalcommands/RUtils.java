@@ -1253,13 +1253,13 @@ public class RUtils {
                 path.append(".");
                 for (String l : lore) {
                     path.append(l);
-                    path.append("\\x00");
+                    path.append("\u0000");
                 }
             }
         }
         // durability
         path.append(".commands");
-        return path.toString();
+        return path.toString().replace('.', '\u00B5');
     }
 
     public static List<String> getAssignment(ItemStack is, GeneralConfManager gcf) {
