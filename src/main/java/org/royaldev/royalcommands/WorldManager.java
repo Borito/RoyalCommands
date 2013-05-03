@@ -91,6 +91,7 @@ public class WorldManager {
     private final Logger log = RoyalCommands.instance.getLogger();
 
     public WorldManager() {
+        il = new InventoryListener(RoyalCommands.instance);
         if (!Config.useWorldManager) return;
         if (!config.exists()) config.createFile();
         if (config.getConfigurationSection("worlds") != null) {
@@ -113,7 +114,6 @@ public class WorldManager {
             boolean isStorming = config.getBoolean("worlds." + w.getName() + ".is_storming_if_weather_false", false);
             w.setStorm(isStorming);
         }
-        il = new InventoryListener(RoyalCommands.instance);
         Bukkit.getPluginManager().registerEvents(il, RoyalCommands.instance);
         Bukkit.getPluginManager().registerEvents(new WorldWatcher(), RoyalCommands.instance);
     }
