@@ -19,7 +19,7 @@ public class CmdSpeak implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("speak")) {
-            if (!plugin.isAuthorized(cs, "rcmds.speak")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.speak")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -40,7 +40,7 @@ public class CmdSpeak implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "You may not send commands!");
                 return true;
             }
-            if (plugin.isAuthorized(victim, "rcmds.exempt.speak")) {
+            if (plugin.ah.isAuthorized(victim, "rcmds.exempt.speak")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You may not make that player speak.");
                 return true;
             }

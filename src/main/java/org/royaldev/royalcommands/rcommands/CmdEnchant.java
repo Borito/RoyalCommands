@@ -58,7 +58,7 @@ public class CmdEnchant implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String args[]) {
         if (cmd.getName().equalsIgnoreCase("enchant")) {
-            if (!plugin.isAuthorized(cs, "rcmds.enchant")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.enchant")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -106,18 +106,18 @@ public class CmdEnchant implements CommandExecutor {
                         }
                         cs.sendMessage(MessageColor.POSITIVE + "Removed all enchantments from " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
                     } else {
-                        if (level == -2 && !plugin.isAuthorized(cs, "rcmds.enchant.levels")) {
+                        if (level == -2 && !plugin.ah.isAuthorized(cs, "rcmds.enchant.levels")) {
                             cs.sendMessage(MessageColor.NEGATIVE + "You cannot apply levels for enchantments higher than the maximum vanilla level!");
                             return true;
                         }
                         boolean skipped = false;
                         for (Enchantment e : Enchantment.values()) {
                             int toApply = getRealLevel(e, level);
-                            if (toApply > e.getMaxLevel() && !plugin.isAuthorized(cs, "rcmds.enchant.levels")) {
+                            if (toApply > e.getMaxLevel() && !plugin.ah.isAuthorized(cs, "rcmds.enchant.levels")) {
                                 skipped = true;
                                 continue;
                             }
-                            if (!e.canEnchantItem(hand) && !plugin.isAuthorized(cs, "rcmds.enchant.illegal")) {
+                            if (!e.canEnchantItem(hand) && !plugin.ah.isAuthorized(cs, "rcmds.enchant.illegal")) {
                                 skipped = true;
                                 continue;
                             }
@@ -165,15 +165,15 @@ public class CmdEnchant implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + toAdd.getName().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ".");
             } else {
                 int toApply = getRealLevel(toAdd, level);
-                if (toApply > toAdd.getMaxLevel() && !plugin.isAuthorized(cs, "rcmds.enchant.levels")) {
+                if (toApply > toAdd.getMaxLevel() && !plugin.ah.isAuthorized(cs, "rcmds.enchant.levels")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That level is too high for " + MessageColor.NEUTRAL + toAdd.getName().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + ".");
                     return true;
                 }
-                if (!toAdd.canEnchantItem(hand) && !plugin.isAuthorized(cs, "rcmds.enchant.illegal")) {
+                if (!toAdd.canEnchantItem(hand) && !plugin.ah.isAuthorized(cs, "rcmds.enchant.illegal")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + toAdd.getName().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + " because it is not for that type of item!");
                     return true;
                 }
-                if (!plugin.isAuthorized(cs, "rcmds.enchant.illegal"))
+                if (!plugin.ah.isAuthorized(cs, "rcmds.enchant.illegal"))
                     for (Enchantment e : hand.getEnchantments().keySet()) {
                         if (toAdd.conflictsWith(e)) {
                             cs.sendMessage(MessageColor.NEGATIVE + "Cannot add " + MessageColor.NEUTRAL + toAdd.getName().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + " because it conflicts with " + MessageColor.NEUTRAL + e.getName().replace("_", " ").toLowerCase() + MessageColor.NEGATIVE + ".");

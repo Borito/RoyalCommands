@@ -25,6 +25,15 @@ public abstract class GeneralConfManager extends YamlConfiguration {
         return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
     }
 
+    /**
+     * Gets a Location from config
+     * <p/>
+     * This <strong>will</strong> throw an exception if the saved Location is invalid or missing parts.
+     *
+     * @param path      Path in the yml to fetch from
+     * @param worldName World name to specify manually
+     * @return Location or null if path does not exist or if config doesn't exist
+     */
     public Location getLocation(String path, String worldName) {
         if (!isSet(path)) return null;
         double x = getDouble(path + ".x");

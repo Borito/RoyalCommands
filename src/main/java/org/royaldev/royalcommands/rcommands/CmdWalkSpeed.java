@@ -18,7 +18,7 @@ public class CmdWalkSpeed implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("walkspeed")) {
-            if (!plugin.isAuthorized(cs, "rcmds.walkspeed")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.walkspeed")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

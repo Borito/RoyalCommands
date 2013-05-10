@@ -20,7 +20,7 @@ public class CmdBanList implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("banlist")) {
-            if (!plugin.isAuthorized(cs, "rcmds.banlist")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.banlist")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

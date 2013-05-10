@@ -20,7 +20,7 @@ public class CmdTppos implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("tppos")) {
-            if (!plugin.isAuthorized(cs, "rcmds.tppos")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.tppos")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

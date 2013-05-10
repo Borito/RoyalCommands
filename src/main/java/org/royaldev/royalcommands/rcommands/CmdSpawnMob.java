@@ -23,7 +23,7 @@ public class CmdSpawnMob implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("spawnmob")) {
-            if (!plugin.isAuthorized(cs, "rcmds.spawnmob")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.spawnmob")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -78,7 +78,7 @@ public class CmdSpawnMob implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "Invalid amount specified!");
                     return true;
                 }
-                if (i > Config.spawnmobLimit && !plugin.isAuthorized(cs, "rcmds.exempt.limit.spawnmob")) {
+                if (i > Config.spawnmobLimit && !plugin.ah.isAuthorized(cs, "rcmds.exempt.limit.spawnmob")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "The amount specified was larger than the allowed amount.");
                     cs.sendMessage(MessageColor.NEGATIVE + "Setting amount to " + MessageColor.NEUTRAL + Config.spawnmobLimit + MessageColor.NEGATIVE + ".");
                     i = Config.spawnmobLimit;

@@ -20,7 +20,7 @@ public class CmdFreezeTime implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("freezetime")) {
-            if (!plugin.isAuthorized(cs, "rcmds.freezetime")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.freezetime")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

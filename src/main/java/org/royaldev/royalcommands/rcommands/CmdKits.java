@@ -22,7 +22,7 @@ public class CmdKits implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("kits")) {
-            if (!plugin.isAuthorized(cs, "rcmds.kits")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.kits")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -37,7 +37,7 @@ public class CmdKits implements CommandExecutor {
             }
             String kits = "";
             for (String s : opts.keySet()) {
-                if (Config.kitPerms && plugin.isAuthorized(cs, "rcmds.kit." + s))
+                if (Config.kitPerms && plugin.ah.isAuthorized(cs, "rcmds.kit." + s))
                     kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
                 else if (!Config.kitPerms) kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
             }

@@ -22,7 +22,7 @@ public class CmdListWarns implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("listwarns")) {
-            if (!plugin.isAuthorized(cs, "rcmds.listwarns")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.listwarns")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -30,7 +30,7 @@ public class CmdListWarns implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            if (args.length > 1 && !plugin.isAuthorized(cs, "rcmds.others.listwarns")) {
+            if (args.length > 1 && !plugin.ah.isAuthorized(cs, "rcmds.others.listwarns")) {
                 RUtils.dispNoPerms(cs, "You're not allowed to view other players' warnings.");
                 return true;
             }

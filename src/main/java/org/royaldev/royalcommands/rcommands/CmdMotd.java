@@ -51,7 +51,7 @@ public class CmdMotd implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("motd")) {
-            if (!plugin.isAuthorized(cs, "rcmds.motd")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.motd")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

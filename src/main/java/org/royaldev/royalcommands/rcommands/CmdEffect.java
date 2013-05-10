@@ -33,7 +33,7 @@ public class CmdEffect implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("effect")) {
-            if (!plugin.isAuthorized(cs, "rcmds.effect")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.effect")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -47,11 +47,11 @@ public class CmdEffect implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (!t.getName().equals(cs.getName()) && !plugin.isAuthorized(cs, "rcmds.others.effect")) {
+            if (!t.getName().equals(cs.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.effect")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot apply effects to other players!");
                 return true;
             }
-            if (!t.getName().equals(cs.getName()) && plugin.isAuthorized(t, "rcmds.exempt.effect")) {
+            if (!t.getName().equals(cs.getName()) && plugin.ah.isAuthorized(t, "rcmds.exempt.effect")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot apply effects to that player!");
                 return true;
             }

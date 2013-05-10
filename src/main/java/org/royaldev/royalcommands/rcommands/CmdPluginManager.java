@@ -120,7 +120,7 @@ public class CmdPluginManager implements CommandExecutor {
             String subcmd = args[0];
             final PluginManager pm = plugin.getServer().getPluginManager();
             if (subcmd.equalsIgnoreCase("load")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.load")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.load")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -162,7 +162,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "Could not load and enable " + MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + ".");
                 return true;
             } else if (subcmd.equalsIgnoreCase("disable")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.disable")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.disable")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -197,7 +197,7 @@ public class CmdPluginManager implements CommandExecutor {
                 else cs.sendMessage(MessageColor.NEGATIVE + "Could not disabled that plugin!");
                 return true;
             } else if (subcmd.equalsIgnoreCase("enable")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.enable")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.enable")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -221,7 +221,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "Could not enable " + MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + ".");
                 return true;
             } else if (subcmd.equalsIgnoreCase("reload")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.reload")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.reload")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -239,7 +239,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Reloaded " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + ".");
                 return true;
             } else if (subcmd.equalsIgnoreCase("update")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.update")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.update")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -296,7 +296,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Updated " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " successfully.");
                 return true;
             } else if (subcmd.equalsIgnoreCase("reloadall")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.reloadall")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.reloadall")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -307,7 +307,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Reloaded all plugins!");
                 return true;
             } else if (subcmd.equalsIgnoreCase("list")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.list")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.list")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -329,7 +329,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Plugins (" + MessageColor.NEUTRAL + enabled + ((disabled > 0) ? MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + disabled + " disabled" : "") + MessageColor.POSITIVE + "): " + list.substring(0, list.length() - 4));
                 return true;
             } else if (subcmd.equalsIgnoreCase("info")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.info")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.info")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -371,7 +371,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Enabled: " + MessageColor.NEUTRAL + ((p.isEnabled()) ? "Yes" : "No"));
                 return true;
             } else if (subcmd.equalsIgnoreCase("commands")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.commands")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.commands")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -396,7 +396,7 @@ public class CmdPluginManager implements CommandExecutor {
                 }
                 return true;
             } else if (subcmd.equalsIgnoreCase("help") || subcmd.equals("?")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.help")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.help")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -418,7 +418,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " findtag [search]" + MessageColor.POSITIVE + " - Searches BukkitDev for a tag to use in download");
                 return true;
             } else if (subcmd.equalsIgnoreCase("download")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.download")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.download")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -523,7 +523,7 @@ public class CmdPluginManager implements CommandExecutor {
                 plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
                 return true;
             } else if (subcmd.equalsIgnoreCase("updatecheckall")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.updatecheckall")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.updatecheckall")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -548,7 +548,7 @@ public class CmdPluginManager implements CommandExecutor {
                 plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
                 return true;
             } else if (subcmd.equalsIgnoreCase("updatecheck")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.updatecheck")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.updatecheck")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -589,7 +589,7 @@ public class CmdPluginManager implements CommandExecutor {
                 }
                 return true;
             } else if (subcmd.equalsIgnoreCase("findtag") || subcmd.equalsIgnoreCase("search")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.findtag")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.findtag")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -649,7 +649,7 @@ public class CmdPluginManager implements CommandExecutor {
                 }
                 return true;
             } else if (subcmd.equalsIgnoreCase("delete")) {
-                if (!plugin.isAuthorized(cs, "rcmds.pluginmanager.delete")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.delete")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }

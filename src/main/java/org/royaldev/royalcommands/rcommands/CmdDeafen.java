@@ -20,7 +20,7 @@ public class CmdDeafen implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("deafen")) {
-            if (!plugin.isAuthorized(cs, "rcmds.deafen")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.deafen")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -29,7 +29,7 @@ public class CmdDeafen implements CommandExecutor {
                 return false;
             }
             String name = (args.length < 1) ? cs.getName() : args[0];
-            if (!name.equalsIgnoreCase(cs.getName()) && !plugin.isAuthorized(cs, "rcmds.others.deafen")) {
+            if (!name.equalsIgnoreCase(cs.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.deafen")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to deafen other players!");
                 return true;
             }
@@ -38,7 +38,7 @@ public class CmdDeafen implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.deafen") && !t.getName().equals(cs.getName())) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.deafen") && !t.getName().equals(cs.getName())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to deafen that player!");
                 return true;
             }

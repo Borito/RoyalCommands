@@ -27,7 +27,7 @@ public class AFKWatcher implements Runnable {
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             if (p == null) continue;
             if (!AFKUtils.isAfk(p)) {
-                if (plugin.isAuthorized(p, "rcmds.exempt.autoafk")) continue;
+                if (plugin.ah.isAuthorized(p, "rcmds.exempt.autoafk")) continue;
                 if (plugin.isVanished(p)) continue;
                 if (!AFKUtils.moveTimesContains(p)) continue;
                 if (afkAutoTime <= 0) continue;
@@ -40,7 +40,7 @@ public class AFKWatcher implements Runnable {
             }
             if (!AFKUtils.isAfk(p)) continue;
             if (afkKickTime <= 0) continue;
-            if (plugin.isAuthorized(p, "rcmds.exempt.afkkick")) return;
+            if (plugin.ah.isAuthorized(p, "rcmds.exempt.afkkick")) return;
             long afkAt = AFKUtils.getAfkTime(p);
             if (afkAt + (afkKickTime * 1000) < currentTime) {
                 try {

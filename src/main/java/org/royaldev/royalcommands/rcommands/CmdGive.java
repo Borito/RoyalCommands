@@ -61,7 +61,7 @@ public class CmdGive implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("give")) {
-            if (!plugin.isAuthorized(cs, "rcmds.give")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.give")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -106,7 +106,7 @@ public class CmdGive implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                 return true;
             }
-            if (Config.blockedItems.contains(itemid.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + itemid)) {
+            if (Config.blockedItems.contains(itemid.toString()) && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item") && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item." + itemid)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;

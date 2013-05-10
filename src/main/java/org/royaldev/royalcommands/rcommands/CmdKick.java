@@ -20,7 +20,7 @@ public class CmdKick implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("kick")) {
-            if (!plugin.isAuthorized(cs, "rcmds.kick")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.kick")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -33,7 +33,7 @@ public class CmdKick implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.kick")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.kick")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot kick that player!");
                 return true;
             }

@@ -21,7 +21,7 @@ public class CmdBackpack implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("backpack")) {
-            if (!plugin.isAuthorized(cs, "rcmds.backpack")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.backpack")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -31,13 +31,13 @@ public class CmdBackpack implements CommandExecutor {
             }
             Player p = (Player) cs;
             if (args.length > 0) {
-                if (!plugin.isAuthorized(p, "rcmds.others.backpack")) {
+                if (!plugin.ah.isAuthorized(p, "rcmds.others.backpack")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
                 OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
                 if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-                if (plugin.isAuthorized(t, "rcmds.exempt.backpack")) {
+                if (plugin.ah.isAuthorized(t, "rcmds.exempt.backpack")) {
                     RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You cannot access that player's backpack!");
                     return true;
                 }

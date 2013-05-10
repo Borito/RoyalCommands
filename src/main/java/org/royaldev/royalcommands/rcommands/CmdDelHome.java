@@ -21,7 +21,7 @@ public class CmdDelHome implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("delhome")) {
-            if (!plugin.isAuthorized(cs, "rcmds.delhome")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.delhome")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -35,13 +35,13 @@ public class CmdDelHome implements CommandExecutor {
                 return false;
             }
             PConfManager pcm;
-            if (name.contains(":") && plugin.isAuthorized(cs, "rcmds.others.delhome")) {
+            if (name.contains(":") && plugin.ah.isAuthorized(cs, "rcmds.others.delhome")) {
                 if (!PConfManager.getPConfManager(name.split(":")[0]).exists()) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
                 OfflinePlayer op = plugin.getServer().getOfflinePlayer(name.split(":")[0]);
-                if (plugin.isAuthorized(op, "rcmds.exempt.delhome")) {
+                if (plugin.ah.isAuthorized(op, "rcmds.exempt.delhome")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot delete that player's home!");
                     return true;
                 }

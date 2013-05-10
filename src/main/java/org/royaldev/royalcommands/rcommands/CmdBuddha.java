@@ -19,12 +19,12 @@ public class CmdBuddha implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("buddha")) {
-            if (!plugin.isAuthorized(cs, "rcmds.buddha")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.buddha")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
             if (args.length > 0) {
-                if (!plugin.isAuthorized(cs, "rcmds.others.buddha")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.others.buddha")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }

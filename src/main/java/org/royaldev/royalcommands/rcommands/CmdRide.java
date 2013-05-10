@@ -19,7 +19,7 @@ public class CmdRide implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ride")) {
-            if (!plugin.isAuthorized(cs, "rcmds.ride")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.ride")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -47,7 +47,7 @@ public class CmdRide implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot ride yourself.");
                     return true;
                 }
-                if (plugin.isAuthorized(t, "rcmds.exempt.ride")) {
+                if (plugin.ah.isAuthorized(t, "rcmds.exempt.ride")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot ride that player!");
                     return true;
                 }

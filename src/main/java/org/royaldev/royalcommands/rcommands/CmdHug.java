@@ -20,7 +20,7 @@ public class CmdHug implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("hug")) {
-            if (!plugin.isAuthorized(cs, "rcmds.hug")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.hug")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

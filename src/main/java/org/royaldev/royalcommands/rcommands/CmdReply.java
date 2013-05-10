@@ -21,7 +21,7 @@ public class CmdReply implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("reply")) {
-            if (!plugin.isAuthorized(cs, "rcmds.reply")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.reply")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

@@ -50,7 +50,7 @@ public class CmdTrade implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("trade")) {
-            if (!plugin.isAuthorized(cs, "rcmds.trade")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.trade")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

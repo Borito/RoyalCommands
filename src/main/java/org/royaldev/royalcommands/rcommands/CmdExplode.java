@@ -31,7 +31,7 @@ public class CmdExplode implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("explode")) {
-            if (!plugin.isAuthorized(cs, "rcmds.explode")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.explode")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -79,7 +79,7 @@ public class CmdExplode implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                if (plugin.isAuthorized(t, "rcmds.exempt.explode")) {
+                if (plugin.ah.isAuthorized(t, "rcmds.exempt.explode")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You may not explode that player!");
                     return true;
                 }

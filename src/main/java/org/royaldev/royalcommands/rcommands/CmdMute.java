@@ -22,7 +22,7 @@ public class CmdMute implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("mute")) {
-            if (!plugin.isAuthorized(cs, "rcmds.mute")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.mute")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -44,7 +44,7 @@ public class CmdMute implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't mute yourself!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.mute")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.mute")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't mute that player!");
                 return true;
             }

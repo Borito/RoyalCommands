@@ -19,7 +19,7 @@ public class CmdQuit implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("quit")) {
-            if (!plugin.isAuthorized(cs, "rcmds.quit")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.quit")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

@@ -42,7 +42,7 @@ public class CmdDump implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("dump")) {
-            if (!plugin.isAuthorized(cs, "rcmds.dump")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.dump")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

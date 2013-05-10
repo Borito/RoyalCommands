@@ -28,7 +28,7 @@ public class RoyalCommandsBlockListener implements Listener {
     @EventHandler
     public void onBlockP(BlockPlaceEvent e) {
         if (e.isCancelled() || !Config.buildPerm) return;
-        if (plugin.isAuthorized(e.getPlayer(), "rcmds.build")) return;
+        if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.build")) return;
         e.getPlayer().sendMessage(Config.noBuildMessage);
         e.setCancelled(true);
     }
@@ -36,7 +36,7 @@ public class RoyalCommandsBlockListener implements Listener {
     @EventHandler
     public void onBlockB(BlockBreakEvent e) {
         if (e.isCancelled() || !Config.buildPerm) return;
-        if (plugin.isAuthorized(e.getPlayer(), "rcmds.build")) return;
+        if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.build")) return;
         e.getPlayer().sendMessage(Config.noBuildMessage);
         e.setCancelled(true);
     }

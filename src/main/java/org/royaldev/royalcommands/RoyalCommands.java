@@ -20,13 +20,9 @@ package org.royaldev.royalcommands;
 import com.griefcraft.lwc.LWCPlugin;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.lang.text.StrBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,7 +30,6 @@ import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
@@ -46,6 +41,7 @@ import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
+import org.royaldev.royalcommands.listeners.ServerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.nms.api.NMSFace;
@@ -77,9 +73,6 @@ public class RoyalCommands extends JavaPlugin {
 
     //--- Globals ---//
 
-    public static Permission permission = null;
-    public static Economy economy = null;
-    public static Chat chat = null;
     public static Map<String, Map<String, Object>> commands = null;
     public static File dataFolder;
     public static ItemNameManager inm;
@@ -105,10 +98,16 @@ public class RoyalCommands extends JavaPlugin {
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
     private final SignListener signListener = new SignListener(this);
     private final MonitorListener monitorListener = new MonitorListener(this);
+    private final ServerListener serverListener = new ServerListener(this);
 
     private final Pattern versionPattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
 
     private RApiMain api;
+
+    //--- Handlders ---//
+
+    public final AuthorizationHandler ah = new AuthorizationHandler(this);
+    public final VaultHandler vh = new VaultHandler(this);
 
     //--- Dependencies ---//
 
@@ -152,7 +151,7 @@ public class RoyalCommands extends JavaPlugin {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
             return false;
         }
-        return !RoyalCommands.hasPerm(cs, "rcmds.seehidden") && vp.getManager().isVanished(p);
+        return !ah.isAuthorized(cs, "rcmds.seehidden") && vp.getManager().isVanished(p);
     }
 
     public int getNumberVanished() {
@@ -161,24 +160,7 @@ public class RoyalCommands extends JavaPlugin {
         return hid;
     }
 
-    public boolean isAuthorized(final OfflinePlayer p, final String node) {
-        String world = getServer().getWorlds().get(0).getName();
-        return !(p instanceof Player) && p == null || (RoyalCommands.permission.has(world, p.getName(), "rcmds.admin") || RoyalCommands.permission.has(world, p.getName(), node));
-    }
-
-    public boolean isAuthorized(final Player player, final String node) {
-        return player == null || (RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), "rcmds.admin") || RoyalCommands.permission.playerHas(player.getWorld(), player.getName(), node));
-    }
-
-    public boolean isAuthorized(final CommandSender player, final String node) {
-        return !(player instanceof Player) && !(player instanceof OfflinePlayer) || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
-    }
-
     //-- Static methods --//
-
-    public static boolean hasPerm(final CommandSender player, final String node) {
-        return !(player instanceof Player) && !(player instanceof OfflinePlayer) || (RoyalCommands.permission.has(player, "rcmds.admin") || RoyalCommands.permission.has(player, node));
-    }
 
     /**
      * Joins an array of strings with spaces
@@ -197,24 +179,6 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     //--- Private methods ---//
-
-    private Boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) permission = permissionProvider.getProvider();
-        return (permission != null);
-    }
-
-    private Boolean setupChat() {
-        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) chat = chatProvider.getProvider();
-        return (chat != null);
-    }
-
-    private Boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) economy = economyProvider.getProvider();
-        return (economy != null);
-    }
 
     /**
      * Registers a command in the server. If the command isn't defined in plugin.yml
@@ -446,9 +410,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Set up Vault --//
 
-        setupEconomy();
-        setupChat();
-        setupPermissions();
+        vh.setupVault();
 
         //-- Schedule tasks --//
 
@@ -517,6 +479,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(blockListener, this);
         pm.registerEvents(signListener, this);
         pm.registerEvents(monitorListener, this);
+        pm.registerEvents(serverListener, this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(this), this);
 
         //-- Register commands --//
@@ -678,11 +641,14 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdFindIP(this), "findip", this);
         registerCommand(new CmdMap(this), "map", this);
         registerCommand(new CmdDeleteBanHistory(this), "deletebanhistory", this);
+        registerCommand(new CmdPublicAssign(this), "publicassign", this);
         registerCommand(new CmdRcmds(this), "rcmds", this);
 
         //-- Make the API --//
 
         api = new RApiMain();
+
+        System.out.println(ah.isAuthorized(getServer().getOfflinePlayer("jkcclemens"), "rcmds.op"));
 
         //-- We're done! --//
 

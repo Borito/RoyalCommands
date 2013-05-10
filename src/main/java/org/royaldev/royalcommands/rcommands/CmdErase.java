@@ -32,7 +32,7 @@ public class CmdErase implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("erase")) {
-            if (!plugin.isAuthorized(cs, "rcmds.erase")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.erase")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

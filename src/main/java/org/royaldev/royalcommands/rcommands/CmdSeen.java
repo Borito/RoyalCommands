@@ -20,7 +20,7 @@ public class CmdSeen implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("seen")) {
-            if (!plugin.isAuthorized(cs, "rcmds.seen")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.seen")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

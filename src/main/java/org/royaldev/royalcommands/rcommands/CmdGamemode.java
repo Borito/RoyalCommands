@@ -55,7 +55,7 @@ public class CmdGamemode implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gamemode")) {
-            if (!plugin.isAuthorized(cs, "rcmds.gamemode")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.gamemode")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -76,11 +76,11 @@ public class CmdGamemode implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                if (!t.equals(cs) && !plugin.isAuthorized(cs, "rcmds.others.gamemode")) {
+                if (!t.equals(cs) && !plugin.ah.isAuthorized(cs, "rcmds.others.gamemode")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't change other players' gamemodes!");
                     return true;
                 }
-                if (!t.equals(cs) && plugin.isAuthorized(t, "rcmds.exempt.gamemode")) {
+                if (!t.equals(cs) && plugin.ah.isAuthorized(t, "rcmds.exempt.gamemode")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot change that player's gamemode.");
                     return true;
                 }

@@ -77,7 +77,7 @@ public class CmdWeather implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("weather")) {
-            if (!plugin.isAuthorized(cs, "rcmds.weather")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.weather")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

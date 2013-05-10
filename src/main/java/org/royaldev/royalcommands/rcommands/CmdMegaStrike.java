@@ -21,7 +21,7 @@ public class CmdMegaStrike implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("megastrike")) {
-            if (!plugin.isAuthorized(cs, "rcmds.megastrike")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.megastrike")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -45,7 +45,7 @@ public class CmdMegaStrike implements CommandExecutor {
                 for (int i = 0; i < 15; i++) p.getWorld().strikeLightning(bb.getLocation());
                 return true;
             } else {
-                if (!plugin.isAuthorized(cs, "rcmds.others.megastrike")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.others.megastrike")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                     return true;
                 }

@@ -23,7 +23,7 @@ public class CmdDeleteBanHistory implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("deletebanhistory")) {
-            if (!plugin.isAuthorized(cs, "rcmds.deletebanhistory")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.deletebanhistory")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

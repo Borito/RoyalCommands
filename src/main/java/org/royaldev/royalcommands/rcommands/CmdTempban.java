@@ -23,7 +23,7 @@ public class CmdTempban implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("tempban")) {
-            if (!plugin.isAuthorized(cs, "rcmds.tempban")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.tempban")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -38,7 +38,7 @@ public class CmdTempban implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.ban")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.ban")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot ban that player!");
                 return true;
             }

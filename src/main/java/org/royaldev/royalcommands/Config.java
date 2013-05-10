@@ -32,6 +32,9 @@ public class Config {
 
         //-- Booleans --//
 
+        assignPublicOnGeneric = c.getBoolean("assign.public.allow_on_generic_items", false);
+        assignUseDisplayNames = c.getBoolean("assign.lore_and_display_names", true);
+        assignUseDurability = c.getBoolean("assign.durability", false);
         backDeath = c.getBoolean("back_on_death", true);
         backpackReset = c.getBoolean("reset_backpack_death", false);
         buildPerm = c.getBoolean("use_build_perm", false);
@@ -170,48 +173,51 @@ public class Config {
 
     //-- Booleans --//
 
-    public static Boolean backDeath;
-    public static Boolean backpackReset;
-    public static Boolean buildPerm;
-    public static Boolean changeNameTag;
-    public static Boolean checkVersion;
-    public static Boolean cooldownAliases;
-    public static Boolean customHelp;
-    public static Boolean disablegetip;
-    public static Boolean dropExtras;
-    public static Boolean dumpCreateChest;
-    public static Boolean dumpUseInv;
-    public static Boolean explodeFire;
-    public static Boolean h2Convert;
-    public static Boolean kitPerms;
-    public static Boolean motdLogin;
-    public static Boolean multiverseNames;
-    public static Boolean otherHelp;
-    public static Boolean overrideRespawn;
-    public static Boolean purgeUnusedUserdata;
-    public static Boolean removePotionEffects;
-    public static Boolean requireHelm;
-    public static Boolean safeTeleport;
-    public static Boolean sendToSpawn;
-    public static Boolean separateEnder;
-    public static Boolean separateInv;
-    public static Boolean separateXP;
-    public static Boolean showcommands;
-    public static Boolean simpleList;
-    public static Boolean smoothTime;
-    public static Boolean stsBack;
-    public static Boolean stsNew;
-    public static Boolean teleportSoundEnabled;
-    public static Boolean timeBroadcast;
-    public static Boolean updateCheck;
-    public static Boolean useVNP;
-    public static Boolean useWelcome;
-    public static Boolean useWhitelist;
-    public static Boolean useWorldManager;
-    public static Boolean warpPermissions;
-    public static Boolean wmShowEmptyWorlds;
-    public static Boolean worldAccessPerm;
-    public static Boolean ymlConvert;
+    public static boolean assignPublicOnGeneric;
+    public static boolean assignUseDisplayNames;
+    public static boolean assignUseDurability;
+    public static boolean backDeath;
+    public static boolean backpackReset;
+    public static boolean buildPerm;
+    public static boolean changeNameTag;
+    public static boolean checkVersion;
+    public static boolean cooldownAliases;
+    public static boolean customHelp;
+    public static boolean disablegetip;
+    public static boolean dropExtras;
+    public static boolean dumpCreateChest;
+    public static boolean dumpUseInv;
+    public static boolean explodeFire;
+    public static boolean h2Convert;
+    public static boolean kitPerms;
+    public static boolean motdLogin;
+    public static boolean multiverseNames;
+    public static boolean otherHelp;
+    public static boolean overrideRespawn;
+    public static boolean purgeUnusedUserdata;
+    public static boolean removePotionEffects;
+    public static boolean requireHelm;
+    public static boolean safeTeleport;
+    public static boolean sendToSpawn;
+    public static boolean separateEnder;
+    public static boolean separateInv;
+    public static boolean separateXP;
+    public static boolean showcommands;
+    public static boolean simpleList;
+    public static boolean smoothTime;
+    public static boolean stsBack;
+    public static boolean stsNew;
+    public static boolean teleportSoundEnabled;
+    public static boolean timeBroadcast;
+    public static boolean updateCheck;
+    public static boolean useVNP;
+    public static boolean useWelcome;
+    public static boolean useWhitelist;
+    public static boolean useWorldManager;
+    public static boolean warpPermissions;
+    public static boolean wmShowEmptyWorlds;
+    public static boolean worldAccessPerm;
+    public static boolean ymlConvert;
 
     //-- ConfigurationSections --//
 
@@ -220,25 +226,25 @@ public class Config {
 
     //-- Doubles --//
 
-    public static Double defaultNear;
-    public static Double findIpPercent;
-    public static Double gTeleCd;
-    public static Double maxNear;
+    public static double defaultNear;
+    public static double findIpPercent;
+    public static double gTeleCd;
+    public static double maxNear;
 
     //-- Floats --//
 
-    public static Float explodePower;
-    public static Float maxExplodePower;
-    public static Float teleportSoundPitch;
-    public static Float teleportSoundVolume;
+    public static float explodePower;
+    public static float maxExplodePower;
+    public static float teleportSoundPitch;
+    public static float teleportSoundVolume;
 
     //-- Integers --//
 
-    public static Integer defaultStack;
-    public static Integer helpAmount;
-    public static Integer maxBackStack;
-    public static Integer spawnmobLimit;
-    public static Integer teleportWarmup;
+    public static int defaultStack;
+    public static int helpAmount;
+    public static int maxBackStack;
+    public static int spawnmobLimit;
+    public static int teleportWarmup;
 
     //-- String lists --//
 
@@ -253,9 +259,9 @@ public class Config {
 
     //-- Longs --//
 
-    public static Long afkAutoTime;
-    public static Long afkKickTime;
-    public static Long warnExpireTime;
+    public static long afkAutoTime;
+    public static long afkKickTime;
+    public static long warnExpireTime;
 
     //-- Strings --//
 

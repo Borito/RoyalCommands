@@ -5,26 +5,33 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CmdAssign implements CommandExecutor {
+public class CmdPublicAssign implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdAssign(RoyalCommands instance) {
+    public CmdPublicAssign(RoyalCommands instance) {
         plugin = instance;
     }
 
-    @Override
+    private boolean isGeneric(ItemStack is) {
+        final ItemMeta im = is.getItemMeta();
+        return im == null || !im.hasDisplayName() && !im.hasLore();
+    }
+
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("assign")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.assign")) {
+        if (cmd.getName().equalsIgnoreCase("publicassign")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.publicassign")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -45,13 +52,13 @@ public class CmdAssign implements CommandExecutor {
             }
             String command = args[0];
             Player p = (Player) cs;
-            final PConfManager pcm = PConfManager.getPConfManager(p);
+            final ConfManager cm = ConfManager.getConfManager("publicassignments.yml");
             ItemStack hand = p.getItemInHand();
             if (hand == null || hand.getTypeId() == 0) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't assign commands to air!");
                 return true;
             }
-            List<String> cmds = RUtils.getAssignment(hand, pcm);
+            List<String> cmds = RUtils.getAssignment(hand, cm);
             if (cmds == null) cmds = new ArrayList<String>();
             if (command.matches("\\-\\d+")) {
                 int toRemove;
@@ -67,7 +74,7 @@ public class CmdAssign implements CommandExecutor {
                 }
                 toRemove--;
                 cmds.remove(toRemove);
-                RUtils.setAssignment(hand, cmds, pcm);
+                RUtils.setAssignment(hand, cmds, cm);
                 cs.sendMessage(MessageColor.POSITIVE + "Removed command " + MessageColor.NEUTRAL + (toRemove + 1) + MessageColor.POSITIVE + ".");
                 return true;
             } else if (command.equals("~")) {
@@ -80,8 +87,12 @@ public class CmdAssign implements CommandExecutor {
                     cs.sendMessage("  " + MessageColor.NEUTRAL + (i + 1) + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + cmds.get(i));
                 return true;
             }
+            if (!Config.assignPublicOnGeneric && isGeneric(hand)) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot assign public commands to generic items!");
+                return true;
+            }
             cmds.add(RoyalCommands.getFinalArg(args, 0));
-            RUtils.setAssignment(hand, cmds, pcm);
+            RUtils.setAssignment(hand, cmds, cm);
             String message = (RoyalCommands.getFinalArg(args, 0).toLowerCase().startsWith("c:")) ? MessageColor.POSITIVE + "Added message " + MessageColor.NEUTRAL + RoyalCommands.getFinalArg(args, 0).substring(2) + MessageColor.POSITIVE + " to that item." : MessageColor.POSITIVE + "Added command " + MessageColor.NEUTRAL + "/" + RoyalCommands.getFinalArg(args, 0) + MessageColor.POSITIVE + " to that item.";
             p.sendMessage(message);
             return true;

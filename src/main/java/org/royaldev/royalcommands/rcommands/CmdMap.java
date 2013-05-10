@@ -43,7 +43,7 @@ public class CmdMap implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("map")) {
-            if (!plugin.isAuthorized(cs, "rcmds.map")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.map")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

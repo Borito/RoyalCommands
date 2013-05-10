@@ -22,7 +22,7 @@ public class CmdSpawner implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("spawner")) {
-            if (!plugin.isAuthorized(cs, "rcmds.spawner")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.spawner")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

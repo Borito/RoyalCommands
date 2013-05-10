@@ -21,7 +21,7 @@ public class CmdSetarmor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("setarmor")) {
-            if (!plugin.isAuthorized(cs, "rcmds.setarmor")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.setarmor")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -38,7 +38,7 @@ public class CmdSetarmor implements CommandExecutor {
             Player player;
 
             if (args.length > 1) {
-                if (!plugin.isAuthorized(cs, "rcmds.others.setarmor")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.others.setarmor")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -47,7 +47,7 @@ public class CmdSetarmor implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                if (plugin.isAuthorized(player, "rcmds.exempt.setarmor")) {
+                if (plugin.ah.isAuthorized(player, "rcmds.exempt.setarmor")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't modify that player's armor!");
                     return true;
                 }
@@ -98,7 +98,7 @@ public class CmdSetarmor implements CommandExecutor {
             none[0] = new ItemStack(0);
 
             if (set.equalsIgnoreCase("diamond")) {
-                if (!plugin.isAuthorized(cs, "rcmds.setarmor.diamond")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.setarmor.diamond")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
@@ -107,7 +107,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 }
             } else if (set.equalsIgnoreCase("gold")) {
-                if (!plugin.isAuthorized(cs, "rcmds.setarmor.gold")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.setarmor.gold")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
@@ -116,7 +116,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 }
             } else if (set.equalsIgnoreCase("iron")) {
-                if (!plugin.isAuthorized(cs, "rcmds.setarmor.iron")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.setarmor.iron")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
@@ -125,7 +125,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 }
             } else if (set.equalsIgnoreCase("leather")) {
-                if (!plugin.isAuthorized(cs, "rcmds.setarmor.leather")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.setarmor.leather")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
@@ -134,7 +134,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 }
             } else if (set.equalsIgnoreCase("chain")) {
-                if (!plugin.isAuthorized(cs, "rcmds.setarmor.chain")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.setarmor.chain")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
@@ -143,7 +143,7 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 }
             } else if (set.equalsIgnoreCase("none")) {
-                if (!plugin.isAuthorized(cs, "rcmds.setarmor.none")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.setarmor.none")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {

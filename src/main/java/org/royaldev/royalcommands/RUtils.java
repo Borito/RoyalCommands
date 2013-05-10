@@ -207,20 +207,20 @@ public class RUtils {
      * @return true if transaction was successful, false if otherwise
      */
     public static boolean chargePlayer(CommandSender cs, double amount) {
-        if (RoyalCommands.economy == null) {
+        if (!RoyalCommands.instance.vh.usingVault() || RoyalCommands.instance.vh.getEconomy() == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No economy! Continuing without charging.");
             return true;
         }
-        if (!RoyalCommands.economy.hasAccount(cs.getName())) {
+        if (!RoyalCommands.instance.vh.getEconomy().hasAccount(cs.getName())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You don't have a bank account!");
             return false;
         }
-        if (RoyalCommands.economy.getBalance(cs.getName()) < amount) {
+        if (RoyalCommands.instance.vh.getEconomy().getBalance(cs.getName()) < amount) {
             cs.sendMessage(MessageColor.NEGATIVE + "You don't have enough money!");
             return false;
         }
-        RoyalCommands.economy.withdrawPlayer(cs.getName(), amount);
-        cs.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + RoyalCommands.economy.format(amount) + MessageColor.POSITIVE + " removed from your account.");
+        RoyalCommands.instance.vh.getEconomy().withdrawPlayer(cs.getName(), amount);
+        cs.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + RoyalCommands.instance.vh.getEconomy().format(amount) + MessageColor.POSITIVE + " removed from your account.");
         return true;
     }
 
@@ -453,7 +453,7 @@ public class RUtils {
      */
     public static String teleport(Player p, Location l) {
         synchronized (teleRunners) {
-            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.instance.ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, l);
                 return "";
             } else if (Config.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
@@ -556,7 +556,7 @@ public class RUtils {
      */
     public static String silentTeleport(Player p, Location l) {
         synchronized (teleRunners) {
-            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.hasPerm(p, "rcmds.exempt.teleportwarmup")) {
+            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.instance.ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, l);
                 return "";
             } else if (Config.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
@@ -804,18 +804,19 @@ public class RUtils {
     public static String replaceVars(final String orig, final Player p) {
         String repld = orig;
         repld = repld.replace("{name}", p.getName()).replace("{dispname}", p.getDisplayName()).replace("{world}", getMVWorldName(p.getWorld()));
+        if (!RoyalCommands.instance.vh.usingVault()) return repld;
         try {
-            repld = repld.replace("{group}", RoyalCommands.permission.getPrimaryGroup(p));
+            repld = repld.replace("{group}", RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p));
         } catch (Exception ignored) {
         }
         try {
-            repld = repld.replace("{prefix}", RoyalCommands.chat.getPlayerPrefix(p));
+            repld = repld.replace("{prefix}", RoyalCommands.instance.vh.getChat().getPlayerPrefix(p));
         } catch (Exception ignored) {
             String prefix = getRChatPrefix(p);
             if (prefix != null) repld = repld.replace("{prefix}", prefix);
         }
         try {
-            repld = repld.replace("{suffix}", RoyalCommands.chat.getPlayerSuffix(p));
+            repld = repld.replace("{suffix}", RoyalCommands.instance.vh.getChat().getPlayerSuffix(p));
         } catch (Exception ignored) {
             String suffix = getRChatSuffix(p);
             if (suffix != null) repld = repld.replace("{suffix}", suffix);
@@ -1222,7 +1223,7 @@ public class RUtils {
             int count = pcm.getStringList("mail").size();
             String poss = (count != 1) ? "s" : "";
             p.sendMessage(MessageColor.POSITIVE + "Your mailbox contains " + MessageColor.NEUTRAL + count + MessageColor.POSITIVE + " message" + poss + ".");
-            if (RoyalCommands.instance.isAuthorized(p, "rcmds.mail"))
+            if (RoyalCommands.instance.ah.isAuthorized(p, "rcmds.mail"))
                 p.sendMessage(MessageColor.POSITIVE + "View mail with " + MessageColor.NEUTRAL + "/mail read" + MessageColor.POSITIVE + ".");
         }
     }
@@ -1242,23 +1243,29 @@ public class RUtils {
     }
 
     public static String getAssignmentPath(ItemStack is) {
+        return getAssignmentPath(is, Config.assignUseDisplayNames, Config.assignUseDurability);
+    }
+
+    public static String getAssignmentPath(ItemStack is, boolean customNames, boolean durability) {
         StringBuilder path = new StringBuilder("assign.");
         path.append(is.getTypeId());
-        ItemMeta im = is.getItemMeta();
-        if (im != null) {
-            String displayName = im.getDisplayName();
-            if (displayName != null) path.append(".").append(displayName.replace('.', ','));
-            List<String> lore = im.getLore();
-            if (lore != null && !lore.isEmpty()) {
-                path.append(".");
-                for (String l : lore) {
-                    path.append(l.replace('.', ','));
-                    path.append("\u0000");
+        if (customNames) {
+            ItemMeta im = is.getItemMeta();
+            if (im != null) {
+                String displayName = im.getDisplayName();
+                if (displayName != null) path.append(".").append(displayName.replace('.', ','));
+                List<String> lore = im.getLore();
+                if (lore != null && !lore.isEmpty()) {
+                    path.append(".");
+                    for (String l : lore) {
+                        path.append(l.replace('.', ','));
+                        path.append(".");
+                    }
                 }
             }
         }
-        // durability
-        path.append(".commands");
+        if (durability) path.append(is.getDurability()).append(".");
+        path.append("commands");
         return path.toString();
     }
 
@@ -1276,6 +1283,6 @@ public class RUtils {
     }
 
     public static String getFriendlyEnumName(Enum e) {
-        return e.name().toLowerCase().replaceAll("_", " ");
+        return e.name().toLowerCase().replace("_", " ");
     }
 }

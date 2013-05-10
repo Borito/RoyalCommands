@@ -20,7 +20,7 @@ public class CmdRename implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("rename")) {
-            if (!plugin.isAuthorized(cs, "rcmds.rename")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.rename")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

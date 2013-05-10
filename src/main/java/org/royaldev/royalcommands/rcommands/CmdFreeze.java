@@ -21,7 +21,7 @@ public class CmdFreeze implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("freeze")) {
-            if (!plugin.isAuthorized(cs, "rcmds.freeze")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.freeze")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -31,7 +31,7 @@ public class CmdFreeze implements CommandExecutor {
             }
             Player victim = plugin.getServer().getPlayer(args[0]);
             if (victim != null) {
-                if (plugin.isAuthorized(victim, "rcmds.exempt.freeze")) {
+                if (plugin.ah.isAuthorized(victim, "rcmds.exempt.freeze")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't freeze that player!");
                     return true;
                 }

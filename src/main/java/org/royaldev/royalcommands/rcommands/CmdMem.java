@@ -20,7 +20,7 @@ public class CmdMem implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("mem")) {
-            if (!plugin.isAuthorized(cs, "rcmds.mem")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.mem")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

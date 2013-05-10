@@ -34,7 +34,7 @@ public class CmdMail implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("mail")) {
-            if (!plugin.isAuthorized(cs, "rcmds.mail")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.mail")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -73,7 +73,7 @@ public class CmdMail implements CommandExecutor {
                 if (pcm.isSet("mail")) pcm.set("mail", null);
                 cs.sendMessage(MessageColor.POSITIVE + "Your mailbox has been cleared.");
             } else if (args[0].equalsIgnoreCase("send")) {
-                if (!plugin.isAuthorized(cs, "rcmds.mail.send")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.mail.send")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }

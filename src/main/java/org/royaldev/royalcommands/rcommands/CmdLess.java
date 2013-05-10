@@ -21,7 +21,7 @@ public class CmdLess implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("less")) {
-            if (!plugin.isAuthorized(cs, "rcmds.less")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.less")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

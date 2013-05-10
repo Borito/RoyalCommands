@@ -20,7 +20,7 @@ public class CmdRocket implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("rocket")) {
-            if (!plugin.isAuthorized(cs, "rcmds.rocket")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.rocket")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -33,7 +33,7 @@ public class CmdRocket implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.rocket")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.rocket")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot rocket that player!");
                 return true;
             }

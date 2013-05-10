@@ -19,7 +19,7 @@ public class CmdCoords implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("coords")) {
-            if (!plugin.isAuthorized(cs, "rcmds.coords")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.coords")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -38,7 +38,7 @@ public class CmdCoords implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "world: " + MessageColor.NEUTRAL + l.getWorld().getName());
                 return true;
             }
-            if (!plugin.isAuthorized(cs, "rcmds.others.coords")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.others.coords")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

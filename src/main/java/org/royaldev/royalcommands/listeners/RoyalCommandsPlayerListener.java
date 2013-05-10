@@ -39,6 +39,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.rcommands.CmdMotd;
 import org.royaldev.royalcommands.rcommands.CmdNameEntity;
@@ -108,7 +109,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         World to = e.getTo().getWorld();
         if (from.equals(to)) return;
         Player p = e.getPlayer();
-        if (plugin.isAuthorized(p, "rcmds.worldaccess." + to.getName())) return;
+        if (plugin.ah.isAuthorized(p, "rcmds.worldaccess." + to.getName())) return;
         e.setTo(e.getFrom());
         p.sendMessage(MessageColor.NEGATIVE + "You do not have permission to access the world \"" + RUtils.getMVWorldName(to) + ".\"");
     }
@@ -177,7 +178,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (plugin.getCommand(command) != null)
             command = plugin.getCommand(command).getName();
         Player p = e.getPlayer();
-        if (plugin.isAuthorized(p, "rcmds.exempt.cooldown.commands")) return;
+        if (plugin.ah.isAuthorized(p, "rcmds.exempt.cooldown.commands")) return;
         Long currentcd = PConfManager.getPConfManager(p).getLong("command_cooldowns." + command);
         if (currentcd != null) {
             if (currentcd <= new Date().getTime()) {
@@ -195,7 +196,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void teleCooldown(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
         Player p = e.getPlayer();
-        if (plugin.isAuthorized(p, "rcmds.exempt.cooldown.teleports")) return;
+        if (plugin.ah.isAuthorized(p, "rcmds.exempt.cooldown.teleports")) return;
         Long currentcd = PConfManager.getPConfManager(p).getLong("teleport_cooldown");
         if (currentcd != null) {
             if (currentcd <= new Date().getTime()) {
@@ -325,7 +326,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (e.isCancelled()) return;
         if (!e.getMessage().matches("(?i)by the power of gr[ae]yskull!?")) return;
         Player p = e.getPlayer();
-        if (!plugin.isAuthorized(p, "rcmds.heman")) return;
+        if (!plugin.ah.isAuthorized(p, "rcmds.heman")) return;
         ItemStack is = p.getItemInHand();
         if (is.getType() != Material.DIAMOND_SWORD) return;
         if (is.getEnchantments().isEmpty()) return;
@@ -380,16 +381,19 @@ public class RoyalCommandsPlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerInteract(PlayerInteractEvent event) {
+    public void assign(PlayerInteractEvent event) {
         //if (event.isCancelled()) return;
-        if (PConfManager.getPConfManager(event.getPlayer()).getBoolean("jailed"))
-            event.setCancelled(true);
+        if (PConfManager.getPConfManager(event.getPlayer()).getBoolean("jailed")) event.setCancelled(true);
         Action act = event.getAction();
         if (act.equals(Action.PHYSICAL)) return;
         ItemStack id = event.getItem();
         if (id == null) return;
-        List<String> cmds = RUtils.getAssignment(id, PConfManager.getPConfManager(event.getPlayer()));
-        if (cmds == null || cmds.isEmpty()) return;
+        final List<String> cmds = new ArrayList<String>();
+        final List<String> personalAssigns = RUtils.getAssignment(id, PConfManager.getPConfManager(event.getPlayer()));
+        final List<String> publicAssigns = RUtils.getAssignment(id, ConfManager.getConfManager("publicassignments.yml"));
+        if (personalAssigns != null) cmds.addAll(personalAssigns);
+        if (publicAssigns != null) cmds.addAll(publicAssigns);
+        if (cmds.isEmpty()) return;
         for (String s : cmds) {
             if (s.toLowerCase().trim().startsWith("c:"))
                 event.getPlayer().chat(s.trim().substring(2));
@@ -413,8 +417,12 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (PConfManager.getPConfManager(e.getPlayer()).getBoolean("jailed")) e.setCancelled(true);
         ItemStack id = e.getPlayer().getItemInHand();
         if (id == null) return;
-        List<String> cmds = RUtils.getAssignment(id, PConfManager.getPConfManager(e.getPlayer()));
-        if (cmds == null || cmds.isEmpty()) return;
+        final List<String> cmds = new ArrayList<String>();
+        final List<String> personalAssigns = RUtils.getAssignment(id, PConfManager.getPConfManager(e.getPlayer()));
+        final List<String> publicAssigns = RUtils.getAssignment(id, ConfManager.getConfManager("publicassignments.yml"));
+        if (personalAssigns != null) cmds.addAll(personalAssigns);
+        if (publicAssigns != null) cmds.addAll(publicAssigns);
+        if (cmds.isEmpty()) return;
         Player clicked = null;
         if (e.getRightClicked() instanceof Player) clicked = (Player) e.getRightClicked();
         for (String s : cmds) {
@@ -445,7 +453,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void onPInt(PlayerInteractEvent event) {
         if (PConfManager.getPConfManager(event.getPlayer()).getBoolean("frozen")) event.setCancelled(true);
-        if (Config.buildPerm && !plugin.isAuthorized(event.getPlayer(), "rcmds.build")) event.setCancelled(true);
+        if (Config.buildPerm && !plugin.ah.isAuthorized(event.getPlayer(), "rcmds.build")) event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH) // run after others
@@ -514,7 +522,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (plugin.newVersion == null) return;
-        if (!plugin.newVersion.contains(plugin.version) && !plugin.version.contains("pre") && plugin.isAuthorized(p, "rcmds.updates")) {
+        if (!plugin.newVersion.contains(plugin.version) && !plugin.version.contains("pre") && plugin.ah.isAuthorized(p, "rcmds.updates")) {
             String newV = plugin.newVersion.split("RoyalCommands")[1].trim().substring(1);
             p.sendMessage(MessageColor.POSITIVE + "RoyalCommands " + MessageColor.NEUTRAL + "v" + newV + MessageColor.POSITIVE + " is out! You are running " + MessageColor.NEUTRAL + "v" + plugin.version + MessageColor.POSITIVE + ".");
             p.sendMessage(MessageColor.POSITIVE + "Get the new version at " + ChatColor.DARK_AQUA + "http://dev.bukkit.org/server-mods/royalcommands" + MessageColor.POSITIVE + ".");

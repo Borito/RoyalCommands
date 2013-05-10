@@ -87,7 +87,7 @@ public class CmdTime implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("time")) {
-            if (!plugin.isAuthorized(cs, "rcmds.time")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.time")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

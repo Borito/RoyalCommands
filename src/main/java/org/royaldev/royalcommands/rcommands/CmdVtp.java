@@ -19,7 +19,7 @@ public class CmdVtp implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("vtp")) {
-            if (!plugin.isAuthorized(cs, "rcmds.vtp")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.vtp")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

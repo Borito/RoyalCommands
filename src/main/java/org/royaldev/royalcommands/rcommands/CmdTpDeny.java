@@ -19,7 +19,7 @@ public class CmdTpDeny implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("tpdeny")) {
-            if (!plugin.isAuthorized(cs, "rcmds.tpdeny")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.tpdeny")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

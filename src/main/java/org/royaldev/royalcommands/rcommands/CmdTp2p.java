@@ -20,7 +20,7 @@ public class CmdTp2p implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("tp2p")) {
-            if (!plugin.isAuthorized(cs, "rcmds.tp2p")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.tp2p")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -34,11 +34,11 @@ public class CmdTp2p implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.isTeleportAllowed(t1) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
+            if (!RUtils.isTeleportAllowed(t1) && !plugin.ah.isAuthorized(cs, "rcmds.tpoverride")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + t1.getName() + MessageColor.NEGATIVE + " has teleportation off!");
                 return true;
             }
-            if (!RUtils.isTeleportAllowed(t2) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
+            if (!RUtils.isTeleportAllowed(t2) && !plugin.ah.isAuthorized(cs, "rcmds.tpoverride")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + t2.getName() + MessageColor.NEGATIVE + " has teleportation off!");
                 return true;
             }

@@ -19,7 +19,7 @@ public class CmdPext implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("pext")) {
-            if (!plugin.isAuthorized(cs, "rcmds.pext")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.pext")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -34,7 +34,7 @@ public class CmdPext implements CommandExecutor {
                 p.setFireTicks(0);
                 return true;
             } else {
-                if (!plugin.isAuthorized(cs, "rcmds.others.pext")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.others.pext")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                     return true;
                 }

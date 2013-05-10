@@ -423,3 +423,20 @@ save:
 ###
 
 mail_check_interval: "10m"
+
+###
+# Assign #
+###
+
+# Options pertaining to /assign
+assign:
+  # Options pertaining to /publicassign
+  public:
+    # Should /pa be allowed on items that don't have custom names/lore? This will make it possible to bind commands to a
+    # normal block or item for EVERY player if set to true.
+    allow_on_generic_items: false
+  # Differentiate between items based on their lore and display names?
+  lore_and_display_names: true
+  # Differentiate between items based on their durability? Note that tools will not make good /assign items if this is
+  # true.
+  durability: false

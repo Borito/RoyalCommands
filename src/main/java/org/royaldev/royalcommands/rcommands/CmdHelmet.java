@@ -23,7 +23,7 @@ public class CmdHelmet implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("helmet")) {
-            if (!plugin.isAuthorized(cs, "rcmds.helmet")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.helmet")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

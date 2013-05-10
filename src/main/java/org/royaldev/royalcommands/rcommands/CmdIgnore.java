@@ -22,7 +22,7 @@ public class CmdIgnore implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ignore")) {
-            if (!plugin.isAuthorized(cs, "rcmds.ignore")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.ignore")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -41,7 +41,7 @@ public class CmdIgnore implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.ignore")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.ignore")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot ignore that player!");
                 return true;
             }

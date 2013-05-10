@@ -40,7 +40,7 @@ public class CmdPlayerTime implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equals("playertime")) {
-            if (!plugin.isAuthorized(cs, "rcmds.playertime")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.playertime")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

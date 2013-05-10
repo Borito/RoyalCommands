@@ -24,7 +24,7 @@ public class CmdDelWarp implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("delwarp")) {
-            if (!plugin.isAuthorized(cs, "rcmds.delwarp")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.delwarp")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

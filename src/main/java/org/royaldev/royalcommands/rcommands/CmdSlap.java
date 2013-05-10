@@ -23,7 +23,7 @@ public class CmdSlap implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("slap")) {
-            if (!plugin.isAuthorized(cs, "rcmds.slap")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.slap")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -37,7 +37,7 @@ public class CmdSlap implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That person is not online!");
                 return true;
             }
-            if (plugin.isAuthorized(victim, "rcmds.exempt.slap")) {
+            if (plugin.ah.isAuthorized(victim, "rcmds.exempt.slap")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You may not slap that player.");
                 return true;
             }

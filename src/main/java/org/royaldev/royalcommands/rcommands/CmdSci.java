@@ -22,7 +22,7 @@ public class CmdSci implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("sci")) {
-            if (!plugin.isAuthorized(cs, "rcmds.sci")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.sci")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -36,7 +36,7 @@ public class CmdSci implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                     return true;
                 }
-                if (plugin.isAuthorized(target, "rcmds.exempt.sci")) {
+                if (plugin.ah.isAuthorized(target, "rcmds.exempt.sci")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot alter that player's inventory!");
                     return true;
                 }
@@ -126,7 +126,7 @@ public class CmdSci implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                     return true;
                 }
-                if (Config.blockedItems.contains(iblock.toString()) && !plugin.isAuthorized(cs, "rcmds.allowed.item") && !plugin.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
+                if (Config.blockedItems.contains(iblock.toString()) && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item") && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
                     plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                     return true;

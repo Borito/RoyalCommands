@@ -24,7 +24,7 @@ public class CmdSetJail implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("setjail")) {
-            if (!plugin.isAuthorized(cs, "rcmds.setjail")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.setjail")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

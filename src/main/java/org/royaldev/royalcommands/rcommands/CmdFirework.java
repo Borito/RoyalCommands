@@ -156,7 +156,7 @@ public class CmdFirework implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("firework")) {
-            if (!plugin.isAuthorized(cs, "rcmds.firework")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.firework")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

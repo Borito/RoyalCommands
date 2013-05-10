@@ -20,7 +20,7 @@ public class CmdRageQuit implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ragequit")) {
-            if (!plugin.isAuthorized(cs, "rcmds.ragequit")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.ragequit")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -32,7 +32,7 @@ public class CmdRageQuit implements CommandExecutor {
                 }
             }
             if (args.length == 1) {
-                if (!plugin.isAuthorized(cs, "rcmds.others.ragequit")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.others.ragequit")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                     return true;
                 }

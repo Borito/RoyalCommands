@@ -19,7 +19,7 @@ public class CmdTeleport implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("teleport")) {
-            if (!plugin.isAuthorized(cs, "rcmds.teleport")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.teleport")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -36,7 +36,7 @@ public class CmdTeleport implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(cs, "rcmds.tpoverride")) {
+            if (!RUtils.isTeleportAllowed(t) && !plugin.ah.isAuthorized(cs, "rcmds.tpoverride")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player has teleportation off!");
                 return true;
             }

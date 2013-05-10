@@ -18,7 +18,7 @@ public class CmdFlySpeed implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("flyspeed")) {
-            if (!plugin.isAuthorized(cs, "rcmds.flyspeed")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.flyspeed")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

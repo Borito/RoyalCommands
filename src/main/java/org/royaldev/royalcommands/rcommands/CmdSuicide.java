@@ -21,7 +21,7 @@ public class CmdSuicide implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("suicide")) {
-            if (!plugin.isAuthorized(cs, "rcmds.suicide")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.suicide")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

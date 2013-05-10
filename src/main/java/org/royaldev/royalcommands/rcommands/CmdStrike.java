@@ -20,7 +20,7 @@ public class CmdStrike implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("strike")) {
-            if (!plugin.isAuthorized(cs, "rcmds.strike")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.strike")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -38,7 +38,7 @@ public class CmdStrike implements CommandExecutor {
                 p.getWorld().strikeLightning(bb.getLocation());
                 return true;
             }
-            if (!plugin.isAuthorized(cs, "rcmds.others.strike")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.others.strike")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                 return true;
             }
@@ -47,7 +47,7 @@ public class CmdStrike implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(target, "rcmds.exempt.strike")) {
+            if (plugin.ah.isAuthorized(target, "rcmds.exempt.strike")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't strike that player!");
                 return true;
             }

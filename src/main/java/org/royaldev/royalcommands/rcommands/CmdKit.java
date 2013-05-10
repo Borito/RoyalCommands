@@ -28,7 +28,7 @@ public class CmdKit implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equals("kit")) {
-            if (!plugin.isAuthorized(cs, "rcmds.kit")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.kit")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -61,12 +61,12 @@ public class CmdKit implements CommandExecutor {
             if (enchants == null) enchants = new ArrayList<String>();
             if (names == null) names = new ArrayList<String>();
             if (lore == null) lore = new ArrayList<String>();
-            if (Config.kitPerms && !plugin.isAuthorized(cs, "rcmds.kit." + kitname)) {
+            if (Config.kitPerms && !plugin.ah.isAuthorized(cs, "rcmds.kit." + kitname)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that kit!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
-            if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown") && !plugin.isAuthorized(cs, "rcmds.exempt.cooldown.kits")) {
+            if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown") && !plugin.ah.isAuthorized(cs, "rcmds.exempt.cooldown.kits")) {
                 long ts = RUtils.getTimeStamp(p, "kits." + kitname + ".cooldown");
                 if (ts > 0) {
                     p.sendMessage(MessageColor.NEGATIVE + "You can't use that kit for" + MessageColor.NEUTRAL + RUtils.formatDateDiff(ts) + MessageColor.NEGATIVE + ".");

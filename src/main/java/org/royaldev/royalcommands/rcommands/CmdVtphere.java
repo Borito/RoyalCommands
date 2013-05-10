@@ -19,7 +19,7 @@ public class CmdVtphere implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("vtphere")) {
-            if (!plugin.isAuthorized(cs, "rcmds.vtphere")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.vtphere")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

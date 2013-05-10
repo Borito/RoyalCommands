@@ -23,7 +23,7 @@ public class CmdHead implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("head")) {
-            if (!plugin.isAuthorized(cs, "rcmds.head")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.head")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -44,11 +44,11 @@ public class CmdHead implements CommandExecutor {
             SkullMeta sm = (SkullMeta) head.getItemMeta();
             OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
             if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-            if (!t.getName().equalsIgnoreCase(p.getName()) && !plugin.isAuthorized(cs, "rcmds.others.head")) {
+            if (!t.getName().equalsIgnoreCase(p.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.head")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (!t.getName().equalsIgnoreCase(p.getName()) && plugin.isAuthorized(t, "rcmds.exempt.head")) {
+            if (!t.getName().equalsIgnoreCase(p.getName()) && plugin.ah.isAuthorized(t, "rcmds.exempt.head")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn that player's head!");
                 return true;
             }

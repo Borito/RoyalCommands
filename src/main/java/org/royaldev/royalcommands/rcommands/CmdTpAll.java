@@ -18,7 +18,7 @@ public class CmdTpAll implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("tpall")) {
-            if (!plugin.isAuthorized(cs, "rcmds.tpall")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.tpall")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -28,7 +28,7 @@ public class CmdTpAll implements CommandExecutor {
             }
             Player p = (Player) cs;
             for (Player t : plugin.getServer().getOnlinePlayers()) {
-                if (!RUtils.isTeleportAllowed(t) && !plugin.isAuthorized(p, "rcmds.tpoverride"))
+                if (!RUtils.isTeleportAllowed(t) && !plugin.ah.isAuthorized(p, "rcmds.tpoverride"))
                     continue;
                 if (t.equals(p)) continue;
                 String error = RUtils.teleport(t, p);

@@ -28,7 +28,7 @@ public class CmdJail implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("jail")) {
-            if (!plugin.isAuthorized(cs, "rcmds.jail")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.jail")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -56,7 +56,7 @@ public class CmdJail implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.jail")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.jail")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot jail that player.");
                 return true;
             }

@@ -18,7 +18,7 @@ public class CmdInvmod implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("invmod")) {
-            if (!plugin.isAuthorized(cs, "rcmds.invmod")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.invmod")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -36,7 +36,7 @@ public class CmdInvmod implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.invmod")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.invmod")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot modify that player's inventory.");
                 return true;
             }

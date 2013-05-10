@@ -54,7 +54,7 @@ public class CmdPotion implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("potion")) {
-            if (!plugin.isAuthorized(cs, "rcmds.potion")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.potion")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

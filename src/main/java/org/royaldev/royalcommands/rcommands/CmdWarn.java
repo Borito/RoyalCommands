@@ -26,7 +26,7 @@ public class CmdWarn implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("warn")) {
-            if (!plugin.isAuthorized(cs, "rcmds.warn")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.warn")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -41,7 +41,7 @@ public class CmdWarn implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(op, "rcmds.exempt.warn")) {
+            if (plugin.ah.isAuthorized(op, "rcmds.exempt.warn")) {
                 RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You can't warn that player!");
                 return true;
             }

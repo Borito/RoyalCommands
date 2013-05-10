@@ -36,7 +36,7 @@ public class CmdBanIP implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("banip")) {
-            if (!plugin.isAuthorized(cs, "rcmds.banip")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.banip")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

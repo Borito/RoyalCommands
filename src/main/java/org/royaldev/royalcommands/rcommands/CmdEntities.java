@@ -23,7 +23,7 @@ public class CmdEntities implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("entities")) {
-            if (!plugin.isAuthorized(cs, "rcmds.entities")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.entities")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

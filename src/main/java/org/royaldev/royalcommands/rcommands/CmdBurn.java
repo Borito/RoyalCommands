@@ -19,7 +19,7 @@ public class CmdBurn implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("burn")) {
-            if (!plugin.isAuthorized(cs, "rcmds.burn")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.burn")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -32,7 +32,7 @@ public class CmdBurn implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.burn")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.burn")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot burn that player!");
                 return true;
             }

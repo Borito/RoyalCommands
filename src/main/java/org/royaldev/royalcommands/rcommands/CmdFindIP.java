@@ -41,7 +41,7 @@ public class CmdFindIP implements CommandExecutor {
     @Override
     public boolean onCommand(final CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("findip")) {
-            if (!plugin.isAuthorized(cs, "rcmds.findip")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.findip")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

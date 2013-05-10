@@ -19,7 +19,7 @@ public class CmdFeed implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("feed")) {
-            if (!plugin.isAuthorized(cs, "rcmds.feed")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.feed")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -35,7 +35,7 @@ public class CmdFeed implements CommandExecutor {
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
-            if (!plugin.isAuthorized(cs, "rcmds.others.feed")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.others.feed")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

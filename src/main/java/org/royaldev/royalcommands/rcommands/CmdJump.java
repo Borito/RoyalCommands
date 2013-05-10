@@ -21,7 +21,7 @@ public class CmdJump implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("jump")) {
-            if (!plugin.isAuthorized(cs, "rcmds.jump")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.jump")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

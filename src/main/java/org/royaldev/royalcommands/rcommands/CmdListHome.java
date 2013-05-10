@@ -1,30 +1,30 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.Map;
 
 public class CmdListHome implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
-    public CmdListHome(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdListHome(RoyalCommands instance) {
+        plugin = instance;
     }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("listhome")) {
-            if (!plugin.isAuthorized(cs, "rcmds.listhome")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.listhome")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -35,13 +35,13 @@ public class CmdListHome implements CommandExecutor {
             OfflinePlayer t;
             if (args.length < 1) t = (OfflinePlayer) cs;
             else {
-                if (!plugin.isAuthorized(cs, "rcmds.others.listhome")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.others.listhome")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot list other players' homes!");
                     return true;
                 }
                 t = plugin.getServer().getPlayer(args[0]);
                 if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-                if (plugin.isAuthorized(t, "rcmds.exempt.listhome")) {
+                if (plugin.ah.isAuthorized(t, "rcmds.exempt.listhome")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't list that player's homes!");
                     return true;
                 }
@@ -62,10 +62,15 @@ public class CmdListHome implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "No homes found!");
                 return true;
             }
-            String homes = opts.keySet().toString();
-            homes = homes.substring(1, homes.length() - 1);
+            StringBuilder homes = new StringBuilder();
+            for (String home : opts.keySet()) {
+                homes.append(MessageColor.NEUTRAL);
+                homes.append(home);
+                homes.append(MessageColor.RESET);
+                homes.append(", ");
+            }
             cs.sendMessage(MessageColor.POSITIVE + "Homes:");
-            cs.sendMessage(homes);
+            cs.sendMessage(homes.substring(0, homes.length() - 4));
             return true;
         }
         return false;

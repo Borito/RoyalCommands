@@ -29,7 +29,7 @@ public class CmdMonitor implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("monitor")) {
-            if (!plugin.isAuthorized(cs, "rcmds.monitor")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.monitor")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -68,7 +68,7 @@ public class CmdMonitor implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot monitor yourself!");
                     return true;
                 }
-                if (plugin.isAuthorized(t, "rcmds.exempt.monitor")) {
+                if (plugin.ah.isAuthorized(t, "rcmds.exempt.monitor")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't monitor that player!");
                     return true;
                 }

@@ -23,7 +23,7 @@ public class CmdBan implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ban")) {
-            if (!plugin.isAuthorized(cs, "rcmds.ban")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.ban")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -43,7 +43,7 @@ public class CmdBan implements CommandExecutor {
                 }
             }*/
             if (!pcm.exists()) pcm.createFile();
-            if (plugin.isAuthorized(t, "rcmds.exempt.ban")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.ban")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't ban that player!");
                 return true;
             }

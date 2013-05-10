@@ -57,7 +57,7 @@ public class CmdWarp implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("warp")) {
-            if (!plugin.isAuthorized(cs, "rcmds.warp")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.warp")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -91,7 +91,7 @@ public class CmdWarp implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "No such warp!");
                     return true;
                 }
-                if (Config.warpPermissions && !plugin.isAuthorized(cs, "rcmds.warp." + args[0].toLowerCase())) {
+                if (Config.warpPermissions && !plugin.ah.isAuthorized(cs, "rcmds.warp." + args[0].toLowerCase())) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You do not have permission for that warp!");
                     return true;
                 }
@@ -104,7 +104,7 @@ public class CmdWarp implements CommandExecutor {
                 return true;
             }
             if (args.length > 1) {
-                if (!plugin.isAuthorized(cs, "rcmds.others.warp")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.others.warp")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -113,7 +113,7 @@ public class CmdWarp implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                if (plugin.isAuthorized(t, "rcmds.exempt.warp")) {
+                if (plugin.ah.isAuthorized(t, "rcmds.exempt.warp")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot warp that player!");
                     return true;
                 }
@@ -123,7 +123,7 @@ public class CmdWarp implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "No such warp!");
                     return true;
                 }
-                if (Config.warpPermissions && !plugin.isAuthorized(t, "rcmds.warp." + args[0].toLowerCase())) {
+                if (Config.warpPermissions && !plugin.ah.isAuthorized(t, "rcmds.warp." + args[0].toLowerCase())) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not have permission for that warp!");
                     return true;
                 }

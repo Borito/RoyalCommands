@@ -4,8 +4,7 @@ version: ${pluginversion}
 website: http://dev.royaldev.org/
 description: A general plugin containing all the commands a discerning server admin could want.
 author: jkcclemens
-depend: [Vault]
-softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard, Multiverse-Core]
+softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard, Multiverse-Core, Vault]
 
 commands:
   level:
@@ -916,6 +915,12 @@ commands:
     aliases: [dbh, rbh, removebanhistory]
     version_added: 0.2.8
 
+  publicassign:
+    description: Assigns commands to items that anyone with the item can use.
+    usage: /<command> [command|-#|~]
+    aliases: [pas, ppt, publicpowertool]
+    version: 0.2.8
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1396,6 +1401,9 @@ permissions:
     default: op
   rcmds.deletebanhistory:
     description: Allows you to remove ban history records.
+    default: op
+  rcmds.publicassign:
+    description: Allows you to add public commands to items.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -1935,6 +1943,7 @@ permissions:
       rcmds.findip: true
       rcmds.map: true
       rcmds.deletebanhistory: true
+      rcmds.publicassign: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2227,6 +2236,7 @@ permissions:
       rcmds.findip: true
       rcmds.map: true
       rcmds.deletebanhistory: true
+      rcmds.publicassign: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

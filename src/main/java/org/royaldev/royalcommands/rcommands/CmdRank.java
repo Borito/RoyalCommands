@@ -19,7 +19,7 @@ public class CmdRank implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("rank")) {
-            if (!plugin.isAuthorized(cs, "rcmds.rank")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.rank")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -34,7 +34,8 @@ public class CmdRank implements CommandExecutor {
             }
             String rank;
             try {
-                rank = RoyalCommands.permission.getPrimaryGroup(victim);
+                if (!plugin.vh.usingVault()) throw new Exception();
+                rank = plugin.vh.getPermission().getPrimaryGroup(victim);
             } catch (Exception e) {
                 rank = null;
             }

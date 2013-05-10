@@ -24,7 +24,7 @@ public class CmdMessage implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("message")) {
-            if (!plugin.isAuthorized(cs, "rcmds.message")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.message")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

@@ -20,7 +20,7 @@ public class CmdMobIgnore implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("mobignore")) {
-            if (!plugin.isAuthorized(cs, "rcmds.mobignore")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.mobignore")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

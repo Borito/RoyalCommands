@@ -19,7 +19,7 @@ public class CmdClearInventory implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("clearinventory")) {
-            if (!plugin.isAuthorized(cs, "rcmds.clearinventory")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.clearinventory")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -35,7 +35,7 @@ public class CmdClearInventory implements CommandExecutor {
             }
         }
         if (args.length == 1) {
-            if (!plugin.isAuthorized(cs, "rcmds.others.clearinventory")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.others.clearinventory")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -44,7 +44,7 @@ public class CmdClearInventory implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                 return true;
             }
-            if (plugin.isAuthorized(target, "rcmds.exempt.clearinventory")) {
+            if (plugin.ah.isAuthorized(target, "rcmds.exempt.clearinventory")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot alter that player's inventory!");
                 return true;
             }

@@ -20,7 +20,7 @@ public class CmdFacepalm implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("facepalm")) {
-            if (!plugin.isAuthorized(cs, "rcmds.facepalm")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.facepalm")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -33,7 +33,7 @@ public class CmdFacepalm implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                 return true;
             }
-            if (plugin.isAuthorized(victim, "rcmds.exempt.facepalm")) {
+            if (plugin.ah.isAuthorized(victim, "rcmds.exempt.facepalm")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot facepalm at that player!");
                 return true;
             }

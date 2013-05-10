@@ -19,7 +19,7 @@ public class CmdHarm implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("harm")) {
-            if (!plugin.isAuthorized(cs, "rcmds.harm")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.harm")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -43,7 +43,7 @@ public class CmdHarm implements CommandExecutor {
                 return true;
             }
 
-            if (!cs.getName().equalsIgnoreCase(t.getName()) && plugin.isAuthorized(t, "rcmds.exempt.harm")) {
+            if (!cs.getName().equalsIgnoreCase(t.getName()) && plugin.ah.isAuthorized(t, "rcmds.exempt.harm")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You may not harm that player.");
                 return true;
             }

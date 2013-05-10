@@ -21,7 +21,7 @@ public class CmdMore implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("more")) {
-            if (!plugin.isAuthorized(cs, "rcmds.more")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.more")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

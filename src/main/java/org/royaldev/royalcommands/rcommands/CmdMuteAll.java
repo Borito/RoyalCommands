@@ -22,13 +22,13 @@ public class CmdMuteAll implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("muteall")) {
-            if (!plugin.isAuthorized(cs, "rcmds.muteall")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.muteall")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
             Player[] ps = plugin.getServer().getOnlinePlayers();
             for (Player p : ps) {
-                if (plugin.isVanished(p, cs) || plugin.isAuthorized(p, "rcmds.exempt.mute"))
+                if (plugin.isVanished(p, cs) || plugin.ah.isAuthorized(p, "rcmds.exempt.mute"))
                     continue;
                 if (cs instanceof Player) {
                     if (p == cs) continue;

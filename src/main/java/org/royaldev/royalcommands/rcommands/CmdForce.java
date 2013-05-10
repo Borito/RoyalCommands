@@ -20,7 +20,7 @@ public class CmdForce implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("force")) {
-            if (!plugin.isAuthorized(cs, "rcmds.force")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.force")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -33,7 +33,7 @@ public class CmdForce implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.isAuthorized(t, "rcmds.exempt.force")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.force")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot make that player run commands!");
                 return true;
             }

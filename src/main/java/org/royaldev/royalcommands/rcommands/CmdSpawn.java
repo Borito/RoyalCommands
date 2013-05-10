@@ -44,7 +44,8 @@ public class CmdSpawn implements CommandExecutor {
         ConfManager cm = ConfManager.getConfManager("spawns.yml");
         String group;
         try {
-            group = RoyalCommands.permission.getPrimaryGroup(p);
+            if (!RoyalCommands.instance.vh.usingVault()) throw new UnsupportedOperationException();
+            group = RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p);
         } catch (UnsupportedOperationException e) {
             group = null;
         } catch (NullPointerException e) {
@@ -58,7 +59,7 @@ public class CmdSpawn implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("spawn")) {
-            if (!plugin.isAuthorized(cs, "rcmds.spawn")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.spawn")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -69,7 +70,7 @@ public class CmdSpawn implements CommandExecutor {
             Player p = (Player) cs;
             World w;
             if (args.length > 0) {
-                if (!plugin.isAuthorized(cs, "rcmds.spawn.other")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.spawn.other")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to spawn in other worlds.");
                     return true;
                 }

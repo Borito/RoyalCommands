@@ -20,7 +20,7 @@ public class CmdSignEdit implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("signedit")) {
-            if (!plugin.isAuthorized(cs, "rcmds.signedit")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.signedit")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -62,7 +62,7 @@ public class CmdSignEdit implements CommandExecutor {
                 return true;
             }
             String text = RoyalCommands.getFinalArg(args, 1);
-            if (plugin.isAuthorized(cs, "rcmds.signedit.color")) text = RUtils.colorize(text);
+            if (plugin.ah.isAuthorized(cs, "rcmds.signedit.color")) text = RUtils.colorize(text);
             s.setLine(lineNumber, text);
             s.update();
             cs.sendMessage(MessageColor.POSITIVE + "Set line " + MessageColor.NEUTRAL + (lineNumber + 1) + MessageColor.POSITIVE + ".");

@@ -19,7 +19,7 @@ public class CmdFly implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("fly")) {
-            if (!plugin.isAuthorized(cs, "rcmds.fly")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.fly")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -34,7 +34,7 @@ public class CmdFly implements CommandExecutor {
                 String status = (p.getAllowFlight()) ? "on" : "off";
                 p.sendMessage(MessageColor.POSITIVE + "Toggled flight to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
             } else {
-                if (!plugin.isAuthorized(cs, "rcmds.others.fly")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.others.fly")) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }

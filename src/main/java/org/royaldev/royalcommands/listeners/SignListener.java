@@ -57,7 +57,7 @@ public class SignListener implements Listener {
 
         //Warp signs
         if (line1.equalsIgnoreCase("[warp]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.use.warp")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.use.warp")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -87,7 +87,7 @@ public class SignListener implements Listener {
 
         //Time signs
         if (line1.equalsIgnoreCase(ChatColor.stripColor("[time]"))) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.use.time")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.use.time")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -114,7 +114,7 @@ public class SignListener implements Listener {
 
         //Free signs
         if (line1.equalsIgnoreCase("[free]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.use.free")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.use.free")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -140,7 +140,7 @@ public class SignListener implements Listener {
 
         //Disposal signs
         if (line1.equalsIgnoreCase("[disposal]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.use.disposal")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.use.disposal")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -161,7 +161,7 @@ public class SignListener implements Listener {
 
         //Heal signs
         if (line1.equalsIgnoreCase("[heal]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.use.heal")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.use.heal")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -182,7 +182,7 @@ public class SignListener implements Listener {
 
         //Weather signs
         if (line1.equalsIgnoreCase("[weather]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.use.weather")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.use.weather")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -201,7 +201,7 @@ public class SignListener implements Listener {
 
         //Give signs
         if (line1.equalsIgnoreCase("[give]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.use.give")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.use.give")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -227,7 +227,7 @@ public class SignListener implements Listener {
 
         //Command signs
         if (line1.equalsIgnoreCase("[command]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.use.command")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.use.command")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -263,7 +263,7 @@ public class SignListener implements Listener {
 
         //Warp signs
         if (line1.equalsIgnoreCase("[warp]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.warp")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.warp")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -293,7 +293,7 @@ public class SignListener implements Listener {
 
         //Time signs
         if (line1.equalsIgnoreCase("[time]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.time")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.time")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -317,7 +317,7 @@ public class SignListener implements Listener {
 
         //Free signs
         if (line1.equalsIgnoreCase("[free]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.free")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.free")) {
                 RUtils.dispNoPerms(p);
                 e.setLine(0, "");
                 return;
@@ -344,7 +344,7 @@ public class SignListener implements Listener {
 
         //Disposal signs
         if (line1.equalsIgnoreCase("[disposal]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.disposal")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.disposal")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -364,7 +364,7 @@ public class SignListener implements Listener {
 
         //Heal signs
         if (line1.equalsIgnoreCase("[heal]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.heal")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.heal")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -384,7 +384,7 @@ public class SignListener implements Listener {
 
         //Weather signs
         if (line1.equalsIgnoreCase("[weather]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.weather")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.weather")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -410,7 +410,7 @@ public class SignListener implements Listener {
 
         //Give signs
         if (line1.equalsIgnoreCase("[give]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.give")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.give")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -442,7 +442,7 @@ public class SignListener implements Listener {
 
         //Command signs
         if (line1.equalsIgnoreCase("[command]")) {
-            if (!plugin.isAuthorized(p, "rcmds.sign.command")) {
+            if (!plugin.ah.isAuthorized(p, "rcmds.sign.command")) {
                 RUtils.dispNoPerms(p);
                 return;
             }
@@ -467,7 +467,7 @@ public class SignListener implements Listener {
     public void colorSigns(SignChangeEvent e) {
         Block b = e.getBlock();
         Player p = e.getPlayer();
-        if (!plugin.isAuthorized(p, "rcmds.signedit.color")) return;
+        if (!plugin.ah.isAuthorized(p, "rcmds.signedit.color")) return;
         for (int i = 0; i < 4; i++) e.setLine(i, RUtils.colorize(e.getLine(i)));
     }
 

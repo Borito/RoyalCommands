@@ -23,7 +23,7 @@ public class CmdNick implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("nick")) {
-            if (!plugin.isAuthorized(cs, "rcmds.nick")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.nick")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -32,7 +32,7 @@ public class CmdNick implements CommandExecutor {
                 return false;
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-            if (!t.equals(cs) && !plugin.isAuthorized(cs, "rcmds.others.nick")) {
+            if (!t.equals(cs) && !plugin.ah.isAuthorized(cs, "rcmds.others.nick")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -54,7 +54,7 @@ public class CmdNick implements CommandExecutor {
                 return true;
             }
             String newName = Config.nickPrefix + args[1];
-            if (plugin.isAuthorized(cs, "rcmds.nick.color"))
+            if (plugin.ah.isAuthorized(cs, "rcmds.nick.color"))
                 newName = RUtils.colorize(newName);
             pcm.set("dispname", newName);
             if (t.isOnline()) {

@@ -1,13 +1,13 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.text.StrBuilder;
-import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.Config;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -27,7 +27,7 @@ public class CmdList implements CommandExecutor {
     public String getNumOnline(CommandSender cs) {
         int hid = plugin.getNumberVanished();
         int all = plugin.getServer().getOnlinePlayers().length;
-        boolean canSeeVanished = plugin.isAuthorized(cs, "rcmds.seehidden");
+        boolean canSeeVanished = plugin.ah.isAuthorized(cs, "rcmds.seehidden");
         String numPlayers;
         if (canSeeVanished && hid > 0) numPlayers = (all - hid) + "/" + hid;
         else numPlayers = String.valueOf(all - hid);
@@ -38,7 +38,7 @@ public class CmdList implements CommandExecutor {
         Player[] pl = plugin.getServer().getOnlinePlayers();
         StringBuilder sb = new StringBuilder();
         for (Player p : pl) {
-            if (plugin.isVanished(p) && plugin.isAuthorized(cs, "rcmds.seehidden")) {
+            if (plugin.isVanished(p) && plugin.ah.isAuthorized(cs, "rcmds.seehidden")) {
                 sb.append(MessageColor.NEUTRAL);
                 sb.append("[HIDDEN]");
                 sb.append(MessageColor.RESET);
@@ -62,12 +62,13 @@ public class CmdList implements CommandExecutor {
         for (Player p : pl) {
             String group;
             try {
-                group = RoyalCommands.permission.getPrimaryGroup(p);
-            } catch (NullPointerException e) {
+                if (!plugin.vh.usingVault()) throw new Exception();
+                group = plugin.vh.getPermission().getPrimaryGroup(p);
+            } catch (Exception e) {
                 group = "No Group";
             }
             List<String> inGroup = (groups.containsKey(group)) ? groups.get(group) : new ArrayList<String>();
-            if (plugin.isVanished(p) && plugin.isAuthorized(cs, "rcmds.seehidden"))
+            if (plugin.isVanished(p) && plugin.ah.isAuthorized(cs, "rcmds.seehidden"))
                 inGroup.add(MessageColor.NEUTRAL + "[HIDDEN]" + MessageColor.RESET + formatPrepend(p));
             else if (!plugin.isVanished(p)) {
                 if (AFKUtils.isAfk(p))
@@ -102,14 +103,16 @@ public class CmdList implements CommandExecutor {
     public static String groupPrepend(String group) {
         String format = Config.whoGroupFormat;
         try {
-            format = format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getGroupPrefix(plugin.getServer().getWorlds().get(0), group));
+            if (!plugin.vh.usingVault()) throw new Exception();
+            format = format.replaceAll("(?i)\\{prefix}", plugin.vh.getChat().getGroupPrefix(plugin.getServer().getWorlds().get(0), group));
         } catch (Exception e) {
             String prefix = RUtils.getRChatGroupPrefix(group);
             if (prefix != null) format = format.replace("{prefix}", prefix);
             else format = format.replace("{prefix}", "");
         }
         try {
-            format = format.replaceAll("(?i)\\{suffix\\}", RoyalCommands.chat.getGroupSuffix(plugin.getServer().getWorlds().get(0), group));
+            if (!plugin.vh.usingVault()) throw new Exception();
+            format = format.replaceAll("(?i)\\{suffix}", plugin.vh.getChat().getGroupSuffix(plugin.getServer().getWorlds().get(0), group));
         } catch (Exception e) {
             String suffix = RUtils.getRChatGroupSuffix(group);
             if (suffix != null) format = format.replace("{suffix}", suffix);
@@ -123,26 +126,29 @@ public class CmdList implements CommandExecutor {
     public static String formatPrepend(Player p) {
         String format = Config.whoFormat;
         try {
-            format = format.replaceAll("(?i)\\{prefix\\}", RoyalCommands.chat.getPlayerPrefix(p));
+            if (!plugin.vh.usingVault()) throw new Exception();
+            format = format.replaceAll("(?i)\\{prefix}", plugin.vh.getChat().getPlayerPrefix(p));
         } catch (Exception e) {
             String prefix = RUtils.getRChatPrefix(p);
             if (prefix != null) format = format.replace("{prefix}", prefix);
             else format = format.replace("{prefix}", "");
         }
         try {
-            format = format.replaceAll("(?i)\\{group\\}", RoyalCommands.permission.getPrimaryGroup(p));
+            if (!plugin.vh.usingVault()) throw new Exception();
+            format = format.replaceAll("(?i)\\{group}", plugin.vh.getPermission().getPrimaryGroup(p));
         } catch (Exception e) {
-            format = format.replaceAll("(?i)\\{group\\}", "");
+            format = format.replaceAll("(?i)\\{group}", "");
         }
         try {
-            format = format.replaceAll("(?i)\\{suffix\\}", RoyalCommands.chat.getPlayerSuffix(p));
+            if (plugin.vh.usingVault())
+                format = format.replaceAll("(?i)\\{suffix}", plugin.vh.getChat().getPlayerSuffix(p));
         } catch (Exception e) {
             String suffix = RUtils.getRChatSuffix(p);
             if (suffix != null) format = format.replace("{suffix}", suffix);
             else format = format.replace("{suffix}", "");
         }
-        format = format.replaceAll("(?i)\\{name\\}", p.getName());
-        format = format.replaceAll("(?i)\\{dispname\\}", p.getDisplayName());
+        format = format.replaceAll("(?i)\\{name}", p.getName());
+        format = format.replaceAll("(?i)\\{dispname}", p.getDisplayName());
         format = RUtils.colorize(format);
         return format;
     }
@@ -150,7 +156,7 @@ public class CmdList implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("list")) {
-            if (!plugin.isAuthorized(cs, "rcmds.list")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.list")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

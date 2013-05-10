@@ -20,7 +20,7 @@ public class CmdSetSpawn implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("setspawn")) {
-            if (!plugin.isAuthorized(cs, "rcmds.setspawn")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.setspawn")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
