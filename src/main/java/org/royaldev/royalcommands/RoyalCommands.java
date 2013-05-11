@@ -648,8 +648,6 @@ public class RoyalCommands extends JavaPlugin {
 
         api = new RApiMain();
 
-        System.out.println(ah.isAuthorized(getServer().getOfflinePlayer("jkcclemens"), "rcmds.op"));
-
         //-- We're done! --//
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
