@@ -1274,7 +1274,7 @@ public class RUtils {
     }
 
     public static void removeAssignment(ItemStack is, GeneralConfManager gcf) {
-        gcf.set(getAssignmentPath(is), null);
+        setAssignment(is, null, gcf);
     }
 
     public static void setAssignment(ItemStack is, List<String> commands, GeneralConfManager gcf) {

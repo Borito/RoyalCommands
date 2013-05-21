@@ -11,7 +11,6 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.ConfManager;
-import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class CmdPublicAssign implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't remove commands from air!");
                     return true;
                 }
-                RUtils.removeAssignment(hand, PConfManager.getPConfManager(p));
+                RUtils.removeAssignment(hand, ConfManager.getConfManager("publicassignments.yml"));
                 p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + hand.getType().toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
                 return true;
             }
