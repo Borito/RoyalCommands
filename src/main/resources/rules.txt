@@ -1,0 +1,8 @@
+###
+&2Page 1:
+  1. Be kind
+  2. Be courteous
+  3. Be respectful
+###
+&2Page 2:
+  4. Be cool

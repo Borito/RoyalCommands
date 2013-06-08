@@ -6,7 +6,7 @@ description: A general plugin containing all the commands a discerning server ad
 author: jkcclemens
 softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard, Multiverse-Core, Vault]
 
-commands:
+reflectcommands:
   level:
     description: Levels your experience up one level.
     usage: /<command>

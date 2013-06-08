@@ -25,11 +25,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
@@ -54,12 +58,12 @@ import org.royaldev.royalcommands.runners.UserdataRunner;
 import org.royaldev.royalcommands.runners.WarnWatcher;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -73,7 +77,7 @@ public class RoyalCommands extends JavaPlugin {
 
     //--- Globals ---//
 
-    public static Map<String, Map<String, Object>> commands = null;
+    public static ConfigurationSection commands = null;
     public static File dataFolder;
     public static ItemNameManager inm;
     public static WorldManager wm = null;
@@ -92,6 +96,9 @@ public class RoyalCommands extends JavaPlugin {
     //--- Privates ---//
 
     private final int minVersion = 2645;
+
+    private CommandMap cm = null;
+    private YamlConfiguration pluginYml = null;
 
     private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
     private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
@@ -180,43 +187,67 @@ public class RoyalCommands extends JavaPlugin {
 
     //--- Private methods ---//
 
-    /**
-     * Registers a command in the server. If the command isn't defined in plugin.yml
-     * the NPE is caught, and a warning line is sent to the console.
-     *
-     * @param ce      CommandExecutor to be registered
-     * @param command Command name as specified in plugin.yml
-     * @param jp      Plugin to register under
-     */
-    private void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
-        if (Config.disabledCommands.contains(command.toLowerCase())) return;
+    private CommandMap getCommandMap() {
+        if (cm != null) return cm;
+        Field map;
         try {
-            jp.getCommand(command).setExecutor(ce);
-        } catch (NullPointerException e) {
-            getLogger().warning("Could not register command \"" + command + "\" - not registered in plugin.yml (" + e.getMessage() + ")");
+            map = SimplePluginManager.class.getDeclaredField("commandMap");
+            map.setAccessible(true);
+            cm = (CommandMap) map.get(getServer().getPluginManager());
+            return cm;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
-    private void createDefault(File f, String def) {
-        if (!f.exists()) {
-            try {
-                boolean success = f.createNewFile();
-                if (success) {
-                    try {
-                        FileWriter fstream = new FileWriter(f.getAbsolutePath());
-                        BufferedWriter out = new BufferedWriter(fstream);
-                        out.write(def);
-                        out.close();
-                    } catch (Exception e) {
-                        log.severe("[RoyalCommands] Could not write to a config.");
-                        e.printStackTrace();
-                    }
-                    log.info("[RoyalCommands] Created config file.");
-                }
-            } catch (Exception e) {
-                log.severe("[RoyalCommands] Failed to create file!");
-                e.printStackTrace();
-            }
+    private ConfigurationSection getCommands() {
+        return pluginYml.getConfigurationSection("reflectcommands");
+    }
+
+    private ConfigurationSection getCommandInfo(String command) {
+        final ConfigurationSection ci = getCommands().getConfigurationSection(command);
+        if (ci == null) throw new IllegalArgumentException("No such command registered!");
+        return ci;
+    }
+
+    private String[] getAliases(String command) {
+        final List<String> aliasesList = getCommandInfo(command).getStringList("aliases");
+        if (aliasesList == null) return new String[0];
+        final String[] aliases = new String[aliasesList.size()];
+        for (int index = 0; index < aliasesList.size(); index++) {
+            final String s = aliasesList.get(index);
+            aliases[index] = s;
+        }
+        return aliases;
+    }
+
+    private String getUsage(String command) {
+        return getCommandInfo(command).getString("usage", "");
+    }
+
+    private String getDescription(String command) {
+        return getCommandInfo(command).getString("description", command);
+    }
+
+    /*private boolean unregisterCommand(String command) {
+        final Command c = getCommandMap().getCommand(command);
+        return c != null && c.unregister(getCommandMap());
+    } save for overriding commands in the config*/
+
+    /**
+     * Registers a command in the server's CommandMap.
+     *
+     * @param ce      CommandExecutor to be registered
+     * @param command Command name as specified in plugin.yml
+     */
+    private void registerCommand(CommandExecutor ce, String command) {
+        if (Config.disabledCommands.contains(command.toLowerCase())) return;
+        final DynamicCommand dc = new DynamicCommand(getAliases(command), command, getDescription(command), getUsage(command), new String[0], "", ce, this, this);
+        try {
+            getCommandMap().register(getDescription().getName(), dc);
+        } catch (IllegalArgumentException e) {
+            getLogger().warning("Could not register command \"" + command + "\" - an error occurred: " + e.getMessage() + ".");
         }
     }
 
@@ -234,7 +265,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private Map<String, String> getNewestVersions() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(new URL("http://cdn.royaldev.org/rcmdsversion.php").openStream()));
+        BufferedReader br = new BufferedReader(new InputStreamReader(new URL("https://cdn.royaldev.org/rcmdsversion.php").openStream()));
         StringBuilder data = new StringBuilder();
         String input;
         while ((input = br.readLine()) != null) data.append(input);
@@ -244,74 +275,21 @@ public class RoyalCommands extends JavaPlugin {
     //--- Load initial configuration ---//
 
     public void loadConfiguration() {
-        if (!new File(getDataFolder() + File.separator + "config.yml").exists())
-            saveDefaultConfig();
-        if (!new File(getDataFolder() + File.separator + "items.csv").exists())
-            saveResource("items.csv", false);
-        File file = new File(getDataFolder() + File.separator + "userdata" + File.separator);
-        boolean exists = file.exists();
-        if (!exists) {
+        if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveDefaultConfig();
+        if (!new File(getDataFolder() + File.separator + "items.csv").exists()) saveResource("items.csv", false);
+        if (!new File(getDataFolder() + File.separator + "rules.txt").exists()) saveResource("rules.txt", false);
+        if (!new File(getDataFolder() + File.separator + "help.txt").exists()) saveResource("help.txt", false);
+        if (!new File(getDataFolder() + File.separator + "warps.yml").exists()) saveResource("warps.yml", false);
+        final File file = new File(getDataFolder(), "userdata");
+        if (!file.exists()) {
             try {
-                boolean success = new File(getDataFolder() + File.separator + "userdata").mkdir();
+                boolean success = file.mkdir();
                 if (success) log.info("[RoyalCommands] Created userdata directory.");
             } catch (Exception e) {
                 log.severe("[RoyalCommands] Failed to make userdata directory!");
                 log.severe(e.getMessage());
             }
         }
-        File rules = new File(getDataFolder() + File.separator + "rules.txt");
-        if (!rules.exists()) {
-            try {
-                boolean success = new File(getDataFolder() + File.separator + "rules.txt").createNewFile();
-                if (!success) log.severe("[RoyalCommands] Could not create rules.txt!");
-                else {
-                    try {
-                        BufferedWriter out = new BufferedWriter(new FileWriter(getDataFolder() + File.separator + "rules.txt"));
-                        out.write("###\n");
-                        out.write("&2Page 1:\n");
-                        out.write("  1. Be kind\n");
-                        out.write("  2. Be courteous\n");
-                        out.write("  3. Be respectful\n");
-                        out.write("###\n");
-                        out.write("&2Page 2:\n");
-                        out.write("  4. Be cool\n");
-                        out.close();
-                    } catch (IOException e) {
-                        //ignore
-                    }
-                }
-            } catch (Exception e) {
-                log.severe("[RoyalCommands] Could not create rules.txt!");
-                e.printStackTrace();
-            }
-        }
-        File help = new File(getDataFolder() + File.separator + "help.txt");
-        if (!help.exists()) {
-            try {
-                boolean success = new File(getDataFolder() + File.separator + "help.txt").createNewFile();
-                if (!success) log.severe("[RoyalCommands] Could not create help.txt!");
-                else {
-                    try {
-                        BufferedWriter out = new BufferedWriter(new FileWriter(getDataFolder() + File.separator + "help.txt"));
-                        out.write("###\n");
-                        out.write("&2Page 1:\n");
-                        out.write("  1. Do some awesome things\n");
-                        out.write("  2. You must meow to join\n");
-                        out.write("  3. The admins didn't change this\n");
-                        out.write("###\n");
-                        out.write("&2Page 2:\n");
-                        out.write("  4. Tell them to\n");
-                        out.close();
-                    } catch (IOException e) {
-                        //ignore
-                    }
-                }
-            } catch (Exception e) {
-                log.severe("[RoyalCommands] Could not create help.txt!");
-                e.printStackTrace();
-            }
-        }
-        createDefault(new File(getDataFolder() + File.separator + "warps.yml"), "warps:");
     }
 
     //--- onEnable() ---//
@@ -323,11 +301,13 @@ public class RoyalCommands extends JavaPlugin {
 
         instance = this;
 
+        pluginYml = YamlConfiguration.loadConfiguration(getResource("plugin.yml"));
+
         dataFolder = getDataFolder();
 
         whl = ConfManager.getConfManager("whitelist.yml");
 
-        commands = getDescription().getCommands();
+        commands = pluginYml.getConfigurationSection("reflectcommands");
 
         version = getDescription().getVersion();
 
@@ -484,165 +464,166 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Register commands --//
 
-        registerCommand(new CmdLevel(this), "level", this);
-        registerCommand(new CmdSetlevel(this), "setlevel", this);
-        registerCommand(new CmdSci(this), "sci", this);
-        registerCommand(new CmdSpeak(this), "speak", this);
-        registerCommand(new CmdFacepalm(this), "facepalm", this);
-        registerCommand(new CmdSlap(this), "slap", this);
-        registerCommand(new CmdHarm(this), "harm", this);
-        registerCommand(new CmdStarve(this), "starve", this);
-        registerCommand(new CmdSetarmor(this), "setarmor", this);
-        registerCommand(new CmdGetIP(this), "getip", this);
-        registerCommand(new CmdCompareIP(this), "compareip", this);
-        registerCommand(new CmdRageQuit(this), "ragequit", this);
-        registerCommand(new CmdQuit(this), "quit", this);
-        registerCommand(new CmdRank(this), "rank", this);
-        registerCommand(new CmdFreeze(this), "freeze", this);
-        registerCommand(new CmdFakeop(this), "fakeop", this);
-        registerCommand(new CmdVtp(this), "vtp", this);
-        registerCommand(new CmdVtphere(this), "vtphere", this);
-        registerCommand(new CmdMegaStrike(this), "megastrike", this);
-        registerCommand(new CmdPext(this), "pext", this);
-        registerCommand(new CmdItem(this), "item", this);
-        registerCommand(new CmdClearInventory(this), "clearinventory", this);
-        registerCommand(new CmdWeather(this), "weather", this);
-        registerCommand(new CmdFixChunk(this), "fixchunk", this);
-        registerCommand(new CmdGive(this), "give", this);
-        registerCommand(new CmdMessage(this), "message", this);
-        registerCommand(new CmdReply(this), "reply", this);
-        registerCommand(new CmdGamemode(this), "gamemode", this);
-        registerCommand(new CmdMute(this), "mute", this);
-        registerCommand(new CmdBan(this), "ban", this);
-        registerCommand(new CmdKick(this), "kick", this);
-        registerCommand(new CmdTime(this), "time", this);
-        registerCommand(new CmdHome(this), "home", this);
-        registerCommand(new CmdSetHome(this), "sethome", this);
-        registerCommand(new CmdDelHome(this), "delhome", this);
-        registerCommand(new CmdListHome(this), "listhome", this);
-        registerCommand(new CmdStrike(this), "strike", this);
-        registerCommand(new CmdJump(this), "jump", this);
-        registerCommand(new CmdWarn(this), "warn", this);
-        registerCommand(new CmdClearWarns(this), "clearwarns", this);
-        registerCommand(new CmdWarp(this), "warp", this);
-        registerCommand(new CmdSetWarp(this), "setwarp", this);
-        registerCommand(new CmdDelWarp(this), "delwarp", this);
-        registerCommand(new CmdRepair(this), "repair", this);
-        registerCommand(new CmdUnban(this), "unban", this);
-        registerCommand(new CmdHeal(this), "heal", this);
-        registerCommand(new CmdFeed(this), "feed", this);
-        registerCommand(new CmdGod(this), "god", this);
-        registerCommand(new CmdSetSpawn(this), "setspawn", this);
-        registerCommand(new CmdSpawn(this), "spawn", this);
-        registerCommand(new CmdBanIP(this), "banip", this);
-        registerCommand(new CmdUnbanIP(this), "unbanip", this);
-        registerCommand(new CmdList(this), "list", this);
-        registerCommand(new CmdBack(this), "back", this);
-        registerCommand(new CmdTeleport(this), "teleport", this);
-        registerCommand(new CmdTeleportHere(this), "teleporthere", this);
-        registerCommand(new CmdTeleportRequest(this), "teleportrequest", this);
-        registerCommand(new CmdTpAccept(this), "tpaccept", this);
-        registerCommand(new CmdTpDeny(this), "tpdeny", this);
-        registerCommand(new CmdListWarns(this), "listwarns", this);
-        registerCommand(new CmdMore(this), "more", this);
-        registerCommand(new CmdTeleportRequestHere(this), "teleportrequesthere", this);
-        registerCommand(new CmdSpy(this), "spy", this);
-        registerCommand(new CmdSpawnMob(this), "spawnmob", this);
-        registerCommand(new CmdAfk(this), "afk", this);
-        registerCommand(new CmdAssign(this), "assign", this);
-        registerCommand(new CmdOneHitKill(this), "onehitkill", this);
-        registerCommand(new CmdBurn(this), "burn", this);
-        registerCommand(new CmdKickAll(this), "kickall", this);
-        registerCommand(new CmdWorld(this), "world", this);
-        registerCommand(new CmdJail(this), "jail", this);
-        registerCommand(new CmdSetJail(this), "setjail", this);
-        registerCommand(new CmdLess(this), "less", this);
-        registerCommand(new CmdSpawner(this), "spawner", this);
-        registerCommand(new CmdTp2p(this), "tp2p", this);
-        registerCommand(new CmdMotd(this), "motd", this);
-        registerCommand(new CmdDelJail(this), "deljail", this);
-        registerCommand(new CmdForce(this), "force", this);
-        registerCommand(new CmdPing(this), "ping", this);
-        registerCommand(new CmdInvsee(this), "invsee", this);
-        registerCommand(new CmdRealName(this), "realname", this);
-        registerCommand(new CmdNick(this), "nick", this);
-        registerCommand(new CmdIngot2Block(this), "ingot2block", this);
-        registerCommand(new CmdNear(this), "near", this);
-        registerCommand(new CmdKill(this), "kill", this);
-        registerCommand(new CmdSuicide(this), "suicide", this);
-        registerCommand(new CmdKillAll(this), "killall", this);
-        registerCommand(new CmdMuteAll(this), "muteall", this);
-        registerCommand(new CmdKit(this), "kit", this);
-        registerCommand(new CmdRules(this), "rules", this);
-        registerCommand(new CmdBroadcast(this), "broadcast", this);
-        registerCommand(new CmdHug(this), "hug", this);
-        registerCommand(new CmdExplode(this), "explode", this);
-        registerCommand(new CmdRide(this), "ride", this);
-        registerCommand(new CmdTppos(this), "tppos", this);
-        registerCommand(new CmdIgnore(this), "ignore", this);
-        registerCommand(new CmdHelp(this), "help", this);
-        registerCommand(new CmdCoords(this), "coords", this);
-        registerCommand(new CmdTpAll(this), "tpall", this);
-        registerCommand(new CmdTpaAll(this), "tpaall", this);
-        registerCommand(new CmdVip(this), "vip", this);
-        registerCommand(new CmdDump(this), "dump", this);
-        registerCommand(new CmdSeen(this), "seen", this);
-        registerCommand(new CmdTempban(this), "tempban", this);
-        registerCommand(new CmdTpToggle(this), "tptoggle", this);
-        registerCommand(new CmdKits(this), "kits", this);
-        registerCommand(new CmdLag(this), "lag", this);
-        registerCommand(new CmdMem(this), "mem", this);
-        registerCommand(new CmdEntities(this), "entities", this);
-        registerCommand(new CmdInvmod(this), "invmod", this);
-        registerCommand(new CmdWorkbench(this), "workbench", this);
-        registerCommand(new CmdEnchantingTable(this), "enchantingtable", this);
-        registerCommand(new CmdTrade(this), "trade", this);
-        registerCommand(new CmdFurnace(this), "furnace", this);
-        registerCommand(new CmdEnchant(this), "enchant", this);
-        registerCommand(new CmdWhitelist(this), "wl", this);
-        registerCommand(new CmdFireball(this), "fireball", this);
-        registerCommand(new CmdFly(this), "fly", this);
-        registerCommand(new CmdPlayerTime(this), "playertime", this);
-        registerCommand(new CmdCompass(this), "compass", this);
-        registerCommand(new CmdHelmet(this), "helmet", this);
-        registerCommand(new CmdWorldManager(this), "worldmanager", this);
-        registerCommand(new CmdBiome(this), "biome", this);
-        registerCommand(new CmdGetID(this), "getid", this);
-        registerCommand(new CmdBuddha(this), "buddha", this);
-        registerCommand(new CmdErase(this), "erase", this);
-        registerCommand(new CmdWhois(this), "whois", this);
-        registerCommand(new CmdMobIgnore(this), "mobignore", this);
-        registerCommand(new CmdMonitor(this), "monitor", this);
-        registerCommand(new CmdGarbageCollector(this), "garbagecollector", this);
-        registerCommand(new CmdBackpack(this), "backpack", this);
-        registerCommand(new CmdUsage(this), "usage", this);
-        registerCommand(new CmdPluginManager(this), "pluginmanager", this);
-        registerCommand(new CmdFreezeTime(this), "freezetime", this);
-        registerCommand(new CmdBanInfo(this), "baninfo", this);
-        registerCommand(new CmdBanList(this), "banlist", this);
-        registerCommand(new CmdFlySpeed(this), "flyspeed", this);
-        registerCommand(new CmdWalkSpeed(this), "walkspeed", this);
-        registerCommand(new CmdAccountStatus(this), "accountstatus", this);
-        registerCommand(new CmdPlayerSearch(this), "playersearch", this);
-        registerCommand(new CmdDeafen(this), "deafen", this);
-        registerCommand(new CmdRename(this), "rename", this);
-        registerCommand(new CmdLore(this), "lore", this);
-        registerCommand(new CmdSetUserdata(this), "setuserdata", this);
-        registerCommand(new CmdFirework(this), "firework", this);
-        registerCommand(new CmdRocket(this), "rocket", this);
-        registerCommand(new CmdEffect(this), "effect", this);
-        registerCommand(new CmdBanHistory(this), "banhistory", this);
-        registerCommand(new CmdMail(this), "mail", this);
-        registerCommand(new CmdSignEdit(this), "signedit", this);
-        registerCommand(new CmdPotion(this), "potion", this);
-        registerCommand(new CmdSetCharacteristic(this), "setcharacteristic", this);
-        registerCommand(new CmdNameEntity(this), "nameentity", this);
-        registerCommand(new CmdHead(this), "head", this);
-        registerCommand(new CmdFindIP(this), "findip", this);
-        registerCommand(new CmdMap(this), "map", this);
-        registerCommand(new CmdDeleteBanHistory(this), "deletebanhistory", this);
-        registerCommand(new CmdPublicAssign(this), "publicassign", this);
-        registerCommand(new CmdRcmds(this), "rcmds", this);
+        registerCommand(new CmdLevel(this), "level");
+        registerCommand(new CmdSetlevel(this), "setlevel");
+        registerCommand(new CmdSci(this), "sci");
+        registerCommand(new CmdSpeak(this), "speak");
+        registerCommand(new CmdFacepalm(this), "facepalm");
+        registerCommand(new CmdSlap(this), "slap");
+        registerCommand(new CmdHarm(this), "harm");
+        registerCommand(new CmdStarve(this), "starve");
+        registerCommand(new CmdSetarmor(this), "setarmor");
+        registerCommand(new CmdGetIP(this), "getip");
+        registerCommand(new CmdCompareIP(this), "compareip");
+        registerCommand(new CmdRageQuit(this), "ragequit");
+        registerCommand(new CmdQuit(this), "quit");
+        registerCommand(new CmdRank(this), "rank");
+        registerCommand(new CmdFreeze(this), "freeze");
+        registerCommand(new CmdFakeop(this), "fakeop");
+        registerCommand(new CmdVtp(this), "vtp");
+        registerCommand(new CmdVtphere(this), "vtphere");
+        registerCommand(new CmdMegaStrike(this), "megastrike");
+        registerCommand(new CmdPext(this), "pext");
+        registerCommand(new CmdItem(this), "item");
+        registerCommand(new CmdClearInventory(this), "clearinventory");
+        registerCommand(new CmdWeather(this), "weather");
+        registerCommand(new CmdFixChunk(this), "fixchunk");
+        registerCommand(new CmdGive(this), "give");
+        registerCommand(new CmdMessage(this), "message");
+        registerCommand(new CmdReply(this), "reply");
+        registerCommand(new CmdGamemode(this), "gamemode");
+        registerCommand(new CmdMute(this), "mute");
+        registerCommand(new CmdBan(this), "ban");
+        registerCommand(new CmdKick(this), "kick");
+        registerCommand(new CmdTime(this), "time");
+        registerCommand(new CmdHome(this), "home");
+        registerCommand(new CmdSetHome(this), "sethome");
+        registerCommand(new CmdDelHome(this), "delhome");
+        registerCommand(new CmdListHome(this), "listhome");
+        registerCommand(new CmdStrike(this), "strike");
+        registerCommand(new CmdJump(this), "jump");
+        registerCommand(new CmdWarn(this), "warn");
+        registerCommand(new CmdClearWarns(this), "clearwarns");
+        registerCommand(new CmdWarp(this), "warp");
+        registerCommand(new CmdSetWarp(this), "setwarp");
+        registerCommand(new CmdDelWarp(this), "delwarp");
+        registerCommand(new CmdRepair(this), "repair");
+        registerCommand(new CmdUnban(this), "unban");
+        registerCommand(new CmdHeal(this), "heal");
+        registerCommand(new CmdFeed(this), "feed");
+        registerCommand(new CmdGod(this), "god");
+        registerCommand(new CmdSetSpawn(this), "setspawn");
+        registerCommand(new CmdSpawn(this), "spawn");
+        registerCommand(new CmdBanIP(this), "banip");
+        registerCommand(new CmdUnbanIP(this), "unbanip");
+        registerCommand(new CmdList(this), "list");
+        registerCommand(new CmdBack(this), "back");
+        registerCommand(new CmdTeleport(this), "teleport");
+        registerCommand(new CmdTeleportHere(this), "teleporthere");
+        registerCommand(new CmdTeleportRequest(this), "teleportrequest");
+        registerCommand(new CmdTpAccept(this), "tpaccept");
+        registerCommand(new CmdTpDeny(this), "tpdeny");
+        registerCommand(new CmdListWarns(this), "listwarns");
+        registerCommand(new CmdMore(this), "more");
+        registerCommand(new CmdTeleportRequestHere(this), "teleportrequesthere");
+        registerCommand(new CmdSpy(this), "spy");
+        registerCommand(new CmdSpawnMob(this), "spawnmob");
+        registerCommand(new CmdAfk(this), "afk");
+        registerCommand(new CmdAssign(this), "assign");
+        registerCommand(new CmdOneHitKill(this), "onehitkill");
+        registerCommand(new CmdBurn(this), "burn");
+        registerCommand(new CmdKickAll(this), "kickall");
+        registerCommand(new CmdWorld(this), "world");
+        registerCommand(new CmdJail(this), "jail");
+        registerCommand(new CmdSetJail(this), "setjail");
+        registerCommand(new CmdLess(this), "less");
+        registerCommand(new CmdSpawner(this), "spawner");
+        registerCommand(new CmdTp2p(this), "tp2p");
+        registerCommand(new CmdMotd(this), "motd");
+        registerCommand(new CmdDelJail(this), "deljail");
+        registerCommand(new CmdForce(this), "force");
+        registerCommand(new CmdPing(this), "ping");
+        registerCommand(new CmdInvsee(this), "invsee");
+        registerCommand(new CmdRealName(this), "realname");
+        registerCommand(new CmdNick(this), "nick");
+        registerCommand(new CmdIngot2Block(this), "ingot2block");
+        registerCommand(new CmdNear(this), "near");
+        registerCommand(new CmdKill(this), "kill");
+        registerCommand(new CmdSuicide(this), "suicide");
+        registerCommand(new CmdKillAll(this), "killall");
+        registerCommand(new CmdMuteAll(this), "muteall");
+        registerCommand(new CmdKit(this), "kit");
+        registerCommand(new CmdRules(this), "rules");
+        registerCommand(new CmdBroadcast(this), "broadcast");
+        registerCommand(new CmdHug(this), "hug");
+        registerCommand(new CmdExplode(this), "explode");
+        registerCommand(new CmdRide(this), "ride");
+        registerCommand(new CmdTppos(this), "tppos");
+        registerCommand(new CmdIgnore(this), "ignore");
+        registerCommand(new CmdHelp(this), "help");
+        registerCommand(new CmdCoords(this), "coords");
+        registerCommand(new CmdTpAll(this), "tpall");
+        registerCommand(new CmdTpaAll(this), "tpaall");
+        registerCommand(new CmdVip(this), "vip");
+        registerCommand(new CmdDump(this), "dump");
+        registerCommand(new CmdSeen(this), "seen");
+        registerCommand(new CmdTempban(this), "tempban");
+        registerCommand(new CmdTpToggle(this), "tptoggle");
+        registerCommand(new CmdKits(this), "kits");
+        registerCommand(new CmdLag(this), "lag");
+        registerCommand(new CmdMem(this), "mem");
+        registerCommand(new CmdEntities(this), "entities");
+        registerCommand(new CmdInvmod(this), "invmod");
+        registerCommand(new CmdWorkbench(this), "workbench");
+        registerCommand(new CmdEnchantingTable(this), "enchantingtable");
+        registerCommand(new CmdTrade(this), "trade");
+        registerCommand(new CmdFurnace(this), "furnace");
+        registerCommand(new CmdEnchant(this), "enchant");
+        registerCommand(new CmdWhitelist(this), "wl");
+        registerCommand(new CmdFireball(this), "fireball");
+        registerCommand(new CmdFly(this), "fly");
+        registerCommand(new CmdPlayerTime(this), "playertime");
+        registerCommand(new CmdCompass(this), "compass");
+        registerCommand(new CmdHelmet(this), "helmet");
+        registerCommand(new CmdWorldManager(this), "worldmanager");
+        registerCommand(new CmdBiome(this), "biome");
+        registerCommand(new CmdGetID(this), "getid");
+        registerCommand(new CmdBuddha(this), "buddha");
+        registerCommand(new CmdErase(this), "erase");
+        registerCommand(new CmdWhois(this), "whois");
+        registerCommand(new CmdMobIgnore(this), "mobignore");
+        registerCommand(new CmdMonitor(this), "monitor");
+        registerCommand(new CmdGarbageCollector(this), "garbagecollector");
+        registerCommand(new CmdBackpack(this), "backpack");
+        registerCommand(new CmdUsage(this), "usage");
+        registerCommand(new CmdPluginManager(this), "pluginmanager");
+        registerCommand(new CmdFreezeTime(this), "freezetime");
+        registerCommand(new CmdBanInfo(this), "baninfo");
+        registerCommand(new CmdBanList(this), "banlist");
+        registerCommand(new CmdFlySpeed(this), "flyspeed");
+        registerCommand(new CmdWalkSpeed(this), "walkspeed");
+        registerCommand(new CmdAccountStatus(this), "accountstatus");
+        registerCommand(new CmdPlayerSearch(this), "playersearch");
+        registerCommand(new CmdDeafen(this), "deafen");
+        registerCommand(new CmdRename(this), "rename");
+        registerCommand(new CmdLore(this), "lore");
+        registerCommand(new CmdSetUserdata(this), "setuserdata");
+        registerCommand(new CmdFirework(this), "firework");
+        registerCommand(new CmdRocket(this), "rocket");
+        registerCommand(new CmdEffect(this), "effect");
+        registerCommand(new CmdBanHistory(this), "banhistory");
+        registerCommand(new CmdMail(this), "mail");
+        registerCommand(new CmdSignEdit(this), "signedit");
+        registerCommand(new CmdPotion(this), "potion");
+        registerCommand(new CmdSetCharacteristic(this), "setcharacteristic");
+        registerCommand(new CmdNameEntity(this), "nameentity");
+        registerCommand(new CmdHead(this), "head");
+        registerCommand(new CmdFindIP(this), "findip");
+        registerCommand(new CmdMap(this), "map");
+        registerCommand(new CmdDeleteBanHistory(this), "deletebanhistory");
+        registerCommand(new CmdPublicAssign(this), "publicassign");
+        registerCommand(new CmdRcmds(this), "rcmds");
+        //updateCommandMap();
 
         //-- Make the API --//
 
