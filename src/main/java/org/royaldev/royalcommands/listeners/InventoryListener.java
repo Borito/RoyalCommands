@@ -63,6 +63,18 @@ public class InventoryListener implements Listener {
         return null;
     }
 
+    private void saveEnderInventory(OfflinePlayer op, String world, Inventory i) {
+        if (!Config.separateInv || !Config.separateEnder) return;
+        World w = plugin.getServer().getWorld(world);
+        String group = getWorldGroup(w);
+        if (group == null) return;
+        PConfManager pcm = PConfManager.getPConfManager(op);
+        for (int slot = 0; slot < i.getSize(); slot++) {
+            pcm.set("inventory." + group + ".ender.slot." + slot, i.getItem(slot));
+        }
+        pcm.set("inventory." + group + ".ender.size", i.getSize());
+    }
+
     private void saveEnderInventory(Player p, Inventory i) {
         if (!Config.separateInv || !Config.separateEnder) return;
         World w = p.getWorld();
@@ -90,6 +102,24 @@ public class InventoryListener implements Listener {
             i.setItem(slot, is);
         }
         return i;
+    }
+
+    private void saveInventory(OfflinePlayer op, String world, Inventory i) {
+        if (!Config.separateInv) return;
+        String group = getWorldGroup(plugin.getServer().getWorld(world));
+        if (group == null) return;
+        PConfManager pcm = PConfManager.getPConfManager(op);
+        for (int slot = 0; slot < i.getSize(); slot++) {
+            pcm.set("inventory." + group + ".slot." + slot, i.getItem(slot));
+        }
+        if (i instanceof PlayerInventory) {
+            PlayerInventory pi = (PlayerInventory) i;
+            pcm.set("inventory." + group + ".slot.helm", pi.getHelmet());
+            pcm.set("inventory." + group + ".slot.chestplate", pi.getChestplate());
+            pcm.set("inventory." + group + ".slot.leggings", pi.getLeggings());
+            pcm.set("inventory." + group + ".slot.boots", pi.getBoots());
+        }
+        pcm.set("inventory." + group + ".size", i.getSize());
     }
 
     private void saveInventory(Player p, Inventory i) {
@@ -127,7 +157,7 @@ public class InventoryListener implements Listener {
         PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
-        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER);
+        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "\u0000OEC;" + world + ": " + op.getName());
         i.clear();
         if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
         for (int slot = 0; slot < invSize; slot++) {
@@ -146,7 +176,7 @@ public class InventoryListener implements Listener {
         PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".size");
-        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER);
+        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "\u0000OPI;" + world + ": " + op.getName());
         i.clear();
         if (pcm.get("inventory." + group + ".slot") == null) return i;
         for (int slot = 0; slot < invSize; slot++) {
@@ -302,6 +332,19 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void closeOfflineInventory(InventoryCloseEvent e) {
-
+        String name = e.getInventory().getName();
+        String world;
+        String opName;
+        try {
+            world = name.split(";")[1].split(":")[0];
+            opName = name.split(": ")[1];
+        } catch (Exception ex) {
+            return;
+        }
+        if (name.startsWith("\u0000OEC;")) {
+            saveEnderInventory(plugin.getServer().getOfflinePlayer(opName), world, e.getInventory());
+        } else if (name.startsWith("\u0000OPI;")) {
+            saveInventory(plugin.getServer().getOfflinePlayer(opName), world, e.getInventory());
+        }
     }
 }

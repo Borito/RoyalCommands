@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -32,6 +33,10 @@ public class CmdEnderChest implements CommandExecutor {
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
+            }
+            if (!Config.separateInv || !Config.separateEnder) {
+                cs.sendMessage(MessageColor.NEGATIVE + "Cannot open ender chests unless they are separated!");
+                return true;
             }
             Player p = (Player) cs;
             final OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
