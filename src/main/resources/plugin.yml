@@ -921,6 +921,12 @@ reflectcommands:
     aliases: [pas, ppt, publicpowertool]
     version: 0.2.8
 
+  enderchest:
+    description: Shows the ender chest of a player.
+    usage: /<command> [player] [world]
+    aliases: [endchest, echest, ec]
+    version: 0.2.8
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1405,6 +1411,9 @@ permissions:
   rcmds.publicassign:
     description: Allows you to add public commands to items.
     default: op
+  rcmds.enderchest:
+    description: Allows you to view a player's ender chest.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1583,6 +1592,9 @@ permissions:
     default: false
   rcmds.exempt.delhome:
     description: Makes the player immune to /delhome.
+    default: false
+  rcmds.exempt.enderchest:
+    description: Makes the player immune to /enderchest.
     default: false
 
   rcmds.exempt.autoafk:
@@ -1944,6 +1956,7 @@ permissions:
       rcmds.map: true
       rcmds.deletebanhistory: true
       rcmds.publicassign: true
+      rcmds.enderchest: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2062,6 +2075,7 @@ permissions:
       rcmds.exempt.effect: true
       rcmds.exempt.head: true
       rcmds.exempt.delhome: true
+      rcmds.exempt.enderchest: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -2237,6 +2251,7 @@ permissions:
       rcmds.map: true
       rcmds.deletebanhistory: true
       rcmds.publicassign: true
+      rcmds.enderchest: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

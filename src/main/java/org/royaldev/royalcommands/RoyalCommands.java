@@ -622,8 +622,8 @@ public class RoyalCommands extends JavaPlugin {
         registerCommand(new CmdMap(this), "map");
         registerCommand(new CmdDeleteBanHistory(this), "deletebanhistory");
         registerCommand(new CmdPublicAssign(this), "publicassign");
+        registerCommand(new CmdEnderChest(this), "enderchest");
         registerCommand(new CmdRcmds(this), "rcmds");
-        //updateCommandMap();
 
         //-- Make the API --//
 

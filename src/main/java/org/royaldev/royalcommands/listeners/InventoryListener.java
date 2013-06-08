@@ -2,6 +2,7 @@ package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -116,6 +117,44 @@ public class InventoryListener implements Listener {
             pcm.set("inventory." + group + ".xp", p.getExp());
             pcm.set("inventory." + group + ".xplevel", p.getLevel());
         }
+    }
+
+    public Inventory getOfflinePlayerEnderInventory(OfflinePlayer op, String world) {
+        World w = plugin.getServer().getWorld(world);
+        if (w == null) return null;
+        String group = getWorldGroup(w);
+        if (group == null) return null;
+        PConfManager pcm = PConfManager.getPConfManager(op);
+        if (!pcm.exists()) pcm.createFile();
+        Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
+        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER);
+        i.clear();
+        if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
+        for (int slot = 0; slot < invSize; slot++) {
+            ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
+            if (is == null) continue;
+            i.setItem(slot, is);
+        }
+        return i;
+    }
+
+    public Inventory getOfflinePlayerInventory(OfflinePlayer op, String world) {
+        World w = plugin.getServer().getWorld(world);
+        if (w == null) return null;
+        String group = getWorldGroup(w);
+        if (group == null) return null;
+        PConfManager pcm = PConfManager.getPConfManager(op);
+        if (!pcm.exists()) pcm.createFile();
+        Integer invSize = pcm.getInt("inventory." + group + ".size");
+        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER);
+        i.clear();
+        if (pcm.get("inventory." + group + ".slot") == null) return i;
+        for (int slot = 0; slot < invSize; slot++) {
+            ItemStack is = pcm.getItemStack("inventory." + group + ".slot." + slot);
+            if (is == null) continue;
+            i.setItem(slot, is);
+        }
+        return i;
     }
 
     private PlayerInventory getInventory(Player p) {
@@ -259,5 +298,10 @@ public class InventoryListener implements Listener {
             if (!p.hasPotionEffect(pe.getType())) continue;
             p.removePotionEffect(pe.getType());
         }
+    }
+
+    @EventHandler
+    public void closeOfflineInventory(InventoryCloseEvent e) {
+
     }
 }
