@@ -157,7 +157,7 @@ public class InventoryListener implements Listener {
         PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
-        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "\u0000OEC;" + world + ": " + op.getName());
+        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "OEC;" + world + ": " + op.getName());
         if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
         for (int slot = 0; slot < invSize; slot++) {
             ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
@@ -175,7 +175,7 @@ public class InventoryListener implements Listener {
         PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".size");
-        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "\u0000OPI;" + world + ": " + op.getName());
+        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "OPI;" + world + ": " + op.getName());
         if (pcm.get("inventory." + group + ".slot") == null) return i;
         for (int slot = 0; slot < invSize; slot++) {
             ItemStack is = pcm.getItemStack("inventory." + group + ".slot." + slot);
@@ -341,7 +341,7 @@ public class InventoryListener implements Listener {
         } catch (Exception ex) {
             return;
         }
-        if (name.startsWith("\u0000OEC;")) saveEnderInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
-        else if (name.startsWith("\u0000OPI;")) saveInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
+        if (name.startsWith("OEC;")) saveEnderInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
+        else if (name.startsWith("OPI;")) saveInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
     }
 }
