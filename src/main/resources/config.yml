@@ -88,6 +88,9 @@ override_respawn: true
 # 25%, 50%, 75%, and 100%)
 findip_alert_percentage: 25.0
 
+# Allow trades between players with different gamemodes?
+allow_trade_gamemode: false
+
 ###
 # MOTD #
 ###

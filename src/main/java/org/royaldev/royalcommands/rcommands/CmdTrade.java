@@ -1,11 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.royaldev.royalcommands.Config;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
@@ -70,6 +71,10 @@ public class CmdTrade implements CommandExecutor {
             }
             if (t.equals(p)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't trade with yourself!");
+                return true;
+            }
+            if (!Config.differentGamemodeTrade && t.getGameMode() != p.getGameMode()) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot trade with " + MessageColor.NEUTRAL + t.getName() + MessageColor.NEGATIVE + " because he has a different gamemode than you!");
                 return true;
             }
             Inventory inv = getTradeInv(p, t);

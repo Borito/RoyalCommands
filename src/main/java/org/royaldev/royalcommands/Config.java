@@ -42,6 +42,7 @@ public class Config {
         checkVersion = c.getBoolean("version_check", true);
         cooldownAliases = c.getBoolean("cooldowns_match_aliases", true);
         customHelp = c.getBoolean("use_custom_help", false);
+        differentGamemodeTrade = c.getBoolean("allow_trade_gamemode", false);
         disablegetip = c.getBoolean("disable_getip", false);
         dropExtras = c.getBoolean("drop_extras", false);
         dumpCreateChest = c.getBoolean("dump_create_chest", true);
@@ -183,6 +184,7 @@ public class Config {
     public static boolean checkVersion;
     public static boolean cooldownAliases;
     public static boolean customHelp;
+    public static boolean differentGamemodeTrade;
     public static boolean disablegetip;
     public static boolean dropExtras;
     public static boolean dumpCreateChest;
