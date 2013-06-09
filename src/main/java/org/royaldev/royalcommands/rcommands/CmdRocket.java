@@ -26,7 +26,8 @@ public class CmdRocket implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {

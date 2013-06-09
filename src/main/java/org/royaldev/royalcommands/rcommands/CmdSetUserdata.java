@@ -24,7 +24,8 @@ public class CmdSetUserdata implements CommandExecutor {
             }
             if (args.length < 3) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             String name = args[0];
             String node = args[1];

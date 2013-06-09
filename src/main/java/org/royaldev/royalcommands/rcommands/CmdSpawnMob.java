@@ -44,7 +44,8 @@ public class CmdSpawnMob implements CommandExecutor {
                 }
                 cs.sendMessage(sb.substring(4));
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             Block bb = RUtils.getTarget(p);
             EntityType c;

@@ -25,7 +25,8 @@ public class CmdSpeak implements CommandExecutor {
             }
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
 
             Player victim;

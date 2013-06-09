@@ -32,12 +32,14 @@ public class CmdWhitelist implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             String command = args[0];
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             String player = args[1];
             if (command.equalsIgnoreCase("add")) {

@@ -27,7 +27,8 @@ public class CmdReply implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             synchronized (CmdMessage.replydb) {
                 if (!CmdMessage.replydb.containsKey(cs.getName())) {

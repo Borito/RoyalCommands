@@ -37,7 +37,8 @@ public class CmdExplode implements CommandExecutor {
             }
             if (args.length < 1 && !(cs instanceof Player)) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             if (args.length < 1) {
                 Player p = (Player) cs;
@@ -49,7 +50,8 @@ public class CmdExplode implements CommandExecutor {
                 if (args[1].equalsIgnoreCase("power")) {
                     if (!(cs instanceof Player)) {
                         cs.sendMessage(cmd.getDescription());
-                        return false;
+                        cs.sendMessage(cmd.getUsage());
+                        return true;
                     }
                     Player p = (Player) cs;
                     Float power;
@@ -87,7 +89,8 @@ public class CmdExplode implements CommandExecutor {
                     if (args[1].equalsIgnoreCase("power")) {
                         if (!(cs instanceof Player)) {
                             cs.sendMessage(cmd.getDescription());
-                            return false;
+                            cs.sendMessage(cmd.getUsage());
+                            return true;
                         }
                         Player p = (Player) cs;
                         Float power;

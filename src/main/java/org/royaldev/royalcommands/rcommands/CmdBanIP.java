@@ -42,7 +42,8 @@ public class CmdBanIP implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
             String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");

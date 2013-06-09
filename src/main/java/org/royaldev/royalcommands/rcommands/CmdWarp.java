@@ -64,7 +64,8 @@ public class CmdWarp implements CommandExecutor {
 
             if (!(cs instanceof Player) && args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
 
             if (args.length < 1) {

@@ -26,7 +26,8 @@ public class CmdClearWarns implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(op);

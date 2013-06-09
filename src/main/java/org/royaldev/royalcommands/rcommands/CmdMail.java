@@ -40,7 +40,8 @@ public class CmdMail implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             if (args[0].equalsIgnoreCase("read")) {
                 if (!(cs instanceof Player)) {
@@ -79,7 +80,8 @@ public class CmdMail implements CommandExecutor {
                 }
                 if (args.length < 3) {
                     cs.sendMessage(cmd.getDescription());
-                    return false;
+                    cs.sendMessage(cmd.getUsage());
+                    return true;
                 }
                 OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[1]);
                 if (!op.hasPlayedBefore()) {
@@ -95,7 +97,8 @@ public class CmdMail implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Mail has been sent.");
             } else {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             return true;
         }

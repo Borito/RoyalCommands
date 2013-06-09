@@ -30,7 +30,8 @@ public class CmdCompass implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             Player p = (Player) cs;
             String command = args[0];
@@ -45,7 +46,8 @@ public class CmdCompass implements CommandExecutor {
                     return true;
                 } else {
                     cs.sendMessage(cmd.getDescription());
-                    return false;
+                    cs.sendMessage(cmd.getUsage());
+                    return true;
                 }
             }
             if (command.equalsIgnoreCase("player")) {
@@ -61,7 +63,8 @@ public class CmdCompass implements CommandExecutor {
             if (command.equalsIgnoreCase("location")) {
                 if (args.length < 4) {
                     cs.sendMessage(cmd.getDescription());
-                    return false;
+                    cs.sendMessage(cmd.getUsage());
+                    return true;
                 }
                 double x;
                 double y;

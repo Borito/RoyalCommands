@@ -28,7 +28,8 @@ public class CmdKits implements CommandExecutor {
             }
             if (!(cs instanceof Player) && args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             final Map<String, Object> opts = plugin.getConfig().getConfigurationSection("kits").getValues(false);
             if (opts.keySet().isEmpty()) {

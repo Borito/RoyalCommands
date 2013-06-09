@@ -61,7 +61,8 @@ public class CmdTrade implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             Player p = (Player) cs;
             Player t = plugin.getServer().getPlayer(args[0]);

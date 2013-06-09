@@ -110,7 +110,8 @@ public class CmdTime implements CommandExecutor {
             }
             if (args.length > 0 && args[0].equals("?") || args[0].equalsIgnoreCase("help")) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             if (args.length > 0 && args[0].equalsIgnoreCase("set"))
                 args = (String[]) ArrayUtils.remove(args, 0);

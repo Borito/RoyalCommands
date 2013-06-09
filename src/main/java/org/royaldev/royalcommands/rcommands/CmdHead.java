@@ -33,7 +33,8 @@ public class CmdHead implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             Player p = (Player) cs;
             ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);

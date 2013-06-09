@@ -28,7 +28,8 @@ public class CmdInvmod implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             if (!(cs instanceof Player)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");

@@ -26,7 +26,8 @@ public class CmdFakeop implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             Player victim = plugin.getServer().getPlayer(args[0]);
             if (victim == null || plugin.isVanished(victim, cs)) {

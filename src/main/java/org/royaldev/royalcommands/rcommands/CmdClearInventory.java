@@ -26,7 +26,8 @@ public class CmdClearInventory implements CommandExecutor {
             if (args.length < 1) {
                 if (!(cs instanceof Player)) {
                     cs.sendMessage(cmd.getDescription());
-                    return false;
+                    cs.sendMessage(cmd.getUsage());
+                    return true;
                 }
                 Player p = (Player) cs;
                 p.getInventory().clear();

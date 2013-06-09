@@ -69,7 +69,8 @@ public class CmdEnchant implements CommandExecutor {
             if (args.length < 1) {
                 sendEnchantmentList(cs);
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             Player p = (Player) cs;
             ItemStack hand = p.getItemInHand();

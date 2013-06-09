@@ -83,7 +83,8 @@ public class CmdJail implements CommandExecutor {
                     return true;
                 }
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
 
             boolean jailSet;

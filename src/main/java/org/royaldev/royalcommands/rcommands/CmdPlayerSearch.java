@@ -25,7 +25,8 @@ public class CmdPlayerSearch implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             final String search = RoyalCommands.getFinalArg(args, 0);
             final OfflinePlayer[] ops = plugin.getServer().getOfflinePlayers();

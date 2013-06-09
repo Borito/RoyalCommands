@@ -36,7 +36,8 @@ public class CmdSetJail implements CommandExecutor {
 
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
 
             Player p = (Player) cs;

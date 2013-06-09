@@ -31,7 +31,8 @@ public class CmdSignEdit implements CommandExecutor {
             Player p = (Player) cs;
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             Block b = p.getTargetBlock(null, 100); // RUtils has signs as transparent
             if (b == null || !(b.getState() instanceof Sign)) {

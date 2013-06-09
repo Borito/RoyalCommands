@@ -30,7 +30,8 @@ public class CmdGetIP implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(oplayer);

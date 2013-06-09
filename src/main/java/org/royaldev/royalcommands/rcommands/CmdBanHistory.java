@@ -30,7 +30,8 @@ public class CmdBanHistory implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             OfflinePlayer op = plugin.getServer().getPlayer(args[0]);
             if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);

@@ -24,7 +24,8 @@ public class CmdBroadcast implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                return false;
+                cs.sendMessage(cmd.getUsage());
+                return true;
             }
             String message = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
             String format = Config.bcastFormat;
