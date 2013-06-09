@@ -158,7 +158,6 @@ public class InventoryListener implements Listener {
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
         final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "\u0000OEC;" + world + ": " + op.getName());
-        i.clear();
         if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
         for (int slot = 0; slot < invSize; slot++) {
             ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
@@ -177,7 +176,6 @@ public class InventoryListener implements Listener {
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".size");
         final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "\u0000OPI;" + world + ": " + op.getName());
-        i.clear();
         if (pcm.get("inventory." + group + ".slot") == null) return i;
         for (int slot = 0; slot < invSize; slot++) {
             ItemStack is = pcm.getItemStack("inventory." + group + ".slot." + slot);
@@ -332,7 +330,9 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void closeOfflineInventory(InventoryCloseEvent e) {
-        String name = e.getInventory().getName();
+        Inventory i = e.getInventory();
+        if (i.getHolder() != null) return;
+        String name = i.getName();
         String world;
         String opName;
         try {
@@ -341,10 +341,7 @@ public class InventoryListener implements Listener {
         } catch (Exception ex) {
             return;
         }
-        if (name.startsWith("\u0000OEC;")) {
-            saveEnderInventory(plugin.getServer().getOfflinePlayer(opName), world, e.getInventory());
-        } else if (name.startsWith("\u0000OPI;")) {
-            saveInventory(plugin.getServer().getOfflinePlayer(opName), world, e.getInventory());
-        }
+        if (name.startsWith("\u0000OEC;")) saveEnderInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
+        else if (name.startsWith("\u0000OPI;")) saveInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
     }
 }
