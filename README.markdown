@@ -1,7 +1,7 @@
 RoyalCommands
 =============
 
-![RoyalCommands](http://dev.bukkit.org/media/images/36/432/royalcommands_5.png)
+![RoyalCommands](http://dev.bukkit.org/media/images/56/527/RoyalCommandsLogo.png)
 
 RoyalCommands is a general plugin with lots of commands. Yeah, that's my description. Go look at the [BukkitDev](http://dev.bukkit.org/server-mods/royalcommands) if you want a better one.
 
@@ -18,12 +18,12 @@ RoyalCommands is coded in IntelliJ with the following libraries:
 
 ### Contact
 
- * Email: jkc.clemens@gmail.com / clemens.kyle@me.com / jkc.clemens@royaldev.org
+ * Email: jkc.clemens@gmail.com / jkc.clemens@royaldev.org
  * Minecraft username: jkcclemens
 
 ### Bleeding Edge Builds
 
-Changes pushed to GitHub will be auto-compiled on [Jenkins](http://ci.royaldev.org).
+Changes pushed to GitHub will be auto-compiled on [Bamboo](http://ci.royaldev.org).
 
 ### Compiling
 
@@ -52,8 +52,4 @@ Make sure it follows these regulations:
 
 ### About the developer
 
-My name is Kyle Clemens. I run a cracked [Minecraft server](http://royaldev.org) at royaldev.org, write (currently) four different plugins: RoyalCommands, RoyalChat, RoyalMessages, and RoyalMisc.
-RoyalMisc is only available on RoyalCraft.
-
-I currently attend school and hope to continue learning Java to better this plugin.
-
+My name is Kyle Clemens. I run a cracked [Minecraft server](https://royaldev.org) at royaldev.org, and I write plugins in my free time.

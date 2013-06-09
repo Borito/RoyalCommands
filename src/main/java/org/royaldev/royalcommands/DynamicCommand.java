@@ -1,4 +1,4 @@
-package org.royaldev.royalcommands.rcommands;
+package org.royaldev.royalcommands;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
