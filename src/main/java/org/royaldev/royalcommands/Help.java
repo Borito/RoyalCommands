@@ -2,10 +2,11 @@ package org.royaldev.royalcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class Help {
@@ -25,13 +26,14 @@ public class Help {
             for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
                 if (p == null) continue;
                 if ((p instanceof RoyalCommands) || !p.isEnabled()) continue;
-                if (p.getDescription() == null || p.getDescription().getCommands() == null)
-                    continue;
-                Map<String, Map<String, Object>> commands = p.getDescription().getCommands();
-                for (String cmd : commands.keySet()) {
-                    if (commands.get(cmd) == null || commands.get(cmd).get("description") == null)
-                        continue;
-                    String desc = commands.get(cmd).get("description").toString();
+                final InputStream is = p.getResource("plugin.yml");
+                if (is == null) continue;
+                final YamlConfiguration info = YamlConfiguration.loadConfiguration(is);
+                final ConfigurationSection commands = info.getConfigurationSection("commands");
+                if (commands == null) continue;
+                for (String cmd : commands.getValues(false).keySet()) {
+                    final String desc = commands.getString(cmd + ".description", cmd);
+                    if (desc.isEmpty()) continue;
                     helpdb.put(cmd, desc);
                 }
             }
