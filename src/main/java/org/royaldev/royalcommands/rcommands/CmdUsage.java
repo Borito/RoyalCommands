@@ -24,7 +24,7 @@ public class CmdUsage implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             PluginCommand pc = plugin.getServer().getPluginCommand(args[0]);

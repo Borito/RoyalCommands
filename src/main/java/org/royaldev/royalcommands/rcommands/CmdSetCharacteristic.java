@@ -48,7 +48,7 @@ public class CmdSetCharacteristic implements CommandExecutor {
             }
             if (args.length < 3) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             Player p = plugin.getServer().getPlayer(args[0]);

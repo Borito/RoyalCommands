@@ -32,7 +32,7 @@ public class CmdIgnore implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             String name = args[0].toLowerCase();

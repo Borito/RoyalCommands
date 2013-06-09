@@ -29,7 +29,7 @@ public class CmdNick implements CommandExecutor {
             }
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);

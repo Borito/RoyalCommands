@@ -42,7 +42,7 @@ public class CmdInvsee implements CommandExecutor {
                     return true;
                 }
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);

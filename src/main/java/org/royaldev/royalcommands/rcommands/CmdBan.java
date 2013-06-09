@@ -29,7 +29,7 @@ public class CmdBan implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             OfflinePlayer t = plugin.getServer().getPlayer(args[0]);

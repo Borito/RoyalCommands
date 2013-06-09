@@ -46,7 +46,7 @@ public class CmdPlayerTime implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);

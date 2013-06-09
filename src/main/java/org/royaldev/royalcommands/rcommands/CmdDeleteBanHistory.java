@@ -29,7 +29,7 @@ public class CmdDeleteBanHistory implements CommandExecutor {
             }
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             OfflinePlayer op = plugin.getServer().getPlayer(args[0]);

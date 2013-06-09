@@ -42,7 +42,7 @@ public class CmdErase implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             Player p = (Player) cs;
@@ -149,7 +149,7 @@ public class CmdErase implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + count + " " + ((count != 1) ? "drops" : "drop") + MessageColor.POSITIVE + ".");
             } else {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             return true;

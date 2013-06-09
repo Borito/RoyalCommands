@@ -30,7 +30,7 @@ public class CmdCompass implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             Player p = (Player) cs;
@@ -46,7 +46,7 @@ public class CmdCompass implements CommandExecutor {
                     return true;
                 } else {
                     cs.sendMessage(cmd.getDescription());
-                    cs.sendMessage(cmd.getUsage());
+                    cs.sendMessage(cmd.getUsage().replace("<command>", label));
                     return true;
                 }
             }
@@ -63,7 +63,7 @@ public class CmdCompass implements CommandExecutor {
             if (command.equalsIgnoreCase("location")) {
                 if (args.length < 4) {
                     cs.sendMessage(cmd.getDescription());
-                    cs.sendMessage(cmd.getUsage());
+                    cs.sendMessage(cmd.getUsage().replace("<command>", label));
                     return true;
                 }
                 double x;

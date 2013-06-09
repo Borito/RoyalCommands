@@ -26,7 +26,7 @@ public class CmdDeafen implements CommandExecutor {
             }
             if (args.length < 1 && !(cs instanceof Player)) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             String name = (args.length < 1) ? cs.getName() : args[0];

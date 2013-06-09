@@ -48,7 +48,7 @@ public class CmdDump implements CommandExecutor {
             }
             if (args.length > 0 && args[0].equals("?")) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             if (!(cs instanceof Player)) {

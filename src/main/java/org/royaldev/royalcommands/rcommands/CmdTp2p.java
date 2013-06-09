@@ -26,7 +26,7 @@ public class CmdTp2p implements CommandExecutor {
             }
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             Player t1 = plugin.getServer().getPlayer(args[0]);

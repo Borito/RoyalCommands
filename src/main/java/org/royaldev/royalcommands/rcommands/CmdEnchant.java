@@ -69,7 +69,7 @@ public class CmdEnchant implements CommandExecutor {
             if (args.length < 1) {
                 sendEnchantmentList(cs);
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             Player p = (Player) cs;

@@ -28,7 +28,7 @@ public class CmdGod implements CommandExecutor {
             if (args.length < 1) {
                 if (!(cs instanceof Player)) {
                     cs.sendMessage(cmd.getDescription());
-                    cs.sendMessage(cmd.getUsage());
+                    cs.sendMessage(cmd.getUsage().replace("<command>", label));
                     return true;
                 }
                 Player t = (Player) cs;

@@ -32,7 +32,7 @@ public class CmdDelHome implements CommandExecutor {
             String name = args[0];
             if (!(cs instanceof Player) && !name.contains(":")) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             PConfManager pcm;

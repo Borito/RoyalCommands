@@ -40,7 +40,7 @@ public class CmdBiome implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Biomes:");
                 sendBiomeList(cs);
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
             final Player p = (Player) cs;
