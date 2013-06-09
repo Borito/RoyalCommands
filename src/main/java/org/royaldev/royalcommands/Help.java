@@ -17,7 +17,7 @@ public class Help {
     public static void reloadHelp() {
         helpdb.clear();
         if (commands == null) {
-            Logger.getLogger("Minecraft").severe("[RoyalCommands] Could not grab list of commands!");
+            Logger.getLogger("Minecraft").warning("[RoyalCommands] Could not grab list of commands!");
             return;
         }
         for (String command : commands.getValues(false).keySet())

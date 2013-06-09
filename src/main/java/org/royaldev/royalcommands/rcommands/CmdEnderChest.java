@@ -48,7 +48,7 @@ public class CmdEnderChest implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "Invalid world specified!");
                 return true;
             }
-            final Inventory i = WorldManager.il.getOfflinePlayerEnderInventory(op, args[2]);
+            final Inventory i = WorldManager.il.getOfflinePlayerEnderInventory(op, args[1]);
             if (i == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No inventory found!");
                 return true;
