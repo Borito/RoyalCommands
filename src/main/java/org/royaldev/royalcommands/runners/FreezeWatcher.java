@@ -1,8 +1,8 @@
 package org.royaldev.royalcommands.runners;
 
 import org.bukkit.World;
-import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.ConfManager;
 
 import java.util.List;
 

@@ -1,15 +1,15 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.ConfManager;
 
 public class CmdSpawn implements CommandExecutor {
 

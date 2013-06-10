@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.MessageColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
@@ -83,7 +83,8 @@ public class CmdFindIP implements CommandExecutor {
                         }
                         if (!alreadyPresent) pcm.discard();
                     }
-                    if (hasIP.isEmpty()) cs.sendMessage(MessageColor.NEGATIVE + "No players with that IP address were found.");
+                    if (hasIP.isEmpty())
+                        cs.sendMessage(MessageColor.NEGATIVE + "No players with that IP address were found.");
                     else {
                         cs.sendMessage(MessageColor.POSITIVE + "The following players matched " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ":");
                         for (String name : hasIP) cs.sendMessage("  " + MessageColor.NEUTRAL + name);

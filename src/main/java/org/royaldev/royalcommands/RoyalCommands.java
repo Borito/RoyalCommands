@@ -149,7 +149,7 @@ public class RoyalCommands extends JavaPlugin {
         if (vp == null) {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
             return false;
-        } else return vp.getManager().isVanished(p.getName());
+        } else return vp.getManager().isVanished(p);
     }
 
     public boolean isVanished(Player p, CommandSender cs) {
@@ -223,7 +223,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private String getUsage(String command) {
-        return getCommandInfo(command).getString("usage", "");
+        return getCommandInfo(command).getString("usage", "/<command>");
     }
 
     private String getDescription(String command) {
@@ -275,11 +275,11 @@ public class RoyalCommands extends JavaPlugin {
     //--- Load initial configuration ---//
 
     public void loadConfiguration() {
-        if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveDefaultConfig();
-        if (!new File(getDataFolder() + File.separator + "items.csv").exists()) saveResource("items.csv", false);
-        if (!new File(getDataFolder() + File.separator + "rules.txt").exists()) saveResource("rules.txt", false);
-        if (!new File(getDataFolder() + File.separator + "help.txt").exists()) saveResource("help.txt", false);
-        if (!new File(getDataFolder() + File.separator + "warps.yml").exists()) saveResource("warps.yml", false);
+        if (!new File(getDataFolder(), "config.yml").exists()) saveDefaultConfig();
+        if (!new File(getDataFolder(), "items.csv").exists()) saveResource("items.csv", false);
+        if (!new File(getDataFolder(), "rules.txt").exists()) saveResource("rules.txt", false);
+        if (!new File(getDataFolder(), "help.txt").exists()) saveResource("help.txt", false);
+        if (!new File(getDataFolder(), "warps.yml").exists()) saveResource("warps.yml", false);
         final File file = new File(getDataFolder(), "userdata");
         if (!file.exists()) {
             try {
@@ -300,15 +300,10 @@ public class RoyalCommands extends JavaPlugin {
         //-- Set globals --//
 
         instance = this;
-
         pluginYml = YamlConfiguration.loadConfiguration(getResource("plugin.yml"));
-
         dataFolder = getDataFolder();
-
         whl = ConfManager.getConfManager("whitelist.yml");
-
         commands = pluginYml.getConfigurationSection("reflectcommands");
-
         version = getDescription().getVersion();
 
         //-- Initialize ConfManagers if not made --//
@@ -340,8 +335,7 @@ public class RoyalCommands extends JavaPlugin {
             getLogger().info("For now, NMS/CB internal support will be disabled.");
             nmsFace = new org.royaldev.royalcommands.nms.NoSupport.NMSHandler();
         }
-        if (nmsFace.hasSupport())
-            getLogger().info("Loaded support for " + nmsFace.getVersion() + ".");
+        if (nmsFace.hasSupport()) getLogger().info("Loaded support for " + nmsFace.getVersion() + ".");
 
         //-- Hidendra's Metrics --//
 

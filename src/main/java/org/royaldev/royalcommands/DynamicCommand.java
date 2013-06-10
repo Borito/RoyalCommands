@@ -1,7 +1,6 @@
 package org.royaldev.royalcommands;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +22,7 @@ public class DynamicCommand extends Command implements PluginIdentifiableCommand
         this.owningPlugin = plugin;
         this.registeredWith = registeredWith;
         if (perms.length > 0) setPermissions(perms);
-        if (!permMessage.trim().isEmpty()) setPermissionMessage(ChatColor.RED + permMessage);
+        if (!permMessage.trim().isEmpty()) setPermissionMessage(MessageColor.NEGATIVE + permMessage);
     }
 
     @Override

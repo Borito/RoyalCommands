@@ -1,9 +1,9 @@
 package org.royaldev.royalcommands.runners;
 
 import org.bukkit.OfflinePlayer;
-import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class BanWatcher implements Runnable {
 
