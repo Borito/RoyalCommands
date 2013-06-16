@@ -552,21 +552,13 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (event.getPlayer() == null) return;
         final PConfManager pcm = PConfManager.getPConfManager(event.getPlayer());
         if (pcm.isFirstJoin()) {
-            log.info("[RoyalCommands] Creating userdata for " + event.getPlayer().getName() + ".");
             String dispname = event.getPlayer().getDisplayName();
-            if (dispname == null || dispname.trim().equals(""))
-                dispname = event.getPlayer().getName();
-            boolean success = pcm.createFile();
-            if (!success)
-                log.warning("[RoyalCommands] Userdata file not created. Tell the developer error code 1a.");
-            else {
-                pcm.set(event.getPlayer().getName(), "name");
-                pcm.set("dispname", dispname);
-                pcm.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
-                pcm.set("banreason", "");
-                pcm.set("allow-tp", true);
-                log.info("[RoyalCommands] Userdata creation finished.");
-            }
+            if (dispname == null || dispname.trim().equals("")) dispname = event.getPlayer().getName();
+            pcm.set(event.getPlayer().getName(), "name");
+            pcm.set("dispname", dispname);
+            pcm.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
+            pcm.set("banreason", "");
+            pcm.set("allow-tp", true);
             if (Config.stsNew)
                 RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
             pcm.setFirstJoin(false);
