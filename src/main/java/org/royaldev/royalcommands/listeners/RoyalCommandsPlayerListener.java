@@ -550,8 +550,8 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer() == null) return;
-        PConfManager pcm = PConfManager.getPConfManager(event.getPlayer());
-        if (!pcm.exists()) {
+        final PConfManager pcm = PConfManager.getPConfManager(event.getPlayer());
+        if (pcm.isFirstJoin()) {
             log.info("[RoyalCommands] Creating userdata for " + event.getPlayer().getName() + ".");
             String dispname = event.getPlayer().getDisplayName();
             if (dispname == null || dispname.trim().equals(""))
@@ -569,6 +569,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             }
             if (Config.stsNew)
                 RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
+            pcm.setFirstJoin(false);
         } else {
             log.info("[RoyalCommands] Updating the IP for " + event.getPlayer().getName() + ".");
             String playerip = event.getPlayer().getAddress().getAddress().toString();

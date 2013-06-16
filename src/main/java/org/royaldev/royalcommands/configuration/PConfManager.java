@@ -47,8 +47,8 @@ public class PConfManager extends GeneralConfManager {
 
     public static void removeAllManagers() {
         Collection<PConfManager> oldConfs = new ArrayList<PConfManager>();
-        oldConfs.addAll(pcms.values());
         synchronized (pcms) {
+            oldConfs.addAll(pcms.values());
             for (PConfManager pcm : oldConfs) pcm.discard(false);
         }
     }
@@ -59,7 +59,7 @@ public class PConfManager extends GeneralConfManager {
         }
     }
 
-    public static Collection<PConfManager> getAllManagers() {
+    public static synchronized Collection<PConfManager> getAllManagers() {
         synchronized (pcms) {
             return Collections.synchronizedCollection(pcms.values());
         }
@@ -137,6 +137,19 @@ public class PConfManager extends GeneralConfManager {
      */
     public String getManagerPlayerName() {
         return playerName;
+    }
+
+    /**
+     * Gets if this is the player's first join.
+     *
+     * @return true or false
+     */
+    public boolean isFirstJoin() {
+        return getBoolean("first_join", true);
+    }
+
+    public void setFirstJoin(boolean firstJoin) {
+        set("first_join", firstJoin);
     }
 
     /**
