@@ -66,7 +66,7 @@ public class CmdBiome implements CommandExecutor {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    for (int x = 0; x <= radius; x++) {
+                    for (int x = -radius; x <= radius; x++) {
                         final Chunk ac = p.getLocation().getWorld().getChunkAt(c.getX() + x, c.getZ() + x);
                         if (!ac.isLoaded()) ac.load(true);
                         for (int cx = 0; cx < 16; cx++)
