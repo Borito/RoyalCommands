@@ -41,10 +41,10 @@ public class AuthorizationHandler {
      * @throws IllegalArgumentException If invalid type if passed for <code>o</code>.
      */
     public boolean isAuthorized(Object o, String node) {
-        if (o instanceof Player) return iAPlayer((Player) o, node);
-        else if (o instanceof OfflinePlayer) return iAOfflinePlayer((OfflinePlayer) o, node);
-        else if (o instanceof RemoteConsoleCommandSender)
+        if (o instanceof RemoteConsoleCommandSender)
             return iARemoteConsoleCommandSender((RemoteConsoleCommandSender) o, node);
+        else if (o instanceof Player) return iAPlayer((Player) o, node);
+        else if (o instanceof OfflinePlayer) return iAOfflinePlayer((OfflinePlayer) o, node);
         else if (o instanceof CommandSender) return iACommandSender((CommandSender) o, node);
         else throw new IllegalArgumentException("Object was not a valid authorizable!");
     }
