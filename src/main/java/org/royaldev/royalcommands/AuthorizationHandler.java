@@ -64,11 +64,7 @@ public class AuthorizationHandler {
     }
 
     private boolean iARemoteConsoleCommandSender(RemoteConsoleCommandSender rccs, String node) {
-        if (plugin.vh.usingVault() && permissionsLoaded()) {
-            final String world = plugin.getServer().getWorlds().get(0).getName();
-            return plugin.vh.getPermission().has(world, rccs.getName(), node);
-        }
-        return rccs.hasPermission(node);
+        return true;
     }
 
     private boolean iACommandSender(CommandSender cs, String node) {
