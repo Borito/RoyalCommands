@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Config {
@@ -110,6 +109,7 @@ public class Config {
 
         blockedItems = c.getStringList("blocked_spawn_items");
         commandCooldowns = c.getStringList("command_cooldowns");
+        disabledBackWorlds = c.getStringList("disabled_back_worlds");
         disabledCommands = c.getStringList("disabled_commands");
         logBlacklist = c.getStringList("command_log_blacklist");
         motd = c.getStringList("motd");
@@ -250,14 +250,15 @@ public class Config {
 
     //-- String lists --//
 
-    public static List<String> blockedItems = new ArrayList<String>();
-    public static List<String> commandCooldowns = new ArrayList<String>();
-    public static List<String> disabledCommands = new ArrayList<String>();
-    public static List<String> logBlacklist = new ArrayList<String>();
-    public static List<String> motd = new ArrayList<String>();
-    public static List<String> muteCmds = new ArrayList<String>();
-    public static List<String> onBanActions = new ArrayList<String>();
-    public static List<String> whitelist = new ArrayList<String>();
+    public static List<String> blockedItems;
+    public static List<String> commandCooldowns;
+    public static List<String> disabledBackWorlds;
+    public static List<String> disabledCommands;
+    public static List<String> logBlacklist;
+    public static List<String> motd;
+    public static List<String> muteCmds;
+    public static List<String> onBanActions;
+    public static List<String> whitelist;
 
     //-- Longs --//
 

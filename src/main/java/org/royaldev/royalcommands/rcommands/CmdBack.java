@@ -31,6 +31,7 @@ public class CmdBack implements CommandExecutor {
      * @param toAdd Location to add
      */
     public static void addBackLocation(Player p, Location toAdd) {
+        if (Config.disabledBackWorlds.contains(toAdd.getWorld().getName())) return;
         int maxStack = Config.maxBackStack;
         synchronized (backdb) {
             List<Location> backs = backdb.get(p.getName());

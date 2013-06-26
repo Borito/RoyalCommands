@@ -77,6 +77,10 @@ custom_plugin_tags:
 # Set to 1 for only /back.
 max_back_stack: 5
 
+# Worlds to disable /back from registering in.
+disabled_back_worlds:
+- someworldhere
+
 # Smooth time transitions?
 use_smooth_time: true
 
