@@ -35,8 +35,7 @@ public class CmdFreezeTime implements CommandExecutor {
                 return true;
             }
             ConfManager cm = RoyalCommands.wm.getConfig();
-            Boolean isFrozen = cm.getBoolean("worlds." + w.getName() + ".freezetime");
-            if (isFrozen == null) isFrozen = false;
+            boolean isFrozen = cm.getBoolean("worlds." + w.getName() + ".freezetime", false);
             cm.set("worlds." + w.getName() + ".freezetime", !isFrozen);
             cm.set("worlds." + w.getName() + ".frozenat", w.getTime());
             cs.sendMessage(MessageColor.POSITIVE + "Turned freezetime on " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + BooleanUtils.toStringOnOff(!isFrozen) + MessageColor.POSITIVE + ".");
