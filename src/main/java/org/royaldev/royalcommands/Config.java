@@ -144,7 +144,7 @@ public class Config {
         teleportSoundName = c.getString("teleport_sound.sound", "ENDERMAN_TELEPORT");
         tempbanFormat = c.getString("tempban_format", "&4Tempbanned&r: {length}&rnFor {reason}&r by {dispname}");
         welcomeMessage = RUtils.colorize(c.getString("welcome_message", "&5Welcome {name} to the server!"));
-        whitelistFormat = RUtils.colorize(c.getString("whitelist_format", "You are not whitelisted on this server!"));
+        whitelistMessage = RUtils.colorize(c.getString("whitelist_message", "You are not whitelisted on this server!"));
         whoFormat = c.getString("who_format", "{prefix}{dispname}");
         whoGroupFormat = c.getString("who_group_format", "{prefix}{group}{suffix}");
         positiveChatColor = c.getString("colors.positive", "BLUE");
@@ -288,7 +288,7 @@ public class Config {
     public static String teleportSoundName;
     public static String tempbanFormat;
     public static String welcomeMessage;
-    public static String whitelistFormat;
+    public static String whitelistMessage;
     public static String whoFormat;
     public static String whoGroupFormat;
     public static String positiveChatColor;

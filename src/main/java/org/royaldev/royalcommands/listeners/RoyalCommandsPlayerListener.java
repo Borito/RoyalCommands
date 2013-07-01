@@ -93,8 +93,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         List<Player> toRemove = new ArrayList<Player>();
         for (Player t : e.getRecipients()) {
             PConfManager pcm = PConfManager.getPConfManager(t);
-            Boolean isDeaf = pcm.getBoolean("deaf");
-            if (isDeaf == null || !isDeaf) continue;
+            boolean isDeaf = pcm.getBoolean("deaf", false);
+            if (!isDeaf) continue;
             if (e.getPlayer().getName().equals(t.getName())) continue; // don't remove own messages
             toRemove.add(t);
         }
@@ -137,7 +137,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void whitelistMessage(PlayerLoginEvent e) {
         if (!plugin.getServer().hasWhitelist()) return;
         if (e.getResult() != Result.KICK_WHITELIST) return;
-        if (!e.getPlayer().isWhitelisted()) e.disallow(Result.KICK_WHITELIST, Config.whitelistFormat);
+        if (!e.getPlayer().isWhitelisted()) e.disallow(Result.KICK_WHITELIST, Config.whitelistMessage);
     }
 
     @EventHandler
@@ -145,14 +145,12 @@ public class RoyalCommandsPlayerListener implements Listener {
         Player p = e.getPlayer();
         Location to = e.getTo();
         Location from = e.getFrom();
-        if (to.getX() == from.getX() && to.getY() == from.getY() && to.getZ() == from.getZ())
-            return;
+        if (to.getX() == from.getX() && to.getY() == from.getY() && to.getZ() == from.getZ()) return;
         PConfManager pcm = PConfManager.getPConfManager(p);
-        Long l = pcm.getLong("teleport_warmup");
-        if (l == null) return;
+        long l = pcm.getLong("teleport_warmup", -1L);
         int toAdd = Config.teleportWarmup * 1000;
         l = l + toAdd;
-        long c = new Date().getTime();
+        long c = System.currentTimeMillis();
         if (l > c) {
             p.sendMessage(MessageColor.NEGATIVE + "You moved! Teleport cancelled!");
             pcm.set("teleport_warmup", -1L);
@@ -168,7 +166,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void whitelist(PlayerLoginEvent e) {
         if (!Config.useWhitelist) return;
         if (!Config.whitelist.contains(e.getPlayer().getName()))
-            e.disallow(Result.KICK_WHITELIST, Config.whitelistFormat);
+            e.disallow(Result.KICK_WHITELIST, Config.whitelistMessage);
     }
 
     @EventHandler
@@ -179,8 +177,8 @@ public class RoyalCommandsPlayerListener implements Listener {
             command = plugin.getCommand(command).getName();
         Player p = e.getPlayer();
         if (plugin.ah.isAuthorized(p, "rcmds.exempt.cooldown.commands")) return;
-        Long currentcd = PConfManager.getPConfManager(p).getLong("command_cooldowns." + command);
-        if (currentcd != null) {
+        long currentcd = PConfManager.getPConfManager(p).getLong("command_cooldowns." + command, -1L);
+        if (currentcd < 0L) {
             if (currentcd <= new Date().getTime()) {
                 setCooldown(command, p);
                 return;
@@ -197,8 +195,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (e.isCancelled()) return;
         Player p = e.getPlayer();
         if (plugin.ah.isAuthorized(p, "rcmds.exempt.cooldown.teleports")) return;
-        Long currentcd = PConfManager.getPConfManager(p).getLong("teleport_cooldown");
-        if (currentcd != null) {
+        long currentcd = PConfManager.getPConfManager(p).getLong("teleport_cooldown", -1L);
+        if (currentcd < 0L) {
             if (currentcd <= new Date().getTime()) {
                 setTeleCooldown(p);
                 return;
@@ -223,16 +221,14 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         PConfManager.getPConfManager(e.getPlayer()).set("seen", new Date().getTime());
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
-        if (AFKUtils.moveTimesContains(e.getPlayer()))
-            AFKUtils.removeLastMove(e.getPlayer());
+        if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
         PConfManager.getPConfManager(e.getPlayer()).set("seen", new Date().getTime());
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
-        if (AFKUtils.moveTimesContains(e.getPlayer()))
-            AFKUtils.removeLastMove(e.getPlayer());
+        if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -370,6 +366,9 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void afkWatch(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
         if (!AFKUtils.isAfk(event.getPlayer())) return;
+        Location to = event.getTo();
+        Location from = event.getFrom();
+        if (to.getX() == from.getX() && to.getY() == from.getY() && to.getZ() == from.getZ()) return;
         AFKUtils.unsetAfk(event.getPlayer());
         plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.returnFormat, event.getPlayer())));
     }
