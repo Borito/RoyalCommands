@@ -71,10 +71,6 @@ import java.util.regex.Pattern;
 
 public class RoyalCommands extends JavaPlugin {
 
-    /*
-    * TODO: Add weather global announcement
-     */
-
     //--- Globals ---//
 
     public static ConfigurationSection commands = null;

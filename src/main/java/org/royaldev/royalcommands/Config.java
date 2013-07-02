@@ -117,8 +117,8 @@ public class Config {
 
         //-- Longs --//
 
-        afkAutoTime = c.getLong("auto_afk_time", 300L);
-        afkKickTime = c.getLong("afk_kick_time", 120L);
+        afkAutoTime = c.getLong("auto_afk_time", 120L);
+        afkKickTime = c.getLong("afk_kick_time", 300L);
         warnExpireTime = c.getLong("warns_expire_after", 604800L);
 
         //-- Strings --//
