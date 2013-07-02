@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
@@ -92,12 +93,17 @@ public class CmdSpawnMob implements CommandExecutor {
                 }
                 return true;
             }
+            Entity spawned;
             try {
-                cs.sendMessage(MessageColor.POSITIVE + "Spawned " + MessageColor.NEUTRAL + "1" + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + c.getName().toLowerCase() + MessageColor.POSITIVE + ".");
-                p.getWorld().spawnEntity(l, c);
+                spawned = p.getWorld().spawnEntity(l, c);
             } catch (Exception e) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Uh-oh! This mob is not currently working with this command.");
+                return true;
             }
+            if (spawned != null)
+                cs.sendMessage(MessageColor.POSITIVE + "Spawned " + MessageColor.NEUTRAL + "1" + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + c.getName().toLowerCase() + MessageColor.POSITIVE + ".");
+            else
+                cs.sendMessage(MessageColor.NEGATIVE + "Could not spawn " + MessageColor.NEUTRAL + c.getName().toLowerCase() + MessageColor.NEGATIVE + ".");
             return true;
         }
         return false;
