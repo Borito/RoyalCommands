@@ -69,15 +69,13 @@ public class CmdSetHome implements CommandExecutor {
             }
             int limit = getHomeLimit(p);
             int curHomes = getCurrentHomes(p);
-            if (limit >= 0 && pcm.isSet("home." + name)) {
-                if (limit == 0) {
-                    RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "Your home limit is set to " + MessageColor.NEUTRAL + "0" + MessageColor.NEGATIVE + "!");
-                    cs.sendMessage(MessageColor.NEGATIVE + "You can't set any homes!");
-                    return true;
-                } else if (curHomes >= limit && limit > -1) {
-                    RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You've reached your max number of homes! (" + MessageColor.NEUTRAL + limit + MessageColor.NEGATIVE + ")");
-                    return true;
-                }
+            if (limit == 0) {
+                RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "Your home limit is set to " + MessageColor.NEUTRAL + "0" + MessageColor.NEGATIVE + "!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't set any homes!");
+                return true;
+            } else if (curHomes >= limit && limit > -1) {
+                RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You've reached your max number of homes! (" + MessageColor.NEUTRAL + limit + MessageColor.NEGATIVE + ")");
+                return true;
             }
             String homePath = (name.equals("")) ? "home.home" : "home." + name;
             pcm.setLocation(homePath, l);
