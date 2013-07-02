@@ -80,7 +80,6 @@ public class Config {
 
         //-- ConfigurationSections --//
 
-        homeLimits = c.getConfigurationSection("home_limits");
         warnActions = c.getConfigurationSection("actions_on_warn");
 
         //-- Doubles --//
@@ -223,7 +222,6 @@ public class Config {
 
     //-- ConfigurationSections --//
 
-    public static ConfigurationSection homeLimits;
     public static ConfigurationSection warnActions;
 
     //-- Doubles --//

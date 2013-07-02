@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -14,10 +13,10 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdSetHome implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
-    public CmdSetHome(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdSetHome(RoyalCommands instance) {
+        plugin = instance;
     }
 
     private Integer getHomeLimit(Player p) {
@@ -31,19 +30,17 @@ public class CmdSetHome implements CommandExecutor {
             }
         } else group = "";
         if (group == null) group = "";
-        ConfigurationSection players = Config.homeLimits.getConfigurationSection("players");
-        ConfigurationSection groups = Config.homeLimits.getConfigurationSection("groups");
-        Integer limit;
-        if (players != null && players.contains(name)) limit = players.getInt(name);
-        else if (groups != null && groups.contains(group)) limit = groups.getInt(group);
-        else limit = null;
+        int limit;
+        if (plugin.getConfig().isSet("home_limits.players." + p.getName()))
+            limit = plugin.getConfig().getInt("home_limits.players." + p.getName(), -1);
+        else limit = plugin.getConfig().getInt("home_limits.groups." + group, -1);
         return limit;
     }
 
     private int getCurrentHomes(Player p) {
         ConfigurationSection pconf = PConfManager.getPConfManager(p).getConfigurationSection("home");
         if (pconf == null) return 0;
-        return pconf.getValues(false).keySet().size();
+        return pconf.getValues(false).size();
     }
 
     @Override
@@ -70,9 +67,9 @@ public class CmdSetHome implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "The name of your home cannot contain \":\"!");
                 return true;
             }
-            Integer limit = getHomeLimit(p);
+            int limit = getHomeLimit(p);
             int curHomes = getCurrentHomes(p);
-            if (limit != null && pcm.get("home." + name) != null) {
+            if (limit >= 0 && pcm.isSet("home." + name)) {
                 if (limit == 0) {
                     RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "Your home limit is set to " + MessageColor.NEUTRAL + "0" + MessageColor.NEGATIVE + "!");
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't set any homes!");
