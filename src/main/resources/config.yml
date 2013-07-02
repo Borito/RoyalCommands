@@ -313,6 +313,17 @@ teleport_sound:
   volume: 1
   pitch: 1
 
+# Options for teleporting players on vehicles
+vehicle_teleport:
+  # If true, teleporting players on vehicles will teleport their vehicle
+  enabled: true
+  # Enable on vehicles?
+  vehicles: true
+  # Enable on animals?
+  animals: true
+  # Enable on players?
+  players: false
+
 ###
 # Command cooldowns #
 ###

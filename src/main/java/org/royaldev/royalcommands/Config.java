@@ -73,6 +73,10 @@ public class Config {
         useWelcome = c.getBoolean("enable_welcome_message", true);
         useWhitelist = c.getBoolean("use_whitelist", false);
         useWorldManager = c.getBoolean("worldmanager.enabled", true);
+        vehicleTeleportAnimals = c.getBoolean("vehicle_teleport.animals", true);
+        vehicleTeleportEnabled = c.getBoolean("vehicle_teleport.enabled", true);
+        vehicleTeleportPlayers = c.getBoolean("vehicle_teleport.players", false);
+        vehicleTeleportVehicles = c.getBoolean("vehicle_teleport.vehicles", true);
         warpPermissions = c.getBoolean("warp_permissions", false);
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         worldAccessPerm = c.getBoolean("enable_worldaccess_perm", false);
@@ -215,6 +219,10 @@ public class Config {
     public static boolean useWelcome;
     public static boolean useWhitelist;
     public static boolean useWorldManager;
+    public static boolean vehicleTeleportAnimals;
+    public static boolean vehicleTeleportEnabled;
+    public static boolean vehicleTeleportPlayers;
+    public static boolean vehicleTeleportVehicles;
     public static boolean warpPermissions;
     public static boolean wmShowEmptyWorlds;
     public static boolean worldAccessPerm;

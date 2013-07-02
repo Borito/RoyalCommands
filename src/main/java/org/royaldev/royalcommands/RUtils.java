@@ -12,8 +12,10 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -464,6 +466,16 @@ public class RUtils {
         at.getWorld().playSound(at, toPlay, Config.teleportSoundVolume, Config.teleportSoundPitch);
     }
 
+    private static Entity getVehicleToTeleport(Entity rider) {
+        if (!Config.vehicleTeleportEnabled) return null;
+        final Entity vehicle = rider.getVehicle();
+        if (vehicle == null) return null;
+        if (Config.vehicleTeleportVehicles && vehicle instanceof Vehicle) return vehicle;
+        if (Config.vehicleTeleportAnimals && vehicle instanceof Animals) return vehicle;
+        if (Config.vehicleTeleportPlayers && vehicle instanceof Player) return vehicle;
+        return null;
+    }
+
     /**
      * Teleports a player and registers it in /back.
      *
@@ -480,13 +492,15 @@ public class RUtils {
                 return "";
             }
         }
+        final Entity vehicle = getVehicleToTeleport(p);
         if (!Config.safeTeleport) {
             CmdBack.addBackLocation(p, p.getLocation());
             Chunk c = l.getChunk();
             if (!c.isLoaded()) c.load(true);
             p.setVelocity(new Vector(0, 0, 0));
             p.setFallDistance(0F);
-            p.teleport(l);
+            if (vehicle != null) vehicle.teleport(l);
+            else p.teleport(l);
             playTeleportSound(l);
         } else {
             Location toTele = getSafeLocation(l);
@@ -496,7 +510,8 @@ public class RUtils {
             CmdBack.addBackLocation(p, p.getLocation());
             p.setVelocity(new Vector(0, 0, 0));
             p.setFallDistance(0F);
-            p.teleport(toTele);
+            if (vehicle != null) vehicle.teleport(toTele);
+            else p.teleport(toTele);
             playTeleportSound(l);
         }
         return "";
