@@ -546,8 +546,8 @@ public class RUtils {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                Long l = pcm.getLong("teleport_warmup");
-                if (l == null || l < 0) {
+                long l = pcm.getLong("teleport_warmup", -1);
+                if (l < 0) {
                     cancelTeleportRunner(p);
                     return;
                 }
@@ -598,11 +598,15 @@ public class RUtils {
                 return "";
             }
         }
-        if (!Config.safeTeleport) p.teleport(l);
-        else {
+        final Entity vehicle = getVehicleToTeleport(p);
+        if (!Config.safeTeleport) {
+            if (vehicle != null) vehicle.teleport(l);
+            else p.teleport(l);
+        } else {
             Location toTele = getSafeLocation(l);
             if (toTele == null) return "There is no ground below.";
-            p.teleport(toTele);
+            if (vehicle != null) vehicle.teleport(l);
+            else p.teleport(l);
         }
         return "";
     }
