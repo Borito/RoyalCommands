@@ -187,7 +187,7 @@ public class RoyalCommands extends JavaPlugin {
         if (cm != null) return cm;
         Field map;
         try {
-            map = SimplePluginManager.class.getDeclaredField("commandMap");
+            map = getServer().getPluginManager().getClass().getDeclaredField("commandMap");
             map.setAccessible(true);
             cm = (CommandMap) map.get(getServer().getPluginManager());
             return cm;
