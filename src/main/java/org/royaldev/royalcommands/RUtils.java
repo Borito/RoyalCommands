@@ -481,12 +481,7 @@ public class RUtils {
     }
 
     private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle, boolean silent) {
-        final Chunk c = l.getChunk();
-        if (!c.isLoaded()) c.load();
         vehicle.eject();
-        vehicle.setVelocity(new Vector(0, 0, 0));
-        vehicle.setFallDistance(0F);
-        vehicle.teleport(l);
         if (!silent && passenger instanceof Player) {
             final Player p = (Player) passenger;
             CmdBack.addBackLocation(p, p.getLocation());
@@ -494,6 +489,9 @@ public class RUtils {
         passenger.setVelocity(new Vector(0, 0, 0));
         passenger.setFallDistance(0F);
         passenger.teleport(l);
+        vehicle.setVelocity(new Vector(0, 0, 0));
+        vehicle.setFallDistance(0F);
+        vehicle.teleport(l);
         vehicle.setPassenger(passenger);
         return "";
     }
@@ -515,13 +513,13 @@ public class RUtils {
             }
         }
         final Location toTele = (Config.safeTeleport) ? getSafeLocation(l) : l;
+        if (toTele == null) return "There is no ground below.";
+        final Chunk c = toTele.getChunk();
+        if (!c.isLoaded()) c.load(true);
         final Entity vehicle = getVehicleToTeleport(p);
         if (vehicle != null) {
             return teleportWithVehicle(toTele, p, vehicle);
         } else {
-            if (toTele == null) return "There is no ground below.";
-            final Chunk c = toTele.getChunk();
-            if (!c.isLoaded()) c.load(true);
             CmdBack.addBackLocation(p, p.getLocation());
             p.setVelocity(new Vector(0, 0, 0));
             p.setFallDistance(0F);
@@ -613,13 +611,13 @@ public class RUtils {
             }
         }
         final Location toTele = (Config.safeTeleport) ? getSafeLocation(l) : l;
+        if (toTele == null) return "There is no ground below.";
+        final Chunk c = toTele.getChunk();
+        if (!c.isLoaded()) c.load(true);
         final Entity vehicle = getVehicleToTeleport(p);
         if (vehicle != null) {
             return teleportWithVehicle(toTele, p, vehicle, false);
         } else {
-            if (toTele == null) return "There is no ground below.";
-            final Chunk c = toTele.getChunk();
-            if (!c.isLoaded()) c.load(true);
             p.setVelocity(new Vector(0, 0, 0));
             p.setFallDistance(0F);
             p.teleport(toTele);
