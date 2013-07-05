@@ -476,6 +476,28 @@ public class RUtils {
         return null;
     }
 
+    private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle) {
+        return teleportWithVehicle(l, passenger, vehicle, false);
+    }
+
+    private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle, boolean silent) {
+        final Chunk c = l.getChunk();
+        if (!c.isLoaded()) c.load();
+        vehicle.eject();
+        vehicle.setVelocity(new Vector(0, 0, 0));
+        vehicle.setFallDistance(0F);
+        vehicle.teleport(l);
+        if (!silent && passenger instanceof Player) {
+            final Player p = (Player) passenger;
+            CmdBack.addBackLocation(p, p.getLocation());
+        }
+        passenger.setVelocity(new Vector(0, 0, 0));
+        passenger.setFallDistance(0F);
+        passenger.teleport(l);
+        vehicle.setPassenger(passenger);
+        return "";
+    }
+
     /**
      * Teleports a player and registers it in /back.
      *
@@ -492,29 +514,21 @@ public class RUtils {
                 return "";
             }
         }
+        final Location toTele = (Config.safeTeleport) ? getSafeLocation(l) : l;
         final Entity vehicle = getVehicleToTeleport(p);
-        if (!Config.safeTeleport) {
-            CmdBack.addBackLocation(p, p.getLocation());
-            Chunk c = l.getChunk();
-            if (!c.isLoaded()) c.load(true);
-            p.setVelocity(new Vector(0, 0, 0));
-            p.setFallDistance(0F);
-            if (vehicle != null) vehicle.teleport(l);
-            else p.teleport(l);
-            playTeleportSound(l);
+        if (vehicle != null) {
+            return teleportWithVehicle(toTele, p, vehicle);
         } else {
-            Location toTele = getSafeLocation(l);
             if (toTele == null) return "There is no ground below.";
-            Chunk c = toTele.getChunk();
+            final Chunk c = toTele.getChunk();
             if (!c.isLoaded()) c.load(true);
             CmdBack.addBackLocation(p, p.getLocation());
             p.setVelocity(new Vector(0, 0, 0));
             p.setFallDistance(0F);
-            if (vehicle != null) vehicle.teleport(toTele);
-            else p.teleport(toTele);
-            playTeleportSound(l);
+            p.teleport(toTele);
+            playTeleportSound(toTele);
+            return "";
         }
-        return "";
     }
 
     private final static Map<String, Integer> teleRunners = new HashMap<String, Integer>();
@@ -543,7 +557,7 @@ public class RUtils {
         p.sendMessage(MessageColor.POSITIVE + "Please wait " + MessageColor.NEUTRAL + Config.teleportWarmup + MessageColor.POSITIVE + " seconds for your teleport.");
         final PConfManager pcm = PConfManager.getPConfManager(p);
         pcm.set("teleport_warmup", new Date().getTime());
-        Runnable r = new Runnable() {
+        final Runnable r = new Runnable() {
             @Override
             public void run() {
                 long l = pcm.getLong("teleport_warmup", -1);
@@ -598,17 +612,20 @@ public class RUtils {
                 return "";
             }
         }
+        final Location toTele = (Config.safeTeleport) ? getSafeLocation(l) : l;
         final Entity vehicle = getVehicleToTeleport(p);
-        if (!Config.safeTeleport) {
-            if (vehicle != null) vehicle.teleport(l);
-            else p.teleport(l);
+        if (vehicle != null) {
+            return teleportWithVehicle(toTele, p, vehicle, false);
         } else {
-            Location toTele = getSafeLocation(l);
             if (toTele == null) return "There is no ground below.";
-            if (vehicle != null) vehicle.teleport(l);
-            else p.teleport(l);
+            final Chunk c = toTele.getChunk();
+            if (!c.isLoaded()) c.load(true);
+            p.setVelocity(new Vector(0, 0, 0));
+            p.setFallDistance(0F);
+            p.teleport(toTele);
+            playTeleportSound(toTele);
+            return "";
         }
-        return "";
     }
 
     /**
@@ -1094,8 +1111,8 @@ public class RUtils {
         Player p = RoyalCommands.instance.getServer().getPlayer(s); // null doesn't matter here
         PConfManager pcm = PConfManager.getPConfManager(s);
         if (!pcm.exists()) pcm.createFile();
-        Integer invSize = pcm.getInt("backpack.size");
-        if (invSize == null || invSize < 9) invSize = 36;
+        int invSize = pcm.getInt("backpack.size", -1);
+        if (invSize < 9) invSize = 36;
         if (invSize % 9 != 0) invSize = 36;
         final Inventory i = Bukkit.createInventory(p, invSize, "Backpack");
         if (pcm.get("backpack.item") == null) return i;
