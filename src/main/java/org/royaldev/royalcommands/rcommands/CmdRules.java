@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 public class CmdRules implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdRules(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdLore implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdLore(RoyalCommands instance) {
         plugin = instance;

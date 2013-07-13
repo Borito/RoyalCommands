@@ -12,10 +12,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdExplode implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdExplode(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     public void explodePlayer(Player p) {
@@ -54,14 +54,10 @@ public class CmdExplode implements CommandExecutor {
                         return true;
                     }
                     Player p = (Player) cs;
-                    Float power;
+                    float power;
                     try {
                         power = Float.parseFloat(args[0]);
                     } catch (Exception e) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "That wasn't a valid power!");
-                        return true;
-                    }
-                    if (power == null) {
                         cs.sendMessage(MessageColor.NEGATIVE + "That wasn't a valid power!");
                         return true;
                     }
@@ -93,14 +89,10 @@ public class CmdExplode implements CommandExecutor {
                             return true;
                         }
                         Player p = (Player) cs;
-                        Float power;
+                        float power;
                         try {
                             power = Float.parseFloat(args[0]);
                         } catch (Exception e) {
-                            cs.sendMessage(MessageColor.NEGATIVE + "That wasn't a valid power!");
-                            return true;
-                        }
-                        if (power == null) {
                             cs.sendMessage(MessageColor.NEGATIVE + "That wasn't a valid power!");
                             return true;
                         }

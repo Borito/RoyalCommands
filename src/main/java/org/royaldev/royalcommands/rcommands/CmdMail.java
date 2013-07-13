@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CmdMail implements CommandExecutor {
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdMail(RoyalCommands plugin) {
         this.plugin = plugin;

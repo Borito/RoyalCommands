@@ -10,10 +10,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdKickAll implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdKickAll(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class CmdKits implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdKits(RoyalCommands plugin) {
         this.plugin = plugin;

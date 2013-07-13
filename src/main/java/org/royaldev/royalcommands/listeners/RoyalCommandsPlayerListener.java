@@ -521,7 +521,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (plugin.newVersion == null) return;
-        if (!plugin.newVersion.contains(plugin.version) && !plugin.version.contains("pre") && plugin.ah.isAuthorized(p, "rcmds.updates")) {
+        if (!plugin.newVersion.contains(plugin.version) && !plugin.version.contains("-SNAPSHOT") && plugin.ah.isAuthorized(p, "rcmds.updates")) {
             String newV = plugin.newVersion.split("RoyalCommands")[1].trim().substring(1);
             p.sendMessage(MessageColor.POSITIVE + "RoyalCommands " + MessageColor.NEUTRAL + "v" + newV + MessageColor.POSITIVE + " is out! You are running " + MessageColor.NEUTRAL + "v" + plugin.version + MessageColor.POSITIVE + ".");
             p.sendMessage(MessageColor.POSITIVE + "Get the new version at " + ChatColor.DARK_AQUA + "http://dev.bukkit.org/server-mods/royalcommands" + MessageColor.POSITIVE + ".");

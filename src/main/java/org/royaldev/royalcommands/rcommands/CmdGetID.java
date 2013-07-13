@@ -14,10 +14,10 @@ import java.util.Map;
 
 public class CmdGetID implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdGetID(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

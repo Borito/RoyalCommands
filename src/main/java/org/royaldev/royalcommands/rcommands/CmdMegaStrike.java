@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdMegaStrike implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdMegaStrike(RoyalCommands plugin) {
         this.plugin = plugin;

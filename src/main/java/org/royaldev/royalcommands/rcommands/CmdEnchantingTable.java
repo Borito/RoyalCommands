@@ -10,7 +10,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdEnchantingTable implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdEnchantingTable(RoyalCommands instance) {
         plugin = instance;

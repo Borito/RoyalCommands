@@ -33,7 +33,6 @@ import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
@@ -63,6 +62,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -207,15 +207,10 @@ public class RoyalCommands extends JavaPlugin {
         return ci;
     }
 
-    private String[] getAliases(String command) {
+    private List<String> getAliases(String command) {
         final List<String> aliasesList = getCommandInfo(command).getStringList("aliases");
-        if (aliasesList == null) return new String[0];
-        final String[] aliases = new String[aliasesList.size()];
-        for (int index = 0; index < aliasesList.size(); index++) {
-            final String s = aliasesList.get(index);
-            aliases[index] = s;
-        }
-        return aliases;
+        if (aliasesList == null) return new ArrayList<String>();
+        return aliasesList;
     }
 
     private String getUsage(String command) {
@@ -239,7 +234,7 @@ public class RoyalCommands extends JavaPlugin {
      */
     private void registerCommand(CommandExecutor ce, String command) {
         if (Config.disabledCommands.contains(command.toLowerCase())) return;
-        final DynamicCommand dc = new DynamicCommand(getAliases(command), command, getDescription(command), getUsage(command), new String[0], "", ce, this, this);
+        final DynamicCommand dc = new DynamicCommand(getAliases(command), command, getDescription(command), getUsage(command), new String[0], "", ce, this);
         try {
             getCommandMap().register(getDescription().getName(), dc);
         } catch (IllegalArgumentException e) {

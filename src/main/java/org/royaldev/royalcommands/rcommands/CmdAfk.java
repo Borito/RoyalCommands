@@ -16,10 +16,10 @@ import java.util.Map;
 
 public class CmdAfk implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdAfk(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     public final static Map<Player, Long> afkdb = new HashMap<Player, Long>();

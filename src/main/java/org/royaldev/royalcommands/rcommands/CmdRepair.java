@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdRepair implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdRepair(RoyalCommands plugin) {
         this.plugin = plugin;
@@ -46,19 +46,18 @@ public class CmdRepair implements CommandExecutor {
             if (args.length > 0) {
                 Player p = (Player) cs;
                 ItemStack[] pInv = p.getInventory().getContents();
-                String items = "";
+                final StringBuilder items = new StringBuilder();
                 for (ItemStack aPInv : pInv) {
                     if (aPInv != null && aPInv.getTypeId() != 0 && aPInv.getDurability() != (short) 0) {
                         aPInv.setDurability((short) 0);
-                        if (items.equals("")) {
-                            items = items.concat(RUtils.getItemName(aPInv));
-                        } else {
-                            items = items.concat(", " + RUtils.getItemName(aPInv));
-                        }
+                        items.append(MessageColor.NEUTRAL);
+                        items.append(RUtils.getItemName(aPInv));
+                        items.append(MessageColor.POSITIVE);
+                        items.append(", ");
                     }
                 }
-                if (!items.equals("")) {
-                    cs.sendMessage(MessageColor.POSITIVE + "Fixed: " + MessageColor.NEUTRAL + items + MessageColor.POSITIVE + ".");
+                if (items.length() > 0) {
+                    cs.sendMessage(MessageColor.POSITIVE + "Fixed: " + items.substring(0, items.length() - 4) + MessageColor.POSITIVE + ".");
                     return true;
                 }
                 cs.sendMessage(MessageColor.NEGATIVE + "You have nothing to repair!");

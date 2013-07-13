@@ -11,10 +11,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdRocket implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdRocket(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

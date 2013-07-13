@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdSeen implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdSeen(RoyalCommands instance) {
         plugin = instance;

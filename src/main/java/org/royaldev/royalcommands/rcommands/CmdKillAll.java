@@ -10,10 +10,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdKillAll implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdKillAll(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

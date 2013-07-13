@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdFly implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdFly(RoyalCommands instance) {
         plugin = instance;
@@ -27,7 +27,7 @@ public class CmdFly implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
-            if (args.length < 1) {
+            if (args.length < 1 && cs instanceof Player) {
                 Player p = (Player) cs;
                 if (p.getAllowFlight()) p.setAllowFlight(false);
                 else p.setAllowFlight(true);

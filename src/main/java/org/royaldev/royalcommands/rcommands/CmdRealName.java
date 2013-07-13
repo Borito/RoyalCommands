@@ -10,10 +10,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdRealName implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdRealName(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
 

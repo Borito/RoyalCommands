@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class CmdItem implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdItem(RoyalCommands plugin) {
         this.plugin = plugin;

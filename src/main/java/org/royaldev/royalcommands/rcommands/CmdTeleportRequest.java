@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class CmdTeleportRequest implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdTeleportRequest(RoyalCommands plugin) {
         this.plugin = plugin;

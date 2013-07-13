@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdLess implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdLess(RoyalCommands plugin) {
         this.plugin = plugin;

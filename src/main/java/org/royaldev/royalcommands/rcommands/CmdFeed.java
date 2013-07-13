@@ -10,7 +10,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdFeed implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdFeed(RoyalCommands plugin) {
         this.plugin = plugin;

@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class CmdDelWarp implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdDelWarp(RoyalCommands plugin) {
         this.plugin = plugin;

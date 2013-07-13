@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdGamemode implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdGamemode(RoyalCommands plugin) {
         this.plugin = plugin;
@@ -64,7 +64,7 @@ public class CmdGamemode implements CommandExecutor {
                 cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
-            if (args.length < 1) {
+            if (args.length < 1 && cs instanceof Player) {
                 Player p = (Player) cs;
                 GameMode toSet = (p.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
                 p.setGameMode(toSet);

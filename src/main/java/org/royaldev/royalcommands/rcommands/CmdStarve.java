@@ -10,7 +10,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdStarve implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdStarve(RoyalCommands plugin) {
         this.plugin = plugin;

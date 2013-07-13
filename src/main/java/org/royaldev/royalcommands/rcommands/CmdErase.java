@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CmdErase implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdErase(RoyalCommands instance) {
         plugin = instance;

@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdSetarmor implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdSetarmor(RoyalCommands plugin) {
         this.plugin = plugin;

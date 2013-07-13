@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdUnban implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdUnban(RoyalCommands plugin) {
         this.plugin = plugin;

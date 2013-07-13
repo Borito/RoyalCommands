@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class CmdBanList implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdBanList(RoyalCommands instance) {
         plugin = instance;
@@ -24,13 +24,13 @@ public class CmdBanList implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            Set<OfflinePlayer> banList = plugin.getServer().getBannedPlayers();
+            final Set<OfflinePlayer> banList = plugin.getServer().getBannedPlayers();
             if (banList.isEmpty()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "There are no banned players!");
                 return true;
             }
             cs.sendMessage(MessageColor.POSITIVE + "There are " + MessageColor.NEUTRAL + banList.size() + MessageColor.POSITIVE + " banned players:");
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             for (OfflinePlayer op : banList) {
                 sb.append(MessageColor.NEUTRAL);
                 sb.append(op.getName());

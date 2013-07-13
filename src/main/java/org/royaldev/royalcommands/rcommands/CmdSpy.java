@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdSpy implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdSpy(RoyalCommands plugin) {
         this.plugin = plugin;

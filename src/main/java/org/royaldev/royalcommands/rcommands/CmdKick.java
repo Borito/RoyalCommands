@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdKick implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdKick(RoyalCommands plugin) {
         this.plugin = plugin;

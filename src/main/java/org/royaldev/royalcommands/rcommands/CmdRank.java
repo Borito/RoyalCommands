@@ -10,7 +10,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdRank implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdRank(RoyalCommands plugin) {
         this.plugin = plugin;

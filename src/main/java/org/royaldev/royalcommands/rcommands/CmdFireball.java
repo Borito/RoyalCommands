@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdFireball implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdFireball(RoyalCommands instance) {
         plugin = instance;

@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdFacepalm implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdFacepalm(RoyalCommands instance) {
         plugin = instance;

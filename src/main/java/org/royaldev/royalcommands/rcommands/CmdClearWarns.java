@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdClearWarns implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdClearWarns(RoyalCommands plugin) {
         this.plugin = plugin;

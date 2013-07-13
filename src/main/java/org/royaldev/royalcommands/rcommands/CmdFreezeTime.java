@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.configuration.ConfManager;
 
 public class CmdFreezeTime implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdFreezeTime(RoyalCommands instance) {
         plugin = instance;

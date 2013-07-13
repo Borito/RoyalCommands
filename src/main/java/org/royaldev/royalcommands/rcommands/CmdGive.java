@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class CmdGive implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdGive(RoyalCommands plugin) {
         this.plugin = plugin;

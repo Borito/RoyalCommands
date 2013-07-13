@@ -12,10 +12,10 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdOneHitKill implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdOneHitKill(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdRcmds implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdRcmds(RoyalCommands plugin) {
         this.plugin = plugin;

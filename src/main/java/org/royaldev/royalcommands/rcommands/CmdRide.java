@@ -10,10 +10,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdRide implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdRide(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

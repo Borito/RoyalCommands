@@ -11,12 +11,14 @@ import org.royaldev.royalcommands.RoyalCommands;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class CmdAccountStatus implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdAccountStatus(RoyalCommands instance) {
         plugin = instance;
@@ -34,14 +36,16 @@ public class CmdAccountStatus implements CommandExecutor {
                 return true;
             }
             String name = args[0];
-            OfflinePlayer p = plugin.getServer().getPlayer(name);
-            if (p == null) p = plugin.getServer().getOfflinePlayer(name);
-            name = p.getName(); // this allows one to use a player online by typing the first letters
+            final OfflinePlayer p = RUtils.getOfflinePlayer(name);
+            name = p.getName();
             URL u;
             try {
-                u = new URL("https://minecraft.net/haspaid.jsp?user=" + name);
-            } catch (MalformedURLException ignored) {
+                u = new URL("https://minecraft.net/haspaid.jsp?user=" + URLEncoder.encode(name, "UTF-8"));
+            } catch (MalformedURLException ex) {
                 cs.sendMessage(MessageColor.NEGATIVE + "An unthinkable error happened. Please let the developer know.");
+                return true;
+            } catch (UnsupportedEncodingException ex) {
+                cs.sendMessage(MessageColor.NEGATIVE + "The UTF-8 encoding is not supported on this system!");
                 return true;
             }
             boolean isPremium;

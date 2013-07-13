@@ -9,10 +9,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdBroadcast implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdBroadcast(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

@@ -14,10 +14,10 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 @SuppressWarnings("unused")
 public class CmdNick implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdNick(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

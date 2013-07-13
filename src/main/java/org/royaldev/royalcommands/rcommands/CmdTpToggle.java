@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdTpToggle implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdTpToggle(RoyalCommands instance) {
         plugin = instance;

@@ -7,36 +7,34 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class DynamicCommand extends Command implements PluginIdentifiableCommand {
 
-    public CommandExecutor owner;
-    public Object registeredWith;
-    public Plugin owningPlugin;
-    public String[] permissions = new String[0];
+    private final CommandExecutor ce;
+    public Plugin plugin;
+    public String[] perms = new String[0];
 
-    public DynamicCommand(String[] aliases, String name, String description, String usage, String[] perms, String permMessage, CommandExecutor owner, Object registeredWith, Plugin plugin) {
-        super(name, description, usage, Arrays.asList(aliases));
-        this.owner = owner;
-        this.owningPlugin = plugin;
-        this.registeredWith = registeredWith;
+    public DynamicCommand(List<String> aliases, String name, String description, String usage, String[] perms, String permMessage, CommandExecutor ce, Plugin plugin) {
+        super(name, description, usage, aliases);
+        this.ce = ce;
+        this.plugin = plugin;
         if (perms.length > 0) setPermissions(perms);
         if (!permMessage.trim().isEmpty()) setPermissionMessage(MessageColor.NEGATIVE + permMessage);
     }
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
-        return owner.onCommand(sender, this, label, args);
+        return ce.onCommand(sender, this, label, args);
     }
 
     public void setPermissions(String[] permissions) {
-        this.permissions = permissions;
+        this.perms = permissions;
         super.setPermission(StringUtils.join(permissions, ";"));
     }
 
     @Override
     public Plugin getPlugin() {
-        return owningPlugin;
+        return plugin;
     }
 }

@@ -10,7 +10,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdWalkSpeed implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdWalkSpeed(RoyalCommands instance) {
         plugin = instance;

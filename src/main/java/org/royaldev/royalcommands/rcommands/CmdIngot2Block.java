@@ -14,35 +14,25 @@ import java.util.HashMap;
 
 public class CmdIngot2Block implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdIngot2Block(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     public void i2b(Player p, ItemStack hand, Material ingot, Material block) {
-        int remainder = hand.getAmount() % 9;
-        int amount = hand.getAmount() - remainder;
-        int blocks = amount / 9;
-        ItemStack blocka = new ItemStack(block, blocks);
-        ItemStack ingots = new ItemStack(ingot, amount);
-        p.getInventory().removeItem(ingots);
-        HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
-        if (!left.isEmpty()) for (ItemStack s : left.values())
-            p.getWorld().dropItemNaturally(p.getLocation(), s);
-        p.sendMessage(MessageColor.POSITIVE + "Made " + MessageColor.NEUTRAL + blocks + " block(s) " + MessageColor.POSITIVE + "and had " + MessageColor.NEUTRAL + remainder + " material(s) " + MessageColor.POSITIVE + "left over.");
+        i2b(p, hand, ingot, block, hand.getDurability());
     }
 
     public void i2b(Player p, ItemStack hand, Material ingot, Material block, short data) {
         int remainder = hand.getAmount() % 9;
         int amount = hand.getAmount() - remainder;
         int blocks = amount / 9;
-        ItemStack blocka = new ItemStack(block, blocks);
-        ItemStack ingots = new ItemStack(ingot, amount, data);
+        final ItemStack blocka = new ItemStack(block, blocks);
+        final ItemStack ingots = new ItemStack(ingot, amount, data);
         p.getInventory().removeItem(ingots);
-        HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
-        if (!left.isEmpty()) for (ItemStack s : left.values())
-            p.getWorld().dropItemNaturally(p.getLocation(), s);
+        final HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
+        if (!left.isEmpty()) for (ItemStack s : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), s);
         p.sendMessage(MessageColor.POSITIVE + "Made " + MessageColor.NEUTRAL + blocks + " block(s) " + MessageColor.POSITIVE + "and had " + MessageColor.NEUTRAL + remainder + " material(s) " + MessageColor.POSITIVE + "left over.");
     }
 
@@ -78,6 +68,15 @@ public class CmdIngot2Block implements CommandExecutor {
                     break;
                 case EMERALD:
                     i2b(p, hand, Material.EMERALD, Material.EMERALD_BLOCK);
+                    break;
+                case COAL:
+                    i2b(p, hand, Material.COAL, Material.COAL_BLOCK);
+                    break;
+                case QUARTZ:
+                    i2b(p, hand, Material.QUARTZ, Material.QUARTZ_BLOCK);
+                    break;
+                case REDSTONE:
+                    i2b(p, hand, Material.REDSTONE, Material.REDSTONE_BLOCK);
                     break;
                 case INK_SACK:
                     if (hand.getDurability() == 4) {

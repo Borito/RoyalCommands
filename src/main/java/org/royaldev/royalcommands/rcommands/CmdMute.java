@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdMute implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdMute(RoyalCommands plugin) {
         this.plugin = plugin;

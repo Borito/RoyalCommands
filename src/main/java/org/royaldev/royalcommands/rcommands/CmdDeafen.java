@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdDeafen implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdDeafen(RoyalCommands instance) {
         plugin = instance;

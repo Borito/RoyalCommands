@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.configuration.ConfManager;
 
 public class CmdSetWarp implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdSetWarp(RoyalCommands plugin) {
         this.plugin = plugin;

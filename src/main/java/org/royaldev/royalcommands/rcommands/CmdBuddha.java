@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdBuddha implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdBuddha(RoyalCommands instance) {
         plugin = instance;

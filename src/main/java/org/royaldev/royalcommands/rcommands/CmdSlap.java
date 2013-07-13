@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class CmdSlap implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdSlap(RoyalCommands plugin) {
         this.plugin = plugin;

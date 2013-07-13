@@ -13,10 +13,10 @@ import java.util.HashMap;
 
 public class CmdInvsee implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdInvsee(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     public HashMap<Player, ItemStack[]> invseedb = new HashMap<Player, ItemStack[]>();

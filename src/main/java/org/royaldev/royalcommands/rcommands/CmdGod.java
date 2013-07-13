@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdGod implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdGod(RoyalCommands plugin) {
         this.plugin = plugin;

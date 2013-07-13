@@ -17,10 +17,10 @@ import java.util.Map;
 
 public class CmdJail implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdJail(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     public HashMap<Player, Location> jaildb = new HashMap<Player, Location>();

@@ -11,10 +11,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdCompass implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdCompass(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

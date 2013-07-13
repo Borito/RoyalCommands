@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 
 public class CmdPluginManager implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdPluginManager(RoyalCommands instance) {
         plugin = instance;

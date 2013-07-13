@@ -12,10 +12,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdNear implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdNear(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

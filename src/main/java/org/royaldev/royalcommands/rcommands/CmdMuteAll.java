@@ -11,10 +11,10 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class CmdMuteAll implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdMuteAll(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     private boolean allMuted = false;

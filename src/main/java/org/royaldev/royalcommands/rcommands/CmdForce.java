@@ -10,10 +10,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdForce implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdForce(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
 

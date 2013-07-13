@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class CmdMessage implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdMessage(RoyalCommands plugin) {
         this.plugin = plugin;

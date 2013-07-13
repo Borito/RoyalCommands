@@ -13,7 +13,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdSci implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdSci(RoyalCommands plugin) {
         this.plugin = plugin;

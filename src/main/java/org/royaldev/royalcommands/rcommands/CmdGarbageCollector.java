@@ -9,7 +9,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdGarbageCollector implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdGarbageCollector(RoyalCommands instance) {
         plugin = instance;

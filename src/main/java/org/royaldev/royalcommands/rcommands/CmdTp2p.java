@@ -10,10 +10,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdTp2p implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdTp2p(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
 

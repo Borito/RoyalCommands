@@ -14,7 +14,7 @@ import org.royaldev.royalcommands.WorldManager;
 
 public class CmdInvmod implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdInvmod(RoyalCommands instance) {
         plugin = instance;

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class CmdHelp implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdHelp(RoyalCommands instance) {
         plugin = instance;

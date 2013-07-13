@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdFakeop implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdFakeop(RoyalCommands plugin) {
         this.plugin = plugin;
@@ -29,13 +29,13 @@ public class CmdFakeop implements CommandExecutor {
                 cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
-            Player victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null || plugin.isVanished(victim, cs)) {
+            Player t = plugin.getServer().getPlayer(args[0]);
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                 return true;
             }
-            victim.sendMessage(ChatColor.YELLOW + "You are now op!");
-            cs.sendMessage(MessageColor.POSITIVE + victim.getName() + " has been sent a fake op notice.");
+            t.sendMessage(ChatColor.YELLOW + "You are now op!");
+            cs.sendMessage(MessageColor.POSITIVE + t.getName() + " has been sent a fake op notice.");
             return true;
         }
         return false;

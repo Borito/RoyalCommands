@@ -43,8 +43,7 @@ public class CmdHead implements CommandExecutor {
                 return true;
             }
             SkullMeta sm = (SkullMeta) head.getItemMeta();
-            OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
-            if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
+            final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
             if (!t.getName().equalsIgnoreCase(p.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.head")) {
                 RUtils.dispNoPerms(cs);
                 return true;

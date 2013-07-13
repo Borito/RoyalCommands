@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class CmdWorldManager implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdWorldManager(RoyalCommands instance) {
         plugin = instance;

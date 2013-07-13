@@ -13,7 +13,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 @SuppressWarnings("unchecked")
 public class CmdBackpack implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdBackpack(RoyalCommands instance) {
         plugin = instance;

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CmdBack implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdBack(RoyalCommands plugin) {
         this.plugin = plugin;

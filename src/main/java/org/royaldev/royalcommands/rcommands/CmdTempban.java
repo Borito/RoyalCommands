@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class CmdTempban implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdTempban(RoyalCommands instance) {
         plugin = instance;

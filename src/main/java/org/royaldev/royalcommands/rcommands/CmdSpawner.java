@@ -13,10 +13,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdSpawner implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdSpawner(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override

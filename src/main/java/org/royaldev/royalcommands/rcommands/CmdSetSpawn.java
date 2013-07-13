@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.configuration.ConfManager;
 
 public class CmdSetSpawn implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdSetSpawn(RoyalCommands plugin) {
         this.plugin = plugin;

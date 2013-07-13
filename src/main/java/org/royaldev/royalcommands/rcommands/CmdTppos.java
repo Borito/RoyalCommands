@@ -12,10 +12,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 public class CmdTppos implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdTppos(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {

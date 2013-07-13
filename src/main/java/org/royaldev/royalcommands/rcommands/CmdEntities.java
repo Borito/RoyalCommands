@@ -14,10 +14,10 @@ import java.util.List;
 
 public class CmdEntities implements CommandExecutor {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public CmdEntities(RoyalCommands instance) {
-        this.plugin = instance;
+        plugin = instance;
     }
 
     @Override
@@ -50,14 +50,14 @@ public class CmdEntities implements CommandExecutor {
             }
             if (args.length > 0) {
                 Player p = (Player) cs;
-                Double radius;
+                double radius;
                 try {
                     radius = Double.parseDouble(args[0]);
                 } catch (Exception e) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That was not a valid number!");
                     return true;
                 }
-                if (radius == null || radius < 1) {
+                if (radius < 1) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That was not a valid number!");
                     return true;
                 }
