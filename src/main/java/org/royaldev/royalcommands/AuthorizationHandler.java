@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -45,6 +46,7 @@ public class AuthorizationHandler {
             return iARemoteConsoleCommandSender((RemoteConsoleCommandSender) o, node);
         else if (o instanceof Player) return iAPlayer((Player) o, node);
         else if (o instanceof OfflinePlayer) return iAOfflinePlayer((OfflinePlayer) o, node);
+        else if (o instanceof BlockCommandSender) return iABlockCommandSender((BlockCommandSender) o, node);
         else if (o instanceof CommandSender) return iACommandSender((CommandSender) o, node);
         else throw new IllegalArgumentException("Object was not a valid authorizable!");
     }
@@ -64,6 +66,10 @@ public class AuthorizationHandler {
     }
 
     private boolean iARemoteConsoleCommandSender(RemoteConsoleCommandSender rccs, String node) {
+        return true;
+    }
+
+    private boolean iABlockCommandSender(BlockCommandSender cb, String node) {
         return true;
     }
 
