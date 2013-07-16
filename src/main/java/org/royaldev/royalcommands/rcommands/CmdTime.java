@@ -32,8 +32,8 @@ public class CmdTime implements CommandExecutor {
             @Override
             public void run() {
                 for (long i = world.getTime() + 1; i != ftime; i++) {
-                    if (i > 24000L) {
-                        i -= 24000L;
+                    if (i >= 24001L) {
+                        i -= 24001L;
                         if (ftime == 0L) break;
                     }
                     world.setTime(i);

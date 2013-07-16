@@ -25,8 +25,8 @@ public class CmdPlayerTime implements CommandExecutor {
             @Override
             public void run() {
                 for (long i = p.getPlayerTime() + 1; i != ftime; i++) {
-                    if (i > 24000L) {
-                        i -= 24000L;
+                    if (i >= 24001L) {
+                        i -= 24001L;
                         if (ftime == 0L) break;
                     }
                     p.setPlayerTime(i, false);
