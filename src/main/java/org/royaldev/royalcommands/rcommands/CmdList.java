@@ -46,9 +46,9 @@ public class CmdList implements CommandExecutor {
                 sb.append(MessageColor.RESET);
                 sb.append(", ");
             } else if (!plugin.isVanished(p)) {
-                if (AFKUtils.isAfk(p)) sb.append(MessageColor.NEUTRAL + "[AFK]");
+                if (AFKUtils.isAfk(p)) sb.append(MessageColor.NEUTRAL).append("[AFK]");
                 sb.append(formatPrepend(p));
-                sb.append(MessageColor.RESET + ", ");
+                sb.append(MessageColor.RESET).append(", ");
             }
         }
         if (sb.length() < 2) return "";
