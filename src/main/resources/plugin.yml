@@ -919,13 +919,13 @@ reflectcommands:
     description: Assigns commands to items that anyone with the item can use.
     usage: /<command> [command|-#|~]
     aliases: [pas, ppt, publicpowertool]
-    version: 0.2.8
+    version_added: 0.2.8
 
   enderchest:
     description: Shows the ender chest of a player.
     usage: /<command> [player] [world]
     aliases: [endchest, echest, ec]
-    version: 0.2.8
+    version_added: 0.2.8
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -1420,6 +1420,20 @@ permissions:
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
+
+  rcmds.enchant.levels:
+    description: Allows you to enchant beyond vanilla levels.
+    default: false
+  rcmds.enchant.illegal:
+    description: Allows you to enchant with enchantments that are not allowed together in vanilla.
+    default: false
+
+  rcmds.enchant.*:
+    description: Allows all types of enchantments.
+    default: false
+    children:
+      rcmds.enchant.levels: true
+      rcmds.enchant.illegal: true
 
   rcmds.pluginmanager.*:
     description: Allows you to use all of PluginManager's features.
