@@ -64,7 +64,7 @@ public class CmdClearInventory implements CommandExecutor {
                 if (p.getWorld().getName().equalsIgnoreCase(world)) p.getInventory().setContents(i.getContents());
             }
             cs.sendMessage(MessageColor.POSITIVE + "You have cleared the inventory of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + ".");
-            if (t.isOnline())
+            if (t.isOnline() && !t.getName().equalsIgnoreCase(cs.getName()))
                 ((Player) t).sendMessage(MessageColor.POSITIVE + "Your inventory for " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + " has been cleared by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
