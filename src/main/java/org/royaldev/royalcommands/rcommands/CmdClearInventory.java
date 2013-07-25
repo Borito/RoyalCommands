@@ -37,7 +37,7 @@ public class CmdClearInventory implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to clear other players' inventories.");
                 return true;
             }
-            if (plugin.ah.isAuthorized(t, "rcmds.exempt.clearinventory")) {
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.clearinventory") && !t.getName().equalsIgnoreCase(cs.getName())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't clear that player's inventory.");
                 return true;
             }
