@@ -1,19 +1,23 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.WorldManager;
 
 public class CmdClearInventory implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdClearInventory(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdClearInventory(RoyalCommands instance) {
+        plugin = instance;
     }
 
     @Override
@@ -23,35 +27,45 @@ public class CmdClearInventory implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 1) {
-                if (!(cs instanceof Player)) {
-                    cs.sendMessage(cmd.getDescription());
-                    cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                    return true;
-                }
-                Player p = (Player) cs;
-                p.getInventory().clear();
-                cs.sendMessage(MessageColor.POSITIVE + "You have cleared your inventory.");
+            if (args.length < 1 && !(cs instanceof Player)) {
+                cs.sendMessage(cmd.getDescription());
+                cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
-        }
-        if (args.length == 1) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.others.clearinventory")) {
-                RUtils.dispNoPerms(cs);
+            final OfflinePlayer t = (args.length > 0) ? RUtils.getOfflinePlayer(args[0]) : (OfflinePlayer) cs;
+            if (!t.getName().equalsIgnoreCase(cs.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.clearinventory")) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to clear other players' inventories.");
                 return true;
             }
-            Player target = plugin.getServer().getPlayer(args[0]);
-            if (target == null || plugin.isVanished(target, cs)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
+            if (plugin.ah.isAuthorized(t, "rcmds.exempt.clearinventory")) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't clear that player's inventory.");
                 return true;
             }
-            if (plugin.ah.isAuthorized(target, "rcmds.exempt.clearinventory")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You cannot alter that player's inventory!");
+            String world = null;
+            if (t.isOnline()) world = ((Player) t).getWorld().getName();
+            else if (args.length > 1) world = args[1];
+            if (world == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You need to specify a world to clear the inventory on!");
                 return true;
             }
-            cs.sendMessage(MessageColor.POSITIVE + "You have cleared the inventory of " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
-            target.sendMessage(MessageColor.NEGATIVE + "Your inventory has been cleared.");
-            target.getInventory().clear();
+            if (!t.isOnline() && !Config.separateInv) {
+                cs.sendMessage(MessageColor.NEGATIVE + "Cannot modify offline inventories unless inventory separation is on!");
+                return true;
+            }
+            final Inventory i = WorldManager.il.getOfflinePlayerInventory(t, world);
+            if (i == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "No inventory found.");
+                return true;
+            }
+            i.clear();
+            WorldManager.il.saveInventory(t, world, i);
+            if (t.isOnline()) {
+                final Player p = (Player) t;
+                if (p.getWorld().getName().equalsIgnoreCase(world)) p.getInventory().setContents(i.getContents());
+            }
+            cs.sendMessage(MessageColor.POSITIVE + "You have cleared the inventory of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + ".");
+            if (t.isOnline())
+                ((Player) t).sendMessage(MessageColor.POSITIVE + "Your inventory for " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + " has been cleared by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;
