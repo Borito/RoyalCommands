@@ -104,7 +104,7 @@ public class InventoryListener implements Listener {
         return i;
     }
 
-    private void saveInventory(OfflinePlayer op, String world, Inventory i) {
+    public void saveInventory(OfflinePlayer op, String world, Inventory i) {
         if (!Config.separateInv) return;
         String group = getWorldGroup(plugin.getServer().getWorld(world));
         if (group == null) return;
@@ -206,10 +206,8 @@ public class InventoryListener implements Listener {
         if (Config.separateXP) {
             Float xp = pcm.getFloat("inventory." + group + ".xp");
             Integer xpLevel = pcm.getInt("inventory." + group + ".xplevel");
-            if (xp != null) p.setExp(xp);
-            else p.setExp(0F);
-            if (xpLevel != null) p.setLevel(xpLevel);
-            else p.setLevel(0);
+            p.setExp(xp);
+            p.setLevel(xpLevel);
         }
         return i;
     }

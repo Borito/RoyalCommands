@@ -27,14 +27,14 @@ public class CmdUsage implements CommandExecutor {
                 cs.sendMessage(cmd.getUsage().replace("<command>", label));
                 return true;
             }
-            PluginCommand pc = plugin.getServer().getPluginCommand(args[0]);
-            if (pc == null) {
+            Command c = RUtils.getCommand(args[0]);
+            if (c == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such command!");
                 return true;
             }
-            cs.sendMessage(pc.getPlugin().getName());
-            cs.sendMessage(pc.getDescription());
-            cs.sendMessage(pc.getUsage());
+            if (c instanceof PluginCommand) cs.sendMessage(((PluginCommand) c).getPlugin().getName());
+            cs.sendMessage(c.getDescription());
+            cs.sendMessage(c.getUsage());
             return true;
         }
         return false;

@@ -10,6 +10,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Animals;
@@ -30,6 +32,7 @@ import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -1337,5 +1340,17 @@ public class RUtils {
 
     public static String getFriendlyEnumName(Enum e) {
         return e.name().toLowerCase().replace("_", " ");
+    }
+
+    public static Command getCommand(String name) {
+        try {
+            final Field map = RoyalCommands.instance.getServer().getPluginManager().getClass().getDeclaredField("commandMap");
+            map.setAccessible(true);
+            final CommandMap cm = (CommandMap) map.get(RoyalCommands.instance.getServer().getPluginManager());
+            return cm.getCommand(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
