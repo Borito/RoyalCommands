@@ -577,7 +577,7 @@ public class CmdPluginManager implements CommandExecutor {
                             return;
                         }
                         String[] urlParts = url.split("(\\\\|/)");
-                        final String fileName = urlParts[urlParts.length];
+                        final String fileName = urlParts[urlParts.length - 1];
                         cs.sendMessage(MessageColor.POSITIVE + "Creating temporary folder...");
                         File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
                         while (f.getParentFile().exists()) // make sure we get our own directory
