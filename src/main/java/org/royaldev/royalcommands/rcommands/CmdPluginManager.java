@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -566,17 +567,21 @@ public class CmdPluginManager implements CommandExecutor {
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
-                        BufferedInputStream bis;
+                        final BufferedInputStream bis;
+                        final HttpURLConnection huc;
                         try {
-                            bis = new BufferedInputStream(new URL(url).openStream());
+                            huc = (HttpURLConnection) new URL(url).openConnection();
+                            huc.setInstanceFollowRedirects(true);
+                            huc.connect();
+                            bis = new BufferedInputStream(huc.getInputStream());
                         } catch (MalformedURLException e) {
                             cs.sendMessage(MessageColor.NEGATIVE + "The received download link was invalid!");
                             return;
                         } catch (IOException e) {
-                            cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again.");
+                            cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again. (" + MessageColor.NEUTRAL + e.getMessage() + MessageColor.NEGATIVE + ")");
                             return;
                         }
-                        String[] urlParts = url.split("(\\\\|/)");
+                        String[] urlParts = huc.getURL().toString().split("(\\\\|/)");
                         final String fileName = urlParts[urlParts.length - 1];
                         cs.sendMessage(MessageColor.POSITIVE + "Creating temporary folder...");
                         File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
