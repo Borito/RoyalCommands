@@ -51,6 +51,13 @@ public class CmdClearInventory implements CommandExecutor {
             if (!t.isOnline() && !Config.separateInv) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Cannot modify offline inventories unless inventory separation is on!");
                 return true;
+            } else if (t.isOnline() && !Config.separateInv) {
+                final Player p = (Player) t;
+                p.getInventory().clear();
+                cs.sendMessage(MessageColor.POSITIVE + "You have cleared the inventory of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + ".");
+                if (!p.getName().equalsIgnoreCase(cs.getName()))
+                    p.sendMessage(MessageColor.POSITIVE + "Your inventory for " + MessageColor.NEUTRAL + world + MessageColor.POSITIVE + " has been cleared by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
+                return true;
             }
             final Inventory i = WorldManager.il.getOfflinePlayerInventory(t, world);
             if (i == null) {
