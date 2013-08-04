@@ -4,8 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
@@ -32,12 +30,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -509,6 +505,79 @@ public class CmdPluginManager implements CommandExecutor {
                         Matcher m = p.matcher(file);
                         m.find();
                         String fileName = m.group(1).trim();
+                        cs.sendMessage(MessageColor.POSITIVE + "Creating temporary folder...");
+                        File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
+                        while (f.getParentFile().exists()) // make sure we get our own directory
+                            f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
+                        if (!fileName.endsWith(".zip") && !fileName.endsWith(".jar")) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "The file wasn't a zip or jar file, so it was not downloaded.");
+                            cs.sendMessage(MessageColor.NEGATIVE + "Filename: " + MessageColor.NEUTRAL + fileName);
+                            return;
+                        }
+                        f.getParentFile().mkdirs();
+                        BufferedOutputStream bos;
+                        try {
+                            bos = new BufferedOutputStream(new FileOutputStream(f));
+                        } catch (FileNotFoundException e) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "The temporary download folder was not found. Make sure that " + MessageColor.NEUTRAL + System.getProperty("java.io.tmpdir") + MessageColor.NEGATIVE + " is writable.");
+                            return;
+                        }
+                        int b;
+                        cs.sendMessage(MessageColor.POSITIVE + "Downloading file " + MessageColor.NEUTRAL + fileName + MessageColor.POSITIVE + "...");
+                        try {
+                            while ((b = bis.read()) != -1) bos.write(b);
+                            bos.flush();
+                            bos.close();
+                        } catch (IOException e) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again.");
+                            return;
+                        }
+                        if (fileName.endsWith(".zip")) {
+                            cs.sendMessage(MessageColor.POSITIVE + "Decompressing zip...");
+                            UnZip.decompress(f.getAbsolutePath(), f.getParent());
+                        }
+                        for (File fi : RUtils.listFiles(f.getParentFile(), recursive)) {
+                            if (!fi.getName().endsWith(".jar")) continue;
+//                          String extraFile = (f.getParent().equals(fi.getParent())) ? "" : fi.getParentFile().getName() + File.separator;
+                            cs.sendMessage(MessageColor.POSITIVE + "Moving " + MessageColor.NEUTRAL + fi.getName() + MessageColor.POSITIVE + " to plugins folder...");
+                            boolean s = fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
+                            if (!s)
+                                cs.sendMessage(MessageColor.NEGATIVE + "Couldn't move " + MessageColor.NEUTRAL + fi.getName() + MessageColor.NEGATIVE + "!");
+                        }
+                        cs.sendMessage(MessageColor.POSITIVE + "Removing temporary folder...");
+                        RUtils.deleteDirectory(f.getParentFile());
+                        cs.sendMessage(MessageColor.POSITIVE + "Downloaded plugin. Use " + MessageColor.NEUTRAL + "/" + commandUsed + " load" + MessageColor.POSITIVE + " to enable it.");
+                    }
+                };
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
+                return true;
+            } else if (subcmd.equalsIgnoreCase("downloadlink")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.downloadlink")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                if (args.length < 2) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide a link to download from!");
+                    return true;
+                }
+                final boolean recursive = args.length > 2 && args[2].equalsIgnoreCase("true");
+                final String url = args[1];
+                final String commandUsed = label;
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        BufferedInputStream bis;
+                        try {
+                            bis = new BufferedInputStream(new URL(url).openStream());
+                        } catch (MalformedURLException e) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "The received download link was invalid!");
+                            return;
+                        } catch (IOException e) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again.");
+                            return;
+                        }
+                        String[] urlParts = url.split("(\\\\|/)");
+                        final String fileName = urlParts[urlParts.length];
                         cs.sendMessage(MessageColor.POSITIVE + "Creating temporary folder...");
                         File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
                         while (f.getParentFile().exists()) // make sure we get our own directory
