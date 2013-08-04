@@ -741,7 +741,7 @@ public class CmdPluginManager implements CommandExecutor {
                         if (i == 0) cs.sendMessage(MessageColor.NEGATIVE + "No results found.");
                         return true;
                     }
-                    Pattern p = Pattern.compile("<h2><a href=\"/server-mods/([\\W\\w]+)/\">([\\w\\W]+)</a></h2>");
+                    Pattern p = Pattern.compile("<h2><a href=\"/bukkit-plugins/([\\W\\w]+)/\">([\\w\\W]+)</a></h2>");
                     Matcher m = p.matcher(base);
                     if (m == null) {
                         if (i == 0) cs.sendMessage(MessageColor.NEGATIVE + "No results found.");
@@ -780,7 +780,7 @@ public class CmdPluginManager implements CommandExecutor {
                 }
                 boolean success = f.delete();
                 if (!success)
-                    cs.sendMessage(MessageColor.NEGATIVE + "Could not delete " + MessageColor.NEUTRAL + f.getName() + MessageColor.POSITIVE + ".");
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not delete " + MessageColor.NEUTRAL + f.getName() + MessageColor.NEGATIVE + ".");
                 else
                     cs.sendMessage(MessageColor.POSITIVE + "Deleted " + MessageColor.NEUTRAL + f.getName() + MessageColor.POSITIVE + ".");
                 return true;
