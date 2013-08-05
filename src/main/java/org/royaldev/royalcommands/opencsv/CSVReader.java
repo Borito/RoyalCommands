@@ -29,16 +29,11 @@ import java.util.List;
  * @author Glen Smith
  */
 public class CSVReader implements Closeable {
-
     private BufferedReader br;
-
     private boolean hasNext = true;
-
     private CSVParser parser;
-
     private int skipLines;
-
-    private boolean linesSkiped;
+    private boolean linesSkipped;
 
     /**
      * The default line to start reading.
@@ -106,7 +101,6 @@ public class CSVReader implements Closeable {
      * @throws IOException if bad things happen during the read
      */
     public List<String[]> readAll() throws IOException {
-
         List<String[]> allElements = new ArrayList<String[]>();
         while (hasNext) {
             String[] nextLineAsTokens = readNext();
@@ -124,18 +118,14 @@ public class CSVReader implements Closeable {
      * @throws IOException if bad things happen during the read
      */
     public String[] readNext() throws IOException {
-
         String[] result = null;
         do {
             String nextLine = getNextLine();
-            if (!hasNext) {
-                return result; // should throw if still pending?
-            }
+            if (!hasNext) return result; // should throw if still pending?
             String[] r = parser.parseLineMulti(nextLine);
             if (r.length > 0) {
-                if (result == null) {
-                    result = r;
-                } else {
+                if (result == null) result = r;
+                else {
                     String[] t = new String[result.length + r.length];
                     System.arraycopy(result, 0, t, 0, result.length);
                     System.arraycopy(r, 0, t, result.length, r.length);
@@ -153,16 +143,12 @@ public class CSVReader implements Closeable {
      * @throws IOException if bad things happen during the read
      */
     private String getNextLine() throws IOException {
-        if (!this.linesSkiped) {
-            for (int i = 0; i < skipLines; i++) {
-                br.readLine();
-            }
-            this.linesSkiped = true;
+        if (!this.linesSkipped) {
+            for (int i = 0; i < skipLines; i++) br.readLine();
+            this.linesSkipped = true;
         }
         String nextLine = br.readLine();
-        if (nextLine == null) {
-            hasNext = false;
-        }
+        if (nextLine == null) hasNext = false;
         return hasNext ? nextLine : null;
     }
 

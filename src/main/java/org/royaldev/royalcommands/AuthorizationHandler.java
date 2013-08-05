@@ -33,6 +33,7 @@ public class AuthorizationHandler {
      * <li>OfflinePlayer</li>
      * <li>CommandSender</li>
      * <li>RemoteConsoleCommandSender</li>
+     * <li>BlockCommandSender</li>
      * </ul>
      * Anything else will throw an IllegalArgumentException.
      *
