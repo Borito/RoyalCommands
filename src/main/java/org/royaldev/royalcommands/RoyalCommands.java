@@ -27,11 +27,13 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -60,6 +62,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
@@ -234,11 +237,17 @@ public class RoyalCommands extends JavaPlugin {
      */
     private void registerCommand(CommandExecutor ce, String command) {
         if (Config.disabledCommands.contains(command.toLowerCase())) return;
-        final DynamicCommand dc = new DynamicCommand(getAliases(command), command, getDescription(command), getUsage(command), new String[0], "", ce, this);
         try {
-            getCommandMap().register(getDescription().getName(), dc);
-        } catch (IllegalArgumentException e) {
-            getLogger().warning("Could not register command \"" + command + "\" - an error occurred: " + e.getMessage() + ".");
+            final Constructor c = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
+            c.setAccessible(true);
+            final PluginCommand pc = (PluginCommand) c.newInstance(command, this);
+            pc.setExecutor(ce);
+            pc.setAliases(getAliases(command));
+            pc.setDescription(getDescription(command));
+            pc.setUsage(getUsage(command));
+            getCommandMap().register(getDescription().getName(), pc);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -449,6 +458,16 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Register commands --//
 
+        /*for (String command : getCommands().getValues(false).keySet()) {
+            try {
+                final Class<?> clazz = Class.forName("org.royaldev.royalcommands.rcommands.Cmd" + command);
+                if (!clazz.isAssignableFrom(CommandExecutor.class)) continue;
+                final Constructor c = clazz.getConstructor(RoyalCommands.class);
+                registerCommand((CommandExecutor) c.newInstance(this), command);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } still need to change naming conventions in order for this to work*/
         registerCommand(new CmdLevel(this), "level");
         registerCommand(new CmdSetlevel(this), "setlevel");
         registerCommand(new CmdSci(this), "sci");
