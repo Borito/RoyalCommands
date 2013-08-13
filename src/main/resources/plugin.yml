@@ -1611,6 +1611,7 @@ permissions:
       rcmds.pluginmanager.updatecheck: true
       rcmds.pluginmanager.updatecheckall: true
       rcmds.pluginmanager.download: true
+      rcmds.pluginmanager.downloadlink: true
       rcmds.pluginmanager.findtag: true
       rcmds.pluginmanager.delete: true
 
@@ -1649,6 +1650,9 @@ permissions:
     default: op
   rcmds.pluginmanager.download:
     description: Allows you to use PluginManager's download feature.
+    default: op
+  rcmds.pluginmanager.downloadlink:
+    description: Allows you to use PluginManager's downloadlink feature.
     default: op
   rcmds.pluginmanager.findtag:
     description: Allows you to use PluginManager's findtag feature.
@@ -2444,8 +2448,6 @@ permissions:
       rcmds.updates: true
 
       rcmds.exempt.*: true
-
-      rcmds.heman: true
 
       rcmds.allowed.item: true
 
