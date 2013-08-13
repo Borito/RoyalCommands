@@ -19,9 +19,6 @@ drop_extras: false
 # Should /explode create fire around the explosion?
 explode_fire: false
 
-# Show other plugin commands in /help?
-other_plugins_in_help: true
-
 # Custom /help (help.txt - same format as rules.txt)?
 use_custom_help: false
 

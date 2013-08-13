@@ -1,46 +1,81 @@
 package org.royaldev.royalcommands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.command.Command;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
 
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.logging.Logger;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeMap;
 
 public class Help {
 
-    public static HashMap<String, String> helpdb = new HashMap<String, String>();
-    private static ConfigurationSection commands = RoyalCommands.commands;
+    private final RoyalCommands plugin;
+    private final TreeMap<String, List<PluginCommand>> commands = new TreeMap<String, List<PluginCommand>>();
+    private String customHelp = "###";
 
-    public static void reloadHelp() {
-        helpdb.clear();
-        if (commands == null) {
-            Logger.getLogger("Minecraft").warning("[RoyalCommands] Could not grab list of commands!");
-            return;
-        }
-        for (String command : commands.getValues(false).keySet())
-            helpdb.put(command, commands.getString(command + ".description", command));
-        if (Config.otherHelp) {
-            for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
-                if (p == null) continue;
-                if ((p instanceof RoyalCommands) || !p.isEnabled()) continue;
-                final InputStream is = p.getResource("plugin.yml");
-                if (is == null) continue;
-                final YamlConfiguration info = YamlConfiguration.loadConfiguration(is);
-                final ConfigurationSection commands = info.getConfigurationSection("commands");
-                if (commands == null) continue;
-                for (String cmd : commands.getValues(false).keySet()) {
-                    final String desc = commands.getString(cmd + ".description", cmd);
-                    if (desc.isEmpty()) continue;
-                    helpdb.put(cmd, desc);
-                }
-            }
-        }
+    Help(RoyalCommands instance) {
+        plugin = instance;
     }
 
-    static {
-        reloadHelp();
+    public TreeMap<String, List<PluginCommand>> getCommands() {
+        return commands;
+    }
+
+    public String getCustomHelp() {
+        return customHelp;
+    }
+
+    public void reloadHelp() {
+        commands.clear();
+        final SimpleCommandMap commandMap;
+        try {
+            Object result = RUtils.getPrivateField(plugin.getServer().getPluginManager(), "commandMap");
+            commandMap = (SimpleCommandMap) result;
+        } catch (Exception e) {
+            plugin.getLogger().warning("Could not get command map; help could not be started.");
+            return;
+        }
+        for (final Command c : commandMap.getCommands()) {
+            if (!(c instanceof PluginCommand)) continue;
+            final PluginCommand pc = (PluginCommand) c;
+            final String pluginName = pc.getPlugin().getName().toLowerCase();
+            List<PluginCommand> pCommands = commands.get(pluginName);
+            if (pCommands == null) pCommands = new ArrayList<PluginCommand>();
+            if (!pCommands.contains(pc)) pCommands.add(pc);
+            commands.put(pluginName, pCommands);
+        }
+        for (final String pluginName : commands.keySet()) {
+            final List<PluginCommand> pCommands = commands.get(pluginName);
+            if (pCommands == null) continue;
+            Collections.sort(pCommands, new Comparator<PluginCommand>() {
+                @Override
+                public int compare(final PluginCommand object1, final PluginCommand object2) {
+                    return object1.getName().compareTo(object2.getName());
+                }
+            });
+            commands.put(pluginName, pCommands);
+        }
+        // custom help
+        final StringBuilder sb = new StringBuilder();
+        try {
+            final BufferedReader br = new BufferedReader(new FileReader(new File(plugin.getDataFolder(), "help.txt")));
+            String input;
+            while ((input = br.readLine()) != null) sb.append(input).append("\n");
+        } catch (FileNotFoundException e) {
+            sb.append(MessageColor.NEGATIVE).append("###\nCouldn't find a help file!");
+            return;
+        } catch (IOException e) {
+            sb.append(MessageColor.NEGATIVE).append("###\nAn error occurred: ").append(MessageColor.NEUTRAL).append(e.getMessage());
+            return;
+        }
+        customHelp = sb.toString();
     }
 }

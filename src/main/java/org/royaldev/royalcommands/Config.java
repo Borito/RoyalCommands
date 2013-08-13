@@ -51,7 +51,6 @@ public class Config {
         kitPerms = c.getBoolean("use_exclusive_kit_perms", false);
         motdLogin = c.getBoolean("motd_on_login", true);
         multiverseNames = c.getBoolean("multiverse_world_names", true);
-        otherHelp = c.getBoolean("other_plugins_in_help", true);
         overrideRespawn = c.getBoolean("override_respawn", true);
         purgeUnusedUserdata = c.getBoolean("save.purge_unused_userdata_handlers", true);
         removePotionEffects = c.getBoolean("remove_potion_effects", true);
@@ -157,7 +156,7 @@ public class Config {
 
         if (plugin.whl.exists()) whitelist = plugin.whl.getStringList("whitelist");
 
-        Help.reloadHelp();
+        plugin.h.reloadHelp();
 
         if (RoyalCommands.wm == null) RoyalCommands.wm = new WorldManager();
         RoyalCommands.wm.reloadConfig();
@@ -197,7 +196,6 @@ public class Config {
     public static boolean kitPerms;
     public static boolean motdLogin;
     public static boolean multiverseNames;
-    public static boolean otherHelp;
     public static boolean overrideRespawn;
     public static boolean purgeUnusedUserdata;
     public static boolean removePotionEffects;

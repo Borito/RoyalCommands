@@ -32,7 +32,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -53,20 +52,11 @@ public class CmdPluginManager implements CommandExecutor {
         plugin = instance;
     }
 
-    private Object getPrivateField(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-        Class<?> clazz = object.getClass();
-        Field objectField = clazz.getDeclaredField(field);
-        objectField.setAccessible(true);
-        Object result = objectField.get(object);
-        objectField.setAccessible(false);
-        return result;
-    }
-
     private void unregisterAllPluginCommands(String pluginName) {
         try {
-            Object result = getPrivateField(plugin.getServer().getPluginManager(), "commandMap");
+            Object result = RUtils.getPrivateField(plugin.getServer().getPluginManager(), "commandMap");
             SimpleCommandMap commandMap = (SimpleCommandMap) result;
-            Object map = getPrivateField(commandMap, "knownCommands");
+            Object map = RUtils.getPrivateField(commandMap, "knownCommands");
             @SuppressWarnings("unchecked")
             HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
             final List<Command> commands = new ArrayList<Command>(commandMap.getCommands());
@@ -93,7 +83,7 @@ public class CmdPluginManager implements CommandExecutor {
     private void removePluginFromList(Plugin p) {
         try {
             @SuppressWarnings("unchecked")
-            final List<Plugin> plugins = (List<Plugin>) getPrivateField(plugin.getServer().getPluginManager(), "plugins");
+            final List<Plugin> plugins = (List<Plugin>) RUtils.getPrivateField(plugin.getServer().getPluginManager(), "plugins");
             plugins.remove(p);
         } catch (Exception e) {
             e.printStackTrace();

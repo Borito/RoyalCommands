@@ -1,19 +1,19 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.ChatColor;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.Plugin;
 import org.royaldev.royalcommands.Config;
-import org.royaldev.royalcommands.Help;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CmdHelp implements CommandExecutor {
 
@@ -23,99 +23,94 @@ public class CmdHelp implements CommandExecutor {
         plugin = instance;
     }
 
+    private Plugin getPlugin(String name) {
+        for (Plugin lp : plugin.getServer().getPluginManager().getPlugins()) {
+            if (!lp.getName().equalsIgnoreCase(name)) continue;
+            return lp;
+        }
+        return null;
+    }
+
+    private void displayCustomHelp(CommandSender cs, String page) {
+        String sb = plugin.h.getCustomHelp();
+        int pageNumber;
+        try {
+            pageNumber = Integer.parseInt(page);
+        } catch (NumberFormatException e) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Page number was not numeric.");
+            return;
+        }
+        int pages = StringUtils.countMatches(sb, "###");
+        if (pageNumber > pages || pageNumber < 1) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Invalid page number!");
+            return;
+        }
+        int beginIndex = StringUtils.ordinalIndexOf(sb, "###", pageNumber);
+        int endIndex = StringUtils.ordinalIndexOf(sb, "###", pageNumber + 1);
+        if (endIndex < 0 && beginIndex > -1) endIndex = sb.length() - 1; // eof
+        if (beginIndex < 0) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Invalid help file!");
+            return;
+        }
+        beginIndex += 4; // "###\n" = 4
+        final String helpPage = sb.substring(beginIndex, endIndex);
+        cs.sendMessage(MessageColor.POSITIVE + "Page " + MessageColor.NEUTRAL + pageNumber + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + pages);
+        for (String line : helpPage.split("\\n")) cs.sendMessage(RUtils.colorize(line));
+    }
+
+    private void displayPluginHelp(CommandSender cs, String pluginName, String page) {
+        final Map<String, List<PluginCommand>> commands = plugin.h.getCommands();
+        final Plugin p = getPlugin(pluginName);
+        if (p == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
+            return;
+        }
+        final List<PluginCommand> pCommands = commands.get(pluginName.toLowerCase());
+        if (pCommands == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "No commands with help for that plugin!");
+            return;
+        }
+        int pageNumber;
+        try {
+            pageNumber = Integer.parseInt(page);
+        } catch (NumberFormatException e) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Page number was not numeric.");
+            return;
+        }
+        int numPages = pCommands.size() / Config.helpAmount;
+        if (pCommands.size() % Config.helpAmount != 0) numPages += 1;
+        if (pageNumber > numPages || pageNumber < 1) {
+            cs.sendMessage(MessageColor.NEGATIVE + "No such page!");
+            return;
+        }
+        cs.sendMessage(MessageColor.POSITIVE + "Help for " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " (Page " + MessageColor.NEUTRAL + pageNumber + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + numPages + MessageColor.POSITIVE + ")");
+        for (int i = (pageNumber - 1) * Config.helpAmount; i < (pageNumber * Config.helpAmount) + Config.helpAmount && i < pCommands.size(); i++) {
+            final PluginCommand pc = pCommands.get(i);
+            cs.sendMessage(MessageColor.NEUTRAL + "/" + pc.getName() + MessageColor.POSITIVE + " - " + pc.getDescription());
+        }
+    }
+
+    private void displayPluginList(CommandSender cs) {
+        final TreeMap<String, List<PluginCommand>> commands = plugin.h.getCommands();
+        cs.sendMessage(MessageColor.POSITIVE + "There are " + MessageColor.NEUTRAL + commands.size() + MessageColor.POSITIVE + " plugins with help information:");
+        for (Map.Entry<String, ?> entry : commands.entrySet()) {
+            final String pluginName = entry.getKey();
+            final Plugin p = getPlugin(pluginName);
+            if (p == null) continue;
+            cs.sendMessage(MessageColor.NEUTRAL + p.getName());
+        }
+    }
+
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("help")) {
             if (!plugin.ah.isAuthorized(cs, "rcmds.help")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (Config.customHelp) {
-                File rulesf = new File(plugin.getDataFolder() + File.separator + "help.txt");
-                if (!rulesf.exists()) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "The help.txt file was not found! Tell an admin.");
-                    return true;
-                }
-                int tpage;
-                if (args.length < 1) {
-                    tpage = 1;
-                } else {
-                    try {
-                        tpage = Integer.valueOf(args[0]);
-                    } catch (Exception e) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "The page number was invalid!");
-                        return true;
-                    }
-                }
-                int pages = 0;
-                try {
-                    BufferedReader br = new BufferedReader(new FileReader(rulesf));
-                    String line;
-                    java.util.List<String> rules = new ArrayList<String>();
-                    while ((line = br.readLine()) != null) {
-                        line = RUtils.colorize(line);
-                        rules.add(line);
-                        if (line.trim().equals("###")) pages++;
-                    }
-                    if (tpage > pages || tpage < 1) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "No such page!");
-                        return true;
-                    }
-                    if (tpage == pages) {
-                        cs.sendMessage(ChatColor.GOLD + "Page " + MessageColor.NEUTRAL + tpage + ChatColor.GOLD + " of " + MessageColor.NEUTRAL + pages + ChatColor.GOLD + ".");
-                    } else {
-                        cs.sendMessage(ChatColor.GOLD + "Page " + MessageColor.NEUTRAL + tpage + ChatColor.GOLD + " of " + MessageColor.NEUTRAL + pages + ChatColor.GOLD + ". " + MessageColor.NEUTRAL + "/" + cmd.getName() + " " + (tpage + 1) + ChatColor.GOLD + " for next page.");
-                    }
-                    int cpage = 0;
-                    for (String s : rules) {
-                        if (s.trim().equals("###")) {
-                            cpage++;
-                            s = "";
-                        }
-                        if (cpage == tpage && !s.equals("")) {
-                            cs.sendMessage(s);
-                        }
-                    }
-                } catch (Exception e) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "The help.txt file was not found! Tell an admin.");
-                    return true;
-                }
-                return true;
-            }
-            int i = 0;
-            int page = 1;
-            int wantedPage = 1;
-            int pages;
-            if (Help.helpdb.keySet().size() % Config.helpAmount == 0) {
-                pages = Help.helpdb.keySet().size() / Config.helpAmount;
-            } else {
-                pages = (Help.helpdb.size() / Config.helpAmount) + 1;
-            }
-            if (args.length > 0) {
-                try {
-                    wantedPage = Integer.parseInt(args[0]);
-                } catch (Exception e) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "That page was invalid!");
-                    return true;
-                }
-            }
-            if (wantedPage <= 0 || wantedPage > pages) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That page was invalid!");
-                return true;
-            }
-            cs.sendMessage(MessageColor.POSITIVE + "Help page " + MessageColor.NEUTRAL + wantedPage + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + pages + MessageColor.POSITIVE + ":");
-            for (String com : Help.helpdb.keySet()) {
-                if (i == Config.helpAmount) {
-                    page++;
-                    i = 0;
-                }
-                i++;
-                if (page < wantedPage) continue;
-                if (page == wantedPage) {
-                    String desc = Help.helpdb.get(com);
-                    cs.sendMessage(MessageColor.POSITIVE + "/" + com + MessageColor.RESET + ": " + MessageColor.NEUTRAL + desc);
-                    if (i == Config.helpAmount) break;
-                }
-            }
+            if (Config.customHelp) displayCustomHelp(cs, (args.length > 0) ? args[0] : "1");
+            else if (args.length < 1 && !Config.customHelp) displayPluginList(cs);
+            else if (args.length > 0 && !Config.customHelp)
+                displayPluginHelp(cs, args[0], (args.length > 1) ? args[1] : "1");
             return true;
         }
         return false;

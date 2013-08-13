@@ -89,6 +89,7 @@ public class RoyalCommands extends JavaPlugin {
 
     public NMSFace nmsFace;
     public Config c;
+    public Help h;
 
     //--- Privates ---//
 
@@ -361,6 +362,10 @@ public class RoyalCommands extends JavaPlugin {
             getLogger().warning("Could not start Metrics!");
         }
 
+        //-- Get help --//
+
+        h = new Help(this);
+
         //-- Get configs --//
 
         loadConfiguration();
@@ -420,6 +425,13 @@ public class RoyalCommands extends JavaPlugin {
                 }
             }
         }, 0L, 36000L);
+        bs.scheduleSyncDelayedTask(this, new Runnable() { // load after server starts up
+            @Override
+            public void run() {
+                h.reloadHelp();
+                getLogger().info("Help loaded for all plugins.");
+            }
+        });
         bs.runTaskTimerAsynchronously(this, new AFKWatcher(this), 0L, 200L);
         bs.runTaskTimerAsynchronously(this, new BanWatcher(this), 20L, 600L);
         bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20L, 12000L);
