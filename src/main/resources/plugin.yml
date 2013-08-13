@@ -11,927 +11,1087 @@ reflectcommands:
     description: Levels your experience up one level.
     usage: /<command>
     version_added: Pre-0.2.7
+    class: CmdLevel
 
   setlevel:
     description: Sets your XP level to specified amount.
     usage: /<command> [level] (player)
     aliases: [slvl, slevel, setlvl]
     version_added: Pre-0.2.7
+    class: CmdSetlevel
 
   sci:
     description: Selectively removes items from a player's inventory.
     usage: /<command> [player] [item] (amount)
     version_added: Pre-0.2.7
+    class: CmdSci
 
   speak:
     description: Make another player talk.
     usage: /<command> [player] [message]
     version_added: Pre-0.2.7
+    class: CmdSpeak
 
   facepalm:
     description: Broadcasts your facepalm.
     usage: /<command>
     aliases: [fp, fpalm, facep]
     version_added: Pre-0.2.7
+    class: CmdFacepalm
 
   slap:
     description: Broadcasts you slapping another player.
     usage: /<command> [player]
     version_added: Pre-0.2.7
+    class: CmdSlap
 
   harm:
     description: Harms a player.
     usage: /<command> [player] [damage]
     version_added: Pre-0.2.7
+    class: CmdHarm
 
   starve:
     description: Lowers a player's hunger.
     usage: /<command> [player] [damage]
     aliases: [strv]
     version_added: Pre-0.2.7
+    class: CmdStarve
 
   setarmor:
     description: Sets your armor to a certain type.
     usage: /<command> [material]
     aliases: [armor, sarmor]
     version_added: Pre-0.2.7
+    class: CmdSetarmor
 
   getip:
     description: Gets the IP of a user.
     usage: /<command> [player]
     aliases: [getaddr, gip]
     version_added: Pre-0.2.7
+    class: CmdGetIP
 
   compareip:
     description: Compare two users' IP addresses.
     usage: /<command> [player1] [player2]
     aliases: [compip, cip]
     version_added: Pre-0.2.7
+    class: CmdCompareIP
 
   ragequit:
     description: Ragequits yourself or another player.
     usage: /<command> (player)
     aliases: [rage, rq]
     version_added: Pre-0.2.7
+    class: CmdRageQuit
 
   quit:
     description: Makes yourself quit.
     usage: /<command>
     version_added: Pre-0.2.7
+    class: CmdQuit
 
   rank:
     description: Check the rank of the specified player (permissions).
     usage: /<command> [player]
     version_added: Pre-0.2.7
+    class: CmdRank
 
   freeze:
     description: Freezes the player.
     usage: /<command> [player]
     aliases: [fz, frz]
     version_added: Pre-0.2.7
+    class: CmdFreeze
 
   fakeop:
     description: Fakes a "You are now op!" message.
     usage: /<command> [player]
     aliases: [fop]
     version_added: Pre-0.2.7
+    class: CmdFakeop
 
   vtp:
     description: Teleports to anyone, regardless of being vanished or having teleport off.
     usage: /<command> [player]
     version_added: Pre-0.2.7
+    class: CmdVtp
 
   vtphere:
     description: Teleports anyone you, regardless of being vanished or having teleport off.
     usage: /<command> [player]
     version_added: Pre-0.2.7
+    class: CmdVtphere
 
   megastrike:
     description: Strikes lightning 15 times at the player's cursor or at specified player.
     usage: /<command> (player)
     aliases: [mstrike, megasmite, msmite, ms]
     version_added: Pre-0.2.7
+    class: CmdMegaStrike
 
   pext:
     description: Extinguishes yourself or a player.
     usage: /<command> (player)
     aliases: [playerext, pex, splash]
     version_added: Pre-0.2.7
+    class: CmdPext
 
   item:
     description: Adds an item to your inventory.
     usage: /<command> [item](:metadata) (amount)
     aliases: [i]
     version_added: Pre-0.2.7
+    class: CmdItem
 
   clearinventory:
     description: Clears your inventory.
     usage: /<command> (user)
     aliases: [ci, clearinv]
     version_added: Pre-0.2.7
+    class: CmdClearInventory
 
   weather:
     description: Changes the weather.
     usage: /<command> [conditions] (time)
     version_added: Pre-0.2.7
+    class: CmdWeather
 
   fixchunk:
     description: Fixes a voided chunk (world holes) by reloading it.
     usage: /<command>
     aliases: [fc, fixc, cfix]
     version_added: Pre-0.2.7
+    class: CmdFixChunk
 
   give:
     description: Gives a player items.
     usage: /<command> [player] [item](:metadata) (amount)
     aliases: [g]
     version_added: Pre-0.2.7
+    class: CmdGive
 
   message:
     description: Send a message to a player.
     usage: /<command> [player] [message]
     aliases: [msg, send, tell, whisper, w]
     version_added: Pre-0.2.7
+    class: CmdMessage
 
   reply:
     description: Reply to a message.
     usage: /<command> [message]
     aliases: [r]
     version_added: Pre-0.2.7
+    class: CmdReply
 
   gamemode:
     description: Toggles your gamemode.
     usage: /<command> (player)
     aliases: [gm, gamem, gmode]
     version_added: Pre-0.2.7
+    class: CmdGamemode
 
   ban:
     description: Bans a user.
     usage: /<command> [player] (message)
     aliases: [rban, banish]
     version_added: Pre-0.2.7
+    class: CmdBan
 
   mute:
     description: Stop a user from speaking.
     usage: /<command> [player] (time)
     aliases: [silence]
     version_added: Pre-0.2.7
+    class: CmdMute
 
   kick:
     description: Kicks a player from the server.
     usage: /<command> [player] (message)
     aliases: [boot]
     version_added: Pre-0.2.7
+    class: CmdKick
 
   time:
     description: Sets the time of your current world.
     usage: /<command> [ticks] (world)
     version_added: Pre-0.2.7
+    class: CmdTime
 
   home:
     description: Teleports the player home.
     usage: /<command> (home)
     aliases: [rhome]
     version_added: Pre-0.2.7
+    class: CmdHome
 
   sethome:
     description: Sets the player's home.
     usage: /<command> (home)
     aliases: [shome, rsethome]
     version_added: Pre-0.2.7
+    class: CmdSetHome
 
   delhome:
     description: Deletes a home.
     usage: /<command> [home]
     aliases: [dhome, rmhome, deletehome, removehome, rdeletehome]
     version_added: Pre-0.2.7
+    class: CmdDelHome
 
   listhome:
     description: List your set homes.
     usage: /<command> (player)
     aliases: [lshome, listhomes, lshomes, homes, rlisthomes]
     version_added: Pre-0.2.7
+    class: CmdListHome
 
   strike:
     description: Strikes lightning at the player's cursor or at specified player.
     usage: /<command> (player)
     aliases: [smite, lightning]
     version_added: Pre-0.2.7
+    class: CmdStrike
 
   jump:
     description: Moves the player to the block they are looking at.
     usage: /<command>
     aliases: [j, go]
     version_added: Pre-0.2.7
+    class: CmdJump
 
   warn:
     description: Warns the specified player.
     usage: /<command> [player] (message)
     version_added: Pre-0.2.7
+    class: CmdWarn
 
   clearwarns:
     description: Clears the warnings on a player.
     usage: /<command> [player]
     aliases: [removewarns, clearwarnings, removewarnings, rmwarns, rmwarnings]
     version_added: Pre-0.2.7
+    class: CmdClearWarns
 
   warp:
     description: Go to a warp point.
     usage: /<command> [warp] (player)
     aliases: [warps]
     version_added: Pre-0.2.7
+    class: CmdWarp
 
   setwarp:
     description: Set a warp point.
     usage: /<command> [warp]
     aliases: [mkwarp, createwarp]
     version_added: Pre-0.2.7
+    class: CmdSetWarp
 
   delwarp:
     description: Delete a warp point.
     usage: /<command> [warp]
     aliases: [dwarp, deletewarp, rmwarp, removewarp]
     version_added: Pre-0.2.7
+    class: CmdDelWarp
 
   repair:
     description: Repairs the item in your hand.
     usage: /<command> (all)
     aliases: [fix]
     version_added: Pre-0.2.7
+    class: CmdRepair
 
   unban:
     description: Removes a ban from a player.
     usage: /<command> [player]
     aliases: [unbanish, pardon]
     version_added: Pre-0.2.7
+    class: CmdUnban
 
   heal:
     description: Heals a player or the player himself.
     usage: /<command> (player)
     version_added: Pre-0.2.7
+    class: CmdHeal
 
   feed:
     description: Feeds a player or the player himself.
     usage: /<command> (player)
     version_added: Pre-0.2.7
+    class: CmdFeed
 
   god:
     description: Toggles godmode on a player or the player himself.
     usage: /<command> (player)
     aliases: [tgm, godmode]
     version_added: Pre-0.2.7
+    class: CmdGod
 
   setspawn:
     description: Sets the spawn of the world the player is standing in.
     usage: /<command>
     version_added: Pre-0.2.7
+    class: CmdSetSpawn
 
   spawn:
     description: Takes the player to the spawn of the world they are standing in.
     usage: /<command>
     version_added: Pre-0.2.7
+    class: CmdSpawn
 
   banip:
     description: Bans an IP address or a player's IP.
     usage: /<command> (player/IP)
     version_added: Pre-0.2.7
+    class: CmdBanIP
 
   unbanip:
     description: Unbans an IP address or a player's IP.
     usage: /<command> (player/IP)
     aliases: [pardonip]
     version_added: Pre-0.2.7
+    class: CmdUnbanIP
 
   list:
     description: Lists the players online and the maximum amount.
     usage: /<command>
     aliases: [ls, dir, who, players, online, listplayers, playing]
     version_added: Pre-0.2.7
+    class: CmdList
 
   back:
     description: Takes you to your previous location.
     usage: /<command>
     aliases: [backs]
     version_added: Pre-0.2.7
+    class: CmdBack
 
   teleport:
     description: Teleports you to a player.
     usage: /<command> [player]
     aliases: [tp]
     version_added: Pre-0.2.7
+    class: CmdTeleport
 
   teleporthere:
     description: Teleports a player to you.
     usage: /<command> [player]
     aliases: [tphere, tph]
     version_added: Pre-0.2.7
+    class: CmdTeleportHere
 
   teleportrequest:
     description: Sends a teleport request to a player.
     usage: /<command> [player]
     aliases: [tpr, tpa, tprequest, teleportr]
     version_added: Pre-0.2.7
+    class: CmdTeleportRequest
 
   tpaccept:
     description: Accepts a teleport request.
     usage: /<command>
     aliases: [tpac, tpyes]
     version_added: Pre-0.2.7
+    class: CmdTpAccept
 
   tpdeny:
     description: Denies a teleport request.
     usage: /<command>
     aliases: [tpad, tpno]
     version_added: Pre-0.2.7
+    class: CmdTpDeny
 
   listwarns:
     description: Lists the warnings a player has.
     usage: /<command> (player)
     aliases: [warns, lswarns, lwarns, lwarn, lswarn, listwarn]
     version_added: Pre-0.2.7
+    class: CmdListWarns
 
   more:
     description: Gives more of the item in hand.
     usage: /<command> (all)
     version_added: Pre-0.2.7
+    class: CmdMore
 
   teleportrequesthere:
     description: Sends a teleport here request to a player.
     usage: /<command> [player]
     aliases: [tprh, tpahere, tpah, teleportrhere, tphrequest, tphererequest, tprhere]
     version_added: Pre-0.2.7
+    class: CmdTeleportRequestHere
 
   spy:
     description: Allows the player to spy on private messages.
     usage: /<command>
     aliases: [msgspy, socialspy]
     version_added: Pre-0.2.7
+    class: CmdSpy
 
   spawnmob:
     description: Spawns mobs where the player is looking.
     usage: /<command> [mob] (amount)
     aliases: [sm, mobspawn]
     version_added: Pre-0.2.7
+    class: CmdSpawnMob
 
   afk:
     description: Marks the player as away from keyboard.
     usage: /<command>
     aliases: [away]
     version_added: Pre-0.2.7
+    class: CmdAfk
 
   assign:
     description: Assigns a command to a certain block.
     usage: /<command> [command|-#|~]
     aliases: [as, pt, powertool]
     version_added: Pre-0.2.7
+    class: CmdAssign
 
   onehitkill:
     description: Makes all attacks kill anything (not dragons).
     usage: /<command> (player)
     aliases: [ohk, instakill, ik]
     version_added: Pre-0.2.7
+    class: CmdOneHitKill
 
   burn:
     description: Sets a player on fire for a set amount of time.
     usage: /<command> [player] (time)
     aliases: [ignite, enflame]
     version_added: Pre-0.2.7
+    class: CmdBurn
 
   kickall:
     description: Kicks everyone from the server except the command issuer.
     usage: /<command> (reason)
     aliases: [ka, kickeveryone]
     version_added: Pre-0.2.7
+    class: CmdKickAll
 
   world:
     description: Teleports the player to the specified world.
     usage: /<command> [world]
     aliases: [goto, gotoworld, tpworld, worldtp, teleportworld, worldteleport, tpw]
     version_added: Pre-0.2.7
+    class: CmdWorld
 
   jail:
     description: Puts a player in jail.
     usage: /<command> [player] [jail]
     aliases: [tjail, togglejail]
     version_added: Pre-0.2.7
+    class: CmdJail
 
   setjail:
     description: Sets the location of a jail.
     usage: /<command> [name]
     aliases: [sjail]
     version_added: Pre-0.2.7
+    class: CmdSetJail
 
   less:
     description: Sets the amount of the item in hand to one.
     usage: /<command> (all)
     aliases: [fewer]
     version_added: Pre-0.2.7
+    class: CmdLess
 
   spawner:
     description: Sets the type of a mob spawner.
     usage: /<command> [mob]
     version_added: Pre-0.2.7
+    class: CmdSpawner
 
   tp2p:
     description: Teleports one player to another.
     usage: /<command> [player] [player]
     aliases: [teleportplayertoplayer, teleportplayer2player, tpptp, tpp2p, teleportp2p, teleportptop]
     version_added: Pre-0.2.7
+    class: CmdTp2p
 
   motd:
     description: Shows the message of the day.
     usage: /<command>
     aliases: [messageoftheday]
     version_added: Pre-0.2.7
+    class: CmdMotd
 
   deljail:
     description: Removes a jail.
     usage: /<command> [jail]
     aliases: [deletejail, rmjail, removejail, destroyjail]
     version_added: Pre-0.2.7
+    class: CmdDelJail
 
   force:
     description: Forces a player to run a command.
     usage: /<command> [player] [command]
     aliases: [sudo, run]
     version_added: Pre-0.2.7
+    class: CmdForce
 
   ping:
     description: Pings the server.
     usage: /<command>
     aliases: [pong]
     version_added: Pre-0.2.7
+    class: CmdPing
 
   realname:
     description: Displays the real name of a player.
     usage: /<command> [player]
     aliases: [rn]
     version_added: Pre-0.2.7
+    class: CmdRealName
 
   invsee:
     description: Allows you to see the inventory or a player.
     usage: /<command> [player]
     aliases: [invs]
     version_added: Pre-0.2.7
+    class: CmdInvsee
 
   nick:
     description: Sets the display name of a player.
     usage: /<command> [player] [nick|off]
     aliases: [dispname, name]
     version_added: Pre-0.2.7
+    class: CmdNick
 
   ingot2block:
     description: Makes raw materials into blocks.
     usage: /<command> (hand|all)
     aliases: [i2b, itb]
     version_added: Pre-0.2.7
+    class: CmdIngot2Block
 
   near:
     description: Gets nearby players.
     usage: /<command> (radius)
     aliases: [nearby, nearme, close]
     version_added: Pre-0.2.7
+    class: CmdNear
 
   kill:
     description: Kills another player.
     usage: /<command> [player]
     aliases: [murder]
     version_added: Pre-0.2.7
+    class: CmdKill
 
   suicide:
     description: Kills yourself.
     usage: /<command>
     aliases: [enditall, anhero]
     version_added: Pre-0.2.7
+    class: CmdSuicide
 
   killall:
     description: Kills everyone on the server but yourself.
     usage: /<command>
     aliases: [kall]
     version_added: Pre-0.2.7
+    class: CmdKillAll
 
   muteall:
     description: Mutes everyone on the server.
     usage: /<command>
     aliases: [silenceall]
     version_added: Pre-0.2.7
+    class: CmdMuteAll
 
   kit:
     description: Gives you a kit defined in the config.
     usage: /<command> [kit-name]
     version_added: Pre-0.2.7
+    class: CmdKit
 
   rules:
     description: Displays server rules.
     usage: /<command>
     aliases: [rule]
     version_added: Pre-0.2.7
+    class: CmdRules
 
   broadcast:
     description: Broadcasts a message to the server.
     usage: /<command> [message]
     aliases: [bc, broadc, bcast]
     version_added: Pre-0.2.7
+    class: CmdBroadcast
 
   hug:
     description: Broadcasts a hug to the server.
     usage: /<command>
     aliases: [embrace]
     version_added: Pre-0.2.7
+    class: CmdHug
 
   explode:
     description: Explodes where the player is looking or the specified player.
     usage: /<command> [player] (power)
     aliases: [destroy, end]
     version_added: Pre-0.2.7
+    class: CmdExplode
 
   ride:
     description: Mounts the player on another player.
     usage: /<command> [player]
     aliases: [mount, eject]
     version_added: Pre-0.2.7
+    class: CmdRide
 
   tppos:
     description: Teleports you to a specific coordinate point.
     usage: /<command> [x] [y] [z] (world)
     aliases: [tpos, teleportposition, tpcoords, tpp, tpc, teleportcoordinates, teleportpos, tpposition, tposition]
     version_added: Pre-0.2.7
+    class: CmdTppos
 
   ignore:
     description: Ignores when a player chats.
     usage: /<command> (player)
     aliases: [forget]
     version_added: Pre-0.2.7
+    class: CmdIgnore
 
   help:
     description: Displays help for commands.
     usage: /<command> (page)
     version_added: Pre-0.2.7
+    class: CmdHelp
 
   coords:
     description: Displays coordinates for yourself or a player.
     usage: /<command> (player)
     aliases: [pos, position, loc, location, coordinates]
     version_added: Pre-0.2.7
+    class: CmdCoords
 
   tpall:
     description: Teleports everyone to you.
     usage: /<command>
     aliases: [teleportall]
     version_added: Pre-0.2.7
+    class: CmdTpAll
 
   tpaall:
     description: Sends a teleport request to everyone.
     usage: /<command>
     aliases: [tprall, teleportaskall, teleportrequestall]
     version_added: Pre-0.2.7
+    class: CmdTpaAll
 
   vip:
     description: Modifies the VIP list. VIPs can join the server when it is full.
     usage: /<command> [add|remove|check|?] (player)
     aliases: [reserve, slot]
     version_added: Pre-0.2.7
+    class: CmdVip
 
   dump:
     description: Dumps contents of inventory into chest.
     usage: /<command>
     aliases: [empty, store]
     version_added: Pre-0.2.7
+    class: CmdDump
 
   seen:
     description: Shows when a player was last online.
     usage: /<command> [player]
     aliases: [lastseen]
     version_added: Pre-0.2.7
+    class: CmdSeen
 
   tempban:
     description: Temporarily bans a player.
     usage: /<command> [player] [time] [reason]
     aliases: [tban, temporarilyban]
     version_added: Pre-0.2.7
+    class: CmdTempban
 
   tptoggle:
     description: Toggles teleportation.
     usage: /<command>
     aliases: [toggletp]
     version_added: Pre-0.2.7
+    class: CmdTpToggle
 
   kits:
     description: Lists the kits available to you.
     usage: /<command>
     aliases: [listkit, listkits]
     version_added: Pre-0.2.7
+    class: CmdKits
 
   lag:
     description: Displays the ticks per seconds over a period of time.
     usage: /<command> (seconds to run)
     aliases: [tps, getlag]
     version_added: Pre-0.2.7
+    class: CmdLag
 
   mem:
     description: Displays the current memory usage.
     usage: /<command>
     aliases: [memory, getmem, lagmem, ram, getram]
     version_added: Pre-0.2.7
+    class: CmdMem
 
   entities:
     description: Displays the entities close to you.
     usage: /<command> (radius)
     aliases: [neare, enear, ents, entity, closeents, entsclose, ent]
     version_added: Pre-0.2.7
+    class: CmdEntities
 
   invmod:
     description: Modifies other players' inventories.
     usage: /<command> [player]
     aliases: [modinv]
     version_added: Pre-0.2.7
+    class: CmdInvmod
 
   workbench:
     description: Opens a workbench anywhere.
     usage: /<command>
     aliases: [wb, ct, craftingtable]
     version_added: Pre-0.2.7
+    class: CmdWorkbench
 
   enchantingtable:
     description: Opens an enchanting table anywhere.
     usage: /<command>
     aliases: [et]
     version_added: Pre-0.2.7
+    class: CmdEnchantingTable
 
   trade:
     description: Opens a mutual chest between two players.
     usage: /<command> [player]
     version_added: Pre-0.2.7
+    class: CmdTrade
 
   furnace:
     description: Remotely manages a furnace you set.
     usage: /<command> [set/show]
     version_added: Pre-0.2.7
+    class: CmdFurnace
 
   enchant:
     description: Enchants the item in hand.
     usage: /<command> [enchantment/all] (level)
     version_added: Pre-0.2.7
+    class: CmdEnchant
 
   fireball:
     description: Launches a fireball out of you.
     usage: /<command>
     aliases: [fb]
     version_added: Pre-0.2.7
+    class: CmdFireball
 
   fly:
     description: Toggles creative flymode for yourself or a player
     usage: /<command> (player)
     version_added: Pre-0.2.7
+    class: CmdFly
 
   wl:
     description: Manages the dynamic whitelist.
     usage: /<command> [check/add/remove] [player]
     aliases: [whitelist]
     version_added: Pre-0.2.7
+    class: CmdWhitelist
 
   playertime:
     description: Changes player time. If not time specified, resets it.
     usage: /<command> [player] (time)
     aliases: [ptime]
     version_added: Pre-0.2.7
+    class: CmdPlayerTime
 
   compass:
     description: Changes where your compass points.
     usage: /<command> [reset/here/location/player] (x y z/player)
     version_added: Pre-0.2.7
+    class: CmdCompass
 
   helmet:
     description: Changes your helmet.
     usage: /<command> [item/none]
     aliases: [helm]
     version_added: Pre-0.2.7
+    class: CmdHelmet
 
   worldmanager:
     description: Allows you to manage the worlds on your server.
     usage: /<command> [help/create/load/unload/delete/list/info] (additional args)
     aliases: [wm]
     version_added: Pre-0.2.7
+    class: CmdWorldManager
 
   biome:
     description: Changes the biome of the chunk you're in.
     usage: /<command> [biome] (radius)
     version_added: Pre-0.2.7
+    class: CmdBiome
 
   getid:
     description: Gets the ID of the item in your hand.
     usage: /<command>
     version_added: Pre-0.2.7
+    class: CmdGetID
 
   buddha:
     description: Toggles buddha mode.
     usage: /<command> (player)
     aliases: [tbm, buddhamode]
     version_added: Pre-0.2.7
+    class: CmdBuddha
 
   erase:
     description: Removes entities.
     usage: /<command> [mobs|arrows|boats|littnt|xp|minecarts|paintings|all] (radius)
     aliases: [rm]
     version_added: Pre-0.2.7
+    class: CmdErase
 
   whois:
     description: Looks up data on the specified player.
     usage: /<command> [player]
     aliases: [whowas]
     version_added: Pre-0.2.7
+    class: CmdWhois
 
   mobignore:
     description: Toggles if mobs ignore the player.
     usage: /<command> (player)
     aliases: [mi]
     version_added: Pre-0.2.7
+    class: CmdMobIgnore
 
   monitor:
     description: Watch another player.
     usage: /<command> (player)
     aliases: [watch]
     version_added: Pre-0.2.7
+    class: CmdMonitor
 
   garbagecollector:
     description: Runs the Java garbage collector.
     usage: /<command>
     aliases: [gc]
     version_added: Pre-0.2.7
+    class: CmdGarbageCollector
 
   backpack:
     description: Opens a personal backpack.
     usage: /<command> (player)
     aliases: [pack, bp]
     version_added: Pre-0.2.7
+    class: CmdBackpack
 
   usage:
     description: Displays the usage of another command.
     usage: /<command> [command]
     version_added: Pre-0.2.7
+    class: CmdUsage
 
   pluginmanager:
     description: Manages plugins on the server.
     usage: /<command> [subcommand] (argument)
     aliases: [pm]
     version_added: Pre-0.2.7
+    class: CmdPluginManager
 
   freezetime:
     description: Freezes time on a world.
     usage: /<command> [world]
     aliases: [ft]
     version_added: Pre-0.2.7
+    class: CmdFreezeTime
 
   baninfo:
     description: Get information about a ban.
     usage: /<command> [player]
     aliases: [bi, whobanned, whoban, wbanned, banwho, bannedwho, wban, banreason, br, banr, breason, banned]
     version_added: Pre-0.2.7
+    class: CmdBanInfo
 
   banlist:
     description: Lists all banned players.
     usage: /<command>
     aliases: [bl]
     version_added: Pre-0.2.7
+    class: CmdBanList
 
   flyspeed:
     description: Changes the speed you fly at.
     usage: /<command> [speed]
     aliases: [fs]
     version_added: Pre-0.2.7
+    class: CmdFlySpeed
 
   walkspeed:
     description: Changes the speed you walk at.
     usage: /<command> [speed]
     aliases: [ws]
     version_added: Pre-0.2.7
+    class: CmdWalkSpeed
 
   accountstatus:
     description: Checks to see if a name is premium.
     usage: /<command> [name]
     aliases: [accs, ispremium, iscracked]
     version_added: Pre-0.2.7
+    class: CmdAccountStatus
 
   playersearch:
     description: Searches for a player.
     usage: /<command> [search query]
     aliases: [ps, psearch]
     version_added: Pre-0.2.7
+    class: CmdPlayerSearch
 
   deafen:
     description: Toggles whether a player can see messages.
     usage: /<command> (player)
     aliases: [deaf, ignoreall]
     version_added: Pre-0.2.7
+    class: CmdDeafen
 
   rename:
     description: Renames an item.
     usage: /<command> [name]
     version_added: Pre-0.2.7
+    class: CmdRename
 
   lore:
     description: Sets lore on an item.
     usage: /<command> [name]
     aliases: [setlore]
     version_added: Pre-0.2.7
+    class: CmdLore
 
   setuserdata:
     description: Sets a userdata value for a player.
     usage: /<command> [name] [node] [value]
     aliases: [sud, ud, userdata]
     version_added: Pre-0.2.7
+    class: CmdSetUserdata
 
   firework:
     description: Sets effects on fireworks.
     usage: /<command> [tags]
     aliases: [fw]
     version_added: Pre-0.2.7
+    class: CmdFirework
 
   rocket:
     description: Launches the player vertically.
     usage: /<command> [name]
     version_added: 0.2.7
+    class: CmdRocket
 
   effect:
     description: Apply custom potion effects on players.
     usage: /<command> [name] [effecttags]
     version_added: 0.2.7
+    class: CmdEffect
 
   banhistory:
     description: Views the ban history of the player.
     usage: /<command> [name] [ban#]
     aliases: [bh]
     version_added: 0.2.7
+    class: CmdBanHistory
 
   mail:
     description: Manages player mail.
     usage: /<command> [read|clear|send [to] [message]]
     version_added: 0.2.7
+    class: CmdMail
 
   signedit:
     description: Edits the sign a player is currently looking at.
     usage: /<command> [line#] (new text)
     aliases: [se, editsign, es]
     version_added: 0.2.7
+    class: CmdSignEdit
 
   potion:
     description: Adds effect to a potion.
     usage: /<command> [effects]
     version_added: 0.2.7
+    class: CmdPotion
 
   setcharacteristic:
     description: Sets player characteristics.
     usage: /<command> [subcommands]
     aliases: [sc, setchar]
     version_added: 0.2.7
+    class: CmdSetCharacteristic
 
   nameentity:
     description: Sets an entity's name.
     usage: /<command> [newname]
     aliases: [setmobname, renamemob, mobname, mn, ne]
     version_added: 0.2.7
+    class: CmdNameEntity
 
   head:
     description: Sets a head to a player's skin.
     usage: /<command> [name]
     aliases: [skull]
     version_added: 0.2.7
+    class: CmdHead
 
   findip:
     description: Finds players with a matching IP address.
     usage: /<command> [ip]
     aliases: [fip]
     version_added: 0.2.8
+    class: CmdFindIP
 
   map:
     description: Adjusts maps.
     usage: /<command> [subcommands]
     aliases: [mapadjust]
     version_added: 0.2.8
+    class: CmdMap
 
   deletebanhistory:
     description: Deletes ban history records.
     usage: /<command> [player] [ban#]
     aliases: [dbh, rbh, removebanhistory]
     version_added: 0.2.8
+    class: CmdDeleteBanHistory
 
   publicassign:
     description: Assigns commands to items that anyone with the item can use.
     usage: /<command> [command|-#|~]
     aliases: [pas, ppt, publicpowertool]
     version_added: 0.2.8
+    class: CmdPublicAssign
 
   enderchest:
     description: Shows the ender chest of a player.
     usage: /<command> [player] [world]
     aliases: [endchest, echest, ec]
     version_added: 0.2.8
+    class: CmdEnderChest
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
     aliases: [royalcommands]
     version_added: Pre-0.2.7
+    class: CmdRcmds
 
 permissions:
   rcmds.level:
