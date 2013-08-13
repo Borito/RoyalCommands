@@ -1581,6 +1581,10 @@ permissions:
     description: Allows you to reload RoyalCommands' config.
     default: op
 
+  rcmds.spawnmob.*:
+    description: Allows you to spawn all mobs.
+    default: op
+
   rcmds.enchant.levels:
     description: Allows you to enchant beyond vanilla levels.
     default: false
