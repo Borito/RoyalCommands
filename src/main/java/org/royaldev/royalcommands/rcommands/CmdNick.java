@@ -53,10 +53,19 @@ public class CmdNick implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "You reset the nickname of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 return true;
             }
+            if (t.getName().equalsIgnoreCase(cs.getName())) {
+                final long allowedAfter = pcm.getLong("nick.lastchange", 0L) + ((long) RUtils.timeFormatToSeconds(Config.nickChangeLimit) * 1000L);
+                if (allowedAfter > System.currentTimeMillis()) return true;
+            }
+            if (!args[1].matches(Config.nickRegex)) {
+                cs.sendMessage(MessageColor.NEGATIVE + "That nickname contains invalid characters!");
+                return true;
+            }
             String newName = Config.nickPrefix + args[1];
             if (plugin.ah.isAuthorized(cs, "rcmds.nick.color")) newName = RUtils.colorize(newName);
             else newName = RUtils.decolorize(newName);
             pcm.set("dispname", newName);
+            pcm.set("nick.lastchange", System.currentTimeMillis());
             if (t.isOnline()) {
                 Player p = (Player) t;
                 p.setDisplayName(newName);

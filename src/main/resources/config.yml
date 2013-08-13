@@ -386,8 +386,14 @@ disabled_commands:
 # Nicks #
 ###
 
-# Prefix to go before nicknames.
-nick_prefix: "*"
+nicknames:
+  # Prefix to go before nicknames.
+  prefix: "*"
+  # How often a player can change his nick.
+  change_limit: "24h"
+  # Regular expression string limiting characters allowed in nicknames. Default is the Minecraft default limitations.
+  # Default: [\\w]{2,16}
+  regex: "[\\w]{2,16}"
 
 # Change name above head? REQUIRES TagAPI. This will not work without it.
 change_nametag: false

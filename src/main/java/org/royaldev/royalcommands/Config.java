@@ -139,7 +139,9 @@ public class Config {
         kickFormat = c.getString("kick_format", "&4Kicked&r: {reason}&rnBy {dispname}");
         kickMessage = RUtils.colorize(c.getString("default_kick_message", "Kicked from server."));
         mailCheckTime = c.getString("mail_check_interval", "10m");
-        nickPrefix = RUtils.colorize(c.getString("nick_prefix", "*"));
+        nickChangeLimit = c.getString("nicknames.change_limit", "24h");
+        nickPrefix = RUtils.colorize(c.getString("nicknames.prefix", "*"));
+        nickRegex = c.getString("nicknames.regex", "[\\w]{2,16}");
         noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
         returnFormat = c.getString("return_format", "{dispname} is no longer AFK.");
         saveInterval = c.getString("save.save_on_interval", "10m");
@@ -285,7 +287,9 @@ public class Config {
     public static String kickFormat;
     public static String kickMessage;
     public static String mailCheckTime;
+    public static String nickChangeLimit;
     public static String nickPrefix;
+    public static String nickRegex;
     public static String noBuildMessage;
     public static String returnFormat;
     public static String saveInterval;
