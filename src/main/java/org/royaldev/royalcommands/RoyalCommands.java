@@ -32,6 +32,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -485,9 +490,35 @@ public class RoyalCommands extends JavaPlugin {
 
         api = new RApiMain();
 
+        //-- Convert old backpacks --//
+
+        pm.registerEvents(new BackpackConverter(), this);
+
         //-- We're done! --//
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
+    }
+
+    private class BackpackConverter implements Listener {
+        @EventHandler
+        public void onJoin(PlayerJoinEvent e) {
+            Player p = e.getPlayer();
+            final PConfManager pcm = PConfManager.getPConfManager(p);
+            if (!pcm.isSet("backpack.item")) return;
+            if (!pcm.exists()) pcm.createFile();
+            int invSize = pcm.getInt("backpack.size", -1);
+            if (invSize < 9) invSize = 36;
+            if (invSize % 9 != 0) invSize = 36;
+            final Inventory i = Bukkit.createInventory(p, invSize, "Backpack");
+            for (int slot = 0; slot < invSize; slot++) {
+                ItemStack is = pcm.getItemStack("backpack.item." + slot);
+                if (is == null) continue;
+                i.setItem(slot, is);
+            }
+            RUtils.saveBackpack(p, i);
+            pcm.set("backpack.item", null);
+            pcm.set("backpack.size", null);
+        }
     }
 
     //--- onDisable() ---//

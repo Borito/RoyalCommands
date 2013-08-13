@@ -1108,17 +1108,19 @@ public class RUtils {
      * @param s Name of player to get backpack for
      * @return Backpack - never null
      */
-    public static Inventory getBackpack(String s) {
+    public static Inventory getBackpack(String s, World w) {
         Player p = RoyalCommands.instance.getServer().getPlayer(s); // null doesn't matter here
         PConfManager pcm = PConfManager.getPConfManager(s);
+        String worldGroup = WorldManager.il.getWorldGroup(w);
+        if (worldGroup == null) worldGroup = "w-" + w.getName();
         if (!pcm.exists()) pcm.createFile();
-        int invSize = pcm.getInt("backpack.size", -1);
+        int invSize = pcm.getInt("backpack." + worldGroup + ".size", -1);
         if (invSize < 9) invSize = 36;
         if (invSize % 9 != 0) invSize = 36;
         final Inventory i = Bukkit.createInventory(p, invSize, "Backpack");
-        if (pcm.get("backpack.item") == null) return i;
+        if (!pcm.isSet("backpack." + worldGroup + ".item")) return i;
         for (int slot = 0; slot < invSize; slot++) {
-            ItemStack is = pcm.getItemStack("backpack.item." + slot);
+            ItemStack is = pcm.getItemStack("backpack." + worldGroup + ".item." + slot);
             if (is == null) continue;
             i.setItem(slot, is);
         }
@@ -1132,7 +1134,7 @@ public class RUtils {
      * @return Backpack - never null
      */
     public static Inventory getBackpack(Player p) {
-        return getBackpack(p.getName());
+        return getBackpack(p.getName(), p.getWorld());
     }
 
     /**
@@ -1142,7 +1144,7 @@ public class RUtils {
      * @param i Inventory to save as backpack
      */
     public static void saveBackpack(Player p, Inventory i) {
-        saveBackpack(p.getName(), i);
+        saveBackpack(p.getName(), p.getWorld(), i);
     }
 
     /**
@@ -1151,10 +1153,14 @@ public class RUtils {
      * @param s Name of player to save backpack for
      * @param i Inventory to save as backpack
      */
-    public static void saveBackpack(String s, Inventory i) {
+    public static void saveBackpack(String s, World w, Inventory i) {
         PConfManager pcm = PConfManager.getPConfManager(s);
-        for (int slot = 0; slot < i.getSize(); slot++) pcm.set("backpack.item." + slot, i.getItem(slot));
-        pcm.set("backpack.size", i.getSize());
+        if (w == null) return;
+        String worldGroup = WorldManager.il.getWorldGroup(w);
+        if (worldGroup == null) worldGroup = "w-" + w.getName();
+        for (int slot = 0; slot < i.getSize(); slot++)
+            pcm.set("backpack." + worldGroup + ".item." + slot, i.getItem(slot));
+        pcm.set("backpack." + worldGroup + ".size", i.getSize());
     }
 
     /**

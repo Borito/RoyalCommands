@@ -53,7 +53,7 @@ public class InventoryListener implements Listener {
      * @param w World to get group of
      * @return String of group name or null if no group
      */
-    private String getWorldGroup(World w) {
+    public String getWorldGroup(World w) {
         ConfigurationSection cs = plugin.getConfig().getConfigurationSection("worldmanager.inventory_separation.groups");
         Set<String> s = cs.getKeys(false);
         for (String group : s) {
