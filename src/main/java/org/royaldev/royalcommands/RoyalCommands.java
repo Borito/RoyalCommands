@@ -247,7 +247,7 @@ public class RoyalCommands extends JavaPlugin {
             pc.setUsage(getUsage(command));
             getCommandMap().register(getDescription().getName(), pc);
         } catch (Exception e) {
-            e.printStackTrace();
+            getLogger().warning("Could not register command \"" + command + "\" - an error occurred: " + e.getMessage() + ".");
         }
     }
 
