@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
@@ -30,11 +32,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -49,7 +53,7 @@ public class CmdPluginManager implements CommandExecutor {
         plugin = instance;
     }
 
-/*    private Object getPrivateField(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    private Object getPrivateField(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         Class<?> clazz = object.getClass();
         Field objectField = clazz.getDeclaredField(field);
         objectField.setAccessible(true);
@@ -58,24 +62,43 @@ public class CmdPluginManager implements CommandExecutor {
         return result;
     }
 
-    private void unregisterCommand(PluginCommand cmd, String pluginName) {
+    private void unregisterAllPluginCommands(String pluginName) {
         try {
             Object result = getPrivateField(plugin.getServer().getPluginManager(), "commandMap");
             SimpleCommandMap commandMap = (SimpleCommandMap) result;
             Object map = getPrivateField(commandMap, "knownCommands");
             @SuppressWarnings("unchecked")
             HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
-            knownCommands.remove(cmd.getName());
-            for (String alias : cmd.getAliases()) {
-                System.out.println(knownCommands.get(alias));
-                if (knownCommands.containsKey(alias) && knownCommands.get(alias).toString().contains(pluginName)) {
-                    knownCommands.remove(alias);
+            final List<Command> commands = new ArrayList<Command>(commandMap.getCommands());
+            for (Command c : commands) {
+                if (!(c instanceof PluginCommand)) continue;
+                final PluginCommand pc = (PluginCommand) c;
+                if (!pc.getPlugin().getName().equals(pluginName)) continue;
+                knownCommands.remove(pc.getName());
+                for (String alias : pc.getAliases()) {
+                    if (knownCommands.containsKey(alias)) {
+                        final Command ac = knownCommands.get(alias);
+                        if (!(ac instanceof PluginCommand)) continue;
+                        final PluginCommand apc = (PluginCommand) ac;
+                        if (!apc.getPlugin().getName().equals(pluginName)) continue;
+                        knownCommands.remove(alias);
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
+
+    private void removePluginFromList(Plugin p) {
+        try {
+            @SuppressWarnings("unchecked")
+            final List<Plugin> plugins = (List<Plugin>) getPrivateField(plugin.getServer().getPluginManager(), "plugins");
+            plugins.remove(p);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Gets the names of all plugins that depend on the specified plugin.
@@ -124,7 +147,7 @@ public class CmdPluginManager implements CommandExecutor {
     public String updateCheck(String name, String currentVersion) throws Exception {
         String tag = getCustomTag(name);
         if (tag == null) tag = name.toLowerCase();
-        String pluginUrlString = "http://dev.bukkit.org/server-mods/" + tag + "/files.rss";
+        String pluginUrlString = "http://dev.bukkit.org/bukkit-plugins/" + tag + "/files.rss";
         URL url = new URL(pluginUrlString);
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
         doc.getDocumentElement().normalize();
@@ -277,7 +300,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to update and its filename!");
                     return true;
                 }
-                Plugin p = pm.getPlugin(args[1]);
+                final Plugin p = pm.getPlugin(args[1]);
                 if (p == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                     return true;
@@ -295,7 +318,7 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
                     return true;
                 }
-                File f = new File(plugin.getDataFolder().getParentFile() + File.separator + args[2]);
+                final File f = new File(plugin.getDataFolder().getParentFile() + File.separator + args[2]);
                 if (!f.exists()) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That file does not exist!");
                     return true;
@@ -304,26 +327,35 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "Can't read that file!");
                     return true;
                 }
-                pm.disablePlugin(p);
-                try {
-                    p = pm.loadPlugin(f);
-                    if (p == null) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "Could not load plugin: plugin was invalid.");
-                        cs.sendMessage(MessageColor.NEGATIVE + "Make sure it ends with .jar!");
-                        return true;
+                cs.sendMessage(MessageColor.POSITIVE + "Starting update process.");
+                final Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        unregisterAllPluginCommands(p.getName());
+                        pm.disablePlugin(p);
+                        try {
+                            Plugin loadedPlugin = pm.loadPlugin(f);
+                            if (loadedPlugin == null) {
+                                cs.sendMessage(MessageColor.NEGATIVE + "Could not load plugin: plugin was invalid.");
+                                cs.sendMessage(MessageColor.NEGATIVE + "Make sure it ends with .jar!");
+                                return;
+                            }
+                            pm.enablePlugin(loadedPlugin);
+                        } catch (InvalidPluginException e) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "That file is not a plugin!");
+                            return;
+                        } catch (UnknownDependencyException e) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "Missing dependency: " + e.getMessage());
+                            return;
+                        } catch (InvalidDescriptionException e) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "That plugin contained an invalid description!");
+                            return;
+                        }
+                        removePluginFromList(p);
+                        cs.sendMessage(MessageColor.POSITIVE + "Updated " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " successfully.");
                     }
-                    pm.enablePlugin(p);
-                } catch (InvalidPluginException e) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "That file is not a plugin!");
-                    return true;
-                } catch (UnknownDependencyException e) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "Missing dependency: " + e.getMessage());
-                    return true;
-                } catch (InvalidDescriptionException e) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "That plugin contained an invalid description!");
-                    return true;
-                }
-                cs.sendMessage(MessageColor.POSITIVE + "Updated " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " successfully.");
+                };
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
                 return true;
             } else if (subcmd.equalsIgnoreCase("reloadall")) {
                 if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.reloadall")) {
