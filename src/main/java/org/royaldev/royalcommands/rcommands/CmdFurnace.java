@@ -34,8 +34,7 @@ public class CmdFurnace implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             Player p = (Player) cs;
             String command = args[0].toLowerCase();

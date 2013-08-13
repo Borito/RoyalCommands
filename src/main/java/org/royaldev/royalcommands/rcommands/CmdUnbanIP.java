@@ -42,8 +42,7 @@ public class CmdUnbanIP implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
             String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");

@@ -31,8 +31,7 @@ public class CmdWorldManager implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             if (!Config.useWorldManager) {
                 cs.sendMessage(MessageColor.NEGATIVE + "WorldManager is disabled!");

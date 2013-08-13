@@ -65,8 +65,7 @@ public class CmdOneHitKill implements CommandExecutor {
             if (args.length < 1) {
                 if (!(cs instanceof Player)) {
                     cs.sendMessage(cmd.getDescription());
-                    cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                    return true;
+                    return false;
                 }
                 Player p = (Player) cs;
                 PConfManager pcm = PConfManager.getPConfManager(p);

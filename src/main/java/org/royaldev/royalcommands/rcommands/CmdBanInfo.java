@@ -28,8 +28,7 @@ public class CmdBanInfo implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             OfflinePlayer op = plugin.getServer().getPlayer(args[0]);
             if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);

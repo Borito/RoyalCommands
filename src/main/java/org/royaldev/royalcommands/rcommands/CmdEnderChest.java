@@ -32,8 +32,7 @@ public class CmdEnderChest implements CommandExecutor {
             }
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             if (!Config.separateInv || !Config.separateEnder) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Cannot open ender chests unless they are separated!");

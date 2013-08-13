@@ -48,8 +48,7 @@ public class CmdDump implements CommandExecutor {
             }
             if (args.length > 0 && args[0].equals("?")) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             if (!(cs instanceof Player)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");

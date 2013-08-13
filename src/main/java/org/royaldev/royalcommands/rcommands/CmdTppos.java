@@ -30,8 +30,7 @@ public class CmdTppos implements CommandExecutor {
             }
             if (args.length < 3) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             Double x = RUtils.getDouble(args[0]);
             Double y = RUtils.getDouble(args[1]);

@@ -26,8 +26,7 @@ public class CmdDeafen implements CommandExecutor {
             }
             if (args.length < 1 && !(cs instanceof Player)) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             String name = (args.length < 1) ? cs.getName() : args[0];
             if (!name.equalsIgnoreCase(cs.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.deafen")) {

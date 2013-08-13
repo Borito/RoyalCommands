@@ -29,8 +29,7 @@ public class CmdNick implements CommandExecutor {
             }
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
             if (!t.equals(cs) && !plugin.ah.isAuthorized(cs, "rcmds.others.nick")) {

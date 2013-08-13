@@ -27,8 +27,7 @@ public class CmdFreeze implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
             final PConfManager pcm = PConfManager.getPConfManager(t);

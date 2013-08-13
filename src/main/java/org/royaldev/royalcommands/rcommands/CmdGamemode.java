@@ -61,8 +61,7 @@ public class CmdGamemode implements CommandExecutor {
             }
             if (!(cs instanceof Player) && args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             if (args.length < 1 && cs instanceof Player) {
                 Player p = (Player) cs;

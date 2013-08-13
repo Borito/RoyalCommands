@@ -67,8 +67,7 @@ public class CmdGive implements CommandExecutor {
             }
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             Player target = plugin.getServer().getPlayer(args[0]);
             if (target == null) {

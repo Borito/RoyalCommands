@@ -65,8 +65,7 @@ public class CmdPotion implements CommandExecutor {
             if (args.length < 1) {
                 sendPotionTypes(cs);
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             Player p = (Player) cs;
             ItemStack hand = p.getItemInHand();

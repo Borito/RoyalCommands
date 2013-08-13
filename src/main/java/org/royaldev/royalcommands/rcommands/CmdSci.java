@@ -28,8 +28,7 @@ public class CmdSci implements CommandExecutor {
             }
             if (args.length < 2) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             if (args.length < 3) {
                 Player target = plugin.getServer().getPlayer(args[0]);

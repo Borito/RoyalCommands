@@ -29,8 +29,7 @@ public class CmdDelJail implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             File pconfl = new File(plugin.getDataFolder() + "/jails.yml");
             if (pconfl.exists()) {

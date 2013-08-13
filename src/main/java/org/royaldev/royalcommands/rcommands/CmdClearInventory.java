@@ -29,8 +29,7 @@ public class CmdClearInventory implements CommandExecutor {
             }
             if (args.length < 1 && !(cs instanceof Player)) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             final OfflinePlayer t = (args.length > 0) ? RUtils.getOfflinePlayer(args[0]) : (OfflinePlayer) cs;
             if (!t.getName().equalsIgnoreCase(cs.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.clearinventory")) {

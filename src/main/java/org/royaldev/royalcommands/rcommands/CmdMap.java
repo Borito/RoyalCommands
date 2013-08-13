@@ -54,8 +54,7 @@ public class CmdMap implements CommandExecutor {
             Player p = (Player) cs;
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             String subcommand = args[0].toLowerCase();
             if (subcommandMatches(subcommand, "help", "?")) {

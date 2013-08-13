@@ -26,8 +26,7 @@ public class CmdRealName implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             Player t = null;
             for (Player p : plugin.getServer().getOnlinePlayers())

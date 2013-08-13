@@ -25,8 +25,7 @@ public class CmdRank implements CommandExecutor {
             }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             Player victim = plugin.getServer().getPlayer(args[0]);
             if (victim == null || plugin.isVanished(victim, cs)) {

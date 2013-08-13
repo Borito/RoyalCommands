@@ -28,8 +28,7 @@ public class CmdListWarns implements CommandExecutor {
             }
             if (!(cs instanceof Player) && args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
-                cs.sendMessage(cmd.getUsage().replace("<command>", label));
-                return true;
+                return false;
             }
             if (args.length > 1 && !plugin.ah.isAuthorized(cs, "rcmds.others.listwarns")) {
                 RUtils.dispNoPerms(cs, "You're not allowed to view other players' warnings.");
