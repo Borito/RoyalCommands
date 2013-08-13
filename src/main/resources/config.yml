@@ -127,6 +127,10 @@ kits:
   # The kit "wool" has 64 red wool and 35 black wool <item>:<amount>:<data>
   wool:
     items: ["35:64:14", "35:64:15"]
+  # This kit can only be used once (cooldown of -1)
+  onetime:
+    items: ["268:1"]
+    cooldown: -1
 
 ###
 # Messages #

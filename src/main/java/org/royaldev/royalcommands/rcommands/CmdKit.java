@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +12,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,20 +42,22 @@ public class CmdKit implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
+            final FileConfiguration c = plugin.getConfig();
             Player p = (Player) cs;
-            if (plugin.getConfig().get("kits") == null) {
+            final PConfManager pcm = PConfManager.getPConfManager(p);
+            if (c.get("kits") == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No kits defined!");
                 return true;
             }
             String kitname = args[0];
-            if (plugin.getConfig().get("kits." + kitname) == null) {
+            if (c.get("kits." + kitname) == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That kit does not exist!");
                 return true;
             }
-            List<String> kits = plugin.getConfig().getStringList("kits." + kitname + ".items");
-            List<String> enchants = plugin.getConfig().getStringList("kits." + kitname + ".enchantments");
-            List<String> names = plugin.getConfig().getStringList("kits." + kitname + ".names");
-            List<String> lore = plugin.getConfig().getStringList("kits." + kitname + ".lore");
+            List<String> kits = c.getStringList("kits." + kitname + ".items");
+            List<String> enchants = c.getStringList("kits." + kitname + ".enchantments");
+            List<String> names = c.getStringList("kits." + kitname + ".names");
+            List<String> lore = c.getStringList("kits." + kitname + ".lore");
             if (kits == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That kit does not exist!");
                 return true;
@@ -66,6 +70,10 @@ public class CmdKit implements CommandExecutor {
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
+            if (pcm.isSet("kits." + kitname + ".cooldown") && pcm.getLong("kits." + kitname + ".cooldown") < 0D) {
+                cs.sendMessage(MessageColor.NEGATIVE + "That kit was a one-time kit.");
+                return true;
+            }
             if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown") && !plugin.ah.isAuthorized(cs, "rcmds.exempt.cooldown.kits")) {
                 long ts = RUtils.getTimeStamp(p, "kits." + kitname + ".cooldown");
                 if (ts > 0) {
@@ -73,8 +81,8 @@ public class CmdKit implements CommandExecutor {
                     return true;
                 }
             }
-            if (plugin.getConfig().get("kits." + kitname + ".cooldown") != null) {
-                long cd = plugin.getConfig().getLong("kits." + kitname + ".cooldown");
+            if (c.isSet("kits." + kitname + ".cooldown")) {
+                long cd = c.getLong("kits." + kitname + ".cooldown");
                 RUtils.setTimeStamp(p, cd, "kits." + kitname + ".cooldown");
             }
             if (kits.size() < 1) {
