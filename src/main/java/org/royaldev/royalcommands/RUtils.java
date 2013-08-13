@@ -13,6 +13,8 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
@@ -1367,5 +1369,33 @@ public class RUtils {
         Object result = objectField.get(object);
         objectField.setAccessible(false);
         return result;
+    }
+
+    public static int getHomeLimit(Player p) {
+        String name = p.getName();
+        String group;
+        if (RoyalCommands.instance.vh.usingVault()) {
+            try {
+                group = RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p);
+            } catch (Exception e) {
+                group = "";
+            }
+        } else group = "";
+        if (group == null) group = "";
+        int limit;
+        final FileConfiguration c = RoyalCommands.instance.getConfig();
+        if (c.isSet("home_limits.players." + name)) limit = c.getInt("home_limits.players." + name, -1);
+        else limit = c.getInt("home_limits.groups." + group, -1);
+        return limit;
+    }
+
+    public static int getCurrentHomes(Player p) {
+        return getCurrentHomes(p.getName());
+    }
+
+    public static int getCurrentHomes(String name) {
+        ConfigurationSection pconf = PConfManager.getPConfManager(name).getConfigurationSection("home");
+        if (pconf == null) return 0;
+        return pconf.getValues(false).size();
     }
 }
