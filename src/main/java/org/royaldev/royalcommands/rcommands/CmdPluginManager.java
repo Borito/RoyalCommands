@@ -466,6 +466,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " updatecheck [plugin] (tag)" + MessageColor.POSITIVE + " - Attempts to check for the newest version of a plugin; may not always work correctly");
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " updatecheckall" + MessageColor.POSITIVE + " - Attempts to check for newest version of all plugins");
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " download [tag] (recursive)" + MessageColor.POSITIVE + " - Attempts to download a plugin from BukkitDev using its tag - recursive can be \"true\" if you would like the plugin to search for jars in all subdirectories of an archive downloaded");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " downloadlink [url] (savename) (recursive)" + MessageColor.POSITIVE + " - Attempts to download a plugin from the URL.");
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " findtag [search]" + MessageColor.POSITIVE + " - Searches BukkitDev for a tag to use in download");
                 return true;
             } else if (subcmd.equalsIgnoreCase("download")) {
@@ -582,9 +583,10 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "Please provide a link to download from!");
                     return true;
                 }
-                final boolean recursive = args.length > 2 && args[2].equalsIgnoreCase("true");
+                final boolean recursive = args.length > 3 && args[3].equalsIgnoreCase("true");
                 final String url = args[1];
                 final String commandUsed = label;
+                final String saveAs = args.length > 2 ? args[2].replaceAll("(\\\\|/)", "") : "";
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
@@ -603,7 +605,7 @@ public class CmdPluginManager implements CommandExecutor {
                             return;
                         }
                         String[] urlParts = huc.getURL().toString().split("(\\\\|/)");
-                        final String fileName = urlParts[urlParts.length - 1];
+                        final String fileName = (!saveAs.isEmpty()) ? saveAs : urlParts[urlParts.length - 1];
                         cs.sendMessage(MessageColor.POSITIVE + "Creating temporary folder...");
                         File f = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString() + File.separator + fileName);
                         while (f.getParentFile().exists()) // make sure we get our own directory
