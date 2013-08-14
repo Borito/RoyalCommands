@@ -3,14 +3,10 @@ package org.royaldev.royalcommands.rcommands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.io.File;
-import java.io.IOException;
+import org.royaldev.royalcommands.configuration.ConfManager;
 
 public class CmdDelJail implements CommandExecutor {
 
@@ -31,22 +27,14 @@ public class CmdDelJail implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            File pconfl = new File(plugin.getDataFolder() + "/jails.yml");
-            if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                if (pconf.get("jails." + args[0]) == null) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "That jail does not exist!");
-                    return true;
-                }
-                pconf.set("jails." + args[0], null);
-                try {
-                    pconf.save(pconfl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                cs.sendMessage(MessageColor.POSITIVE + "The jail \"" + MessageColor.NEUTRAL + args[0] + MessageColor.POSITIVE + "\" has been deleted.");
+            final ConfManager cm = ConfManager.getConfManager("jails.yml");
+            if (!cm.isSet("jails." + args[0])) {
+                cs.sendMessage(MessageColor.NEGATIVE + "That jail does not exist!");
                 return true;
             }
+            cm.set("jails." + args[0], null);
+            cs.sendMessage(MessageColor.POSITIVE + "The jail \"" + MessageColor.NEUTRAL + args[0] + MessageColor.POSITIVE + "\" has been deleted.");
+            return true;
         }
         return false;
     }

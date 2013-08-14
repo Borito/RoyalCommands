@@ -3,15 +3,11 @@ package org.royaldev.royalcommands.rcommands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.io.File;
-import java.io.IOException;
+import org.royaldev.royalcommands.configuration.ConfManager;
 
 public class CmdDelWarp implements CommandExecutor {
 
@@ -36,22 +32,14 @@ public class CmdDelWarp implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            File pconfl = new File(plugin.getDataFolder() + "/warps.yml");
-            if (pconfl.exists()) {
-                FileConfiguration pconf = YamlConfiguration.loadConfiguration(pconfl);
-                if (pconf.get("warps." + args[0]) == null) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "That warp does not exist!");
-                    return true;
-                }
-                pconf.set("warps." + args[0], null);
-                try {
-                    pconf.save(pconfl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                cs.sendMessage(MessageColor.POSITIVE + "The warp \"" + MessageColor.NEUTRAL + args[0] + MessageColor.POSITIVE + "\" has been deleted.");
+            final ConfManager cm = ConfManager.getConfManager("warps.yml");
+            if (!cm.isSet("warps." + args[0])) {
+                cs.sendMessage(MessageColor.NEGATIVE + "That warp does not exist!");
                 return true;
             }
+            cm.set("warps." + args[0], null);
+            cs.sendMessage(MessageColor.POSITIVE + "The warp \"" + MessageColor.NEUTRAL + args[0] + MessageColor.POSITIVE + "\" has been deleted.");
+            return true;
         }
         return false;
     }
