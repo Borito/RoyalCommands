@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
@@ -321,6 +322,8 @@ public class CmdPluginManager implements CommandExecutor {
                     @Override
                     public void run() {
                         unregisterAllPluginCommands(p.getName());
+                        HandlerList.unregisterAll(p);
+                        plugin.getServer().getScheduler().cancelTasks(p);
                         pm.disablePlugin(p);
                         try {
                             Plugin loadedPlugin = pm.loadPlugin(f);
