@@ -1618,6 +1618,7 @@ permissions:
       rcmds.pluginmanager.downloadlink: true
       rcmds.pluginmanager.findtag: true
       rcmds.pluginmanager.delete: true
+      rcmds.pluginmanager.unload: true
 
   rcmds.pluginmanager.load:
     description: Allows you to use PluginManager's load feature.
@@ -1663,6 +1664,9 @@ permissions:
     default: op
   rcmds.pluginmanager.delete:
     description: Allows you to use PluginManager's delete feature.
+    default: op
+  rcmds.pluginmanager.unload:
+    description: Allows you to use PluginManager's unload feature.
     default: op
 
   rcmds.nick.color:

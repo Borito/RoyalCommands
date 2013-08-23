@@ -189,14 +189,14 @@ public class CmdPluginManager implements CommandExecutor {
                         return true;
                     }
                     pm.enablePlugin(p);
-                } catch (InvalidPluginException e) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "That file is not a plugin!");
-                    return true;
                 } catch (UnknownDependencyException e) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Missing dependency: " + e.getMessage());
                     return true;
                 } catch (InvalidDescriptionException e) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That plugin contained an invalid description!");
+                    return true;
+                } catch (InvalidPluginException e) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "That file is not a plugin!");
                     return true;
                 }
                 if (p.isEnabled())
@@ -281,6 +281,47 @@ public class CmdPluginManager implements CommandExecutor {
                 pm.enablePlugin(p);
                 cs.sendMessage(MessageColor.POSITIVE + "Reloaded " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + ".");
                 return true;
+            } else if (subcmd.equalsIgnoreCase("unload")) {
+                if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.unload")) {
+                    RUtils.dispNoPerms(cs);
+                    return true;
+                }
+                if (args.length < 2) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to unload!");
+                    return true;
+                }
+                final Plugin p = pm.getPlugin(args[1]);
+                if (p == null) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
+                    return true;
+                }
+                List<String> depOnBy = getDependedOnBy(p);
+                if (!depOnBy.isEmpty()) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not unload " + MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + " because it is depended on by the following:");
+                    StringBuilder sb = new StringBuilder();
+                    for (String dep : depOnBy) {
+                        sb.append(MessageColor.NEUTRAL);
+                        sb.append(dep);
+                        sb.append(MessageColor.RESET);
+                        sb.append(", ");
+                    }
+                    cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
+                    return true;
+                }
+                final Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        unregisterAllPluginCommands(p.getName());
+                        HandlerList.unregisterAll(p);
+                        plugin.getServer().getScheduler().cancelTasks(p);
+                        pm.disablePlugin(p);
+                        removePluginFromList(p);
+                        cs.sendMessage(MessageColor.POSITIVE + "Unloaded " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + ".");
+                    }
+                };
+                cs.sendMessage(MessageColor.POSITIVE + "Unloading...");
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
+                return true;
             } else if (subcmd.equalsIgnoreCase("update")) {
                 if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.update")) {
                     RUtils.dispNoPerms(cs);
@@ -333,14 +374,14 @@ public class CmdPluginManager implements CommandExecutor {
                                 return;
                             }
                             pm.enablePlugin(loadedPlugin);
-                        } catch (InvalidPluginException e) {
-                            cs.sendMessage(MessageColor.NEGATIVE + "That file is not a plugin!");
-                            return;
                         } catch (UnknownDependencyException e) {
                             cs.sendMessage(MessageColor.NEGATIVE + "Missing dependency: " + e.getMessage());
                             return;
                         } catch (InvalidDescriptionException e) {
                             cs.sendMessage(MessageColor.NEGATIVE + "That plugin contained an invalid description!");
+                            return;
+                        } catch (InvalidPluginException e) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "That file is not a plugin!");
                             return;
                         }
                         removePluginFromList(p);
@@ -540,6 +581,7 @@ public class CmdPluginManager implements CommandExecutor {
                             cs.sendMessage(MessageColor.NEGATIVE + "Filename: " + MessageColor.NEUTRAL + fileName);
                             return;
                         }
+                        //noinspection ResultOfMethodCallIgnored
                         f.getParentFile().mkdirs();
                         BufferedOutputStream bos;
                         try {
@@ -618,6 +660,7 @@ public class CmdPluginManager implements CommandExecutor {
                             cs.sendMessage(MessageColor.NEGATIVE + "Filename: " + MessageColor.NEUTRAL + fileName);
                             return;
                         }
+                        //noinspection ResultOfMethodCallIgnored
                         f.getParentFile().mkdirs();
                         BufferedOutputStream bos;
                         try {
