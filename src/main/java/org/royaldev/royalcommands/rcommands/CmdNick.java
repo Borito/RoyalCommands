@@ -55,7 +55,10 @@ public class CmdNick implements CommandExecutor {
             }
             if (t.getName().equalsIgnoreCase(cs.getName())) {
                 final long allowedAfter = pcm.getLong("nick.lastchange", 0L) + ((long) RUtils.timeFormatToSeconds(Config.nickChangeLimit) * 1000L);
-                if (allowedAfter > System.currentTimeMillis()) return true;
+                if (allowedAfter > System.currentTimeMillis()) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "You have to wait " + MessageColor.NEUTRAL + RUtils.formatDateDiff(allowedAfter) + MessageColor.NEGATIVE + "to change your nick again.");
+                    return true;
+                }
             }
             if (!args[1].matches(Config.nickRegex)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That nickname contains invalid characters!");
