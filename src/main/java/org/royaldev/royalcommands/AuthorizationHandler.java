@@ -37,19 +37,19 @@ public class AuthorizationHandler {
      * </ul>
      * Anything else will throw an IllegalArgumentException.
      *
-     * @param cs   Thing to check for permissions
+     * @param o    Thing to check for permissions
      * @param node Node to check for
      * @return true or false
      * @throws IllegalArgumentException If invalid type if passed for <code>o</code>.
      */
-    public boolean isAuthorized(CommandSender cs, String node) {
-        if (cs instanceof RemoteConsoleCommandSender)
-            return iARemoteConsoleCommandSender((RemoteConsoleCommandSender) cs, node);
-        else if (cs instanceof Player) return iAPlayer((Player) cs, node);
-        else if (cs instanceof OfflinePlayer) return iAOfflinePlayer((OfflinePlayer) cs, node);
-        else if (cs instanceof BlockCommandSender) return iABlockCommandSender((BlockCommandSender) cs, node);
-        else if (cs != null) return iACommandSender(cs, node);
-        else throw new IllegalArgumentException("CommandSender was null!");
+    public boolean isAuthorized(Object o, String node) {
+        if (o instanceof RemoteConsoleCommandSender)
+            return iARemoteConsoleCommandSender((RemoteConsoleCommandSender) o, node);
+        else if (o instanceof Player) return iAPlayer((Player) o, node);
+        else if (o instanceof OfflinePlayer) return iAOfflinePlayer((OfflinePlayer) o, node);
+        else if (o instanceof BlockCommandSender) return iABlockCommandSender((BlockCommandSender) o, node);
+        else if (o instanceof CommandSender) return iACommandSender((CommandSender) o, node);
+        else throw new IllegalArgumentException("Object was not a valid authorizable!");
     }
 
     private boolean iAPlayer(Player p, String node) {
