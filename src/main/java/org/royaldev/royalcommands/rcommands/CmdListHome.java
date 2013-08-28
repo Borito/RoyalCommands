@@ -69,7 +69,7 @@ public class CmdListHome implements CommandExecutor {
                 homes.append(MessageColor.RESET);
                 homes.append(", ");
             }
-            if (cs instanceof Player) {
+            if (cs instanceof Player && (cs.getName().equalsIgnoreCase(t.getName()))) {
                 final Player p = (Player) cs;
                 final int homeLimit = RUtils.getHomeLimit(p);
                 cs.sendMessage(MessageColor.POSITIVE + "Homes (" + MessageColor.NEUTRAL + RUtils.getCurrentHomes(p) + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + ((homeLimit < 0) ? "Unlimited" : homeLimit) + MessageColor.POSITIVE + "):");
