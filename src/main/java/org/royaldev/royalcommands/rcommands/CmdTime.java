@@ -71,7 +71,7 @@ public class CmdTime implements CommandExecutor {
         DecimalFormat df = new DecimalFormat("00");
         df.setRoundingMode(RoundingMode.DOWN);
         float thour = 1000F;
-        float tminute = 16.6666666666666666666666666666666666666666666666666666666666666666666666F;
+        float tminute = 16F + (2F / 3F);
         float hour = (ticks / thour) + 6F;
         if (hour >= 24F) hour = hour - 24F;
         float minute = (ticks % thour) / tminute;
