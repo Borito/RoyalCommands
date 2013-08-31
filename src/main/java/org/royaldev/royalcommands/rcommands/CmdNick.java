@@ -60,7 +60,7 @@ public class CmdNick implements CommandExecutor {
                     return true;
                 }
             }
-            if (!args[1].matches(Config.nickRegex)) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.exempt.nickspecialcharacters") && !args[1].matches(Config.nickRegex)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That nickname contains invalid characters!");
                 return true;
             }
