@@ -395,11 +395,17 @@ public class CmdPluginManager implements CommandExecutor {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
-                for (Plugin p : pm.getPlugins()) {
-                    pm.disablePlugin(p);
-                    pm.enablePlugin(p);
-                }
-                cs.sendMessage(MessageColor.POSITIVE + "Reloaded all plugins!");
+                final Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Plugin p : pm.getPlugins()) {
+                            pm.disablePlugin(p);
+                            pm.enablePlugin(p);
+                        }
+                        cs.sendMessage(MessageColor.POSITIVE + "Reloaded all plugins!");
+                    }
+                };
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
                 return true;
             } else if (subcmd.equalsIgnoreCase("list")) {
                 if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.list")) {
@@ -413,7 +419,7 @@ public class CmdPluginManager implements CommandExecutor {
                 for (Plugin p : ps) {
                     String name = p.getName();
                     if (!p.isEnabled()) {
-                        name = name + " (disabled)";
+                        name += MessageColor.NEGATIVE + " (disabled)";
                         disabled += 1;
                     } else enabled += 1;
                     list.append(MessageColor.NEUTRAL);
@@ -498,6 +504,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "RoyalCommands PluginManager Help");
                 cs.sendMessage(MessageColor.POSITIVE + "================================");
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " load [jar]" + MessageColor.POSITIVE + " - Loads and enables a new plugin");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " unload [plugin]" + MessageColor.POSITIVE + " - Unloads a plugin and removes it from the plugin list");
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " disable [plugin]" + MessageColor.POSITIVE + " - Disables an already loaded plugin");
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " enable [plugin]" + MessageColor.POSITIVE + " - Enables a disabled plugin");
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " reload [plugin]" + MessageColor.POSITIVE + " - Disables then enables a plugin");
@@ -511,7 +518,7 @@ public class CmdPluginManager implements CommandExecutor {
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " updatecheckall" + MessageColor.POSITIVE + " - Attempts to check for newest version of all plugins");
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " download [tag] (recursive)" + MessageColor.POSITIVE + " - Attempts to download a plugin from BukkitDev using its tag - recursive can be \"true\" if you would like the plugin to search for jars in all subdirectories of an archive downloaded");
                 cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " downloadlink [url] (savename) (recursive)" + MessageColor.POSITIVE + " - Attempts to download a plugin from the URL.");
-                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " findtag [search]" + MessageColor.POSITIVE + " - Searches BukkitDev for a tag to use in download");
+                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " findtag [search] (page)" + MessageColor.POSITIVE + " - Searches BukkitDev for a tag to use in download");
                 return true;
             } else if (subcmd.equalsIgnoreCase("download")) {
                 if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.download")) {
@@ -773,56 +780,70 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "Please specify a search term!");
                     return true;
                 }
-                String search = RoyalCommands.getFinalArg(args, 1);
+                int page = 1;
+                if (args.length > 2) {
+                    try {
+                        page = Integer.parseInt(args[args.length - 1]);
+                    } catch (NumberFormatException ignored) {
+                        page = 1;
+                    }
+                }
+                final String search;
                 try {
-                    search = URLEncoder.encode(search, "UTF-8");
+                    search = URLEncoder.encode(RoyalCommands.getFinalArg(args, 1), "UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Tell the developer enc1.");
                     return true;
                 }
-                URL u;
+                final URL u;
                 try {
-                    u = new URL("http://dev.bukkit.org/search/?scope=projects&search=" + search);
+                    u = new URL("http://dev.bukkit.org/search/?scope=projects&search=" + search + "&page=" + page);
                 } catch (MalformedURLException e) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Malformed search term!");
                     return true;
                 }
-                BufferedReader br;
+                final BufferedReader br;
                 try {
                     br = new BufferedReader(new InputStreamReader(u.openStream()));
                 } catch (IOException e) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Internal input/output error. Please try again.");
                     return true;
                 }
-                String inputLine;
-                StringBuilder content = new StringBuilder();
-                try {
-                    while ((inputLine = br.readLine()) != null) content.append(inputLine);
-                } catch (IOException e) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "Internal input/output error. Please try again.");
-                    return true;
-                }
-                cs.sendMessage(MessageColor.POSITIVE + "Project name" + MessageColor.NEUTRAL + " - tag");
-                for (int i = 0; i < 5; i++) {
-                    String project = StringUtils.substringBetween(content.toString(), " row-joined-to-next\">", "</tr>");
-                    String base = StringUtils.substringBetween(project, "<td class=\"col-search-entry\">", "</td>");
-                    if (base == null) {
-                        if (i == 0) cs.sendMessage(MessageColor.NEGATIVE + "No results found.");
-                        return true;
+                final Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        try {
+                            while ((inputLine = br.readLine()) != null) content.append(inputLine);
+                        } catch (IOException e) {
+                            cs.sendMessage(MessageColor.NEGATIVE + "Internal input/output error. Please try again.");
+                            return;
+                        }
+                        cs.sendMessage(MessageColor.POSITIVE + "Project name" + MessageColor.NEUTRAL + " - tag");
+                        for (int i = 0; i < 20; i++) {
+                            String project = StringUtils.substringBetween(content.toString(), " row-joined-to-next\">", "</tr>");
+                            String base = StringUtils.substringBetween(project, "<td class=\"col-search-entry\">", "</td>");
+                            if (base == null) {
+                                if (i == 0) cs.sendMessage(MessageColor.NEGATIVE + "No results found.");
+                                return;
+                            }
+                            Pattern p = Pattern.compile("<h2><a href=\"/bukkit-plugins/([\\W\\w]+)/\">([\\w\\W]+)</a></h2>");
+                            Matcher m = p.matcher(base);
+                            if (m == null) {
+                                if (i == 0) cs.sendMessage(MessageColor.NEGATIVE + "No results found.");
+                                return;
+                            }
+                            m.find();
+                            String name = m.group(2).replaceAll("</?\\w+>", "");
+                            String tag = m.group(1);
+                            int beglen = StringUtils.substringBefore(content.toString(), base).length();
+                            content = new StringBuilder(content.substring(beglen + project.length()));
+                            cs.sendMessage(MessageColor.POSITIVE + name + MessageColor.NEUTRAL + " - " + tag);
+                        }
                     }
-                    Pattern p = Pattern.compile("<h2><a href=\"/bukkit-plugins/([\\W\\w]+)/\">([\\w\\W]+)</a></h2>");
-                    Matcher m = p.matcher(base);
-                    if (m == null) {
-                        if (i == 0) cs.sendMessage(MessageColor.NEGATIVE + "No results found.");
-                        return true;
-                    }
-                    m.find();
-                    String name = m.group(2).replaceAll("</?\\w+>", "");
-                    String tag = m.group(1);
-                    int beglen = StringUtils.substringBefore(content.toString(), base).length();
-                    content = new StringBuilder(content.substring(beglen + project.length()));
-                    cs.sendMessage(MessageColor.POSITIVE + name + MessageColor.NEUTRAL + " - " + tag);
-                }
+                };
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
                 return true;
             } else if (subcmd.equalsIgnoreCase("delete")) {
                 if (!plugin.ah.isAuthorized(cs, "rcmds.pluginmanager.delete")) {
