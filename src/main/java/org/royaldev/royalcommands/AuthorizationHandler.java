@@ -75,7 +75,7 @@ public class AuthorizationHandler {
     }
 
     private boolean iACommandSender(CommandSender cs, String node) {
-        if (plugin.vh.usingVault() && permissionsLoaded()) plugin.vh.getPermission().has(cs, node);
+        if (plugin.vh.usingVault() && permissionsLoaded()) return plugin.vh.getPermission().has(cs, node);
         return cs.hasPermission(node);
     }
 
