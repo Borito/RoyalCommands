@@ -486,6 +486,8 @@ public class RUtils {
     }
 
     private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle, boolean silent) {
+        if (!Config.vehicleCrossWorldTeleport && !l.getWorld().getName().equals(vehicle.getWorld().getName()))
+            return "Passenger on vehicle cannot teleport to a different world!";
         vehicle.eject();
         if (!silent && passenger instanceof Player) {
             final Player p = (Player) passenger;

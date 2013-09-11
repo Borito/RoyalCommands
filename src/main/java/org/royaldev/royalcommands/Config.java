@@ -72,6 +72,7 @@ public class Config {
         useWelcome = c.getBoolean("enable_welcome_message", true);
         useWhitelist = c.getBoolean("use_whitelist", false);
         useWorldManager = c.getBoolean("worldmanager.enabled", true);
+        vehicleCrossWorldTeleport = c.getBoolean("vehicle_teleport.cross_world", false);
         vehicleTeleportAnimals = c.getBoolean("vehicle_teleport.animals", true);
         vehicleTeleportEnabled = c.getBoolean("vehicle_teleport.enabled", true);
         vehicleTeleportPlayers = c.getBoolean("vehicle_teleport.players", false);
@@ -219,6 +220,7 @@ public class Config {
     public static boolean useWelcome;
     public static boolean useWhitelist;
     public static boolean useWorldManager;
+    public static boolean vehicleCrossWorldTeleport;
     public static boolean vehicleTeleportAnimals;
     public static boolean vehicleTeleportEnabled;
     public static boolean vehicleTeleportPlayers;

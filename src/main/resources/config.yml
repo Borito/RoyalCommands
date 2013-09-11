@@ -318,6 +318,8 @@ teleport_sound:
 vehicle_teleport:
   # If true, teleporting players on vehicles will teleport their vehicle
   enabled: true
+  # Allow teleporting on vehicles between worlds?
+  cross_world: false
   # Enable on vehicles?
   vehicles: true
   # Enable on animals?
