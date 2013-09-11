@@ -43,8 +43,7 @@ public class CmdDeafen implements CommandExecutor {
                 return true;
             }
             PConfManager pcm = PConfManager.getPConfManager(t);
-            Boolean isDeaf = pcm.getBoolean("deaf");
-            if (isDeaf == null) isDeaf = false;
+            final boolean isDeaf = pcm.getBoolean("deaf");
             pcm.set("deaf", !isDeaf);
             cs.sendMessage(MessageColor.POSITIVE + "Toggled deaf " + MessageColor.NEUTRAL + BooleanUtils.toStringOnOff(!isDeaf) + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             return true;

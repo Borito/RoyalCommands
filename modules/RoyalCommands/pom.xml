@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.royaldev</groupId>
     <artifactId>royalcommands</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.0-SNAPSHOT</version>
     <name>RoyalCommands</name>
     <url>https://github.com/RoyalDev/RoyalCommands</url>
     <issueManagement>
@@ -226,7 +226,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyyMMdd.kkmmss</maven.build.timestamp.format>
         <BUILD_NUMBER>local-${maven.build.timestamp}</BUILD_NUMBER>
-        <!--<pluginversion>${project.version}-${BUILD_NUMBER}</pluginversion>-->
-        <pluginversion>${project.version}</pluginversion>
+        <pluginversion>${project.version}-${BUILD_NUMBER}</pluginversion>
     </properties>
 </project>
