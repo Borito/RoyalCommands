@@ -57,9 +57,8 @@ dump_use_inv: true
 # Should warps be limited by permissions? rcmds.warp.warpname
 warp_permissions: false
 
-# Commands to be issued before a player is kicked when banned. These only run on
-# permabans. All commands are sent by the player that did the banning, unless the command
-# is prefixed with "@" - those are sent from console.
+# Commands to be issued before a player is kicked when banned. These only run on permabans. All commands are sent by the
+# player that did the banning, unless the command is prefixed with "@" - those are sent from console.
 on_ban:
   - "@lwc admin purge {name}" # Does /lwc admin purge {name} in the console.
   - "me ultrabanned {name}" # Does /me ultrabanned {name} from the banner.
@@ -100,7 +99,11 @@ allow_trade_gamemode: false
 motd_on_login: true
 
 # The message of the day
-motd: ["&dWelcome to {servername}, {dispname}!", "&fThere are &8{players}&f players online:", "{playerlist}", "You are in the world &8{world}&f."]
+motd:
+- "&dWelcome to {servername}, {dispname}!"
+- "&fThere are &8{players}&r players online:"
+- "{playerlist}"
+- "You are in the world &8{world}&r."
 
 ###
 # Kits #
@@ -347,10 +350,8 @@ command_cooldowns:
 cooldowns_match_aliases: true
 
 # Creates cooldowns for global teleports
-# Note that this will apply a cooldown to EVERY teleport
-# done, and not just the /tp command. Whether it be a
-# plugin like NoCheat teleporting you back (!), or Towny
-# spawns, it will apply the cooldown.
+# Note that this will apply a cooldown to EVERY teleport done, and not just the /tp command. Whether it be a plugin like
+# NoCheat teleporting you back (!), or Towny spawns, it will apply the cooldown.
 # 0 is off
 global_teleport_cooldown: 0
 
@@ -358,8 +359,7 @@ global_teleport_cooldown: 0
 # Dynamic Whitelist
 ###
 
-# The dynamic whitelist can be altered ingame and will be
-# reloaded upon /rcmds.
+# The dynamic whitelist can be altered ingame and will be reloaded upon /rcmds.
 
 # Use the dynamic whitelist?
 use_whitelist: false
@@ -410,9 +410,8 @@ change_nametag: false
 
 worldmanager:
   enabled: true
-  # This allows inventories to be separated on a per-world basis. Groups must be created
-  # for each group of worlds (a group can consist of only one world). These groups will
-  # have different inventories.
+  # This allows inventories to be separated on a per-world basis. Groups must be created for each group of worlds
+  # (a group is allowed to consist of only one world). These groups will have different inventories.
   inventory_separation:
     enabled: false
     separate_xp: true
