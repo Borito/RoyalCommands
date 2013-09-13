@@ -1086,6 +1086,12 @@ reflectcommands:
     version_added: 0.2.8
     class: CmdEnderChest
 
+  recipe:
+    description: Displays recipes for any item.
+    usage: /<command> [item]
+    version_added: 3.3.0
+    class: CmdRecipe
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1576,6 +1582,9 @@ permissions:
     default: op
   rcmds.enderchest:
     description: Allows you to view a player's ender chest.
+    default: op
+  rcmds.recipe:
+    description: Allows you to view recipes of any item.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -2153,6 +2162,7 @@ permissions:
       rcmds.deletebanhistory: true
       rcmds.publicassign: true
       rcmds.enderchest: true
+      rcmds.recipe: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2451,6 +2461,7 @@ permissions:
       rcmds.deletebanhistory: true
       rcmds.publicassign: true
       rcmds.enderchest: true
+      rcmds.recipe: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
