@@ -57,8 +57,7 @@ public class CmdAccountStatus implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + ex.getMessage());
                 return true;
             }
-            String status = (isPremium) ? "premium" : "not premium";
-            cs.sendMessage(MessageColor.NEUTRAL + name + MessageColor.POSITIVE + " is " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.NEUTRAL + name + MessageColor.POSITIVE + " has " + MessageColor.NEUTRAL + ((isPremium) ? "paid" : "not paid") + MessageColor.POSITIVE + " for Minecraft.");
             return true;
         }
         return false;
