@@ -271,6 +271,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void invClose(InventoryCloseEvent e) {
+        if (e.getInventory() == null || e.getInventory().getName() == null) return; // modpacks
         if (!e.getInventory().getName().equals("Backpack")) return;
         InventoryHolder ih = e.getInventory().getHolder();
         if (!(ih instanceof CommandSender)) return;
