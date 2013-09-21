@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import com.google.common.io.Files;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -615,9 +616,11 @@ public class CmdPluginManager implements CommandExecutor {
                             if (!fi.getName().endsWith(".jar")) continue;
 //                          String extraFile = (f.getParent().equals(fi.getParent())) ? "" : fi.getParentFile().getName() + File.separator;
                             cs.sendMessage(MessageColor.POSITIVE + "Moving " + MessageColor.NEUTRAL + fi.getName() + MessageColor.POSITIVE + " to plugins folder...");
-                            boolean s = fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
-                            if (!s)
-                                cs.sendMessage(MessageColor.NEGATIVE + "Couldn't move " + MessageColor.NEUTRAL + fi.getName() + MessageColor.NEGATIVE + "!");
+                            try {
+                                Files.move(fi, new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
+                            } catch (IOException e) {
+                                cs.sendMessage(MessageColor.NEGATIVE + "Couldn't move " + MessageColor.NEUTRAL + fi.getName() + MessageColor.NEGATIVE + ": " + MessageColor.NEUTRAL + e.getMessage());
+                            }
                         }
                         cs.sendMessage(MessageColor.POSITIVE + "Removing temporary folder...");
                         RUtils.deleteDirectory(f.getParentFile());
@@ -694,9 +697,11 @@ public class CmdPluginManager implements CommandExecutor {
                             if (!fi.getName().endsWith(".jar")) continue;
 //                          String extraFile = (f.getParent().equals(fi.getParent())) ? "" : fi.getParentFile().getName() + File.separator;
                             cs.sendMessage(MessageColor.POSITIVE + "Moving " + MessageColor.NEUTRAL + fi.getName() + MessageColor.POSITIVE + " to plugins folder...");
-                            boolean s = fi.renameTo(new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
-                            if (!s)
-                                cs.sendMessage(MessageColor.NEGATIVE + "Couldn't move " + MessageColor.NEUTRAL + fi.getName() + MessageColor.NEGATIVE + "!");
+                            try {
+                                Files.move(fi, new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
+                            } catch (IOException e) {
+                                cs.sendMessage(MessageColor.NEGATIVE + "Couldn't move " + MessageColor.NEUTRAL + fi.getName() + MessageColor.NEGATIVE + ": " + MessageColor.NEUTRAL + e.getMessage());
+                            }
                         }
                         cs.sendMessage(MessageColor.POSITIVE + "Removing temporary folder...");
                         RUtils.deleteDirectory(f.getParentFile());
