@@ -13,6 +13,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 import java.io.File;
 import java.io.IOException;
 
+@ReflectCommand
 public class CmdSetJail implements CommandExecutor {
 
     private final RoyalCommands plugin;

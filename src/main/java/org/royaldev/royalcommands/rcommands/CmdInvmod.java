@@ -12,6 +12,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.WorldManager;
 
+@ReflectCommand
 public class CmdInvmod implements CommandExecutor {
 
     private final RoyalCommands plugin;

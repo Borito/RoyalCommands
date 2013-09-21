@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+@ReflectCommand
 public class CmdAccountStatus implements CommandExecutor {
 
     private final RoyalCommands plugin;

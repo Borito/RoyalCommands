@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+@ReflectCommand
 public class CmdHelp implements CommandExecutor {
 
     private final RoyalCommands plugin;

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@ReflectCommand
 public class CmdKit implements CommandExecutor {
 
     private final RoyalCommands plugin;

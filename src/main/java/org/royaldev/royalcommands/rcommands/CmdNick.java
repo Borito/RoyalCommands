@@ -12,6 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 @SuppressWarnings("unused")
+@ReflectCommand
 public class CmdNick implements CommandExecutor {
 
     private final RoyalCommands plugin;

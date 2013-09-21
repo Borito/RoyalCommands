@@ -16,6 +16,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 import java.text.DecimalFormat;
 import java.util.Date;
 
+@ReflectCommand
 public class CmdWhois implements CommandExecutor {
 
     private final RoyalCommands plugin;

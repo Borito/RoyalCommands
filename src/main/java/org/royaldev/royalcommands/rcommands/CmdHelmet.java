@@ -13,6 +13,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 
+@ReflectCommand
 public class CmdHelmet implements CommandExecutor {
 
     private final RoyalCommands plugin;

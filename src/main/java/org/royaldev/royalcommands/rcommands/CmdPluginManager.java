@@ -46,6 +46,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@ReflectCommand
 public class CmdPluginManager implements CommandExecutor {
 
     private final RoyalCommands plugin;

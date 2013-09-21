@@ -9,6 +9,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
+@ReflectCommand
 public class CmdRcmds implements CommandExecutor {
 
     private final RoyalCommands plugin;

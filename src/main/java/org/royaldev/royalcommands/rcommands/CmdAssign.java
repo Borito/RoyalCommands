@@ -13,6 +13,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 import java.util.ArrayList;
 import java.util.List;
 
+@ReflectCommand
 public class CmdAssign implements CommandExecutor {
 
     private final RoyalCommands plugin;

@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+@ReflectCommand
 public class CmdFindIP implements CommandExecutor {
 
     private final RoyalCommands plugin;

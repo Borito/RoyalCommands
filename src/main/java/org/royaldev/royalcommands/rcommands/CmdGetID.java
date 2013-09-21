@@ -12,6 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.Map;
 
+@ReflectCommand
 public class CmdGetID implements CommandExecutor {
 
     private final RoyalCommands plugin;

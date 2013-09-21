@@ -11,6 +11,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.List;
 
+@ReflectCommand
 public class CmdListWarns implements CommandExecutor {
 
     private final RoyalCommands plugin;

@@ -15,6 +15,7 @@ import org.royaldev.royalcommands.configuration.ConfManager;
 import java.util.ArrayList;
 import java.util.List;
 
+@ReflectCommand
 public class CmdPublicAssign implements CommandExecutor {
 
     private final RoyalCommands plugin;

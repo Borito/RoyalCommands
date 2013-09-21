@@ -12,6 +12,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.Date;
 
+@ReflectCommand
 public class CmdBan implements CommandExecutor {
 
     private final RoyalCommands plugin;

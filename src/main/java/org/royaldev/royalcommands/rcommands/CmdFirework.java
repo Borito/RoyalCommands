@@ -15,6 +15,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import static org.royaldev.royalcommands.Converters.toInt;
 
+@ReflectCommand
 public class CmdFirework implements CommandExecutor {
 
     private final RoyalCommands plugin;

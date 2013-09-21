@@ -15,6 +15,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 import java.io.File;
 import java.util.Random;
 
+@ReflectCommand
 public class CmdWorldManager implements CommandExecutor {
 
     private final RoyalCommands plugin;

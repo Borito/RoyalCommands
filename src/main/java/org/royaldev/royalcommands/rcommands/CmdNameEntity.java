@@ -11,6 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 import java.util.HashMap;
 import java.util.Map;
 
+@ReflectCommand
 public class CmdNameEntity implements CommandExecutor {
 
     private final RoyalCommands plugin;

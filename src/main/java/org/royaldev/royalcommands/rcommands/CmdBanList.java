@@ -10,6 +10,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.Set;
 
+@ReflectCommand
 public class CmdBanList implements CommandExecutor {
 
     private final RoyalCommands plugin;

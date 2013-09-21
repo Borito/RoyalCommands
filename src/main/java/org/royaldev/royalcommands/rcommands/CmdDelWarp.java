@@ -9,6 +9,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.ConfManager;
 
+@ReflectCommand
 public class CmdDelWarp implements CommandExecutor {
 
     private final RoyalCommands plugin;

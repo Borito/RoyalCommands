@@ -11,6 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.text.DecimalFormat;
 
+@ReflectCommand
 public class CmdLag implements CommandExecutor {
 
     private final RoyalCommands plugin;

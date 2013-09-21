@@ -10,6 +10,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
+@ReflectCommand
 public class CmdMobIgnore implements CommandExecutor {
 
     private final RoyalCommands plugin;

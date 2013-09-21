@@ -12,6 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.Random;
 
+@ReflectCommand
 public class CmdSlap implements CommandExecutor {
 
     private final RoyalCommands plugin;

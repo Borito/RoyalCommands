@@ -12,6 +12,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 import java.util.ArrayList;
 import java.util.List;
 
+@ReflectCommand
 public class CmdDeleteBanHistory implements CommandExecutor {
 
     private final RoyalCommands plugin;

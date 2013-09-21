@@ -14,6 +14,7 @@ import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 
 import java.util.HashMap;
 
+@ReflectCommand
 public class CmdGive implements CommandExecutor {
 
     private final RoyalCommands plugin;

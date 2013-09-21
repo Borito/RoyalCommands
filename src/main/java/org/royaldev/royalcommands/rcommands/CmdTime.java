@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+@ReflectCommand
 public class CmdTime implements CommandExecutor {
 
     static RoyalCommands plugin;

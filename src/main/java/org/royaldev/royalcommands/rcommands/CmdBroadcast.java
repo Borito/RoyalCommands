@@ -7,6 +7,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+@ReflectCommand
 public class CmdBroadcast implements CommandExecutor {
 
     private final RoyalCommands plugin;

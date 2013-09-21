@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@ReflectCommand
 public class CmdWarn implements CommandExecutor {
 
     private final RoyalCommands plugin;

@@ -17,6 +17,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.HashMap;
 
+@ReflectCommand
 public class CmdDump implements CommandExecutor {
 
     private final RoyalCommands plugin;

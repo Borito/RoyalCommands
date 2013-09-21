@@ -11,6 +11,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+@ReflectCommand
 public class CmdSci implements CommandExecutor {
 
     private final RoyalCommands plugin;

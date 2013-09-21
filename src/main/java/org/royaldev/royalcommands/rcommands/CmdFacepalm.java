@@ -9,6 +9,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+@ReflectCommand
 public class CmdFacepalm implements CommandExecutor {
 
     private final RoyalCommands plugin;

@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@ReflectCommand
 public class CmdAfk implements CommandExecutor {
 
     private final RoyalCommands plugin;

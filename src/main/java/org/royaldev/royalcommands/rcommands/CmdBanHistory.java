@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@ReflectCommand
 public class CmdBanHistory implements CommandExecutor {
 
     private final RoyalCommands plugin;

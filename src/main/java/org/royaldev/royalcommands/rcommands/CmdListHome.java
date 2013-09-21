@@ -13,6 +13,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.Map;
 
+@ReflectCommand
 public class CmdListHome implements CommandExecutor {
 
     private final RoyalCommands plugin;

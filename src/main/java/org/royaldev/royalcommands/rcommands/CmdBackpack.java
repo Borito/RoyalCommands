@@ -12,6 +12,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @SuppressWarnings("unchecked")
+@ReflectCommand
 public class CmdBackpack implements CommandExecutor {
 
     private final RoyalCommands plugin;

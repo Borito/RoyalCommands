@@ -15,6 +15,7 @@ import org.royaldev.royalcommands.configuration.ConfManager;
 
 import java.util.Map;
 
+@ReflectCommand
 public class CmdWarp implements CommandExecutor {
 
     private final RoyalCommands plugin;

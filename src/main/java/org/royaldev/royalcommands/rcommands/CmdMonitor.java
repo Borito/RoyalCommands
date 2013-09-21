@@ -14,6 +14,7 @@ import org.royaldev.royalcommands.listeners.MonitorListener;
 import java.util.HashMap;
 import java.util.Map;
 
+@ReflectCommand
 public class CmdMonitor implements CommandExecutor {
 
     private final RoyalCommands plugin;

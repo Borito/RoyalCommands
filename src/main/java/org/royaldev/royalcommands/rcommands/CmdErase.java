@@ -21,6 +21,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.List;
 
+@ReflectCommand
 public class CmdErase implements CommandExecutor {
 
     private final RoyalCommands plugin;

@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+@ReflectCommand
 public class CmdRules implements CommandExecutor {
 
     private final RoyalCommands plugin;

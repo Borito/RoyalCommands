@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@ReflectCommand
 public class CmdBack implements CommandExecutor {
 
     private final RoyalCommands plugin;

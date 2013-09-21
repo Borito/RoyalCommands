@@ -11,6 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.HashMap;
 
+@ReflectCommand
 public class CmdInvsee implements CommandExecutor {
 
     private final RoyalCommands plugin;

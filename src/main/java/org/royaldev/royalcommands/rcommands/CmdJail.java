@@ -15,6 +15,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 import java.util.HashMap;
 import java.util.Map;
 
+@ReflectCommand
 public class CmdJail implements CommandExecutor {
 
     private final RoyalCommands plugin;

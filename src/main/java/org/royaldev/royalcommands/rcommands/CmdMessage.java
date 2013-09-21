@@ -11,6 +11,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.HashMap;
 
+@ReflectCommand
 public class CmdMessage implements CommandExecutor {
 
     private final RoyalCommands plugin;
