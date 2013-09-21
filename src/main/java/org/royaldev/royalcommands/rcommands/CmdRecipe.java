@@ -114,7 +114,8 @@ public class CmdRecipe implements CommandExecutor {
                 workbenches.add(i);
             }
             final Runnable r = new Runnable() {
-                int currentRecipe = 0;
+                private int currentRecipe = 0;
+                private boolean display = true;
 
                 private void setRecipeMaxStackSize(final Player p, final int size) {
                     final Inventory i = p.getOpenInventory().getTopInventory();
@@ -127,12 +128,14 @@ public class CmdRecipe implements CommandExecutor {
 
                 @Override
                 public void run() {
+                    if (!display) return; // let's not open new workbenches, as that can cause the items to disappear
                     if (!tasks.containsKey(p.getName())) return;
                     if (currentRecipe >= workbenches.size()) currentRecipe = 0;
                     setRecipeMaxStackSize(p, 65);
                     p.openInventory(workbenches.get(currentRecipe));
                     setRecipeMaxStackSize(p, 64);
                     currentRecipe++;
+                    if (workbenches.size() == 1) display = false;
                 }
             };
             int taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, r, 0L, 30L);
