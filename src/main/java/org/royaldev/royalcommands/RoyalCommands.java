@@ -54,6 +54,7 @@ import org.royaldev.royalcommands.listeners.ServerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.nms.api.NMSFace;
+import org.royaldev.royalcommands.rcommands.ReflectCommand;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
@@ -477,6 +478,7 @@ public class RoyalCommands extends JavaPlugin {
             if (className == null) continue;
             try {
                 final Class<?> clazz = Class.forName("org.royaldev.royalcommands.rcommands." + className);
+                if (!clazz.isAnnotationPresent(ReflectCommand.class)) continue;
                 final Constructor c = clazz.getConstructor(RoyalCommands.class);
                 final Object o = c.newInstance(this);
                 if (!(o instanceof CommandExecutor)) continue;
