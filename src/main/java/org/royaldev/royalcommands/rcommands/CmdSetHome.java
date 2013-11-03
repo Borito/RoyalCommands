@@ -57,9 +57,7 @@ public class CmdSetHome implements CommandExecutor {
             pcm.setLocation(homePath, l);
             if (args.length > 0) {
                 p.sendMessage(MessageColor.POSITIVE + "Home " + MessageColor.NEUTRAL + name + MessageColor.POSITIVE + " set.");
-            } else {
-                p.sendMessage(MessageColor.POSITIVE + "Home set.");
-            }
+            } else p.sendMessage(MessageColor.POSITIVE + "Home set.");
             return true;
         }
         return false;

@@ -1055,35 +1055,35 @@ reflectcommands:
     description: Finds players with a matching IP address.
     usage: /<command> [ip]
     aliases: [fip]
-    version_added: 0.2.8
+    version_added: 3.2.0
     class: CmdFindIP
 
   map:
     description: Adjusts maps.
     usage: /<command> [subcommands]
     aliases: [mapadjust]
-    version_added: 0.2.8
+    version_added: 3.2.0
     class: CmdMap
 
   deletebanhistory:
     description: Deletes ban history records.
     usage: /<command> [player] [ban#]
     aliases: [dbh, rbh, removebanhistory]
-    version_added: 0.2.8
+    version_added: 3.2.0
     class: CmdDeleteBanHistory
 
   publicassign:
     description: Assigns commands to items that anyone with the item can use.
     usage: /<command> [command|-#|~]
     aliases: [pas, ppt, publicpowertool]
-    version_added: 0.2.8
+    version_added: 3.2.0
     class: CmdPublicAssign
 
   enderchest:
     description: Shows the ender chest of a player.
     usage: /<command> [player] [world]
     aliases: [endchest, echest, ec]
-    version_added: 0.2.8
+    version_added: 3.2.0
     class: CmdEnderChest
 
   recipe:
@@ -1091,6 +1091,20 @@ reflectcommands:
     usage: /<command> [item]
     version_added: 3.3.0
     class: CmdRecipe
+
+  spawninfo:
+    description: Displays information about spawned items.
+    usage: /<command> [subcommand]
+    aliases: [si]
+    version_added: 3.3.0
+    class: CmdSpawnInfo
+
+  attributes:
+    description: Modifies attributes placed on items.
+    usage: /<command> [subcommand]
+    aliases: [attribute, attrs, attr]
+    version_added: 3.3.0
+    class: CmdAttributes
 
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
@@ -1585,6 +1599,12 @@ permissions:
     default: op
   rcmds.recipe:
     description: Allows you to view recipes of any item.
+    default: op
+  rcmds.spawninfo:
+    description: Allows you to get information about spawned items.
+    default: op
+  rcmds.attributes:
+    description: Allows you to modify item attributes.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -2163,6 +2183,8 @@ permissions:
       rcmds.publicassign: true
       rcmds.enderchest: true
       rcmds.recipe: true
+      rcmds.spawninfo: true
+      rcmds.attributes: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2462,6 +2484,8 @@ permissions:
       rcmds.publicassign: true
       rcmds.enderchest: true
       rcmds.recipe: true
+      rcmds.spawninfo: true
+      rcmds.attributes: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

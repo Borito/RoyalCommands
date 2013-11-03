@@ -30,14 +30,11 @@ public class CmdSetarmor implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-
             if (!(cs instanceof Player)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
-
-            Player player;
-
+            final Player player;
             if (args.length > 1) {
                 if (!plugin.ah.isAuthorized(cs, "rcmds.others.setarmor")) {
                     RUtils.dispNoPerms(cs);
@@ -53,51 +50,13 @@ public class CmdSetarmor implements CommandExecutor {
                     return true;
                 }
             } else player = (Player) cs;
-
             String set = args[0];
-
-            ItemStack[] diamond;
-            diamond = new ItemStack[4];
-            diamond[3] = new ItemStack(Material.DIAMOND_HELMET);
-            diamond[2] = new ItemStack(Material.DIAMOND_CHESTPLATE);
-            diamond[1] = new ItemStack(Material.DIAMOND_LEGGINGS);
-            diamond[0] = new ItemStack(Material.DIAMOND_BOOTS);
-
-            ItemStack[] gold;
-            gold = new ItemStack[4];
-            gold[3] = new ItemStack(Material.GOLD_HELMET);
-            gold[2] = new ItemStack(Material.GOLD_CHESTPLATE);
-            gold[1] = new ItemStack(Material.GOLD_LEGGINGS);
-            gold[0] = new ItemStack(Material.GOLD_BOOTS);
-
-            ItemStack[] iron;
-            iron = new ItemStack[4];
-            iron[3] = new ItemStack(Material.IRON_HELMET);
-            iron[2] = new ItemStack(Material.IRON_CHESTPLATE);
-            iron[1] = new ItemStack(Material.IRON_LEGGINGS);
-            iron[0] = new ItemStack(Material.IRON_BOOTS);
-
-            ItemStack[] leather;
-            leather = new ItemStack[4];
-            leather[3] = new ItemStack(Material.LEATHER_HELMET);
-            leather[2] = new ItemStack(Material.LEATHER_CHESTPLATE);
-            leather[1] = new ItemStack(Material.LEATHER_LEGGINGS);
-            leather[0] = new ItemStack(Material.LEATHER_BOOTS);
-
-            ItemStack[] chain;
-            chain = new ItemStack[4];
-            chain[3] = new ItemStack(Material.CHAINMAIL_HELMET);
-            chain[2] = new ItemStack(Material.CHAINMAIL_CHESTPLATE);
-            chain[1] = new ItemStack(Material.CHAINMAIL_LEGGINGS);
-            chain[0] = new ItemStack(Material.CHAINMAIL_BOOTS);
-
-            ItemStack[] none;
-            none = new ItemStack[4];
-            none[3] = new ItemStack(0);
-            none[2] = new ItemStack(0);
-            none[1] = new ItemStack(0);
-            none[0] = new ItemStack(0);
-
+            ItemStack[] diamond = new ItemStack[]{new ItemStack(Material.DIAMOND_HELMET), new ItemStack(Material.DIAMOND_CHESTPLATE), new ItemStack(Material.DIAMOND_LEGGINGS), new ItemStack(Material.DIAMOND_BOOTS)};
+            ItemStack[] gold = new ItemStack[]{new ItemStack(Material.GOLD_HELMET), new ItemStack(Material.GOLD_CHESTPLATE), new ItemStack(Material.GOLD_LEGGINGS), new ItemStack(Material.GOLD_BOOTS)};
+            ItemStack[] iron = new ItemStack[]{new ItemStack(Material.IRON_HELMET), new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_BOOTS)};
+            ItemStack[] leather = new ItemStack[]{new ItemStack(Material.LEATHER_HELMET), new ItemStack(Material.LEATHER_CHESTPLATE), new ItemStack(Material.LEATHER_LEGGINGS), new ItemStack(Material.LEATHER_BOOTS)};
+            ItemStack[] chain = new ItemStack[]{new ItemStack(Material.CHAINMAIL_HELMET), new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.CHAINMAIL_BOOTS)};
+            ItemStack[] none = new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)};
             if (set.equalsIgnoreCase("diamond")) {
                 if (!plugin.ah.isAuthorized(cs, "rcmds.setarmor.diamond")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
