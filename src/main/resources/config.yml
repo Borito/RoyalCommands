@@ -4,389 +4,437 @@
 # General section #
 ###
 
-# Disable /getip and /compareip?
-disable_getip: false
+general:
+  # Smooth time transitions?
+  use_smooth_time: true
+  # Override natural respawn location with the world's spawn?
+  override_respawn: true
+  # At what percentage interval should /findip alert the command sender about progress?
+  # /findip will attempt to be as close to this percent when it sends updates (if this is 25, it will send updates at
+  # 25%, 50%, 75%, and 100%)
+  findip_alert_percentage: 25.0
 
-# Whether to show commands in console
-view_commands: true
+###
+# Security #
+###
 
-# Use the rcmds.build perm?
-use_build_perm: false
+security:
+  # Disable /getip and /compareip?
+  disable_getip: false
+  # Use the rcmds.build perm?
+  use_build_perm: false
 
-# Drop items that don't fit in inventory on /i or /give?
-drop_extras: false
+###
+# Plugins #
+###
 
-# Should /explode create fire around the explosion?
-explode_fire: false
+plugins:
+  # Use VanishNoPacket integration?
+  use_vanish: true
 
-# Custom /help (help.txt - same format as rules.txt)?
-use_custom_help: false
+###
+# /helm #
+###
 
-# Use VanishNoPacket integration?
-use_vanish: true
+helm:
+  # Require the player to have the item for /helm in their inventory?
+  require_item: false
 
-# Amount of lines to display in /help per page
-help_lines: 5
+###
+# Help options #
+###
 
-# Require the player to have the item for /helm in their inventory?
-helm_require_item: false
+help:
+  # Custom /help (help.txt - same format as rules.txt)?
+  custom:
+    enabled: false
+  # Amount of lines to display in /help per page
+  lines: 5
 
-# Check to see if the version of CraftBukkit you're running is safe?
-version_check: true
+###
+# Updates #
+###
 
-# Check for new versions of RoyalCommands?
-update_check: false
+updates:
+  # Check to see if the version of CraftBukkit you're running is safe?
+  version_check: true
+  # Check for new versions of RoyalCommands?
+  update_check: false
 
-# Commands to not show up if command logging is on
-# Please use all lowercase and no preceding /
-command_log_blacklist:
-- login
-- l
+###
+# Backpack #
+###
 
-# Reset /backpack on death?
-reset_backpack_death: false
+backpack:
+  # Reset /backpack on death?
+  reset_on_death: false
 
-# Should /dump create a new chest or dump into an existing chest?
-# Checks if player can build via WorldGuard, and checks if player can access chest via
-# LWC.
-dump_create_chest: true
+###
+# /dump #
+###
 
-# Should /dump use chests from inventory if dump_create_chest is true?
-dump_use_inv: true
+dump:
+  # Should /dump create a new chest or dump into an existing chest?
+  # Checks if player can build via WorldGuard, and checks if player can access chest via
+  # LWC.
+  create_chest: true
+  # Should /dump use chests from inventory if dump_create_chest is true?
+  use_inv: true
 
-# Should warps be limited by permissions? rcmds.warp.warpname
-warp_permissions: false
+###
+# Warps #
+###
 
-# Commands to be issued before a player is kicked when banned. These only run on permabans. All commands are sent by the
-# player that did the banning, unless the command is prefixed with "@" - those are sent from console.
-on_ban:
-  - "@lwc admin purge {name}" # Does /lwc admin purge {name} in the console.
-  - "me ultrabanned {name}" # Does /me ultrabanned {name} from the banner.
+warps:
+  # Should warps be limited by permissions? rcmds.warp.warpname
+  explicit_permissions: false
 
-# Specify custom update tags for plugins to be checked in PluginManager updates.
-# PluginName: "tag-on-bukkitdev"
-custom_plugin_tags:
-  #ExamplePlugin: "example-plugin"
+###
+# Trade #
+###
 
-# Maximum amount of locations to save for /back.
-# Can be utilized with /back location#.
-# Set to 1 for only /back.
-max_back_stack: 5
+trade:
+  # Allow trades between players with different gamemodes?
+  between_gamemodes: false
 
-# Worlds to disable /back from registering in.
-disabled_back_worlds:
-- someworldhere
+###
+# PluginManager #
+###
 
-# Smooth time transitions?
-use_smooth_time: true
-
-# Override natural respawn location with the world's spawn?
-override_respawn: true
-
-# At what percentage interval should /findip alert the command sender about progress?
-# /findip will attempt to be as close to this percent when it sends updates (if this is 25, it will send updates at
-# 25%, 50%, 75%, and 100%)
-findip_alert_percentage: 25.0
-
-# Allow trades between players with different gamemodes?
-allow_trade_gamemode: false
+pluginmanager:
+  # Specify custom update tags for plugins to be checked in PluginManager updates.
+  # PluginName: "tag-on-bukkitdev"
+  custom_tags:
+    #ExamplePlugin: "example-plugin"
 
 ###
 # MOTD #
 ###
 
-# Show /motd on login?
-motd_on_login: true
-
-# The message of the day
 motd:
-- "&dWelcome to {servername}, {dispname}!"
-- "&fThere are &8{players}&r players online:"
-- "{playerlist}"
-- "You are in the world &8{world}&r."
+  options:
+    # Show /motd on login?
+    display_on_login: true
+  # The message of the day
+  content:
+  - "&dWelcome to {servername}, {dispname}!"
+  - "&fThere are &8{players}&r players online:"
+  - "{playerlist}"
+  - "You are in the world &8{world}&r."
 
 ###
 # Kits #
 ###
 
-# Use rcmds.kit.[kit-name] (true) or just rcmds.kit (false)
-use_exclusive_kit_perms: false
-
-# Define kits here - only use ID numbers, not names & you MUST use amounts (5:1 is one of wood)
 kits:
-  # The kit "default" has 10 wood, 5 stone, 25 dirt, and 64 cobblestone. <item>:<amount>
-  default:
-    items: ["5:10", "1:5", "3:25", "4:64", "268:1"]
-    # Leave a blank string ("") for no enchants. This list is parallel with the items list
-    enchantments: ["", "", "", "", "damage_all:2,durability:1"]
-    names: ["Wood of Champions", "", "", "", "Skyforge Wood Sword"]
-    lore: ["", "", "", "", "Wooden sword forged in the Skyforge"]
-    # 1 = 1 second
-    # 60 = 1 minute
-    # 3600 = 1 hour
-    # 86400 = 1 day
-    # 604800 = 1 week
-    cooldown: 86400
-  # The kit "wool" has 64 red wool and 35 black wool <item>:<amount>:<data>
-  wool:
-    items: ["35:64:14", "35:64:15"]
-  # This kit can only be used once (cooldown of -1)
-  onetime:
-    items: ["268:1"]
-    cooldown: -1
+  options:
+    # Use rcmds.kit.[kit-name] (true) or just rcmds.kit (false)
+    exclusive_perms: false
+  # Define kits here - only use ID numbers, not names & you MUST use amounts (5:1 is one of wood)
+  list:
+    # The kit "default" has 10 wood, 5 stone, 25 dirt, and 64 cobblestone. <item>:<amount>
+    default:
+      items: ["5:10", "1:5", "3:25", "4:64", "268:1"]
+      # Leave a blank string ("") for no enchants. This list is parallel with the items list
+      enchantments: ["", "", "", "", "damage_all:2,durability:1"]
+      names: ["Wood of Champions", "", "", "", "Skyforge Wood Sword"]
+      lore: ["", "", "", "", "Wooden sword forged in the Skyforge"]
+      # 1 = 1 second
+      # 60 = 1 minute
+      # 3600 = 1 hour
+      # 86400 = 1 day
+      # 604800 = 1 week
+      cooldown: 86400
+    # The kit "wool" has 64 red wool and 35 black wool <item>:<amount>:<data>
+    wool:
+      items: ["35:64:14", "35:64:15"]
+    # This kit can only be used once (cooldown of -1)
+    onetime:
+      # Remember to include " around colons
+      items: ["268:1"]
+      cooldown: -1
 
 ###
 # Messages #
 ###
 
-colors:
-  positive: BLUE
-  negative: RED
-  neutral: GRAY
-  reset: RESET
-
-# Message to be shown if player does not have rcmds.build
-no_build_message: "&cYou don't have permission to build!"
-
-# The default ban message for /ban
-default_ban_message: "&4Banhammered!"
-
-# The default kick message for /kick
-default_kick_message: "Kicked from server."
-
-# The message to be displayed if enable_welcome_message is true
-welcome_message: "&5Welcome {name} to the server!"
-
-# Broadcast format (no variables support, just color codes) - message follows this immediately after this
-bcast_format: "&b[&aBroadcast&b]&a "
-
-# Message to use if player is denied by the whitelist.
-whitelist_message: "You are not whitelisted on this server!"
-
-# /who format ({prefix}, {suffix}, {name}, {dispname}, and {group} supported, as well at text and color codes
-who_format: "{prefix}{dispname}"
-
-# Display /list as a simple list (true) or display it separated by groups (false)?
-simple_list: true
-
-# How groups should be displayed if simple_list is false.
-# Only variables are {prefix}, {group}, and {suffix}
-who_group_format: "{prefix}{group}{suffix}"
-
-# The format of the message used in /afk and auto-AFK.
-# Variables allowed are {prefix}, {suffix}, {group}, {name}, {dispname}, {world}
-afk_format: "{dispname} is now AFK."
-
-# The format of the message used when returning from AFK.
-# Variables are the same as afk_format.
-return_format: "{dispname} is no longer AFK."
-
-# The format for ingame kick messages. Put a "k" in front of a variable name to specify
-# that it's for the person who was kicked.
-# {kdispname} = Display name of person who was kicked
-# {dispname}  = Display name of person used /kick
-ingame_kick_format: "&7{kdispname}&c was kicked by &7{dispname}&c for &7{reason}&c."
-
-# The format to be shown when kicked.
-# \n is a newline
-kick_format: "&4Kicked&r: {reason}&r\nBy {dispname}"
-
-ingame_ban_format: "&7{kdispname}&c was banned by &7{dispname}&c for &7{reason}&c."
-
-ban_format: "&4Banned&r: {reason}&r\nBy {dispname}"
-
-ingame_tempban_format: "&7{kdispname}&c was tempbanned by &7{dispname}&c for &7{length}&c for &7{reason}&c."
-
-tempban_format: "&4Tempbanned&r: {length}&r\nFor {reason}&r by {dispname}"
-
-ingame_unban_format: "&7{kdispname}&9 was unbanned by &7{dispname}&9."
-
-# Note that no banner is known for this type of ban. You cannot use {(disp)name} here.
-ipban_format: "&4IP Banned&r: &7{ip}&r has been banned from this server."
+messages:
+  options:
+    # Enable the welcome message for new players?
+    enable_welcome_message: true
+    # Broadcast time changes via /time?
+    broadcast_time_changes: false
+    colors:
+      positive: BLUE
+      negative: RED
+      neutral: GRAY
+      reset: RESET
+  # Message to be shown if player does not have rcmds.build
+  no_build: "&cYou don't have permission to build!"
+  # The message to be displayed if enable_welcome_message is true
+  welcome: "&5Welcome {name} to the server!"
+  # Broadcast format (no variables support, just color codes) - message follows this immediately after this
+  bcast_format: "&b[&aBroadcast&b]&a "
 
 ###
-# Message options #
+# Kicks #
 ###
 
-# Enable the welcome message for new players?
-enable_welcome_message: true
-
-# Broadcast time changes via /time?
-broadcast_time_changes: false
-
-###
-# Block management #
-###
-
-# Commands to block when muted
-mute_blocked_commands: ["/me", "/tc", "/nc"]
-
-# Items that cannot be spawned without rcmds.allowed.item
-blocked_spawn_items: [7, 49, 383]
+kicks:
+  messages:
+    # The format for ingame kick messages. Put a "k" in front of a variable name to specify
+    # that it's for the person who was kicked.
+    # {kdispname} = Display name of person who was kicked
+    # {dispname}  = Display name of person used /kick
+    ingame_format: "&7{kdispname}&c was kicked by &7{dispname}&c for &7{reason}&c."
+    # The format to be shown when kicked.
+    # \n is a newline
+    format: "&4Kicked&r: {reason}&r\nBy {dispname}"
+    # The default kick message for /kick
+    default: "Kicked from server."
 
 ###
-# Defaults & Limits #
+# Bans #
 ###
 
-# The default stack size for /i and /give
-default_stack_size: 64
+bans:
+  # Commands to be issued before a player is kicked when banned. These only run on permabans. All commands are sent by the
+  # player that did the banning, unless the command is prefixed with "@" - those are sent from console.
+  actions:
+    - "@lwc admin purge {name}" # Does /lwc admin purge {name} in the console.
+    - "me ultrabanned {name}" # Does /me ultrabanned {name} from the banner.
+  permanent:
+    messages:
+      # The default ban message for /ban
+      default: "&4Banhammered!"
+      ingame_format: "&7{kdispname}&c was banned by &7{dispname}&c for &7{reason}&c."
+      format: "&4Banned&r: {reason}&r\nBy {dispname}"
+  unban:
+    messages:
+      ingame_format: "&7{kdispname}&9 was unbanned by &7{dispname}&9."
+  ip:
+    messages:
+      # Note that no banner is known for this type of ban. You cannot use {(disp)name} here.
+      format: "&4IP Banned&r: &7{ip}&r has been banned from this server."
+  temp:
+    messages:
+      ingame_format: "&7{kdispname}&c was tempbanned by &7{dispname}&c for &7{length}&c for &7{reason}&c."
+      format: "&4Tempbanned&r: {length}&r\nFor {reason}&r by {dispname}"
 
-# The maximum number of mobs allowed by /spawnmob
-spawnmob_limit: 15
+###
+# Player list #
+###
 
-# Maximum /near radius (2000 is recommended, large numbers like /near 1000000 crash servers)
-max_near_radius: 2000
+playerlist:
+  # /playerlist format ({prefix}, {suffix}, {name}, {dispname}, and {group} supported, as well at text and color codes
+  format: "{prefix}{dispname}"
+  # Display /playerlist as a simple list (true) or display it separated by groups (false)?
+  simple: true
+  # How groups should be displayed if simple is false.
+  # Only variables are {prefix}, {group}, and {suffix}
+  group_format: "{prefix}{group}{suffix}"
 
-# Default /near radius - when /near is run without a radius
-default_near_radius: 50
+###
+# Near #
+###
 
-# The default power for /explode - 4 is creeper
-explode_power: 4
+near:
+  # Default /near radius - when /near is run without a radius
+  default_radius: 50
+  # Maximum /near radius (2000 is recommended, large numbers like /near 1000000 crash servers)
+  max_radius: 2000
 
-# Maximum explode power (~50 is recommended)
-max_explode_power: 10
+###
+# Spawnmob #
+###
 
-# Limit the amount of homes available to be set with /sethome
-# These will not override rcmds.sethome.multi; you must have it to set more than 1 home
-# You can limit people to 0 homes without it, though.
-# 0 for none, -1 for infinite
-# Remember, a player limit will override a group limit.
-# If jkcclemens is in the group Mod, but he also has a player limit of 10, he can set 10 homes instead of 5.
-# There is no default home limit; if a group/player does not have a limit here, they can set:
-# - 1 home if they don't have rcmds.sethome.multi
-# - Unlimited homes if they do
-home_limits:
-  groups:
-    Mod: 5
-    Admin: 10
-  players:
-    jkcclemens: -1
-    WizardCM: 7
-    Herobrine: 0
+spawnmob:
+  # The maximum number of mobs allowed by /spawnmob
+  spawn_limit: 15
+
+###
+# Explode #
+###
+
+explode:
+  # The default power for /explode - 4 is creeper
+  default_power: 4
+  # Maximum explode power (~50 is recommended)
+  max_power: 10
+  # Should /explode create fire around the explosion?
+  fire: false
+
+###
+# Homes #
+###
+
+homes:
+  # Limit the amount of homes available to be set with /sethome
+  # These will not override rcmds.sethome.multi; you must have it to set more than 1 home
+  # You can limit people to 0 homes without it, though.
+  # 0 for none, -1 for infinite
+  # Remember, a player limit will override a group limit.
+  # If jkcclemens is in the group Mod, but he also has a player limit of 10, he can set 10 homes instead of 5.
+  # There is no default home limit; if a group/player does not have a limit here, they can set:
+  # - 1 home if they don't have rcmds.sethome.multi
+  # - Unlimited homes if they do
+  limits:
+    groups:
+      Mod: 5
+      Admin: 10
+    players:
+      jkcclemens: -1
+      WizardCM: 7
+      Herobrine: 0
 
 ###
 # Warns #
 ###
 
-# Commands to perform based on the amount of warns a player has
-# These commands are performed by the console. Any command output will be sent to the console.
-# Keep preceding slash
-actions_on_warn:
-  1: "/tempban {player} 500" # Happens on the first warn
-  2: "/kick {player} {reason}" # Happens on the second warn
-  3: "/ban {player} &4You have reached the warn limit!" # Happens on the third warn
-# Amount of time in seconds before warns expire - set to 0 to disable
-# 3600 = 1 hour
-# 86400 = 1 day
-# 604800 = 1 week
-warns_expire_after: 604800
+warns:
+  # Commands to perform based on the amount of warns a player has
+  # These commands are performed by the console. Any command output will be sent to the console.
+  # Keep preceding slash
+  actions:
+    1: "/tempban {player} 500" # Happens on the first warn
+    2: "/kick {player} {reason}" # Happens on the second warn
+    3: "/ban {player} &4You have reached the warn limit!" # Happens on the third warn
+  # Amount of time in seconds before warns expire - set to 0 to disable
+  # 3600 = 1 hour
+  # 86400 = 1 day
+  # 604800 = 1 week
+  expire_after: 604800
+  # The default warn message for /warn
+  default_message: "You have been warned."
 
-# The default warn message for /warn
-default_warn_message: "You have been warned."
 
 ###
 # Teleports #
 ###
 
-# Put /all/ players at set spawn point (/setspawn) when they login?
-send_to_spawn: false
-
-# Add previous location to /back (if above is true)?
-sts_back: false
-
-# Put /new/ players at set spawn point (/setspawn) when they login?
-send_to_spawn_new: true
-
-# Enable /back on death?
-back_on_death: true
-
-# Make teleports try to find ground for the teleported player, rather than teleport into midair?
-safe_teleport: true
-
-# Make players stay still for a set amount of time before teleporting?
-# Time is in seconds.
-# 0 to disable
-teleport_warmup: 0
-
-# Require rcmds.worldaccess.worldname to access a world?
-enable_worldaccess_perm: false
-
-teleport_sound:
-  enabled: false
-  sound: ENDERMAN_TELEPORT
-  volume: 1
-  pitch: 1
-
-# Options for teleporting players on vehicles
-vehicle_teleport:
-  # If true, teleporting players on vehicles will teleport their vehicle
-  enabled: true
-  # Allow teleporting on vehicles between worlds?
-  cross_world: false
-  # Enable on vehicles?
-  vehicles: true
-  # Enable on animals?
-  animals: true
-  # Enable on players?
-  players: false
-
-###
-# Command cooldowns #
-###
-
-# command: cooldown (seconds)
-# Works for any command. Vanilla, rCmds, or any other
-# Even works for commands that don't exist
-# Cooldowns must be registered under their names in plugin.yml
-# e.g. /teleport, not /tp
-# Basically, you can't register aliases under command_cooldowns
-command_cooldowns:
-  # Matches /home, /home hello, etc. Does not match /homes
-  home: 25
-  teleport: 20
-  save-all: 5
-
-# Should cooldowns match aliases (e.g. /teleport and /tp have the same cooldown)?
-cooldowns_match_aliases: true
-
-# Creates cooldowns for global teleports
-# Note that this will apply a cooldown to EVERY teleport done, and not just the /tp command. Whether it be a plugin like
-# NoCheat teleporting you back (!), or Towny spawns, it will apply the cooldown.
-# 0 is off
-global_teleport_cooldown: 0
+teleports:
+  options:
+    # Make teleports try to find ground for the teleported player, rather than teleport into midair?
+    safe: true
+    # Make players stay still for a set amount of time before teleporting?
+    # Time is in seconds.
+    # 0 to disable
+    warmup: 0
+    # Creates cooldowns for global teleports
+    # Note that this will apply a cooldown to EVERY teleport done, and not just the /tp command. Whether it be a plugin
+    # like NoCheat teleporting you back (!), or Towny spawns, it will apply the cooldown.
+    # 0 is off
+    global_cooldown: 0
+  back:
+    # Enable /back on death?
+    death: true
+    # Maximum amount of locations to save for /back.
+    # Can be utilized with /back location#.
+    # Set to 1 for only /back.
+    max_stack: 5
+    # Worlds to disable /back from registering in.
+    disabled_worlds:
+    - someworldhere
+  spawn:
+    login:
+      # Put /all/ players at set spawn point (/setspawn) when they login?
+      send_all:
+        enabled: false
+        # Add previous location to /back?
+        register_back: false
+      # Put /new/ players at set spawn point (/setspawn) when they login?
+      send_new: true
+  worlds:
+    # Require rcmds.worldaccess.worldname to access a world?
+    worldaccess_perm: false
+  sound:
+    enabled: false
+    sound: ENDERMAN_TELEPORT
+    volume: 1
+    pitch: 1
+  # Options for teleporting players on vehicles
+  vehicles:
+    # If true, teleporting players on vehicles will teleport their vehicle
+    enabled: true
+    options:
+      # Allow teleporting on vehicles between worlds?
+      cross_world: false
+      # Enable on vehicles?
+      vehicles: true
+      # Enable on animals?
+      animals: true
+      # Enable on players?
+      players: false
 
 ###
 # Dynamic Whitelist
 ###
 
 # The dynamic whitelist can be altered ingame and will be reloaded upon /rcmds.
-
-# Use the dynamic whitelist?
-use_whitelist: false
+whitelist:
+  # Use the dynamic whitelist?
+  enabled: false
+  # Message to use if player is denied by the whitelist.
+  message: "You are not whitelisted on this server!"
 
 ###
 # AFK management #
 ###
 
-# Time in seconds to automatically set an idle player to afk
-# Default is 120 (2 minutes)
-# Disable by setting to 0
-auto_afk_time: 120
-
-# Time in seconds for afk kicks
-# Default is 300 (kicks after 5 minutes)
-# Disable by setting to 0
-afk_kick_time: 300
+afk:
+  messages:
+    # The format of the message used in /afk and auto-AFK.
+    # Variables allowed are {prefix}, {suffix}, {group}, {name}, {dispname}, {world}
+    afk_format: "{dispname} is now AFK."
+    # The format of the message used when returning from AFK.
+    # Variables are the same as afk_format.
+    return_format: "{dispname} is no longer AFK."
+  auto:
+    times:
+      # Time in seconds to automatically set an idle player to afk
+      # Default is 120 (2 minutes)
+      # Disable by setting to 0
+      afk: 120
+      # Time in seconds for afk kicks
+      # Default is 300 (kicks after 5 minutes)
+      # Disable by setting to 0
+      kick: 300
 
 ###
-# Disabled commands #
+# Commands #
 ###
 
-# List of disabled commands. You MUST use full names.
-# e.g. teleport vs tp
-disabled_commands:
-# - god
-# - teleport
+commands:
+  logging:
+    # Whether to show commands in console
+    view_commands: true
+    # Commands to not show up if command logging is on
+    # Please use all lowercase and no preceding /
+    blacklist:
+    - login
+    - l
+  # Commands to block when muted
+  mute_blocked: ["/me", "/tc", "/nc"]
+  # command: cooldown (seconds)
+  # Works for any command. Vanilla, rCmds, or any other
+  # Even works for commands that don't exist
+  # Cooldowns must be registered under their names in plugin.yml
+  # e.g. /teleport, not /tp
+  # Basically, you can't register aliases under command_cooldowns
+  cooldowns:
+    options:
+      # Should cooldowns match aliases (e.g. /teleport and /tp have the same cooldown)?
+      match_aliases: true
+    list:
+      # Matches /home, /home hello, etc. Does not match /homes
+      home: 25
+      teleport: 20
+      save-all: 5
+  # List of disabled commands. You MUST use full names.
+  # e.g. teleport vs tp
+  disabled:
+  # - god
+  # - teleport
 
 ###
 # Nicks #
@@ -400,9 +448,8 @@ nicknames:
   # Regular expression string limiting characters allowed in nicknames. Default is the Minecraft default limitations.
   # Default: [\\w]{2,16}
   regex: "[\\w]{2,16}"
-
-# Change name above head? REQUIRES TagAPI. This will not work without it.
-change_nametag: false
+  # Change name above head? REQUIRES TagAPI. This will not work without it.
+  change_nametag: false
 
 ###
 # Worlds & WorldManager #
@@ -411,7 +458,7 @@ change_nametag: false
 worldmanager:
   enabled: true
   # This allows inventories to be separated on a per-world basis. Groups must be created for each group of worlds
-  # (a group is allowed to consist of only one world). These groups will have different inventories.
+  # (a group is allowed to consist of any amount of worlds). These groups will have different inventories.
   inventory_separation:
     enabled: false
     separate_xp: true
@@ -424,31 +471,32 @@ worldmanager:
       - "world_nether"
       survival:
       - "freebuild"
+  # Use Multiverse world names? If Multiverse-Core is not installed, this makes no difference.
+  multiverse_world_names: true
   who:
     show_empty_worlds: false
-
-# Use Multiverse world names? If Multiverse-Core is not installed, this makes no difference.
-multiverse_world_names: true
 
 ###
 # Userdata handling #
 ###
 
-# Saving options.
-save:
-  # The interval to save userdata at. This will register a task to save all created (!) userdata every so often based on
-  # what is entered here. If this is changed, the server requires a restart to update this value.
-  # Default is "10m" (10 minutes)
-  save_on_interval: "10m"
-  # Should userdata handlers created for players that are no longer online be removed when userdata saving is occurring?
-  # This will not delete the userdata, but it will remove the handler, freeing memory.
-  purge_unused_userdata_handlers: true
+userdata:
+  saving:
+    # The interval to save userdata at. This will register a task to save all created (!) userdata every so often based
+    # on what is entered here. If this is changed, the server requires a restart to update this value.
+    # Default is "10m" (10 minutes)
+    save_on_interval: "10m"
+    # Should userdata handlers created for players that are no longer online be removed when userdata saving is
+    # occurring?
+    # This will not delete the userdata, but it will remove the handler, freeing memory.
+    purge_unused_userdata_handlers: true
 
 ###
 # Mail #
 ###
 
-mail_check_interval: "10m"
+mail:
+  check_interval: "10m"
 
 ###
 # Assign #
@@ -466,3 +514,27 @@ assign:
   # Differentiate between items based on their durability? Note that tools will not make good /assign items if this is
   # true.
   durability: false
+
+###
+# Item management #
+###
+
+items:
+  spawn:
+    # The default stack size for /i and /give
+    default_stack_size: 1
+    # Drop items that don't fit in inventory on /i or /give?
+    drop_extras: false
+    # Items that cannot be spawned without rcmds.allowed.item
+    blocked:
+    - 7
+    - 49
+    - 383
+    # This is a tag applied on all items that are spawned. It will prevent spawned items from stacking with legit items.
+    # It is not visible unless lore is specified. It is set in NMS data, set to be saved with the item in the world.
+    # This NMS data may be lost if a block is placed and then broken.
+    tag:
+      enabled: false
+      # The lore to apply to spawned items. This allows for easy identification without /spawninfo.
+      lore:
+      - "&9Spawned"

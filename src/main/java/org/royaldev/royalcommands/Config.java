@@ -34,124 +34,126 @@ public class Config {
         assignPublicOnGeneric = c.getBoolean("assign.public.allow_on_generic_items", false);
         assignUseDisplayNames = c.getBoolean("assign.lore_and_display_names", true);
         assignUseDurability = c.getBoolean("assign.durability", false);
-        backDeath = c.getBoolean("back_on_death", true);
-        backpackReset = c.getBoolean("reset_backpack_death", false);
-        buildPerm = c.getBoolean("use_build_perm", false);
-        changeNameTag = c.getBoolean("change_nametag", false);
-        checkVersion = c.getBoolean("version_check", true);
-        cooldownAliases = c.getBoolean("cooldowns_match_aliases", true);
-        customHelp = c.getBoolean("use_custom_help", false);
-        differentGamemodeTrade = c.getBoolean("allow_trade_gamemode", false);
-        disablegetip = c.getBoolean("disable_getip", false);
-        dropExtras = c.getBoolean("drop_extras", false);
-        dumpCreateChest = c.getBoolean("dump_create_chest", true);
-        dumpUseInv = c.getBoolean("dump_use_inv", true);
-        explodeFire = c.getBoolean("explode_fire", false);
+        backDeath = c.getBoolean("teleports.back.death", true);
+        backpackReset = c.getBoolean("backpack.reset_on_death", false);
+        buildPerm = c.getBoolean("general.use_build_perm", false);
+        changeNameTag = c.getBoolean("nicknames.change_nametag", false);
+        checkVersion = c.getBoolean("updates.version_check", true);
+        cooldownAliases = c.getBoolean("commands.cooldowns.options.match_aliases", true);
+        customHelp = c.getBoolean("help.custom.enabled", false);
+        differentGamemodeTrade = c.getBoolean("trade.between_gamemodes", false);
+        disablegetip = c.getBoolean("security.disable_getip", false);
+        dropExtras = c.getBoolean("items.spawn.drop_extras", false);
+        dumpCreateChest = c.getBoolean("dump.create_chest", true);
+        dumpUseInv = c.getBoolean("dump.use_inv", true);
+        explodeFire = c.getBoolean("explode.fire", false);
         h2Convert = c.getBoolean("h2.convert", false);
+        itemSpawnTag = c.getBoolean("items.spawn.tag.enabled", false);
         kitPerms = c.getBoolean("use_exclusive_kit_perms", false);
-        motdLogin = c.getBoolean("motd_on_login", true);
-        multiverseNames = c.getBoolean("multiverse_world_names", true);
-        overrideRespawn = c.getBoolean("override_respawn", true);
-        purgeUnusedUserdata = c.getBoolean("save.purge_unused_userdata_handlers", true);
+        motdLogin = c.getBoolean("motd.options.display_on_login", true);
+        multiverseNames = c.getBoolean("worldmanager.multiverse_world_names", true);
+        overrideRespawn = c.getBoolean("general.override_respawn", true);
+        purgeUnusedUserdata = c.getBoolean("userdata.saving.purge_unused_userdata_handlers", true);
         removePotionEffects = c.getBoolean("remove_potion_effects", true);
-        requireHelm = c.getBoolean("helm_require_item", false);
-        safeTeleport = c.getBoolean("safe_teleport", true);
-        sendToSpawn = c.getBoolean("send_to_spawn", false);
+        requireHelm = c.getBoolean("helm.require_item", false);
+        safeTeleport = c.getBoolean("teleports.options.safe", true);
+        sendToSpawn = c.getBoolean("teleports.spawn.login.send_all.enabled", false);
         separateEnder = c.getBoolean("worldmanager.inventory_separation.separate_ender_chests", true);
         separateInv = c.getBoolean("worldmanager.inventory_separation.enabled", false);
         separateXP = c.getBoolean("worldmanager.inventory_separation.separate_xp", true);
-        showcommands = c.getBoolean("view_commands", true);
-        simpleList = c.getBoolean("simple_list", true);
-        smoothTime = c.getBoolean("use_smooth_time", true);
-        stsBack = c.getBoolean("sts_back", false);
-        stsNew = c.getBoolean("send_to_spawn_new", true);
-        teleportSoundEnabled = c.getBoolean("teleport_sound.enabled", false);
-        timeBroadcast = c.getBoolean("broadcast_time_changes", false);
-        updateCheck = c.getBoolean("update_check", false);
-        useVNP = c.getBoolean("use_vanish", true);
-        useWelcome = c.getBoolean("enable_welcome_message", true);
-        useWhitelist = c.getBoolean("use_whitelist", false);
+        showcommands = c.getBoolean("commands.logging.view_commands", true);
+        simpleList = c.getBoolean("playerlist.simple", true);
+        smoothTime = c.getBoolean("general.use_smooth_time", true);
+        stsBack = c.getBoolean("teleports.spawn.login.send_all.register_back", false);
+        stsNew = c.getBoolean("teleports.spawn.login.send_new", true);
+        teleportSoundEnabled = c.getBoolean("teleports.sound.enabled", false);
+        timeBroadcast = c.getBoolean("messages.options.broadcast_time_changes", false);
+        updateCheck = c.getBoolean("updates.update_check", false);
+        useVNP = c.getBoolean("plugins.use_vanish", true);
+        useWelcome = c.getBoolean("messages.options.enable_welcome_message", true);
+        useWhitelist = c.getBoolean("whitelist.enabled", false);
         useWorldManager = c.getBoolean("worldmanager.enabled", true);
-        vehicleCrossWorldTeleport = c.getBoolean("vehicle_teleport.cross_world", false);
-        vehicleTeleportAnimals = c.getBoolean("vehicle_teleport.animals", true);
-        vehicleTeleportEnabled = c.getBoolean("vehicle_teleport.enabled", true);
-        vehicleTeleportPlayers = c.getBoolean("vehicle_teleport.players", false);
-        vehicleTeleportVehicles = c.getBoolean("vehicle_teleport.vehicles", true);
-        warpPermissions = c.getBoolean("warp_permissions", false);
+        vehicleCrossWorldTeleport = c.getBoolean("teleports.vehicles.cross_world", false);
+        vehicleTeleportAnimals = c.getBoolean("teleports.vehicles.animals", true);
+        vehicleTeleportEnabled = c.getBoolean("teleports.vehicles.enabled", true);
+        vehicleTeleportPlayers = c.getBoolean("teleports.vehicles.players", false);
+        vehicleTeleportVehicles = c.getBoolean("teleports.vehicles.vehicles", true);
+        warpPermissions = c.getBoolean("warps.explicit_permissions", false);
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
-        worldAccessPerm = c.getBoolean("enable_worldaccess_perm", false);
+        worldAccessPerm = c.getBoolean("teleports.worlds.worldaccess_perm", false);
         ymlConvert = c.getBoolean("yml_convert", false);
 
         //-- ConfigurationSections --//
 
-        warnActions = c.getConfigurationSection("actions_on_warn");
+        warnActions = c.getConfigurationSection("warns.actions");
 
         //-- Doubles --//
 
-        defaultNear = c.getDouble("default_near_radius", 50D);
-        findIpPercent = c.getDouble("findip_alert_percentage", 25D);
-        gTeleCd = c.getDouble("global_teleport_cooldown", 0D);
-        maxNear = c.getDouble("max_near_radius", 2000D);
+        defaultNear = c.getDouble("near.default_radius", 50D);
+        findIpPercent = c.getDouble("general.findip_alert_percentage", 25D);
+        gTeleCd = c.getDouble("teleports.options.global_cooldown", 0D);
+        maxNear = c.getDouble("near.max_radius", 2000D);
 
         //-- Floats --//
 
-        explodePower = (float) c.getDouble("explode_power", 4F);
-        maxExplodePower = (float) c.getDouble("max_explode_power", 10F);
-        teleportSoundPitch = (float) c.getDouble("teleport_sound.pitch", 1F);
-        teleportSoundVolume = (float) c.getDouble("teleport_sound.volume", 1F);
+        explodePower = (float) c.getDouble("explode.default_power", 4F);
+        maxExplodePower = (float) c.getDouble("explode.max_power", 10F);
+        teleportSoundPitch = (float) c.getDouble("teleports.sound.pitch", 1F);
+        teleportSoundVolume = (float) c.getDouble("teleports.sound.volume", 1F);
 
         //-- Integers --//
 
-        defaultStack = c.getInt("default_stack_size", 64);
-        helpAmount = c.getInt("help_lines", 5);
-        maxBackStack = c.getInt("max_back_stack", 5);
-        spawnmobLimit = c.getInt("spawnmob_limit", 15);
-        teleportWarmup = c.getInt("teleport_warmup", 0);
+        defaultStack = c.getInt("items.spawn.default_stack_size", 64);
+        helpAmount = c.getInt("help.lines", 5);
+        maxBackStack = c.getInt("teleports.back.max_stack", 5);
+        spawnmobLimit = c.getInt("spawnmob.spawn_limit", 15);
+        teleportWarmup = c.getInt("teleports.options.warmup", 0);
 
         //-- String lists --//
 
-        blockedItems = c.getStringList("blocked_spawn_items");
-        commandCooldowns = c.getStringList("command_cooldowns");
-        disabledBackWorlds = c.getStringList("disabled_back_worlds");
-        disabledCommands = c.getStringList("disabled_commands");
-        logBlacklist = c.getStringList("command_log_blacklist");
-        motd = c.getStringList("motd");
-        muteCmds = c.getStringList("mute_blocked_commands");
-        onBanActions = c.getStringList("on_ban");
+        blockedItems = c.getStringList("items.spawn.blocked");
+        commandCooldowns = c.getStringList("commands.cooldowns.list");
+        disabledBackWorlds = c.getStringList("teleports.back.disabled_worlds");
+        disabledCommands = c.getStringList("commands.disabled");
+        itemSpawnTagLore = c.getStringList("items.spawn.tag.lore");
+        logBlacklist = c.getStringList("commands.logging.blacklist");
+        motd = c.getStringList("motd.content");
+        muteCmds = c.getStringList("commands.mute_blocked");
+        onBanActions = c.getStringList("bans.actions");
 
         //-- Longs --//
 
-        afkAutoTime = c.getLong("auto_afk_time", 120L);
-        afkKickTime = c.getLong("afk_kick_time", 300L);
-        warnExpireTime = c.getLong("warns_expire_after", 604800L);
+        afkAutoTime = c.getLong("afk.auto.times.afk", 120L);
+        afkKickTime = c.getLong("afk.auto.times.kick", 300L);
+        warnExpireTime = c.getLong("warns.expire_after", 604800L);
 
         //-- Strings --//
 
-        afkFormat = c.getString("afk_format", "{dispname} is now AFK.");
-        banFormat = c.getString("ban_format", "&4Banned&r: {reason}&rnBy {dispname}");
-        banMessage = RUtils.colorize(c.getString("default_ban_message", "&4Banhammered!"));
-        bcastFormat = RUtils.colorize(c.getString("bcast_format", "&b[&aBroadcast&b]&a "));
-        defaultWarn = RUtils.colorize(c.getString("default_warn_message", "You have been warned."));
-        igBanFormat = c.getString("ingame_ban_format", "&7{kdispname}&c was banned by &7{dispname}&c for &7{reason}&c.");
-        igKickFormat = c.getString("ingame_kick_format", "&7{kdispname}&c was kicked by &7{dispname}&c for &7{reason}&c.");
-        igTempbanFormat = c.getString("ingame_tempban_format", "&7{kdispname}&c was tempbanned by &7{dispname}&c for &7{length}&c for &7{reason}&c.");
-        igUnbanFormat = c.getString("ingame_unban_message", "&7{kdispname}&9 was unbanned by &7{dispname}&9.");
-        ipBanFormat = c.getString("ipban_format", "&4IP Banned&r: &7{ip}&r has been banned from this server.");
-        kickFormat = c.getString("kick_format", "&4Kicked&r: {reason}&rnBy {dispname}");
-        kickMessage = RUtils.colorize(c.getString("default_kick_message", "Kicked from server."));
-        mailCheckTime = c.getString("mail_check_interval", "10m");
+        afkFormat = c.getString("afk.messages.afk_format", "{dispname} is now AFK.");
+        banFormat = c.getString("bans.permanent.messages.format", "&4Banned&r: {reason}&rnBy {dispname}");
+        banMessage = RUtils.colorize(c.getString("bans.permanent.messages.default", "&4Banhammered!"));
+        bcastFormat = RUtils.colorize(c.getString("messages.bcast_format", "&b[&aBroadcast&b]&a "));
+        defaultWarn = RUtils.colorize(c.getString("warns.default_message", "You have been warned."));
+        igBanFormat = c.getString("bans.permanent.messages.ingame_format", "&7{kdispname}&c was banned by &7{dispname}&c for &7{reason}&c.");
+        igKickFormat = c.getString("kicks.messages.ingame_format", "&7{kdispname}&c was kicked by &7{dispname}&c for &7{reason}&c.");
+        igTempbanFormat = c.getString("bans.temp.messages.ingame_format", "&7{kdispname}&c was tempbanned by &7{dispname}&c for &7{length}&c for &7{reason}&c.");
+        igUnbanFormat = c.getString("bans.unban.messages.ingame_format", "&7{kdispname}&9 was unbanned by &7{dispname}&9.");
+        ipBanFormat = c.getString("bans.ip.messages.format", "&4IP Banned&r: &7{ip}&r has been banned from this server.");
+        kickFormat = c.getString("kicks.messages.format", "&4Kicked&r: {reason}&rnBy {dispname}");
+        kickMessage = RUtils.colorize(c.getString("kicks.messages.default", "Kicked from server."));
+        mailCheckTime = c.getString("mail.check_interval", "10m");
         nickChangeLimit = c.getString("nicknames.change_limit", "24h");
         nickPrefix = RUtils.colorize(c.getString("nicknames.prefix", "*"));
         nickRegex = c.getString("nicknames.regex", "[\\w]{2,16}");
-        noBuildMessage = RUtils.colorize(c.getString("no_build_message", "&cYou don't have permission to build!"));
-        returnFormat = c.getString("return_format", "{dispname} is no longer AFK.");
-        saveInterval = c.getString("save.save_on_interval", "10m");
-        teleportSoundName = c.getString("teleport_sound.sound", "ENDERMAN_TELEPORT");
-        tempbanFormat = c.getString("tempban_format", "&4Tempbanned&r: {length}&rnFor {reason}&r by {dispname}");
-        welcomeMessage = RUtils.colorize(c.getString("welcome_message", "&5Welcome {name} to the server!"));
-        whitelistMessage = RUtils.colorize(c.getString("whitelist_message", "You are not whitelisted on this server!"));
-        whoFormat = c.getString("who_format", "{prefix}{dispname}");
-        whoGroupFormat = c.getString("who_group_format", "{prefix}{group}{suffix}");
+        noBuildMessage = RUtils.colorize(c.getString("messages.no_build", "&cYou don't have permission to build!"));
+        returnFormat = c.getString("afk.messages.return_format", "{dispname} is no longer AFK.");
+        saveInterval = c.getString("userdata.saving.save_on_interval", "10m");
+        teleportSoundName = c.getString("teleports.sound.sound", "ENDERMAN_TELEPORT");
+        tempbanFormat = c.getString("bans.temp.messages.format", "&4Tempbanned&r: {length}&rnFor {reason}&r by {dispname}");
+        welcomeMessage = RUtils.colorize(c.getString("messages.welcome", "&5Welcome {name} to the server!"));
+        whitelistMessage = RUtils.colorize(c.getString("whitelist.message", "You are not whitelisted on this server!"));
+        whoFormat = c.getString("playerlist.format", "{prefix}{dispname}");
+        whoGroupFormat = c.getString("playerlist.group_format", "{prefix}{group}{suffix}");
         positiveChatColor = c.getString("colors.positive", "BLUE");
         negativeChatColor = c.getString("colors.negative", "RED");
         neutralChatColor = c.getString("colors.neutral", "GRAY");
@@ -196,6 +198,7 @@ public class Config {
     public static boolean dumpUseInv;
     public static boolean explodeFire;
     public static boolean h2Convert;
+    public static boolean itemSpawnTag;
     public static boolean kitPerms;
     public static boolean motdLogin;
     public static boolean multiverseNames;
@@ -262,6 +265,7 @@ public class Config {
     public static List<String> commandCooldowns;
     public static List<String> disabledBackWorlds;
     public static List<String> disabledCommands;
+    public static List<String> itemSpawnTagLore;
     public static List<String> logBlacklist;
     public static List<String> motd;
     public static List<String> muteCmds;
