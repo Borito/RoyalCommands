@@ -119,10 +119,13 @@ public class CmdAttributes implements CommandExecutor {
                     continue;
                 }
                 UUID uuid;
-                try {
-                    uuid = UUID.fromString(parts[4]);
-                } catch (IllegalArgumentException e) {
-                    continue;
+                if (parts[4].equalsIgnoreCase("gen") || parts[4].equalsIgnoreCase("generate")) uuid = UUID.randomUUID();
+                else {
+                    try {
+                        uuid = UUID.fromString(parts[4]);
+                    } catch (IllegalArgumentException e) {
+                        continue;
+                    }
                 }
                 Attributes.Attribute.Builder b = Attributes.Attribute.newBuilder();
                 b.name(parts[3]).operation(o).type(ats.getAttributeType()).amount(amount).uuid(uuid);
