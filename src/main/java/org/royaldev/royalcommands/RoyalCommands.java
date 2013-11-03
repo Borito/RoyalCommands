@@ -61,6 +61,7 @@ import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.MailRunner;
 import org.royaldev.royalcommands.runners.UserdataRunner;
 import org.royaldev.royalcommands.runners.WarnWatcher;
+import org.royaldev.royalcommands.spawninfo.ItemListener;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -467,6 +468,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(signListener, this);
         pm.registerEvents(monitorListener, this);
         pm.registerEvents(serverListener, this);
+        pm.registerEvents(new ItemListener(this), this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(this), this);
 
         //-- Register commands --//

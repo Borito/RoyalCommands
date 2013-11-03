@@ -40,7 +40,6 @@ public class CmdItem implements CommandExecutor {
             }
             Player p = (Player) cs;
             String item = args[0];
-
             int amount = Config.defaultStack;
             if (args.length == 2) {
                 try {
@@ -77,10 +76,17 @@ public class CmdItem implements CommandExecutor {
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
-            HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);
-            if (!left.isEmpty() && Config.dropExtras) for (ItemStack i : left.values())
-                p.getWorld().dropItemNaturally(p.getLocation(), i);
             cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + ".");
+            if (Config.itemSpawnTag)
+                toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));
+            HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);
+            if (!left.isEmpty() && Config.dropExtras) {
+                for (ItemStack i : left.values()) {
+                    if (Config.itemSpawnTag)
+                        i = RUtils.applySpawnLore(RUtils.setItemStackSpawned(i, cs.getName(), true));
+                    p.getWorld().dropItemNaturally(p.getLocation(), i);
+                }
+            }
             return true;
         }
         return false;

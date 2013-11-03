@@ -32,6 +32,7 @@ import org.royaldev.royalcommands.configuration.GeneralConfManager;
 import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
+import org.royaldev.royalcommands.spawninfo.SpawnInfo;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -450,6 +451,22 @@ public class RUtils {
         if (amount == null) amount = Config.defaultStack;
         ItemStack stack = new ItemStack(mat, amount);
         if (data != null) stack.setDurability(data);
+        return stack;
+    }
+
+    public static ItemStack setItemStackSpawned(ItemStack stack, String spawner, boolean spawned) {
+        final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(stack);
+        si.setSpawner(spawner);
+        si.setSpawned(spawned);
+        return SpawnInfo.SpawnInfoManager.applySpawnInfo(stack, si);
+    }
+
+    public static ItemStack applySpawnLore(ItemStack stack) {
+        final ItemMeta im = stack.getItemMeta();
+        final List<String> lore = (im.hasLore()) ? im.getLore() : new ArrayList<String>();
+        for (String s : Config.itemSpawnTagLore) lore.add(RUtils.colorize(s));
+        im.setLore(lore);
+        stack.setItemMeta(im);
         return stack;
     }
 

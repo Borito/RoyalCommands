@@ -222,7 +222,7 @@ public class SignListener implements Listener {
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
-            CmdGive.giveItemStandalone(p, plugin, line2, amount);
+            CmdGive.giveItemStandalone(null, p, line2, amount);
         }
 
         //Command signs

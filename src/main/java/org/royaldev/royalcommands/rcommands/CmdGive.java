@@ -28,7 +28,7 @@ public class CmdGive implements CommandExecutor {
         return stack != null;
     }
 
-    public static boolean giveItemStandalone(Player target, RoyalCommands plugin, String itemname, int amount) {
+    public static boolean giveItemStandalone(CommandSender cs, Player target, String itemname, int amount) {
         if (target == null) return false;
         if (amount < 0) {
             target.sendMessage(MessageColor.NEGATIVE + "The amount must be positive!");
@@ -53,9 +53,16 @@ public class CmdGive implements CommandExecutor {
             return false;
         }
         target.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+        if (Config.itemSpawnTag && cs != null)
+            stack = RUtils.applySpawnLore(RUtils.setItemStackSpawned(stack, cs.getName(), true));
         HashMap<Integer, ItemStack> left = target.getInventory().addItem(stack);
-        if (!left.isEmpty() && Config.dropExtras) for (ItemStack item : left.values())
-            target.getWorld().dropItemNaturally(target.getLocation(), item);
+        if (!left.isEmpty() && Config.dropExtras) {
+            for (ItemStack item : left.values()) {
+                if (Config.itemSpawnTag && cs != null)
+                    item = RUtils.applySpawnLore(RUtils.setItemStackSpawned(item, cs.getName(), true));
+                target.getWorld().dropItemNaturally(target.getLocation(), item);
+            }
+        }
         return true;
     }
 
@@ -112,9 +119,16 @@ public class CmdGive implements CommandExecutor {
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
+            if (Config.itemSpawnTag)
+                toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));
             HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
-            if (!left.isEmpty() && Config.dropExtras) for (ItemStack item : left.values())
-                target.getWorld().dropItemNaturally(target.getLocation(), item);
+            if (!left.isEmpty() && Config.dropExtras) {
+                for (ItemStack item : left.values()) {
+                    if (Config.itemSpawnTag)
+                        item = RUtils.applySpawnLore(RUtils.setItemStackSpawned(item, cs.getName(), true));
+                    target.getWorld().dropItemNaturally(target.getLocation(), item);
+                }
+            }
             cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
             target.sendMessage(MessageColor.POSITIVE + "You have been given " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + ".");
             return true;
