@@ -1386,8 +1386,8 @@ public class RUtils {
         if (group == null) group = "";
         int limit;
         final FileConfiguration c = RoyalCommands.instance.getConfig();
-        if (c.isSet("home_limits.players." + name)) limit = c.getInt("home_limits.players." + name, -1);
-        else limit = c.getInt("home_limits.groups." + group, -1);
+        if (c.isSet("homes.limits.players." + name)) limit = c.getInt("homes.limits.players." + name, -1);
+        else limit = c.getInt("homes.limits.groups." + group, -1);
         return limit;
     }
 

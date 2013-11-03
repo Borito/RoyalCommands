@@ -46,19 +46,19 @@ public class CmdKit implements CommandExecutor {
             final FileConfiguration c = plugin.getConfig();
             Player p = (Player) cs;
             final PConfManager pcm = PConfManager.getPConfManager(p);
-            if (c.get("kits") == null) {
+            if (!c.isSet("kits") || !c.isSet("kits.list")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No kits defined!");
                 return true;
             }
             String kitname = args[0];
-            if (c.get("kits." + kitname) == null) {
+            if (!c.isSet("kits.list." + kitname)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That kit does not exist!");
                 return true;
             }
-            List<String> kits = c.getStringList("kits." + kitname + ".items");
-            List<String> enchants = c.getStringList("kits." + kitname + ".enchantments");
-            List<String> names = c.getStringList("kits." + kitname + ".names");
-            List<String> lore = c.getStringList("kits." + kitname + ".lore");
+            List<String> kits = c.getStringList("kits.list." + kitname + ".items");
+            List<String> enchants = c.getStringList("kits.list." + kitname + ".enchantments");
+            List<String> names = c.getStringList("kits.list." + kitname + ".names");
+            List<String> lore = c.getStringList("kits.list." + kitname + ".lore");
             if (kits == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That kit does not exist!");
                 return true;
@@ -71,20 +71,20 @@ public class CmdKit implements CommandExecutor {
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
-            if (pcm.isSet("kits." + kitname + ".cooldown") && pcm.getLong("kits." + kitname + ".cooldown") < 0D) {
+            if (pcm.isSet("kits.list." + kitname + ".cooldown") && pcm.getLong("kits.list." + kitname + ".cooldown") < 0D) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That kit was a one-time kit.");
                 return true;
             }
-            if (RUtils.isTimeStampValid(p, "kits." + kitname + ".cooldown") && !plugin.ah.isAuthorized(cs, "rcmds.exempt.cooldown.kits")) {
-                long ts = RUtils.getTimeStamp(p, "kits." + kitname + ".cooldown");
+            if (RUtils.isTimeStampValid(p, "kits.list." + kitname + ".cooldown") && !plugin.ah.isAuthorized(cs, "rcmds.exempt.cooldown.kits")) {
+                long ts = RUtils.getTimeStamp(p, "kits.list." + kitname + ".cooldown");
                 if (ts > 0) {
                     p.sendMessage(MessageColor.NEGATIVE + "You can't use that kit for" + MessageColor.NEUTRAL + RUtils.formatDateDiff(ts) + MessageColor.NEGATIVE + ".");
                     return true;
                 }
             }
-            if (c.isSet("kits." + kitname + ".cooldown")) {
-                long cd = c.getLong("kits." + kitname + ".cooldown");
-                RUtils.setTimeStamp(p, cd, "kits." + kitname + ".cooldown");
+            if (c.isSet("kits.list." + kitname + ".cooldown")) {
+                long cd = c.getLong("kits.list." + kitname + ".cooldown");
+                RUtils.setTimeStamp(p, cd, "kits.list." + kitname + ".cooldown");
             }
             if (kits.size() < 1) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That kit was configured wrong!");

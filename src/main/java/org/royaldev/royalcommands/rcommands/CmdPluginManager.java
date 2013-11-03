@@ -192,7 +192,7 @@ public class CmdPluginManager implements CommandExecutor {
     }
 
     private String getCustomTag(String name) {
-        ConfigurationSection cs = plugin.getConfig().getConfigurationSection("custom_plugin_tags");
+        ConfigurationSection cs = plugin.getConfig().getConfigurationSection("pluginmanager.custom_tags");
         if (cs == null) return null;
         for (String key : cs.getKeys(false)) {
             if (!key.equalsIgnoreCase(name)) continue;
