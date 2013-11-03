@@ -325,7 +325,7 @@ public class RoyalCommands extends JavaPlugin {
         // Get the last element of the package
         // If the last element of the package was "craftbukkit" we are now pre-refactor
         String versionNMS = packageName.substring(packageName.lastIndexOf('.') + 1);
-        if (versionNMS.equals("craftbukkit")) versionNMS = "PreSafeGuard";
+        if (versionNMS.equals("craftbukkit")) versionNMS = "NoSupport";
         try {
             // Check if we have a NMSHandler class at that location.
             final Class<?> clazz = Class.forName("org.royaldev.royalcommands.nms." + versionNMS + ".NMSHandler");
