@@ -65,7 +65,8 @@ public class SpawnInfo implements Serializable {
         this.spawner = splitStored[1];
         this.spawned = splitStored[0].equalsIgnoreCase("true");
         this.hasComponents = splitStored[2].equalsIgnoreCase("true");
-        this.components.addAll(Arrays.asList(splitStored[3].substring(1, splitStored[3].length() - 1).split(", ")));
+        if (splitStored[3].startsWith("[") && splitStored[3].endsWith("]"))
+            this.components.addAll(Arrays.asList(splitStored[3].substring(1, splitStored[3].length() - 1).split(", ")));
     }
 
     /**

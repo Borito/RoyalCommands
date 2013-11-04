@@ -51,10 +51,8 @@ public class CmdSpawnInfo implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "  Made with spawned items: " + MessageColor.NEUTRAL + ((si.hasComponents()) ? "Yes" : "No"));
                 if (si.hasComponents()) {
                     cs.sendMessage(MessageColor.POSITIVE + "  Components:");
-                    for (String component : si.getComponents()) {
-                        if (component.equalsIgnoreCase("ul")) continue; // temp fix
+                    for (String component : si.getComponents())
                         cs.sendMessage(MessageColor.POSITIVE + "    - " + MessageColor.NEUTRAL + component);
-                    }
                 }
                 return true;
             } else if (subcommand.equalsIgnoreCase("set")) {
