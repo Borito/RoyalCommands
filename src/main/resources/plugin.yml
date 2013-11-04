@@ -4,7 +4,7 @@ version: ${pluginversion}
 website: http://dev.royaldev.org/
 description: A general plugin containing all the commands a discerning server admin could want.
 author: jkcclemens
-softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard, Multiverse-Core, Vault]
+softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard, Multiverse-Core, Vault, ProtocolLib]
 
 reflectcommands:
   level:
@@ -27,7 +27,7 @@ reflectcommands:
     class: CmdSci
 
   speak:
-    description: Make another player talk.
+    description: Makes another player talk.
     usage: /<command> [player] [message]
     version_added: Pre-0.2.7
     class: CmdSpeak

@@ -54,6 +54,7 @@ import org.royaldev.royalcommands.listeners.ServerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.nms.api.NMSFace;
+import org.royaldev.royalcommands.protocol.ProtocolListener;
 import org.royaldev.royalcommands.rcommands.ReflectCommand;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.BanWatcher;
@@ -470,6 +471,11 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(serverListener, this);
         pm.registerEvents(new ItemListener(this), this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(this), this);
+        final Plugin plPlugin = getServer().getPluginManager().getPlugin("ProtocolLib");
+        if (plPlugin != null && plPlugin.isEnabled()) {
+            final ProtocolListener pl = new ProtocolListener(this);
+            pl.initialize();
+        }
 
         //-- Register commands --//
 

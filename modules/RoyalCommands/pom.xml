@@ -138,6 +138,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalchat</artifactId>
             <version>LATEST</version>
