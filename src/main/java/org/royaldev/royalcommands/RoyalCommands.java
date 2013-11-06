@@ -492,7 +492,7 @@ public class RoyalCommands extends JavaPlugin {
                 if (!(o instanceof CommandExecutor)) continue;
                 registerCommand((CommandExecutor) o, command);
             } catch (Exception e) {
-                getLogger().warning("Could not register command \"" + command + "\" - an error occurred: " + e.getMessage() + ".");
+                getLogger().warning("Could not register command \"" + command + "\" - an error occurred (" + e.getClass().getSimpleName() + "): " + e.getMessage() + ".");
             }
         }
 
