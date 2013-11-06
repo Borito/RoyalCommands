@@ -1,8 +1,10 @@
 package org.royaldev.royalcommands.spawninfo;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -42,6 +44,7 @@ public class ItemListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
         if (!Config.itemSpawnTag) return;
+        final Player p = e.getPlayer();
         final Block b = e.getBlock();
         final BlockData bd = new BlockData(plugin, new BlockData.BlockLocation(b.getLocation()));
         final Object o = bd.get("spawninfo");
@@ -59,7 +62,8 @@ public class ItemListener implements Listener {
             break;
         }
         b.setType(Material.AIR);
-        for (ItemStack drop : drops) b.getWorld().dropItemNaturally(b.getLocation(), drop);
+        if (p.getGameMode() != GameMode.CREATIVE) // don't drop blocks in creative mode, obviously
+            for (ItemStack drop : drops) b.getWorld().dropItemNaturally(b.getLocation(), drop);
         bd.remove("spawninfo");
         bd.caughtSave();
     }
