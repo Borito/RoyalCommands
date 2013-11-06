@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.Config;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.data.block.BlockData;
 
@@ -56,7 +57,7 @@ public class ItemListener implements Listener {
         for (int i = 0; i < drops.size(); i++) {
             ItemStack drop = drops.get(i);
             if (drop.getType() != b.getType()) continue;
-            drop = SpawnInfo.SpawnInfoManager.applySpawnInfo(drop, si);
+            drop = RUtils.applySpawnLore(SpawnInfo.SpawnInfoManager.applySpawnInfo(drop, si));
             drops.remove(i);
             drops.add(i, drop);
             break;
