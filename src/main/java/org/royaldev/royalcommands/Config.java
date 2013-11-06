@@ -69,6 +69,7 @@ public class Config {
         teleportSoundEnabled = c.getBoolean("teleports.sound.enabled", false);
         timeBroadcast = c.getBoolean("messages.options.broadcast_time_changes", false);
         updateCheck = c.getBoolean("updates.update_check", false);
+        useProtocolLib = c.getBoolean("items.spawn.tag.plugins.protocollib", true);
         useVNP = c.getBoolean("plugins.use_vanish", true);
         useWelcome = c.getBoolean("messages.options.enable_welcome_message", true);
         useWhitelist = c.getBoolean("whitelist.enabled", false);
@@ -219,6 +220,7 @@ public class Config {
     public static boolean teleportSoundEnabled;
     public static boolean timeBroadcast;
     public static boolean updateCheck;
+    public static boolean useProtocolLib;
     public static boolean useVNP;
     public static boolean useWelcome;
     public static boolean useWhitelist;
