@@ -11,6 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 @ReflectCommand
@@ -46,8 +47,9 @@ public class CmdRules implements CommandExecutor {
                 }
             }
             int pages = 0;
+            BufferedReader br = null;
             try {
-                BufferedReader br = new BufferedReader(new FileReader(rulesf));
+                br = new BufferedReader(new FileReader(rulesf));
                 String line;
                 java.util.List<String> rules = new ArrayList<String>();
                 while ((line = br.readLine()) != null) {
@@ -77,6 +79,11 @@ public class CmdRules implements CommandExecutor {
             } catch (Exception e) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The rules.txt file was not found! Tell an admin.");
                 return true;
+            } finally {
+                try {
+                    if (br != null) br.close();
+                } catch (IOException ignored) {
+                }
             }
             return true;
         }

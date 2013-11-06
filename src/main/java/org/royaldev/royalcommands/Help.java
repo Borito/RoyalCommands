@@ -65,8 +65,9 @@ public class Help {
         }
         // custom help
         final StringBuilder sb = new StringBuilder();
+        BufferedReader br = null;
         try {
-            final BufferedReader br = new BufferedReader(new FileReader(new File(plugin.getDataFolder(), "help.txt")));
+            br = new BufferedReader(new FileReader(new File(plugin.getDataFolder(), "help.txt")));
             String input;
             while ((input = br.readLine()) != null) sb.append(input).append("\n");
         } catch (FileNotFoundException e) {
@@ -75,6 +76,11 @@ public class Help {
         } catch (IOException e) {
             sb.append(MessageColor.NEGATIVE).append("###\nAn error occurred: ").append(MessageColor.NEUTRAL).append(e.getMessage());
             return;
+        } finally {
+            try {
+                if (br != null) br.close();
+            } catch (IOException ignored) {
+            }
         }
         customHelp = sb.toString();
     }

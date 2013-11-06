@@ -36,15 +36,14 @@ public class CmdKits implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "No kits found!");
                 return true;
             }
-            String kits = "";
+            final StringBuilder sb = new StringBuilder();
             for (String s : opts.keySet()) {
-                if (Config.kitPerms && plugin.ah.isAuthorized(cs, "rcmds.kit." + s))
-                    kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
-                else if (!Config.kitPerms) kits = (kits.isEmpty()) ? kits + s : kits + ", " + s;
+                if (Config.kitPerms && plugin.ah.isAuthorized(cs, "rcmds.kit." + s)) sb.append(s).append(", ");
+                else if (!Config.kitPerms) sb.append(s).append(", ");
             }
             cs.sendMessage(MessageColor.POSITIVE + "Kits:");
-            if (kits.isEmpty()) return true;
-            cs.sendMessage(kits);
+            if (sb.length() == 0) return true;
+            cs.sendMessage(sb.substring(0, sb.length() - 2)); // ", "
             return true;
         }
         return false;

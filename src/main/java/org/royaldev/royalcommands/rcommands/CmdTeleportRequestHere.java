@@ -31,7 +31,7 @@ public class CmdTeleportRequestHere implements CommandExecutor {
         target.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/tpaccept" + MessageColor.POSITIVE + " or " + MessageColor.NEUTRAL + "/tpdeny" + MessageColor.POSITIVE + ".");
     }
 
-    public static HashMap<Player, CommandSender> tprhdb = new HashMap<Player, CommandSender>();
+    public final static HashMap<Player, CommandSender> tprhdb = new HashMap<Player, CommandSender>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {

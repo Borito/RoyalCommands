@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -18,9 +19,9 @@ public class UnZip {
      * @param destinationFolder Folder to unzip in
      */
     public static void decompress(String fileName, String destinationFolder) {
+        BufferedOutputStream dest = null;
+        BufferedInputStream is = null;
         try {
-            BufferedOutputStream dest;
-            BufferedInputStream is;
             ZipEntry entry;
             ZipFile zipfile = new ZipFile(fileName);
             Enumeration e = zipfile.entries();
@@ -45,6 +46,12 @@ public class UnZip {
             }
         } catch (Exception ignored) {
             ignored.printStackTrace();
+        } finally {
+            try {
+                if (dest != null) dest.close();
+                if (is != null) is.close();
+            } catch (IOException ignore) {
+            }
         }
     }
 }

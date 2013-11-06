@@ -95,7 +95,7 @@ public class CmdPluginManager implements CommandExecutor {
 
     private boolean downloadAndMovePlugin(String url, String saveAs, boolean recursive, CommandSender cs) {
         if (saveAs == null) saveAs = "";
-        final BufferedInputStream bis;
+        BufferedInputStream bis = null;
         final HttpURLConnection huc;
         try {
             huc = (HttpURLConnection) new URL(url).openConnection();
@@ -108,6 +108,11 @@ public class CmdPluginManager implements CommandExecutor {
         } catch (IOException e) {
             cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again. (" + MessageColor.NEUTRAL + e.getMessage() + MessageColor.NEGATIVE + ")");
             return false;
+        } finally {
+            try {
+                if (bis != null) bis.close();
+            } catch (IOException ignored) {
+            }
         }
         String[] urlParts = huc.getURL().toString().split("(\\\\|/)");
         final String fileName = (!saveAs.isEmpty()) ? saveAs : urlParts[urlParts.length - 1];
@@ -556,10 +561,10 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEUTRAL + p.getName() + MessageColor.NEGATIVE + " has no registered commands.");
                     return true;
                 }
-                for (String command : commands.keySet()) {
-                    Object odesc = commands.get(command).get("description");
+                for (Map.Entry<String, Map<String, Object>> entry : commands.entrySet()) {
+                    Object odesc = entry.getValue().get("description");
                     String desc = (odesc != null) ? odesc.toString() : "";
-                    cs.sendMessage(MessageColor.NEUTRAL + "/" + command + ((desc.equals("")) ? "" : MessageColor.POSITIVE + " - " + desc));
+                    cs.sendMessage(MessageColor.NEUTRAL + "/" + entry.getKey() + ((desc.equals("")) ? "" : MessageColor.POSITIVE + " - " + desc));
                 }
                 return true;
             } else if (subcmd.equalsIgnoreCase("help") || subcmd.equals("?")) {

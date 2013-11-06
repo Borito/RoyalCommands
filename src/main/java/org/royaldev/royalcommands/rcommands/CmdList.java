@@ -79,10 +79,10 @@ public class CmdList implements CommandExecutor {
             groups.put(group, inGroup);
         }
         List<String> toRet = new ArrayList<String>();
-        for (String group : groups.keySet()) {
-            List<String> inGroup = groups.get(group);
+        for (Map.Entry<String, List<String>> entry : groups.entrySet()) {
+            List<String> inGroup = entry.getValue();
             if (inGroup.size() < 1) continue;
-            sb.append(groupPrepend(group));
+            sb.append(groupPrepend(entry.getKey()));
             sb.append(MessageColor.RESET);
             sb.append(": ");
             for (String name : inGroup) {

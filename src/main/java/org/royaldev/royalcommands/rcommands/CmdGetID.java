@@ -42,9 +42,9 @@ public class CmdGetID implements CommandExecutor {
             cs.sendMessage(MessageColor.NEUTRAL + name + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + id + MessageColor.POSITIVE + " (damage: " + MessageColor.NEUTRAL + damage + MessageColor.POSITIVE + ", materialdata: " + MessageColor.NEUTRAL + data + MessageColor.POSITIVE + ")");
             if (!enchants.isEmpty()) {
                 cs.sendMessage(MessageColor.POSITIVE + "Enchantments:");
-                for (Enchantment e : enchants.keySet()) {
-                    int lvl = enchants.get(e);
-                    cs.sendMessage(" " + MessageColor.NEUTRAL + e.getName().toLowerCase() + " " + lvl);
+                for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+                    int lvl = entry.getValue();
+                    cs.sendMessage(" " + MessageColor.NEUTRAL + entry.getKey().getName().toLowerCase() + " " + lvl);
                 }
             }
             return true;

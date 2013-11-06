@@ -23,10 +23,10 @@ public class CmdMonitor implements CommandExecutor {
         plugin = instance;
     }
 
-    public static Map<String, String> monitors = new HashMap<String, String>();
-    public static Map<String, String> viewees = new HashMap<String, String>();
-    public static Map<String, ItemStack[]> invs = new HashMap<String, ItemStack[]>();
-    public static Map<String, Location> locs = new HashMap<String, Location>();
+    public final static Map<String, String> monitors = new HashMap<String, String>();
+    public final static Map<String, String> viewees = new HashMap<String, String>();
+    public final static Map<String, ItemStack[]> invs = new HashMap<String, ItemStack[]>();
+    public final static Map<String, Location> locs = new HashMap<String, Location>();
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("monitor")) {

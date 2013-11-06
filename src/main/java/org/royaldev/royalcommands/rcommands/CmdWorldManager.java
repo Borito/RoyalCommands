@@ -24,6 +24,8 @@ public class CmdWorldManager implements CommandExecutor {
         plugin = instance;
     }
 
+    private final Random r = new Random();
+
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("worldmanager")) {
             if (!plugin.ah.isAuthorized(cs, "rcmds.worldmanager")) {
@@ -83,7 +85,7 @@ public class CmdWorldManager implements CommandExecutor {
                         seed = args[4].hashCode();
                     }
                     wc = wc.seed(seed);
-                } else wc = wc.seed(new Random().nextLong());
+                } else wc = wc.seed(r.nextLong());
                 if (args.length > 5) {
                     wc = wc.generator(args[5]);
                     RoyalCommands.wm.getConfig().set("worlds." + name + ".generator", args[5]);

@@ -49,13 +49,23 @@ public class CmdAccountStatus implements CommandExecutor {
                 return true;
             }
             boolean isPremium;
+            BufferedReader br = null;
             try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(u.openStream()));
-                isPremium = br.readLine().equalsIgnoreCase("true");
+                br = new BufferedReader(new InputStreamReader(u.openStream()));
+                final String line = br.readLine();
+                if (line == null) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
+                    return true;
+                } else isPremium = line.equalsIgnoreCase("true");
             } catch (IOException ex) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
                 cs.sendMessage(MessageColor.NEGATIVE + ex.getMessage());
                 return true;
+            } finally {
+                try {
+                    if (br != null) br.close();
+                } catch (IOException ignored) {
+                }
             }
             cs.sendMessage(MessageColor.NEUTRAL + name + MessageColor.POSITIVE + " has " + MessageColor.NEUTRAL + ((isPremium) ? "paid" : "not paid") + MessageColor.POSITIVE + " for Minecraft.");
             return true;

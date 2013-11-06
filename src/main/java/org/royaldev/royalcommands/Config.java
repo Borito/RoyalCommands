@@ -167,8 +167,9 @@ public class Config {
         if (RoyalCommands.wm == null) RoyalCommands.wm = new WorldManager();
         RoyalCommands.wm.reloadConfig();
 
+        Reader in = null;
         try {
-            Reader in = new FileReader(new File(plugin.getDataFolder() + File.separator + "items.csv"));
+            in = new FileReader(new File(plugin.getDataFolder() + File.separator + "items.csv"));
             RoyalCommands.inm = new ItemNameManager(new CSVReader(in).readAll());
         } catch (FileNotFoundException e) {
             plugin.getLogger().warning("items.csv was not found! Item aliases will not be used.");
@@ -176,6 +177,11 @@ public class Config {
         } catch (IOException e) {
             plugin.getLogger().warning("Internal input/output error loading items.csv. Item aliases will not be used.");
             RoyalCommands.inm = null;
+        } finally {
+            try {
+                if (in != null) in.close();
+            } catch (IOException ignored) {
+            }
         }
 
     }

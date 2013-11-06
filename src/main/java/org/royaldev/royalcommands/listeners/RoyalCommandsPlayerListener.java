@@ -510,9 +510,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         Player p = e.getPlayer();
         if (p == null) return;
         String dispname = PConfManager.getPConfManager(p).getString("dispname");
-        if (dispname == null || dispname.equals("")) dispname = p.getName().trim();
+        if (dispname == null || dispname.equals("")) dispname = p.getName();
         dispname = dispname.trim();
-        if (dispname == null) return;
         p.setDisplayName(dispname);
         if (dispname.length() <= 16) p.setPlayerListName(dispname);
         else p.setPlayerListName(dispname.substring(0, 16));
