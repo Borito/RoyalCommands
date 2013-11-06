@@ -6,10 +6,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
+
+import java.util.List;
 
 @ReflectCommand
 public class CmdSpawnInfo implements CommandExecutor {
@@ -59,6 +63,13 @@ public class CmdSpawnInfo implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "This mode has not yet been implemented!");
                 return true;
             } else if (subcommand.equalsIgnoreCase("remove")) {
+                final ItemMeta im = hand.getItemMeta();
+                if (im.hasLore()) {
+                    final List<String> lore = im.getLore();
+                    lore.removeAll(Config.itemSpawnTagLore);
+                    im.setLore(lore);
+                }
+                hand.setItemMeta(im);
                 p.setItemInHand(SpawnInfo.SpawnInfoManager.removeSpawnInfo(hand));
                 cs.sendMessage(MessageColor.POSITIVE + "Spawn information removed from the item in hand.");
                 return true;
