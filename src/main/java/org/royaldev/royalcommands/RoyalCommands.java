@@ -130,6 +130,10 @@ public class RoyalCommands extends JavaPlugin {
 
     public static MultiverseCore mvc = null;
 
+    //--- ProtocolLib things ---//
+
+    private ProtocolListener pl = null;
+
     //--- Public methods ---//
 
     @SuppressWarnings("unused")
@@ -471,9 +475,12 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(serverListener, this);
         pm.registerEvents(new ItemListener(this), this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(this), this);
+
+        //-- ProtocolLib things --//
+
         final Plugin plPlugin = getServer().getPluginManager().getPlugin("ProtocolLib");
-        if (plPlugin != null && plPlugin.isEnabled()) {
-            final ProtocolListener pl = new ProtocolListener(this);
+        if (Config.useProtocolLib && plPlugin != null && plPlugin.isEnabled()) {
+            pl = new ProtocolListener(this);
             pl.initialize();
         }
 
@@ -550,6 +557,10 @@ public class RoyalCommands extends JavaPlugin {
         PConfManager.saveAllManagers();
         ConfManager.saveAllManagers();
         getLogger().info("Userdata saved.");
+
+        //-- ProtocolLib --//
+
+        if (pl != null) pl.uninitialize();
 
         //-- We're done! --//
 
