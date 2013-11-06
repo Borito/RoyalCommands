@@ -117,7 +117,7 @@ public class RoyalCommands extends JavaPlugin {
 
     private RApiMain api;
 
-    //--- Handlders ---//
+    //--- Handlers ---//
 
     public final AuthorizationHandler ah = new AuthorizationHandler(this);
     public final VaultHandler vh = new VaultHandler(this);
