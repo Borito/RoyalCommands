@@ -66,7 +66,11 @@ public class CmdSpawnInfo implements CommandExecutor {
                 final ItemMeta im = hand.getItemMeta();
                 if (im.hasLore()) {
                     final List<String> lore = im.getLore();
-                    lore.removeAll(Config.itemSpawnTagLore);
+                    for (String add : Config.itemSpawnTagLore) {
+                        add = RUtils.colorize(add);
+                        if (!lore.contains(add)) continue;
+                        lore.remove(add);
+                    }
                     im.setLore(lore);
                 }
                 hand.setItemMeta(im);
