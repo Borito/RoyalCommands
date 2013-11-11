@@ -108,11 +108,6 @@ public class CmdPluginManager implements CommandExecutor {
         } catch (IOException e) {
             cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again. (" + MessageColor.NEUTRAL + e.getMessage() + MessageColor.NEGATIVE + ")");
             return false;
-        } finally {
-            try {
-                if (bis != null) bis.close();
-            } catch (IOException ignored) {
-            }
         }
         String[] urlParts = huc.getURL().toString().split("(\\\\|/)");
         final String fileName = (!saveAs.isEmpty()) ? saveAs : urlParts[urlParts.length - 1];
@@ -137,11 +132,14 @@ public class CmdPluginManager implements CommandExecutor {
         int b;
         cs.sendMessage(MessageColor.POSITIVE + "Downloading file " + MessageColor.NEUTRAL + fileName + MessageColor.POSITIVE + "...");
         try {
-            while ((b = bis.read()) != -1) bos.write(b);
-            bos.flush();
-            bos.close();
+            try {
+                while ((b = bis.read()) != -1) bos.write(b);
+            } finally {
+                bos.flush();
+                bos.close();
+            }
         } catch (IOException e) {
-            cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again.");
+            cs.sendMessage(MessageColor.NEGATIVE + "An internal input/output error occurred. Please try again. (" + MessageColor.NEUTRAL + e.getMessage() + MessageColor.NEGATIVE + ")");
             return false;
         }
         if (fileName.endsWith(".zip")) {
