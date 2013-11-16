@@ -173,12 +173,11 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void commandCooldown(PlayerCommandPreprocessEvent e) {
         if (e.isCancelled()) return;
         String command = e.getMessage().split(" ")[0].toLowerCase().substring(1);
-        if (plugin.getCommand(command) != null)
-            command = plugin.getCommand(command).getName();
+        if (plugin.getCommand(command) != null) command = plugin.getCommand(command).getName();
         Player p = e.getPlayer();
         if (plugin.ah.isAuthorized(p, "rcmds.exempt.cooldown.commands")) return;
         long currentcd = PConfManager.getPConfManager(p).getLong("command_cooldowns." + command, -1L);
-        if (currentcd < 0L) {
+        if (currentcd > 0L) {
             if (currentcd <= new Date().getTime()) {
                 setCooldown(command, p);
                 return;
@@ -196,7 +195,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         Player p = e.getPlayer();
         if (plugin.ah.isAuthorized(p, "rcmds.exempt.cooldown.teleports")) return;
         long currentcd = PConfManager.getPConfManager(p).getLong("teleport_cooldown", -1L);
-        if (currentcd < 0L) {
+        if (currentcd > 0L) {
             if (currentcd <= new Date().getTime()) {
                 setTeleCooldown(p);
                 return;
