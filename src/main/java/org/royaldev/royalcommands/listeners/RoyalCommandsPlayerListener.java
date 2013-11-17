@@ -77,7 +77,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 }
         if (contains) {
             long cooldown = cmdCds.getLong(command);
-            PConfManager.getPConfManager(p).set("commands.cooldowns.list." + command, new Date().getTime() + (cooldown * 1000));
+            PConfManager.getPConfManager(p).set("command_cooldowns." + command, new Date().getTime() + (cooldown * 1000));
         }
     }
 
