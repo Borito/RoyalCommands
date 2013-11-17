@@ -66,7 +66,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     Logger log = Logger.getLogger("Minecraft");
 
     public void setCooldown(String command, OfflinePlayer p) {
-        ConfigurationSection cmdCds = plugin.getConfig().getConfigurationSection("command_cooldowns");
+        ConfigurationSection cmdCds = plugin.getConfig().getConfigurationSection("commands.cooldowns.list");
         if (cmdCds == null) return;
         boolean contains = cmdCds.getKeys(false).contains(command);
         if (Config.cooldownAliases) if (plugin.getCommand(command) != null)
@@ -77,7 +77,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 }
         if (contains) {
             long cooldown = cmdCds.getLong(command);
-            PConfManager.getPConfManager(p).set("command_cooldowns." + command, new Date().getTime() + (cooldown * 1000));
+            PConfManager.getPConfManager(p).set("commands.cooldowns.list." + command, new Date().getTime() + (cooldown * 1000));
         }
     }
 
