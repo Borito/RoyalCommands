@@ -140,7 +140,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!e.getPlayer().isWhitelisted()) e.disallow(Result.KICK_WHITELIST, Config.whitelistMessage);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void teleWarmup(PlayerMoveEvent e) {
         Player p = e.getPlayer();
         Location to = e.getTo();
