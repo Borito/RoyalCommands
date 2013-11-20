@@ -371,7 +371,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (!AFKUtils.isAfk(event.getPlayer())) return;
         Location to = event.getTo();
         Location from = event.getFrom();
-        if (to.getX() == from.getX() && to.getY() == from.getY() && to.getZ() == from.getZ()) return;
+        if (nearEqual(to.getX(), from.getX()) && nearEqual(to.getY(), from.getY()) && nearEqual(to.getZ(), from.getZ()))
+            return;
         AFKUtils.unsetAfk(event.getPlayer());
         plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.returnFormat, event.getPlayer())));
     }
