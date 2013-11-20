@@ -1417,4 +1417,12 @@ public class RUtils {
         if (pconf == null) return 0;
         return pconf.getValues(false).size();
     }
+
+    public static boolean nearEqual(double a, double b, double margin) {
+        return Math.abs(a - b) < margin;
+    }
+
+    public static boolean nearEqual(double a, double b) {
+        return nearEqual(a, b, .05F);
+    }
 }

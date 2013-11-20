@@ -54,6 +54,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.royaldev.royalcommands.RUtils.nearEqual;
+
 @SuppressWarnings("unused")
 public class RoyalCommandsPlayerListener implements Listener {
 
@@ -145,7 +147,8 @@ public class RoyalCommandsPlayerListener implements Listener {
         Player p = e.getPlayer();
         Location to = e.getTo();
         Location from = e.getFrom();
-        if (to.getX() == from.getX() && to.getY() == from.getY() && to.getZ() == from.getZ()) return;
+        if (nearEqual(to.getX(), from.getX()) && nearEqual(to.getY(), from.getY()) && nearEqual(to.getZ(), from.getZ()))
+            return;
         PConfManager pcm = PConfManager.getPConfManager(p);
         long l = pcm.getLong("teleport_warmup", -1L);
         int toAdd = Config.teleportWarmup * 1000;
