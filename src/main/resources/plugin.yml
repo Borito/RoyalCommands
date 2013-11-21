@@ -1106,6 +1106,13 @@ reflectcommands:
     version_added: 3.3.0
     class: CmdAttributes
 
+  saveplayer:
+    description: Saves an individual player's data.
+    usage: /<command> [player]
+    aliases: [sp]
+    version_added: 3.3.0
+    class: CmdSavePlayer
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1606,6 +1613,9 @@ permissions:
   rcmds.attributes:
     description: Allows you to modify item attributes.
     default: op
+  rcmds.saveplayer:
+    description: Allows you to save player data.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1913,6 +1923,9 @@ permissions:
   rcmds.others.listhome:
     description: Allows the player to /listhome other players.
     default: op
+  rcmds.others.saveplayer:
+    description: Allows the player to /saveplayer other players.
+    default: op
 
   rcmds.spawn.other:
     description: Allows the player to /spawn to different worlds.
@@ -2185,6 +2198,7 @@ permissions:
       rcmds.recipe: true
       rcmds.spawninfo: true
       rcmds.attributes: true
+      rcmds.saveplayer: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2218,6 +2232,7 @@ permissions:
       rcmds.others.delhome: true
       rcmds.others.deafen: true
       rcmds.others.listhome: true
+      rcmds.others.saveplayer: true
 
   rcmds.see.*:
     description: Gives every see permission.
@@ -2486,6 +2501,7 @@ permissions:
       rcmds.recipe: true
       rcmds.spawninfo: true
       rcmds.attributes: true
+      rcmds.saveplayer: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

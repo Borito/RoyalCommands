@@ -24,7 +24,7 @@ public class CmdPing implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (!plugin.nmsFace.hasSupport() || (!(cs instanceof Player) && args.length < 1)) {
+            if (!plugin.getNMSFace().hasSupport() || (!(cs instanceof Player) && args.length < 1)) {
                 cs.sendMessage(MessageColor.POSITIVE + "Pong!");
                 return true;
             }
@@ -38,13 +38,17 @@ public class CmdPing implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                int ping = plugin.nmsFace.getPing(p);
+                int ping = plugin.getNMSFace().getPing(p);
                 String possessive = (p.getName().endsWith("s")) ? "'" : "'s";
                 cs.sendMessage(MessageColor.NEUTRAL + p.getName() + possessive + MessageColor.POSITIVE + " ping: " + MessageColor.NEUTRAL + ping + "ms");
                 return true;
             }
+            if (!(cs instanceof Player)) {
+                cs.sendMessage(MessageColor.POSITIVE + "Pong!");
+                return true;
+            }
             Player p = (Player) cs;
-            int ping = plugin.nmsFace.getPing(p);
+            int ping = plugin.getNMSFace().getPing(p);
             p.sendMessage(MessageColor.POSITIVE + "Your ping: " + MessageColor.NEUTRAL + ping + "ms");
             return true;
         }

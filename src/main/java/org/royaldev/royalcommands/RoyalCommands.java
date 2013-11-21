@@ -95,7 +95,7 @@ public class RoyalCommands extends JavaPlugin {
     public String newVersion = null;
     public Metrics m = null;
 
-    public NMSFace nmsFace;
+    private NMSFace nmsFace;
     public Config c;
     public Help h;
 
@@ -175,6 +175,10 @@ public class RoyalCommands extends JavaPlugin {
         int hid = 0;
         for (Player p : getServer().getOnlinePlayers()) if (isVanished(p)) hid++;
         return hid;
+    }
+
+    public NMSFace getNMSFace() {
+        return nmsFace;
     }
 
     //-- Static methods --//
