@@ -4,16 +4,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.kitteh.tag.PlayerReceiveNameTagEvent;
 import org.royaldev.royalcommands.Config;
-import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class TagAPIListener implements Listener {
-
-    private RoyalCommands plugin;
-
-    public TagAPIListener(RoyalCommands instance) {
-        plugin = instance;
-    }
 
     @EventHandler
     public void onTag(PlayerReceiveNameTagEvent e) {
