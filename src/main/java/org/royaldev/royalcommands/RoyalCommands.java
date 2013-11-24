@@ -113,7 +113,7 @@ public class RoyalCommands extends JavaPlugin {
     private final MonitorListener monitorListener = new MonitorListener(this);
     private final ServerListener serverListener = new ServerListener(this);
 
-    private final Pattern versionPattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
+    private final Pattern versionPattern = Pattern.compile("((\\d+\\.?){3})(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
 
     private RApiMain api;
 
@@ -355,11 +355,11 @@ public class RoyalCommands extends JavaPlugin {
             Matcher matcher = versionPattern.matcher(version);
             matcher.matches();
             // 1 = base version
-            // 2 = -SNAPSHOT
-            // 5 = build #
+            // 3 = -SNAPSHOT
+            // 6 = build #
             String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
-            String build = (matcher.group(5) == null) ? "local build" : matcher.group(5);
-            if (matcher.group(2) == null) build = "release";
+            String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
+            if (matcher.group(3) == null) build = "release";
             m = new Metrics(this);
             Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
             g.addPlotter(
@@ -478,7 +478,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(monitorListener, this);
         pm.registerEvents(serverListener, this);
         pm.registerEvents(new ItemListener(this), this);
-        if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(this), this);
+        if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(), this);
 
         //-- ProtocolLib things --//
 
