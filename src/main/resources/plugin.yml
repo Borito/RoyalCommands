@@ -1113,6 +1113,13 @@ reflectcommands:
     version_added: 3.3.0
     class: CmdSavePlayer
 
+  loadplayer:
+    description: Loads an individual player's data.
+    usage: /<command> [player]
+    aliases: [lp]
+    version_added: 3.3.0
+    class: CmdLoadPlayer
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1616,6 +1623,9 @@ permissions:
   rcmds.saveplayer:
     description: Allows you to save player data.
     default: op
+  rcmds.loadplayer:
+    description: Allows you to load player data.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1926,6 +1936,9 @@ permissions:
   rcmds.others.saveplayer:
     description: Allows the player to /saveplayer other players.
     default: op
+  rcmds.others.loadplayer:
+    description: Allows the player to /loadplayer other players.
+    default: op
 
   rcmds.spawn.other:
     description: Allows the player to /spawn to different worlds.
@@ -2199,6 +2212,7 @@ permissions:
       rcmds.spawninfo: true
       rcmds.attributes: true
       rcmds.saveplayer: true
+      rcmds.loadplayer: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2233,6 +2247,7 @@ permissions:
       rcmds.others.deafen: true
       rcmds.others.listhome: true
       rcmds.others.saveplayer: true
+      rcmds.others.loadplayer: true
 
   rcmds.see.*:
     description: Gives every see permission.
@@ -2502,6 +2517,7 @@ permissions:
       rcmds.spawninfo: true
       rcmds.attributes: true
       rcmds.saveplayer: true
+      rcmds.loadplayer: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
