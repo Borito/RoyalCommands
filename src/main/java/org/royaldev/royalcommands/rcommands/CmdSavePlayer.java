@@ -24,10 +24,6 @@ public class CmdSavePlayer implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (!plugin.getNMSFace().hasSupport()) {
-                cs.sendMessage(MessageColor.NEGATIVE + "No support for your Minecraft version!");
-                return true;
-            }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
@@ -41,12 +37,7 @@ public class CmdSavePlayer implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot save other players' data!");
                 return true;
             }
-            try {
-                plugin.getNMSFace().savePlayerData(t);
-            } catch (IllegalArgumentException ex) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Couldn't save player data: " + MessageColor.NEUTRAL + ex.getMessage() + MessageColor.NEGATIVE + ".");
-                return true;
-            }
+            t.saveData();
             cs.sendMessage(MessageColor.POSITIVE + "Data saved.");
             return true;
         }

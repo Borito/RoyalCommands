@@ -29,10 +29,4 @@ public interface NMSFace {
      */
     public int getPing(Player p);
 
-    /**
-     * Saves an individual player's data (Minecraft player DAT files) to the disk.
-     *
-     * @param p Player to save
-     */
-    public void savePlayerData(Player p);
 }
