@@ -1384,9 +1384,10 @@ public class RUtils {
     public static Object getPrivateField(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         Class<?> clazz = object.getClass();
         Field objectField = clazz.getDeclaredField(field);
+        final boolean wasAccessible = objectField.isAccessible();
         objectField.setAccessible(true);
         Object result = objectField.get(object);
-        objectField.setAccessible(false);
+        objectField.setAccessible(wasAccessible);
         return result;
     }
 
