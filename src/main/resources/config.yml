@@ -130,11 +130,11 @@ kits:
   options:
     # Use rcmds.kit.[kit-name] (true) or just rcmds.kit (false)
     exclusive_perms: false
-  # Define kits here - only use ID numbers, not names & you MUST use amounts (5:1 is one of wood)
+  # Define kits here - only use Material names & you MUST use amounts (WOOD:1 is one of wood)
   list:
     # The kit "default" has 10 wood, 5 stone, 25 dirt, and 64 cobblestone. <item>:<amount>
     default:
-      items: ["5:10", "1:5", "3:25", "4:64", "268:1"]
+      items: ["WOOD:10", "STONE:5", "DIRT:25", "COBBLESTONE:64", "WOOD_SWORD:1"]
       # Leave a blank string ("") for no enchants. This list is parallel with the items list
       enchantments: ["", "", "", "", "damage_all:2,durability:1"]
       names: ["Wood of Champions", "", "", "", "Skyforge Wood Sword"]
@@ -147,11 +147,11 @@ kits:
       cooldown: 86400
     # The kit "wool" has 64 red wool and 35 black wool <item>:<amount>:<data>
     wool:
-      items: ["35:64:14", "35:64:15"]
+      items: ["WOOL:64:14", "WOOL:64:15"]
     # This kit can only be used once (cooldown of -1)
     onetime:
       # Remember to include " around colons
-      items: ["268:1"]
+      items: ["IRON_SWORD:1"]
       cooldown: -1
 
 ###
@@ -525,14 +525,13 @@ items:
     default_stack_size: 1
     # Drop items that don't fit in inventory on /i or /give?
     drop_extras: false
-    # Items that cannot be spawned without rcmds.allowed.item
+    # Items that cannot be spawned without rcmds.allowed.itemName
     blocked:
-    - 7
-    - 49
-    - 383
+    - BEDROCK
+    - OBSIDIAN
+    - MONSTER_EGG
     # This is a tag applied on all items that are spawned. It will prevent spawned items from stacking with legit items.
     # It is not visible unless lore is specified. It is set in NMS data, set to be saved with the item in the world.
-    # This NMS data may be lost if a block is placed and then broken.
     tag:
       enabled: false
       plugins:

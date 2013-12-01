@@ -47,12 +47,12 @@ public class CmdGive implements CommandExecutor {
             target.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
             return false;
         }
-        Integer itemid = stack.getTypeId();
-        if (itemid == 0) {
+        Material m = stack.getType();
+        if (m == Material.AIR) {
             target.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
             return false;
         }
-        target.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+        target.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
         if (Config.itemSpawnTag && cs != null)
             stack = RUtils.applySpawnLore(RUtils.setItemStackSpawned(stack, cs.getName(), true));
         HashMap<Integer, ItemStack> left = target.getInventory().addItem(stack);
@@ -109,12 +109,12 @@ public class CmdGive implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
                 return true;
             }
-            Integer itemid = toInv.getTypeId();
-            if (itemid == 0) {
+            Material m = toInv.getType();
+            if (m == Material.AIR) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                 return true;
             }
-            if (Config.blockedItems.contains(itemid.toString()) && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item") && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item." + itemid)) {
+            if (Config.blockedItems.contains(m.name()) && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item." + m.name())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
@@ -129,8 +129,8 @@ public class CmdGive implements CommandExecutor {
                     target.getWorld().dropItemNaturally(target.getLocation(), item);
                 }
             }
-            cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
-            target.sendMessage(MessageColor.POSITIVE + "You have been given " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+            target.sendMessage(MessageColor.POSITIVE + "You have been given " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

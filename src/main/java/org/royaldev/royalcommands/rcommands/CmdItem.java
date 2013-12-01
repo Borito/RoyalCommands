@@ -66,17 +66,17 @@ public class CmdItem implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
                 return true;
             }
-            Integer itemid = toInv.getTypeId();
-            if (itemid == 0) {
+            Material m = toInv.getType();
+            if (m == Material.AIR) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
                 return true;
             }
-            if (Config.blockedItems.contains(itemid.toString()) && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item") && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item." + itemid.toString())) {
+            if (Config.blockedItems.contains(m.name()) && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item." + m.name())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
-            cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(Material.getMaterial(itemid)) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + ".");
+            cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + ".");
             if (Config.itemSpawnTag)
                 toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));
             HashMap<Integer, ItemStack> left = p.getInventory().addItem(toInv);

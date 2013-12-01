@@ -49,56 +49,52 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("unchecked, unused")
+@SuppressWarnings("unused")
 public class RUtils {
 
     static Logger log = Logger.getLogger("Minecraft");
 
     // Borrowed list of materials from Essentials
-    public static final Set<Integer> AIR_MATERIALS = new HashSet<Integer>();
-    public static final HashSet<Byte> AIR_MATERIALS_TARGET = new HashSet<Byte>();
+    public static final Set<Material> AIR_MATERIALS = new HashSet<Material>();
 
     static {
-        AIR_MATERIALS.add(Material.AIR.getId());
-        AIR_MATERIALS.add(Material.SAPLING.getId());
-        AIR_MATERIALS.add(Material.POWERED_RAIL.getId());
-        AIR_MATERIALS.add(Material.DETECTOR_RAIL.getId());
-        AIR_MATERIALS.add(Material.LONG_GRASS.getId());
-        AIR_MATERIALS.add(Material.DEAD_BUSH.getId());
-        AIR_MATERIALS.add(Material.YELLOW_FLOWER.getId());
-        AIR_MATERIALS.add(Material.RED_ROSE.getId());
-        AIR_MATERIALS.add(Material.BROWN_MUSHROOM.getId());
-        AIR_MATERIALS.add(Material.RED_MUSHROOM.getId());
-        AIR_MATERIALS.add(Material.TORCH.getId());
-        AIR_MATERIALS.add(Material.REDSTONE_WIRE.getId());
-        AIR_MATERIALS.add(Material.SEEDS.getId());
-        AIR_MATERIALS.add(Material.SIGN_POST.getId());
-        AIR_MATERIALS.add(Material.WOODEN_DOOR.getId());
-        AIR_MATERIALS.add(Material.LADDER.getId());
-        AIR_MATERIALS.add(Material.RAILS.getId());
-        AIR_MATERIALS.add(Material.WALL_SIGN.getId());
-        AIR_MATERIALS.add(Material.LEVER.getId());
-        AIR_MATERIALS.add(Material.STONE_PLATE.getId());
-        AIR_MATERIALS.add(Material.IRON_DOOR_BLOCK.getId());
-        AIR_MATERIALS.add(Material.WOOD_PLATE.getId());
-        AIR_MATERIALS.add(Material.REDSTONE_TORCH_OFF.getId());
-        AIR_MATERIALS.add(Material.REDSTONE_TORCH_ON.getId());
-        AIR_MATERIALS.add(Material.STONE_BUTTON.getId());
-        AIR_MATERIALS.add(Material.SUGAR_CANE_BLOCK.getId());
-        AIR_MATERIALS.add(Material.DIODE_BLOCK_OFF.getId());
-        AIR_MATERIALS.add(Material.DIODE_BLOCK_ON.getId());
-        AIR_MATERIALS.add(Material.TRAP_DOOR.getId());
-        AIR_MATERIALS.add(Material.PUMPKIN_STEM.getId());
-        AIR_MATERIALS.add(Material.MELON_STEM.getId());
-        AIR_MATERIALS.add(Material.VINE.getId());
-        AIR_MATERIALS.add(Material.NETHER_WARTS.getId());
-        AIR_MATERIALS.add(Material.WATER_LILY.getId());
-        AIR_MATERIALS.add(Material.SNOW.getId());
-
-        for (Integer integer : AIR_MATERIALS)
-            AIR_MATERIALS_TARGET.add(integer.byteValue());
-        AIR_MATERIALS_TARGET.add((byte) Material.WATER.getId());
-        AIR_MATERIALS_TARGET.add((byte) Material.STATIONARY_WATER.getId());
+        AIR_MATERIALS.add(Material.AIR);
+        AIR_MATERIALS.add(Material.SAPLING);
+        AIR_MATERIALS.add(Material.POWERED_RAIL);
+        AIR_MATERIALS.add(Material.DETECTOR_RAIL);
+        AIR_MATERIALS.add(Material.LONG_GRASS);
+        AIR_MATERIALS.add(Material.DEAD_BUSH);
+        AIR_MATERIALS.add(Material.YELLOW_FLOWER);
+        AIR_MATERIALS.add(Material.RED_ROSE);
+        AIR_MATERIALS.add(Material.BROWN_MUSHROOM);
+        AIR_MATERIALS.add(Material.RED_MUSHROOM);
+        AIR_MATERIALS.add(Material.TORCH);
+        AIR_MATERIALS.add(Material.REDSTONE_WIRE);
+        AIR_MATERIALS.add(Material.SEEDS);
+        AIR_MATERIALS.add(Material.SIGN_POST);
+        AIR_MATERIALS.add(Material.WOODEN_DOOR);
+        AIR_MATERIALS.add(Material.LADDER);
+        AIR_MATERIALS.add(Material.RAILS);
+        AIR_MATERIALS.add(Material.WALL_SIGN);
+        AIR_MATERIALS.add(Material.LEVER);
+        AIR_MATERIALS.add(Material.STONE_PLATE);
+        AIR_MATERIALS.add(Material.IRON_DOOR_BLOCK);
+        AIR_MATERIALS.add(Material.WOOD_PLATE);
+        AIR_MATERIALS.add(Material.REDSTONE_TORCH_OFF);
+        AIR_MATERIALS.add(Material.REDSTONE_TORCH_ON);
+        AIR_MATERIALS.add(Material.STONE_BUTTON);
+        AIR_MATERIALS.add(Material.SUGAR_CANE_BLOCK);
+        AIR_MATERIALS.add(Material.DIODE_BLOCK_OFF);
+        AIR_MATERIALS.add(Material.DIODE_BLOCK_ON);
+        AIR_MATERIALS.add(Material.TRAP_DOOR);
+        AIR_MATERIALS.add(Material.PUMPKIN_STEM);
+        AIR_MATERIALS.add(Material.MELON_STEM);
+        AIR_MATERIALS.add(Material.VINE);
+        AIR_MATERIALS.add(Material.NETHER_WARTS);
+        AIR_MATERIALS.add(Material.WATER_LILY);
+        AIR_MATERIALS.add(Material.SNOW);
+        AIR_MATERIALS.add(Material.WATER);
+        AIR_MATERIALS.add(Material.STATIONARY_WATER);
     }
 
     /**
@@ -108,34 +104,29 @@ public class RUtils {
      * @param len  Length to wrap at
      * @return Array of strings
      */
+    @SuppressWarnings("unchecked")
     public static String[] wrapText(String text, int len) {
         // return empty array for null text
         if (text == null) return new String[]{};
-
         // return text if len is zero or less
         if (len <= 0) return new String[]{text};
-
         // return text if less than length
         if (text.length() <= len) return new String[]{text};
         char[] chars = text.toCharArray();
         java.util.Vector lines = new java.util.Vector();
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
-
         for (char aChar : chars) {
             word.append(aChar);
-
             if (aChar == ' ') {
                 if ((line.length() + word.length()) > len) {
                     lines.add(line.toString());
                     line.delete(0, line.length());
                 }
-
                 line.append(word);
                 word.delete(0, word.length());
             }
         }
-
         // handle any extra chars in current word
         if (word.length() > 0) {
             if ((line.length() + word.length()) > len) {
@@ -144,14 +135,11 @@ public class RUtils {
             }
             line.append(word);
         }
-
         // handle extra line
         if (line.length() > 0) lines.add(line.toString());
-
         String[] ret = new String[lines.size()];
         int c = 0; // counter
-        for (Enumeration e = lines.elements(); e.hasMoreElements(); c++)
-            ret[c] = (String) e.nextElement();
+        for (Enumeration e = lines.elements(); e.hasMoreElements(); c++) ret[c] = (String) e.nextElement();
         return ret;
     }
 
@@ -162,20 +150,18 @@ public class RUtils {
      * @return Block player is looking at
      */
     public static Block getTarget(Player p) {
-        return p.getTargetBlock(AIR_MATERIALS_TARGET, 300);
+        return p.getTargetBlock(null, 300); // waiting on method for Materials
     }
 
     public static String join(Iterable<String> i, String between) {
         String ret = "";
-        for (String s : i)
-            ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
         return ret;
     }
 
     public static String join(String[] i, String between) {
         String ret = "";
-        for (String s : i)
-            ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
         return ret;
     }
 
@@ -355,14 +341,12 @@ public class RUtils {
         boolean future = false;
         if (toDate.equals(fromDate)) return " now";
         if (toDate.after(fromDate)) future = true;
-
         StringBuilder sb = new StringBuilder();
         int[] types = new int[]{Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND};
         String[] names = new String[]{"year", "years", "month", "months", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds"};
         for (int i = 0; i < types.length; i++) {
             int diff = dateDiff(types[i], fromDate, toDate, future);
-            if (diff > 0)
-                sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
+            if (diff > 0) sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
         }
         if (sb.length() == 0) return " now";
         return sb.toString();
@@ -387,7 +371,8 @@ public class RUtils {
      */
     public static String colorize(String text) {
         if (text == null) return null;
-        return text.replaceAll("(?i)&([a-f0-9k-or])", ChatColor.COLOR_CHAR + "$1");
+        return ChatColor.translateAlternateColorCodes('&', text);
+        // return text.replaceAll("(?i)&([a-f0-9k-or])", ChatColor.COLOR_CHAR + "$1");
     }
 
     /**
@@ -440,14 +425,7 @@ public class RUtils {
             else data = null;
         }
         Material mat = Material.getMaterial(name);
-        if (mat == null) {
-            try {
-                mat = Material.getMaterial(Integer.valueOf(name));
-                if (mat == null) return null;
-            } catch (Exception e) {
-                return null;
-            }
-        }
+        if (mat == null) return null;
         if (amount == null) amount = Config.defaultStack;
         ItemStack stack = new ItemStack(mat, amount);
         if (data != null) stack.setDurability(data);
@@ -792,13 +770,12 @@ public class RUtils {
      * @throws NullPointerException     If ItemNameManager is not loaded
      */
     public static ItemStack getItemFromAlias(String alias, int amount) throws InvalidItemNameException, NullPointerException {
-        ItemStack toRet;
-        if (RoyalCommands.inm == null)
-            throw new NullPointerException("ItemNameManager is not loaded!");
-        toRet = getItem(RoyalCommands.inm.getIDFromAlias(alias), amount);
-        if (toRet == null)
-            throw new InvalidItemNameException(alias + " is not a valid alias!");
-        return toRet;
+        ItemStack is;
+        if (RoyalCommands.inm == null) throw new NullPointerException("ItemNameManager is not loaded!");
+        is = RoyalCommands.inm.getAliasFromString(alias);
+        if (is == null) throw new InvalidItemNameException(alias + " is not a valid alias!");
+        is.setAmount(amount);
+        return is;
     }
 
     public static String getMVWorldName(World w) {
@@ -1332,7 +1309,7 @@ public class RUtils {
 
     public static String getAssignmentPath(ItemStack is, boolean customNames, boolean durability) {
         StringBuilder path = new StringBuilder("assign.");
-        path.append(is.getTypeId());
+        path.append(is.getType().name());
         if (customNames) {
             ItemMeta im = is.getItemMeta();
             if (im != null) {

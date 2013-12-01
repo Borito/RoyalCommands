@@ -24,7 +24,7 @@ public class TestAliases {
         for (final Material m : Material.values()) {
             if (inm.aliasExists(m)) continue;
             if (allAliasesExist) allAliasesExist = false;
-            l.warning("Missing alias for ID " + m.getId() + ".");
+            l.warning("Missing alias for Material " + m.name() + ".");
         }
         assertTrue("Missing aliases!", allAliasesExist);
     }
