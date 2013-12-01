@@ -32,7 +32,7 @@ public class ItemNameManager {
                 m = Material.valueOf(s[0]);
                 is = new ItemStack(m);
             } catch (IllegalArgumentException ex) {
-                RoyalCommands.instance.getLogger().warning("ID in IDs file is invalid: " + s[0]);
+                RoyalCommands.instance.getLogger().warning("Material in items.csv is invalid: " + s[0]);
                 continue;
             }
             if (is == null) {
@@ -43,7 +43,7 @@ public class ItemNameManager {
                 short data = Short.valueOf(s[1]);
                 is.setDurability(data);
             } catch (NumberFormatException e) {
-                RoyalCommands.instance.getLogger().warning("Data in IDs file is invalid: " + s[1]);
+                RoyalCommands.instance.getLogger().warning("Data in items.csv file is invalid: " + s[1]);
                 continue;
             }
             synchronized (items) {
