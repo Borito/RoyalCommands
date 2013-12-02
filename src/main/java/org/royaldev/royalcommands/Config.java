@@ -74,11 +74,11 @@ public class Config {
         useWelcome = c.getBoolean("messages.options.enable_welcome_message", true);
         useWhitelist = c.getBoolean("whitelist.enabled", false);
         useWorldManager = c.getBoolean("worldmanager.enabled", true);
-        vehicleCrossWorldTeleport = c.getBoolean("teleports.vehicles.cross_world", false);
-        vehicleTeleportAnimals = c.getBoolean("teleports.vehicles.animals", true);
+        vehicleCrossWorldTeleport = c.getBoolean("teleports.vehicles.options.cross_world", false);
+        vehicleTeleportAnimals = c.getBoolean("teleports.vehicles.options.animals", true);
         vehicleTeleportEnabled = c.getBoolean("teleports.vehicles.enabled", true);
-        vehicleTeleportPlayers = c.getBoolean("teleports.vehicles.players", false);
-        vehicleTeleportVehicles = c.getBoolean("teleports.vehicles.vehicles", true);
+        vehicleTeleportPlayers = c.getBoolean("teleports.vehicles.options.players", false);
+        vehicleTeleportVehicles = c.getBoolean("teleports.vehicles.options.vehicles", true);
         warpPermissions = c.getBoolean("warps.explicit_permissions", false);
         wmShowEmptyWorlds = c.getBoolean("worldmanager.who.show_empty_worlds", false);
         worldAccessPerm = c.getBoolean("teleports.worlds.worldaccess_perm", false);
