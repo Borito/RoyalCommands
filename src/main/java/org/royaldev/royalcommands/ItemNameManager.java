@@ -60,7 +60,7 @@ public class ItemNameManager {
         return items.values().contains(is);
     }
 
-    public ItemStack getAliasFromString(String alias) {
+    public ItemStack getItemStackFromAlias(String alias) {
         boolean found = false;
         String[] aliases = null;
         String data = null;

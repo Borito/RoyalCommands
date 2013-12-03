@@ -104,12 +104,10 @@ public class CmdKit implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That kit was configured wrong!");
                     return true;
                 }
-                int id;
+                ItemStack is = RoyalCommands.inm.getItemStackFromAlias(kit[0]);
                 int amount;
                 int data = -1;
-                try {
-                    id = Integer.parseInt(kit[0]);
-                } catch (Exception e) {
+                if (is == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That kit was configured wrong!");
                     return true;
                 }
@@ -123,36 +121,26 @@ public class CmdKit implements CommandExecutor {
                     data = Integer.parseInt(kit[2]);
                 } catch (Exception ignored) {
                 }
-                if (id < 1 || amount < 1) {
+                if (is.getType() == Material.AIR || amount < 1) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That kit was configured wrong!");
                     return true;
                 }
-                if (Material.getMaterial(id) == null) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid item ID in kit: " + MessageColor.NEUTRAL + id);
-                    return true;
-                }
-                ItemStack item;
-                if (data > -1) {
-                    item = new ItemStack(id, amount, (short) data);
-                } else {
-                    item = new ItemStack(id, amount);
-                }
-                if (enchant != null) item.addUnsafeEnchantments(enchant);
+                if (data > -1) is.setDurability((short) data);
+                is.setAmount(amount);
+                if (enchant != null) is.addUnsafeEnchantments(enchant);
                 try {
                     String name = names.get(index);
-                    if (!name.isEmpty()) item = RUtils.renameItem(item, name);
+                    if (!name.isEmpty()) is = RUtils.renameItem(is, name);
                 } catch (IndexOutOfBoundsException ignored) {
                 }
                 try {
                     String lo = lore.get(index);
-                    if (!lo.isEmpty()) item = RUtils.addLore(item, lo);
+                    if (!lo.isEmpty()) is = RUtils.addLore(is, lo);
                 } catch (IndexOutOfBoundsException ignored) {
                 }
-                HashMap<Integer, ItemStack> left = p.getInventory().addItem(item);
+                HashMap<Integer, ItemStack> left = p.getInventory().addItem(is);
                 if (!left.isEmpty()) {
-                    for (ItemStack is : left.values()) {
-                        p.getWorld().dropItemNaturally(p.getLocation(), is);
-                    }
+                    for (ItemStack i : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), i);
                 }
             }
             p.sendMessage(MessageColor.POSITIVE + "Giving you the kit \"" + MessageColor.NEUTRAL + kitname + MessageColor.POSITIVE + ".\"");

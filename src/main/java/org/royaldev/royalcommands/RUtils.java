@@ -772,7 +772,7 @@ public class RUtils {
     public static ItemStack getItemFromAlias(String alias, int amount) throws InvalidItemNameException, NullPointerException {
         ItemStack is;
         if (RoyalCommands.inm == null) throw new NullPointerException("ItemNameManager is not loaded!");
-        is = RoyalCommands.inm.getAliasFromString(alias);
+        is = RoyalCommands.inm.getItemStackFromAlias(alias);
         if (is == null) throw new InvalidItemNameException(alias + " is not a valid alias!");
         is.setAmount(amount);
         return is;
