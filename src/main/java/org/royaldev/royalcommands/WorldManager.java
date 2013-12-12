@@ -50,7 +50,6 @@ public class WorldManager {
             if (!loadedWorlds.contains(to.getName())) return;
             GameMode gm;
             String mode = config.getString("worlds." + to.getName() + ".gamemode", "SURVIVAL").trim();
-            if (mode == null) mode = "SURVIVAL"; // how?
             try {
                 gm = GameMode.valueOf(mode);
             } catch (IllegalArgumentException ex) {

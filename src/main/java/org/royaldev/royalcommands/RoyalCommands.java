@@ -352,25 +352,26 @@ public class RoyalCommands extends JavaPlugin {
         //-- Hidendra's Metrics --//
 
         try {
-            Matcher matcher = versionPattern.matcher(version);
-            matcher.matches();
-            // 1 = base version
-            // 3 = -SNAPSHOT
-            // 6 = build #
-            String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
-            String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
-            if (matcher.group(3) == null) build = "release";
             m = new Metrics(this);
-            Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
-            g.addPlotter(
-                    new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
-                        @Override
-                        public int getValue() {
-                            return 1; // this value doesn't matter
+            Matcher matcher = versionPattern.matcher(version);
+            if (matcher.matches()) {
+                // 1 = base version
+                // 3 = -SNAPSHOT
+                // 6 = build #
+                String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
+                String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
+                if (matcher.group(3) == null) build = "release";
+                Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
+                g.addPlotter(
+                        new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
+                            @Override
+                            public int getValue() {
+                                return 1; // this value doesn't matter
+                            }
                         }
-                    }
-            ); // add the donut graph with major version inside and build outside
-            m.addGraph(g); // add the graph
+                ); // add the donut graph with major version inside and build outside
+                m.addGraph(g); // add the graph
+            }
             if (!m.start())
                 getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
             else getLogger().info("Metrics enabled. Thank you!");
@@ -411,7 +412,7 @@ public class RoyalCommands extends JavaPlugin {
                 if (!Config.updateCheck) return;
                 try {
                     Matcher m = versionPattern.matcher(version);
-                    m.matches();
+                    if (!m.matches()) return;
                     StringBuilder useVersion = new StringBuilder();
                     if (m.group(1) != null) useVersion.append(m.group(1)); // add base version #
                     if (m.group(2) != null) useVersion.append(m.group(2)); // add SNAPSHOT status

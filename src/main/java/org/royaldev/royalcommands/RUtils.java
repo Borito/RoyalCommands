@@ -149,6 +149,7 @@ public class RUtils {
      * @param p Player to get block from
      * @return Block player is looking at
      */
+    @SuppressWarnings("deprecation")
     public static Block getTarget(Player p) {
         return p.getTargetBlock(null, 300); // waiting on method for Materials
     }
@@ -944,21 +945,23 @@ public class RUtils {
     }
 
     private static boolean isInt(String s) {
+        Integer i;
         try {
-            Integer.parseInt(s);
+            i = Integer.parseInt(s);
         } catch (NumberFormatException e) {
-            return false;
+            i = null;
         }
-        return true;
+        return i != null;
     }
 
     private static boolean isInt(char c) {
+        Integer i;
         try {
-            Integer.parseInt(String.valueOf(c));
+            i = Integer.parseInt(String.valueOf(c));
         } catch (NumberFormatException e) {
-            return false;
+            i = null;
         }
-        return true;
+        return i != null;
     }
 
     /**
@@ -1174,15 +1177,7 @@ public class RUtils {
         List<String> prevBans = pcm.getStringList("prevbans");
         if (prevBans == null) prevBans = new ArrayList<String>();
         // banner,banreason,bannedat,istempban
-        StringBuilder sb = new StringBuilder();
-        sb.append(pcm.getString("banner"));
-        sb.append("\u00b5");
-        sb.append(pcm.getString("banreason"));
-        sb.append("\u00b5");
-        sb.append(pcm.getString("bannedat"));
-        sb.append("\u00b5");
-        sb.append(pcm.get("bantime") != null);
-        prevBans.add(sb.toString());
+        prevBans.add(pcm.getString("banner") + "\u00b5" + pcm.getString("banreason") + "\u00b5" + pcm.getString("bannedat") + "\u00b5" + (pcm.get("bantime") != null));
         pcm.set("prevbans", prevBans);
     }
 
@@ -1270,7 +1265,7 @@ public class RUtils {
         for (File in : listed) {
             if (in.isDirectory()) {
                 if (!recursive) continue;
-                fs.addAll(listFiles(in, recursive));
+                fs.addAll(listFiles(in, true));
                 continue;
             }
             fs.add(in);

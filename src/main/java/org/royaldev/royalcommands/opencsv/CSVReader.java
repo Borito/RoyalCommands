@@ -97,7 +97,7 @@ public class CSVReader implements Closeable {
      * tokens.
      *
      * @return a List of String[], with each String[] representing a line of the
-     *         file.
+     * file.
      * @throws IOException if bad things happen during the read
      */
     public List<String[]> readAll() throws IOException {
@@ -114,7 +114,7 @@ public class CSVReader implements Closeable {
      * Reads the next line from the buffer and converts to a string array.
      *
      * @return a string array with each comma-separated element as a separate
-     *         entry.
+     * entry.
      * @throws IOException if bad things happen during the read
      */
     public String[] readNext() throws IOException {

@@ -4,7 +4,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -33,10 +32,6 @@ public class ItemNameManager {
                 is = new ItemStack(m);
             } catch (IllegalArgumentException ex) {
                 RoyalCommands.instance.getLogger().warning("Material in items.csv is invalid: " + s[0]);
-                continue;
-            }
-            if (is == null) {
-                RoyalCommands.instance.getLogger().warning("Could not make ItemStack from \"" + Arrays.toString(s) + "\"");
                 continue;
             }
             try {
