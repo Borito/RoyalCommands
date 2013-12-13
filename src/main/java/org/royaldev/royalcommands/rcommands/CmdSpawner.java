@@ -53,8 +53,8 @@ public class CmdSpawner implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "Invalid mob!");
                 return true;
             }
-            if (!plugin.ah.isAuthorized(cs, "rcmds.spawnmob." + ct.getName().toLowerCase()) && !plugin.ah.isAuthorized(cs, "rcmds.spawnmob.*")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You cannot use mob type " + MessageColor.NEUTRAL + ct.getName().toLowerCase() + MessageColor.NEGATIVE + ".");
+            if (!plugin.ah.isAuthorized(cs, "rcmds.spawnmob." + ct.name().toLowerCase()) && !plugin.ah.isAuthorized(cs, "rcmds.spawnmob.*")) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot use mob type " + MessageColor.NEUTRAL + ct.name().toLowerCase() + MessageColor.NEGATIVE + ".");
                 return true;
             }
             crs.setSpawnedType(ct);

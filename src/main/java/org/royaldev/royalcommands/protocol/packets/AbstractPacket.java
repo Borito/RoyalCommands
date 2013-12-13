@@ -20,16 +20,16 @@ package org.royaldev.royalcommands.protocol.packets;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 
-public abstract class AbstractPacket {
+abstract class AbstractPacket {
     // The packet we will be modifying
-    protected PacketContainer handle;
+    PacketContainer handle;
 
     /**
      * Constructs a new strongly typed wrapper for the given packet.
      *
      * @param handle - handle to the raw packet data.
      */
-    protected AbstractPacket(PacketContainer handle, PacketType packetType) {
+    AbstractPacket(PacketContainer handle, PacketType packetType) {
         // Make sure we're given a valid packet
         if (handle == null)
             throw new IllegalArgumentException("Packet handle cannot be NULL.");

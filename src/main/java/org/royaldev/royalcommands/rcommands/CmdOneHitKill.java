@@ -35,8 +35,8 @@ public class CmdOneHitKill implements CommandExecutor {
                         cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                         return true;
                     }
-                    Boolean ohk = pcm.getBoolean("ohk");
-                    if (ohk == null || !ohk) {
+                    boolean ohk = pcm.getBoolean("ohk");
+                    if (!ohk) {
                         pcm.set("ohk", true);
                         cs.sendMessage(MessageColor.POSITIVE + "You have enabled onehitkill mode for " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");
                         return true;
@@ -51,8 +51,8 @@ public class CmdOneHitKill implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                Boolean ohk = pcm.getBoolean("ohk");
-                if (ohk == null || !ohk) {
+                boolean ohk = pcm.getBoolean("ohk");
+                if (!ohk) {
                     pcm.set("ohk", true);
                     cs.sendMessage(MessageColor.POSITIVE + "You have enabled onehitkill mode for " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + ".");
                     p.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + " has enabled onehitkill for you.");
@@ -70,8 +70,8 @@ public class CmdOneHitKill implements CommandExecutor {
                 }
                 Player p = (Player) cs;
                 PConfManager pcm = PConfManager.getPConfManager(p);
-                Boolean ohk = pcm.getBoolean("ohk");
-                if (ohk == null || !ohk) {
+                boolean ohk = pcm.getBoolean("ohk");
+                if (!ohk) {
                     pcm.set("ohk", true);
                     p.sendMessage(MessageColor.POSITIVE + "You have enabled onehitkill for yourself.");
                     return true;

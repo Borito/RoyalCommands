@@ -68,8 +68,8 @@ public class CmdSpawnMob implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "Invalid mob!");
                 return true;
             }
-            if (!plugin.ah.isAuthorized(cs, "rcmds.spawnmob." + c.getName().toLowerCase()) && !plugin.ah.isAuthorized(cs, "rcmds.spawnmob.*")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You cannot use mob type " + MessageColor.NEUTRAL + c.getName().toLowerCase() + MessageColor.NEGATIVE + ".");
+            if (!plugin.ah.isAuthorized(cs, "rcmds.spawnmob." + c.name().toLowerCase()) && !plugin.ah.isAuthorized(cs, "rcmds.spawnmob.*")) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot use mob type " + MessageColor.NEUTRAL + c.name().toLowerCase() + MessageColor.NEGATIVE + ".");
                 return true;
             }
             if (args.length > 1) {
@@ -91,7 +91,7 @@ public class CmdSpawnMob implements CommandExecutor {
                 }
                 try {
                     for (int a = 0; a < i; a++) p.getWorld().spawnEntity(l, c);
-                    cs.sendMessage(MessageColor.POSITIVE + "Spawned " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + c.getName().toLowerCase() + MessageColor.POSITIVE + ".");
+                    cs.sendMessage(MessageColor.POSITIVE + "Spawned " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + c.name().toLowerCase() + MessageColor.POSITIVE + ".");
                 } catch (Exception e) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Uh-oh! This mob is not currently working with this command.");
                 }
@@ -105,9 +105,9 @@ public class CmdSpawnMob implements CommandExecutor {
                 return true;
             }
             if (spawned != null)
-                cs.sendMessage(MessageColor.POSITIVE + "Spawned " + MessageColor.NEUTRAL + "1" + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + c.getName().toLowerCase() + MessageColor.POSITIVE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Spawned " + MessageColor.NEUTRAL + "1" + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + c.name().toLowerCase() + MessageColor.POSITIVE + ".");
             else
-                cs.sendMessage(MessageColor.NEGATIVE + "Could not spawn " + MessageColor.NEUTRAL + c.getName().toLowerCase() + MessageColor.NEGATIVE + ".");
+                cs.sendMessage(MessageColor.NEGATIVE + "Could not spawn " + MessageColor.NEUTRAL + c.name().toLowerCase() + MessageColor.NEGATIVE + ".");
             return true;
         }
         return false;

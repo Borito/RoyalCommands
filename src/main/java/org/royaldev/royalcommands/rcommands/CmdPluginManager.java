@@ -95,7 +95,7 @@ public class CmdPluginManager implements CommandExecutor {
 
     private boolean downloadAndMovePlugin(String url, String saveAs, boolean recursive, CommandSender cs) {
         if (saveAs == null) saveAs = "";
-        BufferedInputStream bis = null;
+        BufferedInputStream bis;
         final HttpURLConnection huc;
         try {
             huc = (HttpURLConnection) new URL(url).openConnection();
@@ -712,10 +712,6 @@ public class CmdPluginManager implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "Tell the developer enc1.");
                     return true;
                 }
-                if (p == null) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
-                    return true;
-                }
                 if (p.getDescription() == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Plugin has no description!");
                     return true;
@@ -791,11 +787,10 @@ public class CmdPluginManager implements CommandExecutor {
                             }
                             Pattern p = Pattern.compile("<h2><a href=\"/bukkit-plugins/([\\W\\w]+)/\">([\\w\\W]+)</a></h2>");
                             Matcher m = p.matcher(base);
-                            if (m == null) {
+                            if (!m.find()) {
                                 if (i == 0) cs.sendMessage(MessageColor.NEGATIVE + "No results found.");
                                 return;
                             }
-                            m.find();
                             String name = m.group(2).replaceAll("</?\\w+>", "");
                             String tag = m.group(1);
                             int beglen = StringUtils.substringBefore(content.toString(), base).length();

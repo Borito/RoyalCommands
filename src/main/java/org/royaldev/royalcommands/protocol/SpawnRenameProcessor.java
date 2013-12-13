@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.protocol;
 
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.Packets;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.utility.MinecraftReflection;
@@ -30,8 +31,8 @@ public class SpawnRenameProcessor extends AbstractRenameProcessor {
         if (input == null) return;
         try {
             // Read slot
-            if (event.getPacketID() == Packets.Client.SET_CREATIVE_SLOT) input.skipBytes(2);
-            else if (event.getPacketID() == Packets.Client.PLACE) input.skipBytes(10);
+            if (event.getPacketType() == PacketType.Play.Client.SET_CREATIVE_SLOT) input.skipBytes(2);
+            else if (event.getPacketType() == PacketType.Play.Client.BLOCK_PLACE) input.skipBytes(10);
             ItemStack stack = readItemStack(input, new StreamSerializer());
             // Now we can properly unprocess it
             unprocess(stack);

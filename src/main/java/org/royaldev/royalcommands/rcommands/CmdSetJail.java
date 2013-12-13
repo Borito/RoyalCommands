@@ -52,7 +52,10 @@ public class CmdSetJail implements CommandExecutor {
             File pconfl = new File(plugin.getDataFolder() + File.separator + "jails.yml");
             if (!pconfl.exists()) {
                 try {
-                    pconfl.createNewFile();
+                    if (!pconfl.createNewFile()) {
+                        cs.sendMessage(MessageColor.NEGATIVE + "Could not create a new file!");
+                        return true;
+                    }
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

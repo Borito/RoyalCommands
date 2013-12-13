@@ -66,7 +66,7 @@ public class BlockData {
         }
     }
 
-    public void save() throws IOException, ClassNotFoundException {
+    public void save() throws IOException {
         final File f = new File(p.getDataFolder(), "blockdata.dat");
         if (!f.exists()) if (!f.createNewFile()) throw new IOException("Couldn't create blockdata.dat");
         data.put(bl.toString(), thisData);

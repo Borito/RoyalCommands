@@ -41,7 +41,7 @@ public class CmdMore implements CommandExecutor {
                     return true;
                 } else if (args[0].equalsIgnoreCase("inventory")) {
                     ItemStack hand = p.getItemInHand();
-                    if (hand.getTypeId() == 0) {
+                    if (hand.getType() == Material.AIR) {
                         cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
                         return true;
                     }
@@ -59,7 +59,7 @@ public class CmdMore implements CommandExecutor {
                 }
             }
             ItemStack hand = p.getItemInHand();
-            if (hand.getTypeId() == 0) {
+            if (hand.getType() == Material.AIR) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
                 return true;
             }

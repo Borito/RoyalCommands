@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,7 +33,7 @@ public class CmdRepair implements CommandExecutor {
             if (args.length < 1) {
                 Player p = (Player) cs;
                 ItemStack hand = p.getItemInHand();
-                if (hand.getTypeId() == 0) {
+                if (hand.getType() == Material.AIR) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't repair air!");
                     return true;
                 }
@@ -49,7 +50,7 @@ public class CmdRepair implements CommandExecutor {
                 ItemStack[] pInv = p.getInventory().getContents();
                 final StringBuilder items = new StringBuilder();
                 for (ItemStack aPInv : pInv) {
-                    if (aPInv != null && aPInv.getTypeId() != 0 && aPInv.getDurability() != (short) 0) {
+                    if (aPInv != null && aPInv.getType() == Material.AIR && aPInv.getDurability() != (short) 0) {
                         aPInv.setDurability((short) 0);
                         items.append(MessageColor.NEUTRAL);
                         items.append(RUtils.getItemName(aPInv));

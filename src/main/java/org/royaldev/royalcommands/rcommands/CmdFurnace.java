@@ -21,7 +21,7 @@ public class CmdFurnace implements CommandExecutor {
         plugin = instance;
     }
 
-    public HashMap<Player, Furnace> furnacedb = new HashMap<Player, Furnace>();
+    public final HashMap<Player, Furnace> furnacedb = new HashMap<Player, Furnace>();
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("furnace")) {

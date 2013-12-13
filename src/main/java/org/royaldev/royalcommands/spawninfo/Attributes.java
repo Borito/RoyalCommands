@@ -18,7 +18,7 @@ public class Attributes {
         ADD_NUMBER(0),
         MULTIPLY_PERCENTAGE(1),
         ADD_PERCENTAGE(2);
-        private int id;
+        private final int id;
 
         private Operation(int id) {
             this.id = id;
@@ -40,7 +40,7 @@ public class Attributes {
     }
 
     public static class AttributeType {
-        private static ConcurrentMap<String, AttributeType> LOOKUP = Maps.newConcurrentMap();
+        private static final ConcurrentMap<String, AttributeType> LOOKUP = Maps.newConcurrentMap();
         public static final AttributeType GENERIC_MAX_HEALTH = new AttributeType("generic.maxHealth").register();
         public static final AttributeType GENERIC_FOLLOW_RANGE = new AttributeType("generic.followRange").register();
         public static final AttributeType GENERIC_ATTACK_DAMAGE = new AttributeType("generic.attackDamage").register();
@@ -101,7 +101,7 @@ public class Attributes {
     }
 
     public static class Attribute {
-        private NbtFactory.NbtCompound data;
+        private final NbtFactory.NbtCompound data;
 
         private Attribute(Builder builder) {
             data = NbtFactory.createCompound();
@@ -214,8 +214,8 @@ public class Attributes {
     }
 
     // This may be modified
-    public ItemStack stack;
-    private NbtFactory.NbtList attributes;
+    private final ItemStack stack;
+    private final NbtFactory.NbtList attributes;
 
     public Attributes(ItemStack stack) {
         // Create a CraftItemStack (under the hood)

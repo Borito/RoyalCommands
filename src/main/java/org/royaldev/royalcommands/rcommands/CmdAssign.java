@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,7 +37,7 @@ public class CmdAssign implements CommandExecutor {
             if (args.length < 1) {
                 Player p = (Player) cs;
                 ItemStack hand = p.getItemInHand();
-                if (hand == null || hand.getTypeId() == 0) {
+                if (hand == null || hand.getType() == Material.AIR) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't remove commands from air!");
                     return true;
                 }
@@ -48,7 +49,7 @@ public class CmdAssign implements CommandExecutor {
             Player p = (Player) cs;
             final PConfManager pcm = PConfManager.getPConfManager(p);
             ItemStack hand = p.getItemInHand();
-            if (hand == null || hand.getTypeId() == 0) {
+            if (hand == null || hand.getType() == Material.AIR) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't assign commands to air!");
                 return true;
             }

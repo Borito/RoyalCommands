@@ -54,13 +54,13 @@ public class RoyalCommandsEntityListener implements Listener {
         if (ed instanceof LivingEntity) {
             LivingEntity le = (LivingEntity) ed;
             le.damage(le.getHealth() * 1000);
-            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1));
+            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1D));
         }
         if (ed instanceof EnderDragonPart) {
             EnderDragonPart ldp = (EnderDragonPart) ed;
             LivingEntity le = ldp.getParent();
             le.damage(le.getHealth() * 1000);
-            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1));
+            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1D));
         }
     }
 

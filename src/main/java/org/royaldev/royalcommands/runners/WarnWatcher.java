@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WarnWatcher implements Runnable {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public WarnWatcher(RoyalCommands instance) {
         plugin = instance;

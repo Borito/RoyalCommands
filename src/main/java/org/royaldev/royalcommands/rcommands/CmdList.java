@@ -97,7 +97,7 @@ public class CmdList implements CommandExecutor {
             toRet.add(sb.toString().substring(0, sb.length() - 2));
             sb.clear();
         }
-        for (String s : toRet) if (s == null) toRet.remove(s);
+        for (String s : toRet) if (s == null) toRet.remove(null);
         return toRet.toArray(new String[toRet.size()]);
     }
 

@@ -74,7 +74,7 @@ public class CmdDump implements CommandExecutor {
             Location l = bl.getLocation();
             l.setY(l.getY() + 1);
             Block b = l.getBlock();
-            if (b.getTypeId() != 0) {
+            if (b.getType() != Material.AIR) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please make sure the block above is air.");
                 return true;
             }

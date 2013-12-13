@@ -83,7 +83,7 @@ public class Converters {
             return (String) o;
         }
         try {
-            o.toString();
+            return o.toString();
         } catch (NullPointerException ignored) {
         }
         return "";
@@ -94,7 +94,7 @@ public class Converters {
             return (Boolean) o;
         }
         try {
-            Boolean.valueOf(o.toString());
+            return Boolean.valueOf(o.toString());
         } catch (NullPointerException ignored) {
         }
         return false;

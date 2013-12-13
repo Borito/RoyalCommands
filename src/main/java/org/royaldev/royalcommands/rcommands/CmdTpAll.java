@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 @ReflectCommand
 public class CmdTpAll implements CommandExecutor {
 
-    public RoyalCommands plugin;
+    public final RoyalCommands plugin;
 
     public CmdTpAll(RoyalCommands instance) {
         plugin = instance;

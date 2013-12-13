@@ -31,7 +31,7 @@ public class CmdSuicide implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            p.setLastDamageCause(new EntityDamageByEntityEvent(p, p, EntityDamageEvent.DamageCause.SUICIDE, 0));
+            p.setLastDamageCause(new EntityDamageByEntityEvent(p, p, EntityDamageEvent.DamageCause.SUICIDE, 0D));
             p.setHealth(0);
             plugin.getServer().broadcastMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + p.getDisplayName() + MessageColor.NEGATIVE + " committed suicide.");
             return true;

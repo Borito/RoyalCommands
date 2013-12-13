@@ -49,8 +49,7 @@ public class CmdMute implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't mute that player!");
                 return true;
             }
-            Boolean isMuted = pcm.getBoolean("muted");
-            if (isMuted == null) isMuted = false;
+            boolean isMuted = pcm.getBoolean("muted");
             long muteTime = 0L;
             if (args.length > 1) muteTime = (long) RUtils.timeFormatToSeconds(args[1]);
             if (muteTime < 0L) {

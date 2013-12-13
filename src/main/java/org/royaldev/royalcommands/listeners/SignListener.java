@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +20,7 @@ import org.royaldev.royalcommands.rcommands.CmdWeather;
 
 public class SignListener implements Listener {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public SignListener(RoyalCommands instance) {
         plugin = instance;
@@ -465,7 +464,6 @@ public class SignListener implements Listener {
 
     @EventHandler
     public void colorSigns(SignChangeEvent e) {
-        Block b = e.getBlock();
         Player p = e.getPlayer();
         if (!plugin.ah.isAuthorized(p, "rcmds.signedit.color")) return;
         for (int i = 0; i < 4; i++) e.setLine(i, RUtils.colorize(e.getLine(i)));

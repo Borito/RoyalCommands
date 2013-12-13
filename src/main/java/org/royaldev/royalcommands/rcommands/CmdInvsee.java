@@ -20,7 +20,7 @@ public class CmdInvsee implements CommandExecutor {
         plugin = instance;
     }
 
-    public HashMap<Player, ItemStack[]> invseedb = new HashMap<Player, ItemStack[]>();
+    public final HashMap<Player, ItemStack[]> invseedb = new HashMap<Player, ItemStack[]>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {

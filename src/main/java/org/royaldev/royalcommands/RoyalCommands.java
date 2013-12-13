@@ -90,7 +90,7 @@ public class RoyalCommands extends JavaPlugin {
     public static RoyalCommands instance;
 
     public ConfManager whl;
-    public Logger log = Logger.getLogger("Minecraft");
+    public final Logger log = Logger.getLogger("Minecraft");
     public String version = null;
     public String newVersion = null;
     public Metrics m = null;

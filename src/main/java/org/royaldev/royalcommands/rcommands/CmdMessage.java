@@ -47,7 +47,7 @@ public class CmdMessage implements CommandExecutor {
                 replydb.put(cs.getName(), t.getName());
             }
 
-            if (m == null || m.equals("")) {
+            if (m.equals("")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You entered no message!");
                 return true;
             }

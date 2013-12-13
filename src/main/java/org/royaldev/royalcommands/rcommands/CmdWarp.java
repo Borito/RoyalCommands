@@ -25,7 +25,7 @@ public class CmdWarp implements CommandExecutor {
     }
 
     public static Location pWarp(Player p, String name) {
-        Boolean warpSet;
+        boolean warpSet;
         Double warpX;
         Double warpY;
         Double warpZ;
@@ -36,7 +36,7 @@ public class CmdWarp implements CommandExecutor {
         ConfManager cm = ConfManager.getConfManager("warps.yml");
         if (!cm.exists()) return null;
         warpSet = cm.getBoolean("warps." + name + ".set");
-        if (warpSet != null && !warpSet) return null;
+        if (!warpSet) return null;
         warpX = cm.getDouble("warps." + name + ".x");
         warpY = cm.getDouble("warps." + name + ".y");
         warpZ = cm.getDouble("warps." + name + ".z");

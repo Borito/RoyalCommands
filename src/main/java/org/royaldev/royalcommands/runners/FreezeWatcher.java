@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FreezeWatcher implements Runnable {
 
-    private RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
     public FreezeWatcher(RoyalCommands instance) {
         plugin = instance;
@@ -19,10 +19,9 @@ public class FreezeWatcher implements Runnable {
         List<World> ws = plugin.getServer().getWorlds();
         ConfManager cm = RoyalCommands.wm.getConfig();
         for (World w : ws) {
-            Boolean isFrozen = cm.getBoolean("worlds." + w.getName() + ".freezetime");
-            if (isFrozen == null || !isFrozen) continue;
+            boolean isFrozen = cm.getBoolean("worlds." + w.getName() + ".freezetime");
+            if (!isFrozen) continue;
             Long frozenAt = cm.getLong("worlds." + w.getName() + ".frozenat");
-            if (frozenAt == null) continue;
             w.setTime(frozenAt);
         }
     }

@@ -40,7 +40,7 @@ public class CmdLess implements CommandExecutor {
                 return true;
             }
             ItemStack hand = p.getItemInHand();
-            if (hand.getTypeId() == 0) {
+            if (hand.getType() == Material.AIR) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
                 return true;
             }

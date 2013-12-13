@@ -24,6 +24,10 @@ public class CmdTpDeny implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
+            if (!(cs instanceof Player)) {
+                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players.");
+                return true;
+            }
             if (CmdTeleportRequest.tprdb.containsKey(cs)) {
                 Player t = (Player) CmdTeleportRequest.tprdb.get(cs);
                 cs.sendMessage(MessageColor.POSITIVE + "Teleport request denied.");

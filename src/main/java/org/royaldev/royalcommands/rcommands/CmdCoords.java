@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 @ReflectCommand
 public class CmdCoords implements CommandExecutor {
 
-    public RoyalCommands plugin;
+    public final RoyalCommands plugin;
 
     public CmdCoords(RoyalCommands instance) {
         plugin = instance;

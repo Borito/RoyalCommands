@@ -40,7 +40,7 @@ public class CmdEntities implements CommandExecutor {
                 for (Entity e : ents) {
                     if (e instanceof Player) continue;
                     double dist = p.getLocation().distanceSquared(e.getLocation());
-                    p.sendMessage(MessageColor.NEUTRAL + e.getType().getName() + ": " + MessageColor.RESET + Math.sqrt(dist));
+                    p.sendMessage(MessageColor.NEUTRAL + e.getType().name() + ": " + MessageColor.RESET + Math.sqrt(dist));
                     amount++;
                 }
                 if (amount == 0) {
@@ -71,7 +71,7 @@ public class CmdEntities implements CommandExecutor {
                 for (Entity e : ents) {
                     if (e instanceof Player) continue;
                     double dist = p.getLocation().distanceSquared(e.getLocation());
-                    p.sendMessage(MessageColor.NEUTRAL + e.getType().getName() + ": " + MessageColor.RESET + Math.sqrt(dist));
+                    p.sendMessage(MessageColor.NEUTRAL + e.getType().name() + ": " + MessageColor.RESET + Math.sqrt(dist));
                     amount++;
                 }
                 if (amount == 0) {

@@ -669,7 +669,6 @@ public class RUtils {
             Block b = l.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ());
             if (b == null) return null;
             if (b.getType().equals(Material.AIR)) continue;
-            Location bLoc = b.getLocation();
             double safeY = l.getY() - (unsafeY - i);
             return new Location(l.getWorld(), l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
         }

@@ -7,8 +7,8 @@ package org.royaldev.royalcommands.api;
  */
 public class RApiMain {
 
-    private RWorldApi worldApi = new RWorldApi();
-    private RPlayerApi playerApi = new RPlayerApi();
+    private final RWorldApi worldApi = new RWorldApi();
+    private final RPlayerApi playerApi = new RPlayerApi();
 
     /**
      * Gets the WorldAPI registered by RoyalCommands.

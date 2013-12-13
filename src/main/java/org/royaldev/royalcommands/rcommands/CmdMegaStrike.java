@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -39,7 +40,7 @@ public class CmdMegaStrike implements CommandExecutor {
                 }
                 Block bb = b.next();
                 while (b.hasNext()) {
-                    if (b.next().getTypeId() == 0) continue;
+                    if (b.next().getType() == Material.AIR) continue;
                     bb = b.next();
                     break;
                 }

@@ -24,7 +24,7 @@ public class CmdJail implements CommandExecutor {
         plugin = instance;
     }
 
-    public HashMap<Player, Location> jaildb = new HashMap<Player, Location>();
+    public final HashMap<Player, Location> jaildb = new HashMap<Player, Location>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {

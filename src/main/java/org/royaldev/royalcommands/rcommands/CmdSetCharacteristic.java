@@ -89,7 +89,7 @@ public class CmdSetCharacteristic implements CommandExecutor {
                     return true;
                 }
                 p.setExp(f);
-                cs.sendMessage(MessageColor.POSITIVE + "Set exp to " + MessageColor.NEUTRAL + (f *= 100F) + "%" + MessageColor.POSITIVE + ".");
+                cs.sendMessage(MessageColor.POSITIVE + "Set exp to " + MessageColor.NEUTRAL + (f * 100F) + "%" + MessageColor.POSITIVE + ".");
             } else if (subcommand.equalsIgnoreCase("canpickupitems")) {
                 p.setCanPickupItems(args[2].equalsIgnoreCase("true"));
                 cs.sendMessage(MessageColor.POSITIVE + "Set can pick up items to " + MessageColor.NEUTRAL + Boolean.toString(p.getCanPickupItems()) + MessageColor.POSITIVE + ".");
