@@ -17,19 +17,20 @@
 
 package org.royaldev.royalcommands.protocol.packets;
 
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.inventory.ItemStack;
 
-public class Packet67SetSlot extends AbstractPacket {
-    public static final int ID = 103;
+public class PacketSetSlot extends AbstractPacket {
+    public static final PacketType TYPE = PacketType.Play.Server.SET_SLOT;
 
-    public Packet67SetSlot() {
-        super(new PacketContainer(ID), ID);
+    public PacketSetSlot() {
+        super(new PacketContainer(TYPE), TYPE);
         handle.getModifier().writeDefaults();
     }
 
-    public Packet67SetSlot(PacketContainer packet) {
-        super(packet, ID);
+    public PacketSetSlot(PacketContainer packet) {
+        super(packet, TYPE);
     }
 
     /**

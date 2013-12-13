@@ -169,12 +169,7 @@ public class SpawnInfo implements Serializable {
      */
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(this.spawned).append("/");
-        sb.append(this.spawner).append("/");
-        sb.append(this.hasComponents).append("/");
-        sb.append(this.components.toString()); // no slash; is end of string
-        return sb.toString();
+        return String.valueOf(this.spawned) + "/" + this.spawner + "/" + this.hasComponents + "/" + this.components.toString();
     }
 
     public static class SpawnInfoManager {
@@ -183,26 +178,30 @@ public class SpawnInfo implements Serializable {
         private final static Map<Material, Attributes.Attribute> defaults = new HashMap<Material, Attributes.Attribute>();
 
         static {
-            defaults.put(Material.DIAMOND_AXE, createAttribute(6D, defaultUUID));
-            defaults.put(Material.DIAMOND_PICKAXE, createAttribute(5D, defaultUUID));
-            defaults.put(Material.DIAMOND_SPADE, createAttribute(4D, defaultUUID));
-            defaults.put(Material.DIAMOND_SWORD, createAttribute(7D, defaultUUID));
-            defaults.put(Material.GOLD_AXE, createAttribute(3D, defaultUUID));
-            defaults.put(Material.GOLD_PICKAXE, createAttribute(2D, defaultUUID));
-            defaults.put(Material.GOLD_SPADE, createAttribute(1D, defaultUUID));
-            defaults.put(Material.GOLD_SWORD, createAttribute(4D, defaultUUID));
-            defaults.put(Material.IRON_AXE, createAttribute(5D, defaultUUID));
-            defaults.put(Material.IRON_PICKAXE, createAttribute(4D, defaultUUID));
-            defaults.put(Material.IRON_SPADE, createAttribute(3D, defaultUUID));
-            defaults.put(Material.IRON_SWORD, createAttribute(6D, defaultUUID));
-            defaults.put(Material.STONE_AXE, createAttribute(4D, defaultUUID));
-            defaults.put(Material.STONE_PICKAXE, createAttribute(3D, defaultUUID));
-            defaults.put(Material.STONE_SPADE, createAttribute(2D, defaultUUID));
-            defaults.put(Material.STONE_SWORD, createAttribute(5D, defaultUUID));
-            defaults.put(Material.WOOD_AXE, createAttribute(3D, defaultUUID));
-            defaults.put(Material.WOOD_PICKAXE, createAttribute(2D, defaultUUID));
-            defaults.put(Material.WOOD_SPADE, createAttribute(1D, defaultUUID));
-            defaults.put(Material.WOOD_SWORD, createAttribute(4D, defaultUUID));
+            try {
+                defaults.put(Material.DIAMOND_AXE, createAttribute(6D, defaultUUID));
+                defaults.put(Material.DIAMOND_PICKAXE, createAttribute(5D, defaultUUID));
+                defaults.put(Material.DIAMOND_SPADE, createAttribute(4D, defaultUUID));
+                defaults.put(Material.DIAMOND_SWORD, createAttribute(7D, defaultUUID));
+                defaults.put(Material.GOLD_AXE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.GOLD_PICKAXE, createAttribute(2D, defaultUUID));
+                defaults.put(Material.GOLD_SPADE, createAttribute(1D, defaultUUID));
+                defaults.put(Material.GOLD_SWORD, createAttribute(4D, defaultUUID));
+                defaults.put(Material.IRON_AXE, createAttribute(5D, defaultUUID));
+                defaults.put(Material.IRON_PICKAXE, createAttribute(4D, defaultUUID));
+                defaults.put(Material.IRON_SPADE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.IRON_SWORD, createAttribute(6D, defaultUUID));
+                defaults.put(Material.STONE_AXE, createAttribute(4D, defaultUUID));
+                defaults.put(Material.STONE_PICKAXE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.STONE_SPADE, createAttribute(2D, defaultUUID));
+                defaults.put(Material.STONE_SWORD, createAttribute(5D, defaultUUID));
+                defaults.put(Material.WOOD_AXE, createAttribute(3D, defaultUUID));
+                defaults.put(Material.WOOD_PICKAXE, createAttribute(2D, defaultUUID));
+                defaults.put(Material.WOOD_SPADE, createAttribute(1D, defaultUUID));
+                defaults.put(Material.WOOD_SWORD, createAttribute(4D, defaultUUID));
+            } catch (Exception ex) {
+                ex.printStackTrace(); // wtf is going on
+            }
         }
 
         private static Attributes.Attribute createAttribute(double amount, UUID uuid) {

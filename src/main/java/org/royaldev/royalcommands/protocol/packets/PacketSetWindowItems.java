@@ -17,55 +17,60 @@
 
 package org.royaldev.royalcommands.protocol.packets;
 
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.inventory.ItemStack;
 
-public class Packet6BCreativeInventoryAction extends AbstractPacket {
-    public static final int ID = 107;
+public class PacketSetWindowItems extends AbstractPacket {
+    public static final PacketType TYPE = PacketType.Play.Server.WINDOW_ITEMS;
 
-    public Packet6BCreativeInventoryAction() {
-        super(new PacketContainer(ID), ID);
+    public PacketSetWindowItems() {
+        super(new PacketContainer(TYPE), TYPE);
         handle.getModifier().writeDefaults();
     }
 
-    public Packet6BCreativeInventoryAction(PacketContainer packet) {
-        super(packet, ID);
+    public PacketSetWindowItems(PacketContainer packet) {
+        super(packet, TYPE);
     }
 
     /**
-     * Retrieve the inventory slot index.
+     * Retrieve the ID of the window which is being updated.
+     * <p/>
+     * Use 0 for the player inventory.
      *
-     * @return The current Slot
+     * @return The current Window id
      */
-    public short getSlot() {
-        return handle.getIntegers().read(0).shortValue();
+    public byte getWindowId() {
+        return handle.getIntegers().read(0).byteValue();
     }
 
     /**
-     * Set the inventory slot index.
+     * Set the ID of the window which is being updated.
+     * <p/>
+     * Use 0 for the player inventory.
      *
      * @param value - new value.
      */
-    public void setSlot(short value) {
+    public void setWindowId(byte value) {
         handle.getIntegers().write(0, (int) value);
     }
 
     /**
-     * Retrieve the clicked item stack.
+     * Retrieve the items in the inventory indexed by slot index.
      *
-     * @return The current Clicked item
+     * @return The items that will fill the inventory.
      */
-    public ItemStack getClickedItem() {
-        return handle.getItemModifier().read(0);
+    public ItemStack[] getItems() {
+        return handle.getItemArrayModifier().read(0);
     }
 
     /**
-     * Set the clicked item stack.
+     * Set the items in the inventory indexed by slot index.
      *
      * @param value - new value.
      */
-    public void setClickedItem(ItemStack value) {
-        handle.getItemModifier().write(0, value);
+    public void setItems(ItemStack[] value) {
+        handle.getItemArrayModifier().write(0, value);
     }
 }
 

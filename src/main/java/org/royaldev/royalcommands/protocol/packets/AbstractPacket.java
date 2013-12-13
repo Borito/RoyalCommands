@@ -17,7 +17,7 @@
 
 package org.royaldev.royalcommands.protocol.packets;
 
-import com.comphenix.protocol.Packets;
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 
 public abstract class AbstractPacket {
@@ -29,13 +29,13 @@ public abstract class AbstractPacket {
      *
      * @param handle - handle to the raw packet data.
      */
-    protected AbstractPacket(PacketContainer handle, int packetID) {
+    protected AbstractPacket(PacketContainer handle, PacketType packetType) {
         // Make sure we're given a valid packet
         if (handle == null)
             throw new IllegalArgumentException("Packet handle cannot be NULL.");
-        if (handle.getID() != packetID)
+        if (handle.getType() != packetType)
             throw new IllegalArgumentException(
-                    handle.getHandle() + " is not a packet " + Packets.getDeclaredName(packetID) + "(" + packetID + ")");
+                    handle.getHandle() + " is not a packet " + packetType.toString());
 
         this.handle = handle;
     }
