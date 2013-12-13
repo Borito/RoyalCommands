@@ -12,6 +12,7 @@ import com.google.common.io.OutputSupplier;
 import com.google.common.primitives.Primitives;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.BufferedInputStream;
@@ -86,8 +87,6 @@ public class NbtFactory {
 
     // The NBT base class
     private Class<?> BASE_CLASS;
-    @SuppressWarnings("FieldCanBeLocal")
-    private Class<?> COMPOUND_CLASS;
     private Method NBT_CREATE_TAG;
     private Method NBT_GET_TYPE;
     private Field NBT_LIST_TYPE;
@@ -318,15 +317,14 @@ public class NbtFactory {
                 // Keep in mind that I do use hard-coded field names - but it's okay as long as we're dealing
                 // with CraftBukkit or its derivatives. This does not work in MCPC+ however.
                 ClassLoader loader = NbtFactory.class.getClassLoader();
-                //String packageName = "org.bukkit.craftbukkit.v1_6_R2";
-                String packageName = Bukkit.getServer().getClass().getPackage().getName();
+                String packageName = getPackageName();
                 Class<?> offlinePlayer = loader.loadClass(packageName + ".CraftOfflinePlayer");
 
                 // Prepare NBT
-                COMPOUND_CLASS = getMethod(0, Modifier.STATIC, offlinePlayer, "getData").getReturnType();
-                BASE_CLASS = COMPOUND_CLASS.getSuperclass();
+                Class<?> compoundClass = getMethod(0, Modifier.STATIC, offlinePlayer, "getData").getReturnType();
+                BASE_CLASS = compoundClass.getSuperclass();
                 NBT_GET_TYPE = getMethod(0, Modifier.STATIC, BASE_CLASS, "getTypeId");
-                NBT_CREATE_TAG = getMethod(Modifier.STATIC, 0, BASE_CLASS, "createTag", byte.class, String.class);
+                NBT_CREATE_TAG = getMethod(Modifier.STATIC, 0, BASE_CLASS, "createTag", byte.class);
 
                 // Prepare CraftItemStack
                 CRAFT_STACK = loader.loadClass(packageName + ".inventory.CraftItemStack");
@@ -334,8 +332,9 @@ public class NbtFactory {
                 STACK_TAG = getField(null, CRAFT_HANDLE.getType(), "tag");
 
                 // Loading/saving
-                LOAD_COMPOUND = getMethod(Modifier.STATIC, 0, BASE_CLASS, null, DataInput.class);
-                SAVE_COMPOUND = getMethod(Modifier.STATIC, 0, BASE_CLASS, null, BASE_CLASS, DataOutput.class);
+                Class<?> streamTools = loader.loadClass(BASE_CLASS.getPackage().getName() + ".NBTCompressedStreamTools");
+                LOAD_COMPOUND = getMethod(Modifier.STATIC, 0, streamTools, null, DataInput.class);
+                SAVE_COMPOUND = getMethod(Modifier.STATIC, 0, streamTools, null, BASE_CLASS, DataOutput.class);
 
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException("Unable to find offline player.", e);
@@ -343,16 +342,21 @@ public class NbtFactory {
         }
     }
 
+    private String getPackageName() {
+        Server server = Bukkit.getServer();
+        String name = server != null ? server.getClass().getPackage().getName() : null;
+        if (name != null && name.contains("craftbukkit")) return name;
+        else return "org.bukkit.craftbukkit.v1_7_R1"; // Fallback
+    }
+
     @SuppressWarnings("unchecked")
     private Map<String, Object> getDataMap(Object handle) {
-        return (Map<String, Object>) getFieldValue(
-                getDataField(NbtType.TAG_COMPOUND, handle), handle);
+        return (Map<String, Object>) getFieldValue(getDataField(NbtType.TAG_COMPOUND, handle), handle);
     }
 
     @SuppressWarnings("unchecked")
     private List<Object> getDataList(Object handle) {
-        return (List<Object>) getFieldValue(
-                getDataField(NbtType.TAG_LIST, handle), handle);
+        return (List<Object>) getFieldValue(getDataField(NbtType.TAG_LIST, handle), handle);
     }
 
     /**
@@ -370,7 +374,7 @@ public class NbtFactory {
      * @return The NBT list.
      */
     public static NbtList createList(Iterable<?> iterable) {
-        NbtList list = get().new NbtList(INSTANCE.createNbtTag(NbtType.TAG_LIST, "", null));
+        NbtList list = get().new NbtList(INSTANCE.createNbtTag(NbtType.TAG_LIST, null));
         // Add the content as well
         for (Object obj : iterable) list.add(obj);
         return list;
@@ -384,19 +388,7 @@ public class NbtFactory {
      * @return The NBT compound.
      */
     public static NbtCompound createCompound() {
-        return get().new NbtCompound(INSTANCE.createNbtTag(NbtType.TAG_COMPOUND, "", null));
-    }
-
-    /**
-     * Construct a new NBT root compound.
-     * <p/>
-     * This compound must be given a name, as it is the root object.
-     *
-     * @param name - the name of the compound.
-     * @return The NBT compound.
-     */
-    public static NbtCompound createRootCompound(String name) {
-        return get().new NbtCompound(INSTANCE.createNbtTag(NbtType.TAG_COMPOUND, name, null));
+        return get().new NbtCompound(INSTANCE.createNbtTag(NbtType.TAG_COMPOUND, null));
     }
 
     /**
@@ -500,7 +492,7 @@ public class NbtFactory {
         Object tag = getFieldValue(get().STACK_TAG, nms);
         // Create the tag if it doesn't exist
         if (tag == null) {
-            NbtCompound compound = createRootCompound("tag");
+            NbtCompound compound = createCompound();
             setItemTag(stack, compound);
             return compound;
         }
@@ -546,12 +538,12 @@ public class NbtFactory {
      * @param value - the value of the element to create. Can be a List or a Map.
      * @return The NBT element.
      */
-    private Object unwrapValue(String name, Object value) {
+    private Object unwrapValue(Object value) {
         if (value == null) return null;
         if (value instanceof Wrapper) return ((Wrapper) value).getHandle();
         else if (value instanceof List) throw new IllegalArgumentException("Can only insert a WrappedList.");
         else if (value instanceof Map) throw new IllegalArgumentException("Can only insert a WrappedCompound.");
-        else return createNbtTag(getPrimitiveType(value), name, value);
+        else return createNbtTag(getPrimitiveType(value), value);
     }
 
     /**
@@ -583,12 +575,11 @@ public class NbtFactory {
      * Construct a new NMS NBT tag initialized with the given value.
      *
      * @param type  - the NBT type.
-     * @param name  - the name of the NBT tag.
      * @param value - the value, or NULL to keep the original value.
      * @return The created tag.
      */
-    private Object createNbtTag(NbtType type, String name, Object value) {
-        Object tag = invokeMethod(NBT_CREATE_TAG, null, (byte) type.id, name);
+    private Object createNbtTag(NbtType type, Object value) {
+        Object tag = invokeMethod(NBT_CREATE_TAG, null, (byte) type.id);
         if (value != null) setFieldValue(getDataField(type, tag), tag, value);
         return tag;
     }
@@ -669,6 +660,7 @@ public class NbtFactory {
      * @param bannedMod  - modifiers that are banned.
      * @param clazz      - a class to start with.
      * @param methodName - the method name, or NULL to skip.
+     * @param params     - the expected parameters.
      * @return The first method by this name.
      * @throws IllegalStateException If we cannot find this method.
      */
@@ -753,14 +745,14 @@ public class NbtFactory {
             return cache.wrap(value);
         }
 
-        protected Object unwrapIncoming(String key, Object wrapped) {
-            return unwrapValue(key, wrapped);
+        protected Object unwrapIncoming(Object wrapped) {
+            return unwrapValue(wrapped);
         }
 
         // Modification
         @Override
         public Object put(String key, Object value) {
-            return wrapOutgoing(original.put(key, unwrapIncoming(key, value)));
+            return wrapOutgoing(original.put(key, unwrapIncoming(value)));
         }
 
         // Performance
@@ -787,8 +779,7 @@ public class NbtFactory {
                 public boolean add(Entry<String, Object> e) {
                     String key = e.getKey();
                     Object value = e.getValue();
-
-                    original.put(key, unwrapIncoming(key, value));
+                    original.put(key, unwrapIncoming(value));
                     return true;
                 }
 
@@ -797,7 +788,6 @@ public class NbtFactory {
                     return original.size();
                 }
 
-                @SuppressWarnings("NullableProblems")
                 @Override
                 public Iterator<Entry<String, Object>> iterator() {
                     return ConvertedMap.this.iterator();
@@ -817,7 +807,6 @@ public class NbtFactory {
                 @Override
                 public Entry<String, Object> next() {
                     Entry<String, Object> entry = proxy.next();
-
                     return new SimpleEntry<String, Object>(entry.getKey(), wrapOutgoing(entry.getValue()));
                 }
 
@@ -857,7 +846,7 @@ public class NbtFactory {
         }
 
         protected Object unwrapIncoming(Object wrapped) {
-            return unwrapValue("", wrapped);
+            return unwrapValue(wrapped);
         }
 
         @Override
