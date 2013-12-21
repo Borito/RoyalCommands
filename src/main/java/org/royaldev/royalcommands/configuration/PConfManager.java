@@ -125,7 +125,8 @@ public class PConfManager extends GeneralConfManager {
         synchronized (saveLock) {
             try {
                 save(pconfl);
-            } catch (IOException ignored) {
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

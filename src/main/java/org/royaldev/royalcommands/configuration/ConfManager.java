@@ -123,7 +123,8 @@ public class ConfManager extends GeneralConfManager {
         synchronized (saveLock) {
             try {
                 save(pconfl);
-            } catch (IOException ignored) {
+            } catch (IOException ex) {
+                ex.printStackTrace();
             } catch (IllegalArgumentException ignored) {
             }
         }
