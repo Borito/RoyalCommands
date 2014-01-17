@@ -26,10 +26,10 @@ public class CmdRcmds implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            boolean saveManagers = !(args.length > 0 && args[0].equalsIgnoreCase("false"));
-            if (saveManagers) {
+            if (args.length > 0 && args[0].equalsIgnoreCase("true")) {
                 PConfManager.saveAllManagers();
                 ConfManager.saveAllManagers();
+                cs.sendMessage(MessageColor.POSITIVE + "Saved all configurations to disk.");
             }
             PConfManager.removeAllManagers();
             ConfManager.removeAllManagers();
