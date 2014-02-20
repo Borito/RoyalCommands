@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.rcommands.teleport.TeleportRequest;
 
 @ReflectCommand
 public class CmdTpDeny implements CommandExecutor {
@@ -24,18 +25,20 @@ public class CmdTpDeny implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
+            if (args.length < 1) {
+                cs.sendMessage(cmd.getDescription());
+                return false;
+            }
             if (!(cs instanceof Player)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players.");
                 return true;
             }
-            if (CmdTeleportRequest.tprdb.containsKey(cs)) {
-                Player t = (Player) CmdTeleportRequest.tprdb.get(cs);
-                cs.sendMessage(MessageColor.POSITIVE + "Teleport request denied.");
-                t.sendMessage(MessageColor.POSITIVE + "Your teleport request was denied.");
-                CmdTeleportRequest.tprdb.remove(cs);
+            final TeleportRequest tr = TeleportRequest.getFirstRequest(RUtils.getOfflinePlayer(args[0]).getName(), cs.getName());
+            if (tr == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "No such teleport request.");
                 return true;
             }
-            cs.sendMessage(MessageColor.NEGATIVE + "You have no requests pending.");
+            tr.deny();
             return true;
         }
         return false;

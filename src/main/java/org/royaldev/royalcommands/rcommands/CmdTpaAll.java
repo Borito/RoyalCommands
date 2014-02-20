@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.rcommands.teleport.TeleportRequest;
 
 @ReflectCommand
 public class CmdTpaAll implements CommandExecutor {
@@ -29,10 +30,9 @@ public class CmdTpaAll implements CommandExecutor {
             }
             Player p = (Player) cs;
             for (Player t : plugin.getServer().getOnlinePlayers()) {
-                if (!RUtils.isTeleportAllowed(t) && !plugin.ah.isAuthorized(p, "rcmds.tpoverride"))
-                    continue;
+                if (!RUtils.isTeleportAllowed(t) && !plugin.ah.isAuthorized(p, "rcmds.tpoverride")) continue;
                 if (t.equals(p)) continue;
-                CmdTeleportRequestHere.sendTpRequest(t, p);
+                TeleportRequest.send(t, p, TeleportRequest.TeleportType.HERE, false);
             }
             p.sendMessage(MessageColor.POSITIVE + "You have sent a teleport request to all players.");
             return true;

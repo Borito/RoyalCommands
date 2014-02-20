@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.rcommands.teleport.TeleportRequest;
 
 @ReflectCommand
 public class CmdTpAccept implements CommandExecutor {
@@ -24,36 +25,26 @@ public class CmdTpAccept implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
+            if (args.length < 1) {
+                cs.sendMessage(cmd.getDescription());
+                return false;
+            }
             if (!(cs instanceof Player)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
-            Player p = (Player) cs;
-            if (CmdTeleportRequest.tprdb.containsKey(cs)) {
-                Player t = (Player) CmdTeleportRequest.tprdb.get(cs);
-                cs.sendMessage(MessageColor.POSITIVE + "Teleport request accepted.");
-                t.sendMessage(MessageColor.POSITIVE + "Your teleport request was accepted.");
-                String error = RUtils.teleport(t, p);
-                if (!error.isEmpty()) {
-                    p.sendMessage(MessageColor.NEGATIVE + error);
-                    return true;
-                }
-                CmdTeleportRequest.tprdb.remove(cs);
+            final Player p = (Player) cs;
+            final Player t = plugin.getServer().getPlayer(args[0]);
+            if (t == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "That player is not online.");
                 return true;
             }
-            if (CmdTeleportRequestHere.tprhdb.containsKey(cs)) {
-                Player t = (Player) CmdTeleportRequestHere.tprhdb.get(cs);
-                cs.sendMessage(MessageColor.POSITIVE + "Teleport request accepted.");
-                t.sendMessage(MessageColor.POSITIVE + "Your teleport request was accepted.");
-                String error = RUtils.teleport(p, t);
-                if (!error.isEmpty()) {
-                    p.sendMessage(MessageColor.NEGATIVE + error);
-                    return true;
-                }
-                CmdTeleportRequestHere.tprhdb.remove(cs);
+            final TeleportRequest tr = TeleportRequest.getFirstRequest(t.getName(), p.getName());
+            if (tr == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "No matching teleport requests!");
                 return true;
             }
-            cs.sendMessage(MessageColor.NEGATIVE + "You have no requests pending.");
+            tr.accept();
             return true;
         }
         return false;

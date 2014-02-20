@@ -7,8 +7,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.util.HashMap;
+import org.royaldev.royalcommands.rcommands.teleport.TeleportRequest;
 
 @ReflectCommand
 public class CmdTeleportRequestHere implements CommandExecutor {
@@ -18,20 +17,6 @@ public class CmdTeleportRequestHere implements CommandExecutor {
     public CmdTeleportRequestHere(RoyalCommands plugin) {
         this.plugin = plugin;
     }
-
-    /**
-     * Send a teleport request to the sender's location.
-     *
-     * @param target Person to send the request to
-     * @param sender Person sending the request
-     */
-    public static void sendTpRequest(Player target, CommandSender sender) {
-        tprhdb.put(target, sender);
-        target.sendMessage(MessageColor.NEUTRAL + sender.getName() + MessageColor.POSITIVE + " has requested you to teleport to them.");
-        target.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/tpaccept" + MessageColor.POSITIVE + " or " + MessageColor.NEUTRAL + "/tpdeny" + MessageColor.POSITIVE + ".");
-    }
-
-    public final static HashMap<Player, CommandSender> tprhdb = new HashMap<Player, CommandSender>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -48,7 +33,8 @@ public class CmdTeleportRequestHere implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
-            Player t = plugin.getServer().getPlayer(args[0]);
+            final Player p = (Player) cs;
+            final Player t = plugin.getServer().getPlayer(args[0]);
             if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
@@ -57,8 +43,7 @@ public class CmdTeleportRequestHere implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player has teleportation off!");
                 return true;
             }
-            sendTpRequest(t, cs);
-            cs.sendMessage(MessageColor.POSITIVE + "Sent request to " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+            TeleportRequest.send(p, t, TeleportRequest.TeleportType.HERE);
             return true;
         }
         return false;
