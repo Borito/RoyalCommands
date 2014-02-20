@@ -33,6 +33,10 @@ public class TeleportRequest {
     }
 
     public static void send(Player requester, Player target, TeleportType teleportType, boolean confirmation) {
+        if (requester.getName().equalsIgnoreCase(target.getName())) {
+            requester.sendMessage(MessageColor.NEGATIVE + "You cannot teleport to yourself.");
+            return;
+        }
         final TeleportRequest tr = new TeleportRequest(requester.getName(), target.getName(), teleportType);
         List<TeleportRequest> trs;
         synchronized (teleportRequests) {
@@ -49,7 +53,8 @@ public class TeleportRequest {
         }
         target.sendMessage(teleportType.getMessage(requester));
         target.sendMessage(MessageColor.POSITIVE + "To accept, use " + MessageColor.NEUTRAL + "/tpaccept" + MessageColor.POSITIVE + ". To decline, use " + MessageColor.NEUTRAL + "/tpdeny" + MessageColor.POSITIVE + ".");
-        if (confirmation) requester.sendMessage(MessageColor.POSITIVE + "Request sent to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+        if (confirmation)
+            requester.sendMessage(MessageColor.POSITIVE + "Request sent to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
     }
 
     /**
