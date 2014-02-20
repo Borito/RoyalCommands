@@ -52,8 +52,6 @@ import java.util.regex.Pattern;
 @SuppressWarnings("unused")
 public class RUtils {
 
-    static Logger log = Logger.getLogger("Minecraft");
-
     // Borrowed list of materials from Essentials
     public static final Set<Material> AIR_MATERIALS = new HashSet<Material>();
 
@@ -96,6 +94,10 @@ public class RUtils {
         AIR_MATERIALS.add(Material.WATER);
         AIR_MATERIALS.add(Material.STATIONARY_WATER);
     }
+
+    private final static Map<String, Integer> teleRunners = new HashMap<String, Integer>();
+    private final static List<String> teleAllowed = new ArrayList<String>();
+    private final static Logger log = Logger.getLogger("Minecraft");
 
     /**
      * Wraps text to fit evenly in the chat box
@@ -193,6 +195,16 @@ public class RUtils {
      */
     public static void showEmptyChest(Player player) {
         player.openInventory(Bukkit.createInventory(null, InventoryType.CHEST));
+    }
+
+    /**
+     * Shows a temporary empty chest to the player
+     *
+     * @param p    Player to show chest to
+     * @param name Name of chest
+     */
+    public static void showEmptyChest(Player p, String name) {
+        p.openInventory(Bukkit.createInventory(null, InventoryType.CHEST.getDefaultSize(), name));
     }
 
     /**
@@ -531,9 +543,6 @@ public class RUtils {
             return "";
         }
     }
-
-    private final static Map<String, Integer> teleRunners = new HashMap<String, Integer>();
-    private final static List<String> teleAllowed = new ArrayList<String>();
 
     public static void cancelTeleportRunner(final Player p) {
         synchronized (teleRunners) {

@@ -30,9 +30,8 @@ public class CmdFly implements CommandExecutor {
             }
             if (args.length < 1 && cs instanceof Player) {
                 Player p = (Player) cs;
-                if (p.getAllowFlight()) p.setAllowFlight(false);
-                else p.setAllowFlight(true);
-                String status = (p.getAllowFlight()) ? "on" : "off";
+                p.setAllowFlight(!p.getAllowFlight());
+                String status = BooleanUtils.toStringOnOff(p.getAllowFlight());
                 p.sendMessage(MessageColor.POSITIVE + "Toggled flight to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");
             } else {
                 if (!plugin.ah.isAuthorized(cs, "rcmds.others.fly")) {
@@ -44,8 +43,7 @@ public class CmdFly implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                if (t.getAllowFlight()) t.setAllowFlight(false);
-                else t.setAllowFlight(true);
+                t.setAllowFlight(!t.getAllowFlight());
                 String status = BooleanUtils.toStringOnOff(t.getAllowFlight());
                 cs.sendMessage(MessageColor.POSITIVE + "Toggled flight to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " on " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 t.sendMessage(MessageColor.POSITIVE + "You have had flight toggled to " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + ".");

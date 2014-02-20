@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -46,7 +45,6 @@ import org.royaldev.royalcommands.rcommands.CmdNameEntity;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,33 +58,33 @@ import static org.royaldev.royalcommands.RUtils.nearEqual;
 public class RoyalCommandsPlayerListener implements Listener {
 
     public static RoyalCommands plugin;
+    private final Logger log = Logger.getLogger("Minecraft");
 
     public RoyalCommandsPlayerListener(RoyalCommands instance) {
         plugin = instance;
     }
 
-    Logger log = Logger.getLogger("Minecraft");
-
     public void setCooldown(String command, OfflinePlayer p) {
-        ConfigurationSection cmdCds = plugin.getConfig().getConfigurationSection("commands.cooldowns.list");
-        if (cmdCds == null) return;
-        boolean contains = cmdCds.getKeys(false).contains(command);
-        if (Config.cooldownAliases) if (plugin.getCommand(command) != null)
-            for (String alias : plugin.getCommand(command).getAliases())
-                if (cmdCds.getKeys(false).contains(alias)) {
+        if (Config.commandCooldowns == null) return;
+        boolean contains = Config.commandCooldowns.getKeys(false).contains(command);
+        if (Config.cooldownAliases && plugin.getCommand(command) != null) {
+            for (String alias : plugin.getCommand(command).getAliases()) {
+                if (Config.commandCooldowns.getKeys(false).contains(alias)) {
                     contains = true;
                     break;
                 }
+            }
+        }
         if (contains) {
-            long cooldown = cmdCds.getLong(command);
-            PConfManager.getPConfManager(p).set("command_cooldowns." + command, new Date().getTime() + (cooldown * 1000));
+            long cooldown = Config.commandCooldowns.getLong(command);
+            PConfManager.getPConfManager(p).set("command_cooldowns." + command, System.currentTimeMillis() + (cooldown * 1000));
         }
     }
 
     public void setTeleCooldown(OfflinePlayer p) {
-        double seconds = Config.gTeleCd;
+        double seconds = Config.globalTeleportCooldown;
         if (seconds <= 0) return;
-        PConfManager.getPConfManager(p).set("teleport_cooldown", (seconds * 1000) + new Date().getTime());
+        PConfManager.getPConfManager(p).set("teleport_cooldown", (seconds * 1000) + System.currentTimeMillis());
     }
 
     @EventHandler
@@ -162,7 +160,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void afk(PlayerMoveEvent e) {
-        AFKUtils.setLastMove(e.getPlayer(), new Date().getTime());
+        AFKUtils.setLastMove(e.getPlayer(), System.currentTimeMillis());
     }
 
     @EventHandler
@@ -181,7 +179,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (plugin.ah.isAuthorized(p, "rcmds.exempt.cooldown.commands")) return;
         long currentcd = PConfManager.getPConfManager(p).getLong("command_cooldowns." + command, -1L);
         if (currentcd > 0L) {
-            if (currentcd <= new Date().getTime()) {
+            if (currentcd <= System.currentTimeMillis()) {
                 setCooldown(command, p);
                 return;
             }
@@ -199,7 +197,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (plugin.ah.isAuthorized(p, "rcmds.exempt.cooldown.teleports")) return;
         long currentcd = PConfManager.getPConfManager(p).getLong("teleport_cooldown", -1L);
         if (currentcd > 0L) {
-            if (currentcd <= new Date().getTime()) {
+            if (currentcd <= System.currentTimeMillis()) {
                 setTeleCooldown(p);
                 return;
             }
@@ -221,14 +219,14 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        PConfManager.getPConfManager(e.getPlayer()).set("seen", new Date().getTime());
+        PConfManager.getPConfManager(e.getPlayer()).set("seen", System.currentTimeMillis());
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
         if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
-        PConfManager.getPConfManager(e.getPlayer()).set("seen", new Date().getTime());
+        PConfManager.getPConfManager(e.getPlayer()).set("seen", System.currentTimeMillis());
         if (AFKUtils.isAfk(e.getPlayer())) AFKUtils.unsetAfk(e.getPlayer());
         if (AFKUtils.moveTimesContains(e.getPlayer())) AFKUtils.removeLastMove(e.getPlayer());
     }
@@ -296,7 +294,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
         Player p = event.getPlayer();
-        AFKUtils.setLastMove(p, new Date().getTime());
+        AFKUtils.setLastMove(p, System.currentTimeMillis());
         if (AFKUtils.isAfk(p)) {
             AFKUtils.unsetAfk(p);
             plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.returnFormat, p)));

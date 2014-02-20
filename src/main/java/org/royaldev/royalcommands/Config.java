@@ -86,13 +86,14 @@ public class Config {
 
         //-- ConfigurationSections --//
 
+        commandCooldowns = c.getConfigurationSection("commands.cooldowns.list");
         warnActions = c.getConfigurationSection("warns.actions");
 
         //-- Doubles --//
 
         defaultNear = c.getDouble("near.default_radius", 50D);
         findIpPercent = c.getDouble("general.findip_alert_percentage", 25D);
-        gTeleCd = c.getDouble("teleports.options.global_cooldown", 0D);
+        globalTeleportCooldown = c.getDouble("teleports.options.global_cooldown", 0D);
         maxNear = c.getDouble("near.max_radius", 2000D);
 
         //-- Floats --//
@@ -113,7 +114,6 @@ public class Config {
         //-- String lists --//
 
         blockedItems = c.getStringList("items.spawn.blocked");
-        commandCooldowns = c.getStringList("commands.cooldowns.list");
         disabledBackWorlds = c.getStringList("teleports.back.disabled_worlds");
         disabledCommands = c.getStringList("commands.disabled");
         itemSpawnTagLore = c.getStringList("items.spawn.tag.lore");
@@ -244,12 +244,13 @@ public class Config {
     //-- ConfigurationSections --//
 
     public static ConfigurationSection warnActions;
+    public static ConfigurationSection commandCooldowns;
 
     //-- Doubles --//
 
     public static double defaultNear;
     public static double findIpPercent;
-    public static double gTeleCd;
+    public static double globalTeleportCooldown;
     public static double maxNear;
 
     //-- Floats --//
@@ -270,7 +271,6 @@ public class Config {
     //-- String lists --//
 
     public static List<String> blockedItems;
-    public static List<String> commandCooldowns;
     public static List<String> disabledBackWorlds;
     public static List<String> disabledCommands;
     public static List<String> itemSpawnTagLore;

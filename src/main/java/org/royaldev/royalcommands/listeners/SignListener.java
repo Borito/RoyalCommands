@@ -155,7 +155,7 @@ public class SignListener implements Listener {
                 if (!did) return;
             }
 
-            RUtils.showEmptyChest(p);
+            RUtils.showEmptyChest(p, "Disposal");
         }
 
         //Heal signs
