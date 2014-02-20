@@ -139,7 +139,7 @@ public class TeleportRequest {
         final boolean success = error.isEmpty();
         final String message = MessageColor.POSITIVE + "The request to teleport " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? requester.getName() : target.getName()) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? target.getName() : requester.getName()) + MessageColor.POSITIVE + " was accepted.";
         if (success) {
-            requester.sendMessage(message + " accepted.");
+            requester.sendMessage(message);
             target.sendMessage(message);
         } else {
             final String errorMessage = message.substring(0, message.length() - 1).replace(MessageColor.POSITIVE.toString(), MessageColor.NEGATIVE.toString()) + ", but there was an error.";
