@@ -109,7 +109,7 @@ public class TeleportRequest {
      * Causes this TeleportRequest to expire, removing it from the registered list of requests.
      */
     public void expire() {
-        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(this.getRequester());
+        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(this.getTarget());
         if (trs == null) return; // not registered, then
         trs.remove(this);
         TeleportRequest.getRequests().put(this.getRequester(), trs);
