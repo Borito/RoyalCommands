@@ -75,7 +75,7 @@ public class CmdTrade implements CommandExecutor {
                 return true;
             }
             if (!Config.differentGamemodeTrade && t.getGameMode() != p.getGameMode()) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You cannot trade with " + MessageColor.NEUTRAL + t.getName() + MessageColor.NEGATIVE + " because he has a different gamemode than you!");
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot trade with " + MessageColor.NEUTRAL + t.getName() + MessageColor.NEGATIVE + " because they have a different gamemode than you!");
                 return true;
             }
             Inventory inv = getTradeInv(p, t);
