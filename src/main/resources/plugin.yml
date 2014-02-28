@@ -391,14 +391,14 @@ reflectcommands:
 
   tpaccept:
     description: Accepts a teleport request.
-    usage: /<command>
+    usage: /<command> [name]
     aliases: [tpac, tpyes]
     version_added: Pre-0.2.7
     class: CmdTpAccept
 
   tpdeny:
     description: Denies a teleport request.
-    usage: /<command>
+    usage: /<command> [name]
     aliases: [tpad, tpno]
     version_added: Pre-0.2.7
     class: CmdTpDeny
