@@ -84,6 +84,9 @@ public class CmdIngot2Block implements CommandExecutor {
                         i2b(p, hand, Material.INK_SACK, Material.LAPIS_BLOCK, (short) 4);
                         break;
                     }
+                case WHEAT:
+                    i2b(p, hand, Material.WHEAT, Material.HAY_BLOCK);
+                    break;
                 default:
                     cs.sendMessage(MessageColor.NEGATIVE + "That cannot be made into blocks!");
             }
