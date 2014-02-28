@@ -67,13 +67,18 @@ public class CmdBiome implements CommandExecutor {
                 @Override
                 public void run() {
                     for (int x = -radius; x <= radius; x++) {
-                        final Chunk ac = p.getLocation().getWorld().getChunkAt(c.getX() + x, c.getZ() + x);
-                        if (!ac.isLoaded()) ac.load(true);
-                        for (int cx = 0; cx < 16; cx++)
-                            for (int cz = 0; cz < 16; cz++)
-                                for (int cy = 0; cy < c.getWorld().getMaxHeight(); cy++)
-                                    ac.getBlock(cx, cy, cz).setBiome(b);
-                        ac.getWorld().refreshChunk(ac.getX(), ac.getZ());
+                        for (int z = -radius; z <= radius; z++) {
+                            final Chunk ac = p.getLocation().getWorld().getChunkAt(c.getX() + x, c.getZ() + z);
+                            if (!ac.isLoaded()) ac.load(true);
+                            for (int cx = 0; cx < 16; cx++) {
+                                for (int cz = 0; cz < 16; cz++) {
+                                    for (int cy = 0; cy < c.getWorld().getMaxHeight(); cy++) {
+                                        ac.getBlock(cx, cy, cz).setBiome(b);
+                                    }
+                                }
+                            }
+                            ac.getWorld().refreshChunk(ac.getX(), ac.getZ());
+                        }
                     }
                     p.sendMessage(MessageColor.POSITIVE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + MessageColor.NEUTRAL + b.name().toLowerCase().replace(" _ ", " ") + MessageColor.POSITIVE + ".");
                 }
