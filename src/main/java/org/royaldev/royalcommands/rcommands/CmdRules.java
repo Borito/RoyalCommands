@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @ReflectCommand
 public class CmdRules implements CommandExecutor {
@@ -51,7 +52,7 @@ public class CmdRules implements CommandExecutor {
             try {
                 br = new BufferedReader(new FileReader(rulesf));
                 String line;
-                java.util.List<String> rules = new ArrayList<String>();
+                List<String> rules = new ArrayList<String>();
                 while ((line = br.readLine()) != null) {
                     line = RUtils.colorize(line);
                     rules.add(line);

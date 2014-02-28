@@ -40,7 +40,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.configuration.PConfManager;
-import org.royaldev.royalcommands.rcommands.CmdMotd;
+import org.royaldev.royalcommands.rcommands.CmdMessageOfTheDay;
 import org.royaldev.royalcommands.rcommands.CmdNameEntity;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
 
@@ -532,7 +532,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void showMotd(PlayerJoinEvent e) {
         if (!Config.motdLogin) return;
-        CmdMotd.showMotd(e.getPlayer());
+        CmdMessageOfTheDay.showMotd(e.getPlayer());
     }
 
     @EventHandler

@@ -18,13 +18,13 @@ reflectcommands:
     usage: /<command> [level] (player)
     aliases: [slvl, slevel, setlvl]
     version_added: Pre-0.2.7
-    class: CmdSetlevel
+    class: CmdSetLevel
 
   sci:
     description: Selectively removes items from a player's inventory.
     usage: /<command> [player] [item] (amount)
     version_added: Pre-0.2.7
-    class: CmdSci
+    class: CmdSelectiveClearInventory
 
   speak:
     description: Makes another player talk.
@@ -63,7 +63,7 @@ reflectcommands:
     usage: /<command> [material]
     aliases: [armor, sarmor]
     version_added: Pre-0.2.7
-    class: CmdSetarmor
+    class: CmdSetArmor
 
   getip:
     description: Gets the IP of a user.
@@ -191,7 +191,7 @@ reflectcommands:
     usage: /<command> (player)
     aliases: [gm, gamem, gmode]
     version_added: Pre-0.2.7
-    class: CmdGamemode
+    class: CmdGameMode
 
   ban:
     description: Bans a user.
@@ -518,7 +518,7 @@ reflectcommands:
     usage: /<command>
     aliases: [messageoftheday]
     version_added: Pre-0.2.7
-    class: CmdMotd
+    class: CmdMessageOfTheDay
 
   deljail:
     description: Removes a jail.

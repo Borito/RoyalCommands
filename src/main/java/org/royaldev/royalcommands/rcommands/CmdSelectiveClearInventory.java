@@ -12,11 +12,11 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdSci implements CommandExecutor {
+public class CmdSelectiveClearInventory implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdSci(RoyalCommands plugin) {
+    public CmdSelectiveClearInventory(RoyalCommands plugin) {
         this.plugin = plugin;
     }
 

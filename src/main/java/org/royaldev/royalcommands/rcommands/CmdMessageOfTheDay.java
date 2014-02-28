@@ -9,14 +9,13 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdMotd implements CommandExecutor {
+public class CmdMessageOfTheDay implements CommandExecutor {
 
-    static RoyalCommands plugin;
+    private static RoyalCommands plugin;
 
-    public CmdMotd(RoyalCommands instance) {
+    public CmdMessageOfTheDay(RoyalCommands instance) {
         plugin = instance;
     }
-
 
     public static void showMotd(CommandSender cs) {
         String ps = (Config.simpleList) ? CmdList.getSimpleList(cs) : RUtils.join(CmdList.getGroupList(cs), "\n");
@@ -56,7 +55,7 @@ public class CmdMotd implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            showMotd(cs);
+            CmdMessageOfTheDay.showMotd(cs);
             return true;
         }
         return false;

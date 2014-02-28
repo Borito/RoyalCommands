@@ -29,17 +29,16 @@ public class CmdHug implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player victim;
-            victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null) {
+            Player t = plugin.getServer().getPlayer(args[0]);
+            if (t == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That person is not online!");
                 return true;
             }
-            if (plugin.isVanished(victim, cs)) {
+            if (plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            plugin.getServer().broadcastMessage(ChatColor.DARK_GREEN + cs.getName() + ChatColor.LIGHT_PURPLE + " hugs " + ChatColor.DARK_GREEN + victim.getName() + ChatColor.LIGHT_PURPLE + "! " + MessageColor.NEGATIVE + "<3");
+            plugin.getServer().broadcastMessage(ChatColor.DARK_GREEN + cs.getName() + ChatColor.LIGHT_PURPLE + " hugs " + ChatColor.DARK_GREEN + t.getName() + ChatColor.LIGHT_PURPLE + "! " + MessageColor.NEGATIVE + "<3");
             return true;
         }
         return false;

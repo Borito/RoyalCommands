@@ -44,7 +44,7 @@ public class CmdMobIgnore implements CommandExecutor {
                 return true;
             }
             PConfManager pcm = PConfManager.getPConfManager(t);
-            Boolean isHidden = pcm.getBoolean("mobignored");
+            boolean isHidden = pcm.getBoolean("mobignored", false);
             pcm.set("mobignored", !isHidden);
             String status = BooleanUtils.toStringOnOff(isHidden);
             cs.sendMessage(MessageColor.POSITIVE + "Toggled mob ignore " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
