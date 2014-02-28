@@ -13,19 +13,19 @@ public enum MessageColor {
 
     MessageColor(String custom, ChatColor def) {
         try {
-            c = ChatColor.valueOf(custom.toUpperCase());
+            this.c = ChatColor.valueOf(custom.toUpperCase());
         } catch (IllegalArgumentException e) {
-            c = def;
+            this.c = def;
         }
     }
 
     @Override
     public String toString() {
-        return c.toString();
+        return this.c.toString();
     }
 
     public ChatColor getChatColor() {
-        return c;
+        return this.c;
     }
 
 }

@@ -31,12 +31,9 @@ abstract class AbstractPacket {
      */
     AbstractPacket(PacketContainer handle, PacketType packetType) {
         // Make sure we're given a valid packet
-        if (handle == null)
-            throw new IllegalArgumentException("Packet handle cannot be NULL.");
+        if (handle == null) throw new IllegalArgumentException("Packet handle cannot be NULL.");
         if (handle.getType() != packetType)
-            throw new IllegalArgumentException(
-                    handle.getHandle() + " is not a packet " + packetType.toString());
-
+            throw new IllegalArgumentException(handle.getHandle() + " is not a packet " + packetType.toString());
         this.handle = handle;
     }
 
@@ -46,6 +43,6 @@ abstract class AbstractPacket {
      * @return Raw packet data.
      */
     public PacketContainer getHandle() {
-        return handle;
+        return this.handle;
     }
 }

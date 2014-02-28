@@ -23,7 +23,10 @@ import java.util.UUID;
  */
 public class SpawnInfo implements Serializable {
     private static final long serialVersionUID = 3232013L;
-
+    /**
+     * List of <em>spawned</em> components used in the creation of this item.
+     */
+    private final List<String> components = new ArrayList<String>();
     /**
      * Name of player that spawned this item. If item is not spawned, this should be null. If it has no spawner, this
      * should be null.
@@ -37,10 +40,6 @@ public class SpawnInfo implements Serializable {
      * Whether the item was made with spawned components.
      */
     private boolean hasComponents;
-    /**
-     * List of <em>spawned</em> components used in the creation of this item.
-     */
-    private final List<String> components = new ArrayList<String>();
 
     /**
      * Constructs a SpawnInfo object assuming that the item was not spawned.

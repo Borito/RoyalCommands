@@ -19,26 +19,27 @@ import java.util.List;
 
 public class ProtocolListener {
 
+    protected static final String NBT_INFO_KEY = "rcmds-spawninfo";
+    final SpawnRenameProcessor srp = new SpawnRenameProcessor();
     private final RoyalCommands plugin;
     private final ProtocolManager pm = ProtocolLibrary.getProtocolManager();
-    protected static final String NBT_INFO_KEY = "rcmds-spawninfo";
 
     public ProtocolListener(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     public void initialize() {
-        createSetSlotListener();
-        createWindowItemsListener();
-        createSetCreativeSlotListener();
+        this.createSetSlotListener();
+        this.createWindowItemsListener();
+        this.createSetCreativeSlotListener();
     }
 
     public void uninitialize() {
-        pm.removePacketListeners(plugin);
+        this.pm.removePacketListeners(this.plugin);
     }
 
     public void createSetSlotListener() {
-        pm.addPacketListener(new PacketAdapter(PacketAdapter.params(plugin, PacketType.Play.Server.SET_SLOT)) {
+        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, PacketType.Play.Server.SET_SLOT)) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 if (!Config.useProtocolLib) return;
@@ -57,7 +58,7 @@ public class ProtocolListener {
     }
 
     public void createWindowItemsListener() {
-        pm.addPacketListener(new PacketAdapter(PacketAdapter.params(plugin, PacketType.Play.Server.WINDOW_ITEMS)) {
+        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, PacketType.Play.Server.WINDOW_ITEMS)) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 if (!Config.useProtocolLib) return;
@@ -81,14 +82,12 @@ public class ProtocolListener {
         });
     }
 
-    final SpawnRenameProcessor srp = new SpawnRenameProcessor();
-
     public void createSetCreativeSlotListener() {
-        pm.addPacketListener(new PacketAdapter(PacketAdapter.params(plugin, PacketType.Play.Client.SET_CREATIVE_SLOT).optionIntercept()) {
+        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, PacketType.Play.Client.SET_CREATIVE_SLOT).optionIntercept()) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 if (!Config.useProtocolLib) return;
-                srp.unprocessFieldStack(event);
+                ProtocolListener.this.srp.unprocessFieldStack(event);
                 final PacketCreativeInventoryAction p = new PacketCreativeInventoryAction(event.getPacket());
                 if (p.getClickedItem() == null) return;
                 final ItemStack is = p.getClickedItem();

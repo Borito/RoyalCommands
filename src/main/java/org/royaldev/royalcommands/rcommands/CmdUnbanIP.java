@@ -57,7 +57,7 @@ public class CmdUnbanIP implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Unbanned IP " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ".");
                 return true;
             } else {
-                op.setBanned(false);
+                RUtils.unbanPlayer(op);
                 cs.sendMessage(MessageColor.POSITIVE + "Unbanned IP of " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ").");
                 return true;
             }

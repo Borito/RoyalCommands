@@ -1,7 +1,6 @@
 package org.royaldev.royalcommands.protocol;
 
 import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.Packets;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.utility.StreamSerializer;
@@ -16,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 public class SpawnRenameProcessor extends AbstractRenameProcessor {
+
     public SpawnRenameProcessor() {
         super("org.royaldev.royalcommands.spawninfo.TempSpawn");
     }
@@ -35,7 +35,7 @@ public class SpawnRenameProcessor extends AbstractRenameProcessor {
             else if (event.getPacketType() == PacketType.Play.Client.BLOCK_PLACE) input.skipBytes(10);
             ItemStack stack = readItemStack(input, new StreamSerializer());
             // Now we can properly unprocess it
-            unprocess(stack);
+            this.unprocess(stack);
             // And write it back
             event.getPacket().getItemModifier().write(0, stack);
         } catch (IOException e) {

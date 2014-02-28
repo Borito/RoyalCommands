@@ -26,7 +26,7 @@ public class PacketSetWindowItems extends AbstractPacket {
 
     public PacketSetWindowItems() {
         super(new PacketContainer(TYPE), TYPE);
-        handle.getModifier().writeDefaults();
+        this.handle.getModifier().writeDefaults();
     }
 
     public PacketSetWindowItems(PacketContainer packet) {
@@ -41,7 +41,7 @@ public class PacketSetWindowItems extends AbstractPacket {
      * @return The current Window id
      */
     public byte getWindowId() {
-        return handle.getIntegers().read(0).byteValue();
+        return this.handle.getIntegers().read(0).byteValue();
     }
 
     /**
@@ -52,7 +52,7 @@ public class PacketSetWindowItems extends AbstractPacket {
      * @param value - new value.
      */
     public void setWindowId(byte value) {
-        handle.getIntegers().write(0, (int) value);
+        this.handle.getIntegers().write(0, (int) value);
     }
 
     /**
@@ -61,7 +61,7 @@ public class PacketSetWindowItems extends AbstractPacket {
      * @return The items that will fill the inventory.
      */
     public ItemStack[] getItems() {
-        return handle.getItemArrayModifier().read(0);
+        return this.handle.getItemArrayModifier().read(0);
     }
 
     /**
@@ -70,7 +70,7 @@ public class PacketSetWindowItems extends AbstractPacket {
      * @param value - new value.
      */
     public void setItems(ItemStack[] value) {
-        handle.getItemArrayModifier().write(0, value);
+        this.handle.getItemArrayModifier().write(0, value);
     }
 }
 

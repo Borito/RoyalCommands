@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -633,7 +634,7 @@ public class RUtils {
             p.setVelocity(new Vector(0, 0, 0));
             p.setFallDistance(0F);
             p.teleport(toTele);
-            playTeleportSound(toTele);
+            //playTeleportSound(toTele); Silent
             return "";
         }
     }
@@ -1202,13 +1203,24 @@ public class RUtils {
      */
     public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
         reason = colorize(reason);
-        t.setBanned(true);
+        final BanList bl = Bukkit.getBanList(BanList.Type.NAME);
+        bl.addBan(t.getName(), reason, null, cs.getName());
         writeBanHistory(t);
         String inGameFormat = Config.igBanFormat;
         String outFormat = Config.banFormat;
         executeBanActions(t, cs, reason);
         Bukkit.getServer().broadcast(getInGameMessage(inGameFormat, reason, t, cs), "rcmds.see.ban");
         if (t.isOnline()) ((Player) t).kickPlayer(getMessage(outFormat, reason, cs));
+    }
+
+    public static void unbanPlayer(OfflinePlayer t) {
+        final BanList bl = Bukkit.getBanList(BanList.Type.NAME);
+        bl.pardon(t.getName());
+    }
+
+    public static void banIP(String ip, CommandSender cs, String reason) {
+        final BanList bl = Bukkit.getBanList(BanList.Type.IP);
+        bl.addBan(ip, reason, null, cs.getName());
     }
 
     private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {

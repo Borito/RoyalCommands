@@ -58,7 +58,7 @@ public class CmdAttributes implements CommandExecutor {
                 return true;
             }
             if (args.length < 1) {
-                sendAttributes(cs);
+                this.sendAttributes(cs);
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }

@@ -13,6 +13,49 @@ import java.util.Map;
 public class ConfManager extends GeneralConfManager {
 
     private static final Map<String, ConfManager> confs = new HashMap<String, ConfManager>();
+    private final Object saveLock = new Object();
+    private final String path;
+    private final String name;
+    private File pconfl = null;
+
+    /**
+     * Configuration file manager
+     * <p/>
+     * If file does not exist, it will be created.
+     *
+     * @param filename Filename (local) for the config
+     */
+    ConfManager(String filename) {
+        super();
+        File dataFolder = RoyalCommands.dataFolder;
+        path = dataFolder + File.separator + filename;
+        pconfl = new File(path);
+        try {
+            load(pconfl);
+        } catch (Exception ignored) {
+        }
+        name = filename;
+    }
+
+    /**
+     * Configuration file manager
+     * <p/>
+     * If file does not exist, it will be created.
+     *
+     * @param file File object for the config
+     */
+    ConfManager(File file) {
+        this(file.getName());
+    }
+
+    /**
+     * Just to prevent construction outside of package.
+     */
+    @SuppressWarnings("unused")
+    private ConfManager() {
+        path = "";
+        name = "";
+    }
 
     public static ConfManager getConfManager(String s) {
         synchronized (confs) {
@@ -53,50 +96,6 @@ public class ConfManager extends GeneralConfManager {
         synchronized (confs) {
             return Collections.synchronizedCollection(confs.values());
         }
-    }
-
-    private File pconfl = null;
-    private final Object saveLock = new Object();
-    private final String path;
-    private final String name;
-
-    /**
-     * Configuration file manager
-     * <p/>
-     * If file does not exist, it will be created.
-     *
-     * @param filename Filename (local) for the config
-     */
-    ConfManager(String filename) {
-        super();
-        File dataFolder = RoyalCommands.dataFolder;
-        path = dataFolder + File.separator + filename;
-        pconfl = new File(path);
-        try {
-            load(pconfl);
-        } catch (Exception ignored) {
-        }
-        name = filename;
-    }
-
-    /**
-     * Configuration file manager
-     * <p/>
-     * If file does not exist, it will be created.
-     *
-     * @param file File object for the config
-     */
-    ConfManager(File file) {
-        this(file.getName());
-    }
-
-    /**
-     * Just to prevent construction outside of package.
-     */
-    @SuppressWarnings("unused")
-    private ConfManager() {
-        path = "";
-        name = "";
     }
 
     public void reload() {

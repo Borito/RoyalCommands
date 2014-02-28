@@ -8,15 +8,14 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class VaultHandler {
 
+    private static Permission permission = null;
+    private static Economy economy = null;
+    private static Chat chat = null;
     private final RoyalCommands plugin;
 
     public VaultHandler(RoyalCommands instance) {
         plugin = instance;
     }
-
-    private static Permission permission = null;
-    private static Economy economy = null;
-    private static Chat chat = null;
 
     public boolean usingVault() {
         final Plugin p = plugin.getServer().getPluginManager().getPlugin("Vault");
@@ -40,9 +39,9 @@ public class VaultHandler {
 
     public void setupVault() {
         if (!usingVault()) return;
-        setupEconomy();
-        setupChat();
-        setupPermissions();
+        this.setupEconomy();
+        this.setupChat();
+        this.setupPermissions();
     }
 
     public void removeVault() {

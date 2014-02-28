@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.BanList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,11 +15,11 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 import java.util.Date;
 
 @ReflectCommand
-public class CmdTempban implements CommandExecutor {
+public class CmdTemporaryBan implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdTempban(RoyalCommands instance) {
+    public CmdTemporaryBan(RoyalCommands instance) {
         plugin = instance;
     }
 
@@ -51,7 +52,7 @@ public class CmdTempban implements CommandExecutor {
             time++; // fix for always being a second short
             long curTime = new Date().getTime();
             String banreason = RoyalCommands.getFinalArg(args, 2);
-            t.setBanned(true);
+            this.plugin.getServer().getBanList(BanList.Type.NAME).addBan(t.getName(), banreason, null, cs.getName());
             pcm.set("bantime", (time * 1000L) + curTime);
             pcm.set("bannedat", curTime);
             pcm.set("banreason", banreason);

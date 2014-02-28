@@ -10,7 +10,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class UnZip {
-    static final int BUFFER = 2048;
+    private final static int BUFFER = 2048;
 
     /**
      * Decompresses a zipped file - respects directories

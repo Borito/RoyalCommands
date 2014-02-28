@@ -26,7 +26,7 @@ public class PacketCreativeInventoryAction extends AbstractPacket {
 
     public PacketCreativeInventoryAction() {
         super(new PacketContainer(TYPE), TYPE);
-        handle.getModifier().writeDefaults();
+        this.handle.getModifier().writeDefaults();
     }
 
     public PacketCreativeInventoryAction(PacketContainer packet) {
@@ -39,7 +39,7 @@ public class PacketCreativeInventoryAction extends AbstractPacket {
      * @return The current Slot
      */
     public short getSlot() {
-        return handle.getIntegers().read(0).shortValue();
+        return this.handle.getIntegers().read(0).shortValue();
     }
 
     /**
@@ -48,7 +48,7 @@ public class PacketCreativeInventoryAction extends AbstractPacket {
      * @param value - new value.
      */
     public void setSlot(short value) {
-        handle.getIntegers().write(0, (int) value);
+        this.handle.getIntegers().write(0, (int) value);
     }
 
     /**
@@ -57,7 +57,7 @@ public class PacketCreativeInventoryAction extends AbstractPacket {
      * @return The current Clicked item
      */
     public ItemStack getClickedItem() {
-        return handle.getItemModifier().read(0);
+        return this.handle.getItemModifier().read(0);
     }
 
     /**
@@ -66,7 +66,7 @@ public class PacketCreativeInventoryAction extends AbstractPacket {
      * @param value - new value.
      */
     public void setClickedItem(ItemStack value) {
-        handle.getItemModifier().write(0, value);
+        this.handle.getItemModifier().write(0, value);
     }
 }
 

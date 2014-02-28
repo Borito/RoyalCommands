@@ -9,8 +9,7 @@ package org.royaldev.royalcommands.exceptions;
 public class InvalidItemNameException extends Exception {
 
     /**
-     * Constructor for an InvalidItemNameException - should be thrown when
-     * an item's alias is not found.
+     * Constructor for an InvalidItemNameException - should be thrown when an item's alias is not found.
      *
      * @param s Exception comment
      */
@@ -19,8 +18,7 @@ public class InvalidItemNameException extends Exception {
     }
 
     /**
-     * Constructor for an InvalidItemNameException - should be thrown when
-     * an item's alias is not found.
+     * Constructor for an InvalidItemNameException - should be thrown when an item's alias is not found.
      *
      * @param cause A throwable with the cause
      */

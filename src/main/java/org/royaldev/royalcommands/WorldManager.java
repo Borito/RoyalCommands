@@ -24,69 +24,10 @@ import java.util.logging.Logger;
 
 public class WorldManager {
 
-    private class WorldWatcher implements Listener {
-        @EventHandler
-        public void worldUnload(WorldUnloadEvent e) {
-            if (e.isCancelled()) return;
-            synchronized (loadedWorlds) {
-                if (loadedWorlds.contains(e.getWorld().getName()))
-                    loadedWorlds.remove(e.getWorld().getName());
-            }
-        }
-
-        @EventHandler
-        public void worldLoad(WorldLoadEvent e) {
-            synchronized (loadedWorlds) {
-                if (!loadedWorlds.contains(e.getWorld().getName()))
-                    loadedWorlds.add(e.getWorld().getName());
-                addNewToConfig();
-            }
-        }
-
-        @EventHandler
-        public void onWorldTele(PlayerChangedWorldEvent e) {
-            World to = e.getPlayer().getWorld();
-            if (!configuredWorlds.contains(to.getName())) return;
-            if (!loadedWorlds.contains(to.getName())) return;
-            GameMode gm;
-            String mode = config.getString("worlds." + to.getName() + ".gamemode", "SURVIVAL").trim();
-            try {
-                gm = GameMode.valueOf(mode);
-            } catch (IllegalArgumentException ex) {
-                gm = GameMode.SURVIVAL;
-            }
-            e.getPlayer().setGameMode(gm);
-        }
-
-        @EventHandler
-        public void onWeather(WeatherChangeEvent e) {
-            if (e.isCancelled()) return;
-            World w = e.getWorld();
-            if (!configuredWorlds.contains(w.getName())) return;
-            if (!loadedWorlds.contains(w.getName())) return;
-            boolean allowWeather = config.getBoolean("worlds." + w.getName() + ".weather", true);
-            if (!allowWeather) e.setCancelled(true);
-        }
-
-        @EventHandler
-        public void onThunder(ThunderChangeEvent e) {
-            if (e.isCancelled()) return;
-            World w = e.getWorld();
-            if (!configuredWorlds.contains(w.getName())) return;
-            if (!loadedWorlds.contains(w.getName())) return;
-            boolean allowWeather = config.getBoolean("worlds." + w.getName() + ".weather", true);
-            if (!allowWeather) e.setCancelled(true);
-        }
-
-    }
-
+    public static InventoryListener il;
     private final List<String> loadedWorlds = new ArrayList<String>();
     private final List<String> configuredWorlds = new ArrayList<String>();
-
-    public static InventoryListener il;
-
     private final ConfManager config = ConfManager.getConfManager("worlds.yml");
-
     private final Logger log = RoyalCommands.instance.getLogger();
 
     public WorldManager() {
@@ -104,8 +45,8 @@ public class WorldManager {
             if (loadedWorlds.contains(w.getName())) continue;
             loadedWorlds.add(w.getName());
         }
-        addNewToConfig();
-        setupWorlds();
+        this.addNewToConfig();
+        this.setupWorlds();
         for (String s : loadedWorlds) {
             if (!configuredWorlds.contains(s)) continue;
             World w = Bukkit.getWorld(s);
@@ -123,7 +64,7 @@ public class WorldManager {
 
     public void reloadConfig() {
         config.reload();
-        setupWorlds();
+        this.setupWorlds();
     }
 
     public void setupWorlds() {
@@ -313,6 +254,62 @@ public class WorldManager {
             }
         }
         return null;
+    }
+
+    private class WorldWatcher implements Listener {
+        @EventHandler
+        public void worldUnload(WorldUnloadEvent e) {
+            if (e.isCancelled()) return;
+            synchronized (loadedWorlds) {
+                if (loadedWorlds.contains(e.getWorld().getName()))
+                    loadedWorlds.remove(e.getWorld().getName());
+            }
+        }
+
+        @EventHandler
+        public void worldLoad(WorldLoadEvent e) {
+            synchronized (loadedWorlds) {
+                if (!loadedWorlds.contains(e.getWorld().getName()))
+                    loadedWorlds.add(e.getWorld().getName());
+                WorldManager.this.addNewToConfig();
+            }
+        }
+
+        @EventHandler
+        public void onWorldTele(PlayerChangedWorldEvent e) {
+            World to = e.getPlayer().getWorld();
+            if (!configuredWorlds.contains(to.getName())) return;
+            if (!loadedWorlds.contains(to.getName())) return;
+            GameMode gm;
+            String mode = config.getString("worlds." + to.getName() + ".gamemode", "SURVIVAL").trim();
+            try {
+                gm = GameMode.valueOf(mode);
+            } catch (IllegalArgumentException ex) {
+                gm = GameMode.SURVIVAL;
+            }
+            e.getPlayer().setGameMode(gm);
+        }
+
+        @EventHandler
+        public void onWeather(WeatherChangeEvent e) {
+            if (e.isCancelled()) return;
+            World w = e.getWorld();
+            if (!configuredWorlds.contains(w.getName())) return;
+            if (!loadedWorlds.contains(w.getName())) return;
+            boolean allowWeather = config.getBoolean("worlds." + w.getName() + ".weather", true);
+            if (!allowWeather) e.setCancelled(true);
+        }
+
+        @EventHandler
+        public void onThunder(ThunderChangeEvent e) {
+            if (e.isCancelled()) return;
+            World w = e.getWorld();
+            if (!configuredWorlds.contains(w.getName())) return;
+            if (!loadedWorlds.contains(w.getName())) return;
+            boolean allowWeather = config.getBoolean("worlds." + w.getName() + ".weather", true);
+            if (!allowWeather) e.setCancelled(true);
+        }
+
     }
 
 }

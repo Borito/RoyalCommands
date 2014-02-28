@@ -26,7 +26,7 @@ public class PacketSetSlot extends AbstractPacket {
 
     public PacketSetSlot() {
         super(new PacketContainer(TYPE), TYPE);
-        handle.getModifier().writeDefaults();
+        this.handle.getModifier().writeDefaults();
     }
 
     public PacketSetSlot(PacketContainer packet) {
@@ -43,7 +43,7 @@ public class PacketSetSlot extends AbstractPacket {
      * @return The current Window id
      */
     public byte getWindowId() {
-        return handle.getIntegers().read(0).byteValue();
+        return this.handle.getIntegers().read(0).byteValue();
     }
 
     /**
@@ -56,7 +56,7 @@ public class PacketSetSlot extends AbstractPacket {
      * @param value - new value.
      */
     public void setWindowId(byte value) {
-        handle.getIntegers().write(0, (int) value);
+        this.handle.getIntegers().write(0, (int) value);
     }
 
     /**
@@ -65,7 +65,7 @@ public class PacketSetSlot extends AbstractPacket {
      * @return The current slot
      */
     public short getSlot() {
-        return handle.getIntegers().read(1).shortValue();
+        return this.handle.getIntegers().read(1).shortValue();
     }
 
     /**
@@ -74,7 +74,7 @@ public class PacketSetSlot extends AbstractPacket {
      * @param value - new value.
      */
     public void setSlot(short value) {
-        handle.getIntegers().write(1, (int) value);
+        this.handle.getIntegers().write(1, (int) value);
     }
 
     /**
@@ -83,7 +83,7 @@ public class PacketSetSlot extends AbstractPacket {
      * @return The current Slot data
      */
     public ItemStack getSlotData() {
-        return handle.getItemModifier().read(0);
+        return this.handle.getItemModifier().read(0);
     }
 
     /**
@@ -92,7 +92,7 @@ public class PacketSetSlot extends AbstractPacket {
      * @param value - new value.
      */
     public void setSlotData(ItemStack value) {
-        handle.getItemModifier().write(0, value);
+        this.handle.getItemModifier().write(0, value);
     }
 }
 

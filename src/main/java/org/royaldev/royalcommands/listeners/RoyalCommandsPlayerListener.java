@@ -480,7 +480,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         // Check to see that they have a bantime, and that if they do, if the timestamp is invalid.
         if (pcm.get("bantime") != null && !RUtils.isTimeStampValid(p, "bantime")) {
             // Set them unbanned
-            p.setBanned(false);
+            RUtils.unbanPlayer(p);
             // Allow the event
             event.allow();
             // Stop the method

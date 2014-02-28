@@ -14,6 +14,49 @@ import java.util.Map;
 public class PConfManager extends GeneralConfManager {
 
     private static final Map<String, PConfManager> pcms = new HashMap<String, PConfManager>();
+    private final Object saveLock = new Object();
+    private final String playerName;
+    private File pconfl = null;
+
+    /**
+     * Player configuration manager
+     *
+     * @param p Player to manage
+     */
+    PConfManager(OfflinePlayer p) {
+        super();
+        File dataFolder = RoyalCommands.dataFolder;
+        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.getName().toLowerCase() + ".yml");
+        try {
+            load(pconfl);
+        } catch (Exception ignored) {
+        }
+        playerName = p.getName();
+    }
+
+    /**
+     * Player configuration manager.
+     *
+     * @param p Player to manage
+     */
+    PConfManager(String p) {
+        super();
+        File dataFolder = RoyalCommands.dataFolder;
+        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.toLowerCase() + ".yml");
+        try {
+            load(pconfl);
+        } catch (Exception ignored) {
+        }
+        playerName = p;
+    }
+
+    /**
+     * Just to prevent construction outside of package.
+     */
+    @SuppressWarnings("unused")
+    private PConfManager() {
+        playerName = "";
+    }
 
     public static PConfManager getPConfManager(OfflinePlayer p) {
         return getPConfManager(p.getName());
@@ -63,50 +106,6 @@ public class PConfManager extends GeneralConfManager {
         synchronized (pcms) {
             return Collections.synchronizedCollection(pcms.values());
         }
-    }
-
-    private File pconfl = null;
-    private final Object saveLock = new Object();
-    private final String playerName;
-
-    /**
-     * Player configuration manager
-     *
-     * @param p Player to manage
-     */
-    PConfManager(OfflinePlayer p) {
-        super();
-        File dataFolder = RoyalCommands.dataFolder;
-        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.getName().toLowerCase() + ".yml");
-        try {
-            load(pconfl);
-        } catch (Exception ignored) {
-        }
-        playerName = p.getName();
-    }
-
-    /**
-     * Player configuration manager.
-     *
-     * @param p Player to manage
-     */
-    PConfManager(String p) {
-        super();
-        File dataFolder = RoyalCommands.dataFolder;
-        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.toLowerCase() + ".yml");
-        try {
-            load(pconfl);
-        } catch (Exception ignored) {
-        }
-        playerName = p;
-    }
-
-    /**
-     * Just to prevent construction outside of package.
-     */
-    @SuppressWarnings("unused")
-    private PConfManager() {
-        playerName = "";
     }
 
     public boolean exists() {

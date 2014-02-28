@@ -36,7 +36,7 @@ public class CmdUnban implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player isn't banned!");
                 return true;
             }
-            t.setBanned(false);
+            RUtils.unbanPlayer(t);
             if (pcm.exists()) pcm.set("bantime", null);
             cs.sendMessage(MessageColor.POSITIVE + "You have unbanned " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             String message = RUtils.getInGameMessage(Config.igUnbanFormat, "", t, cs); // "" because there is no reason for unbans

@@ -37,14 +37,12 @@ public class InventoryListener implements Listener {
     private final RoyalCommands plugin;
 
     public InventoryListener(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     public void saveAllInventories() {
         if (!Config.separateInv) return;
-        for (Player p : plugin.getServer().getOnlinePlayers()) {
-            saveInventory(p, p.getInventory());
-        }
+        for (Player p : plugin.getServer().getOnlinePlayers()) this.saveInventory(p, p.getInventory());
     }
 
     /**
@@ -54,7 +52,7 @@ public class InventoryListener implements Listener {
      * @return String of group name or null if no group
      */
     public String getWorldGroup(World w) {
-        ConfigurationSection cs = plugin.getConfig().getConfigurationSection("worldmanager.inventory_separation.groups");
+        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("worldmanager.inventory_separation.groups");
         Set<String> s = cs.getKeys(false);
         for (String group : s) {
             List<String> worlds = cs.getStringList(group);
@@ -65,7 +63,7 @@ public class InventoryListener implements Listener {
 
     private void saveEnderInventory(OfflinePlayer op, String world, Inventory i) {
         if (!Config.separateInv || !Config.separateEnder) return;
-        World w = plugin.getServer().getWorld(world);
+        World w = this.plugin.getServer().getWorld(world);
         String group = getWorldGroup(w);
         if (group == null) return;
         PConfManager pcm = PConfManager.getPConfManager(op);
@@ -106,7 +104,7 @@ public class InventoryListener implements Listener {
 
     public void saveInventory(OfflinePlayer op, String world, Inventory i) {
         if (!Config.separateInv) return;
-        String group = getWorldGroup(plugin.getServer().getWorld(world));
+        String group = this.getWorldGroup(this.plugin.getServer().getWorld(world));
         if (group == null) return;
         PConfManager pcm = PConfManager.getPConfManager(op);
         for (int slot = 0; slot < i.getSize(); slot++) {
@@ -124,7 +122,7 @@ public class InventoryListener implements Listener {
 
     private void saveInventory(Player p, Inventory i) {
         if (!Config.separateInv) return;
-        saveInventory(p, i, p.getWorld());
+        this.saveInventory(p, i, p.getWorld());
     }
 
     private void saveInventory(Player p, Inventory i, World w) {

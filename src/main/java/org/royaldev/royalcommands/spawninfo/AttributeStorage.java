@@ -12,8 +12,8 @@ import java.util.UUID;
  * @author Kristian
  */
 public class AttributeStorage {
-    private ItemStack target;
     private final UUID uniqueKey;
+    private ItemStack target;
 
     private AttributeStorage(ItemStack target, UUID uniqueKey) {
         this.target = Preconditions.checkNotNull(target, "target cannot be NULL");

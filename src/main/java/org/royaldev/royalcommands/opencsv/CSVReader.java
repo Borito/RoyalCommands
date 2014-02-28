@@ -29,16 +29,15 @@ import java.util.List;
  * @author Glen Smith
  */
 public class CSVReader implements Closeable {
-    private final BufferedReader br;
-    private boolean hasNext = true;
-    private final CSVParser parser;
-    private final int skipLines;
-    private boolean linesSkipped;
-
     /**
      * The default line to start reading.
      */
     public static final int DEFAULT_SKIP_LINES = 0;
+    private final BufferedReader br;
+    private final CSVParser parser;
+    private final int skipLines;
+    private boolean hasNext = true;
+    private boolean linesSkipped;
 
     /**
      * Constructs CSVReader using a comma for the separator.

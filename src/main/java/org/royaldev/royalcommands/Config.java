@@ -13,6 +13,131 @@ import java.util.List;
 
 public class Config {
 
+    public static boolean assignPublicOnGeneric;
+    public static boolean assignUseDisplayNames;
+    public static boolean assignUseDurability;
+
+    //-- Booleans --//
+    public static boolean backDeath;
+    public static boolean backpackReset;
+    public static boolean buildPerm;
+    public static boolean changeNameTag;
+    public static boolean checkVersion;
+    public static boolean cooldownAliases;
+    public static boolean customHelp;
+    public static boolean differentGamemodeTrade;
+    public static boolean disablegetip;
+    public static boolean dropExtras;
+    public static boolean dumpCreateChest;
+    public static boolean dumpUseInv;
+    public static boolean explodeFire;
+    public static boolean h2Convert;
+    public static boolean itemSpawnTag;
+    public static boolean kitPerms;
+    public static boolean motdLogin;
+    public static boolean multiverseNames;
+    public static boolean overrideRespawn;
+    public static boolean purgeUnusedUserdata;
+    public static boolean removePotionEffects;
+    public static boolean requireHelm;
+    public static boolean safeTeleport;
+    public static boolean sendToSpawn;
+    public static boolean separateEnder;
+    public static boolean separateInv;
+    public static boolean separateXP;
+    public static boolean showcommands;
+    public static boolean simpleList;
+    public static boolean smoothTime;
+    public static boolean stsBack;
+    public static boolean stsNew;
+    public static boolean teleportSoundEnabled;
+    public static boolean timeBroadcast;
+    public static boolean updateCheck;
+    public static boolean useProtocolLib;
+    public static boolean useVNP;
+    public static boolean useWelcome;
+    public static boolean useWhitelist;
+    public static boolean useWorldManager;
+    public static boolean vehicleCrossWorldTeleport;
+    public static boolean vehicleTeleportAnimals;
+    public static boolean vehicleTeleportEnabled;
+    public static boolean vehicleTeleportPlayers;
+    public static boolean vehicleTeleportVehicles;
+    public static boolean warpPermissions;
+    public static boolean wmShowEmptyWorlds;
+    public static boolean worldAccessPerm;
+    public static boolean ymlConvert;
+    public static ConfigurationSection warnActions;
+    public static ConfigurationSection commandCooldowns;
+    public static double defaultNear;
+
+    //-- ConfigurationSections --//
+    public static double findIpPercent;
+    public static double globalTeleportCooldown;
+
+    //-- Doubles --//
+    public static double maxNear;
+    public static float explodePower;
+    public static float maxExplodePower;
+    public static float teleportSoundPitch;
+
+    //-- Floats --//
+    public static float teleportSoundVolume;
+    public static int defaultStack;
+    public static int helpAmount;
+    public static int maxBackStack;
+
+    //-- Integers --//
+    public static int spawnmobLimit;
+    public static int teleportWarmup;
+    public static List<String> blockedItems;
+    public static List<String> disabledBackWorlds;
+    public static List<String> disabledCommands;
+
+    //-- String lists --//
+    public static List<String> itemSpawnTagLore;
+    public static List<String> logBlacklist;
+    public static List<String> motd;
+    public static List<String> muteCmds;
+    public static List<String> onBanActions;
+    public static List<String> whitelist;
+    public static long afkAutoTime;
+    public static long afkKickTime;
+    public static long warnExpireTime;
+
+    //-- Longs --//
+    public static String afkFormat;
+    public static String banFormat;
+    public static String banMessage;
+
+    //-- Strings --//
+    public static String bcastFormat;
+    public static String defaultWarn;
+    public static String igBanFormat;
+    public static String igKickFormat;
+    public static String igTempbanFormat;
+    public static String igUnbanFormat;
+    public static String ipBanFormat;
+    public static String kickFormat;
+    public static String kickMessage;
+    public static String mailCheckTime;
+    public static String nickChangeLimit;
+    public static String nickPrefix;
+    public static String nickRegex;
+    public static String noBuildMessage;
+    public static String returnFormat;
+    public static String saveInterval;
+    public static String teleportSoundName;
+    public static String tempbanFormat;
+    public static String welcomeMessage;
+    public static String whitelistMessage;
+    public static String whoFormat;
+    public static String whoGroupFormat;
+    public static String positiveChatColor;
+    public static String negativeChatColor;
+    public static String neutralChatColor;
+    public static String resetChatColor;
+
     private final RoyalCommands plugin;
 
     public Config(RoyalCommands instance) {
@@ -22,7 +147,7 @@ public class Config {
             if (!config.getParentFile().mkdirs()) plugin.getLogger().warning("Could not create config.yml directory.");
             plugin.saveDefaultConfig();
         }
-        reloadConfiguration();
+        this.reloadConfiguration();
     }
 
     public void reloadConfiguration() {
@@ -185,138 +310,6 @@ public class Config {
         }
 
     }
-
-    //-- Booleans --//
-
-    public static boolean assignPublicOnGeneric;
-    public static boolean assignUseDisplayNames;
-    public static boolean assignUseDurability;
-    public static boolean backDeath;
-    public static boolean backpackReset;
-    public static boolean buildPerm;
-    public static boolean changeNameTag;
-    public static boolean checkVersion;
-    public static boolean cooldownAliases;
-    public static boolean customHelp;
-    public static boolean differentGamemodeTrade;
-    public static boolean disablegetip;
-    public static boolean dropExtras;
-    public static boolean dumpCreateChest;
-    public static boolean dumpUseInv;
-    public static boolean explodeFire;
-    public static boolean h2Convert;
-    public static boolean itemSpawnTag;
-    public static boolean kitPerms;
-    public static boolean motdLogin;
-    public static boolean multiverseNames;
-    public static boolean overrideRespawn;
-    public static boolean purgeUnusedUserdata;
-    public static boolean removePotionEffects;
-    public static boolean requireHelm;
-    public static boolean safeTeleport;
-    public static boolean sendToSpawn;
-    public static boolean separateEnder;
-    public static boolean separateInv;
-    public static boolean separateXP;
-    public static boolean showcommands;
-    public static boolean simpleList;
-    public static boolean smoothTime;
-    public static boolean stsBack;
-    public static boolean stsNew;
-    public static boolean teleportSoundEnabled;
-    public static boolean timeBroadcast;
-    public static boolean updateCheck;
-    public static boolean useProtocolLib;
-    public static boolean useVNP;
-    public static boolean useWelcome;
-    public static boolean useWhitelist;
-    public static boolean useWorldManager;
-    public static boolean vehicleCrossWorldTeleport;
-    public static boolean vehicleTeleportAnimals;
-    public static boolean vehicleTeleportEnabled;
-    public static boolean vehicleTeleportPlayers;
-    public static boolean vehicleTeleportVehicles;
-    public static boolean warpPermissions;
-    public static boolean wmShowEmptyWorlds;
-    public static boolean worldAccessPerm;
-    public static boolean ymlConvert;
-
-    //-- ConfigurationSections --//
-
-    public static ConfigurationSection warnActions;
-    public static ConfigurationSection commandCooldowns;
-
-    //-- Doubles --//
-
-    public static double defaultNear;
-    public static double findIpPercent;
-    public static double globalTeleportCooldown;
-    public static double maxNear;
-
-    //-- Floats --//
-
-    public static float explodePower;
-    public static float maxExplodePower;
-    public static float teleportSoundPitch;
-    public static float teleportSoundVolume;
-
-    //-- Integers --//
-
-    public static int defaultStack;
-    public static int helpAmount;
-    public static int maxBackStack;
-    public static int spawnmobLimit;
-    public static int teleportWarmup;
-
-    //-- String lists --//
-
-    public static List<String> blockedItems;
-    public static List<String> disabledBackWorlds;
-    public static List<String> disabledCommands;
-    public static List<String> itemSpawnTagLore;
-    public static List<String> logBlacklist;
-    public static List<String> motd;
-    public static List<String> muteCmds;
-    public static List<String> onBanActions;
-    public static List<String> whitelist;
-
-    //-- Longs --//
-
-    public static long afkAutoTime;
-    public static long afkKickTime;
-    public static long warnExpireTime;
-
-    //-- Strings --//
-
-    public static String afkFormat;
-    public static String banFormat;
-    public static String banMessage;
-    public static String bcastFormat;
-    public static String defaultWarn;
-    public static String igBanFormat;
-    public static String igKickFormat;
-    public static String igTempbanFormat;
-    public static String igUnbanFormat;
-    public static String ipBanFormat;
-    public static String kickFormat;
-    public static String kickMessage;
-    public static String mailCheckTime;
-    public static String nickChangeLimit;
-    public static String nickPrefix;
-    public static String nickRegex;
-    public static String noBuildMessage;
-    public static String returnFormat;
-    public static String saveInterval;
-    public static String teleportSoundName;
-    public static String tempbanFormat;
-    public static String welcomeMessage;
-    public static String whitelistMessage;
-    public static String whoFormat;
-    public static String whoGroupFormat;
-    public static String positiveChatColor;
-    public static String negativeChatColor;
-    public static String neutralChatColor;
-    public static String resetChatColor;
 
 
 }

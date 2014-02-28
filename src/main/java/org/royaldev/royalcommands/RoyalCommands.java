@@ -88,100 +88,42 @@ public class RoyalCommands extends JavaPlugin {
     public static WorldManager wm = null;
 
     public static RoyalCommands instance;
-
-    public ConfManager whl;
+    public static MultiverseCore mvc = null;
     public final Logger log = Logger.getLogger("Minecraft");
-    public String version = null;
-    public String newVersion = null;
-    public Metrics m = null;
-
-    private NMSFace nmsFace;
-    public Config c;
-    public Help h;
-
-    //--- Privates ---//
-
+    public final AuthorizationHandler ah = new AuthorizationHandler(this);
+    public final VaultHandler vh = new VaultHandler(this);
     private final int minVersion = 2645;
-
-    private CommandMap cm = null;
-    private YamlConfiguration pluginYml = null;
-
     private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
     private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
     private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
+
+    //--- Privates ---//
     private final SignListener signListener = new SignListener(this);
     private final MonitorListener monitorListener = new MonitorListener(this);
     private final ServerListener serverListener = new ServerListener(this);
-
     private final Pattern versionPattern = Pattern.compile("((\\d+\\.?){3})(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
-
-    private RApiMain api;
+    public ConfManager whl;
+    public String version = null;
+    public String newVersion = null;
+    public Metrics m = null;
+    public Config c;
+    public Help h;
+    private NMSFace nmsFace;
 
     //--- Handlers ---//
-
-    public final AuthorizationHandler ah = new AuthorizationHandler(this);
-    public final VaultHandler vh = new VaultHandler(this);
+    private CommandMap cm = null;
+    private YamlConfiguration pluginYml = null;
 
     //--- Dependencies ---//
-
+    private RApiMain api;
     private VanishPlugin vp = null;
     private WorldGuardPlugin wg = null;
     private LWCPlugin lwc = null;
 
-    public static MultiverseCore mvc = null;
-
     //--- ProtocolLib things ---//
-
     private ProtocolListener pl = null;
 
     //--- Public methods ---//
-
-    @SuppressWarnings("unused")
-    public RApiMain getAPI() {
-        return api;
-    }
-
-    @SuppressWarnings("unused")
-    public boolean canBuild(Player p, Location l) {
-        return wg == null || wg.canBuild(p, l);
-    }
-
-    public boolean canBuild(Player p, Block b) {
-        return wg == null || wg.canBuild(p, b);
-    }
-
-    public boolean canAccessChest(Player p, Block b) {
-        return lwc == null || lwc.getLWC().canAccessProtection(p, b);
-    }
-
-    public boolean isVanished(Player p) {
-        if (!Config.useVNP) return false;
-        if (vp == null) {
-            vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
-            return false;
-        } else return vp.getManager().isVanished(p);
-    }
-
-    public boolean isVanished(Player p, CommandSender cs) {
-        if (!Config.useVNP) return false;
-        if (vp == null) {
-            vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
-            return false;
-        }
-        return !ah.isAuthorized(cs, "rcmds.seehidden") && vp.getManager().isVanished(p);
-    }
-
-    public int getNumberVanished() {
-        int hid = 0;
-        for (Player p : getServer().getOnlinePlayers()) if (isVanished(p)) hid++;
-        return hid;
-    }
-
-    public NMSFace getNMSFace() {
-        return nmsFace;
-    }
-
-    //-- Static methods --//
 
     /**
      * Joins an array of strings with spaces
@@ -196,16 +138,63 @@ public class RoyalCommands extends JavaPlugin {
         return sb.substring(0, sb.length() - 1);
     }
 
+    @SuppressWarnings("unused")
+    public RApiMain getAPI() {
+        return this.api;
+    }
+
+    @SuppressWarnings("unused")
+    public boolean canBuild(Player p, Location l) {
+        return this.wg == null || this.wg.canBuild(p, l);
+    }
+
+    public boolean canBuild(Player p, Block b) {
+        return this.wg == null || this.wg.canBuild(p, b);
+    }
+
+    public boolean canAccessChest(Player p, Block b) {
+        return this.lwc == null || this.lwc.getLWC().canAccessProtection(p, b);
+    }
+
+    public boolean isVanished(Player p) {
+        if (!Config.useVNP) return false;
+        if (this.vp == null) {
+            this.vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
+            return false;
+        } else return this.vp.getManager().isVanished(p);
+    }
+
+    public boolean isVanished(Player p, CommandSender cs) {
+        if (!Config.useVNP) return false;
+        if (this.vp == null) {
+            this.vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
+            return false;
+        }
+        return !this.ah.isAuthorized(cs, "rcmds.seehidden") && vp.getManager().isVanished(p);
+    }
+
+    public int getNumberVanished() {
+        int hid = 0;
+        for (Player p : getServer().getOnlinePlayers()) if (this.isVanished(p)) hid++;
+        return hid;
+    }
+
+    //-- Static methods --//
+
+    public NMSFace getNMSFace() {
+        return nmsFace;
+    }
+
     //--- Private methods ---//
 
     private CommandMap getCommandMap() {
-        if (cm != null) return cm;
+        if (this.cm != null) return this.cm;
         Field map;
         try {
-            map = getServer().getPluginManager().getClass().getDeclaredField("commandMap");
+            map = this.getServer().getPluginManager().getClass().getDeclaredField("commandMap");
             map.setAccessible(true);
-            cm = (CommandMap) map.get(getServer().getPluginManager());
-            return cm;
+            this.cm = (CommandMap) map.get(this.getServer().getPluginManager());
+            return this.cm;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -213,7 +202,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private ConfigurationSection getCommands() {
-        return pluginYml.getConfigurationSection("reflectcommands");
+        return this.pluginYml.getConfigurationSection("reflectcommands");
     }
 
     private ConfigurationSection getCommandInfo(String command) {
@@ -223,17 +212,17 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private List<String> getAliases(String command) {
-        final List<String> aliasesList = getCommandInfo(command).getStringList("aliases");
+        final List<String> aliasesList = this.getCommandInfo(command).getStringList("aliases");
         if (aliasesList == null) return new ArrayList<String>();
         return aliasesList;
     }
 
     private String getUsage(String command) {
-        return getCommandInfo(command).getString("usage", "/<command>");
+        return this.getCommandInfo(command).getString("usage", "/<command>");
     }
 
     private String getDescription(String command) {
-        return getCommandInfo(command).getString("description", command);
+        return this.getCommandInfo(command).getString("description", command);
     }
 
     /*private boolean unregisterCommand(String command) {
@@ -257,9 +246,9 @@ public class RoyalCommands extends JavaPlugin {
             pc.setAliases(getAliases(command));
             pc.setDescription(getDescription(command));
             pc.setUsage(getUsage(command));
-            getCommandMap().register(getDescription().getName(), pc);
+            this.getCommandMap().register(getDescription().getName(), pc);
         } catch (Exception e) {
-            getLogger().warning("Could not register command \"" + command + "\" - an error occurred: " + e.getMessage() + ".");
+            this.getLogger().warning("Could not register command \"" + command + "\" - an error occurred: " + e.getMessage() + ".");
         }
     }
 
@@ -269,7 +258,7 @@ public class RoyalCommands extends JavaPlugin {
         Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
         Matcher m = p.matcher(getServer().getVersion());
         if (!m.matches() || m.groupCount() < 1) {
-            log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
+            this.log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
             return true;
         }
         Integer currentVersion = RUtils.getInt(m.group(1));
@@ -296,10 +285,10 @@ public class RoyalCommands extends JavaPlugin {
         if (!file.exists()) {
             try {
                 boolean success = file.mkdir();
-                if (success) log.info("[RoyalCommands] Created userdata directory.");
+                if (success) this.log.info("[RoyalCommands] Created userdata directory.");
             } catch (Exception e) {
-                log.severe("[RoyalCommands] Failed to make userdata directory!");
-                log.severe(e.getMessage());
+                this.log.severe("[RoyalCommands] Failed to make userdata directory!");
+                this.log.severe(e.getMessage());
             }
         }
     }
@@ -311,12 +300,12 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Set globals --//
 
-        instance = this;
-        pluginYml = YamlConfiguration.loadConfiguration(getResource("plugin.yml"));
-        dataFolder = getDataFolder();
-        whl = ConfManager.getConfManager("whitelist.yml");
-        commands = pluginYml.getConfigurationSection("reflectcommands");
-        version = getDescription().getVersion();
+        RoyalCommands.instance = this;
+        this.pluginYml = YamlConfiguration.loadConfiguration(getResource("plugin.yml"));
+        RoyalCommands.dataFolder = getDataFolder();
+        this.whl = ConfManager.getConfManager("whitelist.yml");
+        RoyalCommands.commands = pluginYml.getConfigurationSection("reflectcommands");
+        this.version = getDescription().getVersion();
 
         //-- Initialize ConfManagers if not made --//
 
@@ -340,20 +329,20 @@ public class RoyalCommands extends JavaPlugin {
             // Check if we have a NMSHandler class at that location.
             final Class<?> clazz = Class.forName("org.royaldev.royalcommands.nms." + versionNMS + ".NMSHandler");
             // Make sure it actually implements NMS and set our handler
-            if (NMSFace.class.isAssignableFrom(clazz)) nmsFace = (NMSFace) clazz.getConstructor().newInstance();
+            if (NMSFace.class.isAssignableFrom(clazz)) this.nmsFace = (NMSFace) clazz.getConstructor().newInstance();
         } catch (final Exception e) {
-            getLogger().warning("Could not find support for this CraftBukkit version.");
-            getLogger().info("The BukkitDev page has links to the newest development builds to fix this.");
-            getLogger().info("For now, NMS/CB internal support will be disabled.");
-            nmsFace = new org.royaldev.royalcommands.nms.NoSupport.NMSHandler();
+            this.getLogger().warning("Could not find support for this CraftBukkit version.");
+            this.getLogger().info("The BukkitDev page has links to the newest development builds to fix this.");
+            this.getLogger().info("For now, NMS/CB internal support will be disabled.");
+            this.nmsFace = new org.royaldev.royalcommands.nms.NoSupport.NMSHandler();
         }
-        if (nmsFace.hasSupport()) getLogger().info("Loaded support for " + nmsFace.getVersion() + ".");
+        if (this.nmsFace.hasSupport()) getLogger().info("Loaded support for " + this.nmsFace.getVersion() + ".");
 
         //-- Hidendra's Metrics --//
 
         try {
-            m = new Metrics(this);
-            Matcher matcher = versionPattern.matcher(version);
+            this.m = new Metrics(this);
+            Matcher matcher = this.versionPattern.matcher(this.version);
             if (matcher.matches()) {
                 // 1 = base version
                 // 3 = -SNAPSHOT
@@ -373,10 +362,10 @@ public class RoyalCommands extends JavaPlugin {
                 m.addGraph(g); // add the graph
             }
             if (!m.start())
-                getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
-            else getLogger().info("Metrics enabled. Thank you!");
+                this.getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
+            else this.getLogger().info("Metrics enabled. Thank you!");
         } catch (Exception ignore) {
-            getLogger().warning("Could not start Metrics!");
+            this.getLogger().warning("Could not start Metrics!");
         }
 
         //-- Get help --//
@@ -385,7 +374,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Get configs --//
 
-        loadConfiguration();
+        this.loadConfiguration();
         c = new Config(this);
         c.reloadConfiguration();
 
@@ -395,7 +384,7 @@ public class RoyalCommands extends JavaPlugin {
             log.severe("[RoyalCommands] This version of CraftBukkit is too old to run RoyalCommands!");
             log.severe("[RoyalCommands] This version of RoyalCommands needs at least CraftBukkit " + minVersion + ".");
             log.severe("[RoyalCommands] Disabling plugin. You can turn this check off in the config.");
-            setEnabled(false);
+            this.setEnabled(false);
             return;
         }
 
@@ -425,17 +414,17 @@ public class RoyalCommands extends JavaPlugin {
                     String dev = jo.get("dev");
                     String currentVersion = useVersion.toString().toLowerCase();
                     if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
-                        getLogger().warning("A newer version of RoyalCommands is available!");
-                        getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
-                        getLogger().warning("Development builds are available at http://ci.royaldev.org/");
+                        RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
+                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
+                        RoyalCommands.this.getLogger().warning("Development builds are available at http://ci.royaldev.org/");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && !currentVersion.equalsIgnoreCase(dev)) {
-                        getLogger().warning("A newer version of RoyalCommands is available!");
-                        getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
-                        getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
+                        RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
+                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
+                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && currentVersion.replace("-SNAPSHOT", "").equalsIgnoreCase(stable)) {
-                        getLogger().warning("A newer version of RoyalCommands is available!");
-                        getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
-                        getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
+                        RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
+                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
+                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
                     }
                 } catch (Exception ignored) {
                     // ignore exceptions
@@ -446,7 +435,7 @@ public class RoyalCommands extends JavaPlugin {
             @Override
             public void run() {
                 h.reloadHelp();
-                getLogger().info("Help loaded for all plugins.");
+                RoyalCommands.this.getLogger().info("Help loaded for all plugins.");
             }
         });
         bs.runTaskTimerAsynchronously(this, new AFKWatcher(this), 0L, 200L);
@@ -502,9 +491,9 @@ public class RoyalCommands extends JavaPlugin {
                 final Constructor c = clazz.getConstructor(RoyalCommands.class);
                 final Object o = c.newInstance(this);
                 if (!(o instanceof CommandExecutor)) continue;
-                registerCommand((CommandExecutor) o, command);
+                this.registerCommand((CommandExecutor) o, command);
             } catch (Exception e) {
-                getLogger().warning("Could not register command \"" + command + "\" - an error occurred (" + e.getClass().getSimpleName() + "): " + e.getMessage() + ".");
+                this.getLogger().warning("Could not register command \"" + command + "\" - an error occurred (" + e.getClass().getSimpleName() + "): " + e.getMessage() + ".");
             }
         }
 
@@ -520,6 +509,35 @@ public class RoyalCommands extends JavaPlugin {
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
     }
+
+    @Override
+    public void onDisable() {
+
+        //-- Cancel scheduled tasks --//
+
+        this.getServer().getScheduler().cancelTasks(this);
+
+        //-- Save inventories --//
+
+        WorldManager.il.saveAllInventories();
+
+        //-- Save all userdata --//
+
+        this.getLogger().info("Saving userdata and configurations (" + (PConfManager.managersCreated() + ConfManager.managersCreated()) + " files in all)...");
+        PConfManager.saveAllManagers();
+        ConfManager.saveAllManagers();
+        this.getLogger().info("Userdata saved.");
+
+        //-- ProtocolLib --//
+
+        if (pl != null) pl.uninitialize();
+
+        //-- We're done! --//
+
+        log.info("[RoyalCommands] RoyalCommands v" + version + " disabled.");
+    }
+
+    //--- onDisable() ---//
 
     private class BackpackConverter implements Listener {
         @EventHandler
@@ -541,35 +559,6 @@ public class RoyalCommands extends JavaPlugin {
             pcm.set("backpack.item", null);
             pcm.set("backpack.size", null);
         }
-    }
-
-    //--- onDisable() ---//
-
-    @Override
-    public void onDisable() {
-
-        //-- Cancel scheduled tasks --//
-
-        getServer().getScheduler().cancelTasks(this);
-
-        //-- Save inventories --//
-
-        WorldManager.il.saveAllInventories();
-
-        //-- Save all userdata --//
-
-        getLogger().info("Saving userdata and configurations (" + (PConfManager.managersCreated() + ConfManager.managersCreated()) + " files in all)...");
-        PConfManager.saveAllManagers();
-        ConfManager.saveAllManagers();
-        getLogger().info("Userdata saved.");
-
-        //-- ProtocolLib --//
-
-        if (pl != null) pl.uninitialize();
-
-        //-- We're done! --//
-
-        log.info("[RoyalCommands] RoyalCommands v" + version + " disabled.");
     }
 
 }

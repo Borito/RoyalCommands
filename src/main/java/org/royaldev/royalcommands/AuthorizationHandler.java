@@ -11,19 +11,19 @@ public class AuthorizationHandler {
     private final RoyalCommands plugin;
 
     public AuthorizationHandler(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     private boolean permissionsLoaded() {
-        return plugin.vh.usingVault() && plugin.vh.getPermission() != null;
+        return this.plugin.vh.usingVault() && this.plugin.vh.getPermission() != null;
     }
 
     private boolean chatLoaded() {
-        return plugin.vh.usingVault() && plugin.vh.getChat() != null;
+        return this.plugin.vh.usingVault() && this.plugin.vh.getChat() != null;
     }
 
     private boolean economyLoaded() {
-        return plugin.vh.usingVault() && plugin.vh.getEconomy() != null;
+        return this.plugin.vh.usingVault() && this.plugin.vh.getEconomy() != null;
     }
 
     /**
@@ -44,24 +44,24 @@ public class AuthorizationHandler {
      */
     public boolean isAuthorized(Object o, String node) {
         if (o instanceof RemoteConsoleCommandSender)
-            return iARemoteConsoleCommandSender((RemoteConsoleCommandSender) o, node);
-        else if (o instanceof Player) return iAPlayer((Player) o, node);
-        else if (o instanceof OfflinePlayer) return iAOfflinePlayer((OfflinePlayer) o, node);
-        else if (o instanceof BlockCommandSender) return iABlockCommandSender((BlockCommandSender) o, node);
-        else if (o instanceof CommandSender) return iACommandSender((CommandSender) o, node);
+            return this.iARemoteConsoleCommandSender((RemoteConsoleCommandSender) o, node);
+        else if (o instanceof Player) return this.iAPlayer((Player) o, node);
+        else if (o instanceof OfflinePlayer) return this.iAOfflinePlayer((OfflinePlayer) o, node);
+        else if (o instanceof BlockCommandSender) return this.iABlockCommandSender((BlockCommandSender) o, node);
+        else if (o instanceof CommandSender) return this.iACommandSender((CommandSender) o, node);
         else throw new IllegalArgumentException("Object was not a valid authorizable!");
     }
 
     private boolean iAPlayer(Player p, String node) {
-        if (plugin.vh.usingVault() && permissionsLoaded()) return plugin.vh.getPermission().has(p, node);
+        if (this.plugin.vh.usingVault() && this.permissionsLoaded()) return this.plugin.vh.getPermission().has(p, node);
         return p.hasPermission(node);
     }
 
     private boolean iAOfflinePlayer(OfflinePlayer op, String node) {
-        if (op.isOnline()) return iAPlayer(op.getPlayer(), node);
-        if (plugin.vh.usingVault() && permissionsLoaded()) {
-            final String world = plugin.getServer().getWorlds().get(0).getName();
-            return plugin.vh.getPermission().has(world, op.getName(), node);
+        if (op.isOnline()) return this.iAPlayer(op.getPlayer(), node);
+        if (this.plugin.vh.usingVault() && this.permissionsLoaded()) {
+            final String world = this.plugin.getServer().getWorlds().get(0).getName();
+            return this.plugin.vh.getPermission().has(world, op.getName(), node);
         }
         return false;
     }
@@ -75,7 +75,7 @@ public class AuthorizationHandler {
     }
 
     private boolean iACommandSender(CommandSender cs, String node) {
-        if (plugin.vh.usingVault() && permissionsLoaded()) return plugin.vh.getPermission().has(cs, node);
+        if (this.plugin.vh.usingVault() && permissionsLoaded()) return this.plugin.vh.getPermission().has(cs, node);
         return cs.hasPermission(node);
     }
 
