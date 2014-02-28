@@ -10,11 +10,11 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.teleport.TeleportRequest;
 
 @ReflectCommand
-public class CmdTpaAll implements CommandExecutor {
+public class CmdTeleportRequestAll implements CommandExecutor {
 
     public final RoyalCommands plugin;
 
-    public CmdTpaAll(RoyalCommands instance) {
+    public CmdTeleportRequestAll(RoyalCommands instance) {
         plugin = instance;
     }
 

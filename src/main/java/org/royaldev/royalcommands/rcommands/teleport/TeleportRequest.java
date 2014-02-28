@@ -17,11 +17,13 @@ public class TeleportRequest {
     private final String requester;
     private final String target;
     private final TeleportType teleportType;
+    private final long date;
 
-    public TeleportRequest(String requester, String target, TeleportType teleportType) {
+    public TeleportRequest(String requester, String target, TeleportType teleportType, long date) {
         this.requester = requester;
         this.target = target;
         this.teleportType = teleportType;
+        this.date = date;
     }
 
     public static Map<String, List<TeleportRequest>> getRequests() {
@@ -37,7 +39,7 @@ public class TeleportRequest {
             requester.sendMessage(MessageColor.NEGATIVE + "You cannot teleport to yourself.");
             return;
         }
-        final TeleportRequest tr = new TeleportRequest(requester.getName(), target.getName(), teleportType);
+        final TeleportRequest tr = new TeleportRequest(requester.getName(), target.getName(), teleportType, System.currentTimeMillis());
         List<TeleportRequest> trs;
         synchronized (teleportRequests) {
             trs = teleportRequests.get(target.getName());
@@ -93,6 +95,27 @@ public class TeleportRequest {
         return null;
     }
 
+    /**
+     * Gets the latest request for the given target name. If there are no requests, this will return null.
+     *
+     * @param target Target's name
+     * @return Latest TeleportRequest or null
+     */
+    public static TeleportRequest getLatestRequest(String target) {
+        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
+        if (trs == null) return null;
+        long highest = -1L;
+        TeleportRequest latest = null;
+        for (TeleportRequest tr : trs) {
+            if (tr == null || !tr.getTarget().equalsIgnoreCase(target)) continue;
+            if (highest == -1L || tr.getDate() > highest) {
+                highest = tr.getDate();
+                latest = tr;
+            }
+        }
+        return latest;
+    }
+
     public String getRequester() {
         return requester;
     }
@@ -103,6 +126,10 @@ public class TeleportRequest {
 
     public TeleportType getType() {
         return teleportType;
+    }
+
+    public long getDate() {
+        return this.date;
     }
 
     /**

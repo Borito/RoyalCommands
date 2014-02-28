@@ -9,11 +9,11 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdTpAll implements CommandExecutor {
+public class CmdTeleportAll implements CommandExecutor {
 
     public final RoyalCommands plugin;
 
-    public CmdTpAll(RoyalCommands instance) {
+    public CmdTeleportAll(RoyalCommands instance) {
         plugin = instance;
     }
 

@@ -9,11 +9,11 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdTp2p implements CommandExecutor {
+public class CmdTeleportPlayerToPlayer implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdTp2p(RoyalCommands instance) {
+    public CmdTeleportPlayerToPlayer(RoyalCommands instance) {
         plugin = instance;
     }
 

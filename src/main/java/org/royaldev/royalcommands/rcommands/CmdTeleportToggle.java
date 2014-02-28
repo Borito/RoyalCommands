@@ -10,11 +10,11 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 @ReflectCommand
-public class CmdTpToggle implements CommandExecutor {
+public class CmdTeleportToggle implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdTpToggle(RoyalCommands instance) {
+    public CmdTeleportToggle(RoyalCommands instance) {
         plugin = instance;
     }
 

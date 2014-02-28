@@ -391,17 +391,17 @@ reflectcommands:
 
   tpaccept:
     description: Accepts a teleport request.
-    usage: /<command> [name]
+    usage: /<command> (name)
     aliases: [tpac, tpyes]
     version_added: Pre-0.2.7
-    class: CmdTpAccept
+    class: CmdTeleportAccept
 
   tpdeny:
     description: Denies a teleport request.
-    usage: /<command> [name]
+    usage: /<command> (name)
     aliases: [tpad, tpno]
     version_added: Pre-0.2.7
-    class: CmdTpDeny
+    class: CmdTeleportDeny
 
   listwarns:
     description: Lists the warnings a player has.
@@ -511,7 +511,7 @@ reflectcommands:
     usage: /<command> [player] [player]
     aliases: [teleportplayertoplayer, teleportplayer2player, tpptp, tpp2p, teleportp2p, teleportptop]
     version_added: Pre-0.2.7
-    class: CmdTp2p
+    class: CmdTeleportPlayerToPlayer
 
   motd:
     description: Shows the message of the day.
@@ -650,7 +650,7 @@ reflectcommands:
     usage: /<command> [x] [y] [z] (world)
     aliases: [tpos, teleportposition, tpcoords, tpp, tpc, teleportcoordinates, teleportpos, tpposition, tposition]
     version_added: Pre-0.2.7
-    class: CmdTppos
+    class: CmdTeleportPosition
 
   ignore:
     description: Ignores when a player chats.
@@ -677,14 +677,14 @@ reflectcommands:
     usage: /<command>
     aliases: [teleportall]
     version_added: Pre-0.2.7
-    class: CmdTpAll
+    class: CmdTeleportAll
 
   tpaall:
     description: Sends a teleport request to everyone.
     usage: /<command>
     aliases: [tprall, teleportaskall, teleportrequestall]
     version_added: Pre-0.2.7
-    class: CmdTpaAll
+    class: CmdTeleportRequestAll
 
   vip:
     description: Modifies the VIP list. VIPs can join the server when it is full.
@@ -712,14 +712,14 @@ reflectcommands:
     usage: /<command> [player] [time] [reason]
     aliases: [tban, temporarilyban]
     version_added: Pre-0.2.7
-    class: CmdTempban
+    class: CmdTemporaryBan
 
   tptoggle:
     description: Toggles teleportation.
     usage: /<command>
     aliases: [toggletp]
     version_added: Pre-0.2.7
-    class: CmdTpToggle
+    class: CmdTeleportToggle
 
   kits:
     description: Lists the kits available to you.
