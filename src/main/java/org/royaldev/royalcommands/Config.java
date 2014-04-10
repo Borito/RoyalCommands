@@ -280,10 +280,10 @@ public class Config {
         whitelistMessage = RUtils.colorize(c.getString("whitelist.message", "You are not whitelisted on this server!"));
         whoFormat = c.getString("playerlist.format", "{prefix}{dispname}");
         whoGroupFormat = c.getString("playerlist.group_format", "{prefix}{group}{suffix}");
-        positiveChatColor = c.getString("messages.colors.positive", "BLUE");
-        negativeChatColor = c.getString("messages.colors.negative", "RED");
-        neutralChatColor = c.getString("messages.colors.neutral", "GRAY");
-        resetChatColor = c.getString("messages.colors.reset", "RESET");
+        positiveChatColor = c.getString("messages.options.colors.positive", "BLUE");
+        negativeChatColor = c.getString("messages.options.colors.negative", "RED");
+        neutralChatColor = c.getString("messages.options.colors.neutral", "GRAY");
+        resetChatColor = c.getString("messages.options.colors.reset", "RESET");
 
         if (plugin.whl.exists()) whitelist = plugin.whl.getStringList("whitelist");
 
