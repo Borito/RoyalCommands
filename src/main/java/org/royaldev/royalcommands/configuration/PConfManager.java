@@ -10,12 +10,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PConfManager extends GeneralConfManager {
 
-    private static final Map<String, PConfManager> pcms = new HashMap<String, PConfManager>();
+    private static final Map<UUID, PConfManager> pcms = new HashMap<UUID, PConfManager>();
     private final Object saveLock = new Object();
-    private final String playerName;
+    private final UUID playerUUID;
     private File pconfl = null;
 
     /**
@@ -24,30 +25,23 @@ public class PConfManager extends GeneralConfManager {
      * @param p Player to manage
      */
     PConfManager(OfflinePlayer p) {
-        super();
-        File dataFolder = RoyalCommands.dataFolder;
-        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.getName().toLowerCase() + ".yml");
-        try {
-            load(pconfl);
-        } catch (Exception ignored) {
-        }
-        playerName = p.getName();
+        this(p.getUniqueId());
     }
 
     /**
      * Player configuration manager.
      *
-     * @param p Player to manage
+     * @param u Player UUID to manage
      */
-    PConfManager(String p) {
+    PConfManager(UUID u) {
         super();
         File dataFolder = RoyalCommands.dataFolder;
-        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + p.toLowerCase() + ".yml");
+        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + u + ".yml");
         try {
             load(pconfl);
         } catch (Exception ignored) {
         }
-        playerName = p;
+        playerUUID = u;
     }
 
     /**
@@ -55,30 +49,29 @@ public class PConfManager extends GeneralConfManager {
      */
     @SuppressWarnings("unused")
     private PConfManager() {
-        playerName = "";
+        playerUUID = null;
     }
 
     public static PConfManager getPConfManager(OfflinePlayer p) {
-        return getPConfManager(p.getName());
+        return getPConfManager(p.getUniqueId());
     }
 
-    public static PConfManager getPConfManager(String s) {
-        s = s.toLowerCase();
+    public static PConfManager getPConfManager(UUID u) {
         synchronized (pcms) {
-            if (pcms.containsKey(s)) return pcms.get(s);
-            final PConfManager pcm = new PConfManager(s);
-            pcms.put(s, pcm);
+            if (pcms.containsKey(u)) return pcms.get(u);
+            final PConfManager pcm = new PConfManager(u);
+            pcms.put(u, pcm);
             return pcm;
         }
     }
 
     public static boolean isManagerCreated(OfflinePlayer p) {
-        return isManagerCreated(p.getName());
+        return isManagerCreated(p.getUniqueId());
     }
 
-    public static boolean isManagerCreated(String s) {
+    public static boolean isManagerCreated(UUID u) {
         synchronized (pcms) {
-            return pcms.containsKey(s);
+            return pcms.containsKey(u);
         }
     }
 
@@ -135,8 +128,8 @@ public class PConfManager extends GeneralConfManager {
      *
      * @return Player name
      */
-    public String getManagerPlayerName() {
-        return playerName;
+    public UUID getManagerPlayerUUID() {
+        return playerUUID;
     }
 
     /**
@@ -167,7 +160,7 @@ public class PConfManager extends GeneralConfManager {
     public void discard(boolean save) {
         if (save) forceSave();
         synchronized (pcms) {
-            pcms.remove(playerName);
+            pcms.remove(playerUUID);
         }
     }
 }

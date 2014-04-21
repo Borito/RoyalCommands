@@ -17,6 +17,7 @@
  */
 package org.royaldev.royalcommands;
 
+import com.google.common.io.PatternFilenameFilter;
 import com.griefcraft.lwc.LWCPlugin;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -71,9 +72,11 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -252,6 +255,35 @@ public class RoyalCommands extends JavaPlugin {
         }
     }
 
+    private void update() {
+        final File userdataFolder = new File(dataFolder, "userdata");
+        if (!userdataFolder.exists() || !userdataFolder.isDirectory()) return;
+        for (String fileName : userdataFolder.list(new PatternFilenameFilter("(?i)^.+\\.yml$"))) {
+            String playerName = fileName.substring(0, fileName.length() - 4); // ".yml" = 4
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                UUID.fromString(playerName);
+                continue;
+            } catch (IllegalArgumentException ignored) {}
+            UUID u;
+            try {
+                u = RUtils.getUUID(playerName);
+            } catch (Exception ex) {
+                u = this.getServer().getOfflinePlayer(playerName).getUniqueId();
+            }
+            if (u == null) {
+                this.getLogger().warning("Error.");
+                continue;
+            }
+            try {
+                Files.move(new File(userdataFolder, fileName).toPath(), new File(userdataFolder, u + ".yml").toPath());
+                this.getLogger().info("Converted " + fileName + " to " + u + ".yml");
+            } catch (IOException ex) {
+                this.getLogger().warning("Could not convert " + fileName + ": " + ex.getMessage());
+            }
+        }
+    }
+
     private boolean versionCheck() {
         // If someone happens to be looking through this and knows a better way, let me know.
         if (!Config.checkVersion) return true;
@@ -391,6 +423,9 @@ public class RoyalCommands extends JavaPlugin {
         //-- Set up Vault --//
 
         vh.setupVault();
+
+        //-- Update old userdata --//
+        this.update();
 
         //-- Schedule tasks --//
 

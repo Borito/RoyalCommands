@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,8 +31,9 @@ public class CmdSetUserdata implements CommandExecutor {
             String name = args[0];
             String node = args[1];
             String value = RoyalCommands.getFinalArg(args, 2);
-            PConfManager pcm = PConfManager.getPConfManager(name);
-            if (!pcm.exists() || !plugin.getServer().getOfflinePlayer(name).hasPlayedBefore()) {
+            OfflinePlayer op = plugin.getServer().getOfflinePlayer(name);
+            PConfManager pcm = PConfManager.getPConfManager(op);
+            if (!pcm.exists() || !op.hasPlayedBefore()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
                 return true;
             }

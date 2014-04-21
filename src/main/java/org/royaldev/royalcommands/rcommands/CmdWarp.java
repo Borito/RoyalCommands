@@ -85,7 +85,7 @@ public class CmdWarp implements CommandExecutor {
                 cs.sendMessage(warps);
                 return true;
             }
-            if (args.length == 1) {
+            if (args.length == 1 && cs instanceof Player) {
                 Player p = (Player) cs;
                 Location warpLoc = pWarp(p, args[0].toLowerCase());
                 if (warpLoc == null) {

@@ -37,7 +37,7 @@ public class CmdDelHome implements CommandExecutor {
             }
             PConfManager pcm;
             if (name.contains(":") && plugin.ah.isAuthorized(cs, "rcmds.others.delhome")) {
-                if (!PConfManager.getPConfManager(name.split(":")[0]).exists()) {
+                if (!PConfManager.getPConfManager(plugin.getServer().getOfflinePlayer(name.split(":")[0])).exists()) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
@@ -51,11 +51,9 @@ public class CmdDelHome implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You must include the name of the player and home (player:home).");
                     return true;
                 }
-                pcm = PConfManager.getPConfManager(ss[0]);
+                pcm = PConfManager.getPConfManager(plugin.getServer().getOfflinePlayer(ss[0]));
                 name = ss[1];
-            } else {
-                pcm = PConfManager.getPConfManager(cs.getName());
-            }
+            } else pcm = PConfManager.getPConfManager(((OfflinePlayer) cs).getUniqueId());
             if (pcm.get("home." + name) == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That home does not exist!");
                 return true;

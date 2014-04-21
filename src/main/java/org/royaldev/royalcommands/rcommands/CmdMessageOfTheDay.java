@@ -43,7 +43,7 @@ public class CmdMessageOfTheDay implements CommandExecutor {
             s = s.replace("{playerlist}", ps);
             s = (cs instanceof Player) ? s.replace("{world}", RUtils.getMVWorldName(((Player) cs).getWorld())) : s.replace("{world}", "No World");
             if (maxonl != null) s = s.replace("{maxplayers}", maxonl);
-            s = (plugin.getServer().getServerName() != null || !plugin.getServer().getServerName().equals("")) ? s.replace("{servername}", plugin.getServer().getServerName()) : s.replace("{servername}", "this server");
+            s = (plugin.getServer().getServerName() != null || !plugin.getServer().getServerName().isEmpty()) ? s.replace("{servername}", plugin.getServer().getServerName()) : s.replace("{servername}", "this server");
             cs.sendMessage(s);
         }
     }

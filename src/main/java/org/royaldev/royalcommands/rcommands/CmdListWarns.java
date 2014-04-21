@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -35,15 +36,15 @@ public class CmdListWarns implements CommandExecutor {
                 RUtils.dispNoPerms(cs, "You're not allowed to view other players' warnings.");
                 return true;
             }
-            String target = (args.length > 0) ? args[0] : cs.getName();
-            PConfManager pcm = PConfManager.getPConfManager(target);
+            OfflinePlayer op = plugin.getServer().getOfflinePlayer((args.length > 0) ? args[0] : cs.getName());
+            PConfManager pcm = PConfManager.getPConfManager(op);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
             List<String> warns = pcm.getStringList("warns");
             if (warns == null || warns.isEmpty()) {
-                cs.sendMessage(MessageColor.NEUTRAL + target + MessageColor.POSITIVE + " has no warnings!");
+                cs.sendMessage(MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " has no warnings!");
                 return true;
             }
             for (int i = 0; i < warns.size(); i++)

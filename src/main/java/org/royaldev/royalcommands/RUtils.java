@@ -34,10 +34,13 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
+import org.royaldev.royalcommands.tools.NameFetcher;
+import org.royaldev.royalcommands.tools.UUIDFetcher;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -47,6 +50,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -1115,19 +1119,18 @@ public class RUtils {
     /**
      * Gets a player backpack
      *
-     * @param s Name of player to get backpack for
+     * @param u UUID of player to get backpack for
      * @return Backpack - never null
      */
-    public static Inventory getBackpack(String s, World w) {
-        Player p = RoyalCommands.instance.getServer().getPlayer(s); // null doesn't matter here
-        PConfManager pcm = PConfManager.getPConfManager(s);
+    public static Inventory getBackpack(UUID u, World w) {
+        PConfManager pcm = PConfManager.getPConfManager(u);
         String worldGroup = WorldManager.il.getWorldGroup(w);
         if (worldGroup == null) worldGroup = "w-" + w.getName();
         if (!pcm.exists()) pcm.createFile();
         int invSize = pcm.getInt("backpack." + worldGroup + ".size", -1);
         if (invSize < 9) invSize = 36;
         if (invSize % 9 != 0) invSize = 36;
-        final Inventory i = Bukkit.createInventory(p, invSize, "Backpack");
+        final Inventory i = Bukkit.createInventory(null, invSize, "Backpack");
         if (!pcm.isSet("backpack." + worldGroup + ".item")) return i;
         for (int slot = 0; slot < invSize; slot++) {
             ItemStack is = pcm.getItemStack("backpack." + worldGroup + ".item." + slot);
@@ -1144,7 +1147,7 @@ public class RUtils {
      * @return Backpack - never null
      */
     public static Inventory getBackpack(Player p) {
-        return getBackpack(p.getName(), p.getWorld());
+        return getBackpack(p.getUniqueId(), p.getWorld());
     }
 
     /**
@@ -1154,17 +1157,17 @@ public class RUtils {
      * @param i Inventory to save as backpack
      */
     public static void saveBackpack(Player p, Inventory i) {
-        saveBackpack(p.getName(), p.getWorld(), i);
+        saveBackpack(p.getUniqueId(), p.getWorld(), i);
     }
 
     /**
      * Saves player backpacks in a forwards-compatible method, using native Bukkit methods.
      *
-     * @param s Name of player to save backpack for
+     * @param u UUID of player to save backpack for
      * @param i Inventory to save as backpack
      */
-    public static void saveBackpack(String s, World w, Inventory i) {
-        PConfManager pcm = PConfManager.getPConfManager(s);
+    public static void saveBackpack(UUID u, World w, Inventory i) {
+        PConfManager pcm = PConfManager.getPConfManager(u);
         if (w == null) return;
         String worldGroup = WorldManager.il.getWorldGroup(w);
         if (worldGroup == null) worldGroup = "w-" + w.getName();
@@ -1402,11 +1405,11 @@ public class RUtils {
     }
 
     public static int getCurrentHomes(Player p) {
-        return getCurrentHomes(p.getName());
+        return getCurrentHomes(p.getUniqueId());
     }
 
-    public static int getCurrentHomes(String name) {
-        ConfigurationSection pconf = PConfManager.getPConfManager(name).getConfigurationSection("home");
+    public static int getCurrentHomes(UUID u) {
+        ConfigurationSection pconf = PConfManager.getPConfManager(u).getConfigurationSection("home");
         if (pconf == null) return 0;
         return pconf.getValues(false).size();
     }
@@ -1417,5 +1420,25 @@ public class RUtils {
 
     public static boolean nearEqual(double a, double b) {
         return nearEqual(a, b, .05F);
+    }
+
+    public static UUID getUUID(String name) throws Exception {
+        final Map<String, UUID> m = new UUIDFetcher(Arrays.asList(name)).call();
+        for (Map.Entry<String, UUID> e : m.entrySet()) if (e.getKey().equalsIgnoreCase(name)) return e.getValue();
+        throw new Exception("Couldn't find name in results.");
+    }
+
+    public static String getName(UUID u) throws Exception {
+        return new NameFetcher(Arrays.asList(u)).call().get(u);
+    }
+
+    public static String forceGetName(UUID u) {
+        String name;
+        try {
+            name = RUtils.getName(u);
+        } catch (Exception ex) {
+            name = u.toString();
+        }
+        return name;
     }
 }

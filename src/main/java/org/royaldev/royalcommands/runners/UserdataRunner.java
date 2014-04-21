@@ -22,7 +22,7 @@ public class UserdataRunner implements Runnable {
         for (Object o : managers) {
             if (!(o instanceof PConfManager)) continue;
             final PConfManager pcm = (PConfManager) o;
-            if (plugin.getServer().getPlayer(pcm.getManagerPlayerName()) != null) continue;
+            if (plugin.getServer().getPlayer(pcm.getManagerPlayerUUID()) != null) continue;
             pcm.discard(true);
         }
     }

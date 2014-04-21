@@ -28,7 +28,7 @@ public class CmdCoords implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            if (args.length < 1) {
+            if (args.length < 1 && cs instanceof Player) {
                 Player p = (Player) cs;
                 Location l = p.getLocation();
                 cs.sendMessage(MessageColor.POSITIVE + "x: " + MessageColor.NEUTRAL + l.getX());

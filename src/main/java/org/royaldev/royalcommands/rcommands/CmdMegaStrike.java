@@ -31,7 +31,7 @@ public class CmdMegaStrike implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            if (args.length < 1) {
+            if (args.length < 1 && cs instanceof Player) {
                 Player p = (Player) cs;
                 BlockIterator b = new BlockIterator(p, 0);
                 if (!b.hasNext()) {

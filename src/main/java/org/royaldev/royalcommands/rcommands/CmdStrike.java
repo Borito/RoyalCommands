@@ -29,7 +29,7 @@ public class CmdStrike implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            if (args.length < 1) {
+            if (args.length < 1 && cs instanceof Player) {
                 Player p = (Player) cs;
                 Block bb = RUtils.getTarget(p);
                 if (bb == null) {

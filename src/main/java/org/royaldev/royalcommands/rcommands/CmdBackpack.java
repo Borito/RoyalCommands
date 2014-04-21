@@ -52,7 +52,7 @@ public class CmdBackpack implements CommandExecutor {
                     RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You cannot access that player's backpack!");
                     return true;
                 }
-                Inventory i = RUtils.getBackpack(t.getName(), w);
+                Inventory i = RUtils.getBackpack(t.getUniqueId(), w);
                 if (i == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;

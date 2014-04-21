@@ -89,7 +89,7 @@ public class CmdMail implements CommandExecutor {
                 }
                 final String senderName = cs.getName();
                 final String newmail = senderName + ": " + RoyalCommands.getFinalArg(args, 2);
-                final PConfManager pcm = PConfManager.getPConfManager(op.getName());
+                final PConfManager pcm = PConfManager.getPConfManager(op);
                 List<String> mail = pcm.getStringList("mail");
                 mail.add(newmail);
                 pcm.set("mail", mail);
