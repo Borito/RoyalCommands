@@ -64,6 +64,7 @@ import org.royaldev.royalcommands.runners.MailRunner;
 import org.royaldev.royalcommands.runners.UserdataRunner;
 import org.royaldev.royalcommands.runners.WarnWatcher;
 import org.royaldev.royalcommands.spawninfo.ItemListener;
+import org.royaldev.royalcommands.tools.UUIDFetcher;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -74,6 +75,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -258,6 +260,8 @@ public class RoyalCommands extends JavaPlugin {
     private void update() {
         final File userdataFolder = new File(dataFolder, "userdata");
         if (!userdataFolder.exists() || !userdataFolder.isDirectory()) return;
+        final List<String> playersToConvert = new ArrayList<String>();
+        //final List<String> playersConverted = new ArrayList<String>();
         for (String fileName : userdataFolder.list(new PatternFilenameFilter("(?i)^.+\\.yml$"))) {
             String playerName = fileName.substring(0, fileName.length() - 4); // ".yml" = 4
             try {
@@ -265,21 +269,29 @@ public class RoyalCommands extends JavaPlugin {
                 UUID.fromString(playerName);
                 continue;
             } catch (IllegalArgumentException ignored) {}
-            UUID u;
+            playersToConvert.add(playerName);
+        }
+        int partitionSize = 100;
+        final List<List<String>> partitions = new LinkedList<List<String>>();
+        for (int i = 0; i < playersToConvert.size(); i += partitionSize)
+            partitions.add(playersToConvert.subList(i, i + Math.min(partitionSize, playersToConvert.size() - i)));
+        for (List<String> lookup : partitions) {
+            final Map<String, UUID> uuids;
             try {
-                u = RUtils.getUUID(playerName);
+                uuids = new UUIDFetcher(lookup).call();
             } catch (Exception ex) {
-                u = this.getServer().getOfflinePlayer(playerName).getUniqueId();
-            }
-            if (u == null) {
-                this.getLogger().warning("Error.");
+                ex.printStackTrace();
                 continue;
             }
-            try {
-                Files.move(new File(userdataFolder, fileName).toPath(), new File(userdataFolder, u + ".yml").toPath());
-                this.getLogger().info("Converted " + fileName + " to " + u + ".yml");
-            } catch (IOException ex) {
-                this.getLogger().warning("Could not convert " + fileName + ": " + ex.getMessage());
+            for (Map.Entry<String, UUID> e : uuids.entrySet()) {
+                File userFile = new File(userdataFolder, e.getKey().toLowerCase() + ".yml");
+                if (!userFile.exists()) continue;
+                try {
+                    Files.move(userFile.toPath(), new File(userdataFolder, e.getValue() + ".yml").toPath());
+                    this.getLogger().info("Converted " + e.getKey().toLowerCase() + ".yml to " + e.getValue() + ".yml");
+                } catch (IOException ex) {
+                    this.getLogger().warning("Could not convert " + e.getKey().toLowerCase() + ".yml: " + ex.getMessage());
+                }
             }
         }
     }
