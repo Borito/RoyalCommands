@@ -490,6 +490,8 @@ userdata:
     # occurring?
     # This will not delete the userdata, but it will remove the handler, freeing memory.
     purge_unused_userdata_handlers: true
+    # Update old userdata saved with names to UUIDs?
+    update_old: true
 
 ###
 # Mail #

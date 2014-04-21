@@ -279,7 +279,9 @@ public class RoyalCommands extends JavaPlugin {
             playersToConvert.add(playerName);
         }
         final List<List<String>> partitions = this.partitionList(playersToConvert, 100);
+        this.getLogger().info("Converting " + playersToConvert.size() + " players in " + partitions.size() + " requests of 100.");
         for (List<String> lookup : partitions) {
+            this.getLogger().info("Converting next " + lookup.size() + " players.");
             final Map<String, UUID> uuids;
             try {
                 uuids = new UUIDFetcher(lookup).call();
@@ -300,6 +302,7 @@ public class RoyalCommands extends JavaPlugin {
             }
         }
         playersToConvert.removeAll(playersConverted); // left over should be offline-mode players
+        if (playersToConvert.size() > 0) this.getLogger().info("Converting offline-mode players.");
         for (String name : playersToConvert) {
             name = name.toLowerCase();
             final UUID uuid = this.getServer().getOfflinePlayer(name).getUniqueId();
@@ -453,7 +456,7 @@ public class RoyalCommands extends JavaPlugin {
         vh.setupVault();
 
         //-- Update old userdata --//
-        this.update();
+        if (Config.updateOldUserdata) this.update();
 
         //-- Schedule tasks --//
 
