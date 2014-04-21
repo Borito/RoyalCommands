@@ -30,8 +30,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -75,6 +73,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -328,11 +327,22 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private Map<String, String> getNewestVersions() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(new URL("https://cdn.royaldev.org/rcmdsversion.php").openStream()));
+        BufferedReader br = new BufferedReader(new InputStreamReader(new URL("http://dev.bukkit.org/bukkit-plugins/royalcommands/pages/update-information/").openStream()));
         StringBuilder data = new StringBuilder();
         String input;
         while ((input = br.readLine()) != null) data.append(input);
-        return new Gson().fromJson(data.toString(), new TypeToken<Map<String, String>>() {}.getType());
+        String site = data.toString();
+        int begin = site.indexOf("rcmdsupdateinfoasfollows-") + 25;
+        int end = site.indexOf("-rcmdsupdateinfoend");
+        String version = site.substring(begin, end);
+        String[] vs = version.split(";");
+        final Map<String, String> toReturn = new HashMap<String, String>();
+        for (String s : vs) {
+            String[] parts = s.split(":");
+            if (parts.length < 2) continue; // that's a bad sign
+            toReturn.put(parts[0], parts[1]);
+        }
+        return toReturn;
     }
 
     //--- Load initial configuration ---//
@@ -467,14 +477,14 @@ public class RoyalCommands extends JavaPlugin {
                 try {
                     Matcher m = versionPattern.matcher(version);
                     if (!m.matches()) return;
-                    StringBuilder useVersion = new StringBuilder();
+                    final StringBuilder useVersion = new StringBuilder();
                     if (m.group(1) != null) useVersion.append(m.group(1)); // add base version #
-                    if (m.group(2) != null) useVersion.append(m.group(2)); // add SNAPSHOT status
+                    if (m.group(3) != null) useVersion.append(m.group(3)); // add SNAPSHOT status
                     /*
                     This does not need to compare build numbers. Everyone would be out of date all the time if it did.
                     This method will compare root versions.
                      */
-                    Map<String, String> jo = getNewestVersions();
+                    Map<String, String> jo = RoyalCommands.this.getNewestVersions();
                     String stable = jo.get("stable");
                     String dev = jo.get("dev");
                     String currentVersion = useVersion.toString().toLowerCase();
