@@ -481,6 +481,8 @@ worldmanager:
 ###
 
 userdata:
+  # Update old userdata saved with names to UUIDs?
+  update_old: true
   saving:
     # The interval to save userdata at. This will register a task to save all created (!) userdata every so often based
     # on what is entered here. If this is changed, the server requires a restart to update this value.
@@ -490,8 +492,6 @@ userdata:
     # occurring?
     # This will not delete the userdata, but it will remove the handler, freeing memory.
     purge_unused_userdata_handlers: true
-    # Update old userdata saved with names to UUIDs?
-    update_old: true
 
 ###
 # Mail #
