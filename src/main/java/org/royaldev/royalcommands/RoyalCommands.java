@@ -279,7 +279,7 @@ public class RoyalCommands extends JavaPlugin {
             playersToConvert.add(playerName);
         }
         final List<List<String>> partitions = this.partitionList(playersToConvert, 100);
-        this.getLogger().info("Converting " + playersToConvert.size() + " players in " + partitions.size() + " requests of 100.");
+        this.getLogger().info("Converting " + playersToConvert.size() + " players in " + partitions.size() + " request" + (partitions.size() == 1 ? "" : "s") + ".");
         for (List<String> lookup : partitions) {
             this.getLogger().info("Converting next " + lookup.size() + " players.");
             final Map<String, UUID> uuids;
@@ -297,20 +297,19 @@ public class RoyalCommands extends JavaPlugin {
                     this.getLogger().info("Converted " + e.getKey().toLowerCase() + ".yml to " + e.getValue() + ".yml");
                     playersConverted.add(e.getKey().toLowerCase());
                 } catch (IOException ex) {
-                    this.getLogger().warning("Could not convert " + e.getKey().toLowerCase() + ".yml: " + ex.getMessage());
+                    this.getLogger().warning("Could not convert " + e.getKey() + ".yml: " + ex.getClass().getSimpleName() + " (" + ex.getMessage() + ")");
                 }
             }
         }
         playersToConvert.removeAll(playersConverted); // left over should be offline-mode players
         if (playersToConvert.size() > 0) this.getLogger().info("Converting offline-mode players.");
         for (String name : playersToConvert) {
-            name = name.toLowerCase();
             final UUID uuid = this.getServer().getOfflinePlayer(name).getUniqueId();
             try {
                 Files.move(new File(userdataFolder, name + ".yml").toPath(), new File(userdataFolder, uuid + ".yml").toPath());
                 this.getLogger().info("Converted offline-mode player " + name + ".yml to " + uuid + ".yml");
             } catch (IOException ex) {
-                this.getLogger().warning("Could not convert " + name + ".yml: " + ex.getMessage());
+                this.getLogger().warning("Could not convert " + name + ".yml: " + ex.getClass().getSimpleName() + " (" + ex.getMessage() + ")");
             }
         }
     }
