@@ -257,11 +257,18 @@ public class RoyalCommands extends JavaPlugin {
         }
     }
 
+    private <T> List<List<T>> partitionList(List<T> original, int maxSize) {
+        final List<List<T>> partitions = new LinkedList<List<T>>();
+        for (int i = 0; i < original.size(); i += maxSize)
+            partitions.add(original.subList(i, i + Math.min(maxSize, original.size() - i)));
+        return partitions;
+    }
+
     private void update() {
         final File userdataFolder = new File(dataFolder, "userdata");
         if (!userdataFolder.exists() || !userdataFolder.isDirectory()) return;
         final List<String> playersToConvert = new ArrayList<String>();
-        //final List<String> playersConverted = new ArrayList<String>();
+        final List<String> playersConverted = new ArrayList<String>();
         for (String fileName : userdataFolder.list(new PatternFilenameFilter("(?i)^.+\\.yml$"))) {
             String playerName = fileName.substring(0, fileName.length() - 4); // ".yml" = 4
             try {
@@ -271,10 +278,7 @@ public class RoyalCommands extends JavaPlugin {
             } catch (IllegalArgumentException ignored) {}
             playersToConvert.add(playerName);
         }
-        int partitionSize = 100;
-        final List<List<String>> partitions = new LinkedList<List<String>>();
-        for (int i = 0; i < playersToConvert.size(); i += partitionSize)
-            partitions.add(playersToConvert.subList(i, i + Math.min(partitionSize, playersToConvert.size() - i)));
+        final List<List<String>> partitions = this.partitionList(playersToConvert, 100);
         for (List<String> lookup : partitions) {
             final Map<String, UUID> uuids;
             try {
@@ -289,9 +293,21 @@ public class RoyalCommands extends JavaPlugin {
                 try {
                     Files.move(userFile.toPath(), new File(userdataFolder, e.getValue() + ".yml").toPath());
                     this.getLogger().info("Converted " + e.getKey().toLowerCase() + ".yml to " + e.getValue() + ".yml");
+                    playersConverted.add(e.getKey().toLowerCase());
                 } catch (IOException ex) {
                     this.getLogger().warning("Could not convert " + e.getKey().toLowerCase() + ".yml: " + ex.getMessage());
                 }
+            }
+        }
+        playersToConvert.removeAll(playersConverted); // left over should be offline-mode players
+        for (String name : playersToConvert) {
+            name = name.toLowerCase();
+            final UUID uuid = this.getServer().getOfflinePlayer(name).getUniqueId();
+            try {
+                Files.move(new File(userdataFolder, name + ".yml").toPath(), new File(userdataFolder, uuid + ".yml").toPath());
+                this.getLogger().info("Converted offline-mode player " + name + ".yml to " + uuid + ".yml");
+            } catch (IOException ex) {
+                this.getLogger().warning("Could not convert " + name + ".yml: " + ex.getMessage());
             }
         }
     }
