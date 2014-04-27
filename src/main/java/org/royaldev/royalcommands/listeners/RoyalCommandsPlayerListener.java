@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -14,8 +13,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -28,8 +25,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -258,27 +253,6 @@ public class RoyalCommandsPlayerListener implements Listener {
             log.info("[RoyalCommands] " + p.getName() + " tried to use that command, but is jailed.");
             event.setCancelled(true);
         }
-    }
-
-    @EventHandler
-    public void onDeath(PlayerDeathEvent e) {
-        if (!Config.backpackReset) return;
-        Player p = e.getEntity();
-        Inventory backpack = RUtils.getBackpack(p);
-        backpack.clear();
-        RUtils.saveBackpack(p, backpack);
-    }
-
-    @EventHandler
-    public void invClose(InventoryCloseEvent e) {
-        if (e.getInventory() == null || e.getInventory().getName() == null) return; // modpacks
-        if (!e.getInventory().getName().equals("Backpack")) return;
-        InventoryHolder ih = e.getInventory().getHolder();
-        if (!(ih instanceof CommandSender)) return;
-        Player p = (Player) ih;
-        Inventory backpack = RUtils.getBackpack(p);
-        backpack.setContents(e.getInventory().getContents());
-        RUtils.saveBackpack(p, backpack);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

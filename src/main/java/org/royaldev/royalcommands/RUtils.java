@@ -32,6 +32,7 @@ import org.royaldev.royalchat.RoyalChat;
 import org.royaldev.royalcommands.configuration.GeneralConfManager;
 import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
+import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
 import org.royaldev.royalcommands.tools.NameFetcher;
@@ -1130,7 +1131,7 @@ public class RUtils {
         int invSize = pcm.getInt("backpack." + worldGroup + ".size", -1);
         if (invSize < 9) invSize = 36;
         if (invSize % 9 != 0) invSize = 36;
-        final Inventory i = Bukkit.createInventory(null, invSize, "Backpack");
+        final Inventory i = Bukkit.createInventory(new BackpackListener.BackpackHolder(u, w), invSize, "Backpack");
         if (!pcm.isSet("backpack." + worldGroup + ".item")) return i;
         for (int slot = 0; slot < invSize; slot++) {
             ItemStack is = pcm.getItemStack("backpack." + worldGroup + ".item." + slot);
@@ -1167,7 +1168,7 @@ public class RUtils {
      * @param i Inventory to save as backpack
      */
     public static void saveBackpack(UUID u, World w, Inventory i) {
-        PConfManager pcm = PConfManager.getPConfManager(u);
+        final PConfManager pcm = PConfManager.getPConfManager(u);
         if (w == null) return;
         String worldGroup = WorldManager.il.getWorldGroup(w);
         if (worldGroup == null) worldGroup = "w-" + w.getName();

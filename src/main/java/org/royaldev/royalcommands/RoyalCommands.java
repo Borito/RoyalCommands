@@ -45,6 +45,7 @@ import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
 import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
@@ -543,6 +544,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(monitorListener, this);
         pm.registerEvents(serverListener, this);
         pm.registerEvents(new ItemListener(this), this);
+        pm.registerEvents(new BackpackListener(), this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(), this);
 
         //-- ProtocolLib things --//
