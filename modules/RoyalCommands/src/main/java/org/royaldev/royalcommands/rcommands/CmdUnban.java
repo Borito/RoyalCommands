@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.BanList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,7 +32,7 @@ public class CmdUnban implements CommandExecutor {
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(t);
-            if (!plugin.getServer().getBanList(BanList.Type.NAME).isBanned(t.getName())) {
+            if (!t.isBanned()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player isn't banned!");
                 return true;
             }

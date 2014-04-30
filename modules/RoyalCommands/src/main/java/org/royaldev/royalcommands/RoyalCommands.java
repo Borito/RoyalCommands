@@ -83,6 +83,9 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// TODO: Add banning for no-UUID players? Wait for Bukkit to fix? Investigate.
+// TODO: Rewrite /gm
+
 public class RoyalCommands extends JavaPlugin {
 
     //--- Globals ---//
@@ -557,7 +560,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Register commands --//
 
-        for (String command : getCommands().getValues(false).keySet()) {
+        for (String command : this.getCommands().getValues(false).keySet()) {
             final ConfigurationSection ci = getCommandInfo(command);
             if (ci == null) continue;
             final String className = ci.getString("class");

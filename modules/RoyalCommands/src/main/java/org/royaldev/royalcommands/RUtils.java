@@ -1420,7 +1420,7 @@ public class RUtils {
     }
 
     public static boolean nearEqual(double a, double b) {
-        return nearEqual(a, b, .05F);
+        return nearEqual(a, b, .05D);
     }
 
     public static UUID getUUID(String name) throws Exception {

@@ -48,7 +48,7 @@ public class CmdPublicAssign implements CommandExecutor {
                     return true;
                 }
                 RUtils.removeAssignment(hand, ConfManager.getConfManager("publicassignments.yml"));
-                p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + hand.getType().toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
+                p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(hand.getType()) + MessageColor.POSITIVE + ".");
                 return true;
             }
             String command = args[0];

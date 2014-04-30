@@ -1120,6 +1120,13 @@ reflectcommands:
     version_added: 3.3.0
     class: CmdLoadPlayer
 
+  teleportrequestcancel:
+    description: Cancels a teleport request.
+    usage: /<command> [player]
+    aliases: [trc, tprcancel, tpacancel, tpac, tprc]
+    version_added: 3.3.0
+    class: CmdTeleportRequestCancel
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>

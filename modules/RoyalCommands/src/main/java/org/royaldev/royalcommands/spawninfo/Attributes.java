@@ -108,7 +108,8 @@ public class Attributes {
                             public Attribute apply(@Nullable Object element) {
                                 return new Attribute((NbtFactory.NbtCompound) element);
                             }
-                        });
+                        }
+                );
             }
         };
     }
@@ -139,12 +140,12 @@ public class Attributes {
     }
 
     public static class AttributeType {
+        private static final ConcurrentMap<String, AttributeType> LOOKUP = Maps.newConcurrentMap();
         public static final AttributeType GENERIC_MAX_HEALTH = new AttributeType("generic.maxHealth").register();
         public static final AttributeType GENERIC_FOLLOW_RANGE = new AttributeType("generic.followRange").register();
         public static final AttributeType GENERIC_ATTACK_DAMAGE = new AttributeType("generic.attackDamage").register();
         public static final AttributeType GENERIC_MOVEMENT_SPEED = new AttributeType("generic.movementSpeed").register();
         public static final AttributeType GENERIC_KNOCKBACK_RESISTANCE = new AttributeType("generic.knockbackResistance").register();
-        private static final ConcurrentMap<String, AttributeType> LOOKUP = Maps.newConcurrentMap();
         private final String minecraftId;
 
         /**
@@ -193,7 +194,11 @@ public class Attributes {
          */
         // Constructors should have no side-effects!
         public AttributeType register() {
+            System.out.println("LOOKUP: " + LOOKUP);
+            System.out.println("minecraftId: " + minecraftId);
+            System.out.println("this: " + this);
             AttributeType old = LOOKUP.putIfAbsent(minecraftId, this);
+            System.out.println("old: " + old);
             return old != null ? old : this;
         }
     }

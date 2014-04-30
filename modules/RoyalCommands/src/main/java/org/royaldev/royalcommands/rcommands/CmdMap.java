@@ -130,7 +130,7 @@ public class CmdMap implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Information about map " + MessageColor.NEUTRAL + mv.getId() + MessageColor.POSITIVE + ":");
                 cs.sendMessage("  " + MessageColor.POSITIVE + "Center coordinates: " + MessageColor.NEUTRAL + mv.getCenterX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + mv.getCenterZ());
                 cs.sendMessage("  " + MessageColor.POSITIVE + "World: " + MessageColor.NEUTRAL + mv.getWorld().getName());
-                cs.sendMessage("  " + MessageColor.POSITIVE + "Scale: " + MessageColor.NEUTRAL + mv.getScale().name().toLowerCase().replace("_", " "));
+                cs.sendMessage("  " + MessageColor.POSITIVE + "Scale: " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(mv.getScale()));
                 //cs.sendMessage("  " + MessageColor.POSITIVE + "Char: " + MessageColor.NEUTRAL + "stuff");
                 return true;
                 //} else if (subcommandMatches(subcommand, "render", "fullrender")) {

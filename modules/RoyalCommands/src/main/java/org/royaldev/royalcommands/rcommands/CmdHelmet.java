@@ -85,7 +85,7 @@ public class CmdHelmet implements CommandExecutor {
                 p.getInventory().remove(stack);
             }
             p.getInventory().setHelmet(stack);
-            p.sendMessage(MessageColor.POSITIVE + "Set your helmet to " + MessageColor.NEUTRAL + stack.getType().name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
+            p.sendMessage(MessageColor.POSITIVE + "Set your helmet to " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(stack.getType()) + MessageColor.POSITIVE + ".");
             return true;
         }
         return false;

@@ -19,6 +19,14 @@ public class TeleportRequest {
     private final TeleportType teleportType;
     private final long date;
 
+    /**
+     * Constructs a teleport request. This does not register it in the list of pending requests.
+     *
+     * @param requester    Requester's name
+     * @param target       Target's name
+     * @param teleportType Type of teleport
+     * @param date         Time teleport was requested
+     */
     public TeleportRequest(String requester, String target, TeleportType teleportType, long date) {
         this.requester = requester;
         this.target = target;
@@ -26,14 +34,34 @@ public class TeleportRequest {
         this.date = date;
     }
 
+    /**
+     * Gets all teleport requests currently pending.
+     *
+     * @return Map&lt;Target Name, List&lt;TeleportRequest&gt;&gt;
+     */
     public static Map<String, List<TeleportRequest>> getRequests() {
         return TeleportRequest.teleportRequests;
     }
 
+    /**
+     * Sends a teleport request to the target from the requester.
+     *
+     * @param requester    Requester of the teleport
+     * @param target       Target of the teleport
+     * @param teleportType Type of teleport
+     */
     public static void send(Player requester, Player target, TeleportType teleportType) {
         TeleportRequest.send(requester, target, teleportType, true);
     }
 
+    /**
+     * Sends a teleport request to the target from the requester.
+     *
+     * @param requester    Requester of the teleport
+     * @param target       Target of the teleport
+     * @param teleportType Type of teleport
+     * @param confirmation If a confirmation of the request should be sent to the requester
+     */
     public static void send(Player requester, Player target, TeleportType teleportType, boolean confirmation) {
         if (requester.getName().equalsIgnoreCase(target.getName())) {
             requester.sendMessage(MessageColor.NEGATIVE + "You cannot teleport to yourself.");
