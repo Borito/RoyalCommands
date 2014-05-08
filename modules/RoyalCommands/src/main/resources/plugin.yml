@@ -1123,7 +1123,7 @@ reflectcommands:
   teleportrequestcancel:
     description: Cancels a teleport request.
     usage: /<command> [player]
-    aliases: [trc, tprcancel, tpacancel, tpac, tprc]
+    aliases: [trc, tprcancel, tpacancel, tprc]
     version_added: 3.3.0
     class: CmdTeleportRequestCancel
 
@@ -1632,6 +1632,9 @@ permissions:
     default: op
   rcmds.loadplayer:
     description: Allows you to load player data.
+    default: op
+  rcmds.teleportrequestcancel:
+    description: Allows you to cancel a teleport reuqest.
     default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
@@ -2220,6 +2223,7 @@ permissions:
       rcmds.attributes: true
       rcmds.saveplayer: true
       rcmds.loadplayer: true
+      rcmds.teleportrequestcancel: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2525,6 +2529,7 @@ permissions:
       rcmds.attributes: true
       rcmds.saveplayer: true
       rcmds.loadplayer: true
+      rcmds.teleportrequestcancel: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true
