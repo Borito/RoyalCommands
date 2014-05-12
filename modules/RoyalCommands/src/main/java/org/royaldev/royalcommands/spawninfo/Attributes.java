@@ -102,8 +102,7 @@ public class Attributes {
         return new Iterable<Attribute>() {
             @Override
             public Iterator<Attribute> iterator() {
-                return Iterators.transform(attributes.iterator(),
-                        new Function<Object, Attribute>() {
+                return Iterators.transform(attributes.iterator(), new Function<Object, Attribute>() {
                             @Override
                             public Attribute apply(@Nullable Object element) {
                                 return new Attribute((NbtFactory.NbtCompound) element);
@@ -194,11 +193,7 @@ public class Attributes {
          */
         // Constructors should have no side-effects!
         public AttributeType register() {
-            System.out.println("LOOKUP: " + LOOKUP);
-            System.out.println("minecraftId: " + minecraftId);
-            System.out.println("this: " + this);
             AttributeType old = LOOKUP.putIfAbsent(minecraftId, this);
-            System.out.println("old: " + old);
             return old != null ? old : this;
         }
     }
