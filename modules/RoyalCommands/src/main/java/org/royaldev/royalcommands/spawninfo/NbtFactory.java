@@ -85,7 +85,7 @@ public class NbtFactory {
 
                 // Loading/saving
                 Class<?> streamTools = loader.loadClass(BASE_CLASS.getPackage().getName() + ".NBTCompressedStreamTools");
-                LOAD_COMPOUND = getMethod(Modifier.STATIC, 0, streamTools, null, DataInput.class);
+                LOAD_COMPOUND = getMethod(Modifier.STATIC, 0, streamTools, null, DataInputStream.class);
                 SAVE_COMPOUND = getMethod(Modifier.STATIC, 0, streamTools, null, BASE_CLASS, DataOutput.class);
 
             } catch (ClassNotFoundException e) {
@@ -803,7 +803,7 @@ public class NbtFactory {
                 @Override
                 public Entry<String, Object> next() {
                     Entry<String, Object> entry = proxy.next();
-                    return new SimpleEntry<String, Object>(entry.getKey(), wrapOutgoing(entry.getValue()));
+                    return new SimpleEntry<>(entry.getKey(), wrapOutgoing(entry.getValue()));
                 }
 
                 @Override
