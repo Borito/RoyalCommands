@@ -31,9 +31,8 @@ public class CmdBanInfo implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer op = plugin.getServer().getPlayer(args[0]);
-            if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = PConfManager.getPConfManager(op);
+            final OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
+            final PConfManager pcm = PConfManager.getPConfManager(op);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
                 return true;

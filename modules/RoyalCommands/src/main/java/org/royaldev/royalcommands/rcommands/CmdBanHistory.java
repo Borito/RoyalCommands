@@ -41,7 +41,7 @@ public class CmdBanHistory implements CommandExecutor {
                 return true;
             }
             List<String> prevBans = pcm.getStringList("prevbans");
-            if (prevBans == null) prevBans = new ArrayList<String>();
+            if (prevBans == null) prevBans = new ArrayList<>();
             if (args.length < 2) {
                 if (prevBans.size() < 1) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player has no previous bans.");

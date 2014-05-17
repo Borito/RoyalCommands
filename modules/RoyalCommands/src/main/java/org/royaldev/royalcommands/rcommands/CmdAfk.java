@@ -17,14 +17,13 @@ import java.util.Map;
 @ReflectCommand
 public class CmdAfk implements CommandExecutor {
 
+    public final static Map<Player, Long> afkdb = new HashMap<>();
+    public final static Map<Player, Long> movetimes = new HashMap<>();
     private final RoyalCommands plugin;
 
     public CmdAfk(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
-
-    public final static Map<Player, Long> afkdb = new HashMap<Player, Long>();
-    public final static Map<Player, Long> movetimes = new HashMap<Player, Long>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {

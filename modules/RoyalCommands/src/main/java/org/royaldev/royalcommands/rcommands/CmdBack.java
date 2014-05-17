@@ -19,6 +19,7 @@ import java.util.List;
 @ReflectCommand
 public class CmdBack implements CommandExecutor {
 
+    private static final HashMap<String, List<Location>> backdb = new HashMap<>();
     private final RoyalCommands plugin;
 
     public CmdBack(RoyalCommands plugin) {
@@ -36,15 +37,13 @@ public class CmdBack implements CommandExecutor {
         int maxStack = Config.maxBackStack;
         synchronized (backdb) {
             List<Location> backs = backdb.get(p.getName());
-            if (backs == null) backs = new ArrayList<Location>();
+            if (backs == null) backs = new ArrayList<>();
             // remove last location if needed
             if (backs.size() > 0 && backs.size() >= maxStack) backs.remove(backs.size() - 1);
             backs.add(0, toAdd);
             backdb.put(p.getName(), backs);
         }
     }
-
-    private static final HashMap<String, List<Location>> backdb = new HashMap<String, List<Location>>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {

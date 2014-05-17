@@ -25,8 +25,8 @@ import java.util.logging.Logger;
 public class WorldManager {
 
     public static InventoryListener il;
-    private final List<String> loadedWorlds = new ArrayList<String>();
-    private final List<String> configuredWorlds = new ArrayList<String>();
+    private final List<String> loadedWorlds = new ArrayList<>();
+    private final List<String> configuredWorlds = new ArrayList<>();
     private final ConfManager config = ConfManager.getConfManager("worlds.yml");
     private final Logger log = RoyalCommands.instance.getLogger();
 
@@ -169,8 +169,7 @@ public class WorldManager {
     public boolean unloadWorld(World w) {
         boolean worked = Bukkit.unloadWorld(w, true);
         synchronized (loadedWorlds) {
-            if (loadedWorlds.contains(w.getName()) && worked)
-                loadedWorlds.remove(w.getName());
+            if (loadedWorlds.contains(w.getName()) && worked) loadedWorlds.remove(w.getName());
         }
         return worked;
     }
@@ -212,8 +211,7 @@ public class WorldManager {
             config.set(path + "worldtype", w.getWorldType().name());
             config.set(path + "environment", w.getEnvironment().name());
             config.set(path + "gamemode", Bukkit.getServer().getDefaultGameMode().name());
-            if (w.getGenerator() == null)
-                config.set(path + "generator", "DefaultGen");
+            if (w.getGenerator() == null) config.set(path + "generator", "DefaultGen");
             config.set(path + "seed", w.getSeed());
             config.set(path + "freezetime", false);
             config.set(path + "loadatstartup", true);
@@ -261,16 +259,14 @@ public class WorldManager {
         public void worldUnload(WorldUnloadEvent e) {
             if (e.isCancelled()) return;
             synchronized (loadedWorlds) {
-                if (loadedWorlds.contains(e.getWorld().getName()))
-                    loadedWorlds.remove(e.getWorld().getName());
+                if (loadedWorlds.contains(e.getWorld().getName())) loadedWorlds.remove(e.getWorld().getName());
             }
         }
 
         @EventHandler
         public void worldLoad(WorldLoadEvent e) {
             synchronized (loadedWorlds) {
-                if (!loadedWorlds.contains(e.getWorld().getName()))
-                    loadedWorlds.add(e.getWorld().getName());
+                if (!loadedWorlds.contains(e.getWorld().getName())) loadedWorlds.add(e.getWorld().getName());
                 WorldManager.this.addNewToConfig();
             }
         }

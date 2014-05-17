@@ -54,7 +54,7 @@ public class CmdAssign implements CommandExecutor {
                 return true;
             }
             List<String> cmds = RUtils.getAssignment(hand, pcm);
-            if (cmds == null) cmds = new ArrayList<String>();
+            if (cmds == null) cmds = new ArrayList<>();
             if (command.matches("\\-\\d+")) {
                 int toRemove;
                 try {

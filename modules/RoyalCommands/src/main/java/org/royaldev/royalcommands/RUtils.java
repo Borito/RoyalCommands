@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
 public class RUtils {
 
     // Borrowed list of materials from Essentials
-    public static final Set<Material> AIR_MATERIALS = new HashSet<Material>();
+    public static final Set<Material> AIR_MATERIALS = new HashSet<>();
 
     static {
         AIR_MATERIALS.add(Material.AIR);
@@ -101,8 +101,8 @@ public class RUtils {
         AIR_MATERIALS.add(Material.STATIONARY_WATER);
     }
 
-    private final static Map<String, Integer> teleRunners = new HashMap<String, Integer>();
-    private final static List<String> teleAllowed = new ArrayList<String>();
+    private final static Map<String, Integer> teleRunners = new HashMap<>();
+    private final static List<String> teleAllowed = new ArrayList<>();
     private final static Logger log = Logger.getLogger("Minecraft");
 
     /**
@@ -770,8 +770,7 @@ public class RUtils {
             }
         };
         Plugin plugin = RoyalCommands.instance;
-        if (plugin == null)
-            throw new NullPointerException("Could not get the RoyalCommands plugin.");
+        if (plugin == null) throw new NullPointerException("Could not get the RoyalCommands plugin.");
         RoyalCommands.instance.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
     }
 
@@ -907,16 +906,12 @@ public class RUtils {
         if (reason == null || kicked == null || kicker == null) return null;
         String message = format;
         message = colorize(message);
-        if (kicked.isOnline())
-            message = message.replace("{kdispname}", ((Player) kicked).getDisplayName());
-        else
-            message = message.replace("{kdispname}", kicked.getName());
+        if (kicked.isOnline()) message = message.replace("{kdispname}", ((Player) kicked).getDisplayName());
+        else message = message.replace("{kdispname}", kicked.getName());
         message = message.replace("{kname}", kicked.getName());
         message = message.replace("{name}", kicker.getName());
-        if (kicker instanceof Player)
-            message = message.replace("{dispname}", ((Player) kicker).getDisplayName());
-        else
-            message = message.replace("{dispname}", kicker.getName());
+        if (kicker instanceof Player) message = message.replace("{dispname}", ((Player) kicker).getDisplayName());
+        else message = message.replace("{dispname}", kicker.getName());
         message = message.replace("{reason}", reason);
         return message;
     }
@@ -932,10 +927,8 @@ public class RUtils {
     public static String getMessage(final String message, final String reason, final CommandSender kicker) {
         String format = message;
         format = colorize(format);
-        if (kicker instanceof Player)
-            format = format.replace("{dispname}", ((Player) kicker).getDisplayName());
-        else
-            format = format.replace("{dispname}", kicker.getName());
+        if (kicker instanceof Player) format = format.replace("{dispname}", ((Player) kicker).getDisplayName());
+        else format = format.replace("{dispname}", kicker.getName());
         format = format.replace("{name}", kicker.getName());
         format = format.replace("{reason}", reason);
         return format;
@@ -1040,7 +1033,7 @@ public class RUtils {
      * @return Map of Enchantments and their levels or null if invalid
      */
     public static Map<Enchantment, Integer> getEnchantments(String enchant) {
-        final Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+        final Map<Enchantment, Integer> enchants = new HashMap<>();
         for (String enc : enchant.split(",")) {
             enc = enc.replace(" ", "");
             String[] data = enc.split(":");
@@ -1087,7 +1080,7 @@ public class RUtils {
         if (newLore == null) return is;
         ItemMeta im = is.getItemMeta();
         List<String> lores = im.getLore();
-        if (lores == null) lores = new ArrayList<String>();
+        if (lores == null) lores = new ArrayList<>();
         lores.add(newLore);
         im.setLore(lores);
         is.setItemMeta(im);
@@ -1188,7 +1181,7 @@ public class RUtils {
         PConfManager pcm = PConfManager.getPConfManager(t);
         if (!pcm.exists()) pcm.createFile();
         List<String> prevBans = pcm.getStringList("prevbans");
-        if (prevBans == null) prevBans = new ArrayList<String>();
+        if (prevBans == null) prevBans = new ArrayList<>();
         // banner,banreason,bannedat,istempban
         prevBans.add(pcm.getString("banner") + "\u00b5" + pcm.getString("banreason") + "\u00b5" + pcm.getString("bannedat") + "\u00b5" + (pcm.get("bantime") != null));
         pcm.set("prevbans", prevBans);

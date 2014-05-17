@@ -58,7 +58,7 @@ public class CmdList implements CommandExecutor {
 
     public static String[] getGroupList(CommandSender cs) {
         Player[] pl = plugin.getServer().getOnlinePlayers();
-        Map<String, List<String>> groups = new HashMap<String, List<String>>();
+        Map<String, List<String>> groups = new HashMap<>();
         StrBuilder sb = new StrBuilder();
         for (Player p : pl) {
             String group;
@@ -78,7 +78,7 @@ public class CmdList implements CommandExecutor {
             }
             groups.put(group, inGroup);
         }
-        List<String> toRet = new ArrayList<String>();
+        List<String> toRet = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : groups.entrySet()) {
             List<String> inGroup = entry.getValue();
             if (inGroup.size() < 1) continue;

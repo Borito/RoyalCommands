@@ -29,24 +29,6 @@ public class CmdAttributes implements CommandExecutor {
         cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, "
     }
 
-    private static enum AttributeTypes {
-        ATTACK_DAMAGE(Attributes.AttributeType.GENERIC_ATTACK_DAMAGE),
-        FOLLOW_RANGE(Attributes.AttributeType.GENERIC_FOLLOW_RANGE),
-        KNOCKBACK_RESISTANCE(Attributes.AttributeType.GENERIC_KNOCKBACK_RESISTANCE),
-        MAX_HEALTH(Attributes.AttributeType.GENERIC_MAX_HEALTH),
-        MOVEMENT_SPEED(Attributes.AttributeType.GENERIC_MOVEMENT_SPEED);
-
-        private final Attributes.AttributeType at;
-
-        AttributeTypes(Attributes.AttributeType at) {
-            this.at = at;
-        }
-
-        private Attributes.AttributeType getAttributeType() {
-            return at;
-        }
-    }
-
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("attributes")) {
             if (!plugin.ah.isAuthorized(cs, "rcmds.attributes")) {
@@ -137,6 +119,24 @@ public class CmdAttributes implements CommandExecutor {
             return true;
         }
         return false;
+    }
+
+    private static enum AttributeTypes {
+        ATTACK_DAMAGE(Attributes.AttributeType.GENERIC_ATTACK_DAMAGE),
+        FOLLOW_RANGE(Attributes.AttributeType.GENERIC_FOLLOW_RANGE),
+        KNOCKBACK_RESISTANCE(Attributes.AttributeType.GENERIC_KNOCKBACK_RESISTANCE),
+        MAX_HEALTH(Attributes.AttributeType.GENERIC_MAX_HEALTH),
+        MOVEMENT_SPEED(Attributes.AttributeType.GENERIC_MOVEMENT_SPEED);
+
+        private final Attributes.AttributeType at;
+
+        AttributeTypes(Attributes.AttributeType at) {
+            this.at = at;
+        }
+
+        private Attributes.AttributeType getAttributeType() {
+            return at;
+        }
     }
 
 }
