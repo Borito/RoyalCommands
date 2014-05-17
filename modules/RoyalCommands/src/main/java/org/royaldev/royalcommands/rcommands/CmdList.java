@@ -53,7 +53,7 @@ public class CmdList implements CommandExecutor {
             }
         }
         if (sb.length() < 2) return "";
-        return "Online Players: " + sb.toString().substring(0, sb.length() - 2);
+        return MessageColor.NEUTRAL + "Online Players: " + MessageColor.RESET + sb.toString().substring(0, sb.length() - 2);
     }
 
     public static String[] getGroupList(CommandSender cs) {
