@@ -190,7 +190,7 @@ public class RoyalCommands extends JavaPlugin {
     //-- Static methods --//
 
     public NMSFace getNMSFace() {
-        return nmsFace;
+        return this.nmsFace;
     }
 
     //--- Private methods ---//
@@ -221,7 +221,7 @@ public class RoyalCommands extends JavaPlugin {
 
     private List<String> getAliases(String command) {
         final List<String> aliasesList = this.getCommandInfo(command).getStringList("aliases");
-        if (aliasesList == null) return new ArrayList<String>();
+        if (aliasesList == null) return new ArrayList<>();
         return aliasesList;
     }
 
@@ -261,7 +261,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private <T> List<List<T>> partitionList(List<T> original, int maxSize) {
-        final List<List<T>> partitions = new LinkedList<List<T>>();
+        final List<List<T>> partitions = new LinkedList<>();
         for (int i = 0; i < original.size(); i += maxSize)
             partitions.add(original.subList(i, i + Math.min(maxSize, original.size() - i)));
         return partitions;
@@ -270,8 +270,8 @@ public class RoyalCommands extends JavaPlugin {
     private void update() {
         final File userdataFolder = new File(dataFolder, "userdata");
         if (!userdataFolder.exists() || !userdataFolder.isDirectory()) return;
-        final List<String> playersToConvert = new ArrayList<String>();
-        final List<String> playersConverted = new ArrayList<String>();
+        final List<String> playersToConvert = new ArrayList<>();
+        final List<String> playersConverted = new ArrayList<>();
         for (String fileName : userdataFolder.list(new PatternFilenameFilter("(?i)^.+\\.yml$"))) {
             String playerName = fileName.substring(0, fileName.length() - 4); // ".yml" = 4
             try {
@@ -340,7 +340,7 @@ public class RoyalCommands extends JavaPlugin {
         int end = site.indexOf("-rcmdsupdateinfoend");
         String version = site.substring(begin, end);
         String[] vs = version.split(";");
-        final Map<String, String> toReturn = new HashMap<String, String>();
+        final Map<String, String> toReturn = new HashMap<>();
         for (String s : vs) {
             String[] parts = s.split(":");
             if (parts.length < 2) continue; // that's a bad sign
@@ -377,7 +377,7 @@ public class RoyalCommands extends JavaPlugin {
         //-- Set globals --//
 
         RoyalCommands.instance = this;
-        this.pluginYml = YamlConfiguration.loadConfiguration(getResource("plugin.yml"));
+        this.pluginYml = YamlConfiguration.loadConfiguration(this.getTextResource("plugin.yml"));
         RoyalCommands.dataFolder = getDataFolder();
         this.whl = ConfManager.getConfManager("whitelist.yml");
         RoyalCommands.commands = pluginYml.getConfigurationSection("reflectcommands");
