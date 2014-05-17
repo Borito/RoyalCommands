@@ -1275,7 +1275,7 @@ public class RUtils {
      * @return List of files - never null
      */
     public static List<File> listFiles(File f, boolean recursive) {
-        List<File> fs = new ArrayList<File>();
+        List<File> fs = new ArrayList<>();
         if (!f.isDirectory()) return fs;
         File[] listed = f.listFiles();
         if (listed == null) return fs;
