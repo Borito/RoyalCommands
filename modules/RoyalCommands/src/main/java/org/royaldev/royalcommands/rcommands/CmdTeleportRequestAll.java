@@ -32,7 +32,7 @@ public class CmdTeleportRequestAll implements CommandExecutor {
             for (Player t : plugin.getServer().getOnlinePlayers()) {
                 if (!RUtils.isTeleportAllowed(t) && !plugin.ah.isAuthorized(p, "rcmds.tpoverride")) continue;
                 if (t.equals(p)) continue;
-                TeleportRequest.send(t, p, TeleportRequest.TeleportType.HERE, false);
+                TeleportRequest.send(p, t, TeleportRequest.TeleportType.HERE, false);
             }
             p.sendMessage(MessageColor.POSITIVE + "You have sent a teleport request to all players.");
             return true;
