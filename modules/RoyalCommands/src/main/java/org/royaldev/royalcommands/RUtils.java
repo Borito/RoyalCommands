@@ -1416,6 +1416,20 @@ public class RUtils {
         return nearEqual(a, b, .05D);
     }
 
+    public static boolean isBanned(final Player p) {
+        if (p.isBanned()) return true;
+        final PConfManager pcm = PConfManager.getPConfManager(p);
+        if (pcm.get("bantime") != null) {
+            if (RUtils.isTimeStampValid(p, "bantime")) return true;
+            else {
+                pcm.set("bantime", null);
+                RUtils.unbanPlayer(p);
+                return false;
+            }
+        }
+        return false;
+    }
+
     public static UUID getUUID(String name) throws Exception {
         final Map<String, UUID> m = new UUIDFetcher(Arrays.asList(name)).call();
         for (Map.Entry<String, UUID> e : m.entrySet()) if (e.getKey().equalsIgnoreCase(name)) return e.getValue();

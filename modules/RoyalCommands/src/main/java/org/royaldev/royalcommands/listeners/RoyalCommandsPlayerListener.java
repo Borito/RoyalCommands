@@ -370,8 +370,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (publicAssigns != null) cmds.addAll(publicAssigns);
         if (cmds.isEmpty()) return;
         for (String s : cmds) {
-            if (s.toLowerCase().trim().startsWith("c:"))
-                event.getPlayer().chat(s.trim().substring(2));
+            if (s.toLowerCase().trim().startsWith("c:")) event.getPlayer().chat(s.trim().substring(2));
             else {
                 event.getPlayer().performCommand(s.trim());
                 if (Config.showcommands) {
@@ -402,8 +401,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (e.getRightClicked() instanceof Player) clicked = (Player) e.getRightClicked();
         for (String s : cmds) {
             if (clicked != null) s = s.replace("{player}", clicked.getName());
-            if (s.toLowerCase().trim().startsWith("c:"))
-                e.getPlayer().chat(s.trim().substring(2));
+            if (s.toLowerCase().trim().startsWith("c:")) e.getPlayer().chat(s.trim().substring(2));
             else {
                 e.getPlayer().performCommand(s.trim());
                 if (Config.showcommands) {
@@ -451,15 +449,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         PConfManager pcm = PConfManager.getPConfManager(p);
         // Check if player is banned
         if (!p.isBanned()) return;
-        // Check to see that they have a bantime, and that if they do, if the timestamp is invalid.
-        if (pcm.get("bantime") != null && !RUtils.isTimeStampValid(p, "bantime")) {
-            // Set them unbanned
-            RUtils.unbanPlayer(p);
-            // Allow the event
-            event.allow();
-            // Stop the method
-            return;
-        }
+        if (RUtils.isBanned(p)) return;
         // Get the banreason from the player's userdata file
         String reason = pcm.getString("banreason"); // Returns string or null
         // Check if there was none, and if there wasn't, set it to default ban message.
@@ -471,8 +461,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             kickMessage = RUtils.getMessage(Config.tempbanFormat, reason, kicker);
             long banTime = pcm.getLong("bantime");
             kickMessage = kickMessage.replace("{length}", RUtils.formatDateDiff(banTime).substring(1));
-        } else
-            kickMessage = RUtils.getMessage(Config.banFormat, reason, kicker);
+        } else kickMessage = RUtils.getMessage(Config.banFormat, reason, kicker);
         // Set the kick message to the ban reason
         event.setKickMessage(kickMessage);
         // Disallow the event
@@ -545,8 +534,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (Config.sendToSpawn) {
             if (Config.stsBack)
                 RUtils.teleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
-            else
-                RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
+            else RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
         }
     }
 

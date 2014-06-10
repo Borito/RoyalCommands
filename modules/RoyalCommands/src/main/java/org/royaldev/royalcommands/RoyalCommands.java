@@ -57,7 +57,6 @@ import org.royaldev.royalcommands.nms.api.NMSFace;
 import org.royaldev.royalcommands.protocol.ProtocolListener;
 import org.royaldev.royalcommands.rcommands.ReflectCommand;
 import org.royaldev.royalcommands.runners.AFKWatcher;
-import org.royaldev.royalcommands.runners.BanWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.MailRunner;
 import org.royaldev.royalcommands.runners.UserdataRunner;
@@ -518,7 +517,6 @@ public class RoyalCommands extends JavaPlugin {
             }
         });
         bs.runTaskTimerAsynchronously(this, new AFKWatcher(this), 0L, 200L);
-        bs.runTaskTimerAsynchronously(this, new BanWatcher(this), 20L, 600L);
         bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20L, 12000L);
         bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20L, 100L);
         long mail = RUtils.timeFormatToSeconds(Config.mailCheckTime);
