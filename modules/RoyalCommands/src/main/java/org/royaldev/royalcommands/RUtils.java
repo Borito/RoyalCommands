@@ -297,7 +297,7 @@ public class RUtils {
     public static boolean isTimeStampValid(OfflinePlayer p, String title) {
         PConfManager pcm = PConfManager.getPConfManager(p);
         if (!pcm.isSet(title)) return false;
-        long time = new Date().getTime();
+        long time = System.currentTimeMillis();
         long overall = pcm.getLong(title);
         return time < overall;
     }
