@@ -10,10 +10,15 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 @ReflectCommand
 public class CmdSetHome implements CommandExecutor {
 
     private final RoyalCommands plugin;
+    private final Map<UUID, Map<String, Long>> overwrites = new HashMap<>();
 
     public CmdSetHome(RoyalCommands instance) {
         plugin = instance;
@@ -53,7 +58,27 @@ public class CmdSetHome implements CommandExecutor {
                 RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You've reached your max number of homes! (" + MessageColor.NEUTRAL + limit + MessageColor.NEGATIVE + ")");
                 return true;
             }
-            String homePath = (name.equals("")) ? "home.home" : "home." + name;
+            final String homePath = (name.equals("")) ? "home.home" : "home." + name;
+            if (pcm.isSet(homePath)) {
+                boolean overwrite = false;
+                Map<String, Long> hto = this.overwrites.get(p.getUniqueId());
+                if (this.overwrites.containsKey(p.getUniqueId())) {
+                    if (hto.containsKey(name) && hto.get(name) != null) {
+                        final long expiresAt = hto.get(name) + 10000;
+                        overwrite = System.currentTimeMillis() < expiresAt;
+                    }
+                }
+                if (!overwrite) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "Warning! " + MessageColor.POSITIVE + "The home " + MessageColor.NEUTRAL + ((name.isEmpty() ? "home" : name)) + MessageColor.POSITIVE + " is already set. To re-set it, do this command again in the next ten seconds.");
+                    if (hto == null) hto = new HashMap<>();
+                    hto.put(name, System.currentTimeMillis());
+                    this.overwrites.put(p.getUniqueId(), hto);
+                    return true;
+                } else {
+                    hto.remove(name);
+                    this.overwrites.put(p.getUniqueId(), hto);
+                }
+            }
             pcm.setLocation(homePath, l);
             if (args.length > 0) {
                 p.sendMessage(MessageColor.POSITIVE + "Home " + MessageColor.NEUTRAL + name + MessageColor.POSITIVE + " set.");
