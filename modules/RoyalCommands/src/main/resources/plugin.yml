@@ -549,7 +549,7 @@ reflectcommands:
     class: CmdRealName
 
   invsee:
-    description: Allows you to see the inventory or a player.
+    description: Allows you to see the inventory of a player.
     usage: /<command> [player]
     aliases: [invs]
     version_added: Pre-0.2.7

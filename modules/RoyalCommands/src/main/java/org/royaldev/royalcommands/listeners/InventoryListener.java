@@ -9,7 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -27,6 +31,7 @@ import org.bukkit.potion.PotionEffect;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.rcommands.CmdInvsee.InvSeeHolder;
 
 import java.util.Collection;
 import java.util.List;
@@ -339,5 +344,17 @@ public class InventoryListener implements Listener {
         }
         if (name.startsWith("OEC;")) saveEnderInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
         else if (name.startsWith("OPI;")) saveInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (!(e.getInventory().getHolder() instanceof InvSeeHolder)) return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent e) {
+        if (!(e.getInventory().getHolder() instanceof InvSeeHolder)) return;
+        e.setCancelled(true);
     }
 }
