@@ -389,17 +389,17 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdTeleportRequest
 
-  tpaccept:
+  teleportaccept:
     description: Accepts a teleport request.
     usage: /<command> (name)
-    aliases: [tpaa, tpyes, tpay]
+    aliases: [tpaa, tpyes, tpay, tpaccept]
     version_added: Pre-0.2.7
     class: CmdTeleportAccept
 
-  tpdeny:
+  teleportdeny:
     description: Denies a teleport request.
     usage: /<command> (name)
-    aliases: [tpad, tpno, tpan]
+    aliases: [tpad, tpno, tpan, tpdeny]
     version_added: Pre-0.2.7
     class: CmdTeleportDeny
 
@@ -506,10 +506,10 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdSpawner
 
-  tp2p:
+  teleportplayertoplayer:
     description: Teleports one player to another.
     usage: /<command> [player] [player]
-    aliases: [teleportplayertoplayer, teleportplayer2player, tpptp, tpp2p, teleportp2p, teleportptop]
+    aliases: [tp2p, teleportplayer2player, tpptp, tpp2p, teleportp2p, teleportptop]
     version_added: Pre-0.2.7
     class: CmdTeleportPlayerToPlayer
 
@@ -645,10 +645,10 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdRide
 
-  tppos:
+  teleportposition:
     description: Teleports you to a specific coordinate point.
     usage: /<command> [x] [y] [z] (world)
-    aliases: [tpos, teleportposition, tpcoords, tpp, tpc, teleportcoordinates, teleportpos, tpposition, tposition]
+    aliases: [tppos, tpos, tpcoords, tpp, tpc, teleportcoordinates, teleportpos, tpposition, tposition]
     version_added: Pre-0.2.7
     class: CmdTeleportPosition
 
@@ -672,17 +672,17 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdCoords
 
-  tpall:
+  teleportall:
     description: Teleports everyone to you.
     usage: /<command>
-    aliases: [teleportall]
+    aliases: [tpall]
     version_added: Pre-0.2.7
     class: CmdTeleportAll
 
-  tpaall:
+  teleportrequestall:
     description: Sends a teleport request to everyone.
     usage: /<command>
-    aliases: [tprall, teleportaskall, teleportrequestall]
+    aliases: [tprall, teleportaskall, tpaall]
     version_added: Pre-0.2.7
     class: CmdTeleportRequestAll
 
@@ -714,10 +714,10 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdTemporaryBan
 
-  tptoggle:
+  teleporttoggle:
     description: Toggles teleportation.
     usage: /<command>
-    aliases: [toggletp]
+    aliases: [tptoggle, toggletp]
     version_added: Pre-0.2.7
     class: CmdTeleportToggle
 
@@ -1309,10 +1309,10 @@ permissions:
   rcmds.teleportrequesthere:
     description: Allows you to ask other players to teleport to you.
     default: op
-  rcmds.tpaccept:
+  rcmds.teleportaccept:
     description: Allows you to accept a teleport request.
     default: op
-  rcmds.tpdeny:
+  rcmds.teleportdeny:
     description: Allows you to deny a teleport request.
     default: op
   rcmds.listwarns:
@@ -1360,7 +1360,7 @@ permissions:
   rcmds.spawner:
     description: Allows you to change the type of a mob spawner.
     default: op
-  rcmds.tp2p:
+  rcmds.teleportplayertoplayer:
     description: Allows you to teleport players to each other.
     default: op
   rcmds.motd:
@@ -1423,7 +1423,7 @@ permissions:
   rcmds.ride:
     description: Allows you to ride on other players.
     default: op
-  rcmds.tppos:
+  rcmds.teleportposition:
     description: Allows you to teleport to a coordinate point.
     default: op
   rcmds.ignore:
@@ -1432,10 +1432,10 @@ permissions:
   rcmds.coords:
     description: Allows you to see your coordinates.
     default: op
-  rcmds.tpall:
+  rcmds.teleportall:
     description: Allows you to teleport everyone to you.
     default: op
-  rcmds.tpaall:
+  rcmds.teleportrequestall:
     description: Allows you to request everyone to teleport to you.
     default: op
   rcmds.vip:
@@ -1450,7 +1450,7 @@ permissions:
   rcmds.tempban:
     description: Allows you to temporarily ban a player.
     default: op
-  rcmds.tptoggle:
+  rcmds.teleporttoggle:
     description: Allows you to toggle teleportation.
     default: op
   rcmds.kits:
@@ -1959,7 +1959,7 @@ permissions:
     default: op
 
   rcmds.tpoverride:
-    description: Allows the player to override /tptoggle settings.
+    description: Allows the player to override /teleporttoggle settings.
     default: op
 
   rcmds.see.ban:
@@ -2114,8 +2114,8 @@ permissions:
       rcmds.teleporthere: true
       rcmds.teleportrequest: true
       rcmds.teleportrequesthere: true
-      rcmds.tpaccept: true
-      rcmds.tpdeny: true
+      rcmds.teleportaccept: true
+      rcmds.teleportdeny: true
       rcmds.listwarns: true
       rcmds.more: true
       rcmds.spy: true
@@ -2131,7 +2131,7 @@ permissions:
       rcmds.setjail: true
       rcmds.less: true
       rcmds.spawner: true
-      rcmds.tp2p: true
+      rcmds.teleportplayertoplayer: true
       rcmds.motd: true
       rcmds.deljail: true
       rcmds.force: true
@@ -2152,16 +2152,16 @@ permissions:
       rcmds.hug: true
       rcmds.explode: true
       rcmds.ride: true
-      rcmds.tppos: true
+      rcmds.teleportposition: true
       rcmds.ignore: true
       rcmds.coords: true
-      rcmds.tpall: true
-      rcmds.tpaall: true
+      rcmds.teleportall: true
+      rcmds.teleportrequestall: true
       rcmds.vip: true
       rcmds.dump: true
       rcmds.seen: true
       rcmds.tempban: true
-      rcmds.tptoggle: true
+      rcmds.teleporttoggle: true
       rcmds.kits: true
       rcmds.lag: true
       rcmds.mem: true
@@ -2322,7 +2322,7 @@ permissions:
       rcmds.exempt.teleport: true
       rcmds.exempt.burn: true
       rcmds.exempt.jail: true
-      rcmds.exempt.tp2p: true
+      rcmds.exempt.teleportplayertoplayer: true
       rcmds.exempt.warp: true
       rcmds.exempt.force: true
       rcmds.exempt.gamemode: true
@@ -2421,8 +2421,8 @@ permissions:
       rcmds.teleporthere: true
       rcmds.teleportrequest: true
       rcmds.teleportrequesthere: true
-      rcmds.tpaccept: true
-      rcmds.tpdeny: true
+      rcmds.teleportaccept: true
+      rcmds.teleportdeny: true
       rcmds.listwarns: true
       rcmds.more: true
       rcmds.spy: true
@@ -2438,7 +2438,7 @@ permissions:
       rcmds.setjail: true
       rcmds.less: true
       rcmds.spawner: true
-      rcmds.tp2p: true
+      rcmds.teleportplayertoplayer: true
       rcmds.motd: true
       rcmds.deljail: true
       rcmds.force: true
@@ -2459,16 +2459,16 @@ permissions:
       rcmds.hug: true
       rcmds.explode: true
       rcmds.ride: true
-      rcmds.tppos: true
+      rcmds.teleportposition: true
       rcmds.ignore: true
       rcmds.coords: true
-      rcmds.tpall: true
-      rcmds.tpaall: true
+      rcmds.teleportall: true
+      rcmds.teleportrequestall: true
       rcmds.vip: true
       rcmds.dump: true
       rcmds.seen: true
       rcmds.tempban: true
-      rcmds.tptoggle: true
+      rcmds.teleporttoggle: true
       rcmds.kits: true
       rcmds.lag: true
       rcmds.mem: true

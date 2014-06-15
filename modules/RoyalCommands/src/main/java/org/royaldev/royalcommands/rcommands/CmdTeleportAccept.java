@@ -20,8 +20,8 @@ public class CmdTeleportAccept implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("tpaccept")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.tpaccept")) {
+        if (cmd.getName().equalsIgnoreCase("teleportaccept")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.teleportaccept")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

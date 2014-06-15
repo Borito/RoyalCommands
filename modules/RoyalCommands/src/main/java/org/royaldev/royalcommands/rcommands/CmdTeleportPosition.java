@@ -20,8 +20,8 @@ public class CmdTeleportPosition implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("tppos")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.tppos")) {
+        if (cmd.getName().equalsIgnoreCase("teleportposition")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.teleportposition")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

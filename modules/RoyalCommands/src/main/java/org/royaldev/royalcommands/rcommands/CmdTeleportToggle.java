@@ -19,8 +19,8 @@ public class CmdTeleportToggle implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("tptoggle")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.tptoggle")) {
+        if (cmd.getName().equalsIgnoreCase("teleporttoggle")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.teleporttoggle")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

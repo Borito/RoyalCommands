@@ -18,8 +18,8 @@ public class CmdTeleportAll implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("tpall")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.tpall")) {
+        if (cmd.getName().equalsIgnoreCase("teleportall")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.teleportall")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

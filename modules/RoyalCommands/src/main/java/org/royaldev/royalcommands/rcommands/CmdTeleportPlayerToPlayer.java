@@ -20,8 +20,8 @@ public class CmdTeleportPlayerToPlayer implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("tp2p")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.tp2p")) {
+        if (cmd.getName().equalsIgnoreCase("teleportplayertoplayer")) {
+            if (!plugin.ah.isAuthorized(cs, "rcmds.teleportplayertoplayer")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
