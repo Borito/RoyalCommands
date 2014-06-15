@@ -93,7 +93,7 @@ reflectcommands:
     class: CmdQuit
 
   rank:
-    description: Check the rank of the specified player (permissions).
+    description: Checks the rank of the specified player (permissions).
     usage: /<command> [player]
     version_added: Pre-0.2.7
     class: CmdRank
@@ -173,14 +173,14 @@ reflectcommands:
     class: CmdGive
 
   message:
-    description: Send a message to a player.
+    description: Sends a message to a player.
     usage: /<command> [player] [message]
     aliases: [msg, send, tell, whisper, w]
     version_added: Pre-0.2.7
     class: CmdMessage
 
   reply:
-    description: Reply to a message.
+    description: Replies to a message.
     usage: /<command> [message]
     aliases: [r]
     version_added: Pre-0.2.7
@@ -201,7 +201,7 @@ reflectcommands:
     class: CmdBan
 
   mute:
-    description: Stop a user from speaking.
+    description: Stops a user from speaking.
     usage: /<command> [player] (time)
     aliases: [silence]
     version_added: Pre-0.2.7
@@ -242,7 +242,7 @@ reflectcommands:
     class: CmdDelHome
 
   listhome:
-    description: List your set homes.
+    description: Lists your set homes.
     usage: /<command> (player)
     aliases: [lshome, listhomes, lshomes, homes, rlisthomes]
     version_added: Pre-0.2.7
@@ -276,21 +276,21 @@ reflectcommands:
     class: CmdClearWarns
 
   warp:
-    description: Go to a warp point.
+    description: Moves you to a warp point.
     usage: /<command> [warp] (player)
     aliases: [warps]
     version_added: Pre-0.2.7
     class: CmdWarp
 
   setwarp:
-    description: Set a warp point.
+    description: Sets a warp point.
     usage: /<command> [warp]
     aliases: [mkwarp, createwarp]
     version_added: Pre-0.2.7
     class: CmdSetWarp
 
   delwarp:
-    description: Delete a warp point.
+    description: Deletes a warp point.
     usage: /<command> [warp]
     aliases: [dwarp, deletewarp, rmwarp, removewarp]
     version_added: Pre-0.2.7
