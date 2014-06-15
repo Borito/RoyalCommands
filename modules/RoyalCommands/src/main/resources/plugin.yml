@@ -8,7 +8,7 @@ softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard, Multiverse-Core, Vault, Pr
 
 reflectcommands:
   level:
-    description: Levels your experience up one level.
+    description: Increases your experience level by one.
     usage: /<command>
     version_added: Pre-0.2.7
     class: CmdLevel
