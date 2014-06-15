@@ -789,7 +789,7 @@ reflectcommands:
     class: CmdEnchant
 
   fireball:
-    description: Launches a fireball out of you.
+    description: Launches a fireball towards where you are looking.
     usage: /<command>
     aliases: [fb]
     version_added: Pre-0.2.7
