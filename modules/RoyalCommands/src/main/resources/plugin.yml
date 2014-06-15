@@ -73,7 +73,7 @@ reflectcommands:
     class: CmdGetIP
 
   compareip:
-    description: Compare two users' IP addresses.
+    description: Compares two users' IP addresses.
     usage: /<command> [player1] [player2]
     aliases: [compip, cip]
     version_added: Pre-0.2.7
