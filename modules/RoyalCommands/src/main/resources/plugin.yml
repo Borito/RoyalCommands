@@ -363,7 +363,7 @@ reflectcommands:
 
   back:
     description: Takes you to your previous location.
-    usage: /<command>
+    usage: /<command> (#)
     aliases: [backs]
     version_added: Pre-0.2.7
     class: CmdBack
