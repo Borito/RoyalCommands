@@ -14,7 +14,7 @@ reflectcommands:
     class: CmdLevel
 
   setlevel:
-    description: Sets your XP level to specified amount.
+    description: Sets your or another player's XP level to specified level.
     usage: /<command> [level] (player)
     aliases: [slvl, slevel, setlvl]
     version_added: Pre-0.2.7
