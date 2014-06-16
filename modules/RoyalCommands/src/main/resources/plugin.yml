@@ -423,12 +423,12 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdTeleportRequestHere
 
-  spy:
+  messagespy:
     description: Allows the player to spy on private messages.
-    usage: /<command>
-    aliases: [msgspy, socialspy]
+    usage: /<command> (player)
+    aliases: [chatspy, msgspy, socialspy]
     version_added: Pre-0.2.7
-    class: CmdSpy
+    class: CmdMessageSpy
 
   spawnmob:
     description: Spawns mobs where the player is looking.
@@ -1321,7 +1321,7 @@ permissions:
   rcmds.more:
     description: Allows you to give yourself more of the item in hand.
     default: op
-  rcmds.spy:
+  rcmds.messagespy:
     description: Allows you to spy on private messages.
     default: op
   rcmds.spawnmob:
@@ -1844,6 +1844,9 @@ permissions:
   rcmds.exempt.enderchest:
     description: Makes the player immune to /enderchest.
     default: false
+  rcmds.exempt.messagespy:
+    description: Makes the player immune to /messagespy and message spying.
+    default: false
 
   rcmds.exempt.autoafk:
     description: Makes the player immune to auto AFK.
@@ -1948,6 +1951,9 @@ permissions:
     default: op
   rcmds.others.loadplayer:
     description: Allows the player to /loadplayer other players.
+    default: op
+  rcmds.others.messagespy:
+    description: Allows the player to /messagespy other players.
     default: op
 
   rcmds.spawn.other:
@@ -2118,7 +2124,7 @@ permissions:
       rcmds.teleportdeny: true
       rcmds.listwarns: true
       rcmds.more: true
-      rcmds.spy: true
+      rcmds.messagespy: true
       rcmds.spawnmob: true
       rcmds.afk: true
       rcmds.assign: true
@@ -2347,6 +2353,7 @@ permissions:
       rcmds.exempt.enderchest: true
       rcmds.exempt.nickchangelimit: true
       rcmds.exempt.nickspecialcharacters: true
+      rcmds.exempt.messagespy: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -2425,7 +2432,7 @@ permissions:
       rcmds.teleportdeny: true
       rcmds.listwarns: true
       rcmds.more: true
-      rcmds.spy: true
+      rcmds.messagespy: true
       rcmds.spawnmob: true
       rcmds.afk: true
       rcmds.assign: true

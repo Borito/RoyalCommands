@@ -14,13 +14,12 @@ import java.util.HashMap;
 @ReflectCommand
 public class CmdMessage implements CommandExecutor {
 
+    public final static HashMap<String, String> replydb = new HashMap<String, String>();
     private final RoyalCommands plugin;
 
     public CmdMessage(RoyalCommands plugin) {
         this.plugin = plugin;
     }
-
-    public final static HashMap<String, String> replydb = new HashMap<String, String>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -53,11 +52,13 @@ public class CmdMessage implements CommandExecutor {
             }
             t.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + "] " + m);
             cs.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + t.getName() + MessageColor.NEUTRAL + "] " + m);
-            Player[] ps = plugin.getServer().getOnlinePlayers();
-            for (Player p1 : ps) {
-                if (PConfManager.getPConfManager(p1).getBoolean("spy")) {
-                    if (t == p1 || cs == p1) continue;
-                    p1.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + t.getName() + MessageColor.NEUTRAL + "] " + m);
+            if (!this.plugin.ah.isAuthorized(cs, "rcmds.exempt.messagespy")) {
+                Player[] ps = plugin.getServer().getOnlinePlayers();
+                for (Player p1 : ps) {
+                    if (PConfManager.getPConfManager(p1).getBoolean("messagespy")) {
+                        if (t == p1 || cs == p1) continue;
+                        p1.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + t.getName() + MessageColor.NEUTRAL + "] " + m);
+                    }
                 }
             }
             return true;
