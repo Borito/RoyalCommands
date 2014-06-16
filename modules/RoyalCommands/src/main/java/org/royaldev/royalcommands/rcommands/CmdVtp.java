@@ -28,8 +28,8 @@ public class CmdVtp implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null) {
+            Player t = plugin.getServer().getPlayer(args[0]);
+            if (t == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
@@ -38,8 +38,8 @@ public class CmdVtp implements CommandExecutor {
                 return true;
             }
             Player player = (Player) cs;
-            cs.sendMessage(MessageColor.POSITIVE + "Teleporting you to player " + MessageColor.NEUTRAL + victim.getName() + MessageColor.POSITIVE + ".");
-            player.teleport(victim); // raw teleports in /vtp
+            cs.sendMessage(MessageColor.POSITIVE + "Teleporting you to player " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+            player.teleport(t); // raw teleports in /vtp
             return true;
         }
         return false;

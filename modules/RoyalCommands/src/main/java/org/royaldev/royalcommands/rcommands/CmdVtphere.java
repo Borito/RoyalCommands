@@ -28,8 +28,8 @@ public class CmdVtphere implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null) {
+            Player t = plugin.getServer().getPlayer(args[0]);
+            if (t == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
@@ -38,8 +38,8 @@ public class CmdVtphere implements CommandExecutor {
                 return true;
             }
             Player player = (Player) cs;
-            cs.sendMessage(MessageColor.POSITIVE + "Teleporting player " + MessageColor.NEUTRAL + victim.getName() + MessageColor.POSITIVE + " to you.");
-            victim.teleport(player); // raw teleports in /vtphere
+            cs.sendMessage(MessageColor.POSITIVE + "Teleporting player " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " to you.");
+            t.teleport(player); // raw teleports in /vtphere
             return true;
         }
         return false;
