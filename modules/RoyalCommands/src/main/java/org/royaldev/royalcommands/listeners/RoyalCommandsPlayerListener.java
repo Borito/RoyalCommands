@@ -537,7 +537,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void silentKicks(PlayerKickEvent e) {
         if (e.isCancelled()) return;
         String reason = e.getReason();
