@@ -190,7 +190,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.exempt.commandspy")) return;
         for (Player p : e.getPlayer().getServer().getOnlinePlayers()) {
             if (p.getName().equalsIgnoreCase(e.getPlayer().getName())) continue; // don't send to self
-            p.sendMessage(MessageColor.NEUTRAL + e.getPlayer().getName() + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + "/" + e.getMessage());
+            p.sendMessage(MessageColor.NEUTRAL + e.getPlayer().getName() + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + e.getMessage());
         }
     }
 
