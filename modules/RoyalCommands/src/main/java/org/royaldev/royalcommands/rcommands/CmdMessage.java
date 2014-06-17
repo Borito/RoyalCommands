@@ -14,7 +14,7 @@ import java.util.HashMap;
 @ReflectCommand
 public class CmdMessage implements CommandExecutor {
 
-    public final static HashMap<String, String> replydb = new HashMap<String, String>();
+    public final static HashMap<String, String> replydb = new HashMap<>();
     private final RoyalCommands plugin;
 
     public CmdMessage(RoyalCommands plugin) {
