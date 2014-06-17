@@ -36,26 +36,22 @@ public class CmdReply implements CommandExecutor {
                     return true;
                 }
             }
-
             String target = CmdMessage.replydb.get(cs.getName());
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(target);
-
             if (!t.isOnline()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player is offline!");
                 return true;
             }
-
             synchronized (CmdMessage.replydb) {
                 CmdMessage.replydb.put(t.getName(), cs.getName());
             }
-
             Player p = (Player) t;
             String m = RoyalCommands.getFinalArg(args, 0).trim();
             cs.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + p.getName() + MessageColor.NEUTRAL + "] " + m);
             p.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + "] " + m);
             Player[] ps = plugin.getServer().getOnlinePlayers();
             for (Player p1 : ps) {
-                if (PConfManager.getPConfManager(p1).getBoolean("spy")) {
+                if (PConfManager.getPConfManager(p1).getBoolean("messagespy")) {
                     if (t == p1 || cs == p1) continue;
                     p1.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + p.getName() + MessageColor.NEUTRAL + "] " + m);
                 }
