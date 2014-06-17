@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -188,6 +189,11 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void commandSpy(PlayerCommandPreprocessEvent e) {
         if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.exempt.commandspy")) return;
+        final PluginCommand pc = plugin.getServer().getPluginCommand(e.getMessage().split(" ")[0].substring(1));
+        if (pc != null) {
+            if (Config.commandSpyBlacklist.contains(pc.getName().toLowerCase())) return;
+            for (String alias : pc.getAliases()) if (Config.commandSpyBlacklist.contains(alias.toLowerCase())) return;
+        }
         for (Player p : e.getPlayer().getServer().getOnlinePlayers()) {
             if (!PConfManager.getPConfManager(p).getBoolean("commandspy", false)) continue;
             if (p.getName().equalsIgnoreCase(e.getPlayer().getName())) continue; // don't send to self

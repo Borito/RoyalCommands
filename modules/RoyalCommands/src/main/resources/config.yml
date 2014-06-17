@@ -413,6 +413,11 @@ commands:
     blacklist:
     - login
     - l
+    # Commands to filter out of /commandspy mode. Aliases are allowed, and one alias will match all.
+    # Again, all lowercase and no preceding /
+    command_spy_blacklist:
+    - login
+    - msg
   # Commands to block when muted
   mute_blocked: ["/me", "/tc", "/nc"]
   # command: cooldown (seconds)

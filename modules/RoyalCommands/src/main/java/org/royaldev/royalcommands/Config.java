@@ -96,6 +96,7 @@ public class Config {
     public static List<String> disabledCommands;
 
     //-- String lists --//
+    public static List<String> commandSpyBlacklist;
     public static List<String> itemSpawnTagLore;
     public static List<String> logBlacklist;
     public static List<String> motd;
@@ -240,6 +241,7 @@ public class Config {
 
         //-- String lists --//
 
+        commandSpyBlacklist = c.getStringList("commands.logging.command_spy_blacklist");
         blockedItems = c.getStringList("items.spawn.blocked");
         disabledBackWorlds = c.getStringList("teleports.back.disabled_worlds");
         disabledCommands = c.getStringList("commands.disabled");
