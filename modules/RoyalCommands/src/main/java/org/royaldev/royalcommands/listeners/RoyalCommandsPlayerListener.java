@@ -185,6 +185,15 @@ public class RoyalCommandsPlayerListener implements Listener {
         setCooldown(command, p);
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void commandSpy(PlayerCommandPreprocessEvent e) {
+        if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.exempt.commandspy")) return;
+        for (Player p : e.getPlayer().getServer().getOnlinePlayers()) {
+            if (p.getName().equalsIgnoreCase(e.getPlayer().getName())) continue; // don't send to self
+            p.sendMessage(MessageColor.NEUTRAL + e.getPlayer().getName() + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + "/" + e.getMessage());
+        }
+    }
+
     @EventHandler(priority = EventPriority.LOW)
     public void teleCooldown(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
