@@ -1134,6 +1134,13 @@ reflectcommands:
     version_added: 3.3.0
     class: CmdCommandSpy
 
+  kickhistory:
+    description: Views the kick history of the player.
+    usage: /<command> (player)
+    aliases: [khistory, kh]
+    version_added: 3.3.0
+    class: CmdKickHistory
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1646,6 +1653,9 @@ permissions:
   rcmds.commandspy:
     description: Allows you to spy on commands used.
     default: op
+  rcmds.kickhistory:
+    description: Allows you to view your own kicks.
+    default: op
   rcmds.rcmds:
     description: Allows you to reload RoyalCommands' config.
     default: op
@@ -1860,6 +1870,9 @@ permissions:
   rcmds.exempt.commandspy:
     description: Makes the player immune to /commandspy and command spying.
     default: false
+  rcmds.exempt.kickhistory:
+    description: Makes the player immune to /kickhistory.
+    default: false
 
   rcmds.exempt.autoafk:
     description: Makes the player immune to auto AFK.
@@ -1970,6 +1983,9 @@ permissions:
     default: op
   rcmds.others.commandspy:
     description: Allows the player to /commandspy other players.
+    default: op
+  rcmds.others.kickhistory:
+    description: Allows the player to /kickhistory other players.
     default: op
 
   rcmds.spawn.other:
@@ -2247,6 +2263,7 @@ permissions:
       rcmds.loadplayer: true
       rcmds.teleportrequestcancel: true
       rcmds.commandspy: true
+      rcmds.kickhistory: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2284,6 +2301,7 @@ permissions:
       rcmds.others.loadplayer: true
       rcmds.others.messagespy: true
       rcmds.others.commandspy: true
+      rcmds.others.kickhistory: true
 
   rcmds.see.*:
     description: Gives every see permission.
@@ -2374,6 +2392,7 @@ permissions:
       rcmds.exempt.nickspecialcharacters: true
       rcmds.exempt.messagespy: true
       rcmds.exempt.commandspy: true
+      rcmds.exempt.kickhistory: true
 
   rcmds.setarmor.*:
     description: Allows the player to set every armor.
@@ -2558,6 +2577,7 @@ permissions:
       rcmds.loadplayer: true
       rcmds.teleportrequestcancel: true
       rcmds.commandspy: true
+      rcmds.kickhistory: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

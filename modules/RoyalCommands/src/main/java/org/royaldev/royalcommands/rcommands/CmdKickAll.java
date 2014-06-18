@@ -30,7 +30,7 @@ public class CmdKickAll implements CommandExecutor {
             Player p = null;
             if (cs instanceof Player) p = (Player) cs;
             for (Player t : plugin.getServer().getOnlinePlayers()) {
-                if (!t.equals(p)) t.kickPlayer(kickreason);
+                if (!t.equals(p)) RUtils.kickPlayer(t, cs, kickreason);
             }
             return true;
         }

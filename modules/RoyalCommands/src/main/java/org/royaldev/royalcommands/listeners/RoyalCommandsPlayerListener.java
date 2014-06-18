@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -585,6 +586,18 @@ public class RoyalCommandsPlayerListener implements Listener {
             p.sendMessage(MessageColor.POSITIVE + "Successfully removed the name from that " + MessageColor.NEUTRAL + le.getType().name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + ".");
         else
             p.sendMessage(MessageColor.POSITIVE + "Successfully renamed that " + MessageColor.NEUTRAL + le.getType().name().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void kickLogging(PlayerKickEvent e) {
+        final Player p = e.getPlayer();
+        final PConfManager pcm = PConfManager.getPConfManager(p);
+        final ConfigurationSection prevKicks = (pcm.isSet("kick_history")) ? pcm.getConfigurationSection("kick_history") : pcm.createSection("kick_history");
+        final String section = String.valueOf(prevKicks.getKeys(false).size()) + ".";
+        prevKicks.set(section + "kicker", pcm.getString("last_kick.kicker", "Unknown"));
+        prevKicks.set(section + "reason", pcm.getString("last_kick.reason", e.getReason().replaceAll("\\r?\\n", " ")));
+        prevKicks.set(section + "timestamp", pcm.isSet("last_kick.timestamp") ? pcm.getLong("last_kick.timestamp") : null);
+        if (pcm.isSet("last_kick")) pcm.set("last_kick", null); // clear last_kick
     }
 
 }

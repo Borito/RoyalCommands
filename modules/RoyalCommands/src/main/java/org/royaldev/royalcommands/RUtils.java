@@ -753,6 +753,20 @@ public class RUtils {
     }
 
     /**
+     * Kicks a player and sets the last kick for history writing.
+     *
+     * @param kicked      Player to kick
+     * @param reason Reason for kick
+     */
+    public static void kickPlayer(final Player kicked, final CommandSender kicker, final String reason) {
+        final PConfManager pcm = PConfManager.getPConfManager(kicked);
+        pcm.set("last_kick.kicker", (kicker == null) ? "Unknown" : kicker.getName());
+        pcm.set("last_kick.reason", decolorize(reason));
+        pcm.set("last_kick.timestamp", System.currentTimeMillis());
+        kicked.kickPlayer(RUtils.getMessage(Config.kickFormat, reason, kicker));
+    }
+
+    /**
      * Schedules a player kick via the Bukkit scheduler. Will run as soon as a spot frees for the event.
      *
      * @param p      Player to kick

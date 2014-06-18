@@ -40,12 +40,12 @@ public class CmdKick implements CommandExecutor {
             }
             if (args.length == 1) {
                 plugin.getServer().broadcast(RUtils.getInGameMessage(Config.igKickFormat, Config.kickMessage, t, cs), "rcmds.see.kick");
-                t.kickPlayer(RUtils.getMessage(Config.kickFormat, Config.kickMessage, cs));
+                RUtils.kickPlayer(t, cs, Config.kickMessage);
                 return true;
             } else if (args.length > 1) {
                 String kickMessage = RUtils.colorize(RoyalCommands.getFinalArg(args, 1));
                 plugin.getServer().broadcast(RUtils.getInGameMessage(Config.igKickFormat, kickMessage, t, cs), "rcmds.see.kick");
-                t.kickPlayer(RUtils.getMessage(Config.kickFormat, kickMessage, cs));
+                RUtils.kickPlayer(t, cs, kickMessage);
                 return true;
             }
         }
