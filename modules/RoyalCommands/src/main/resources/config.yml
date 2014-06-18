@@ -198,8 +198,8 @@ kicks:
 ###
 
 bans:
-  # Commands to be issued before a player is kicked when banned. These only run on permabans. All commands are sent by the
-  # player that did the banning, unless the command is prefixed with "@" - those are sent from console.
+  # Commands to be issued before a player is kicked when banned. These only run on permabans. All commands are sent by
+  # the player that did the banning, unless the command is prefixed with "@" - those are sent from console.
   actions:
     - "@lwc admin purge {name}" # Does /lwc admin purge {name} in the console.
     - "me ultrabanned {name}" # Does /me ultrabanned {name} from the banner.
@@ -207,7 +207,9 @@ bans:
     messages:
       # The default ban message for /ban
       default: "&4Banhammered!"
+      # The format to show to players in-game when someone is banned
       ingame_format: "&7{kdispname}&c was banned by &7{dispname}&c for &7{reason}&c."
+      # The format to show to the banned player
       format: "&4Banned&r: {reason}&r\nBy {dispname}"
   unban:
     messages:
@@ -471,10 +473,10 @@ worldmanager:
     remove_potion_effects: true
     # List of groups (can be named whatever)
     groups:
-      creative:
+      survival:
       - "world"
       - "world_nether"
-      survival:
+      creative:
       - "freebuild"
   # Use Multiverse world names? If Multiverse-Core is not installed, this makes no difference.
   multiverse_world_names: true
