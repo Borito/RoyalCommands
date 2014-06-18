@@ -1149,529 +1149,703 @@ reflectcommands:
     class: CmdRcmds
 
 permissions:
-  rcmds.level:
-    description: Allows you to level your XP up by 1
-    default: op
-  rcmds.setlevel:
-    description: Allows you to set your XP level
-    default: op
-  rcmds.sci:
-    description: Allows you to selectively clear inventories
-    default: op
-  rcmds.speak:
-    description: Allows you to spoof a message
-    default: op
-  rcmds.facepalm:
-    description: Allows you to facepalm
-    default: op
-  rcmds.slap:
-    description: Allows you to slap another player
-    default: op
-  rcmds.harm:
-    description: Allows you to damage another player
-    default: op
-  rcmds.starve:
-    description: Allows you to starve another player
-    default: op
-  rcmds.setarmor:
-    description: Allows you to set your armor
-    default: op
-  rcmds.getip:
-    description: Allows you to get the IP of another player
-    default: op
-  rcmds.compareip:
-    description: Allows you to compare to players' IPs
-    default: op
-  rcmds.ragequit:
-    description: Allows you to ragequit.
-    default: op
-  rcmds.quit:
-    description: Allows you to quit.
-    default: op
-  rcmds.rank:
-    description: Allows you to check the rank of a player.
-    default: op
-  rcmds.freeze:
-    description: Allows you to freeze a player.
-    default: op
-  rcmds.fakeop:
-    description: Allows you to fake op.
-    default: op
-  rcmds.vtp:
-    description: Allows you to override teleport.
-    default: op
-  rcmds.vtphere:
-    description: Allows you to override teleporthere.
-    default: op
-  rcmds.megastrike:
-    description: Allows you to call a mega-strike.
-    default: op
-  rcmds.pext:
-    description: Allows you to extinguish players.
-    default: op
-  rcmds.item:
-    description: Allows you to spawn items.
-    default: op
-  rcmds.fixchunk:
-    description: Allows you to fix chunk errors.
-    default: true
-  rcmds.weather:
-    description: Allows you to change weather.
-    default: op
-  rcmds.clearinventory:
-    description: Allows you to clear your inventory.
-    default: op
-  rcmds.give:
-    description: Allows you to give items to players.
-    default: op
-  rcmds.message:
-    description: Allows you to private message.
-    default: op
-  rcmds.reply:
-    description: Allows you to reply to private messages.
-    default: op
-  rcmds.gamemode:
-    description: Allows you to change your gamemode.
-    default: op
-  rcmds.mute:
-    description: Allows you to mute players.
-    default: op
-  rcmds.ban:
-    description: Allows you to ban players.
-    default: op
-  rcmds.time:
-    description: Allows you to change the time.
-    default: op
-  rcmds.home:
-    description: Allows you to go home.
-    default: op
-  rcmds.sethome:
-    description: Allows you to set a home.
-    default: op
-  rcmds.sethome.multi:
-    description: Allows you to set multiple homes.
-    default: op
-  rcmds.delhome:
-    description: Allows you to delete a home.
-    default: op
-  rcmds.listhome:
-    description: Allows you to list your homes.
-    default: op
-  rcmds.strike:
-    description: Allows you to strike lightning.
-    default: op
-  rcmds.jump:
-    description: Allows you to jump to your cursor.
-    default: op
-  rcmds.warn:
-    description: Allows you to warn players.
-    default: op
-  rcmds.clearwarns:
-    description: Allows you to clear warnings on players.
-    default: op
-  rcmds.warp:
-    description: Allows you to warp.
-    default: op
-  rcmds.setwarp:
-    description: Allows you to set warp points.
-    default: op
-  rcmds.delwarp:
-    description: Allows you to delete warps.
-    default: op
-  rcmds.repair:
-    description: Allows you to repair items.
-    default: op
-  rcmds.heal:
-    description: Allows you to heal yourself.
-    default: op
-  rcmds.unban:
-    description: Allows you to unban players.
-    default: op
-  rcmds.feed:
-    description: Allows you to feed yourself.
-    default: op
-  rcmds.setspawn:
-    description: Allows you to set the spawn of the world.
-    default: op
-  rcmds.god:
-    description: Allows you to use god mode.
-    default: op
-  rcmds.spawn:
-    description: Allows you to go to your world's spawn.
-    default: op
-  rcmds.banip:
-    description: Allows you to ban IPs.
-    default: op
-  rcmds.unbanip:
-    description: Allows you to unban IPs.
-    default: op
-  rcmds.list:
-    description: Allows you to see who is online.
-    default: op
-  rcmds.back:
-    description: Allows you to return to where you were.
-    default: op
-  rcmds.teleport:
-    description: Allows you to teleport to other players.
-    default: op
-  rcmds.teleporthere:
-    description: Allows you to teleport other players to you.
-    default: op
-  rcmds.teleportrequest:
-    description: Allows you to ask other players to teleport.
-    default: op
-  rcmds.teleportrequesthere:
-    description: Allows you to ask other players to teleport to you.
-    default: op
-  rcmds.teleportaccept:
-    description: Allows you to accept a teleport request.
-    default: op
-  rcmds.teleportdeny:
-    description: Allows you to deny a teleport request.
-    default: op
-  rcmds.listwarns:
-    description: Allows you to list your warnings.
-    default: op
-  rcmds.more:
-    description: Allows you to give yourself more of the item in hand.
-    default: op
-  rcmds.messagespy:
-    description: Allows you to spy on private messages.
-    default: op
-  rcmds.spawnmob:
-    description: Allows you to spawn mobs.
-    default: op
-  rcmds.afk:
-    description: Allows you to mark yourself as AFK.
-    default: op
-  rcmds.assign:
-    description: Allows you to assign a command to a block.
-    default: op
-  rcmds.onehitkill:
-    description: Allows you to kill anything instantly.
-    default: op
-  rcmds.burn:
-    description: Allows you to set players on fire.
-    default: op
-  rcmds.kick:
-    description: Allows you to a player.
-    default: op
-  rcmds.kickall:
-    description: Allows you to kick every player.
-    default: op
-  rcmds.world:
-    description: Allows you to teleport between worlds.
-    default: op
-  rcmds.jail:
-    description: Allows you to jail players.
-    default: op
-  rcmds.setjail:
-    description: Allows you to set jails.
-    default: op
-  rcmds.less:
-    description: Allows you to get one of the item in hand.
-    default: op
-  rcmds.spawner:
-    description: Allows you to change the type of a mob spawner.
-    default: op
-  rcmds.teleportplayertoplayer:
-    description: Allows you to teleport players to each other.
-    default: op
-  rcmds.motd:
-    description: Allows you to see the message of the day.
-    default: op
-  rcmds.deljail:
-    description: Allows you to delete a jail.
-    default: op
-  rcmds.force:
-    description: Allows you to run a command as another player.
-    default: op
-  rcmds.ping:
-    description: Allows you to use /ping.
-    default: op
-  rcmds.invsee:
-    description: Allows you see another player's inventory.
-    default: op
-  rcmds.realname:
-    description: Allows you to see a player's real name.
-    default: op
-  rcmds.nick:
-    description: Allows you to set a player's display name.
-    default: op
-  rcmds.ingot2block:
-    description: Allows you to make raw materials into blocks.
-    default: op
-  rcmds.near:
-    description: Allows you to see nearby players.
-    default: op
-  rcmds.kill:
-    description: Allows you to kill other players.
-    default: op
-  rcmds.suicide:
-    description: Allows you to kill yourself.
-    default: op
-  rcmds.killall:
-    description: Allows you to kill all players on the server.
-    default: op
-  rcmds.muteall:
-    description: Allows you to mute all players on the server.
-    default: op
-  rcmds.kit:
-    description: Allows you to spawn kits.
-    default: op
-  rcmds.rules:
-    description: Allows you to see server rules.
-    default: op
-  rcmds.help:
-    description: Allows you to see server help.
-    default: op
-  rcmds.broadcast:
-    description: Allows you to broadcast messages to the server.
-    default: op
-  rcmds.hug:
-    description: Allows you to hug other players.
-    default: op
-  rcmds.explode:
-    description: Allows you to explode other players.
-    default: op
-  rcmds.ride:
-    description: Allows you to ride on other players.
-    default: op
-  rcmds.teleportposition:
-    description: Allows you to teleport to a coordinate point.
-    default: op
-  rcmds.ignore:
-    description: Allows you to ignore other players.
-    default: op
-  rcmds.coords:
-    description: Allows you to see your coordinates.
-    default: op
-  rcmds.teleportall:
-    description: Allows you to teleport everyone to you.
-    default: op
-  rcmds.teleportrequestall:
-    description: Allows you to request everyone to teleport to you.
-    default: op
-  rcmds.vip:
-    description: Allows you to modify the VIP list.
-    default: op
-  rcmds.dump:
-    description: Allows you to store your inventory in a chest.
-    default: op
-  rcmds.seen:
-    description: Allows you to see when a player was last online.
-    default: op
-  rcmds.tempban:
-    description: Allows you to temporarily ban a player.
-    default: op
-  rcmds.teleporttoggle:
-    description: Allows you to toggle teleportation.
-    default: op
-  rcmds.kits:
-    description: Allows you to list available kits.
-    default: op
-  rcmds.lag:
-    description: Allows you to poll the ticks per second.
-    default: op
-  rcmds.mem:
-    description: Allows you to see the memory usage.
-    default: op
-  rcmds.entities:
-    description: Allows you to see nearby entities.
-    default: op
-  rcmds.invmod:
-    description: Allows you to modify other players' inventories.
-    default: op
-  rcmds.workbench:
-    description: Allows you to open a workbench anywhere.
-    default: op
-  rcmds.enchantingtable:
-    description: Allows you to open an enchanting table anywhere.
-    default: op
-  rcmds.trade:
-    description: Allows you to trade with other players.
-    default: op
-  rcmds.furnace:
-    description: Allows you to remotely open a furnace.
-    default: op
-  rcmds.enchant:
-    description: Allows you to enchant items.
-    default: op
-  rcmds.fireball:
-    description: Allows you to launch a fireball.
-    default: op
-  rcmds.fly:
-    description: Allows you to toggle flymode.
-    default: op
-  rcmds.whitelist:
-    description: Allows you to manage the dynamic whitelist.
-    default: op
-  rcmds.playertime:
-    description: Allows you to change other players' times.
-    default: op
-  rcmds.compass:
-    description: Allows you to change where your compass points.
-    default: op
-  rcmds.helmet:
-    description: Allows you to change your helmet.
-    default: op
-  rcmds.worldmanager:
-    description: Allows you to manage worlds.
-    default: op
-  rcmds.biome:
-    description: Allows you to change biomes.
-    default: op
-  rcmds.getid:
-    description: Allows you to get the ID of the item in hand.
-    default: op
-  rcmds.buddha:
-    description: Allows you to toggle buddha mode.
-    default: op
-  rcmds.erase:
-    description: Allows you to remove entities.
-    default: op
-  rcmds.whois:
-    description: Allows you to look players up.
-    default: op
-  rcmds.mobignore:
-    description: Allows you to toggle if mobs ignore you.
-    default: op
-  rcmds.monitor:
-    description: Allows you to watch other players.
-    default: op
-  rcmds.garbagecollector:
-    description: Allows you to run the Java garbage collector.
-    default: op
-  rcmds.backpack:
-    description: Allows you to open a personal backpack.
-    default: op
-  rcmds.usage:
-    description: Allows you to view the usage of other commands.
-    default: op
-  rcmds.baninfo:
-    description: Allows you to view info about bans.
-    default: op
-  rcmds.banlist:
-    description: Allows you to see all banned players.
-    default: op
-  rcmds.flyspeed:
-    description: Allows you to change your flying speed.
-    default: op
-  rcmds.walkspeed:
-    description: Allows you to change your walking speed.
-    default: op
   rcmds.accountstatus:
+    command: accountstatus
+    default: op
     description: Allows you to check if a player name is premium.
+  rcmds.afk:
+    command: afk
     default: op
-  rcmds.playersearch:
-    description: Allows you to search for a player.
+    description: Allows you to mark yourself as AFK.
+  rcmds.assign:
+    command: assign
     default: op
-  rcmds.deafen:
-    description: Allows you to deafen a player.
-    default: op
-  rcmds.rename:
-    description: Allows you to rename an item.
-    default: op
-  rcmds.lore:
-    description: Allows you to set lore on an item.
-    default: op
-  rcmds.setuserdata:
-    description: Allows you to set userdata.
-    default: op
-  rcmds.firework:
-    description: Allows you to set firework effects.
-    default: op
-  rcmds.rocket:
-    description: Allows you to shoot a player into the sky.
-    default: op
-  rcmds.effect:
-    description: Allows you to apply custom potion effects on players.
-    default: op
-  rcmds.banhistory:
-    description: Allows you to view ban history of players.
-    default: op
-  rcmds.mail:
-    description: Allows you to view and clear your mail.
-    default: op
-  rcmds.mail.send:
-    description: Allows you to send mail to a player.
-    default: op
-  rcmds.freezetime:
-    description: Allows you to freeze the time.
-    default: op
-  rcmds.signedit:
-    description: Allows you to edit signs.
-    default: op
-  rcmds.signedit.color:
-    description: Allows you to use colors on signs.
-    default: op
-  rcmds.potion:
-    description: Allows you to add potion effects to a potion.
-    default: op
-  rcmds.setcharacteristic:
-    description: Allows you to set player characteristics.
-    default: op
-  rcmds.nameentity:
-    description: Allows you to set an entity's name.
-    default: op
-  rcmds.head:
-    description: Allows you to set a head to a player.
-    default: op
-  rcmds.findip:
-    description: Allows you to find players with matching IPs.
-    default: op
-  rcmds.map:
-    description: Allows you to adjust maps.
-    default: op
-  rcmds.deletebanhistory:
-    description: Allows you to remove ban history records.
-    default: op
-  rcmds.publicassign:
-    description: Allows you to add public commands to items.
-    default: op
-  rcmds.enderchest:
-    description: Allows you to view a player's ender chest.
-    default: op
-  rcmds.recipe:
-    description: Allows you to view recipes of any item.
-    default: op
-  rcmds.spawninfo:
-    description: Allows you to get information about spawned items.
-    default: op
+    description: Allows you to assign a command to a block.
   rcmds.attributes:
+    command: attributes
+    default: op
     description: Allows you to modify item attributes.
+  rcmds.back:
+    command: back
     default: op
-  rcmds.saveplayer:
-    description: Allows you to save player data.
+    description: Allows you to return to where you were.
+  rcmds.backpack:
+    command: backpack
     default: op
-  rcmds.loadplayer:
-    description: Allows you to load player data.
+    description: Allows you to open a personal backpack.
+  rcmds.ban:
+    command: ban
     default: op
-  rcmds.teleportrequestcancel:
-    description: Allows you to cancel a teleport reuqest.
+    description: Allows you to ban players.
+  rcmds.banhistory:
+    command: banhistory
     default: op
+    description: Allows you to view ban history of players.
+  rcmds.baninfo:
+    command: baninfo
+    default: op
+    description: Allows you to view info about bans.
+  rcmds.banip:
+    command: banip
+    default: op
+    description: Allows you to ban IPs.
+  rcmds.banlist:
+    command: banlist
+    default: op
+    description: Allows you to see all banned players.
+  rcmds.biome:
+    command: biome
+    default: op
+    description: Allows you to change biomes.
+  rcmds.broadcast:
+    command: broadcast
+    default: op
+    description: Allows you to broadcast messages to the server.
+  rcmds.buddha:
+    command: buddha
+    default: op
+    description: Allows you to toggle buddha mode.
+  rcmds.burn:
+    command: burn
+    default: op
+    description: Allows you to set players on fire.
+  rcmds.clearinventory:
+    command: clearinventory
+    default: op
+    description: Allows you to clear your inventory.
+  rcmds.clearwarns:
+    command: clearwarns
+    default: op
+    description: Allows you to clear warnings on players.
   rcmds.commandspy:
+    command: commandspy
+    default: op
     description: Allows you to spy on commands used.
+  rcmds.compareip:
+    command: compareip
     default: op
+    description: Allows you to compare to players' IPs
+  rcmds.compass:
+    command: compass
+    default: op
+    description: Allows you to change where your compass points.
+  rcmds.coords:
+    command: coords
+    default: op
+    description: Allows you to see your coordinates.
+  rcmds.deafen:
+    command: deafen
+    default: op
+    description: Allows you to deafen a player.
+  rcmds.deletebanhistory:
+    command: deletebanhistory
+    default: op
+    description: Allows you to remove ban history records.
+  rcmds.delhome:
+    command: delhome
+    default: op
+    description: Allows you to delete a home.
+  rcmds.deljail:
+    command: deljail
+    default: op
+    description: Allows you to delete a jail.
+  rcmds.delwarp:
+    command: delwarp
+    default: op
+    description: Allows you to delete warps.
+  rcmds.dump:
+    command: dump
+    default: op
+    description: Allows you to store your inventory in a chest.
+  rcmds.effect:
+    command: effect
+    default: op
+    description: Allows you to apply custom potion effects on players.
+  rcmds.enchant:
+    command: enchant
+    default: op
+    description: Allows you to enchant items.
+  rcmds.enchantingtable:
+    command: enchantingtable
+    default: op
+    description: Allows you to open an enchanting table anywhere.
+  rcmds.enderchest:
+    command: enderchest
+    default: op
+    description: Allows you to view a player's ender chest.
+  rcmds.entities:
+    command: entities
+    default: op
+    description: Allows you to see nearby entities.
+  rcmds.erase:
+    command: erase
+    default: op
+    description: Allows you to remove entities.
+  rcmds.explode:
+    command: explode
+    default: op
+    description: Allows you to explode other players.
+  rcmds.facepalm:
+    command: facepalm
+    default: op
+    description: Allows you to facepalm
+  rcmds.fakeop:
+    command: fakeop
+    default: op
+    description: Allows you to fake op.
+  rcmds.feed:
+    command: feed
+    default: op
+    description: Allows you to feed yourself.
+  rcmds.findip:
+    command: findip
+    default: op
+    description: Allows you to find players with matching IPs.
+  rcmds.fireball:
+    command: fireball
+    default: op
+    description: Allows you to launch a fireball.
+  rcmds.firework:
+    command: firework
+    default: op
+    description: Allows you to set firework effects.
+  rcmds.fixchunk:
+    command: fixchunk
+    default: true
+    description: Allows you to fix chunk errors.
+  rcmds.fly:
+    command: fly
+    default: op
+    description: Allows you to toggle flymode.
+  rcmds.flyspeed:
+    command: flyspeed
+    default: op
+    description: Allows you to change your flying speed.
+  rcmds.force:
+    command: force
+    default: op
+    description: Allows you to run a command as another player.
+  rcmds.freeze:
+    command: freeze
+    default: op
+    description: Allows you to freeze a player.
+  rcmds.freezetime:
+    command: freezetime
+    default: op
+    description: Allows you to freeze the time.
+  rcmds.furnace:
+    command: furnace
+    default: op
+    description: Allows you to remotely open a furnace.
+  rcmds.gamemode:
+    command: gamemode
+    default: op
+    description: Allows you to change your gamemode.
+  rcmds.garbagecollector:
+    command: garbagecollector
+    default: op
+    description: Allows you to run the Java garbage collector.
+  rcmds.getid:
+    command: getid
+    default: op
+    description: Allows you to get the ID of the item in hand.
+  rcmds.getip:
+    command: getip
+    default: op
+    description: Allows you to get the IP of another player
+  rcmds.give:
+    command: give
+    default: op
+    description: Allows you to give items to players.
+  rcmds.god:
+    command: god
+    default: op
+    description: Allows you to use god mode.
+  rcmds.harm:
+    command: harm
+    default: op
+    description: Allows you to damage another player
+  rcmds.head:
+    command: head
+    default: op
+    description: Allows you to set a head to a player.
+  rcmds.heal:
+    command: heal
+    default: op
+    description: Allows you to heal yourself.
+  rcmds.helmet:
+    command: helmet
+    default: op
+    description: Allows you to change your helmet.
+  rcmds.help:
+    command: help
+    default: op
+    description: Allows you to see server help.
+  rcmds.home:
+    command: home
+    default: op
+    description: Allows you to go home.
+  rcmds.hug:
+    command: hug
+    default: op
+    description: Allows you to hug other players.
+  rcmds.ignore:
+    command: ignore
+    default: op
+    description: Allows you to ignore other players.
+  rcmds.ingot2block:
+    command: ingot2block
+    default: op
+    description: Allows you to make raw materials into blocks.
+  rcmds.invmod:
+    command: invmod
+    default: op
+    description: Allows you to modify other players' inventories.
+  rcmds.invsee:
+    command: invsee
+    default: op
+    description: Allows you see another player's inventory.
+  rcmds.item:
+    command: item
+    default: op
+    description: Allows you to spawn items.
+  rcmds.jail:
+    command: jail
+    default: op
+    description: Allows you to jail players.
+  rcmds.jump:
+    command: jump
+    default: op
+    description: Allows you to jump to your cursor.
+  rcmds.kick:
+    command: kick
+    default: op
+    description: Allows you to a player.
+  rcmds.kickall:
+    command: kickall
+    default: op
+    description: Allows you to kick every player.
   rcmds.kickhistory:
+    command: kickhistory
+    default: op
     description: Allows you to view your own kicks.
+  rcmds.kill:
+    command: kill
     default: op
+    description: Allows you to kill other players.
+  rcmds.killall:
+    command: killall
+    default: op
+    description: Allows you to kill all players on the server.
+  rcmds.kit:
+    command: kit
+    default: op
+    description: Allows you to spawn kits.
+  rcmds.kits:
+    command: kits
+    default: op
+    description: Allows you to list available kits.
+  rcmds.lag:
+    command: lag
+    default: op
+    description: Allows you to poll the ticks per second.
+  rcmds.less:
+    command: less
+    default: op
+    description: Allows you to get one of the item in hand.
+  rcmds.level:
+    command: level
+    default: op
+    description: Allows you to level your XP up by 1
+  rcmds.list:
+    command: list
+    default: op
+    description: Allows you to see who is online.
+  rcmds.listhome:
+    command: listhome
+    default: op
+    description: Allows you to list your homes.
+  rcmds.listwarns:
+    command: listwarns
+    default: op
+    description: Allows you to list your warnings.
+  rcmds.loadplayer:
+    command: loadplayer
+    default: op
+    description: Allows you to load player data.
+  rcmds.lore:
+    command: lore
+    default: op
+    description: Allows you to set lore on an item.
+  rcmds.mail:
+    command: mail
+    default: op
+    description: Allows you to view and clear your mail.
+  rcmds.mail.send:
+    command: mail
+    default: op
+    description: Allows you to send mail to a player.
+  rcmds.map:
+    command: map
+    default: op
+    description: Allows you to adjust maps.
+  rcmds.megastrike:
+    command: megastrike
+    default: op
+    description: Allows you to call a mega-strike.
+  rcmds.mem:
+    command: mem
+    default: op
+    description: Allows you to see the memory usage.
+  rcmds.message:
+    command: message
+    default: op
+    description: Allows you to private message.
+  rcmds.messagespy:
+    command: messagespy
+    default: op
+    description: Allows you to spy on private messages.
+  rcmds.mobignore:
+    command: mobignore
+    default: op
+    description: Allows you to toggle if mobs ignore you.
+  rcmds.monitor:
+    command: monitor
+    default: op
+    description: Allows you to watch other players.
+  rcmds.more:
+    command: more
+    default: op
+    description: Allows you to give yourself more of the item in hand.
+  rcmds.motd:
+    command: motd
+    default: op
+    description: Allows you to see the message of the day.
+  rcmds.mute:
+    command: mute
+    default: op
+    description: Allows you to mute players.
+  rcmds.muteall:
+    command: muteall
+    default: op
+    description: Allows you to mute all players on the server.
+  rcmds.nameentity:
+    command: nameentity
+    default: op
+    description: Allows you to set an entity's name.
+  rcmds.near:
+    command: near
+    default: op
+    description: Allows you to see nearby players.
+  rcmds.nick:
+    command: nick
+    default: op
+    description: Allows you to set a player's display name.
+  rcmds.onehitkill:
+    command: onehitkill
+    default: op
+    description: Allows you to kill anything instantly.
+  rcmds.pext:
+    command: pext
+    default: op
+    description: Allows you to extinguish players.
+  rcmds.ping:
+    command: ping
+    default: op
+    description: Allows you to use /ping.
+  rcmds.playersearch:
+    command: playersearch
+    default: op
+    description: Allows you to search for a player.
+  rcmds.playertime:
+    command: playertime
+    default: op
+    description: Allows you to change other players' times.
+  rcmds.potion:
+    command: potion
+    default: op
+    description: Allows you to add potion effects to a potion.
+  rcmds.publicassign:
+    command: publicassign
+    default: op
+    description: Allows you to add public commands to items.
+  rcmds.quit:
+    command: quit
+    default: op
+    description: Allows you to quit.
+  rcmds.ragequit:
+    command: ragequit
+    default: op
+    description: Allows you to ragequit.
+  rcmds.rank:
+    command: rank
+    default: op
+    description: Allows you to check the rank of a player.
   rcmds.rcmds:
-    description: Allows you to reload RoyalCommands' config.
+    command: rcmds
     default: op
+    description: Allows you to reload RoyalCommands' config.
+  rcmds.realname:
+    command: realname
+    default: op
+    description: Allows you to see a player's real name.
+  rcmds.recipe:
+    command: recipe
+    default: op
+    description: Allows you to view recipes of any item.
+  rcmds.rename:
+    command: rename
+    default: op
+    description: Allows you to rename an item.
+  rcmds.repair:
+    command: repair
+    default: op
+    description: Allows you to repair items.
+  rcmds.reply:
+    command: reply
+    default: op
+    description: Allows you to reply to private messages.
+  rcmds.ride:
+    command: ride
+    default: op
+    description: Allows you to ride on other players.
+  rcmds.rocket:
+    command: rocket
+    default: op
+    description: Allows you to shoot a player into the sky.
+  rcmds.rules:
+    command: rules
+    default: op
+    description: Allows you to see server rules.
+  rcmds.saveplayer:
+    command: saveplayer
+    default: op
+    description: Allows you to save player data.
+  rcmds.sci:
+    command: sci
+    default: op
+    description: Allows you to selectively clear inventories
+  rcmds.seen:
+    command: seen
+    default: op
+    description: Allows you to see when a player was last online.
+  rcmds.setarmor:
+    command: setarmor
+    default: op
+    description: Allows you to set your armor
+  rcmds.setcharacteristic:
+    command: setcharacteristic
+    default: op
+    description: Allows you to set player characteristics.
+  rcmds.sethome:
+    command: sethome
+    default: op
+    description: Allows you to set a home.
+  rcmds.sethome.multi:
+    command: sethome
+    default: op
+    description: Allows you to set multiple homes.
+  rcmds.setjail:
+    command: setjail
+    default: op
+    description: Allows you to set jails.
+  rcmds.setlevel:
+    command: setlevel
+    default: op
+    description: Allows you to set your XP level
+  rcmds.setspawn:
+    command: setspawn
+    default: op
+    description: Allows you to set the spawn of the world.
+  rcmds.setuserdata:
+    command: setuserdata
+    default: op
+    description: Allows you to set userdata.
+  rcmds.setwarp:
+    command: setwarp
+    default: op
+    description: Allows you to set warp points.
+  rcmds.signedit:
+    command: signedit
+    default: op
+    description: Allows you to edit signs.
+  rcmds.signedit.color:
+    command: signedit
+    default: op
+    description: Allows you to use colors on signs.
+  rcmds.slap:
+    command: slap
+    default: op
+    description: Allows you to slap another player
+  rcmds.spawn:
+    command: spawn
+    default: op
+    description: Allows you to go to your world's spawn.
+  rcmds.spawner:
+    command: spawner
+    default: op
+    description: Allows you to change the type of a mob spawner.
+  rcmds.spawninfo:
+    command: spawninfo
+    default: op
+    description: Allows you to get information about spawned items.
+  rcmds.spawnmob:
+    command: spawnmob
+    default: op
+    description: Allows you to spawn mobs.
+  rcmds.speak:
+    command: speak
+    default: op
+    description: Allows you to spoof a message
+  rcmds.starve:
+    command: starve
+    default: op
+    description: Allows you to starve another player
+  rcmds.strike:
+    command: strike
+    default: op
+    description: Allows you to strike lightning.
+  rcmds.suicide:
+    command: suicide
+    default: op
+    description: Allows you to kill yourself.
+  rcmds.teleport:
+    command: teleport
+    default: op
+    description: Allows you to teleport to other players.
+  rcmds.teleportaccept:
+    command: teleportaccept
+    default: op
+    description: Allows you to accept a teleport request.
+  rcmds.teleportall:
+    command: teleportall
+    default: op
+    description: Allows you to teleport everyone to you.
+  rcmds.teleportdeny:
+    command: teleportdeny
+    default: op
+    description: Allows you to deny a teleport request.
+  rcmds.teleporthere:
+    command: teleporthere
+    default: op
+    description: Allows you to teleport other players to you.
+  rcmds.teleportplayertoplayer:
+    command: teleportplayertoplayer
+    default: op
+    description: Allows you to teleport players to each other.
+  rcmds.teleportposition:
+    command: teleportposition
+    default: op
+    description: Allows you to teleport to a coordinate point.
+  rcmds.teleportrequest:
+    command: teleportrequest
+    default: op
+    description: Allows you to ask other players to teleport.
+  rcmds.teleportrequestall:
+    command: teleportrequestall
+    default: op
+    description: Allows you to request everyone to teleport to you.
+  rcmds.teleportrequestcancel:
+    command: teleportrequestcancel
+    default: op
+    description: Allows you to cancel a teleport reuqest.
+  rcmds.teleportrequesthere:
+    command: teleportrequesthere
+    default: op
+    description: Allows you to ask other players to teleport to you.
+  rcmds.teleporttoggle:
+    command: teleporttoggle
+    default: op
+    description: Allows you to toggle teleportation.
+  rcmds.tempban:
+    command: tempban
+    default: op
+    description: Allows you to temporarily ban a player.
+  rcmds.time:
+    command: time
+    default: op
+    description: Allows you to change the time.
+  rcmds.trade:
+    command: trade
+    default: op
+    description: Allows you to trade with other players.
+  rcmds.unban:
+    command: unban
+    default: op
+    description: Allows you to unban players.
+  rcmds.unbanip:
+    command: unbanip
+    default: op
+    description: Allows you to unban IPs.
+  rcmds.usage:
+    command: usage
+    default: op
+    description: Allows you to view the usage of other commands.
+  rcmds.vip:
+    command: vip
+    default: op
+    description: Allows you to modify the VIP list.
+  rcmds.vtp:
+    command: vtp
+    default: op
+    description: Allows you to override teleport.
+  rcmds.vtphere:
+    command: vtphere
+    default: op
+    description: Allows you to override teleporthere.
+  rcmds.walkspeed:
+    command: walkspeed
+    default: op
+    description: Allows you to change your walking speed.
+  rcmds.warn:
+    command: warn
+    default: op
+    description: Allows you to warn players.
+  rcmds.warp:
+    command: warp
+    default: op
+    description: Allows you to warp.
+  rcmds.weather:
+    command: weather
+    default: op
+    description: Allows you to change weather.
+  rcmds.whitelist:
+    command: whitelist
+    default: op
+    description: Allows you to manage the dynamic whitelist.
+  rcmds.whois:
+    command: whois
+    default: op
+    description: Allows you to look players up.
+  rcmds.workbench:
+    command: workbench
+    default: op
+    description: Allows you to open a workbench anywhere.
+  rcmds.world:
+    command: world
+    default: op
+    description: Allows you to teleport between worlds.
+  rcmds.worldmanager:
+    command: worldmanager
+    default: op
+    description: Allows you to manage worlds.
 
   rcmds.spawnmob.*:
+    command: spawnmob
     description: Allows you to spawn all mobs.
     default: op
 
   rcmds.enchant.levels:
+    command: enchant
     description: Allows you to enchant beyond vanilla levels.
     default: false
   rcmds.enchant.illegal:
+    command: enchant
     description: Allows you to enchant with enchantments that are not allowed together in vanilla.
     default: false
 
   rcmds.enchant.*:
+    command: enchant
     description: Allows all types of enchantments.
     default: false
     children:
@@ -1679,6 +1853,7 @@ permissions:
       rcmds.enchant.illegal: true
 
   rcmds.pluginmanager.*:
+    command: pluginmanager
     description: Allows you to use all of PluginManager's features.
     default: false
     children:
@@ -1699,56 +1874,73 @@ permissions:
       rcmds.pluginmanager.delete: true
       rcmds.pluginmanager.unload: true
 
-  rcmds.pluginmanager.load:
-    description: Allows you to use PluginManager's load feature.
-    default: op
-  rcmds.pluginmanager.disable:
-    description: Allows you to use PluginManager's disable feature.
-    default: op
-  rcmds.pluginmanager.enable:
-    description: Allows you to use PluginManager's enable feature.
-    default: op
-  rcmds.pluginmanager.reload:
-    description: Allows you to use PluginManager's reload feature.
-    default: op
-  rcmds.pluginmanager.update:
-    description: Allows you to use PluginManager's update feature.
-    default: op
-  rcmds.pluginmanager.reloadall:
-    description: Allows you to use PluginManager's reloadall feature.
-    default: op
-  rcmds.pluginmanager.list:
-    description: Allows you to use PluginManager's list feature.
-    default: op
-  rcmds.pluginmanager.info:
-    description: Allows you to use PluginManager's info feature.
-    default: op
-  rcmds.pluginmanager.help:
-    description: Allows you to use PluginManager's help feature.
-    default: op
-  rcmds.pluginmanager.updatecheck:
-    description: Allows you to use PluginManager's updatecheck feature.
-    default: op
-  rcmds.pluginmanager.updatecheckall:
-    description: Allows you to use PluginManager's updatecheckall feature.
-    default: op
-  rcmds.pluginmanager.download:
-    description: Allows you to use PluginManager's download feature.
-    default: op
-  rcmds.pluginmanager.downloadlink:
-    description: Allows you to use PluginManager's downloadlink feature.
-    default: op
-  rcmds.pluginmanager.findtag:
-    description: Allows you to use PluginManager's findtag feature.
-    default: op
   rcmds.pluginmanager.delete:
+    command: pluginmanager
+    default: op
     description: Allows you to use PluginManager's delete feature.
+  rcmds.pluginmanager.disable:
+    command: pluginmanager
     default: op
+    description: Allows you to use PluginManager's disable feature.
+  rcmds.pluginmanager.download:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's download feature.
+  rcmds.pluginmanager.downloadlink:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's downloadlink feature.
+  rcmds.pluginmanager.enable:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's enable feature.
+  rcmds.pluginmanager.findtag:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's findtag feature.
+  rcmds.pluginmanager.help:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's help feature.
+  rcmds.pluginmanager.info:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's info feature.
+  rcmds.pluginmanager.list:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's list feature.
+  rcmds.pluginmanager.load:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's load feature.
+  rcmds.pluginmanager.reload:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's reload feature.
+  rcmds.pluginmanager.reloadall:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's reloadall feature.
   rcmds.pluginmanager.unload:
-    description: Allows you to use PluginManager's unload feature.
+    command: pluginmanager
     default: op
+    description: Allows you to use PluginManager's unload feature.
+  rcmds.pluginmanager.update:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's update feature.
+  rcmds.pluginmanager.updatecheck:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's updatecheck feature.
+  rcmds.pluginmanager.updatecheckall:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's updatecheckall feature.
 
   rcmds.nick.color:
+    command: nick
     description: Allows you to use color in nicknames.
     default: op
 
@@ -1756,134 +1948,178 @@ permissions:
     description: Allows you to see new update messages.
     default: op
 
-  rcmds.exempt.speak:
-    description: Makes the player immune to /speak.
-    default: false
-  rcmds.exempt.sci:
-    description: Makes the player immune to /sci.
-    default: false
-  rcmds.exempt.harm:
-    description: Makes the player immune to /harm.
-    default: false
-  rcmds.exempt.starve:
-    description: Makes the player immune to /starve.
-    default: false
-  rcmds.exempt.slap:
-    description: Makes the player immune to /slap.
-    default: false
-  rcmds.exempt.facepalm:
-    description: Makes the player immune to /facepalm.
-    default: false
-  rcmds.exempt.ragequit:
-    description: Makes the player immune to /ragequit.
-    default: false
-  rcmds.exempt.freeze:
-    description: Makes the player immune to /freeze.
-    default: false
-  rcmds.exempt.kick:
-    description: Makes the player immune to /kick.
-    default: false
-  rcmds.exempt.ban:
-    description: Makes the player immune to /ban.
-    default: false
-  rcmds.exempt.mute:
-    description: Makes the player immune to /mute.
-    default: false
-  rcmds.exempt.warn:
-    description: Makes the player immune to /warn.
-    default: false
-  rcmds.exempt.strike:
-    description: Makes the player immune to /strike.
-    default: false
-  rcmds.exempt.burn:
-    description: Makes the player immune to /burn.
-    default: false
-  rcmds.exempt.jail:
-    description: Makes the player immune to /jail.
-    default: false
-  rcmds.exempt.warp:
-    description: Makes the player immune to /warp.
-    default: false
-  rcmds.exempt.force:
-    description: Makes the player immune to /force.
-    default: false
-  rcmds.exempt.gamemode:
-    description: Makes the player immune to /gamemode.
-    default: false
-  rcmds.exempt.nick:
-    description: Makes the player immune to /nick.
-    default: false
-  rcmds.exempt.feed:
-    description: Makes the player immune to /feed.
-    default: false
-  rcmds.exempt.kill:
-    description: Makes the player immune to /kill.
-    default: false
-  rcmds.exempt.explode:
-    description: Makes the player immune to /explode.
-    default: false
-  rcmds.exempt.ride:
-    description: Makes the player immune to /ride.
-    default: false
-  rcmds.exempt.home:
-    description: Makes it so no other players can access the player's houses.
-    default: false
-  rcmds.exempt.listhome:
-    description: Makes the player immune to /listhome.
-    default: false
-  rcmds.exempt.ignore:
-    description: Makes the player immune to /ignore.
-    default: false
-  rcmds.exempt.invmod:
-    description: Makes the player immune to /invmod.
-    default: false
-  rcmds.exempt.setarmor:
-    description: Makes the player immune to /setarmor.
-    default: false
-  rcmds.exempt.monitor:
-    description: Makes the player immune to /monitor.
-    default: false
   rcmds.exempt.backpack:
+    command: backpack
+    default: false
     description: Makes the player immune to /backpack.
+  rcmds.exempt.ban:
+    command: ban
     default: false
-  rcmds.exempt.deafen:
-    description: Makes the player immune to /deafen.
+    description: Makes the player immune to /ban.
+  rcmds.exempt.burn:
+    command: burn
     default: false
-  rcmds.exempt.rocket:
-    description: Makes the player immune to /rocket.
-    default: false
-  rcmds.exempt.effect:
-    description: Makes the player immune to /effect.
-    default: false
-  rcmds.exempt.head:
-    description: Makes the player immune to /head.
-    default: false
-  rcmds.exempt.delhome:
-    description: Makes the player immune to /delhome.
-    default: false
-  rcmds.exempt.enderchest:
-    description: Makes the player immune to /enderchest.
-    default: false
-  rcmds.exempt.messagespy:
-    description: Makes the player immune to /messagespy and message spying.
-    default: false
+    description: Makes the player immune to /burn.
   rcmds.exempt.commandspy:
+    command: commandspy
+    default: false
     description: Makes the player immune to /commandspy and command spying.
+  rcmds.exempt.deafen:
+    command: deafen
     default: false
+    description: Makes the player immune to /deafen.
+  rcmds.exempt.delhome:
+    command: delhome
+    default: false
+    description: Makes the player immune to /delhome.
+  rcmds.exempt.effect:
+    command: effect
+    default: false
+    description: Makes the player immune to /effect.
+  rcmds.exempt.enderchest:
+    command: enderchest
+    default: false
+    description: Makes the player immune to /enderchest.
+  rcmds.exempt.explode:
+    command: explode
+    default: false
+    description: Makes the player immune to /explode.
+  rcmds.exempt.facepalm:
+    command: facepalm
+    default: false
+    description: Makes the player immune to /facepalm.
+  rcmds.exempt.feed:
+    command: feed
+    default: false
+    description: Makes the player immune to /feed.
+  rcmds.exempt.force:
+    command: force
+    default: false
+    description: Makes the player immune to /force.
+  rcmds.exempt.freeze:
+    command: freeze
+    default: false
+    description: Makes the player immune to /freeze.
+  rcmds.exempt.gamemode:
+    command: gamemode
+    default: false
+    description: Makes the player immune to /gamemode.
+  rcmds.exempt.harm:
+    command: harm
+    default: false
+    description: Makes the player immune to /harm.
+  rcmds.exempt.head:
+    command: head
+    default: false
+    description: Makes the player immune to /head.
+  rcmds.exempt.home:
+    command: home
+    default: false
+    description: Makes it so no other players can access the player's houses.
+  rcmds.exempt.ignore:
+    command: ignore
+    default: false
+    description: Makes the player immune to /ignore.
+  rcmds.exempt.invmod:
+    command: invmod
+    default: false
+    description: Makes the player immune to /invmod.
+  rcmds.exempt.jail:
+    command: jail
+    default: false
+    description: Makes the player immune to /jail.
+  rcmds.exempt.kick:
+    command: kick
+    default: false
+    description: Makes the player immune to /kick.
   rcmds.exempt.kickhistory:
-    description: Makes the player immune to /kickhistory.
+    command: kickhistory
     default: false
+    description: Makes the player immune to /kickhistory.
+  rcmds.exempt.kill:
+    command: kill
+    default: false
+    description: Makes the player immune to /kill.
+  rcmds.exempt.listhome:
+    command: listhome
+    default: false
+    description: Makes the player immune to /listhome.
+  rcmds.exempt.messagespy:
+    command: messagespy
+    default: false
+    description: Makes the player immune to /messagespy and message spying.
+  rcmds.exempt.monitor:
+    command: monitor
+    default: false
+    description: Makes the player immune to /monitor.
+  rcmds.exempt.mute:
+    command: mute
+    default: false
+    description: Makes the player immune to /mute.
+  rcmds.exempt.nick:
+    command: nick
+    default: false
+    description: Makes the player immune to /nick.
+  rcmds.exempt.ragequit:
+    command: ragequit
+    default: false
+    description: Makes the player immune to /ragequit.
+  rcmds.exempt.ride:
+    command: ride
+    default: false
+    description: Makes the player immune to /ride.
+  rcmds.exempt.rocket:
+    command: rocket
+    default: false
+    description: Makes the player immune to /rocket.
+  rcmds.exempt.sci:
+    command: sci
+    default: false
+    description: Makes the player immune to /sci.
+  rcmds.exempt.setarmor:
+    command: setarmor
+    default: false
+    description: Makes the player immune to /setarmor.
+  rcmds.exempt.slap:
+    command: slap
+    default: false
+    description: Makes the player immune to /slap.
+  rcmds.exempt.speak:
+    command: speak
+    default: false
+    description: Makes the player immune to /speak.
+  rcmds.exempt.starve:
+    command: starve
+    default: false
+    description: Makes the player immune to /starve.
+  rcmds.exempt.strike:
+    command: strike
+    default: false
+    description: Makes the player immune to /strike.
+  rcmds.exempt.warn:
+    command: warn
+    default: false
+    description: Makes the player immune to /warn.
+  rcmds.exempt.warp:
+    command: warp
+    default: false
+    description: Makes the player immune to /warp.
+
 
   rcmds.exempt.autoafk:
+    command: afk
     description: Makes the player immune to auto AFK.
     default: false
   rcmds.exempt.afkkick:
+    command: afk
     description: Makes the player immune to AFK kicks.
     default: false
   rcmds.exempt.nickchangelimit:
+    command: nick
     description: Makes the player immune to the nick change limit.
     default: false
   rcmds.exempt.nickspecialcharacters:
+    command: nick
     description: Makes the player immune to the nick character check.
     default: false
 
@@ -1902,6 +2138,7 @@ permissions:
     default: false
 
   rcmds.exempt.limit.spawnmob:
+    command: spawnmob
     description: Allows the player to spawn more than the server limit of mobs.
     default: false
 
@@ -1909,94 +2146,123 @@ permissions:
     description: Allows the player to spawn prohibited items.
     default: false
 
-  rcmds.others.clearinventory:
-    description: Allows the player to clear other people's inventories.
-    default: op
-  rcmds.others.megastrike:
-    description: Allows the player to /megastrike other players.
-    default: op
-  rcmds.others.pext:
-    description: Allows the player to /pext other players.
-    default: op
-  rcmds.others.strike:
-    description: Allows the player to /strike other players.
-    default: op
-  rcmds.others.god:
-    description: Allows the player to /god other players.
-    default: op
-  rcmds.others.warp:
-    description: Allows the player to /warp other players.
-    default: op
-  rcmds.others.nick:
-    description: Allows the player to /nick other players.
-    default: op
-  rcmds.others.listwarns:
-    description: Allows the player to /listwarns other players.
-    default: op
-  rcmds.others.home:
-    description: Allows the player to go to other players' homes.
-    default: op
-  rcmds.others.coords:
-    description: Allows the player to see other players' coordinates.
-    default: op
-  rcmds.others.fly:
-    description: Allows the player to toggle other players' fly ability.
-    default: op
-  rcmds.others.buddha:
-    description: Allows the player to /buddha other players.
-    default: op
-  rcmds.others.setarmor:
-    description: Allows the player to /setarmor other players.
-    default: op
   rcmds.others.backpack:
+    command: backpack
+    default: op
     description: Allows the player to /backpack other players.
+  rcmds.others.buddha:
+    command: buddha
     default: op
-  rcmds.others.ping:
-    description: Allows the player to /ping other players.
+    description: Allows the player to /buddha other players.
+  rcmds.others.clearinventory:
+    command: clearinventory
     default: op
-  rcmds.others.feed:
-    description: Allows the player to /feed other players.
-    default: op
-  rcmds.others.effect:
-    description: Allows the player to /effect other players.
-    default: op
-  rcmds.others.head:
-    description: Allows the player to /head other players.
-    default: op
-  rcmds.others.delhome:
-    description: Allows the player to /delhome other players.
-    default: op
-  rcmds.others.deafen:
-    description: Allows the player to /deafen other players.
-    default: op
-  rcmds.others.listhome:
-    description: Allows the player to /listhome other players.
-    default: op
-  rcmds.others.saveplayer:
-    description: Allows the player to /saveplayer other players.
-    default: op
-  rcmds.others.loadplayer:
-    description: Allows the player to /loadplayer other players.
-    default: op
-  rcmds.others.messagespy:
-    description: Allows the player to /messagespy other players.
-    default: op
+    description: Allows the player to clear other people's inventories.
   rcmds.others.commandspy:
+    command: commandspy
+    default: op
     description: Allows the player to /commandspy other players.
+  rcmds.others.coords:
+    command: coords
     default: op
+    description: Allows the player to see other players' coordinates.
+  rcmds.others.deafen:
+    command: deafen
+    default: op
+    description: Allows the player to /deafen other players.
+  rcmds.others.delhome:
+    command: delhome
+    default: op
+    description: Allows the player to /delhome other players.
+  rcmds.others.effect:
+    command: effect
+    default: op
+    description: Allows the player to /effect other players.
+  rcmds.others.feed:
+    command: feed
+    default: op
+    description: Allows the player to /feed other players.
+  rcmds.others.fly:
+    command: fly
+    default: op
+    description: Allows the player to toggle other players' fly ability.
+  rcmds.others.god:
+    command: god
+    default: op
+    description: Allows the player to /god other players.
+  rcmds.others.head:
+    command: head
+    default: op
+    description: Allows the player to /head other players.
+  rcmds.others.home:
+    command: home
+    default: op
+    description: Allows the player to go to other players' homes.
   rcmds.others.kickhistory:
-    description: Allows the player to /kickhistory other players.
+    command: kickhistory
     default: op
+    description: Allows the player to /kickhistory other players.
+  rcmds.others.listhome:
+    command: listhome
+    default: op
+    description: Allows the player to /listhome other players.
+  rcmds.others.listwarns:
+    command: listwarns
+    default: op
+    description: Allows the player to /listwarns other players.
+  rcmds.others.loadplayer:
+    command: loadplayer
+    default: op
+    description: Allows the player to /loadplayer other players.
+  rcmds.others.megastrike:
+    command: megastrike
+    default: op
+    description: Allows the player to /megastrike other players.
+  rcmds.others.messagespy:
+    command: messagespy
+    default: op
+    description: Allows the player to /messagespy other players.
+  rcmds.others.nick:
+    command: nick
+    default: op
+    description: Allows the player to /nick other players.
+  rcmds.others.pext:
+    command: pext
+    default: op
+    description: Allows the player to /pext other players.
+  rcmds.others.ping:
+    command: ping
+    default: op
+    description: Allows the player to /ping other players.
+  rcmds.others.saveplayer:
+    command: saveplayer
+    default: op
+    description: Allows the player to /saveplayer other players.
+  rcmds.others.setarmor:
+    command: setarmor
+    default: op
+    description: Allows the player to /setarmor other players.
+  rcmds.others.strike:
+    command: strike
+    default: op
+    description: Allows the player to /strike other players.
+  rcmds.others.warp:
+    command: warp
+    default: op
+    description: Allows the player to /warp other players.
 
   rcmds.spawn.other:
+    command: spawn
     description: Allows the player to /spawn to different worlds.
     default: op
 
   rcmds.seehidden:
+    command: list
     description: Allows the player to see hidden players in /list (VanishNoPacket).
     default: op
 
   rcmds.tpoverride:
+    command: teleporttoggle
     description: Allows the player to override /teleporttoggle settings.
     default: op
 
@@ -2057,24 +2323,30 @@ permissions:
     description: Allows the player to use free signs.
     default: op
 
-  rcmds.setarmor.none:
-    description: Allows the player to set no armor.
-    default: op
   rcmds.setarmor.chain:
+    command: setarmor
+    default: op
     description: Allows the player to set chainmail armor.
-    default: op
   rcmds.setarmor.diamond:
+    command: setarmor
+    default: op
     description: Allows the player to set diamond armor.
-    default: op
   rcmds.setarmor.gold:
+    command: setarmor
+    default: op
     description: Allows the player to set gold armor.
-    default: op
   rcmds.setarmor.iron:
+    command: setarmor
+    default: op
     description: Allows the player to set iron armor.
-    default: op
   rcmds.setarmor.leather:
-    description: Allows the player to set leather armor.
+    command: setarmor
     default: op
+    description: Allows the player to set leather armor.
+  rcmds.setarmor.none:
+    command: setarmor
+    default: op
+    description: Allows the player to set no armor.
 
   rcmds.notarget:
     description: Disables the mobs' ability to target the player.
@@ -2395,6 +2667,7 @@ permissions:
       rcmds.exempt.kickhistory: true
 
   rcmds.setarmor.*:
+    command: setarmor
     description: Allows the player to set every armor.
     default: false
     children:
