@@ -81,7 +81,7 @@ public class CmdKickHistory implements CommandExecutor {
                 return true;
             }
             final ConfigurationSection kick = pcm.getConfigurationSection("kick_history." + index);
-            final String timestamp = kick.isSet("timestamp") ? new SimpleDateFormat("EEEE, MMMM dd, yyyy 'at' hh:mm:ss a z").format(kick.getLong("timestamp")) : "Unknown time";
+            final String timestamp = kick.isSet("timestamp") ? new SimpleDateFormat("MM/dd/yy hh:mm:ss a").format(kick.getLong("timestamp")) : "Unknown time";
             cs.sendMessage(MessageColor.POSITIVE + "Kick " + MessageColor.NEUTRAL + (index + 1) + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + kick.getParent().getKeys(false).size() + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             cs.sendMessage(MessageColor.NEUTRAL + String.valueOf(index + 1) + MessageColor.POSITIVE + ": [" + MessageColor.NEUTRAL + timestamp + MessageColor.POSITIVE + "] (" + MessageColor.NEUTRAL + kick.getString("kicker", "Unknown player") + MessageColor.POSITIVE + ") " + MessageColor.NEUTRAL + kick.getString("reason", "Unknown reason"));
             return true;
