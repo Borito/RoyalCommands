@@ -1420,7 +1420,7 @@ permissions:
   rcmds.kick:
     command: kick
     default: op
-    description: Allows you to a player.
+    description: Allows you to kick a player.
   rcmds.kickall:
     command: kickall
     default: op
