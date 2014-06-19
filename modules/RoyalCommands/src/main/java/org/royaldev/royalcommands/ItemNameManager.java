@@ -11,12 +11,11 @@ import java.util.logging.Logger;
 public class ItemNameManager {
 
     // <Aliases, <ID, Data>>
-    private final Map<String[], ItemStack> items = new HashMap<String[], ItemStack>();
+    public final Map<String[], Pair<Material, Short>> items = new HashMap<>();
 
     public ItemNameManager(Iterable<String[]> values) {
         for (String[] s : values) {
             if (s.length < 1) continue;
-            ItemStack is;
             String[] aliases;
             try {
                 aliases = s[2].split(",");
@@ -27,32 +26,35 @@ public class ItemNameManager {
                 continue;
             }
             Material m;
+            short data;
             try {
                 m = Material.valueOf(s[0]);
-                is = new ItemStack(m);
             } catch (IllegalArgumentException ex) {
                 RoyalCommands.instance.getLogger().warning("Material in items.csv is invalid: " + s[0]);
                 continue;
             }
             try {
-                short data = Short.valueOf(s[1]);
-                is.setDurability(data);
+                data = Short.valueOf(s[1]);
             } catch (NumberFormatException e) {
                 RoyalCommands.instance.getLogger().warning("Data in items.csv file is invalid: " + s[1]);
                 continue;
             }
             synchronized (items) {
-                items.put(aliases, is);
+                items.put(aliases, new Pair<>(m, data));
             }
         }
     }
 
     public boolean aliasExists(Material m) {
-        return aliasExists(new ItemStack(m));
+        return aliasExists(new Pair<>(m, (short) 0));
     }
 
     public boolean aliasExists(ItemStack is) {
-        return items.values().contains(is);
+        return aliasExists(new Pair<>(is.getType(), is.getDurability()));
+    }
+
+    public boolean aliasExists(Pair<Material, Short> data) {
+        return items.values().contains(data);
     }
 
     public ItemStack getItemStackFromAlias(String alias) {
@@ -71,7 +73,8 @@ public class ItemNameManager {
                 break;
             }
         if (!found) return null;
-        ItemStack is = items.get(aliases);
+        final Pair<Material, Short> itemstackData = items.get(aliases);
+        final ItemStack is = new ItemStack(itemstackData.getFirst(), 1, itemstackData.getSecond());
         if (data != null && !data.isEmpty()) {
             try {
                 is.setDurability(Short.parseShort(data));
@@ -79,6 +82,37 @@ public class ItemNameManager {
             }
         }
         return is;
+    }
+
+    private class Pair<T, U> {
+        private final T first;
+        private final U second;
+
+        private Pair(T first, U second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public T getFirst() {
+            return this.first;
+        }
+
+        public U getSecond() {
+            return this.second;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Pair<%s, %s>", this.getFirst().toString(), this.getSecond().toString());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == this) return true;
+            if (!(o instanceof Pair)) return false;
+            final Pair<?, ?> other = (Pair<?, ?>) o;
+            return !(!this.getFirst().equals(other.getFirst()) || !this.getSecond().equals(other.getSecond()));
+        }
     }
 
 }

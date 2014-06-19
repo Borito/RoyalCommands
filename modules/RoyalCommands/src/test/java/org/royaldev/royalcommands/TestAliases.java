@@ -16,7 +16,7 @@ public class TestAliases {
     @Test
     public void testAliases() throws Throwable {
         final Logger l = Logger.getLogger("org.royaldev.royalcommands");
-        final File csv = new File("src/main/resources/items.csv");
+        final File csv = new File("modules/RoyalCommands/src/main/resources/items.csv");
         assertTrue("No items.csv found!", csv.exists());
         final Reader in = new FileReader(csv);
         final ItemNameManager inm = new ItemNameManager(new CSVReader(in).readAll());
