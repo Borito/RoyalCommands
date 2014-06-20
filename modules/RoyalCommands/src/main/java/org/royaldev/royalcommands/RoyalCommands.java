@@ -64,16 +64,12 @@ import org.royaldev.royalcommands.runners.WarnWatcher;
 import org.royaldev.royalcommands.spawninfo.ItemListener;
 import org.royaldev.royalcommands.tools.UUIDFetcher;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +80,7 @@ import java.util.regex.Pattern;
 
 // TODO: Add banning for no-UUID players? Wait for Bukkit to fix? Investigate.
 // TODO: Rewrite /gm
+// TODO: Add config option for dangerous async (some people like living on the edge)
 
 public class RoyalCommands extends JavaPlugin {
 
@@ -127,10 +124,7 @@ public class RoyalCommands extends JavaPlugin {
     private WorldGuardPlugin wg = null;
     private LWCPlugin lwc = null;
 
-    //--- ProtocolLib things ---//
     private ProtocolListener pl = null;
-
-    //--- Public methods ---//
 
     /**
      * Joins an array of strings with spaces
@@ -190,13 +184,10 @@ public class RoyalCommands extends JavaPlugin {
         return YamlConfiguration.loadConfiguration(this.getTextResource("plugin.yml"));
     }
 
-    //-- Static methods --//
 
     public NMSFace getNMSFace() {
         return this.nmsFace;
     }
-
-    //--- Private methods ---//
 
     private CommandMap getCommandMap() {
         if (this.cm != null) return this.cm;
@@ -232,14 +223,14 @@ public class RoyalCommands extends JavaPlugin {
         return this.getCommandInfo(command).getString("usage", "/<command>");
     }
 
-    private String getDescription(String command) {
-        return this.getCommandInfo(command).getString("description", command);
-    }
-
     /*private boolean unregisterCommand(String command) {
         final Command c = getCommandMap().getCommand(command);
         return c != null && c.unregister(getCommandMap());
     } save for overriding commands in the config*/
+
+    private String getDescription(String command) {
+        return this.getCommandInfo(command).getString("description", command);
+    }
 
     /**
      * Registers a command in the server's CommandMap.
@@ -333,23 +324,8 @@ public class RoyalCommands extends JavaPlugin {
         return currentVersion == null || currentVersion >= minVersion;
     }
 
-    private Map<String, String> getNewestVersions() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(new URL("http://dev.bukkit.org/bukkit-plugins/royalcommands/pages/update-information/").openStream()));
-        StringBuilder data = new StringBuilder();
-        String input;
-        while ((input = br.readLine()) != null) data.append(input);
-        String site = data.toString();
-        int begin = site.indexOf("rcmdsupdateinfoasfollows-") + 25;
-        int end = site.indexOf("-rcmdsupdateinfoend");
-        String version = site.substring(begin, end);
-        String[] vs = version.split(";");
-        final Map<String, String> toReturn = new HashMap<>();
-        for (String s : vs) {
-            String[] parts = s.split(":");
-            if (parts.length < 2) continue; // that's a bad sign
-            toReturn.put(parts[0], parts[1]);
-        }
-        return toReturn;
+    private VUUpdater.VUUpdateInfo getNewestVersions() throws Exception {
+        return VUUpdater.getUpdateInfo("34507");
     }
 
     //--- Load initial configuration ---//
@@ -370,6 +346,35 @@ public class RoyalCommands extends JavaPlugin {
                 this.log.severe(e.getMessage());
             }
         }
+    }
+
+    //--- onDisable() ---//
+
+    @Override
+    public void onDisable() {
+
+        //-- Cancel scheduled tasks --//
+
+        this.getServer().getScheduler().cancelTasks(this);
+
+        //-- Save inventories --//
+
+        WorldManager.il.saveAllInventories();
+
+        //-- Save all userdata --//
+
+        this.getLogger().info("Saving userdata and configurations (" + (PConfManager.managersCreated() + ConfManager.managersCreated()) + " files in all)...");
+        PConfManager.saveAllManagers();
+        ConfManager.saveAllManagers();
+        this.getLogger().info("Userdata saved.");
+
+        //-- ProtocolLib --//
+
+        if (pl != null) pl.uninitialize();
+
+        //-- We're done! --//
+
+        log.info("[RoyalCommands] RoyalCommands v" + version + " disabled.");
     }
 
     //--- onEnable() ---//
@@ -430,14 +435,12 @@ public class RoyalCommands extends JavaPlugin {
                 String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
                 if (matcher.group(3) == null) build = "release";
                 Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
-                g.addPlotter(
-                        new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
-                            @Override
-                            public int getValue() {
-                                return 1; // this value doesn't matter
-                            }
-                        }
-                ); // add the donut graph with major version inside and build outside
+                g.addPlotter(new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
+                    @Override
+                    public int getValue() {
+                        return 1; // this value doesn't matter
+                    }
+                }); // add the donut graph with major version inside and build outside
                 m.addGraph(g); // add the graph
             }
             if (!m.start())
@@ -491,9 +494,9 @@ public class RoyalCommands extends JavaPlugin {
                     This does not need to compare build numbers. Everyone would be out of date all the time if it did.
                     This method will compare root versions.
                      */
-                    Map<String, String> jo = RoyalCommands.this.getNewestVersions();
-                    String stable = jo.get("stable");
-                    String dev = jo.get("dev");
+                    final VUUpdater.VUUpdateInfo vuui = RoyalCommands.this.getNewestVersions();
+                    final String stable = vuui.getStable();
+                    final String dev = vuui.getDevelopment() + "-SNAPSHOT";
                     String currentVersion = useVersion.toString().toLowerCase();
                     if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
@@ -508,9 +511,7 @@ public class RoyalCommands extends JavaPlugin {
                         RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
                         RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
                     }
-                } catch (Exception ignored) {
-                    // ignore exceptions
-                }
+                } catch (Exception ignored) {}
             }
         }, 0L, 36000L);
         bs.scheduleSyncDelayedTask(this, new Runnable() { // load after server starts up
@@ -591,35 +592,6 @@ public class RoyalCommands extends JavaPlugin {
 
         log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
     }
-
-    @Override
-    public void onDisable() {
-
-        //-- Cancel scheduled tasks --//
-
-        this.getServer().getScheduler().cancelTasks(this);
-
-        //-- Save inventories --//
-
-        WorldManager.il.saveAllInventories();
-
-        //-- Save all userdata --//
-
-        this.getLogger().info("Saving userdata and configurations (" + (PConfManager.managersCreated() + ConfManager.managersCreated()) + " files in all)...");
-        PConfManager.saveAllManagers();
-        ConfManager.saveAllManagers();
-        this.getLogger().info("Userdata saved.");
-
-        //-- ProtocolLib --//
-
-        if (pl != null) pl.uninitialize();
-
-        //-- We're done! --//
-
-        log.info("[RoyalCommands] RoyalCommands v" + version + " disabled.");
-    }
-
-    //--- onDisable() ---//
 
     private class BackpackConverter implements Listener {
         @EventHandler
