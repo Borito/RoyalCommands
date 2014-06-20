@@ -1141,6 +1141,13 @@ reflectcommands:
     version_added: 3.3.0
     class: CmdKickHistory
 
+  documentation:
+    description: Gets a link to the documentation of a command or permission node.
+    usage: /<command> [command|permission] [name]
+    aliases: [docs, doc]
+    version_added: 3.3.0
+    class: CmdDocumentation
+
   rcmds:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1829,6 +1836,10 @@ permissions:
     command: worldmanager
     default: op
     description: Allows you to manage worlds.
+  rcmds.documentation:
+    command: documentation
+    default: op
+    description: Allows you to view documentation for commands or permission nodes.
 
   rcmds.spawnmob.*:
     command: spawnmob
@@ -2536,6 +2547,7 @@ permissions:
       rcmds.teleportrequestcancel: true
       rcmds.commandspy: true
       rcmds.kickhistory: true
+      rcmds.documentation: true
       rcmds.rcmds: true
 
   rcmds.admin:
@@ -2851,6 +2863,7 @@ permissions:
       rcmds.teleportrequestcancel: true
       rcmds.commandspy: true
       rcmds.kickhistory: true
+      rcmds.documentation: true
       rcmds.rcmds: true
 
       rcmds.pluginmanager.*: true

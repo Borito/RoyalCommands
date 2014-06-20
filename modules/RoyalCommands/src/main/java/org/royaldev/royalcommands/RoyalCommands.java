@@ -186,6 +186,10 @@ public class RoyalCommands extends JavaPlugin {
         return hid;
     }
 
+    public YamlConfiguration getPluginYml() {
+        return YamlConfiguration.loadConfiguration(this.getTextResource("plugin.yml"));
+    }
+
     //-- Static methods --//
 
     public NMSFace getNMSFace() {
