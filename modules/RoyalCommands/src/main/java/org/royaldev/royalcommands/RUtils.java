@@ -14,7 +14,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -756,7 +755,7 @@ public class RUtils {
     /**
      * Kicks a player and sets the last kick for history writing.
      *
-     * @param kicked      Player to kick
+     * @param kicked Player to kick
      * @param reason Reason for kick
      */
     public static void kickPlayer(final Player kicked, final CommandSender kicker, final String reason) {
