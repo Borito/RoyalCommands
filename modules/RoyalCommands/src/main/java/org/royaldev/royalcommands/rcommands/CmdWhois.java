@@ -67,7 +67,7 @@ public class CmdWhois implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "Item in hand: " + MessageColor.NEUTRAL + RUtils.getItemName(p.getItemInHand()));
                 cs.sendMessage(MessageColor.POSITIVE + "Alive for:" + MessageColor.NEUTRAL + RUtils.formatDateDiff(new Date().getTime() - p.getTicksLived() * 50));
                 Location l = p.getLocation();
-                cs.sendMessage(MessageColor.POSITIVE + "Last position: " + "(" + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + ")");
+                cs.sendMessage(MessageColor.POSITIVE + "Last position: " + "(" + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + MessageColor.POSITIVE + ")");
                 cs.sendMessage(MessageColor.POSITIVE + "Last world: " + MessageColor.NEUTRAL + RUtils.getMVWorldName(l.getWorld()) + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + l.getWorld().getName() + MessageColor.POSITIVE + ")");
             } else {
                 String lP = "lastposition.";
