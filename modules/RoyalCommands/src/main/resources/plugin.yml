@@ -20,9 +20,10 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdSetLevel
 
-  sci:
+  selectiveclearinventory:
     description: Selectively removes items from a player's inventory.
     usage: /<command> [player] [item] (amount)
+    aliases: [sci]
     version_added: Pre-0.2.7
     class: CmdSelectiveClearInventory
 
@@ -31,13 +32,6 @@ reflectcommands:
     usage: /<command> [player] [message]
     version_added: Pre-0.2.7
     class: CmdSpeak
-
-  facepalm:
-    description: Broadcasts your facepalm.
-    usage: /<command>
-    aliases: [fp, fpalm, facep]
-    version_added: Pre-0.2.7
-    class: CmdFacepalm
 
   slap:
     description: Broadcasts you slapping another player.
@@ -78,13 +72,6 @@ reflectcommands:
     aliases: [compip, cip]
     version_added: Pre-0.2.7
     class: CmdCompareIP
-
-  ragequit:
-    description: Ragequits yourself or another player.
-    usage: /<command> (player)
-    aliases: [rage, rq]
-    version_added: Pre-0.2.7
-    class: CmdRageQuit
 
   quit:
     description: Makes yourself quit.
@@ -131,12 +118,12 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdMegaStrike
 
-  pext:
+  playerextinguish:
     description: Extinguishes yourself or a player.
     usage: /<command> (player)
-    aliases: [playerext, pex, splash]
+    aliases: [playerext, pex, splash, pext]
     version_added: Pre-0.2.7
-    class: CmdPext
+    class: CmdPlayerExtinguish
 
   item:
     description: Adds an item to your inventory.
@@ -234,19 +221,19 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdSetHome
 
-  delhome:
+  deletehome:
     description: Deletes a home.
     usage: /<command> [home]
-    aliases: [dhome, rmhome, deletehome, removehome, rdeletehome]
+    aliases: [dhome, rmhome, delhome, removehome, rdeletehome]
     version_added: Pre-0.2.7
-    class: CmdDelHome
+    class: CmdDeleteHome
 
-  listhome:
+  listhomes:
     description: Lists your set homes.
     usage: /<command> (player)
-    aliases: [lshome, listhomes, lshomes, homes, rlisthomes]
+    aliases: [lshome, listhome, lshomes, homes, rlisthomes]
     version_added: Pre-0.2.7
-    class: CmdListHome
+    class: CmdListHomes
 
   strike:
     description: Strikes lightning at the player's cursor or at specified player.
@@ -289,12 +276,12 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdSetWarp
 
-  delwarp:
+  deletewarp:
     description: Deletes a warp point.
     usage: /<command> [warp]
-    aliases: [dwarp, deletewarp, rmwarp, removewarp]
+    aliases: [dwarp, delwarp, rmwarp, removewarp]
     version_added: Pre-0.2.7
-    class: CmdDelWarp
+    class: CmdDeleteWarp
 
   repair:
     description: Repairs the item in your hand.
@@ -513,19 +500,19 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdTeleportPlayerToPlayer
 
-  motd:
+  messageoftheday:
     description: Shows the message of the day.
     usage: /<command>
-    aliases: [messageoftheday]
+    aliases: [motd]
     version_added: Pre-0.2.7
     class: CmdMessageOfTheDay
 
-  deljail:
+  deletejail:
     description: Removes a jail.
     usage: /<command> [jail]
-    aliases: [deletejail, rmjail, removejail, destroyjail]
+    aliases: [deljail, rmjail, removejail, destroyjail]
     version_added: Pre-0.2.7
-    class: CmdDelJail
+    class: CmdDeleteJail
 
   force:
     description: Forces a player to run a command.
@@ -548,12 +535,12 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdRealName
 
-  invsee:
+  seeinventory:
     description: Allows you to see the inventory of a player.
     usage: /<command> [player]
-    aliases: [invs]
+    aliases: [invs, invsee, seeinv, si]
     version_added: Pre-0.2.7
-    class: CmdInvsee
+    class: CmdSeeInventory
 
   nick:
     description: Sets the display name of a player.
@@ -707,10 +694,10 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdSeen
 
-  tempban:
+  temporaryban:
     description: Temporarily bans a player.
     usage: /<command> [player] [time] [reason]
-    aliases: [tban, temporarilyban]
+    aliases: [tban, temporarilyban, tempban]
     version_added: Pre-0.2.7
     class: CmdTemporaryBan
 
@@ -735,12 +722,12 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdLag
 
-  mem:
+  memory:
     description: Displays the current memory usage.
     usage: /<command>
-    aliases: [memory, getmem, lagmem, ram, getram]
+    aliases: [mem, getmem, lagmem, ram, getram]
     version_added: Pre-0.2.7
-    class: CmdMem
+    class: CmdMemory
 
   entities:
     description: Displays the entities close to you.
@@ -749,12 +736,12 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdEntities
 
-  invmod:
+  modifyinventory:
     description: Modifies other players' inventories.
     usage: /<command> [player]
-    aliases: [modinv]
+    aliases: [modinv, invmod]
     version_added: Pre-0.2.7
-    class: CmdInvmod
+    class: CmdModifyInventory
 
   workbench:
     description: Opens a workbench anywhere.
@@ -801,7 +788,7 @@ reflectcommands:
     version_added: Pre-0.2.7
     class: CmdFly
 
-  wl:
+  wl: # This should remain wl and not the expanded form (don't override vanilla command, hopefully)
     description: Manages the dynamic whitelist.
     usage: /<command> [check/add/remove] [player]
     aliases: [whitelist]
@@ -1252,12 +1239,12 @@ permissions:
     command: delhome
     default: op
     description: Allows you to delete a home.
-  rcmds.deljail:
-    command: deljail
+  rcmds.deletejail:
+    command: deletejail
     default: op
     description: Allows you to delete a jail.
-  rcmds.delwarp:
-    command: delwarp
+  rcmds.deletewarp:
+    command: deletewarp
     default: op
     description: Allows you to delete warps.
   rcmds.dump:
@@ -1292,10 +1279,6 @@ permissions:
     command: explode
     default: op
     description: Allows you to explode other players.
-  rcmds.facepalm:
-    command: facepalm
-    default: op
-    description: Allows you to facepalm
   rcmds.fakeop:
     command: fakeop
     default: op
@@ -1404,12 +1387,12 @@ permissions:
     command: ingot2block
     default: op
     description: Allows you to make raw materials into blocks.
-  rcmds.invmod:
-    command: invmod
+  rcmds.modifyinventory:
+    command: modifyinventory
     default: op
     description: Allows you to modify other players' inventories.
-  rcmds.invsee:
-    command: invsee
+  rcmds.seeinventory:
+    command: seeinventory
     default: op
     description: Allows you see another player's inventory.
   rcmds.item:
@@ -1468,8 +1451,8 @@ permissions:
     command: list
     default: op
     description: Allows you to see who is online.
-  rcmds.listhome:
-    command: listhome
+  rcmds.listhomes:
+    command: listhomes
     default: op
     description: Allows you to list your homes.
   rcmds.listwarns:
@@ -1500,8 +1483,8 @@ permissions:
     command: megastrike
     default: op
     description: Allows you to call a mega-strike.
-  rcmds.mem:
-    command: mem
+  rcmds.memory:
+    command: memory
     default: op
     description: Allows you to see the memory usage.
   rcmds.message:
@@ -1524,8 +1507,8 @@ permissions:
     command: more
     default: op
     description: Allows you to give yourself more of the item in hand.
-  rcmds.motd:
-    command: motd
+  rcmds.messageoftheday:
+    command: messageoftheday
     default: op
     description: Allows you to see the message of the day.
   rcmds.mute:
@@ -1552,8 +1535,8 @@ permissions:
     command: onehitkill
     default: op
     description: Allows you to kill anything instantly.
-  rcmds.pext:
-    command: pext
+  rcmds.playerextinguish:
+    command: playerextinguish
     default: op
     description: Allows you to extinguish players.
   rcmds.ping:
@@ -1580,10 +1563,6 @@ permissions:
     command: quit
     default: op
     description: Allows you to quit.
-  rcmds.ragequit:
-    command: ragequit
-    default: op
-    description: Allows you to ragequit.
   rcmds.rank:
     command: rank
     default: op
@@ -1628,8 +1607,8 @@ permissions:
     command: saveplayer
     default: op
     description: Allows you to save player data.
-  rcmds.sci:
-    command: sci
+  rcmds.selectiveclearinventory:
+    command: selectiveclearinventory
     default: op
     description: Allows you to selectively clear inventories
   rcmds.seen:
@@ -1764,8 +1743,8 @@ permissions:
     command: teleporttoggle
     default: op
     description: Allows you to toggle teleportation.
-  rcmds.tempban:
-    command: tempban
+  rcmds.temporaryban:
+    command: temporaryban
     default: op
     description: Allows you to temporarily ban a player.
   rcmds.time:
@@ -1995,10 +1974,6 @@ permissions:
     command: explode
     default: false
     description: Makes the player immune to /explode.
-  rcmds.exempt.facepalm:
-    command: facepalm
-    default: false
-    description: Makes the player immune to /facepalm.
   rcmds.exempt.feed:
     command: feed
     default: false
@@ -2031,8 +2006,8 @@ permissions:
     command: ignore
     default: false
     description: Makes the player immune to /ignore.
-  rcmds.exempt.invmod:
-    command: invmod
+  rcmds.exempt.modifyinventory:
+    command: modifyinventory
     default: false
     description: Makes the player immune to /invmod.
   rcmds.exempt.jail:
@@ -2051,8 +2026,8 @@ permissions:
     command: kill
     default: false
     description: Makes the player immune to /kill.
-  rcmds.exempt.listhome:
-    command: listhome
+  rcmds.exempt.listhomes:
+    command: listhomes
     default: false
     description: Makes the player immune to /listhome.
   rcmds.exempt.messagespy:
@@ -2071,10 +2046,6 @@ permissions:
     command: nick
     default: false
     description: Makes the player immune to /nick.
-  rcmds.exempt.ragequit:
-    command: ragequit
-    default: false
-    description: Makes the player immune to /ragequit.
   rcmds.exempt.ride:
     command: ride
     default: false
@@ -2083,8 +2054,8 @@ permissions:
     command: rocket
     default: false
     description: Makes the player immune to /rocket.
-  rcmds.exempt.sci:
-    command: sci
+  rcmds.exempt.selectiveclearinventory:
+    command: selectiveclearinventory
     default: false
     description: Makes the player immune to /sci.
   rcmds.exempt.setarmor:
@@ -2213,8 +2184,8 @@ permissions:
     command: kickhistory
     default: op
     description: Allows the player to /kickhistory other players.
-  rcmds.others.listhome:
-    command: listhome
+  rcmds.others.listhomes:
+    command: listhomes
     default: op
     description: Allows the player to /listhome other players.
   rcmds.others.listwarns:
@@ -2237,10 +2208,10 @@ permissions:
     command: nick
     default: op
     description: Allows the player to /nick other players.
-  rcmds.others.pext:
-    command: pext
+  rcmds.others.playerextinguish:
+    command: playerextinguish
     default: op
-    description: Allows the player to /pext other players.
+    description: Allows the player to /playerextinguish other players.
   rcmds.others.ping:
     command: ping
     default: op
@@ -2379,16 +2350,14 @@ permissions:
 
       rcmds.level: true
       rcmds.setlevel: true
-      rcmds.sci: true
+      rcmds.selectiveclearinventory: true
       rcmds.speak: true
-      rcmds.facepalm: true
       rcmds.slap: true
       rcmds.harm: true
       rcmds.starve: true
       rcmds.setarmor: true
       rcmds.getip: true
       rcmds.compareip: true
-      rcmds.ragequit: true
       rcmds.quit: true
       rcmds.rank: true
       rcmds.freeze: true
@@ -2396,7 +2365,7 @@ permissions:
       rcmds.vtp: true
       rcmds.vtphere: true
       rcmds.megastrike: true
-      rcmds.pext: true
+      rcmds.playerextinguish: true
       rcmds.item: true
       rcmds.fixchunk: true
       rcmds.weather: true
@@ -2412,14 +2381,14 @@ permissions:
       rcmds.sethome: true
       rcmds.sethome.multi: true
       rcmds.delhome: true
-      rcmds.listhome: true
+      rcmds.listhomes: true
       rcmds.strike: true
       rcmds.jump: true
       rcmds.warn: true
       rcmds.clearwarns: true
       rcmds.warp: true
       rcmds.setwarp: true
-      rcmds.delwarp: true
+      rcmds.deletewarp: true
       rcmds.repair: true
       rcmds.heal: true
       rcmds.unban: true
@@ -2453,11 +2422,11 @@ permissions:
       rcmds.less: true
       rcmds.spawner: true
       rcmds.teleportplayertoplayer: true
-      rcmds.motd: true
-      rcmds.deljail: true
+      rcmds.messageoftheday: true
+      rcmds.deletejail: true
       rcmds.force: true
       rcmds.ping: true
-      rcmds.invsee: true
+      rcmds.seeinventory: true
       rcmds.realname: true
       rcmds.nick: true
       rcmds.ingot2block: true
@@ -2481,13 +2450,13 @@ permissions:
       rcmds.vip: true
       rcmds.dump: true
       rcmds.seen: true
-      rcmds.tempban: true
+      rcmds.temporaryban: true
       rcmds.teleporttoggle: true
       rcmds.kits: true
       rcmds.lag: true
-      rcmds.mem: true
+      rcmds.memory: true
       rcmds.entities: true
-      rcmds.invmod: true
+      rcmds.modifyinventory: true
       rcmds.workbench: true
       rcmds.enchantingtable: true
       rcmds.trade: true
@@ -2562,7 +2531,7 @@ permissions:
     children:
       rcmds.others.clearinventory: true
       rcmds.others.megastrike: true
-      rcmds.others.pext: true
+      rcmds.others.playerextinguish: true
       rcmds.others.strike: true
       rcmds.others.god: true
       rcmds.others.warp: true
@@ -2580,7 +2549,7 @@ permissions:
       rcmds.others.head: true
       rcmds.others.delhome: true
       rcmds.others.deafen: true
-      rcmds.others.listhome: true
+      rcmds.others.listhomes: true
       rcmds.others.saveplayer: true
       rcmds.others.loadplayer: true
       rcmds.others.messagespy: true
@@ -2634,12 +2603,10 @@ permissions:
       rcmds.exempt.limit.spawnmob: true
       rcmds.exempt.feed: true
       rcmds.exempt.speak: true
-      rcmds.exempt.sci: true
+      rcmds.exempt.selectiveclearinventory: true
       rcmds.exempt.harm: true
       rcmds.exempt.starve: true
       rcmds.exempt.slap: true
-      rcmds.exempt.facepalm: true
-      rcmds.exempt.ragequit: true
       rcmds.exempt.freeze: true
       rcmds.exempt.kick: true
       rcmds.exempt.ban: true
@@ -2657,10 +2624,10 @@ permissions:
       rcmds.exempt.kill: true
       rcmds.exempt.explode: true
       rcmds.exempt.home: true
-      rcmds.exempt.listhome: true
+      rcmds.exempt.listhomes: true
       rcmds.exempt.ignore: true
       rcmds.exempt.cooldown.*: true
-      rcmds.exempt.invmod: true
+      rcmds.exempt.modifyinventory: true
       rcmds.exempt.afkkick: true
       rcmds.exempt.setarmor: true
       rcmds.exempt.monitor: true
@@ -2696,16 +2663,14 @@ permissions:
     children:
       rcmds.level: true
       rcmds.setlevel: true
-      rcmds.sci: true
+      rcmds.selectiveclearinventory: true
       rcmds.speak: true
-      rcmds.facepalm: true
       rcmds.slap: true
       rcmds.harm: true
       rcmds.starve: true
       rcmds.setarmor: true
       rcmds.getip: true
       rcmds.compareip: true
-      rcmds.ragequit: true
       rcmds.quit: true
       rcmds.rank: true
       rcmds.freeze: true
@@ -2713,7 +2678,7 @@ permissions:
       rcmds.vtp: true
       rcmds.vtphere: true
       rcmds.megastrike: true
-      rcmds.pext: true
+      rcmds.playerextinguish: true
       rcmds.item: true
       rcmds.fixchunk: true
       rcmds.weather: true
@@ -2729,14 +2694,14 @@ permissions:
       rcmds.sethome: true
       rcmds.sethome.multi: true
       rcmds.delhome: true
-      rcmds.listhome: true
+      rcmds.listhomes: true
       rcmds.strike: true
       rcmds.jump: true
       rcmds.warn: true
       rcmds.clearwarns: true
       rcmds.warp: true
       rcmds.setwarp: true
-      rcmds.delwarp: true
+      rcmds.deletewarp: true
       rcmds.repair: true
       rcmds.heal: true
       rcmds.unban: true
@@ -2770,11 +2735,11 @@ permissions:
       rcmds.less: true
       rcmds.spawner: true
       rcmds.teleportplayertoplayer: true
-      rcmds.motd: true
-      rcmds.deljail: true
+      rcmds.messageoftheday: true
+      rcmds.deletejail: true
       rcmds.force: true
       rcmds.ping: true
-      rcmds.invsee: true
+      rcmds.seeinventory: true
       rcmds.realname: true
       rcmds.nick: true
       rcmds.ingot2block: true
@@ -2798,13 +2763,13 @@ permissions:
       rcmds.vip: true
       rcmds.dump: true
       rcmds.seen: true
-      rcmds.tempban: true
+      rcmds.temporaryban: true
       rcmds.teleporttoggle: true
       rcmds.kits: true
       rcmds.lag: true
-      rcmds.mem: true
+      rcmds.memory: true
       rcmds.entities: true
-      rcmds.invmod: true
+      rcmds.modifyinventory: true
       rcmds.workbench: true
       rcmds.enchantingtable: true
       rcmds.trade: true

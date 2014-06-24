@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -13,17 +14,17 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.WorldManager;
 
 @ReflectCommand
-public class CmdInvmod implements CommandExecutor {
+public class CmdModifyInventory implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdInvmod(RoyalCommands instance) {
+    public CmdModifyInventory(RoyalCommands instance) {
         plugin = instance;
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("invmod")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.invmod")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -62,7 +63,7 @@ public class CmdInvmod implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(t, "rcmds.exempt.invmod")) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot modify that player's inventory.");
                 return true;
             }

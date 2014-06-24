@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -14,18 +15,18 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 import java.util.Map;
 
 @ReflectCommand
-public class CmdListHome implements CommandExecutor {
+public class CmdListHomes implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdListHome(RoyalCommands instance) {
+    public CmdListHomes(RoyalCommands instance) {
         plugin = instance;
     }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("listhome")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.listhome")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -36,13 +37,13 @@ public class CmdListHome implements CommandExecutor {
             OfflinePlayer t;
             if (args.length < 1) t = (OfflinePlayer) cs;
             else {
-                if (!plugin.ah.isAuthorized(cs, "rcmds.others.listhome")) {
+                if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot list other players' homes!");
                     return true;
                 }
                 t = plugin.getServer().getPlayer(args[0]);
                 if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-                if (plugin.ah.isAuthorized(t, "rcmds.exempt.listhome")) {
+                if (this.plugin.ah.isAuthorized(cs, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't list that player's homes!");
                     return true;
                 }

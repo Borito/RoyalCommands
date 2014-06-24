@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -15,18 +16,18 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.WorldManager;
 
 @ReflectCommand
-public class CmdInvsee implements CommandExecutor {
+public class CmdSeeInventory implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdInvsee(RoyalCommands instance) {
+    public CmdSeeInventory(RoyalCommands instance) {
         plugin = instance;
     }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("invsee")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.invsee")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -65,7 +66,7 @@ public class CmdInvsee implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(t, "rcmds.exempt.invsee")) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot see that player's inventory.");
                 return true;
             }

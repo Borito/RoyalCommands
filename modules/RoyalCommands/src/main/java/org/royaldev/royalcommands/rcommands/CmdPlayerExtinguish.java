@@ -4,23 +4,24 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdPext implements CommandExecutor {
+public class CmdPlayerExtinguish implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdPext(RoyalCommands plugin) {
+    public CmdPlayerExtinguish(RoyalCommands plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("pext")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.pext")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -35,7 +36,7 @@ public class CmdPext implements CommandExecutor {
                 p.setFireTicks(0);
                 return true;
             } else {
-                if (!plugin.ah.isAuthorized(cs, "rcmds.others.pext")) {
+                if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                     return true;
                 }

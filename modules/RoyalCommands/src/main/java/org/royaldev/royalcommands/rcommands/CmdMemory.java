@@ -11,17 +11,17 @@ import org.royaldev.royalcommands.RoyalCommands;
 import java.text.DecimalFormat;
 
 @ReflectCommand
-public class CmdMem implements CommandExecutor {
+public class CmdMemory implements CommandExecutor {
 
     private final RoyalCommands plugin;
 
-    public CmdMem(RoyalCommands instance) {
+    public CmdMemory(RoyalCommands instance) {
         plugin = instance;
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("mem")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.mem")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
