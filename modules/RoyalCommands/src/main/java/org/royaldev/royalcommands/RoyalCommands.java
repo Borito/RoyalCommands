@@ -181,7 +181,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     public YamlConfiguration getPluginYml() {
-        return YamlConfiguration.loadConfiguration(this.getTextResource("plugin.yml"));
+        return this.pluginYml;
     }
 
 
@@ -385,7 +385,7 @@ public class RoyalCommands extends JavaPlugin {
         //-- Set globals --//
 
         RoyalCommands.instance = this;
-        this.pluginYml = YamlConfiguration.loadConfiguration(this.getTextResource("plugin.yml"));
+        this.pluginYml = YamlConfiguration.loadConfiguration(this.getResource("plugin.yml"));
         RoyalCommands.dataFolder = getDataFolder();
         this.whl = ConfManager.getConfManager("whitelist.yml");
         RoyalCommands.commands = pluginYml.getConfigurationSection("reflectcommands");
