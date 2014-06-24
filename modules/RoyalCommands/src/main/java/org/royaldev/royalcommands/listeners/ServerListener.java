@@ -20,7 +20,7 @@ public class ServerListener implements Listener {
     public void onPluginEnable(PluginEnableEvent e) {
         final Plugin p = e.getPlugin();
         if (!p.getName().equals("Vault")) return;
-        plugin.vh.setupVault();
+        plugin.vh.setUpVault();
 
     }
 

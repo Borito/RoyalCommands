@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -24,7 +25,7 @@ public class CmdHead implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("head")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.head")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -44,11 +45,11 @@ public class CmdHead implements CommandExecutor {
             }
             SkullMeta sm = (SkullMeta) head.getItemMeta();
             final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
-            if (!t.getName().equalsIgnoreCase(p.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.head")) {
+            if (!t.getName().equalsIgnoreCase(p.getName()) && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (!t.getName().equalsIgnoreCase(p.getName()) && plugin.ah.isAuthorized(t, "rcmds.exempt.head")) {
+            if (!t.getName().equalsIgnoreCase(p.getName()) && this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn that player's head!");
                 return true;
             }

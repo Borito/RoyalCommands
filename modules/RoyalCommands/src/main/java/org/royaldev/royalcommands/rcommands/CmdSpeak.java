@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -20,7 +21,7 @@ public class CmdSpeak implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("speak")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.speak")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -29,11 +30,11 @@ public class CmdSpeak implements CommandExecutor {
                 return false;
             }
 
-            Player victim;
+            Player t;
 
-            victim = plugin.getServer().getPlayer(args[0]);
+            t = plugin.getServer().getPlayer(args[0]);
 
-            if (victim == null || plugin.isVanished(victim, cs)) {
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
@@ -41,12 +42,12 @@ public class CmdSpeak implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "You may not send commands!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(victim, "rcmds.exempt.speak")) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You may not make that player speak.");
                 return true;
             }
-            victim.chat(RoyalCommands.getFinalArg(args, 1));
-            plugin.log.info(cs.getName() + " has spoofed a message from " + victim.getName() + "!");
+            t.chat(RoyalCommands.getFinalArg(args, 1));
+            plugin.log.info(cs.getName() + " has spoofed a message from " + t.getName() + "!");
             return true;
         }
         return false;

@@ -2,6 +2,7 @@ package org.royaldev.royalcommands;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.BlockCommandSender;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -24,6 +25,14 @@ public class AuthorizationHandler {
 
     private boolean economyLoaded() {
         return this.plugin.vh.usingVault() && this.plugin.vh.getEconomy() != null;
+    }
+
+    public boolean isAuthorized(Object o, Command cmd) {
+        return this.isAuthorized(o, this.getPermission(cmd));
+    }
+
+    public boolean isAuthorized(Object o, Command cmd, PermType type) {
+        return this.isAuthorized(o, this.getPermission(cmd, type));
     }
 
     /**
@@ -77,6 +86,44 @@ public class AuthorizationHandler {
     private boolean iACommandSender(CommandSender cs, String node) {
         if (this.plugin.vh.usingVault() && permissionsLoaded()) return this.plugin.vh.getPermission().has(cs, node);
         return cs.hasPermission(node);
+    }
+
+    /**
+     * Gets the permission node for this command.
+     *
+     * @param cmd Command to get node for
+     * @return Permission node
+     */
+    public String getPermission(Command cmd) {
+        return this.getPermission(cmd, PermType.NORMAL);
+    }
+
+    /**
+     * Gets the permission node for this command and the given type.
+     *
+     * @param cmd  Command to get node for
+     * @param type Type of node to get
+     * @return Permission node
+     */
+    public String getPermission(Command cmd, PermType type) {
+        return "rcmds." + type + cmd.getName().toLowerCase();
+    }
+
+    public enum PermType {
+        NORMAL(""),
+        EXEMPT("exempt."),
+        OTHERS("others.");
+
+        private final String permNode;
+
+        PermType(String permNode) {
+            this.permNode = permNode;
+        }
+
+        @Override
+        public String toString() {
+            return this.permNode;
+        }
     }
 
 }

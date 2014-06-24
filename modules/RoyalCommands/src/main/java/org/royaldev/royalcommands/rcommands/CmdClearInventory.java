@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -24,7 +25,7 @@ public class CmdClearInventory implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("clearinventory")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.clearinventory")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -33,11 +34,11 @@ public class CmdClearInventory implements CommandExecutor {
                 return false;
             }
             final OfflinePlayer t = (args.length > 0) ? RUtils.getOfflinePlayer(args[0]) : (OfflinePlayer) cs;
-            if (!t.getName().equalsIgnoreCase(cs.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.clearinventory")) {
+            if (!t.getName().equalsIgnoreCase(cs.getName()) && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to clear other players' inventories.");
                 return true;
             }
-            if (plugin.ah.isAuthorized(t, "rcmds.exempt.clearinventory") && !t.getName().equalsIgnoreCase(cs.getName())) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT) && !t.getName().equalsIgnoreCase(cs.getName())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't clear that player's inventory.");
                 return true;
             }

@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -56,7 +57,7 @@ public class CmdGameMode implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gamemode")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.gamemode")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -77,11 +78,11 @@ public class CmdGameMode implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                if (!t.equals(cs) && !plugin.ah.isAuthorized(cs, "rcmds.others.gamemode")) {
+                if (!t.equals(cs) && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't change other players' gamemodes!");
                     return true;
                 }
-                if (!t.equals(cs) && plugin.ah.isAuthorized(t, "rcmds.exempt.gamemode")) {
+                if (!t.equals(cs) && this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot change that player's gamemode.");
                     return true;
                 }

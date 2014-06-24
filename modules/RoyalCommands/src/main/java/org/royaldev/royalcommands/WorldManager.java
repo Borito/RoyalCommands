@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-// TODO: Use WE for regions for portals?
-
 public class WorldManager {
 
     public static InventoryListener il;

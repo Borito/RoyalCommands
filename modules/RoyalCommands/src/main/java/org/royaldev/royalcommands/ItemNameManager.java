@@ -78,8 +78,7 @@ public class ItemNameManager {
         if (data != null && !data.isEmpty()) {
             try {
                 is.setDurability(Short.parseShort(data));
-            } catch (NumberFormatException ignored) {
-            }
+            } catch (NumberFormatException ignored) {}
         }
         return is;
     }
@@ -102,16 +101,16 @@ public class ItemNameManager {
         }
 
         @Override
-        public String toString() {
-            return String.format("Pair<%s, %s>", this.getFirst().toString(), this.getSecond().toString());
-        }
-
-        @Override
         public boolean equals(Object o) {
             if (o == this) return true;
             if (!(o instanceof Pair)) return false;
             final Pair<?, ?> other = (Pair<?, ?>) o;
-            return !(!this.getFirst().equals(other.getFirst()) || !this.getSecond().equals(other.getSecond()));
+            return this.getFirst().equals(other.getFirst()) && this.getSecond().equals(other.getSecond());
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Pair<%s, %s>", this.getFirst().toString(), this.getSecond().toString());
         }
     }
 

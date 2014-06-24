@@ -26,7 +26,7 @@ public class CmdItem implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("item")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.item")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

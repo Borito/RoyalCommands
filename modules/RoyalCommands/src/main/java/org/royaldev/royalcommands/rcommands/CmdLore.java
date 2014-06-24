@@ -21,7 +21,7 @@ public class CmdLore implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("lore")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.lore")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

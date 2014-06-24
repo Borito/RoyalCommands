@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -22,7 +23,7 @@ public class CmdGod implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("god")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.god")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -47,7 +48,7 @@ public class CmdGod implements CommandExecutor {
                 }
             }
             if (args.length > 0) {
-                if (!plugin.ah.isAuthorized(cs, "rcmds.others.god")) {
+                if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                     plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                     return true;

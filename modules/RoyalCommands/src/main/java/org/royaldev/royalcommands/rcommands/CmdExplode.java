@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -32,7 +33,7 @@ public class CmdExplode implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("explode")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.explode")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -76,7 +77,7 @@ public class CmdExplode implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                if (plugin.ah.isAuthorized(t, "rcmds.exempt.explode")) {
+                if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You may not explode that player!");
                     return true;
                 }

@@ -24,8 +24,8 @@ public class CmdTemporaryBan implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("tempban")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.tempban")) {
+        if (cmd.getName().equalsIgnoreCase("temporaryban")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -40,7 +40,7 @@ public class CmdTemporaryBan implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(t, "rcmds.exempt.ban")) {
+            if (this.plugin.ah.isAuthorized(t, "rcmds.exempt.ban")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot ban that player!");
                 return true;
             }

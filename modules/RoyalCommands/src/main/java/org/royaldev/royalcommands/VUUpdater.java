@@ -1,11 +1,13 @@
 package org.royaldev.royalcommands;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -21,7 +23,63 @@ public class VUUpdater {
     /**
      * Matches "PluginName vA.B.C (V1V2V3)" according to the spec.
      */
-    private final static Pattern vuPattern = Pattern.compile("(?i)(.+)\\s+v(\\d+(\\.\\d){2})\\s+\\((([0-9a-f]{2}){1,3})\\)");
+    private final static Pattern vuPattern = Pattern.compile("^(.+)\\s+v(\\d+(\\.\\d){2}).*\\((([0-9a-f]{2}){1,3})\\)$", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * Checks for an update for the given plugin and plugin ID. This will check if the plugin version contains
+     * "-SNAPSHOT" and set the updater to check for development versions if it does. See
+     * {@link #checkForUpdate(org.bukkit.plugin.Plugin, String, boolean)} if that is not the behavior you desire.
+     *
+     * @param p        Plugin to check for an update for
+     * @param pluginID ID of the plugin to get the information from. The ID comes from CurseForge.
+     * @return {@link VUUpdater.UpdateStatus}
+     */
+    public static VUUpdater.UpdateStatus checkForUpdate(Plugin p, String pluginID) {
+        final String pluginVersion = p.getDescription().getVersion();
+        return VUUpdater.checkForUpdate(p, pluginID, pluginVersion.toUpperCase().contains("-SNAPSHOT"));
+    }
+
+    /**
+     * Checks for an update for the given plugin and plugin ID.
+     *
+     * @param p        Plugin to check for an update for
+     * @param pluginID ID of the plugin to get the information from. The ID comes from CurseForge.
+     * @param useDev   Should development versions be checked?
+     * @return {@link VUUpdater.UpdateStatus}
+     */
+    public static UpdateStatus checkForUpdate(Plugin p, String pluginID, boolean useDev) {
+        final VUUpdateInfo vuui;
+        try {
+            vuui = VUUpdater.getUpdateInfo(pluginID);
+        } catch (IOException e) {
+            return UpdateStatus.ERROR;
+        }
+        final String pluginVersion = p.getDescription().getVersion();
+        if (useDev && !pluginVersion.contains(vuui.getDevelopment())) return UpdateStatus.UPDATE_FOUND;
+        if (!useDev && !pluginVersion.contains(vuui.getStable())) return UpdateStatus.UPDATE_FOUND;
+        return UpdateStatus.NO_UPDATE;
+    }
+
+    /**
+     * Gets the update information from the title of the latest file available from the CurseForge API.
+     *
+     * @param pluginID ID of the plugin to get the information from. The ID comes from CurseForge.
+     * @return {@link org.royaldev.royalcommands.VUUpdater.VUUpdateInfo}
+     * @throws IOException If any errors occur
+     */
+    public static VUUpdateInfo getUpdateInfo(String pluginID) throws IOException {
+        final URLConnection conn = new URL("https://api.curseforge.com/servermods/files?projectIds=" + pluginID).openConnection();
+        conn.setConnectTimeout(5000);
+        conn.setRequestProperty("User-Agent", "VU/1.0");
+        conn.setDoOutput(true);
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        final String response = reader.readLine();
+        final JSONArray array = (JSONArray) JSONValue.parse(response);
+        final Matcher m = VUUpdater.vuPattern.matcher((String) ((JSONObject) array.get(array.size() - 1)).get("name"));
+        if (!m.matches()) throw new IllegalArgumentException("No match found!");
+        final byte[] vuBytes = VUUpdater.hexStringToByteArray(m.group(4));
+        return new VUUpdateInfo(m.group(2), vuBytes);
+    }
 
     /**
      * Turns a hexadecimal string into an array of bytes.
@@ -39,24 +97,21 @@ public class VUUpdater {
     }
 
     /**
-     * Gets the update information from the title of the latest file available from the CurseForge API.
-     *
-     * @param pluginID ID of the plugin to get the information from. The ID comes from CurseForge.
-     * @return {@link org.royaldev.royalcommands.VUUpdater.VUUpdateInfo}
-     * @throws Exception If any errors occur
+     * Possible statuses for the update checker to return.
      */
-    public static VUUpdateInfo getUpdateInfo(String pluginID) throws Exception {
-        final URLConnection conn = new URL("https://api.curseforge.com/servermods/files?projectIds=" + pluginID).openConnection();
-        conn.setConnectTimeout(5000);
-        conn.setRequestProperty("User-Agent", "VU/1.0");
-        conn.setDoOutput(true);
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        final String response = reader.readLine();
-        final JSONArray array = (JSONArray) JSONValue.parse(response);
-        final Matcher m = VUUpdater.vuPattern.matcher((String) ((JSONObject) array.get(array.size() - 1)).get("name"));
-        if (!m.matches()) throw new Exception("No match found!");
-        final byte[] vuBytes = VUUpdater.hexStringToByteArray(m.group(4));
-        return new VUUpdateInfo(m.group(2), vuBytes);
+    public static enum UpdateStatus {
+        /**
+         * An error occurred getting the update information.
+         */
+        ERROR,
+        /**
+         * No update was found.
+         */
+        NO_UPDATE,
+        /**
+         * An update was found.
+         */
+        UPDATE_FOUND
     }
 
     /**
@@ -179,7 +234,7 @@ public class VUUpdater {
             /**
              * Bit 7 of head VU byte.
              * <p/>
-             * The stable version is the same as the file this VU byte was retrieved from if this is set.
+             * The stable version is the same as the source version if this is set.
              */
             STABLE_IS_SAME((byte) 7),
             /**

@@ -23,7 +23,7 @@ public class CmdWorld implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("world")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.world")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

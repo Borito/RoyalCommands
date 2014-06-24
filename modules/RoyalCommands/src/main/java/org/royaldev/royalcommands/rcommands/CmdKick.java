@@ -4,10 +4,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+
+// TODO: Not set reason, but set leave message (cleaner)
 
 @ReflectCommand
 public class CmdKick implements CommandExecutor {
@@ -21,7 +24,7 @@ public class CmdKick implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("kick")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.kick")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -34,7 +37,7 @@ public class CmdKick implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(t, "rcmds.exempt.kick")) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot kick that player!");
                 return true;
             }

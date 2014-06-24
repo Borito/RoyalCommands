@@ -12,8 +12,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -31,7 +29,7 @@ import org.bukkit.potion.PotionEffect;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
-import org.royaldev.royalcommands.rcommands.CmdInvsee.InvSeeHolder;
+import org.royaldev.royalcommands.rcommands.CmdSeeInventory.InvSeeHolder;
 
 import java.util.Collection;
 import java.util.List;

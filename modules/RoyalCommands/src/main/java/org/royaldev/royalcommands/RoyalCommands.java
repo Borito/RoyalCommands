@@ -472,7 +472,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Set up Vault --//
 
-        vh.setupVault();
+        vh.setUpVault();
 
         //-- Update old userdata --//
         if (Config.updateOldUserdata) this.update();
@@ -501,7 +501,7 @@ public class RoyalCommands extends JavaPlugin {
                     if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
-                        RoyalCommands.this.getLogger().warning("Development builds are available at http://ci.royaldev.org/");
+                        RoyalCommands.this.getLogger().warning("Development builds are available at https://ci.royaldev.org/");
                     } else if (!stable.equalsIgnoreCase(currentVersion) && !currentVersion.equalsIgnoreCase(dev)) {
                         RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
                         RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);

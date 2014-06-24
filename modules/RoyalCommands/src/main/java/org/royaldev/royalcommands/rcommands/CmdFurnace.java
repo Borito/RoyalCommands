@@ -11,21 +11,22 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @ReflectCommand
 public class CmdFurnace implements CommandExecutor {
 
+    public final Map<UUID, Furnace> furnacedb = new HashMap<>();
     private final RoyalCommands plugin;
 
     public CmdFurnace(RoyalCommands instance) {
         plugin = instance;
     }
 
-    public final HashMap<Player, Furnace> furnacedb = new HashMap<Player, Furnace>();
-
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("furnace")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.furnace")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -39,33 +40,36 @@ public class CmdFurnace implements CommandExecutor {
             }
             Player p = (Player) cs;
             String command = args[0].toLowerCase();
-            if (command.equals("set")) {
-                if (!(RUtils.getTarget(p).getState() instanceof Furnace)) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "That's not a furnace!");
+            switch (command) {
+                case "set": {
+                    if (!(RUtils.getTarget(p).getState() instanceof Furnace)) {
+                        cs.sendMessage(MessageColor.NEGATIVE + "That's not a furnace!");
+                        return true;
+                    }
+                    Furnace f = (Furnace) RUtils.getTarget(p).getState();
+                    furnacedb.put(p.getUniqueId(), f);
+                    cs.sendMessage(MessageColor.POSITIVE + "Furnace set.");
                     return true;
                 }
-                Furnace f = (Furnace) RUtils.getTarget(p).getState();
-                furnacedb.put(p, f);
-                cs.sendMessage(MessageColor.POSITIVE + "Furnace set.");
-                return true;
-            } else if (command.equals("show")) {
-                if (!furnacedb.containsKey(p)) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "You must first set a furnace!");
+                case "show": {
+                    if (!furnacedb.containsKey(p.getUniqueId())) {
+                        cs.sendMessage(MessageColor.NEGATIVE + "You must first set a furnace!");
+                        return true;
+                    }
+                    Furnace f = furnacedb.get(p.getUniqueId());
+                    if (!(f.getBlock().getState() instanceof Furnace)) {
+                        cs.sendMessage(MessageColor.NEGATIVE + "The furnace is no longer there!");
+                        return true;
+                    }
+                    f = (Furnace) f.getBlock().getState();
+                    FurnaceInventory fi = f.getInventory();
+                    p.openInventory(fi);
+                    cs.sendMessage(MessageColor.POSITIVE + "Opened your furnace for you.");
                     return true;
                 }
-                Furnace f = furnacedb.get(p);
-                if (!(f.getBlock().getState() instanceof Furnace)) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "The furnace is no longer there!");
+                default:
+                    cs.sendMessage(MessageColor.NEGATIVE + "Try " + MessageColor.NEUTRAL + "/" + label + MessageColor.POSITIVE + ".");
                     return true;
-                }
-                f = (Furnace) f.getBlock().getState();
-                FurnaceInventory fi = f.getInventory();
-                p.openInventory(fi);
-                cs.sendMessage(MessageColor.POSITIVE + "Opened your furnace for you.");
-                return true;
-            } else {
-                cs.sendMessage(MessageColor.NEGATIVE + "Try " + MessageColor.NEUTRAL + "/" + label + MessageColor.POSITIVE + ".");
-                return true;
             }
         }
         return false;

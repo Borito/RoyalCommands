@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -30,7 +31,7 @@ public class CmdMonitor implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("monitor")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.monitor")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -68,7 +69,7 @@ public class CmdMonitor implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot monitor yourself!");
                     return true;
                 }
-                if (plugin.ah.isAuthorized(t, "rcmds.exempt.monitor")) {
+                if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't monitor that player!");
                     return true;
                 }

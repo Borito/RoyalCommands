@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -27,7 +28,7 @@ public class CmdWarn implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("warn")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.warn")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -42,7 +43,7 @@ public class CmdWarn implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(op, "rcmds.exempt.warn")) {
+            if (this.plugin.ah.isAuthorized(op, cmd, PermType.EXEMPT)) {
                 RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You can't warn that player!");
                 return true;
             }

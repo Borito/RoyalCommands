@@ -104,7 +104,7 @@ public class CmdHelp implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("help")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.help")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

@@ -1463,8 +1463,4 @@ public class RUtils {
         }
         return name;
     }
-
-    public static String getPermission(Command cmd) {
-        return "rcmds." + cmd.getName().toLowerCase();
-    }
 }

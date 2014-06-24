@@ -21,7 +21,7 @@ public class CmdGetIP implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("getip")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.getip")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

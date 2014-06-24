@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -20,7 +21,7 @@ public class CmdCoords implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("coords")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.coords")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -39,7 +40,7 @@ public class CmdCoords implements CommandExecutor {
                 cs.sendMessage(MessageColor.POSITIVE + "world: " + MessageColor.NEUTRAL + l.getWorld().getName());
                 return true;
             }
-            if (!plugin.ah.isAuthorized(cs, "rcmds.others.coords")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

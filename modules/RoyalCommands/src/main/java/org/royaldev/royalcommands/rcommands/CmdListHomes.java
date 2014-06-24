@@ -25,7 +25,7 @@ public class CmdListHomes implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("listhome")) {
+        if (cmd.getName().equalsIgnoreCase("listhomes")) {
             if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
@@ -41,9 +41,8 @@ public class CmdListHomes implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot list other players' homes!");
                     return true;
                 }
-                t = plugin.getServer().getPlayer(args[0]);
-                if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-                if (this.plugin.ah.isAuthorized(cs, cmd, PermType.EXEMPT)) {
+                t = RUtils.getOfflinePlayer(args[0]);
+                if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't list that player's homes!");
                     return true;
                 }

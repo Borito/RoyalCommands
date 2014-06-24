@@ -23,7 +23,7 @@ public class CmdModifyInventory implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("invmod")) {
+        if (cmd.getName().equalsIgnoreCase("modifyinventory")) {
             if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;

@@ -22,7 +22,7 @@ public class CmdRcmds implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("rcmds")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.rcmds")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

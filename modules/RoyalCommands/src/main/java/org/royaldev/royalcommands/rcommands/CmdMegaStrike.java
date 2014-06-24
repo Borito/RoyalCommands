@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -23,7 +24,7 @@ public class CmdMegaStrike implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("megastrike")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.megastrike")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -47,7 +48,7 @@ public class CmdMegaStrike implements CommandExecutor {
                 for (int i = 0; i < 15; i++) p.getWorld().strikeLightning(bb.getLocation());
                 return true;
             } else {
-                if (!plugin.ah.isAuthorized(cs, "rcmds.others.megastrike")) {
+                if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                     return true;
                 }

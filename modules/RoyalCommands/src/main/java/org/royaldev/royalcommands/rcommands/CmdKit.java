@@ -31,7 +31,7 @@ public class CmdKit implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equals("kit")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.kit")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

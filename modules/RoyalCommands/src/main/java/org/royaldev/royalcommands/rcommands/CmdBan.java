@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -24,7 +25,7 @@ public class CmdBan implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ban")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.ban")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -44,7 +45,7 @@ public class CmdBan implements CommandExecutor {
                 }
             }*/
             if (!pcm.exists()) pcm.createFile();
-            if (plugin.ah.isAuthorized(t, "rcmds.exempt.ban")) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't ban that player!");
                 return true;
             }

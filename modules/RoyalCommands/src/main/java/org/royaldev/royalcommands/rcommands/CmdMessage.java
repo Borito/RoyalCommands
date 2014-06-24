@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -24,7 +25,7 @@ public class CmdMessage implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("message")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.message")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -52,7 +53,7 @@ public class CmdMessage implements CommandExecutor {
             }
             t.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + "] " + m);
             cs.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + t.getName() + MessageColor.NEUTRAL + "] " + m);
-            if (!this.plugin.ah.isAuthorized(cs, "rcmds.exempt.messagespy")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.EXEMPT)) {
                 Player[] ps = plugin.getServer().getOnlinePlayers();
                 for (Player p1 : ps) {
                     if (PConfManager.getPConfManager(p1).getBoolean("messagespy")) {

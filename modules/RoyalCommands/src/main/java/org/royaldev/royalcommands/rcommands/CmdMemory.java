@@ -20,7 +20,7 @@ public class CmdMemory implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("mem")) {
+        if (cmd.getName().equalsIgnoreCase("memory")) {
             if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;

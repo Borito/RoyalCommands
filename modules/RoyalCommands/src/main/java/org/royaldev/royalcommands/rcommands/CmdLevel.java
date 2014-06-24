@@ -24,7 +24,7 @@ public class CmdLevel implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command can only be used by players!");
                 return true;
             }
-            if (!plugin.ah.isAuthorized(cs, "rcmds.level")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

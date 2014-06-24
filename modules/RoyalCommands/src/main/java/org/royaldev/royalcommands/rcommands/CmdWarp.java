@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -58,7 +59,7 @@ public class CmdWarp implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("warp")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.warp")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -105,7 +106,7 @@ public class CmdWarp implements CommandExecutor {
                 return true;
             }
             if (args.length > 1) {
-                if (!plugin.ah.isAuthorized(cs, "rcmds.others.warp")) {
+                if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
@@ -114,7 +115,7 @@ public class CmdWarp implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                if (plugin.ah.isAuthorized(t, "rcmds.exempt.warp")) {
+                if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot warp that player!");
                     return true;
                 }

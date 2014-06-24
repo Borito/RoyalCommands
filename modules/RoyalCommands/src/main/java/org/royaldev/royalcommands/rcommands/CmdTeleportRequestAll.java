@@ -20,7 +20,7 @@ public class CmdTeleportRequestAll implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("teleportrequestall")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.teleportrequestall")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -30,7 +30,7 @@ public class CmdTeleportRequestAll implements CommandExecutor {
             }
             Player p = (Player) cs;
             for (Player t : plugin.getServer().getOnlinePlayers()) {
-                if (!RUtils.isTeleportAllowed(t) && !plugin.ah.isAuthorized(p, "rcmds.tpoverride")) continue;
+                if (!RUtils.isTeleportAllowed(t) && !this.plugin.ah.isAuthorized(cs, cmd)) continue;
                 if (t.equals(p)) continue;
                 TeleportRequest.send(p, t, TeleportRequest.TeleportType.HERE, false);
             }

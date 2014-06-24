@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -22,7 +23,7 @@ public class CmdSetArmor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("setarmor")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.setarmor")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -34,22 +35,22 @@ public class CmdSetArmor implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
-            final Player player;
+            final Player p;
             if (args.length > 1) {
-                if (!plugin.ah.isAuthorized(cs, "rcmds.others.setarmor")) {
+                if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                     RUtils.dispNoPerms(cs);
                     return true;
                 }
-                player = plugin.getServer().getPlayer(args[1]);
-                if (player == null || plugin.isVanished(player, cs)) {
+                p = plugin.getServer().getPlayer(args[1]);
+                if (p == null || plugin.isVanished(p, cs)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
                 }
-                if (plugin.ah.isAuthorized(player, "rcmds.exempt.setarmor")) {
+                if (this.plugin.ah.isAuthorized(p, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't modify that player's armor!");
                     return true;
                 }
-            } else player = (Player) cs;
+            } else p = (Player) cs;
             String set = args[0];
             ItemStack[] diamond = new ItemStack[]{new ItemStack(Material.DIAMOND_BOOTS), new ItemStack(Material.DIAMOND_LEGGINGS), new ItemStack(Material.DIAMOND_CHESTPLATE), new ItemStack(Material.DIAMOND_HELMET)};
             ItemStack[] gold = new ItemStack[]{new ItemStack(Material.GOLD_BOOTS), new ItemStack(Material.GOLD_LEGGINGS), new ItemStack(Material.GOLD_CHESTPLATE), new ItemStack(Material.GOLD_HELMET)};
@@ -62,7 +63,7 @@ public class CmdSetArmor implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
-                    player.getInventory().setArmorContents(diamond);
+                    p.getInventory().setArmorContents(diamond);
                     cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
@@ -71,7 +72,7 @@ public class CmdSetArmor implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
-                    player.getInventory().setArmorContents(gold);
+                    p.getInventory().setArmorContents(gold);
                     cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
@@ -80,7 +81,7 @@ public class CmdSetArmor implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
-                    player.getInventory().setArmorContents(iron);
+                    p.getInventory().setArmorContents(iron);
                     cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
@@ -89,7 +90,7 @@ public class CmdSetArmor implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
-                    player.getInventory().setArmorContents(leather);
+                    p.getInventory().setArmorContents(leather);
                     cs.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
@@ -98,8 +99,8 @@ public class CmdSetArmor implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
-                    player.getInventory().setArmorContents(chain);
-                    player.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
+                    p.getInventory().setArmorContents(chain);
+                    p.sendMessage(MessageColor.POSITIVE + "Armor was set to " + set + ".");
                     return true;
                 }
             } else if (set.equalsIgnoreCase("none")) {
@@ -107,7 +108,7 @@ public class CmdSetArmor implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that type of material!");
                     return true;
                 } else {
-                    player.getInventory().setArmorContents(none);
+                    p.getInventory().setArmorContents(none);
                     cs.sendMessage(MessageColor.POSITIVE + "Armor was cleared.");
                     return true;
                 }

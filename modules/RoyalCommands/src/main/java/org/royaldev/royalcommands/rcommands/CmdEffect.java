@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -34,7 +35,7 @@ public class CmdEffect implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("effect")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.effect")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -48,11 +49,11 @@ public class CmdEffect implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (!t.getName().equals(cs.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.effect")) {
+            if (!t.getName().equals(cs.getName()) && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot apply effects to other players!");
                 return true;
             }
-            if (!t.getName().equals(cs.getName()) && plugin.ah.isAuthorized(t, "rcmds.exempt.effect")) {
+            if (!t.getName().equals(cs.getName()) && this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot apply effects to that player!");
                 return true;
             }

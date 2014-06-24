@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -24,7 +25,7 @@ public class CmdNick implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("nick")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.nick")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -33,7 +34,7 @@ public class CmdNick implements CommandExecutor {
                 return false;
             }
             OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-            if (!t.equals(cs) && !plugin.ah.isAuthorized(cs, "rcmds.others.nick")) {
+            if (!t.equals(cs) && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -56,12 +57,12 @@ public class CmdNick implements CommandExecutor {
             }
             if (t.getName().equalsIgnoreCase(cs.getName())) {
                 final long allowedAfter = pcm.getLong("nick.lastchange", 0L) + ((long) RUtils.timeFormatToSeconds(Config.nickChangeLimit) * 1000L);
-                if (allowedAfter > System.currentTimeMillis() && !plugin.ah.isAuthorized(cs, "rcmds.exempt.nickchangelimit")) {
+                if (allowedAfter > System.currentTimeMillis() && !this.plugin.ah.isAuthorized(cs, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You have to wait " + MessageColor.NEUTRAL + RUtils.formatDateDiff(allowedAfter) + MessageColor.NEGATIVE + "to change your nick again.");
                     return true;
                 }
             }
-            if (!plugin.ah.isAuthorized(cs, "rcmds.exempt.nickspecialcharacters") && !args[1].matches(Config.nickRegex)) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.EXEMPT) && !args[1].matches(Config.nickRegex)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That nickname contains invalid characters!");
                 return true;
             }

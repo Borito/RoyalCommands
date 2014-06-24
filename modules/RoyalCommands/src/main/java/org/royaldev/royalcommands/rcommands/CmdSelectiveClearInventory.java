@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -22,8 +23,8 @@ public class CmdSelectiveClearInventory implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("sci")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.sci")) {
+        if (cmd.getName().equalsIgnoreCase("selectiveclearinventory")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -32,12 +33,12 @@ public class CmdSelectiveClearInventory implements CommandExecutor {
                 return false;
             }
             if (args.length < 3) {
-                Player target = plugin.getServer().getPlayer(args[0]);
-                if (target == null || plugin.isVanished(target, cs)) {
+                Player t = plugin.getServer().getPlayer(args[0]);
+                if (t == null || plugin.isVanished(t, cs)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                     return true;
                 }
-                if (plugin.ah.isAuthorized(target, "rcmds.exempt.sci")) {
+                if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot alter that player's inventory!");
                     return true;
                 }
@@ -81,9 +82,9 @@ public class CmdSelectiveClearInventory implements CommandExecutor {
                     } else {
                         toInv = new ItemStack(Material.getMaterial(iblock).getId(), Config.defaultStack);
                     }
-                    target.getInventory().removeItem(toInv);
-                    cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
-                    target.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " taken.");
+                    t.getInventory().removeItem(toInv);
+                    cs.sendMessage(MessageColor.POSITIVE + "Removing " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " from " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+                    t.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + Config.defaultStack + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + Material.getMaterial(iblock).toString().toLowerCase().replace("_", " ") + MessageColor.POSITIVE + " taken.");
                     return true;
                 } else {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");

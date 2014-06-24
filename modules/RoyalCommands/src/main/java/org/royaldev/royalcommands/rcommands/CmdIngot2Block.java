@@ -40,7 +40,7 @@ public class CmdIngot2Block implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ingot2block")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.ingot2block")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

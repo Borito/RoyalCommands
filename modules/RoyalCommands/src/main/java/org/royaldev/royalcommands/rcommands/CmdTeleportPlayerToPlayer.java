@@ -21,7 +21,7 @@ public class CmdTeleportPlayerToPlayer implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("teleportplayertoplayer")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.teleportplayertoplayer")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -35,11 +35,11 @@ public class CmdTeleportPlayerToPlayer implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.isTeleportAllowed(t1) && !plugin.ah.isAuthorized(cs, "rcmds.tpoverride")) {
+            if (!RUtils.isTeleportAllowed(t1) && !this.plugin.ah.isAuthorized(cs, cmd)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + t1.getName() + MessageColor.NEGATIVE + " has teleportation off!");
                 return true;
             }
-            if (!RUtils.isTeleportAllowed(t2) && !plugin.ah.isAuthorized(cs, "rcmds.tpoverride")) {
+            if (!RUtils.isTeleportAllowed(t2) && !this.plugin.ah.isAuthorized(cs, cmd)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + t2.getName() + MessageColor.NEGATIVE + " has teleportation off!");
                 return true;
             }

@@ -88,7 +88,7 @@ public class CmdTime implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("time")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.time")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -113,12 +113,10 @@ public class CmdTime implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            if (args.length > 0 && args[0].equalsIgnoreCase("set"))
-                args = (String[]) ArrayUtils.remove(args, 0);
+            if (args.length > 0 && args[0].equalsIgnoreCase("set")) args = (String[]) ArrayUtils.remove(args, 0);
             String target = "";
             if (!(cs instanceof Player) && args.length < 2) target = "*";
-            else if ((cs instanceof Player) && args.length < 2)
-                target = ((Player) cs).getWorld().getName();
+            else if ((cs instanceof Player) && args.length < 2) target = ((Player) cs).getWorld().getName();
             if (args.length > 1) target = args[1];
             if (target.equalsIgnoreCase("all")) target = "*";
             if (RUtils.getWorld(target) == null && !target.equals("*")) {
@@ -158,7 +156,6 @@ public class CmdTime implements CommandExecutor {
                 }
             }
             return true;
-
         }
         return false;
     }

@@ -37,7 +37,7 @@ public class VaultHandler {
         return economy;
     }
 
-    public void setupVault() {
+    public void setUpVault() {
         if (!usingVault()) return;
         this.setupEconomy();
         this.setupChat();

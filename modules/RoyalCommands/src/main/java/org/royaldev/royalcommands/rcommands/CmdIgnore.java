@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -23,7 +24,7 @@ public class CmdIgnore implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ignore")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.ignore")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -42,13 +43,13 @@ public class CmdIgnore implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(t, "rcmds.exempt.ignore")) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot ignore that player!");
                 return true;
             }
             PConfManager pcm = PConfManager.getPConfManager(t);
             List<String> players = pcm.getStringList("ignoredby");
-            if (players == null) players = new ArrayList<String>();
+            if (players == null) players = new ArrayList<>();
             for (String ignored : players) {
                 if (ignored.toLowerCase().equals(cs.getName().toLowerCase())) {
                     players.remove(ignored);

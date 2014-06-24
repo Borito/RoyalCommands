@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -24,7 +25,7 @@ public class CmdSlap implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("slap")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.slap")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -32,13 +33,13 @@ public class CmdSlap implements CommandExecutor {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player victim;
-            victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null || plugin.isVanished(victim, cs)) {
+            Player t;
+            t = plugin.getServer().getPlayer(args[0]);
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That person is not online!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(victim, "rcmds.exempt.slap")) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You may not slap that player.");
                 return true;
             }
@@ -47,8 +48,8 @@ public class CmdSlap implements CommandExecutor {
             push.setY(r.nextInt(2));
             push.setX(r.nextInt(4) - 2);
             push.setZ(r.nextInt(4) - 2);
-            victim.setVelocity(push);
-            plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + MessageColor.RESET + " slaps " + MessageColor.NEGATIVE + victim.getName() + MessageColor.RESET + "!");
+            t.setVelocity(push);
+            plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + MessageColor.RESET + " slaps " + MessageColor.NEGATIVE + t.getName() + MessageColor.RESET + "!");
             return true;
         }
         return false;

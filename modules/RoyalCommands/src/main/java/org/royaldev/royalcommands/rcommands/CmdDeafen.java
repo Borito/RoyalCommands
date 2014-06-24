@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -21,7 +22,7 @@ public class CmdDeafen implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("deafen")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.deafen")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -30,7 +31,7 @@ public class CmdDeafen implements CommandExecutor {
                 return false;
             }
             String name = (args.length < 1) ? cs.getName() : args[0];
-            if (!name.equalsIgnoreCase(cs.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.deafen")) {
+            if (!name.equalsIgnoreCase(cs.getName()) && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to deafen other players!");
                 return true;
             }
@@ -39,7 +40,7 @@ public class CmdDeafen implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(t, "rcmds.exempt.deafen") && !t.getName().equals(cs.getName())) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT) && !t.getName().equals(cs.getName())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to deafen that player!");
                 return true;
             }

@@ -29,7 +29,7 @@ public class CmdBiome implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("biome")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.biome")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

@@ -22,13 +22,13 @@ public class CmdDeleteHome implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("delhome")) {
+        if (cmd.getName().equalsIgnoreCase("deletehome")) {
             if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
             if (args.length < 1) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Type \"" + MessageColor.NEUTRAL + "/delhome home" + MessageColor.NEGATIVE + "\" to delete your default home.");
+                cs.sendMessage(MessageColor.NEGATIVE + "Type \"" + MessageColor.NEUTRAL + "/deletehome home" + MessageColor.NEGATIVE + "\" to delete your default home.");
                 return true;
             }
             String name = args[0];
@@ -43,7 +43,7 @@ public class CmdDeleteHome implements CommandExecutor {
                     return true;
                 }
                 OfflinePlayer op = plugin.getServer().getOfflinePlayer(name.split(":")[0]);
-                if (this.plugin.ah.isAuthorized(cs, cmd, PermType.EXEMPT)) {
+                if (this.plugin.ah.isAuthorized(op, cmd, PermType.EXEMPT)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You cannot delete that player's home!");
                     return true;
                 }

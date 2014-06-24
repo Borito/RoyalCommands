@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -20,7 +21,7 @@ public class CmdLoadPlayer implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("loadplayer")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.loadplayer")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -33,7 +34,7 @@ public class CmdLoadPlayer implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
                 return true;
             }
-            if (!t.getName().equals(cs.getName()) && !plugin.ah.isAuthorized(cs, "rcmds.others.loadplayer")) {
+            if (!t.getName().equals(cs.getName()) && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot load other players' data!");
                 return true;
             }

@@ -37,7 +37,7 @@ public class CmdUnbanIP implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("unbanip")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.unbanip")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
@@ -21,7 +22,7 @@ public class CmdStrike implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("strike")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.strike")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -39,22 +40,22 @@ public class CmdStrike implements CommandExecutor {
                 p.getWorld().strikeLightning(bb.getLocation());
                 return true;
             }
-            if (!plugin.ah.isAuthorized(cs, "rcmds.others.strike")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                 return true;
             }
-            Player target = plugin.getServer().getPlayer(args[0]);
-            if (target == null || plugin.isVanished(target, cs)) {
+            Player t = plugin.getServer().getPlayer(args[0]);
+            if (t == null || plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (plugin.ah.isAuthorized(target, "rcmds.exempt.strike")) {
+            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't strike that player!");
                 return true;
             }
-            cs.sendMessage(MessageColor.POSITIVE + "Smiting " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
-            target.sendMessage(MessageColor.NEGATIVE + "You have been smited by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + ".");
-            target.getWorld().strikeLightning(target.getLocation());
+            cs.sendMessage(MessageColor.POSITIVE + "Smiting " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+            t.sendMessage(MessageColor.NEGATIVE + "You have been smited by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + ".");
+            t.getWorld().strikeLightning(t.getLocation());
             return true;
         }
         return false;

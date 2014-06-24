@@ -6,14 +6,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /*
 FROM PLAYER
@@ -39,7 +38,7 @@ public class CmdKickHistory implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("kickhistory")) {
-            if (!this.plugin.ah.isAuthorized(cs, "rcmds." + cmd.getName())) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
@@ -67,11 +66,11 @@ public class CmdKickHistory implements CommandExecutor {
             }
             index--;
             boolean isSame = t.getName().equalsIgnoreCase(cs.getName());
-            if (!isSame && !this.plugin.ah.isAuthorized(cs, "rcmds.others." + cmd.getName())) {
+            if (!isSame && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You do not have permission to view the kicks of other players.");
                 return true;
             }
-            if (!isSame && this.plugin.ah.isAuthorized(t, "rcmds.exempt." + cmd.getName())) {
+            if (!isSame && this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot view the kicks of that player.");
                 return true;
             }

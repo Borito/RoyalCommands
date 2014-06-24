@@ -35,7 +35,7 @@ public class CmdSetCharacteristic implements CommandExecutor {
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("setcharacteristic")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.setcharacteristic")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

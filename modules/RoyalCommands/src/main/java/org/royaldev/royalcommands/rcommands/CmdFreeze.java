@@ -22,7 +22,7 @@ public class CmdFreeze implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("freeze")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.freeze")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

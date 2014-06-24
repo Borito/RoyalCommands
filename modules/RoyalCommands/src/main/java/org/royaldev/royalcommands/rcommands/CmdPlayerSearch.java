@@ -20,7 +20,7 @@ public class CmdPlayerSearch implements CommandExecutor {
 
     public boolean onCommand(final CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("playersearch")) {
-            if (!plugin.ah.isAuthorized(cs, "rcmds.playersearch")) {
+            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
