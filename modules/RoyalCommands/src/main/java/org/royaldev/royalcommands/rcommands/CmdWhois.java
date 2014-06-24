@@ -74,7 +74,7 @@ public class CmdWhois implements CommandExecutor {
                 World w = (pcm.isSet(lP + "world")) ? plugin.getServer().getWorld(pcm.getString(lP + "world")) : null;
                 if (w != null) {
                     Location l = new Location(w, pcm.getDouble(lP + "x"), pcm.getDouble(lP + "y"), pcm.getDouble(lP + "z"));
-                    cs.sendMessage(MessageColor.POSITIVE + "Last position: " + "(" + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + ")");
+                    cs.sendMessage(MessageColor.POSITIVE + "Last position: " + "(" + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + MessageColor.POSITIVE + ")");
                     cs.sendMessage(MessageColor.POSITIVE + "Last world: " + MessageColor.NEUTRAL + RUtils.getMVWorldName(l.getWorld()) + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + l.getWorld().getName() + MessageColor.POSITIVE + ")");
                 }
             }
