@@ -89,7 +89,6 @@ public class InventoryListener implements Listener {
     }
 
     private Inventory getEnderInventory(Player p) {
-        if (!Config.separateInv || !Config.separateEnder) return;
         World w = p.getWorld();
         String group = getWorldGroup(w);
         if (group == null) return null;
@@ -282,13 +281,12 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onEnderChestOpen(InventoryOpenEvent e) {
-        if (!Config.separateInv || !Config.separateEnder) return;
         if (!(e.getPlayer() instanceof Player)) return;
         Player p = (Player) e.getPlayer();
         Inventory i = e.getInventory();
         if (i.getType() != InventoryType.ENDER_CHEST) return;
         Inventory ender = getEnderInventory(p);
-        if (ender == null) return;
+        if (ender == null || ender.getContents().length < 1) return;
         i.setContents(ender.getContents());
     }
 
