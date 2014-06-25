@@ -533,7 +533,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (pcm.isFirstJoin()) {
             String dispname = event.getPlayer().getDisplayName();
             if (dispname == null || dispname.trim().equals("")) dispname = event.getPlayer().getName();
-            pcm.set(event.getPlayer().getName(), "name");
+            pcm.set("name", event.getPlayer().getName());
             pcm.set("dispname", dispname);
             pcm.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
             pcm.set("banreason", "");
