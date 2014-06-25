@@ -1235,8 +1235,8 @@ permissions:
     command: deletebanhistory
     default: op
     description: Allows you to remove ban history records.
-  rcmds.delhome:
-    command: delhome
+  rcmds.deletehome:
+    command: deletehome
     default: op
     description: Allows you to delete a home.
   rcmds.deletejail:
@@ -1958,8 +1958,8 @@ permissions:
     command: deafen
     default: false
     description: Makes the player immune to /deafen.
-  rcmds.exempt.delhome:
-    command: delhome
+  rcmds.exempt.deletehome:
+    command: deletehome
     default: false
     description: Makes the player immune to /delhome.
   rcmds.exempt.effect:
@@ -2152,8 +2152,8 @@ permissions:
     command: deafen
     default: op
     description: Allows the player to /deafen other players.
-  rcmds.others.delhome:
-    command: delhome
+  rcmds.others.deletehome:
+    command: deletehome
     default: op
     description: Allows the player to /delhome other players.
   rcmds.others.effect:
@@ -2380,7 +2380,7 @@ permissions:
       rcmds.home: true
       rcmds.sethome: true
       rcmds.sethome.multi: true
-      rcmds.delhome: true
+      rcmds.deletehome: true
       rcmds.listhomes: true
       rcmds.strike: true
       rcmds.jump: true
@@ -2547,7 +2547,7 @@ permissions:
       rcmds.others.feed: true
       rcmds.others.effect: true
       rcmds.others.head: true
-      rcmds.others.delhome: true
+      rcmds.others.deletehome: true
       rcmds.others.deafen: true
       rcmds.others.listhomes: true
       rcmds.others.saveplayer: true
@@ -2637,7 +2637,7 @@ permissions:
       rcmds.exempt.rocket: true
       rcmds.exempt.effect: true
       rcmds.exempt.head: true
-      rcmds.exempt.delhome: true
+      rcmds.exempt.deletehome: true
       rcmds.exempt.enderchest: true
       rcmds.exempt.nickchangelimit: true
       rcmds.exempt.nickspecialcharacters: true
@@ -2693,7 +2693,7 @@ permissions:
       rcmds.home: true
       rcmds.sethome: true
       rcmds.sethome.multi: true
-      rcmds.delhome: true
+      rcmds.deletehome: true
       rcmds.listhomes: true
       rcmds.strike: true
       rcmds.jump: true
