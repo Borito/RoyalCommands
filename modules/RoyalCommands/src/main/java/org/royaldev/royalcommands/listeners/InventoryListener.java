@@ -89,6 +89,7 @@ public class InventoryListener implements Listener {
     }
 
     private Inventory getEnderInventory(Player p) {
+        if (!Config.separateInv || !Config.separateEnder) return;
         World w = p.getWorld();
         String group = getWorldGroup(w);
         if (group == null) return null;
@@ -263,7 +264,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onXP(PlayerExpChangeEvent e) {
-        if (!Config.separateInv) return;
+        if (!Config.separateInv || !Config.separateXP) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
@@ -271,6 +272,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onEnderChestClose(InventoryCloseEvent e) {
+        if (!Config.separateInv || !Config.separateEnder) return;
         if (!(e.getPlayer() instanceof Player)) return;
         Player p = (Player) e.getPlayer();
         Inventory i = e.getInventory();
@@ -280,6 +282,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onEnderChestOpen(InventoryOpenEvent e) {
+        if (!Config.separateInv || !Config.separateEnder) return;
         if (!(e.getPlayer() instanceof Player)) return;
         Player p = (Player) e.getPlayer();
         Inventory i = e.getInventory();
@@ -316,8 +319,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void potionEffects(PlayerChangedWorldEvent e) {
-        if (!Config.separateInv) return;
-        if (!Config.removePotionEffects) return;
+        if (!Config.separateInv || !Config.removePotionEffects) return;
         Player p = e.getPlayer();
         Collection<PotionEffect> potionEffects = p.getActivePotionEffects();
         if (potionEffects.isEmpty()) return;
