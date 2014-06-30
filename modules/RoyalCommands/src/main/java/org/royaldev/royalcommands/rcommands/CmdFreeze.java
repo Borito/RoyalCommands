@@ -38,6 +38,7 @@ public class CmdFreeze implements CommandExecutor {
             if (t.isOnline())
                 ((Player) t).sendMessage(MessageColor.POSITIVE + "You have been " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
             cs.sendMessage(MessageColor.POSITIVE + "You have " + MessageColor.NEUTRAL + status + MessageColor.POSITIVE + " the player " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+            return true;
         }
         return false;
     }

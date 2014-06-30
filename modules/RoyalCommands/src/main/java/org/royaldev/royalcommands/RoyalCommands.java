@@ -208,7 +208,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private ConfigurationSection getCommandInfo(String command) {
-        final ConfigurationSection ci = getCommands().getConfigurationSection(command);
+        final ConfigurationSection ci = this.getCommands().getConfigurationSection(command);
         if (ci == null) throw new IllegalArgumentException("No such command registered!");
         return ci;
     }
@@ -245,10 +245,10 @@ public class RoyalCommands extends JavaPlugin {
             c.setAccessible(true);
             final PluginCommand pc = (PluginCommand) c.newInstance(command, this);
             pc.setExecutor(ce);
-            pc.setAliases(getAliases(command));
-            pc.setDescription(getDescription(command));
-            pc.setUsage(getUsage(command));
-            this.getCommandMap().register(getDescription().getName(), pc);
+            pc.setAliases(this.getAliases(command));
+            pc.setDescription(this.getDescription(command));
+            pc.setUsage(this.getUsage(command));
+            this.getCommandMap().register(this.getDescription().getName(), pc);
         } catch (Exception e) {
             this.getLogger().warning("Could not register command \"" + command + "\" - an error occurred: " + e.getMessage() + ".");
         }
