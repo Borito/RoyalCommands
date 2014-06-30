@@ -30,7 +30,7 @@ import java.util.Map;
 public class CmdRecipe implements CommandExecutor {
 
     private final RoyalCommands plugin;
-    private final Map<String, Integer> tasks = new HashMap<String, Integer>();
+    private final Map<String, Integer> tasks = new HashMap<>();
 
     public CmdRecipe(RoyalCommands instance) {
         plugin = instance;
@@ -73,13 +73,12 @@ public class CmdRecipe implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
                 return true;
             }
-            is.setDurability((short) -1);
             final List<Recipe> rs = plugin.getServer().getRecipesFor(is);
             if (rs.size() < 1) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No recipes for that item!");
                 return true;
             }
-            final List<Inventory> workbenches = new ArrayList<Inventory>();
+            final List<Inventory> workbenches = new ArrayList<>();
             for (Recipe r : rs) {
                 final Inventory i;
                 if (r instanceof ShapedRecipe) {
