@@ -35,11 +35,11 @@ public class CmdTeleportPlayerToPlayer implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.isTeleportAllowed(t1) && !this.plugin.ah.isAuthorized(cs, cmd)) {
+            if (!RUtils.isTeleportAllowed(t1) && !this.plugin.ah.isAuthorized(cs, "rcmds.tpoverride")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + t1.getName() + MessageColor.NEGATIVE + " has teleportation off!");
                 return true;
             }
-            if (!RUtils.isTeleportAllowed(t2) && !this.plugin.ah.isAuthorized(cs, cmd)) {
+            if (!RUtils.isTeleportAllowed(t2) && !this.plugin.ah.isAuthorized(cs, "rcmds.tpoverride")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + t2.getName() + MessageColor.NEGATIVE + " has teleportation off!");
                 return true;
             }

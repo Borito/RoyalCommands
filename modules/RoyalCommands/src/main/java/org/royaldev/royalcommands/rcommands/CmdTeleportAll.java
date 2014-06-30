@@ -29,7 +29,7 @@ public class CmdTeleportAll implements CommandExecutor {
             }
             Player p = (Player) cs;
             for (Player t : plugin.getServer().getOnlinePlayers()) {
-                if (!RUtils.isTeleportAllowed(t) && !this.plugin.ah.isAuthorized(cs, cmd)) continue;
+                if (!RUtils.isTeleportAllowed(t) && !this.plugin.ah.isAuthorized(cs, "rcmds.tpoverride")) continue;
                 if (t.equals(p)) continue;
                 String error = RUtils.teleport(t, p);
                 if (!error.isEmpty()) {

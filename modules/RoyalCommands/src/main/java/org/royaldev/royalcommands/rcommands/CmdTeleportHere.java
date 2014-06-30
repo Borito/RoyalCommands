@@ -37,7 +37,7 @@ public class CmdTeleportHere implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            if (!RUtils.isTeleportAllowed(t) && !this.plugin.ah.isAuthorized(cs, cmd)) {
+            if (!RUtils.isTeleportAllowed(t) && !this.plugin.ah.isAuthorized(cs, "rcmds.tpoverride")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player has teleportation off!");
                 return true;
             }
