@@ -1431,9 +1431,8 @@ public class RUtils {
     }
 
     public static boolean isBanned(final Player p) {
-        if (p.isBanned()) return true;
         final PConfManager pcm = PConfManager.getPConfManager(p);
-        if (pcm.get("bantime") != null) {
+        if (pcm.isSet("bantime")) {
             if (RUtils.isTimeStampValid(p, "bantime")) return true;
             else {
                 pcm.set("bantime", null);
@@ -1441,7 +1440,7 @@ public class RUtils {
                 return false;
             }
         }
-        return false;
+        return p.isBanned();
     }
 
     public static UUID getUUID(String name) throws Exception {
