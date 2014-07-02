@@ -464,8 +464,11 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (p == null) return;
         // Create new config manager for player
         PConfManager pcm = PConfManager.getPConfManager(p);
+        final boolean wasBanned = p.isBanned();
         // Check if player is banned
-        if (!RUtils.isBanned(p)) return;
+        final boolean isBanned = RUtils.isBanned(p);
+        if (wasBanned && !isBanned) event.setResult(Result.ALLOWED); // end of tempban, most likely
+        if (!isBanned) return;
         // Get the banreason from the player's userdata file
         String reason = pcm.getString("banreason"); // Returns string or null
         // Check if there was none, and if there wasn't, set it to default ban message.
