@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.royaldev</groupId>
     <artifactId>royalcommands</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
     <name>RoyalCommands</name>
     <url>https://github.com/RoyalDev/RoyalCommands</url>
     <issueManagement>
@@ -159,7 +159,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.9-R0.1-SNAPSHOT</version>
+            <version>1.7.9-R0.2</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
