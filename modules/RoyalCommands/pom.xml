@@ -163,7 +163,7 @@
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
+            <artifactId>VaultAPI</artifactId>
             <version>LATEST</version>
         </dependency>
         <dependency>
