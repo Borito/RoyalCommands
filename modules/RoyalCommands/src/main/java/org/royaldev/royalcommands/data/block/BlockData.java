@@ -19,10 +19,10 @@ import java.util.zip.GZIPOutputStream;
 
 public class BlockData {
 
-    private static final Map<String, Map<String, Object>> data = new HashMap<String, Map<String, Object>>();
+    private static final Map<String, Map<String, Object>> data = new HashMap<>();
     private final Plugin p;
     private final BlockLocation bl;
-    private final Map<String, Object> thisData = new HashMap<String, Object>();
+    private final Map<String, Object> thisData = new HashMap<>();
 
     public BlockData(Plugin p, BlockLocation bl) {
         this.p = p;

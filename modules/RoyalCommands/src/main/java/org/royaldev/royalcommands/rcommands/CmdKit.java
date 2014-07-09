@@ -63,9 +63,9 @@ public class CmdKit implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That kit does not exist!");
                 return true;
             }
-            if (enchants == null) enchants = new ArrayList<String>();
-            if (names == null) names = new ArrayList<String>();
-            if (lore == null) lore = new ArrayList<String>();
+            if (enchants == null) enchants = new ArrayList<>();
+            if (names == null) names = new ArrayList<>();
+            if (lore == null) lore = new ArrayList<>();
             if (Config.kitPerms && !plugin.ah.isAuthorized(cs, "rcmds.kit." + kitname)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that kit!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");

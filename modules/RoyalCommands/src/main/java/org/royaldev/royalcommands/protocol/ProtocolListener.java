@@ -63,7 +63,7 @@ public class ProtocolListener {
             public void onPacketSending(PacketEvent event) {
                 if (!Config.useProtocolLib) return;
                 final PacketSetWindowItems p = new PacketSetWindowItems(event.getPacket());
-                final List<ItemStack> newItems = new ArrayList<ItemStack>();
+                final List<ItemStack> newItems = new ArrayList<>();
                 for (ItemStack is : p.getItems()) {
                     if (is == null) { // SpawnInfoManager can't take null ItemStacks
                         newItems.add(null);

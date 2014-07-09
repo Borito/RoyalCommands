@@ -26,7 +26,7 @@ public class WarnWatcher implements Runnable {
             if (!pcm.exists()) continue;
             if (pcm.get("warns") == null) continue;
             List<String> warns = pcm.getStringList("warns");
-            List<String> warnsToRemove = new ArrayList<String>();
+            List<String> warnsToRemove = new ArrayList<>();
             if (warns == null) return;
             for (String s : warns) {
                 String[] reason = s.split("\\u00b5");

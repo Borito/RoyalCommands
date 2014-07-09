@@ -15,11 +15,13 @@ import org.royaldev.royalcommands.RoyalCommands;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @ReflectCommand
 public class CmdBack implements CommandExecutor {
 
-    private static final HashMap<String, List<Location>> backdb = new HashMap<>();
+    private static final Map<UUID, List<Location>> backdb = new HashMap<>();
     private final RoyalCommands plugin;
 
     public CmdBack(RoyalCommands plugin) {
@@ -36,12 +38,12 @@ public class CmdBack implements CommandExecutor {
         if (Config.disabledBackWorlds.contains(toAdd.getWorld().getName())) return;
         int maxStack = Config.maxBackStack;
         synchronized (backdb) {
-            List<Location> backs = backdb.get(p.getName());
+            List<Location> backs = backdb.get(p.getUniqueId());
             if (backs == null) backs = new ArrayList<>();
             // remove last location if needed
             if (backs.size() > 0 && backs.size() >= maxStack) backs.remove(backs.size() - 1);
             backs.add(0, toAdd);
-            backdb.put(p.getName(), backs);
+            backdb.put(p.getUniqueId(), backs);
         }
     }
 
@@ -57,12 +59,12 @@ public class CmdBack implements CommandExecutor {
                 return true;
             }
             Player p = (Player) cs;
-            if (!backdb.containsKey(p.getName())) {
+            if (!backdb.containsKey(p.getUniqueId())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You have no place to go back to!");
                 return true;
             }
             if (label.equalsIgnoreCase("backs")) {
-                List<Location> backs = backdb.get(p.getName());
+                final List<Location> backs = backdb.get(p.getUniqueId());
                 cs.sendMessage(MessageColor.NEUTRAL + "/back locations:");
                 for (int i = 0; i < backs.size(); i++) {
                     Location l = backs.get(i);
@@ -83,7 +85,7 @@ public class CmdBack implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "The back number was not a valid number!");
                 return true;
             }
-            List<Location> backs = backdb.get(p.getName());
+            List<Location> backs = backdb.get(p.getUniqueId());
             if (index < 0 || index >= backs.size()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such back number!");
                 return true;

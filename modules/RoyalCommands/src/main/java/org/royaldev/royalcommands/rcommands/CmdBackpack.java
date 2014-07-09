@@ -19,9 +19,10 @@ public class CmdBackpack implements CommandExecutor {
     private final RoyalCommands plugin;
 
     public CmdBackpack(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
+    @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("backpack")) {
             if (!this.plugin.ah.isAuthorized(cs, cmd)) {
@@ -42,7 +43,7 @@ public class CmdBackpack implements CommandExecutor {
                     cs.sendMessage(MessageColor.NEGATIVE + "No world specified.");
                     return true;
                 }
-                World w = plugin.getServer().getWorld(args[1]);
+                World w = this.plugin.getServer().getWorld(args[1]);
                 if (w == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                     return true;

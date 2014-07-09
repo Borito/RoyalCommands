@@ -60,7 +60,7 @@ public class CmdPublicAssign implements CommandExecutor {
                 return true;
             }
             List<String> cmds = RUtils.getAssignment(hand, cm);
-            if (cmds == null) cmds = new ArrayList<String>();
+            if (cmds == null) cmds = new ArrayList<>();
             if (command.matches("\\-\\d+")) {
                 int toRemove;
                 try {

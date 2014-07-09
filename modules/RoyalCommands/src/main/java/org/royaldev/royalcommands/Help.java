@@ -18,42 +18,42 @@ import java.util.TreeMap;
 public class Help {
 
     private final RoyalCommands plugin;
-    private final TreeMap<String, List<PluginCommand>> commands = new TreeMap<String, List<PluginCommand>>();
+    private final TreeMap<String, List<PluginCommand>> commands = new TreeMap<>();
     private String customHelp = "###";
 
     Help(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     public TreeMap<String, List<PluginCommand>> getCommands() {
-        return commands;
+        return this.commands;
     }
 
     public String getCustomHelp() {
-        return customHelp;
+        return this.customHelp;
     }
 
     public void reloadHelp() {
-        commands.clear();
+        this.commands.clear();
         final SimpleCommandMap commandMap;
         try {
-            Object result = RUtils.getPrivateField(plugin.getServer().getPluginManager(), "commandMap");
+            Object result = RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "commandMap");
             commandMap = (SimpleCommandMap) result;
         } catch (Exception e) {
-            plugin.getLogger().warning("Could not get command map; help could not be started.");
+            this.plugin.getLogger().warning("Could not get command map; help could not be started.");
             return;
         }
         for (final Command c : commandMap.getCommands()) {
             if (!(c instanceof PluginCommand)) continue;
             final PluginCommand pc = (PluginCommand) c;
             final String pluginName = pc.getPlugin().getName().toLowerCase();
-            List<PluginCommand> pCommands = commands.get(pluginName);
-            if (pCommands == null) pCommands = new ArrayList<PluginCommand>();
+            List<PluginCommand> pCommands = this.commands.get(pluginName);
+            if (pCommands == null) pCommands = new ArrayList<>();
             if (!pCommands.contains(pc)) pCommands.add(pc);
-            commands.put(pluginName, pCommands);
+            this.commands.put(pluginName, pCommands);
         }
-        for (final String pluginName : commands.keySet()) {
-            final List<PluginCommand> pCommands = commands.get(pluginName);
+        for (final String pluginName : this.commands.keySet()) {
+            final List<PluginCommand> pCommands = this.commands.get(pluginName);
             if (pCommands == null) continue;
             Collections.sort(pCommands, new Comparator<PluginCommand>() {
                 @Override
@@ -61,13 +61,13 @@ public class Help {
                     return object1.getName().compareTo(object2.getName());
                 }
             });
-            commands.put(pluginName, pCommands);
+            this.commands.put(pluginName, pCommands);
         }
         // custom help
         final StringBuilder sb = new StringBuilder();
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(new File(plugin.getDataFolder(), "help.txt")));
+            br = new BufferedReader(new FileReader(new File(this.plugin.getDataFolder(), "help.txt")));
             String input;
             while ((input = br.readLine()) != null) sb.append(input).append("\n");
         } catch (FileNotFoundException e) {
@@ -82,6 +82,6 @@ public class Help {
             } catch (IOException ignored) {
             }
         }
-        customHelp = sb.toString();
+        this.customHelp = sb.toString();
     }
 }

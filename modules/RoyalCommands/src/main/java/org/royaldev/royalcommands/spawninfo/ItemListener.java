@@ -73,7 +73,7 @@ public class ItemListener implements Listener {
     public void onCraft(CraftItemEvent e) {
         if (!Config.itemSpawnTag) return;
         final CraftingInventory ci = e.getInventory();
-        final List<ItemStack> spawnedItems = new ArrayList<ItemStack>();
+        final List<ItemStack> spawnedItems = new ArrayList<>();
         for (ItemStack component : ci.getMatrix()) {
             if (component == null) continue;
             final SpawnInfo csi = SpawnInfo.SpawnInfoManager.getSpawnInfo(component);

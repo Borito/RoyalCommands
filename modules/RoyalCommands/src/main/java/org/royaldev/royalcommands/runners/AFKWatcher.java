@@ -43,9 +43,7 @@ public class AFKWatcher implements Runnable {
             if (afkAt + (afkKickTime * 1000) < currentTime) {
                 try {
                     RUtils.scheduleKick(p, "You have been AFK for too long!");
-                } catch (IllegalArgumentException e) {
-                    Logger.getLogger("Minecraft").warning("[RoyalCommands] Could not kick " + p.getName() + " for being AFK: " + e.getMessage());
-                } catch (NullPointerException e) {
+                } catch (IllegalArgumentException | NullPointerException e) {
                     Logger.getLogger("Minecraft").warning("[RoyalCommands] Could not kick " + p.getName() + " for being AFK: " + e.getMessage());
                 }
             }

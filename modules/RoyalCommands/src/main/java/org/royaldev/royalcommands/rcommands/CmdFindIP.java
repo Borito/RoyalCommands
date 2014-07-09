@@ -59,7 +59,7 @@ public class CmdFindIP implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "No players have played to check IPs for!");
                 return true;
             }
-            final List<String> hasIP = new ArrayList<String>();
+            final List<String> hasIP = new ArrayList<>();
             final Runnable r = new Runnable() {
                 @Override
                 public void run() {

@@ -87,7 +87,7 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler
     public void deafenMessages(AsyncPlayerChatEvent e) {
         if (e.isCancelled()) return;
-        List<Player> toRemove = new ArrayList<Player>();
+        List<Player> toRemove = new ArrayList<>();
         for (Player t : e.getRecipients()) {
             PConfManager pcm = PConfManager.getPConfManager(t);
             boolean isDeaf = pcm.getBoolean("deaf", false);
@@ -331,7 +331,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         sb.append(e.getMessage().substring(last));
         plugin.getServer().broadcastMessage(e.getFormat().replaceAll("(?i)by the power of gr[ae]yskull!?", sb.toString()));
         e.setFormat("");
-        List<PotionEffect> effects = new ArrayList<PotionEffect>();
+        List<PotionEffect> effects = new ArrayList<>();
         effects.add(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 1200, 2));
         effects.add(new PotionEffect(PotionEffectType.REGENERATION, 1200, 2));
         effects.add(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1200, 2));
@@ -347,7 +347,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         Set<Player> recpts = e.getRecipients();
         ArrayList<String> ignores = (ArrayList<String>) pcm.getStringList("ignoredby");
         if (ignores == null) return;
-        Set<Player> ignore = new HashSet<Player>();
+        Set<Player> ignore = new HashSet<>();
         for (Player pl : recpts)
             for (String ignoree : ignores)
                 if (pl.getName().equalsIgnoreCase(ignoree.toLowerCase())) ignore.add(pl);
@@ -380,7 +380,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (act.equals(Action.PHYSICAL)) return;
         ItemStack id = event.getItem();
         if (id == null) return;
-        final List<String> cmds = new ArrayList<String>();
+        final List<String> cmds = new ArrayList<>();
         final List<String> personalAssigns = RUtils.getAssignment(id, PConfManager.getPConfManager(event.getPlayer()));
         final List<String> publicAssigns = RUtils.getAssignment(id, ConfManager.getConfManager("publicassignments.yml"));
         if (personalAssigns != null) cmds.addAll(personalAssigns);
@@ -408,7 +408,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         if (PConfManager.getPConfManager(e.getPlayer()).getBoolean("jailed")) e.setCancelled(true);
         ItemStack id = e.getPlayer().getItemInHand();
         if (id == null) return;
-        final List<String> cmds = new ArrayList<String>();
+        final List<String> cmds = new ArrayList<>();
         final List<String> personalAssigns = RUtils.getAssignment(id, PConfManager.getPConfManager(e.getPlayer()));
         final List<String> publicAssigns = RUtils.getAssignment(id, ConfManager.getConfManager("publicassignments.yml"));
         if (personalAssigns != null) cmds.addAll(personalAssigns);

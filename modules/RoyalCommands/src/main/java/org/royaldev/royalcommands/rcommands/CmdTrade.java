@@ -11,6 +11,8 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @ReflectCommand
 public class CmdTrade implements CommandExecutor {
@@ -22,7 +24,7 @@ public class CmdTrade implements CommandExecutor {
     }
 
     public static void sendTradeRequest(Player target, Player sender) {
-        tradedb.put(sender.getName(), target.getName());
+        tradedb.put(sender.getUniqueId(), target.getUniqueId());
         target.sendMessage(MessageColor.NEUTRAL + sender.getName() + MessageColor.POSITIVE + " has requested to trade with you.");
         target.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/trade " + sender.getName() + MessageColor.POSITIVE + " to accept.");
     }
@@ -39,16 +41,16 @@ public class CmdTrade implements CommandExecutor {
      */
     public static Inventory getTradeInv(Player p, Player t) {
         synchronized (trades) {
-            for (final HashMap<String, String> set : trades.keySet()) {
-                if ((set.containsKey(t.getName()) && set.get(t.getName()).equals(p.getName())) || (set.containsKey(p.getName()) && set.get(p.getName()).equals(t.getName())))
+            for (final Map<UUID, UUID> set : trades.keySet()) {
+                if ((set.containsKey(t.getUniqueId()) && set.get(t.getUniqueId()).equals(p.getUniqueId())) || (set.containsKey(p.getUniqueId()) && set.get(p.getUniqueId()).equals(t.getUniqueId())))
                     return trades.get(set);
             }
         }
         return null;
     }
 
-    public static final HashMap<String, String> tradedb = new HashMap<String, String>();
-    public static final HashMap<HashMap<String, String>, Inventory> trades = new HashMap<HashMap<String, String>, Inventory>();
+    public static final Map<UUID, UUID> tradedb = new HashMap<>();
+    public static final Map<Map<UUID, UUID>, Inventory> trades = new HashMap<>();
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("trade")) {
@@ -84,15 +86,15 @@ public class CmdTrade implements CommandExecutor {
                 p.openInventory(inv);
                 return true;
             }
-            if (tradedb.containsKey(t.getName())) {
+            if (tradedb.containsKey(t.getUniqueId())) {
                 inv = plugin.getServer().createInventory(null, 36, "Trade");
                 p.sendMessage(MessageColor.POSITIVE + "Opened trading interface.");
                 p.openInventory(inv);
                 t.openInventory(inv);
-                final HashMap<String, String> trade = new HashMap<String, String>();
-                trade.put(p.getName(), t.getName());
+                final Map<UUID, UUID> trade = new HashMap<>();
+                trade.put(p.getUniqueId(), t.getUniqueId());
                 trades.put(trade, inv);
-                tradedb.remove(t.getName());
+                tradedb.remove(t.getUniqueId());
                 return true;
             } else {
                 sendTradeRequest(t, p);

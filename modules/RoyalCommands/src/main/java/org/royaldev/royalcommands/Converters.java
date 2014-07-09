@@ -12,8 +12,7 @@ public class Converters {
         }
         try {
             return Integer.valueOf(o.toString());
-        } catch (NumberFormatException ignored) {
-        } catch (NullPointerException ignored) {
+        } catch (NumberFormatException | NullPointerException ignored) {
         }
         return 0;
     }
@@ -24,8 +23,7 @@ public class Converters {
         }
         try {
             return Float.valueOf(o.toString());
-        } catch (NumberFormatException ignored) {
-        } catch (NullPointerException ignored) {
+        } catch (NumberFormatException | NullPointerException ignored) {
         }
         return 0F;
     }
@@ -36,8 +34,7 @@ public class Converters {
         }
         try {
             return Double.valueOf(o.toString());
-        } catch (NumberFormatException ignored) {
-        } catch (NullPointerException ignored) {
+        } catch (NumberFormatException | NullPointerException ignored) {
         }
         return 0D;
     }
@@ -48,8 +45,7 @@ public class Converters {
         }
         try {
             return Long.valueOf(o.toString());
-        } catch (NumberFormatException ignored) {
-        } catch (NullPointerException ignored) {
+        } catch (NumberFormatException | NullPointerException ignored) {
         }
         return 0L;
     }
@@ -60,8 +56,7 @@ public class Converters {
         }
         try {
             return Short.valueOf(o.toString());
-        } catch (NumberFormatException ignored) {
-        } catch (NullPointerException ignored) {
+        } catch (NumberFormatException | NullPointerException ignored) {
         }
         return (short) 0;
     }
@@ -72,8 +67,7 @@ public class Converters {
         }
         try {
             return Byte.valueOf(o.toString());
-        } catch (NumberFormatException ignored) {
-        } catch (NullPointerException ignored) {
+        } catch (NumberFormatException | NullPointerException ignored) {
         }
         return (byte) 0;
     }

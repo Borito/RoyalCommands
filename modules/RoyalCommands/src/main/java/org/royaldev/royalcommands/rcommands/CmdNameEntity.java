@@ -20,7 +20,7 @@ public class CmdNameEntity implements CommandExecutor {
         plugin = instance;
     }
 
-    private final static Map<String, String> names = new HashMap<String, String>();
+    private final static Map<String, String> names = new HashMap<>();
 
     /**
      * Checks to see if the player has a name to give to an entity.

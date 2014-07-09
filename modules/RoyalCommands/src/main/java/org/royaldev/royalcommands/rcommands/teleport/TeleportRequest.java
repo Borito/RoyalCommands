@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class TeleportRequest {
 
-    private final static Map<String, List<TeleportRequest>> teleportRequests = new HashMap<String, List<TeleportRequest>>();
+    private final static Map<String, List<TeleportRequest>> teleportRequests = new HashMap<>();
     private final String requester;
     private final String target;
     private final TeleportType teleportType;
@@ -72,7 +72,7 @@ public class TeleportRequest {
         synchronized (teleportRequests) {
             trs = teleportRequests.get(target.getName());
         }
-        if (trs == null) trs = new ArrayList<TeleportRequest>();
+        if (trs == null) trs = new ArrayList<>();
         if (TeleportRequest.hasPendingRequest(requester.getName(), target.getName())) {
             requester.sendMessage(MessageColor.NEGATIVE + "You already have a request pending with " + MessageColor.NEUTRAL + target.getName() + MessageColor.NEGATIVE + ".");
             return;
@@ -172,8 +172,6 @@ public class TeleportRequest {
 
     /**
      * Accepts this TeleportRequest and attempts the teleport. Also sends confirmation messages to both parties.
-     *
-     * @return true if a teleport was attempted, false if not
      */
     public void accept() {
         this.expire();

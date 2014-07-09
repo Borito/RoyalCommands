@@ -100,7 +100,7 @@ public class CSVReader implements Closeable {
      * @throws IOException if bad things happen during the read
      */
     public List<String[]> readAll() throws IOException {
-        List<String[]> allElements = new ArrayList<String[]>();
+        List<String[]> allElements = new ArrayList<>();
         while (hasNext) {
             String[] nextLineAsTokens = readNext();
             if (nextLineAsTokens != null) allElements.add(nextLineAsTokens);

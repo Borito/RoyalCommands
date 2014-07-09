@@ -2,15 +2,15 @@ package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.kitteh.tag.PlayerReceiveNameTagEvent;
+import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 public class TagAPIListener implements Listener {
 
     @EventHandler
-    public void onTag(PlayerReceiveNameTagEvent e) {
-        if (e.isModified()) return;
+    public void onTag(AsyncPlayerReceiveNameTagEvent e) {
+        if (e.isTagModified()) return;
         if (e.getNamedPlayer() == null) return;
         PConfManager pcm = PConfManager.getPConfManager(e.getNamedPlayer());
         String dispname = pcm.getString("dispname");

@@ -26,7 +26,7 @@ public class SpawnInfo implements Serializable {
     /**
      * List of <em>spawned</em> components used in the creation of this item.
      */
-    private final List<String> components = new ArrayList<String>();
+    private final List<String> components = new ArrayList<>();
     /**
      * Name of player that spawned this item. If item is not spawned, this should be null. If it has no spawner, this
      * should be null.
@@ -174,7 +174,7 @@ public class SpawnInfo implements Serializable {
     public static class SpawnInfoManager {
         private final static UUID uuid = UUID.fromString("553ade7d-86cd-469e-a4ff-c6fbb564d961");
         private final static UUID defaultUUID = UUID.fromString("4f0925a7-abf4-4a61-8c81-2028d453ff92");
-        private final static Map<Material, Attributes.Attribute> defaults = new HashMap<Material, Attributes.Attribute>();
+        private final static Map<Material, Attributes.Attribute> defaults = new HashMap<>();
 
         static {
             try {

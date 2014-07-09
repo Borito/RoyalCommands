@@ -79,7 +79,7 @@ public class CmdTime implements CommandExecutor {
         String meridian = (hour >= 12F) ? "PM" : "AM";
         float twelvehour = (hour > 12F) ? hour - 12F : hour;
         if (df.format(twelvehour).equals("00")) twelvehour = 12F;
-        Map<String, String> toRet = new HashMap<String, String>();
+        Map<String, String> toRet = new HashMap<>();
         toRet.put("24h", df.format(hour) + ":" + df.format(minute));
         toRet.put("12h", df.format(twelvehour) + ":" + df.format(minute) + " " + meridian);
         return toRet;
@@ -88,7 +88,7 @@ public class CmdTime implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("time")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
+            if (!plugin.ah.isAuthorized(cs, cmd)) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }

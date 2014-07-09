@@ -33,15 +33,15 @@ public class CmdRecipe implements CommandExecutor {
     private final Map<String, Integer> tasks = new HashMap<>();
 
     public CmdRecipe(RoyalCommands instance) {
-        plugin = instance;
-        plugin.getServer().getPluginManager().registerEvents(new WorkbenchCloseListener(), plugin);
+        this.plugin = instance;
+        this.plugin.getServer().getPluginManager().registerEvents(new WorkbenchCloseListener(), plugin);
     }
 
     private void cancelTask(final Player p) {
-        if (!tasks.containsKey(p.getName())) return;
-        final int taskID = tasks.get(p.getName());
+        if (!this.tasks.containsKey(p.getName())) return;
+        final int taskID = this.tasks.get(p.getName());
         if (taskID == -1) return;
-        plugin.getServer().getScheduler().cancelTask(taskID);
+        this.plugin.getServer().getScheduler().cancelTask(taskID);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class CmdRecipe implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
                 return true;
             }
-            final List<Recipe> rs = plugin.getServer().getRecipesFor(is);
+            final List<Recipe> rs = this.plugin.getServer().getRecipesFor(is);
             if (rs.size() < 1) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No recipes for that item!");
                 return true;
@@ -82,7 +82,7 @@ public class CmdRecipe implements CommandExecutor {
             for (Recipe r : rs) {
                 final Inventory i;
                 if (r instanceof ShapedRecipe) {
-                    i = plugin.getServer().createInventory(null, InventoryType.WORKBENCH);
+                    i = this.plugin.getServer().createInventory(null, InventoryType.WORKBENCH);
                     final ShapedRecipe sr = (ShapedRecipe) r;
                     final Map<Character, ItemStack> im = sr.getIngredientMap();
                     final String[] lines = sr.getShape();
@@ -97,7 +97,7 @@ public class CmdRecipe implements CommandExecutor {
                     }
                     i.setItem(0, sr.getResult());
                 } else if (r instanceof ShapelessRecipe) {
-                    i = plugin.getServer().createInventory(null, InventoryType.WORKBENCH);
+                    i = this.plugin.getServer().createInventory(null, InventoryType.WORKBENCH);
                     final ShapelessRecipe sr = (ShapelessRecipe) r;
                     final List<ItemStack> ingredients = sr.getIngredientList();
                     for (int slot = 1; slot <= ingredients.size(); slot++) {
@@ -106,7 +106,7 @@ public class CmdRecipe implements CommandExecutor {
                     }
                     i.setItem(0, sr.getResult());
                 } else if (r instanceof FurnaceRecipe) {
-                    i = plugin.getServer().createInventory(null, InventoryType.FURNACE);
+                    i = this.plugin.getServer().createInventory(null, InventoryType.FURNACE);
                     final FurnaceRecipe fr = (FurnaceRecipe) r;
                     i.setItem(0, fr.getInput());
                     i.setItem(2, fr.getResult());
@@ -128,23 +128,24 @@ public class CmdRecipe implements CommandExecutor {
 
                 @Override
                 public void run() {
-                    if (!display) return; // let's not open new workbenches, as that can cause the items to disappear
-                    if (!tasks.containsKey(p.getName())) return;
-                    if (currentRecipe >= workbenches.size()) currentRecipe = 0;
+                    // let's not open new workbenches, as that can cause the items to disappear
+                    if (!this.display) return;
+                    if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
+                    if (this.currentRecipe >= workbenches.size()) this.currentRecipe = 0;
                     setRecipeMaxStackSize(p, 65);
-                    p.openInventory(workbenches.get(currentRecipe));
+                    p.openInventory(workbenches.get(this.currentRecipe));
                     setRecipeMaxStackSize(p, 64);
-                    currentRecipe++;
-                    if (workbenches.size() == 1) display = false;
+                    this.currentRecipe++;
+                    if (workbenches.size() == 1) this.display = false;
                 }
             };
-            int taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, r, 0L, 30L);
+            int taskID = this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.plugin, r, 0L, 30L);
             if (taskID == -1) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Could not schedule task!");
                 return true;
             }
-            cancelTask(p);
-            tasks.put(p.getName(), taskID);
+            CmdRecipe.this.cancelTask(p);
+            CmdRecipe.this.tasks.put(p.getName(), taskID);
             return true;
         }
         return false;
@@ -157,12 +158,12 @@ public class CmdRecipe implements CommandExecutor {
             final Player p = (Player) e.getPlayer();
             final InventoryType it = e.getInventory().getType();
             if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
-            if (!tasks.containsKey(p.getName())) return;
+            if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
             if (e.getInventory().getMaxStackSize() == 65) return;
-            final int taskID = tasks.get(p.getName());
+            final int taskID = CmdRecipe.this.tasks.get(p.getName());
             if (taskID == -1) return;
-            plugin.getServer().getScheduler().cancelTask(taskID);
-            tasks.remove(p.getName());
+            CmdRecipe.this.plugin.getServer().getScheduler().cancelTask(taskID);
+            CmdRecipe.this.tasks.remove(p.getName());
         }
 
         @EventHandler(ignoreCancelled = true)
@@ -171,7 +172,7 @@ public class CmdRecipe implements CommandExecutor {
             final Player p = (Player) e.getWhoClicked();
             final InventoryType it = e.getInventory().getType();
             if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
-            if (!tasks.containsKey(p.getName())) return;
+            if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
             e.setCancelled(true);
         }
     }

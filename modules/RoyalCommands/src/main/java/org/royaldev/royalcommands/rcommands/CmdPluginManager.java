@@ -62,7 +62,7 @@ public class CmdPluginManager implements CommandExecutor {
             Object map = RUtils.getPrivateField(commandMap, "knownCommands");
             @SuppressWarnings("unchecked")
             HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
-            final List<Command> commands = new ArrayList<Command>(commandMap.getCommands());
+            final List<Command> commands = new ArrayList<>(commandMap.getCommands());
             for (Command c : commands) {
                 if (!(c instanceof PluginCommand)) continue;
                 final PluginCommand pc = (PluginCommand) c;
@@ -181,7 +181,7 @@ public class CmdPluginManager implements CommandExecutor {
      * @return List of dependencies, may be empty - never null
      */
     private List<String> getDependedOnBy(String name) {
-        final List<String> dependedOnBy = new ArrayList<String>();
+        final List<String> dependedOnBy = new ArrayList<>();
         for (Plugin pl : plugin.getServer().getPluginManager().getPlugins()) {
             if (pl == null) continue;
             if (!pl.isEnabled()) continue;

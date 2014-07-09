@@ -32,6 +32,7 @@ import java.util.List;
 
 public class MonitorListener implements Listener {
 
+    public static final List<String> openInvs = new ArrayList<>();
     private final RoyalCommands plugin;
 
     public MonitorListener(RoyalCommands instance) {
@@ -49,8 +50,6 @@ public class MonitorListener implements Listener {
         if (name == null) return null;
         return plugin.getServer().getPlayer(name);
     }
-
-    public static final List<String> openInvs = new ArrayList<String>();
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {

@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ConfManager extends GeneralConfManager {
 
-    private static final Map<String, ConfManager> confs = new HashMap<String, ConfManager>();
+    private static final Map<String, ConfManager> confs = new HashMap<>();
     private final Object saveLock = new Object();
     private final String path;
     private final String name;
@@ -79,7 +79,7 @@ public class ConfManager extends GeneralConfManager {
     }
 
     public static void removeAllManagers() {
-        Collection<ConfManager> oldConfs = new ArrayList<ConfManager>();
+        Collection<ConfManager> oldConfs = new ArrayList<>();
         oldConfs.addAll(confs.values());
         synchronized (confs) {
             for (ConfManager cm : oldConfs) cm.discard(false);

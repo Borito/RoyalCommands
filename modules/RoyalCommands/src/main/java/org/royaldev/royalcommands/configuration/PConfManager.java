@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class PConfManager extends GeneralConfManager {
 
-    private static final Map<UUID, PConfManager> pcms = new HashMap<UUID, PConfManager>();
+    private static final Map<UUID, PConfManager> pcms = new HashMap<>();
     private final Object saveLock = new Object();
     private final UUID playerUUID;
     private File pconfl = null;
@@ -82,7 +82,7 @@ public class PConfManager extends GeneralConfManager {
     }
 
     public static void removeAllManagers() {
-        Collection<PConfManager> oldConfs = new ArrayList<PConfManager>();
+        Collection<PConfManager> oldConfs = new ArrayList<>();
         synchronized (pcms) {
             oldConfs.addAll(pcms.values());
             for (PConfManager pcm : oldConfs) pcm.discard(false);

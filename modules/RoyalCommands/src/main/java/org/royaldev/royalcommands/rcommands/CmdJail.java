@@ -15,6 +15,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @ReflectCommand
 public class CmdJail implements CommandExecutor {
@@ -25,7 +26,7 @@ public class CmdJail implements CommandExecutor {
         plugin = instance;
     }
 
-    public final HashMap<Player, Location> jaildb = new HashMap<Player, Location>();
+    public final Map<UUID, Location> jaildb = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -68,7 +69,7 @@ public class CmdJail implements CommandExecutor {
                     pcm.set("jailed", false);
                     cs.sendMessage(MessageColor.POSITIVE + "You have released " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                     t.sendMessage(MessageColor.POSITIVE + "You have been released.");
-                    if (jaildb.get(t) == null || jaildb.get(t).getWorld() == null) {
+                    if (jaildb.get(t.getUniqueId()) == null || jaildb.get(t.getUniqueId()).getWorld() == null) {
                         t.sendMessage(MessageColor.NEGATIVE + "Your previous location no longer exists. Sending you to spawn.");
                         String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
                         if (!error.isEmpty()) {
@@ -77,7 +78,7 @@ public class CmdJail implements CommandExecutor {
                         }
                         return true;
                     }
-                    String error = RUtils.silentTeleport(t, jaildb.get(t));
+                    String error = RUtils.silentTeleport(t, jaildb.get(t.getUniqueId()));
                     if (!error.isEmpty()) {
                         cs.sendMessage(MessageColor.NEGATIVE + error);
                         return true;
@@ -133,7 +134,7 @@ public class CmdJail implements CommandExecutor {
                 pcm.set("jailed", false);
                 cs.sendMessage(MessageColor.POSITIVE + "You have released " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 t.sendMessage(MessageColor.POSITIVE + "You have been released.");
-                if (jaildb.get(t) == null || jaildb.get(t).getWorld() == null) {
+                if (jaildb.get(t.getUniqueId()) == null || jaildb.get(t.getUniqueId()).getWorld() == null) {
                     t.sendMessage(MessageColor.NEGATIVE + "Your previous location no longer exists. Sending you to spawn.");
                     String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
                     if (!error.isEmpty()) {
@@ -142,7 +143,7 @@ public class CmdJail implements CommandExecutor {
                     }
                     return true;
                 }
-                String error = RUtils.silentTeleport(t, jaildb.get(t));
+                String error = RUtils.silentTeleport(t, jaildb.get(t.getUniqueId()));
                 if (!error.isEmpty()) {
                     cs.sendMessage(MessageColor.NEGATIVE + error);
                     return true;
@@ -154,7 +155,7 @@ public class CmdJail implements CommandExecutor {
                 }
                 cs.sendMessage(MessageColor.POSITIVE + "You have jailed " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 t.sendMessage(MessageColor.NEGATIVE + "You have been jailed.");
-                jaildb.put(t, t.getLocation());
+                jaildb.put(t.getUniqueId(), t.getLocation());
                 String error = RUtils.silentTeleport(t, jailLoc);
                 if (!error.isEmpty()) {
                     cs.sendMessage(MessageColor.NEGATIVE + error);

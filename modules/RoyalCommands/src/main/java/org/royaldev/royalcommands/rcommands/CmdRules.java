@@ -52,7 +52,7 @@ public class CmdRules implements CommandExecutor {
             try {
                 br = new BufferedReader(new FileReader(rulesf));
                 String line;
-                List<String> rules = new ArrayList<String>();
+                List<String> rules = new ArrayList<>();
                 while ((line = br.readLine()) != null) {
                     line = RUtils.colorize(line);
                     rules.add(line);

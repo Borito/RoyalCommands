@@ -48,7 +48,7 @@ public class CmdWarn implements CommandExecutor {
                 return true;
             }
             List<String> warns = pcm.getStringList("warns");
-            if (warns == null) warns = new ArrayList<String>();
+            if (warns == null) warns = new ArrayList<>();
             String reason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : Config.defaultWarn;
             reason = RUtils.colorize(reason);
             if (reason.contains("\u00b5")) {
