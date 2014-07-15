@@ -6,16 +6,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Test;
 import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
+import org.royaldev.royalcommands.rcommands.BaseCommand;
 import org.royaldev.royalcommands.rcommands.ReflectCommand;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,18 +18,15 @@ import static org.junit.Assert.assertTrue;
 
 public class TestCommands {
 
-    private Set<Class<?>> allClasses = null;
+    private Set<Class<? extends BaseCommand>> allCommands = null;
     private YamlConfiguration pluginYml = null;
 
-    private Set<Class<?>> getAllCommandClasses() {
-        if (this.allClasses == null) {
-            final List<ClassLoader> classLoadersList = new LinkedList<>();
-            classLoadersList.add(ClasspathHelper.contextClassLoader());
-            classLoadersList.add(ClasspathHelper.staticClassLoader());
-            final Reflections r = new Reflections(new ConfigurationBuilder().setScanners(new SubTypesScanner(false), new ResourcesScanner()).setUrls(ClasspathHelper.forClassLoader(classLoadersList.toArray(new ClassLoader[classLoadersList.size()]))).filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix("org.royaldev.royalcommands.rcommands"))));
-            this.allClasses = r.getSubTypesOf(Object.class);
+    private Set<Class<? extends BaseCommand>> getAllCommandClasses() {
+        if (this.allCommands == null) {
+            final Reflections r = new Reflections("org.royaldev.royalcommands.rcommands");
+            this.allCommands = r.getSubTypesOf(BaseCommand.class);
         }
-        return this.allClasses;
+        return this.allCommands;
     }
 
     private YamlConfiguration getPluginYml() {
@@ -48,11 +40,11 @@ public class TestCommands {
 
     @Test
     public void testValidity() throws Throwable {
-        final Set<Class<?>> classes = this.getAllCommandClasses();
+        final Set<Class<? extends BaseCommand>> classes = this.getAllCommandClasses();
         for (final Class<?> clazz : classes) {
             if (!clazz.getSimpleName().startsWith("Cmd")) continue; // not a command, so ignore
             assertTrue(clazz.getName() + " is not annotated with ReflectCommand!", clazz.isAnnotationPresent(ReflectCommand.class));
-            clazz.getMethod("onCommand", CommandSender.class, Command.class, String.class, String[].class);
+            clazz.getDeclaredMethod("runCommand", CommandSender.class, Command.class, String.class, String[].class);
         }
     }
 
@@ -64,7 +56,7 @@ public class TestCommands {
         for (String key : reflectCommands.getKeys(false)) {
             if (reflectCommands.isSet(key + ".class")) registeredClasses.add(reflectCommands.getString(key + ".class"));
         }
-        final Set<Class<?>> classes = this.getAllCommandClasses();
+        final Set<Class<? extends BaseCommand>> classes = this.getAllCommandClasses();
         for (final Class<?> clazz : classes) {
             if (!clazz.getSimpleName().startsWith("Cmd")) continue;
             assertTrue(clazz.getName() + " is not registered in the plugin.yml!", registeredClasses.contains(clazz.getSimpleName()));
