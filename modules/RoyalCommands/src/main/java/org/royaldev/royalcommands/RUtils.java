@@ -15,6 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -1472,5 +1473,40 @@ public class RUtils {
             name = u.toString();
         }
         return name;
+    }
+
+    public static List<FancyMessage> getPlayerTooltip(final Object o) {
+        final List<FancyMessage> tooltip = new ArrayList<>();
+        final VaultHandler vh = RoyalCommands.instance.vh;
+        if (o instanceof OfflinePlayer) {
+            final OfflinePlayer op = (OfflinePlayer) o;
+            if (tooltip.size() < 1) tooltip.add(new FancyMessage("Offline Player").style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            tooltip.add(new FancyMessage("Name: ").style(ChatColor.BOLD).then(op.getName()));
+            tooltip.add(new FancyMessage("Operator: ").style(ChatColor.BOLD).then(op.isOp() ? "Yes" : "No"));
+            if (vh.usingVault()) {
+                final String group = vh.getPermission().getPrimaryGroup(null, op);
+                String prefix = vh.getChat().getGroupPrefix((String) null, group);
+                if (prefix == null || prefix.isEmpty()) prefix = vh.getChat().getPlayerPrefix(null, op);
+                if (prefix == null) prefix = "";
+                String suffix = vh.getChat().getGroupSuffix((String) null, group);
+                if (suffix == null || suffix.isEmpty()) suffix = vh.getChat().getPlayerSuffix(null, op);
+                if (suffix == null) suffix = "";
+                // TODO: Config format
+                if (!group.isEmpty()) {
+                    tooltip.add(new FancyMessage("Group: ").style(ChatColor.BOLD).then(ChatColor.translateAlternateColorCodes('&', prefix)).then(group).then(ChatColor.translateAlternateColorCodes('&', suffix)));
+                }
+            }
+        }
+        if (o instanceof Player) {
+            final Player p = (Player) o;
+            if (tooltip.size() > 0) { // Replace Offline Player with Player
+                tooltip.remove(0);
+                tooltip.add(0, new FancyMessage("Player").style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            }
+        }
+        if (o instanceof ConsoleCommandSender) {
+            if (tooltip.size() < 1) tooltip.add(new FancyMessage("Console").style(ChatColor.BOLD, ChatColor.UNDERLINE));
+        }
+        return tooltip.isEmpty() ? null : tooltip;
     }
 }

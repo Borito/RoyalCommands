@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -60,7 +61,18 @@ public class CmdAccountStatus extends BaseCommand {
             } catch (IOException ignored) {
             }
         }
-        cs.sendMessage(MessageColor.NEUTRAL + name + MessageColor.POSITIVE + " has " + MessageColor.NEUTRAL + ((isPremium) ? "paid" : "not paid") + MessageColor.POSITIVE + " for Minecraft.");
+        // @formatter:off
+        new FancyMessage(name)
+                .color(MessageColor.NEUTRAL._())
+                .formattedTooltip(RUtils.getPlayerTooltip(p))
+            .then(" has ")
+                .color(MessageColor.POSITIVE._())
+            .then(isPremium ? "paid" : "not paid")
+                .color(MessageColor.NEUTRAL._())
+            .then(" for Minecraft.")
+                .color(MessageColor.POSITIVE._())
+            .send(cs);
+        // @formatter:on
         return true;
     }
 
