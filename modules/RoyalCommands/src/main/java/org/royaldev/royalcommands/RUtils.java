@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -221,19 +222,21 @@ public class RUtils {
      * @return true if transaction was successful, false if otherwise
      */
     public static boolean chargePlayer(CommandSender cs, double amount) {
+        if (!(cs instanceof OfflinePlayer)) return false;
+        final OfflinePlayer op = (OfflinePlayer) cs;
         if (!RoyalCommands.instance.vh.usingVault() || RoyalCommands.instance.vh.getEconomy() == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No economy! Continuing without charging.");
             return true;
         }
-        if (!RoyalCommands.instance.vh.getEconomy().hasAccount(cs.getName())) {
+        if (!RoyalCommands.instance.vh.getEconomy().hasAccount(op)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You don't have a bank account!");
             return false;
         }
-        if (RoyalCommands.instance.vh.getEconomy().getBalance(cs.getName()) < amount) {
+        if (RoyalCommands.instance.vh.getEconomy().getBalance(op) < amount) {
             cs.sendMessage(MessageColor.NEGATIVE + "You don't have enough money!");
             return false;
         }
-        RoyalCommands.instance.vh.getEconomy().withdrawPlayer(cs.getName(), amount);
+        RoyalCommands.instance.vh.getEconomy().withdrawPlayer(op, amount);
         cs.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + RoyalCommands.instance.vh.getEconomy().format(amount) + MessageColor.POSITIVE + " removed from your account.");
         return true;
     }
@@ -257,6 +260,12 @@ public class RUtils {
     public static void dispNoPerms(CommandSender cs, String message) {
         cs.sendMessage(message);
         log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
+    }
+
+    public static void dispNoPerms(CommandSender cs, String... permissionsNeeded) {
+        final List<String> tooltip = new ArrayList<>(Arrays.asList(permissionsNeeded));
+        tooltip.add(0, "Missing permissions:");
+        new FancyMessage("You don't have permission for that!").color(MessageColor.NEGATIVE._()).tooltip(tooltip).send(cs);
     }
 
     /**
@@ -1323,8 +1332,10 @@ public class RUtils {
      * @param name Name of player
      * @return OfflinePlayer
      */
+    @SuppressWarnings("deprecation")
     public static OfflinePlayer getOfflinePlayer(String name) {
-        OfflinePlayer op = RoyalCommands.instance.getServer().getPlayer(name);
+        OfflinePlayer op = RoyalCommands.instance.getServer().getPlayerExact(name);
+        if (op == null) op = RoyalCommands.instance.getServer().getPlayer(name);
         if (op == null) op = RoyalCommands.instance.getServer().getOfflinePlayer(name);
         return op;
     }

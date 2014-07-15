@@ -55,6 +55,7 @@ import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.nms.api.NMSFace;
 import org.royaldev.royalcommands.protocol.ProtocolListener;
+import org.royaldev.royalcommands.rcommands.BaseCommand;
 import org.royaldev.royalcommands.rcommands.ReflectCommand;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
@@ -81,6 +82,7 @@ import java.util.regex.Pattern;
 // TODO: Add banning for no-UUID players? Wait for Bukkit to fix? Investigate.
 // TODO: Rewrite /gm
 // TODO: Add config option for dangerous async (some people like living on the edge)
+// TODO: Add config for getting info about player for tooltip (use vault for group, etc) "{{group}}\n{{name}}" etc
 
 public class RoyalCommands extends JavaPlugin {
 
@@ -571,9 +573,9 @@ public class RoyalCommands extends JavaPlugin {
             try {
                 final Class<?> clazz = Class.forName("org.royaldev.royalcommands.rcommands." + className);
                 if (!clazz.isAnnotationPresent(ReflectCommand.class)) continue;
-                final Constructor c = clazz.getConstructor(RoyalCommands.class);
-                final Object o = c.newInstance(this);
-                if (!(o instanceof CommandExecutor)) continue;
+                final Constructor c = clazz.getConstructor(RoyalCommands.class, String.class);
+                final Object o = c.newInstance(this, command);
+                if (!(o instanceof BaseCommand)) continue;
                 this.registerCommand((CommandExecutor) o, command);
             } catch (Exception e) {
                 this.getLogger().warning("Could not register command \"" + command + "\" - an error occurred (" + e.getClass().getSimpleName() + "): " + e.getMessage() + ".");

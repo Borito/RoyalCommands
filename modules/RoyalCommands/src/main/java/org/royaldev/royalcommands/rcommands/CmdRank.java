@@ -1,53 +1,41 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdRank implements CommandExecutor {
+public class CmdRank extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdRank(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdRank(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("rank")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            Player victim = plugin.getServer().getPlayer(args[0]);
-            if (victim == null || plugin.isVanished(victim, cs)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
-                return true;
-            }
-            String rank;
-            try {
-                if (!plugin.vh.usingVault()) throw new Exception();
-                rank = plugin.vh.getPermission().getPrimaryGroup(victim);
-            } catch (Exception e) {
-                rank = null;
-            }
-            if (rank == null) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That player has no rank.");
-                return true;
-            }
-            cs.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + victim.getName() + MessageColor.POSITIVE + " has the group " + MessageColor.NEUTRAL + rank + MessageColor.POSITIVE + ".");
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        Player victim = plugin.getServer().getPlayer(args[0]);
+        if (victim == null || plugin.isVanished(victim, cs)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }
-        return false;
+        String rank;
+        try {
+            if (!plugin.vh.usingVault()) throw new Exception();
+            rank = plugin.vh.getPermission().getPrimaryGroup(victim);
+        } catch (Exception e) {
+            rank = null;
+        }
+        if (rank == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "That player has no rank.");
+            return true;
+        }
+        cs.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + victim.getName() + MessageColor.POSITIVE + " has the group " + MessageColor.NEUTRAL + rank + MessageColor.POSITIVE + ".");
+        return true;
     }
-
 }

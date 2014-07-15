@@ -1,49 +1,37 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdForce implements CommandExecutor {
+public class CmdForce extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdForce(RoyalCommands instance) {
-        plugin = instance;
+    public CmdForce(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
-
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("force")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length < 2) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
-                return true;
-            }
-            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You cannot make that player run commands!");
-                return true;
-            }
-            String command = RoyalCommands.getFinalArg(args, 1).trim();
-            cs.sendMessage(MessageColor.POSITIVE + "Executing command " + MessageColor.NEUTRAL + "/" + command + MessageColor.POSITIVE + " from user " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
-            t.performCommand(command);
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length < 2) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        Player t = plugin.getServer().getPlayer(args[0]);
+        if (t == null || plugin.isVanished(t, cs)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }
-        return false;
+        if (this.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You cannot make that player run commands!");
+            return true;
+        }
+        String command = RoyalCommands.getFinalArg(args, 1).trim();
+        cs.sendMessage(MessageColor.POSITIVE + "Executing command " + MessageColor.NEUTRAL + "/" + command + MessageColor.POSITIVE + " from user " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+        t.performCommand(command);
+        return true;
     }
 }

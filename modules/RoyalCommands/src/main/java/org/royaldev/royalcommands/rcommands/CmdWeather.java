@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
@@ -10,12 +9,10 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdWeather implements CommandExecutor {
+public class CmdWeather extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdWeather(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdWeather(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     public static boolean changeWeather(Player p, String conds) {
@@ -76,37 +73,31 @@ public class CmdWeather implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("weather")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-                return true;
-            }
-            if (args.length == 1) {
-                Player p = (Player) cs;
-                changeWeather(p, args[0]);
-                return true;
-            } else if (args.length > 1) {
-                Player p = (Player) cs;
-                String conds = args[0];
-                int length = RUtils.timeFormatToSeconds(args[1]);
-                if (length <= 0) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid time specified.");
-                    return true;
-                }
-                changeWeather(p, conds, length);
-                return true;
-            }
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
         }
-        return false;
+
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
+            return true;
+        }
+        if (args.length == 1) {
+            Player p = (Player) cs;
+            changeWeather(p, args[0]);
+            return true;
+        } else if (args.length > 1) {
+            Player p = (Player) cs;
+            String conds = args[0];
+            int length = RUtils.timeFormatToSeconds(args[1]);
+            if (length <= 0) {
+                cs.sendMessage(MessageColor.NEGATIVE + "Invalid time specified.");
+                return true;
+            }
+            changeWeather(p, conds, length);
+            return true;
+        }
+        return true;
     }
 }

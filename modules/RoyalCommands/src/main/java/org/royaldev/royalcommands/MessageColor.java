@@ -28,4 +28,8 @@ public enum MessageColor {
         return this.c;
     }
 
+    public ChatColor _() {
+        return this.getChatColor();
+    }
+
 }

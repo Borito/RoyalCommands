@@ -1,21 +1,20 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdPlayerTime implements CommandExecutor {
+public class CmdPlayerTime extends BaseCommand {
 
-    static RoyalCommands plugin;
+    private static RoyalCommands pluginInstance;
 
-    public CmdPlayerTime(RoyalCommands instance) {
-        plugin = instance;
+    public CmdPlayerTime(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
+        CmdPlayerTime.pluginInstance = instance;
     }
 
     public static void smoothPlayerTimeChange(long time, final Player p) {
@@ -35,22 +34,18 @@ public class CmdPlayerTime implements CommandExecutor {
                 p.setPlayerTime(ftime, false);
             }
         };
-        plugin.getServer().getScheduler().runTask(plugin, r);
+        CmdPlayerTime.pluginInstance.getServer().getScheduler().runTask(CmdPlayerTime.pluginInstance, r);
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equals("playertime")) {
-            if (!plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null || plugin.isVanished(t, cs)) {
+            Player t = this.plugin.getServer().getPlayer(args[0]);
+            if (t == null || this.plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
@@ -76,5 +71,4 @@ public class CmdPlayerTime implements CommandExecutor {
         }
         return false;
     }
-
 }

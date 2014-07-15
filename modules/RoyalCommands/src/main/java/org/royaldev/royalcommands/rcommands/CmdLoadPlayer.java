@@ -1,47 +1,36 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdLoadPlayer implements CommandExecutor {
+public class CmdLoadPlayer extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdLoadPlayer(RoyalCommands instance) {
-        plugin = instance;
+    public CmdLoadPlayer(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("loadplayer")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            final Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null) {
-                cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
-                return true;
-            }
-            if (!t.getName().equals(cs.getName()) && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You cannot load other players' data!");
-                return true;
-            }
-            t.loadData();
-            cs.sendMessage(MessageColor.POSITIVE + "Data loaded.");
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        final Player t = plugin.getServer().getPlayer(args[0]);
+        if (t == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
             return true;
         }
-        return false;
+        if (!t.getName().equals(cs.getName()) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You cannot load other players' data!");
+            return true;
+        }
+        t.loadData();
+        cs.sendMessage(MessageColor.POSITIVE + "Data loaded.");
+        return true;
     }
 }

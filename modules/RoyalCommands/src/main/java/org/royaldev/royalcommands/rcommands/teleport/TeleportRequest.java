@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands.teleport;
 
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 public class TeleportRequest {
 
+    // NOTE: Not using UUIDs, because this is so temporary that it should NOT matter. It will just add lag time.
     private final static Map<String, List<TeleportRequest>> teleportRequests = new HashMap<>();
     private final String requester;
     private final String target;
@@ -69,8 +71,8 @@ public class TeleportRequest {
         }
         final TeleportRequest tr = new TeleportRequest(requester.getName(), target.getName(), teleportType, System.currentTimeMillis());
         List<TeleportRequest> trs;
-        synchronized (teleportRequests) {
-            trs = teleportRequests.get(target.getName());
+        synchronized (TeleportRequest.teleportRequests) {
+            trs = TeleportRequest.teleportRequests.get(target.getName());
         }
         if (trs == null) trs = new ArrayList<>();
         if (TeleportRequest.hasPendingRequest(requester.getName(), target.getName())) {
@@ -78,11 +80,27 @@ public class TeleportRequest {
             return;
         }
         trs.add(tr);
-        synchronized (teleportRequests) {
-            teleportRequests.put(target.getName(), trs);
+        synchronized (TeleportRequest.teleportRequests) {
+            TeleportRequest.teleportRequests.put(target.getName(), trs);
         }
         target.sendMessage(teleportType.getMessage(requester));
-        target.sendMessage(MessageColor.POSITIVE + "To accept, use " + MessageColor.NEUTRAL + "/tpaccept" + MessageColor.POSITIVE + ". To decline, use " + MessageColor.NEUTRAL + "/tpdeny" + MessageColor.POSITIVE + ".");
+        // @formatter:off
+        new FancyMessage("To accept, use ")
+                .color(MessageColor.POSITIVE._())
+            .then("/tpaccept")
+                .color(MessageColor.NEUTRAL._())
+                .tooltip("Click here to execute this command.")
+                .command("/tpaccept")
+            .then(". To decline, use ")
+                .color(MessageColor.POSITIVE._())
+            .then("/tpdeny")
+                .color(MessageColor.NEUTRAL._())
+                .tooltip("Click here to execute this command.")
+                .command("/tpdeny")
+            .then(".")
+                .color(MessageColor.POSITIVE._())
+            .send(target);
+        // @formatter:on
         if (confirmation)
             requester.sendMessage(MessageColor.POSITIVE + "Request sent to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
     }
@@ -145,15 +163,15 @@ public class TeleportRequest {
     }
 
     public String getRequester() {
-        return requester;
+        return this.requester;
     }
 
     public String getTarget() {
-        return target;
+        return this.target;
     }
 
     public TeleportType getType() {
-        return teleportType;
+        return this.teleportType;
     }
 
     public long getDate() {
@@ -210,7 +228,7 @@ public class TeleportRequest {
         this.expire();
         final Player requester = Bukkit.getPlayerExact(this.getRequester());
         final Player target = Bukkit.getPlayerExact(this.getTarget());
-        final String message = MessageColor.POSITIVE + "The request to teleport " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? requester.getName() : target.getName()) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? target.getName() : requester.getName()) + MessageColor.POSITIVE + " was denied.";
+        final String message = MessageColor.POSITIVE + "The request to teleport " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? this.getRequester() : this.getTarget()) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + ((this.getType() == TeleportType.TO) ? this.getTarget() : this.getRequester()) + MessageColor.POSITIVE + " was denied.";
         if (requester != null)
             requester.sendMessage(message.replace(MessageColor.POSITIVE.toString(), MessageColor.NEGATIVE.toString()));
         if (target != null) target.sendMessage(message);

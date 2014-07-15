@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
@@ -13,15 +12,14 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 @ReflectCommand
-public class CmdHelp implements CommandExecutor {
+public class CmdHelp extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdHelp(RoyalCommands instance) {
-        plugin = instance;
+    public CmdHelp(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     private Plugin getPlugin(String name) {
@@ -94,7 +92,7 @@ public class CmdHelp implements CommandExecutor {
     private void displayPluginList(CommandSender cs) {
         final TreeMap<String, List<PluginCommand>> commands = plugin.h.getCommands();
         cs.sendMessage(MessageColor.POSITIVE + "There are " + MessageColor.NEUTRAL + commands.size() + MessageColor.POSITIVE + " plugins with help information:");
-        for (Map.Entry<String, ?> entry : commands.entrySet()) {
+        for (Entry<String, ?> entry : commands.entrySet()) {
             final String pluginName = entry.getKey();
             final Plugin p = getPlugin(pluginName);
             if (p == null) continue;
@@ -102,18 +100,12 @@ public class CmdHelp implements CommandExecutor {
         }
     }
 
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("help")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (Config.customHelp) displayCustomHelp(cs, (args.length > 0) ? args[0] : "1");
-            else if (args.length < 1 && !Config.customHelp) displayPluginList(cs);
-            else if (args.length > 0 && !Config.customHelp)
-                displayPluginHelp(cs, args[0], (args.length > 1) ? args[1] : "1");
-            return true;
-        }
-        return false;
+    @Override
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (Config.customHelp) displayCustomHelp(cs, (args.length > 0) ? args[0] : "1");
+        else if (args.length < 1 && !Config.customHelp) displayPluginList(cs);
+        else if (args.length > 0 && !Config.customHelp)
+            displayPluginHelp(cs, args[0], (args.length > 1) ? args[1] : "1");
+        return true;
     }
 }

@@ -1,7 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.royaldev.royalcommands.MessageColor;
@@ -9,35 +8,26 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdUsage implements CommandExecutor {
+public class CmdUsage extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdUsage(RoyalCommands instance) {
-        plugin = instance;
+    public CmdUsage(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("usage")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            Command c = RUtils.getCommand(args[0]);
-            if (c == null) {
-                cs.sendMessage(MessageColor.NEGATIVE + "No such command!");
-                return true;
-            }
-            if (c instanceof PluginCommand) cs.sendMessage(((PluginCommand) c).getPlugin().getName());
-            cs.sendMessage(c.getDescription());
-            cs.sendMessage(c.getUsage());
+    @Override
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        Command c = RUtils.getCommand(args[0]);
+        if (c == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "No such command!");
             return true;
         }
-        return false;
+        if (c instanceof PluginCommand) cs.sendMessage(((PluginCommand) c).getPlugin().getName());
+        cs.sendMessage(c.getDescription());
+        cs.sendMessage(c.getUsage());
+        return true;
     }
-
 }

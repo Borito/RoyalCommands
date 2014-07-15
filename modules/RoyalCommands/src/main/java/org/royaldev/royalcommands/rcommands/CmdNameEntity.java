@@ -1,7 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
@@ -12,15 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ReflectCommand
-public class CmdNameEntity implements CommandExecutor {
-
-    private final RoyalCommands plugin;
-
-    public CmdNameEntity(RoyalCommands instance) {
-        plugin = instance;
-    }
+public class CmdNameEntity extends BaseCommand {
 
     private final static Map<String, String> names = new HashMap<>();
+
+    public CmdNameEntity(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
+    }
 
     /**
      * Checks to see if the player has a name to give to an entity.
@@ -87,34 +84,26 @@ public class CmdNameEntity implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("nameentity")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
-            if (newName.equalsIgnoreCase("reset") || newName.equalsIgnoreCase("clear") || newName.equals("remove")) {
-                setNamingName(cs, "");
-                cs.sendMessage(MessageColor.POSITIVE + "Right click on the entity you want to remove a custom name from.");
-            }
-            if (newName.length() > 32) {
-                cs.sendMessage(MessageColor.NEGATIVE + "The name must be 32 characters or less!");
-                return true;
-            }
-            setNamingName(cs, newName);
-            cs.sendMessage(MessageColor.POSITIVE + "Right click on the entity you want to rename " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        return false;
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
+        if (newName.equalsIgnoreCase("reset") || newName.equalsIgnoreCase("clear") || newName.equals("remove")) {
+            setNamingName(cs, "");
+            cs.sendMessage(MessageColor.POSITIVE + "Right click on the entity you want to remove a custom name from.");
+        }
+        if (newName.length() > 32) {
+            cs.sendMessage(MessageColor.NEGATIVE + "The name must be 32 characters or less!");
+            return true;
+        }
+        setNamingName(cs, newName);
+        cs.sendMessage(MessageColor.POSITIVE + "Right click on the entity you want to rename " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
+        return true;
     }
-
 }

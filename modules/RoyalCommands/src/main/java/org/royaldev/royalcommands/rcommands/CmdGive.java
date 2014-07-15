@@ -1,8 +1,8 @@
 package org.royaldev.royalcommands.rcommands;
 
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,12 +15,10 @@ import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import java.util.HashMap;
 
 @ReflectCommand
-public class CmdGive implements CommandExecutor {
+public class CmdGive extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdGive(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdGive(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     public static boolean validItem(String itemname) {
@@ -52,7 +50,25 @@ public class CmdGive implements CommandExecutor {
             target.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
             return false;
         }
-        target.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+        // @formatter:off
+        new FancyMessage("Giving ")
+                .color(MessageColor.POSITIVE._())
+            .then(String.valueOf(amount))
+                .color(MessageColor.NEUTRAL._())
+            .then(" of ")
+                .color(MessageColor.POSITIVE._())
+            .then(RUtils.getItemName(m))
+                .color(MessageColor.NEUTRAL._())
+                .itemTooltip(stack)
+            .then(" to ")
+                .color(MessageColor.POSITIVE._())
+            .then(target.getName())
+                .color(MessageColor.NEUTRAL._())
+            .then(".")
+                .color(MessageColor.POSITIVE._())
+            .send(target);
+        // @formatter:on
+        // target.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
         if (Config.itemSpawnTag && cs != null)
             stack = RUtils.applySpawnLore(RUtils.setItemStackSpawned(stack, cs.getName(), true));
         HashMap<Integer, ItemStack> left = target.getInventory().addItem(stack);
@@ -67,72 +83,94 @@ public class CmdGive implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("give")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length < 2) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            Player target = plugin.getServer().getPlayer(args[0]);
-            if (target == null) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
-                return true;
-            }
-            int amount = Config.defaultStack;
-            if (args.length == 3) {
-                try {
-                    amount = Integer.parseInt(args[2]);
-                } catch (Exception e) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "The amount was not a number!");
-                    return true;
-                }
-            }
-            if (amount < 1) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Invalid amount! You must specify a positive amount.");
-                return true;
-            }
-            String name = args[1];
-            ItemStack toInv;
-            try {
-                toInv = RUtils.getItemFromAlias(name, amount);
-            } catch (InvalidItemNameException e) {
-                toInv = RUtils.getItem(name, amount);
-            } catch (NullPointerException e) {
-                cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
-                return true;
-            }
-            if (toInv == null) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
-                return true;
-            }
-            Material m = toInv.getType();
-            if (m == Material.AIR) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
-                return true;
-            }
-            if (Config.blockedItems.contains(m.name()) && !plugin.ah.isAuthorized(cs, "rcmds.allowed.item." + m.name())) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
-                return true;
-            }
-            if (Config.itemSpawnTag)
-                toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));
-            HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
-            if (!left.isEmpty() && Config.dropExtras) {
-                for (ItemStack item : left.values()) {
-                    if (Config.itemSpawnTag)
-                        item = RUtils.applySpawnLore(RUtils.setItemStackSpawned(item, cs.getName(), true));
-                    target.getWorld().dropItemNaturally(target.getLocation(), item);
-                }
-            }
-            cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
-            target.sendMessage(MessageColor.POSITIVE + "You have been given " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + ".");
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length < 2) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        Player target = plugin.getServer().getPlayer(args[0]);
+        if (target == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
             return true;
         }
-        return false;
+        int amount = Config.defaultStack;
+        if (args.length == 3) {
+            try {
+                amount = Integer.parseInt(args[2]);
+            } catch (Exception e) {
+                cs.sendMessage(MessageColor.NEGATIVE + "The amount was not a number!");
+                return true;
+            }
+        }
+        if (amount < 1) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Invalid amount! You must specify a positive amount.");
+            return true;
+        }
+        String name = args[1];
+        ItemStack toInv;
+        try {
+            toInv = RUtils.getItemFromAlias(name, amount);
+        } catch (InvalidItemNameException e) {
+            toInv = RUtils.getItem(name, amount);
+        } catch (NullPointerException e) {
+            cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
+            return true;
+        }
+        if (toInv == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
+            return true;
+        }
+        Material m = toInv.getType();
+        if (m == Material.AIR) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You cannot spawn air!");
+            return true;
+        }
+        if (Config.blockedItems.contains(m.name()) && !this.ah.isAuthorized(cs, "rcmds.allowed.item." + m.name())) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
+            plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+            return true;
+        }
+        if (Config.itemSpawnTag) toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));
+        HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
+        if (!left.isEmpty() && Config.dropExtras) {
+            for (ItemStack item : left.values()) {
+                if (Config.itemSpawnTag)
+                    item = RUtils.applySpawnLore(RUtils.setItemStackSpawned(item, cs.getName(), true));
+                target.getWorld().dropItemNaturally(target.getLocation(), item);
+            }
+        }
+        // @formatter:off
+        new FancyMessage("Giving ")
+                .color(MessageColor.POSITIVE._())
+            .then(String.valueOf(amount))
+                .color(MessageColor.NEUTRAL._())
+            .then(" of ")
+                .color(MessageColor.POSITIVE._())
+            .then(RUtils.getItemName(m))
+                .color(MessageColor.NEUTRAL._())
+                .itemTooltip(toInv)
+            .then(" to ")
+                .color(MessageColor.POSITIVE._())
+            .then(target.getName())
+                .color(MessageColor.NEUTRAL._())
+            .then(".")
+                .color(MessageColor.POSITIVE._())
+            .send(cs);
+        new FancyMessage("You have been given ")
+                .color(MessageColor.POSITIVE._())
+            .then(String.valueOf(amount))
+                .color(MessageColor.NEUTRAL._())
+            .then(" of ")
+                .color(MessageColor.POSITIVE._())
+            .then(RUtils.getItemName(m))
+                .color(MessageColor.NEUTRAL._())
+                .itemTooltip(toInv)
+            .then(".")
+                .color(MessageColor.POSITIVE._())
+            .send(target);
+        // @formatter:on
+        // cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
+        // target.sendMessage(MessageColor.POSITIVE + "You have been given " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + ".");
+        return true;
     }
 }

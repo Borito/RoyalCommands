@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
@@ -11,12 +10,10 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdGameMode implements CommandExecutor {
+public class CmdGameMode extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdGameMode(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdGameMode(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     /**
@@ -55,54 +52,48 @@ public class CmdGameMode implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("gamemode")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player) && args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            if (args.length < 1 && cs instanceof Player) {
-                Player p = (Player) cs;
-                GameMode toSet = (p.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
-                p.setGameMode(toSet);
-                p.sendMessage(MessageColor.POSITIVE + "Your game mode has been set to " + MessageColor.NEUTRAL + toSet.name().toLowerCase() + MessageColor.POSITIVE + ".");
-                return true;
-            }
-            if (args.length > 0) {
-                Player t = plugin.getServer().getPlayer(args[0]);
-                if (t == null || plugin.isVanished(t, cs)) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
-                    return true;
-                }
-                if (!t.equals(cs) && !this.plugin.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "You can't change other players' gamemodes!");
-                    return true;
-                }
-                if (!t.equals(cs) && this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "You cannot change that player's gamemode.");
-                    return true;
-                }
-                GameMode toSet = (t.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
-                if (args.length > 1) {
-                    GameMode result = getGameMode(args[1]);
-                    if (result == null) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "Invalid gamemode!");
-                        cs.sendMessage(MessageColor.NEUTRAL + RUtils.join(GameMode.values(), MessageColor.RESET + ", " + MessageColor.NEUTRAL));
-                        return true;
-                    }
-                    toSet = result;
-                }
-                t.setGameMode(toSet);
-                if (cs instanceof Player && !cs.equals(t))
-                    cs.sendMessage(MessageColor.POSITIVE + "You have changed " + MessageColor.NEUTRAL + t.getName() + "\'s" + MessageColor.POSITIVE + " game mode to " + MessageColor.NEUTRAL + toSet.name().toLowerCase() + MessageColor.POSITIVE + ".");
-                t.sendMessage(MessageColor.POSITIVE + "Your game mode has been changed to " + MessageColor.NEUTRAL + toSet.name().toLowerCase() + MessageColor.POSITIVE + ".");
-                return true;
-            }
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!(cs instanceof Player) && args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
         }
-        return false;
+        if (args.length < 1 && cs instanceof Player) {
+            Player p = (Player) cs;
+            GameMode toSet = (p.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
+            p.setGameMode(toSet);
+            p.sendMessage(MessageColor.POSITIVE + "Your game mode has been set to " + MessageColor.NEUTRAL + toSet.name().toLowerCase() + MessageColor.POSITIVE + ".");
+            return true;
+        }
+        if (args.length > 0) {
+            Player t = plugin.getServer().getPlayer(args[0]);
+            if (t == null || plugin.isVanished(t, cs)) {
+                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
+                return true;
+            }
+            if (!t.equals(cs) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You can't change other players' gamemodes!");
+                return true;
+            }
+            if (!t.equals(cs) && this.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You cannot change that player's gamemode.");
+                return true;
+            }
+            GameMode toSet = (t.getGameMode().equals(GameMode.CREATIVE)) ? GameMode.SURVIVAL : GameMode.CREATIVE;
+            if (args.length > 1) {
+                GameMode result = getGameMode(args[1]);
+                if (result == null) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid gamemode!");
+                    cs.sendMessage(MessageColor.NEUTRAL + RUtils.join(GameMode.values(), MessageColor.RESET + ", " + MessageColor.NEUTRAL));
+                    return true;
+                }
+                toSet = result;
+            }
+            t.setGameMode(toSet);
+            if (cs instanceof Player && !cs.equals(t))
+                cs.sendMessage(MessageColor.POSITIVE + "You have changed " + MessageColor.NEUTRAL + t.getName() + "\'s" + MessageColor.POSITIVE + " game mode to " + MessageColor.NEUTRAL + toSet.name().toLowerCase() + MessageColor.POSITIVE + ".");
+            t.sendMessage(MessageColor.POSITIVE + "Your game mode has been changed to " + MessageColor.NEUTRAL + toSet.name().toLowerCase() + MessageColor.POSITIVE + ".");
+            return true;
+        }
+        return true;
     }
 }

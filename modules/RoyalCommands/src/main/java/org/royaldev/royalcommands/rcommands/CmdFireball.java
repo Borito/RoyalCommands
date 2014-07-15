@@ -1,44 +1,33 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdFireball implements CommandExecutor {
+public class CmdFireball extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdFireball(RoyalCommands instance) {
-        plugin = instance;
+    public CmdFireball(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("fireball")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-                return true;
-            }
-            Player p = (Player) cs;
-            //Fireball fb = p.launchProjectile(Fireball.class);
-            Vector dir = p.getEyeLocation().getDirection().multiply(2);
-            Fireball fb = p.getWorld().spawn(p.getEyeLocation().add(dir.getX(), dir.getY(), dir.getZ()), Fireball.class);
-            fb.setDirection(dir);
-            //fb.teleport(p.getEyeLocation().add(dir.getX(), dir.getY(), dir.getZ()));
-            fb.setIsIncendiary(true);
+    @Override
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        return false;
+        Player p = (Player) cs;
+        //Fireball fb = p.launchProjectile(Fireball.class);
+        Vector dir = p.getEyeLocation().getDirection().multiply(2);
+        Fireball fb = p.getWorld().spawn(p.getEyeLocation().add(dir.getX(), dir.getY(), dir.getZ()), Fireball.class);
+        fb.setDirection(dir);
+        //fb.teleport(p.getEyeLocation().add(dir.getX(), dir.getY(), dir.getZ()));
+        fb.setIsIncendiary(true);
+        return true;
     }
-
 }

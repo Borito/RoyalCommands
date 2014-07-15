@@ -2,29 +2,21 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdCompass implements CommandExecutor {
+public class CmdCompass extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdCompass(RoyalCommands instance) {
-        plugin = instance;
+    public CmdCompass(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equals("compass")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
             if (!(cs instanceof Player)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
@@ -83,5 +75,4 @@ public class CmdCompass implements CommandExecutor {
         }
         return false;
     }
-
 }

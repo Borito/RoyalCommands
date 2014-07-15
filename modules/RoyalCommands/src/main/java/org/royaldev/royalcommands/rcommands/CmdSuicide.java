@@ -1,41 +1,30 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdSuicide implements CommandExecutor {
+public class CmdSuicide extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdSuicide(RoyalCommands instance) {
-        plugin = instance;
+    public CmdSuicide(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("suicide")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-                return true;
-            }
-            Player p = (Player) cs;
-            p.setLastDamageCause(new EntityDamageByEntityEvent(p, p, EntityDamageEvent.DamageCause.SUICIDE, 0D));
-            p.setHealth(0);
-            plugin.getServer().broadcastMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + p.getDisplayName() + MessageColor.NEGATIVE + " committed suicide.");
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        return false;
+        Player p = (Player) cs;
+        p.setLastDamageCause(new EntityDamageByEntityEvent(p, p, DamageCause.SUICIDE, 0D));
+        p.setHealth(0);
+        plugin.getServer().broadcastMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + p.getDisplayName() + MessageColor.NEGATIVE + " committed suicide.");
+        return true;
     }
 }

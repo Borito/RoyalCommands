@@ -1,7 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
@@ -9,25 +8,26 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdMessageOfTheDay implements CommandExecutor {
+public class CmdMessageOfTheDay extends BaseCommand {
 
-    private static RoyalCommands plugin;
+    private static RoyalCommands pluginInstance;
 
-    public CmdMessageOfTheDay(RoyalCommands instance) {
-        plugin = instance;
+    public CmdMessageOfTheDay(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
+        CmdMessageOfTheDay.pluginInstance = instance;
     }
 
     public static void showMotd(CommandSender cs) {
         String ps = (Config.simpleList) ? CmdList.getSimpleList(cs) : RUtils.join(CmdList.getGroupList(cs), "\n");
-        Integer onnum = plugin.getServer().getOnlinePlayers().length;
-        int hid = plugin.getNumberVanished();
+        Integer onnum = CmdMessageOfTheDay.pluginInstance.getServer().getOnlinePlayers().length;
+        int hid = CmdMessageOfTheDay.pluginInstance.getNumberVanished();
         String onlinenum;
         try {
             onlinenum = Integer.toString(onnum - hid);
         } catch (Exception e) {
             onlinenum = null;
         }
-        Integer maxon = plugin.getServer().getMaxPlayers();
+        Integer maxon = CmdMessageOfTheDay.pluginInstance.getServer().getMaxPlayers();
         String maxonl;
         try {
             maxonl = Integer.toString(maxon);
@@ -43,21 +43,14 @@ public class CmdMessageOfTheDay implements CommandExecutor {
             s = s.replace("{playerlist}", ps);
             s = (cs instanceof Player) ? s.replace("{world}", RUtils.getMVWorldName(((Player) cs).getWorld())) : s.replace("{world}", "No World");
             if (maxonl != null) s = s.replace("{maxplayers}", maxonl);
-            s = (plugin.getServer().getServerName() != null || !plugin.getServer().getServerName().isEmpty()) ? s.replace("{servername}", plugin.getServer().getServerName()) : s.replace("{servername}", "this server");
+            s = (CmdMessageOfTheDay.pluginInstance.getServer().getServerName() != null || !CmdMessageOfTheDay.pluginInstance.getServer().getServerName().isEmpty()) ? s.replace("{servername}", CmdMessageOfTheDay.pluginInstance.getServer().getServerName()) : s.replace("{servername}", "this server");
             cs.sendMessage(s);
         }
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("messageoftheday")) {
-            if (!plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            CmdMessageOfTheDay.showMotd(cs);
-            return true;
-        }
-        return false;
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        CmdMessageOfTheDay.showMotd(cs);
+        return true;
     }
 }

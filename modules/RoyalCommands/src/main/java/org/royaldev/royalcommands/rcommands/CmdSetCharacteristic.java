@@ -1,20 +1,16 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdSetCharacteristic implements CommandExecutor {
+public class CmdSetCharacteristic extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdSetCharacteristic(RoyalCommands instance) {
-        plugin = instance;
+    public CmdSetCharacteristic(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     private Integer toInt(Object o) {
@@ -33,70 +29,63 @@ public class CmdSetCharacteristic implements CommandExecutor {
         }
     }
 
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("setcharacteristic")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
-                cs.sendMessage(MessageColor.POSITIVE + "/" + label + " help:");
-                cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] maxhealth [half-hearts]");
-                cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] maxair [ticks]");
-                cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] exp [percentage]");
-                cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] canpickupitems [boolean]");
-                return true;
-            }
-            if (args.length < 3) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            Player p = plugin.getServer().getPlayer(args[0]);
-            if (p == null || plugin.isVanished(p, cs)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
-                return true;
-            }
-            String subcommand = args[1];
-            if (subcommand.equalsIgnoreCase("maxhealth")) {
-                Integer i = toInt(args[2]);
-                if (i == null) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "The max health was not a number!");
-                    return true;
-                }
-                if (i < 1) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "Cannot set maxhealth to less than 1.");
-                    return true;
-                }
-                p.setMaxHealth(i);
-                cs.sendMessage(MessageColor.POSITIVE + "Set max health to " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + ".");
-            } else if (subcommand.equalsIgnoreCase("maxair")) {
-                Integer i = toInt(args[2]);
-                if (i == null) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "The max air was not a number!");
-                    return true;
-                }
-                p.setMaximumAir(i);
-                cs.sendMessage(MessageColor.POSITIVE + "Set max air to " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + ".");
-            } else if (subcommand.equalsIgnoreCase("exp")) {
-                Float f = toFloat(args[2]);
-                if (f == null) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "The exp was not a number!");
-                    return true;
-                }
-                f /= 100F;
-                if (f < 0F || f > 1F) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "Exp must be a percentage between 0 and 100.");
-                    return true;
-                }
-                p.setExp(f);
-                cs.sendMessage(MessageColor.POSITIVE + "Set exp to " + MessageColor.NEUTRAL + (f * 100F) + "%" + MessageColor.POSITIVE + ".");
-            } else if (subcommand.equalsIgnoreCase("canpickupitems")) {
-                p.setCanPickupItems(args[2].equalsIgnoreCase("true"));
-                cs.sendMessage(MessageColor.POSITIVE + "Set can pick up items to " + MessageColor.NEUTRAL + Boolean.toString(p.getCanPickupItems()) + MessageColor.POSITIVE + ".");
-            } else cs.sendMessage(MessageColor.NEGATIVE + "No such subcommand!");
+    @Override
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
+            cs.sendMessage(MessageColor.POSITIVE + "/" + label + " help:");
+            cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] maxhealth [half-hearts]");
+            cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] maxair [ticks]");
+            cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] exp [percentage]");
+            cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] canpickupitems [boolean]");
             return true;
         }
-        return false;
+        if (args.length < 3) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        Player p = plugin.getServer().getPlayer(args[0]);
+        if (p == null || plugin.isVanished(p, cs)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
+            return true;
+        }
+        String subcommand = args[1];
+        if (subcommand.equalsIgnoreCase("maxhealth")) {
+            Integer i = toInt(args[2]);
+            if (i == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "The max health was not a number!");
+                return true;
+            }
+            if (i < 1) {
+                cs.sendMessage(MessageColor.NEGATIVE + "Cannot set maxhealth to less than 1.");
+                return true;
+            }
+            p.setMaxHealth(i);
+            cs.sendMessage(MessageColor.POSITIVE + "Set max health to " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + ".");
+        } else if (subcommand.equalsIgnoreCase("maxair")) {
+            Integer i = toInt(args[2]);
+            if (i == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "The max air was not a number!");
+                return true;
+            }
+            p.setMaximumAir(i);
+            cs.sendMessage(MessageColor.POSITIVE + "Set max air to " + MessageColor.NEUTRAL + i + MessageColor.POSITIVE + ".");
+        } else if (subcommand.equalsIgnoreCase("exp")) {
+            Float f = toFloat(args[2]);
+            if (f == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "The exp was not a number!");
+                return true;
+            }
+            f /= 100F;
+            if (f < 0F || f > 1F) {
+                cs.sendMessage(MessageColor.NEGATIVE + "Exp must be a percentage between 0 and 100.");
+                return true;
+            }
+            p.setExp(f);
+            cs.sendMessage(MessageColor.POSITIVE + "Set exp to " + MessageColor.NEUTRAL + (f * 100F) + "%" + MessageColor.POSITIVE + ".");
+        } else if (subcommand.equalsIgnoreCase("canpickupitems")) {
+            p.setCanPickupItems(args[2].equalsIgnoreCase("true"));
+            cs.sendMessage(MessageColor.POSITIVE + "Set can pick up items to " + MessageColor.NEUTRAL + Boolean.toString(p.getCanPickupItems()) + MessageColor.POSITIVE + ".");
+        } else cs.sendMessage(MessageColor.NEGATIVE + "No such subcommand!");
+        return true;
     }
-
 }

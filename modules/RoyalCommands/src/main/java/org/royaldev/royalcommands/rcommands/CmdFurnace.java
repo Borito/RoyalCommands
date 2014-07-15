@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.block.Furnace;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceInventory;
@@ -15,64 +14,55 @@ import java.util.Map;
 import java.util.UUID;
 
 @ReflectCommand
-public class CmdFurnace implements CommandExecutor {
-
+public class CmdFurnace extends BaseCommand {
     public final Map<UUID, Furnace> furnacedb = new HashMap<>();
-    private final RoyalCommands plugin;
 
-    public CmdFurnace(RoyalCommands instance) {
-        plugin = instance;
+    public CmdFurnace(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("furnace")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            Player p = (Player) cs;
-            String command = args[0].toLowerCase();
-            switch (command) {
-                case "set": {
-                    if (!(RUtils.getTarget(p).getState() instanceof Furnace)) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "That's not a furnace!");
-                        return true;
-                    }
-                    Furnace f = (Furnace) RUtils.getTarget(p).getState();
-                    furnacedb.put(p.getUniqueId(), f);
-                    cs.sendMessage(MessageColor.POSITIVE + "Furnace set.");
-                    return true;
-                }
-                case "show": {
-                    if (!furnacedb.containsKey(p.getUniqueId())) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "You must first set a furnace!");
-                        return true;
-                    }
-                    Furnace f = furnacedb.get(p.getUniqueId());
-                    if (!(f.getBlock().getState() instanceof Furnace)) {
-                        cs.sendMessage(MessageColor.NEGATIVE + "The furnace is no longer there!");
-                        return true;
-                    }
-                    f = (Furnace) f.getBlock().getState();
-                    FurnaceInventory fi = f.getInventory();
-                    p.openInventory(fi);
-                    cs.sendMessage(MessageColor.POSITIVE + "Opened your furnace for you.");
-                    return true;
-                }
-                default:
-                    cs.sendMessage(MessageColor.NEGATIVE + "Try " + MessageColor.NEUTRAL + "/" + label + MessageColor.POSITIVE + ".");
-                    return true;
-            }
+    @Override
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
+            return true;
         }
-        return false;
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        Player p = (Player) cs;
+        String command = args[0].toLowerCase();
+        switch (command) {
+            case "set": {
+                if (!(RUtils.getTarget(p).getState() instanceof Furnace)) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "That's not a furnace!");
+                    return true;
+                }
+                Furnace f = (Furnace) RUtils.getTarget(p).getState();
+                furnacedb.put(p.getUniqueId(), f);
+                cs.sendMessage(MessageColor.POSITIVE + "Furnace set.");
+                return true;
+            }
+            case "show": {
+                if (!furnacedb.containsKey(p.getUniqueId())) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "You must first set a furnace!");
+                    return true;
+                }
+                Furnace f = furnacedb.get(p.getUniqueId());
+                if (!(f.getBlock().getState() instanceof Furnace)) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "The furnace is no longer there!");
+                    return true;
+                }
+                f = (Furnace) f.getBlock().getState();
+                FurnaceInventory fi = f.getInventory();
+                p.openInventory(fi);
+                cs.sendMessage(MessageColor.POSITIVE + "Opened your furnace for you.");
+                return true;
+            }
+            default:
+                cs.sendMessage(MessageColor.NEGATIVE + "Try " + MessageColor.NEUTRAL + "/" + label + MessageColor.POSITIVE + ".");
+                return true;
+        }
     }
-
 }

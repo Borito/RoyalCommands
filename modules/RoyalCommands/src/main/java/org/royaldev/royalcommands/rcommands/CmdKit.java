@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.Material;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -20,21 +19,15 @@ import java.util.List;
 import java.util.Map;
 
 @ReflectCommand
-public class CmdKit implements CommandExecutor {
+public class CmdKit extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdKit(RoyalCommands instance) {
-        plugin = instance;
+    public CmdKit(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equals("kit")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
@@ -66,7 +59,7 @@ public class CmdKit implements CommandExecutor {
             if (enchants == null) enchants = new ArrayList<>();
             if (names == null) names = new ArrayList<>();
             if (lore == null) lore = new ArrayList<>();
-            if (Config.kitPerms && !plugin.ah.isAuthorized(cs, "rcmds.kit." + kitname)) {
+            if (Config.kitPerms && !this.ah.isAuthorized(cs, "rcmds.kit." + kitname)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that kit!");
                 plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
@@ -75,7 +68,7 @@ public class CmdKit implements CommandExecutor {
                 cs.sendMessage(MessageColor.NEGATIVE + "That kit was a one-time kit.");
                 return true;
             }
-            if (RUtils.isTimeStampValid(p, "kits.list." + kitname + ".cooldown") && !plugin.ah.isAuthorized(cs, "rcmds.exempt.cooldown.kits")) {
+            if (RUtils.isTimeStampValid(p, "kits.list." + kitname + ".cooldown") && !this.ah.isAuthorized(cs, "rcmds.exempt.cooldown.kits")) {
                 long ts = RUtils.getTimeStamp(p, "kits.list." + kitname + ".cooldown");
                 if (ts > 0) {
                     p.sendMessage(MessageColor.NEGATIVE + "You can't use that kit for" + MessageColor.NEUTRAL + RUtils.formatDateDiff(ts) + MessageColor.NEGATIVE + ".");

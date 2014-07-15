@@ -3,7 +3,6 @@ package org.royaldev.royalcommands.rcommands;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
@@ -12,12 +11,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.ConfManager;
 
 @ReflectCommand
-public class CmdSpawn implements CommandExecutor {
+public class CmdSpawn extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdSpawn(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdSpawn(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     /**
@@ -58,37 +55,29 @@ public class CmdSpawn implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("spawn")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-                return true;
-            }
-            Player p = (Player) cs;
-            World w;
-            if (args.length > 0) {
-                if (!plugin.ah.isAuthorized(cs, "rcmds.spawn.other")) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to spawn in other worlds.");
-                    return true;
-                }
-                w = plugin.getServer().getWorld(args[0]);
-                if (w == null) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
-                    return true;
-                }
-            } else w = p.getWorld();
-            Location l = getGroupSpawn(p, w);
-            if (l == null) l = getWorldSpawn(w);
-            p.sendMessage(MessageColor.POSITIVE + "Going to spawn in " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
-            String error = RUtils.teleport(p, l);
-            if (!error.isEmpty()) p.sendMessage(MessageColor.NEGATIVE + error);
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        return false;
+        Player p = (Player) cs;
+        World w;
+        if (args.length > 0) {
+            if (!this.ah.isAuthorized(cs, "rcmds.spawn.other")) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to spawn in other worlds.");
+                return true;
+            }
+            w = plugin.getServer().getWorld(args[0]);
+            if (w == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
+                return true;
+            }
+        } else w = p.getWorld();
+        Location l = getGroupSpawn(p, w);
+        if (l == null) l = getWorldSpawn(w);
+        p.sendMessage(MessageColor.POSITIVE + "Going to spawn in " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w) + MessageColor.POSITIVE + ".");
+        String error = RUtils.teleport(p, l);
+        if (!error.isEmpty()) p.sendMessage(MessageColor.NEGATIVE + error);
+        return true;
     }
-
 }

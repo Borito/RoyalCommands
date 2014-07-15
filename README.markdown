@@ -52,4 +52,4 @@ Make sure it follows these regulations:
 
 ### About the developer
 
-My name is Kyle Clemens. I write plugins in my free time.
+My name is Kyle Clemens (jkcclemens). I write plugins in my free time.

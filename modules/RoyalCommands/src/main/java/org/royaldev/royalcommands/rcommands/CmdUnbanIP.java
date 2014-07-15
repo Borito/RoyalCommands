@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -10,12 +9,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 @ReflectCommand
-public class CmdUnbanIP implements CommandExecutor {
+public class CmdUnbanIP extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdUnbanIP(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdUnbanIP(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     private boolean isValid(String address) {
@@ -35,33 +32,26 @@ public class CmdUnbanIP implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("unbanip")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
-            String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");
-            if (ip == null) ip = args[0];
-            if (!isValid(ip)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Invalid IP (" + MessageColor.NEUTRAL + ip + MessageColor.NEGATIVE + ").");
-                return true;
-            }
-            plugin.getServer().unbanIP(ip);
-            if (!op.hasPlayedBefore()) {
-                cs.sendMessage(MessageColor.POSITIVE + "Unbanned IP " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ".");
-                return true;
-            } else {
-                RUtils.unbanPlayer(op);
-                cs.sendMessage(MessageColor.POSITIVE + "Unbanned IP of " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ").");
-                return true;
-            }
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
         }
-        return false;
+        OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
+        String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");
+        if (ip == null) ip = args[0];
+        if (!isValid(ip)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Invalid IP (" + MessageColor.NEUTRAL + ip + MessageColor.NEGATIVE + ").");
+            return true;
+        }
+        plugin.getServer().unbanIP(ip);
+        if (!op.hasPlayedBefore()) {
+            cs.sendMessage(MessageColor.POSITIVE + "Unbanned IP " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ".");
+            return true;
+        } else {
+            RUtils.unbanPlayer(op);
+            cs.sendMessage(MessageColor.POSITIVE + "Unbanned IP of " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ").");
+            return true;
+        }
     }
 }

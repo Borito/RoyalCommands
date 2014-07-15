@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.Config;
@@ -14,28 +13,21 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 import java.util.Date;
 
 @ReflectCommand
-public class CmdBan implements CommandExecutor {
+public class CmdBan extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdBan(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdBan(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("ban")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
-            if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-            PConfManager pcm = PConfManager.getPConfManager(t);
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
+        if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
+        PConfManager pcm = PConfManager.getPConfManager(t);
 /*            if (!pcm.getConfExists()) {
                 if (args.length > 1 && args[1].equalsIgnoreCase("true")) {
                     args = (String[]) ArrayUtils.remove(args, 1);
@@ -44,21 +36,19 @@ public class CmdBan implements CommandExecutor {
                     return true;
                 }
             }*/
-            if (!pcm.exists()) pcm.createFile();
-            if (this.plugin.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You can't ban that player!");
-                return true;
-            }
-            String banreason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : Config.banMessage;
-            banreason = RUtils.colorize(banreason);
-            pcm.set("banreason", banreason);
-            pcm.set("banner", cs.getName());
-            pcm.set("bannedat", new Date().getTime());
-            pcm.set("bantime", null);
-            cs.sendMessage(MessageColor.POSITIVE + "You have banned " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
-            RUtils.banPlayer(t, cs, banreason);
+        if (!pcm.exists()) pcm.createFile();
+        if (this.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You can't ban that player!");
             return true;
         }
-        return false;
+        String banreason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : Config.banMessage;
+        banreason = RUtils.colorize(banreason);
+        pcm.set("banreason", banreason);
+        pcm.set("banner", cs.getName());
+        pcm.set("bannedat", new Date().getTime());
+        pcm.set("bantime", null);
+        cs.sendMessage(MessageColor.POSITIVE + "You have banned " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+        RUtils.banPlayer(t, cs, banreason);
+        return true;
     }
 }

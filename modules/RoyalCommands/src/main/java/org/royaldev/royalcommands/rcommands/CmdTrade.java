@@ -1,13 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.HashMap;
@@ -15,18 +14,29 @@ import java.util.Map;
 import java.util.UUID;
 
 @ReflectCommand
-public class CmdTrade implements CommandExecutor {
+public class CmdTrade extends BaseCommand {
 
-    private final RoyalCommands plugin;
+    public static final Map<UUID, UUID> tradedb = new HashMap<>();
+    public static final Map<Map<UUID, UUID>, Inventory> trades = new HashMap<>();
 
-    public CmdTrade(RoyalCommands instance) {
-        plugin = instance;
+    public CmdTrade(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     public static void sendTradeRequest(Player target, Player sender) {
         tradedb.put(sender.getUniqueId(), target.getUniqueId());
         target.sendMessage(MessageColor.NEUTRAL + sender.getName() + MessageColor.POSITIVE + " has requested to trade with you.");
-        target.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/trade " + sender.getName() + MessageColor.POSITIVE + " to accept.");
+        // @formatter:off
+        new FancyMessage("Type ")
+                .color(MessageColor.POSITIVE._())
+            .then("/trade " + sender.getName())
+                .color(MessageColor.NEUTRAL._())
+                .tooltip("Click to execute this command.")
+                .command("/trade " + sender.getName())
+            .then(" to accept.")
+                .color(MessageColor.POSITIVE._())
+            .send(target);
+        // @formatter:on
     }
 
     /**
@@ -49,60 +59,50 @@ public class CmdTrade implements CommandExecutor {
         return null;
     }
 
-    public static final Map<UUID, UUID> tradedb = new HashMap<>();
-    public static final Map<Map<UUID, UUID>, Inventory> trades = new HashMap<>();
-
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("trade")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            Player p = (Player) cs;
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null || plugin.isVanished(t, cs)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
-                return true;
-            }
-            if (t.equals(p)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You can't trade with yourself!");
-                return true;
-            }
-            if (!Config.differentGamemodeTrade && t.getGameMode() != p.getGameMode()) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You cannot trade with " + MessageColor.NEUTRAL + t.getName() + MessageColor.NEGATIVE + " because they have a different gamemode than you!");
-                return true;
-            }
-            Inventory inv = getTradeInv(p, t);
-            if (inv != null) {
-                p.sendMessage(MessageColor.POSITIVE + "Resumed trading with " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
-                p.openInventory(inv);
-                return true;
-            }
-            if (tradedb.containsKey(t.getUniqueId())) {
-                inv = plugin.getServer().createInventory(null, 36, "Trade");
-                p.sendMessage(MessageColor.POSITIVE + "Opened trading interface.");
-                p.openInventory(inv);
-                t.openInventory(inv);
-                final Map<UUID, UUID> trade = new HashMap<>();
-                trade.put(p.getUniqueId(), t.getUniqueId());
-                trades.put(trade, inv);
-                tradedb.remove(t.getUniqueId());
-                return true;
-            } else {
-                sendTradeRequest(t, p);
-                p.sendMessage(MessageColor.POSITIVE + "Sent a trade request to " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
-                return true;
-            }
+    @Override
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
+            return true;
         }
-        return false;
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        Player p = (Player) cs;
+        Player t = plugin.getServer().getPlayer(args[0]);
+        if (t == null || plugin.isVanished(t, cs)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
+            return true;
+        }
+        if (t.equals(p)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You can't trade with yourself!");
+            return true;
+        }
+        if (!Config.differentGamemodeTrade && t.getGameMode() != p.getGameMode()) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You cannot trade with " + MessageColor.NEUTRAL + t.getName() + MessageColor.NEGATIVE + " because they have a different gamemode than you!");
+            return true;
+        }
+        Inventory inv = getTradeInv(p, t);
+        if (inv != null) {
+            p.sendMessage(MessageColor.POSITIVE + "Resumed trading with " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+            p.openInventory(inv);
+            return true;
+        }
+        if (tradedb.containsKey(t.getUniqueId())) {
+            inv = plugin.getServer().createInventory(null, 36, "Trade");
+            p.sendMessage(MessageColor.POSITIVE + "Opened trading interface.");
+            p.openInventory(inv);
+            t.openInventory(inv);
+            final Map<UUID, UUID> trade = new HashMap<>();
+            trade.put(p.getUniqueId(), t.getUniqueId());
+            trades.put(trade, inv);
+            tradedb.remove(t.getUniqueId());
+            return true;
+        } else {
+            sendTradeRequest(t, p);
+            p.sendMessage(MessageColor.POSITIVE + "Sent a trade request to " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+            return true;
+        }
     }
-
 }

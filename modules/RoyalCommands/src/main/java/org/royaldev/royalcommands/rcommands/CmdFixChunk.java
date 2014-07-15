@@ -2,45 +2,32 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.Chunk;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
-import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdFixChunk implements CommandExecutor {
+public class CmdFixChunk extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdFixChunk(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdFixChunk(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("fixchunk")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-                return true;
-            }
-            Player p = (Player) cs;
-            Chunk c = p.getLocation().getChunk();
-            if (!c.isLoaded()) c.load(true);
-            boolean worked = p.getWorld().refreshChunk(c.getX(), c.getZ());
-            c.unload();
-            c.load();
-            if (worked)
-                cs.sendMessage(MessageColor.POSITIVE + "The chunk you're standing in has been refreshed!");
-            else cs.sendMessage(MessageColor.NEGATIVE + "The chunk could not be refreshed.");
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        return false;
+        Player p = (Player) cs;
+        Chunk c = p.getLocation().getChunk();
+        if (!c.isLoaded()) c.load(true);
+        boolean worked = p.getWorld().refreshChunk(c.getX(), c.getZ());
+        c.unload();
+        c.load();
+        if (worked) cs.sendMessage(MessageColor.POSITIVE + "The chunk you're standing in has been refreshed!");
+        else cs.sendMessage(MessageColor.NEGATIVE + "The chunk could not be refreshed.");
+        return true;
     }
-
 }

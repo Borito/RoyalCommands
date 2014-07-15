@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
@@ -19,13 +18,11 @@ import java.util.Map;
 import java.util.UUID;
 
 @ReflectCommand
-public class CmdBack implements CommandExecutor {
-
+public class CmdBack extends BaseCommand {
     private static final Map<UUID, List<Location>> backdb = new HashMap<>();
-    private final RoyalCommands plugin;
 
-    public CmdBack(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdBack(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     /**
@@ -48,57 +45,49 @@ public class CmdBack implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("back")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (!(cs instanceof Player)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-                return true;
-            }
-            Player p = (Player) cs;
-            if (!backdb.containsKey(p.getUniqueId())) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You have no place to go back to!");
-                return true;
-            }
-            if (label.equalsIgnoreCase("backs")) {
-                final List<Location> backs = backdb.get(p.getUniqueId());
-                cs.sendMessage(MessageColor.NEUTRAL + "/back locations:");
-                for (int i = 0; i < backs.size(); i++) {
-                    Location l = backs.get(i);
-                    if (l == null) continue;
-                    Block b = l.getBlock().getRelative(BlockFace.DOWN);
-                    String onTopOf = "on " + MessageColor.NEUTRAL + RUtils.getItemName(b.getType()) + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(b.getBiome());
-                    cs.sendMessage(MessageColor.NEUTRAL + "  " + (i + 1) + ": " + MessageColor.POSITIVE + onTopOf + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + l.getWorld().getName() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + MessageColor.POSITIVE + ")");
-                }
-                return true;
-            }
-            int index = 0;
-            try {
-                if (args.length > 0) {
-                    index = Integer.parseInt(args[0]);
-                    index--;
-                }
-            } catch (NumberFormatException e) {
-                cs.sendMessage(MessageColor.NEGATIVE + "The back number was not a valid number!");
-                return true;
-            }
-            List<Location> backs = backdb.get(p.getUniqueId());
-            if (index < 0 || index >= backs.size()) {
-                cs.sendMessage(MessageColor.NEGATIVE + "No such back number!");
-                return true;
-            }
-            String error = RUtils.teleport(p, backs.get(index));
-            if (!error.isEmpty()) {
-                p.sendMessage(MessageColor.NEGATIVE + error);
-                return true;
-            }
-            p.sendMessage(MessageColor.POSITIVE + "Returning to your previous location.");
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        return false;
+        Player p = (Player) cs;
+        if (!backdb.containsKey(p.getUniqueId())) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You have no place to go back to!");
+            return true;
+        }
+        if (label.equalsIgnoreCase("backs")) {
+            final List<Location> backs = backdb.get(p.getUniqueId());
+            cs.sendMessage(MessageColor.NEUTRAL + "/back locations:");
+            for (int i = 0; i < backs.size(); i++) {
+                Location l = backs.get(i);
+                if (l == null) continue;
+                Block b = l.getBlock().getRelative(BlockFace.DOWN);
+                String onTopOf = "on " + MessageColor.NEUTRAL + RUtils.getItemName(b.getType()) + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(b.getBiome());
+                cs.sendMessage(MessageColor.NEUTRAL + "  " + (i + 1) + ": " + MessageColor.POSITIVE + onTopOf + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + l.getWorld().getName() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + MessageColor.POSITIVE + ")");
+            }
+            return true;
+        }
+        int index = 0;
+        try {
+            if (args.length > 0) {
+                index = Integer.parseInt(args[0]);
+                index--;
+            }
+        } catch (NumberFormatException e) {
+            cs.sendMessage(MessageColor.NEGATIVE + "The back number was not a valid number!");
+            return true;
+        }
+        List<Location> backs = backdb.get(p.getUniqueId());
+        if (index < 0 || index >= backs.size()) {
+            cs.sendMessage(MessageColor.NEGATIVE + "No such back number!");
+            return true;
+        }
+        String error = RUtils.teleport(p, backs.get(index));
+        if (!error.isEmpty()) {
+            p.sendMessage(MessageColor.NEGATIVE + error);
+            return true;
+        }
+        p.sendMessage(MessageColor.POSITIVE + "Returning to your previous location.");
+        return true;
     }
-
 }

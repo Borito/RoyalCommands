@@ -2,7 +2,6 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
@@ -11,12 +10,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 @ReflectCommand
-public class CmdBanIP implements CommandExecutor {
+public class CmdBanIP extends BaseCommand {
 
-    private final RoyalCommands plugin;
-
-    public CmdBanIP(RoyalCommands plugin) {
-        this.plugin = plugin;
+    public CmdBanIP(final RoyalCommands instance, final String name) {
+        super(instance, name, true);
     }
 
     private boolean isValid(String address) {
@@ -36,39 +33,32 @@ public class CmdBanIP implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("banip")) {
-            if (!this.plugin.ah.isAuthorized(cs, cmd)) {
-                RUtils.dispNoPerms(cs);
-                return true;
-            }
-            if (args.length < 1) {
-                cs.sendMessage(cmd.getDescription());
-                return false;
-            }
-            OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
-            String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");
-            String banreason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : Config.banMessage;
-            banreason = RUtils.colorize(banreason);
-            if (ip == null) ip = args[0];
-            if (!this.isValid(ip)) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Invalid IP (" + MessageColor.NEUTRAL + ip + MessageColor.NEGATIVE + ").");
-                return true;
-            }
-            RUtils.banIP(ip, cs, banreason);
-            if (!op.hasPlayedBefore()) {
-                cs.sendMessage(MessageColor.POSITIVE + "Banned IP " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ".");
-                return true;
-            } else {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (args.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
+        String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");
+        String banreason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : Config.banMessage;
+        banreason = RUtils.colorize(banreason);
+        if (ip == null) ip = args[0];
+        if (!this.isValid(ip)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Invalid IP (" + MessageColor.NEUTRAL + ip + MessageColor.NEGATIVE + ").");
+            return true;
+        }
+        RUtils.banIP(ip, cs, banreason);
+        if (!op.hasPlayedBefore()) {
+            cs.sendMessage(MessageColor.POSITIVE + "Banned IP " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ".");
+            return true;
+        } else {
                 /*
                 op.setBanned(true);
                 RUtils.writeBanHistory(op);
                 -- Do not set the player to banned. May revert this. --
                 */
-                cs.sendMessage(MessageColor.POSITIVE + "Banned IP of " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ").");
-                return true;
-            }
+            cs.sendMessage(MessageColor.POSITIVE + "Banned IP of " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ").");
+            return true;
         }
-        return false;
     }
 }
