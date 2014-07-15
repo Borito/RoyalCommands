@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.data.block;
 
-
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -27,36 +26,36 @@ public class BlockData {
     public BlockData(Plugin p, BlockLocation bl) {
         this.p = p;
         this.bl = bl;
-        synchronized (data) {
-            if (data.isEmpty()) caughtLoad();
-            synchronized (thisData) {
-                if (data.containsKey(bl.toString())) thisData.putAll(data.get(bl.toString()));
+        synchronized (BlockData.data) {
+            if (BlockData.data.isEmpty()) this.caughtLoad();
+            synchronized (this.thisData) {
+                if (BlockData.data.containsKey(bl.toString())) this.thisData.putAll(BlockData.data.get(bl.toString()));
             }
         }
     }
 
     @SuppressWarnings("unchecked")
     public void load() throws IOException, ClassNotFoundException {
-        final File f = new File(p.getDataFolder(), "blockdata.dat");
+        final File f = new File(this.p.getDataFolder(), "blockdata.dat");
         if (!f.exists()) return;
         final ObjectInputStream ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream(f)));
         final Object o = ois.readObject();
         ois.close();
         if (!(o instanceof Map)) return;
-        HashMap<String, Map<String, Object>> data = (HashMap<String, Map<String, Object>>) o;
+        final HashMap<String, Map<String, Object>> data = (HashMap<String, Map<String, Object>>) o;
         synchronized (BlockData.data) {
             BlockData.data.clear();
             BlockData.data.putAll(data);
         }
-        synchronized (thisData) {
-            thisData.clear();
-            if (BlockData.data.containsKey(bl.toString())) thisData.putAll(BlockData.data.get(bl.toString()));
+        synchronized (this.thisData) {
+            this.thisData.clear();
+            if (BlockData.data.containsKey(bl.toString())) this.thisData.putAll(BlockData.data.get(this.bl.toString()));
         }
     }
 
     public boolean caughtLoad() {
         try {
-            load();
+            this.load();
             return true;
         } catch (EOFException ignored) {
             return true;
@@ -67,12 +66,12 @@ public class BlockData {
     }
 
     public void save() throws IOException {
-        final File f = new File(p.getDataFolder(), "blockdata.dat");
+        final File f = new File(this.p.getDataFolder(), "blockdata.dat");
         if (!f.exists()) if (!f.createNewFile()) throw new IOException("Couldn't create blockdata.dat");
-        data.put(bl.toString(), thisData);
-        final ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File(p.getDataFolder(), "blockdata.dat"))));
-        synchronized (data) {
-            oos.writeObject(data);
+        BlockData.data.put(this.bl.toString(), this.thisData);
+        final ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File(this.p.getDataFolder(), "blockdata.dat"))));
+        synchronized (BlockData.data) {
+            oos.writeObject(BlockData.data);
         }
         oos.flush();
         oos.close();
@@ -80,7 +79,7 @@ public class BlockData {
 
     public boolean caughtSave() {
         try {
-            save();
+            this.save();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,26 +88,26 @@ public class BlockData {
     }
 
     public void set(String key, Object value) {
-        synchronized (thisData) {
-            thisData.put(key, value);
+        synchronized (this.thisData) {
+            this.thisData.put(key, value);
         }
     }
 
     public Object get(String key) {
-        synchronized (thisData) {
-            return thisData.get(key);
+        synchronized (this.thisData) {
+            return this.thisData.get(key);
         }
     }
 
     public boolean contains(String key) {
-        synchronized (thisData) {
-            return thisData.containsKey(key);
+        synchronized (this.thisData) {
+            return this.thisData.containsKey(key);
         }
     }
 
     public void remove(String key) {
-        synchronized (thisData) {
-            thisData.remove(key);
+        synchronized (this.thisData) {
+            this.thisData.remove(key);
         }
     }
 
@@ -135,7 +134,7 @@ public class BlockData {
         }
 
         public int getX() {
-            return x;
+            return this.x;
         }
 
         public void setX(int x) {
@@ -143,7 +142,7 @@ public class BlockData {
         }
 
         public int getY() {
-            return y;
+            return this.y;
         }
 
         public void setY(int y) {
@@ -151,7 +150,7 @@ public class BlockData {
         }
 
         public int getZ() {
-            return z;
+            return this.z;
         }
 
         public void setZ(int z) {
@@ -159,7 +158,7 @@ public class BlockData {
         }
 
         public String getWorld() {
-            return world;
+            return this.world;
         }
 
         public void setWorld(String world) {

@@ -68,7 +68,6 @@ public class CmdGive extends BaseCommand {
                 .color(MessageColor.POSITIVE._())
             .send(target);
         // @formatter:on
-        // target.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
         if (Config.itemSpawnTag && cs != null)
             stack = RUtils.applySpawnLore(RUtils.setItemStackSpawned(stack, cs.getName(), true));
         HashMap<Integer, ItemStack> left = target.getInventory().addItem(stack);
@@ -169,8 +168,6 @@ public class CmdGive extends BaseCommand {
                 .color(MessageColor.POSITIVE._())
             .send(target);
         // @formatter:on
-        // cs.sendMessage(MessageColor.POSITIVE + "Giving " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + target.getName() + MessageColor.POSITIVE + ".");
-        // target.sendMessage(MessageColor.POSITIVE + "You have been given " + MessageColor.NEUTRAL + amount + MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + RUtils.getItemName(m) + MessageColor.POSITIVE + ".");
         return true;
     }
 }

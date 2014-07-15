@@ -50,7 +50,7 @@ public class BackpackListener implements Listener {
         }
 
         public World getWorld() {
-            return w;
+            return this.w;
         }
 
         /**

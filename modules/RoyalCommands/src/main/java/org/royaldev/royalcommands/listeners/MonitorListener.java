@@ -36,25 +36,25 @@ public class MonitorListener implements Listener {
     private final RoyalCommands plugin;
 
     public MonitorListener(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     private Player getVP(Player p) {
-        String name = CmdMonitor.viewees.get(p.getName());
+        final String name = CmdMonitor.viewees.get(p.getName());
         if (name == null) return null;
-        return plugin.getServer().getPlayer(name);
+        return this.plugin.getServer().getPlayer(name);
     }
 
     private Player getMP(Player p) {
-        String name = CmdMonitor.monitors.get(p.getName());
+        final String name = CmdMonitor.monitors.get(p.getName());
         if (name == null) return null;
-        return plugin.getServer().getPlayer(name);
+        return this.plugin.getServer().getPlayer(name);
     }
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         if (!CmdMonitor.monitors.containsValue(e.getPlayer().getName())) return;
-        Player p = getVP(e.getPlayer());
+        final Player p = this.getVP(e.getPlayer());
         if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
         if (e.getPlayer().canSee(p)) e.getPlayer().hidePlayer(p);
@@ -63,7 +63,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onChangeHold(PlayerItemHeldEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = getVP(e.getPlayer());
+        final Player t = this.getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
         t.getInventory().setHeldItemSlot(e.getNewSlot());
@@ -72,7 +72,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onBlockViewee(BlockPlaceEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = getVP(e.getPlayer());
+        final Player t = this.getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
     }
@@ -80,7 +80,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onItemDropViewee(PlayerDropItemEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = getVP(e.getPlayer());
+        final Player t = this.getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
     }
@@ -88,7 +88,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onItemPickupViewee(PlayerPickupItemEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = getVP(e.getPlayer());
+        final Player t = this.getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
     }
@@ -96,9 +96,9 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onDamageViewee(EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
-        Player p = (Player) e.getEntity();
+        final Player p = (Player) e.getEntity();
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        Player t = getVP(p);
+        final Player t = this.getVP(p);
         if (t == null) return;
         if (p.getHealth() < 1) return;
         t.setHealth(p.getHealth());
@@ -107,9 +107,9 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onRegainViewee(EntityRegainHealthEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
-        Player p = (Player) e.getEntity();
+        final Player p = (Player) e.getEntity();
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        Player t = getVP(p);
+        final Player t = this.getVP(p);
         if (t == null) return;
         if (p.getHealth() < 1) return;
         if (p.getHealth() < t.getHealth()) return;
@@ -119,9 +119,9 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onFoodViewee(FoodLevelChangeEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
-        Player p = (Player) e.getEntity();
+        final Player p = (Player) e.getEntity();
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        Player t = getVP(p);
+        final Player t = this.getVP(p);
         if (t == null) return;
         if (p.getFoodLevel() < 1) return;
         t.setFoodLevel(p.getFoodLevel());
@@ -131,12 +131,12 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onInvOpen(InventoryOpenEvent e) {
         if (!(e.getPlayer() instanceof Player)) return;
-        Player p = (Player) e.getPlayer();
+        final Player p = (Player) e.getPlayer();
         if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        Player t = getVP(p);
+        final Player t = this.getVP(p);
         if (t == null) return;
-        Inventory i = e.getInventory();
-        Block b = RUtils.getTarget(p);
+        final Inventory i = e.getInventory();
+        final Block b = RUtils.getTarget(p);
         switch (i.getType()) {
             case WORKBENCH:
                 if (!b.getType().equals(Material.WORKBENCH)) return;
@@ -152,18 +152,18 @@ public class MonitorListener implements Listener {
                 return;
         }
         t.openInventory(e.getInventory());
-        openInvs.add(t.getName());
+        MonitorListener.openInvs.add(t.getName());
     }
 
     @EventHandler
     public void onInvClick(InventoryClickEvent e) {
-        if (!openInvs.contains(e.getWhoClicked().getName())) return;
+        if (!MonitorListener.openInvs.contains(e.getWhoClicked().getName())) return;
         e.setCancelled(true);
     }
 
     /*@EventHandler
     public void onInvCloseMonitor(InventoryCloseEvent e) {
-        if (!openInvs.contains(e.getPlayer().getName())) return;
+        if (!MonitorListener.openInvs.contains(e.getPlayer().getName())) return;
         e.getPlayer().openInventory(e.getInventory());
     }*/
     // Seems a bit harsh ^
@@ -172,16 +172,16 @@ public class MonitorListener implements Listener {
     public void onInvCloseViewee(InventoryCloseEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
         if (!(e.getPlayer() instanceof Player)) return;
-        Player t = getVP((Player) e.getPlayer());
+        final Player t = this.getVP((Player) e.getPlayer());
         if (t == null) return;
         t.closeInventory();
-        openInvs.remove(t.getName());
+        MonitorListener.openInvs.remove(t.getName());
     }
 
     @EventHandler
     public void onTele(PlayerTeleportEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player p = getVP(e.getPlayer());
+        final Player p = this.getVP(e.getPlayer());
         if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
         e.getPlayer().hidePlayer(p);
@@ -202,8 +202,8 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         if (CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
-        for (String pn : CmdMonitor.monitors.keySet()) {
-            Player p = plugin.getServer().getPlayer(pn);
+        for (final String pn : CmdMonitor.monitors.keySet()) {
+            final Player p = this.plugin.getServer().getPlayer(pn);
             if (p == null) continue;
             e.getPlayer().hidePlayer(p);
         }
@@ -212,7 +212,7 @@ public class MonitorListener implements Listener {
     @EventHandler
     public void joinViewee(PlayerJoinEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        Player t = getVP(e.getPlayer());
+        final Player t = this.getVP(e.getPlayer());
         if (t == null) return;
         t.hidePlayer(e.getPlayer());
     }
@@ -234,8 +234,8 @@ public class MonitorListener implements Listener {
         if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
         if (e.getClickedBlock() == null) return; // Fixed NPE below?
         if (e.getClickedBlock().getState() instanceof Chest) {
-            Chest c = (Chest) e.getClickedBlock().getState();
-            final Inventory i = plugin.getServer().createInventory(c.getInventory().getHolder(), c.getInventory().getSize());
+            final Chest c = (Chest) e.getClickedBlock().getState();
+            final Inventory i = this.plugin.getServer().createInventory(c.getInventory().getHolder(), c.getInventory().getSize());
             i.setContents(c.getInventory().getContents());
             e.getPlayer().openInventory(i);
             e.getPlayer().sendMessage(MessageColor.POSITIVE + "Opened chest in read-only mode; you can't make changes.");

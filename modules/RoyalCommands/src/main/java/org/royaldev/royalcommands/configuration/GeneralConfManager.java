@@ -15,13 +15,13 @@ public abstract class GeneralConfManager extends YamlConfiguration {
      * @return Location or null if path does not exist or if config doesn't exist
      */
     public Location getLocation(String path) {
-        if (!isSet(path)) return null;
-        String world = getString(path + ".w");
-        double x = getDouble(path + ".x");
-        double y = getDouble(path + ".y");
-        double z = getDouble(path + ".z");
-        float pitch = getFloat(path + ".pitch");
-        float yaw = getFloat(path + ".yaw");
+        if (!this.isSet(path)) return null;
+        final String world = this.getString(path + ".w");
+        final double x = this.getDouble(path + ".x");
+        final double y = this.getDouble(path + ".y");
+        final double z = this.getDouble(path + ".z");
+        final float pitch = this.getFloat(path + ".pitch");
+        final float yaw = this.getFloat(path + ".yaw");
         return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
     }
 
@@ -35,12 +35,12 @@ public abstract class GeneralConfManager extends YamlConfiguration {
      * @return Location or null if path does not exist or if config doesn't exist
      */
     public Location getLocation(String path, String worldName) {
-        if (!isSet(path)) return null;
-        double x = getDouble(path + ".x");
-        double y = getDouble(path + ".y");
-        double z = getDouble(path + ".z");
-        float pitch = getFloat(path + ".pitch");
-        float yaw = getFloat(path + ".yaw");
+        if (!this.isSet(path)) return null;
+        final double x = this.getDouble(path + ".x");
+        final double y = this.getDouble(path + ".y");
+        final double z = this.getDouble(path + ".z");
+        final float pitch = this.getFloat(path + ".pitch");
+        final float yaw = this.getFloat(path + ".yaw");
         return new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
     }
 
@@ -51,12 +51,12 @@ public abstract class GeneralConfManager extends YamlConfiguration {
      * @param path  Path in the yml to set
      */
     public void setLocation(String path, Location value) {
-        set(path + ".w", value.getWorld().getName());
-        set(path + ".x", value.getX());
-        set(path + ".y", value.getY());
-        set(path + ".z", value.getZ());
-        set(path + ".pitch", value.getPitch());
-        set(path + ".yaw", value.getYaw());
+        this.set(path + ".w", value.getWorld().getName());
+        this.set(path + ".x", value.getX());
+        this.set(path + ".y", value.getY());
+        this.set(path + ".z", value.getZ());
+        this.set(path + ".pitch", value.getPitch());
+        this.set(path + ".yaw", value.getYaw());
     }
 
     /**
@@ -66,6 +66,6 @@ public abstract class GeneralConfManager extends YamlConfiguration {
      * @return float
      */
     public float getFloat(String path) {
-        return (float) getDouble(path);
+        return (float) this.getDouble(path);
     }
 }

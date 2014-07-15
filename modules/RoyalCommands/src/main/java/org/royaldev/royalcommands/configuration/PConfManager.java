@@ -35,13 +35,13 @@ public class PConfManager extends GeneralConfManager {
      */
     PConfManager(UUID u) {
         super();
-        File dataFolder = RoyalCommands.dataFolder;
-        pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + u + ".yml");
+        final File dataFolder = RoyalCommands.dataFolder;
+        this.pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + u + ".yml");
         try {
-            load(pconfl);
+            this.load(this.pconfl);
         } catch (Exception ignored) {
         }
-        playerUUID = u;
+        this.playerUUID = u;
     }
 
     /**
@@ -49,7 +49,7 @@ public class PConfManager extends GeneralConfManager {
      */
     @SuppressWarnings("unused")
     private PConfManager() {
-        playerUUID = null;
+        this.playerUUID = null;
     }
 
     public static PConfManager getPConfManager(OfflinePlayer p) {
@@ -57,10 +57,10 @@ public class PConfManager extends GeneralConfManager {
     }
 
     public static PConfManager getPConfManager(UUID u) {
-        synchronized (pcms) {
-            if (pcms.containsKey(u)) return pcms.get(u);
+        synchronized (PConfManager.pcms) {
+            if (PConfManager.pcms.containsKey(u)) return PConfManager.pcms.get(u);
             final PConfManager pcm = new PConfManager(u);
-            pcms.put(u, pcm);
+            PConfManager.pcms.put(u, pcm);
             return pcm;
         }
     }
@@ -70,53 +70,53 @@ public class PConfManager extends GeneralConfManager {
     }
 
     public static boolean isManagerCreated(UUID u) {
-        synchronized (pcms) {
-            return pcms.containsKey(u);
+        synchronized (PConfManager.pcms) {
+            return PConfManager.pcms.containsKey(u);
         }
     }
 
     public static void saveAllManagers() {
-        synchronized (pcms) {
-            for (PConfManager pcm : pcms.values()) pcm.forceSave();
+        synchronized (PConfManager.pcms) {
+            for (final PConfManager pcm : PConfManager.pcms.values()) pcm.forceSave();
         }
     }
 
     public static void removeAllManagers() {
-        Collection<PConfManager> oldConfs = new ArrayList<>();
-        synchronized (pcms) {
-            oldConfs.addAll(pcms.values());
-            for (PConfManager pcm : oldConfs) pcm.discard(false);
+        final Collection<PConfManager> oldConfs = new ArrayList<>();
+        synchronized (PConfManager.pcms) {
+            oldConfs.addAll(PConfManager.pcms.values());
+            for (final PConfManager pcm : oldConfs) pcm.discard(false);
         }
     }
 
     public static int managersCreated() {
-        synchronized (pcms) {
-            return pcms.size();
+        synchronized (PConfManager.pcms) {
+            return PConfManager.pcms.size();
         }
     }
 
     public static synchronized Collection<PConfManager> getAllManagers() {
-        synchronized (pcms) {
-            return Collections.synchronizedCollection(pcms.values());
+        synchronized (PConfManager.pcms) {
+            return Collections.synchronizedCollection(PConfManager.pcms.values());
         }
     }
 
     public boolean exists() {
-        return pconfl.exists();
+        return this.pconfl.exists();
     }
 
     public boolean createFile() {
         try {
-            return pconfl.createNewFile();
+            return this.pconfl.createNewFile();
         } catch (IOException ignored) {
             return false;
         }
     }
 
     public void forceSave() {
-        synchronized (saveLock) {
+        synchronized (this.saveLock) {
             try {
-                save(pconfl);
+                this.save(this.pconfl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -129,7 +129,7 @@ public class PConfManager extends GeneralConfManager {
      * @return Player name
      */
     public UUID getManagerPlayerUUID() {
-        return playerUUID;
+        return this.playerUUID;
     }
 
     /**
@@ -138,18 +138,18 @@ public class PConfManager extends GeneralConfManager {
      * @return true or false
      */
     public boolean isFirstJoin() {
-        return getBoolean("first_join", true);
+        return this.getBoolean("first_join", true);
     }
 
     public void setFirstJoin(boolean firstJoin) {
-        set("first_join", firstJoin);
+        this.set("first_join", firstJoin);
     }
 
     /**
      * Removes the reference to this manager without saving.
      */
     public void discard() {
-        discard(false);
+        this.discard(false);
     }
 
     /**
@@ -158,9 +158,9 @@ public class PConfManager extends GeneralConfManager {
      * @param save Save manager before removing references?
      */
     public void discard(boolean save) {
-        if (save) forceSave();
-        synchronized (pcms) {
-            pcms.remove(playerUUID);
+        if (save) this.forceSave();
+        synchronized (PConfManager.pcms) {
+            PConfManager.pcms.remove(playerUUID);
         }
     }
 }

@@ -18,6 +18,9 @@ import org.royaldev.royalcommands.rcommands.CmdTime;
 import org.royaldev.royalcommands.rcommands.CmdWarp;
 import org.royaldev.royalcommands.rcommands.CmdWeather;
 
+// This code is so ancient... It *really* needs a rewrite.
+// TODO: Rewrite
+
 public class SignListener implements Listener {
 
     private final RoyalCommands plugin;
@@ -28,7 +31,7 @@ public class SignListener implements Listener {
 
     private Double getCharge(String line) {
         if (!line.isEmpty()) {
-            Double amount;
+            double amount;
             try {
                 amount = Double.parseDouble(line);
             } catch (Exception ex) {

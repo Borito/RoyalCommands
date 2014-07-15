@@ -12,7 +12,7 @@ public class TagAPIListener implements Listener {
     public void onTag(AsyncPlayerReceiveNameTagEvent e) {
         if (e.isTagModified()) return;
         if (e.getNamedPlayer() == null) return;
-        PConfManager pcm = PConfManager.getPConfManager(e.getNamedPlayer());
+        final PConfManager pcm = PConfManager.getPConfManager(e.getNamedPlayer());
         String dispname = pcm.getString("dispname");
         if (dispname == null) return;
         if (dispname.equalsIgnoreCase(e.getNamedPlayer().getName())) {

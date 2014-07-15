@@ -27,14 +27,14 @@ public class ConfManager extends GeneralConfManager {
      */
     ConfManager(String filename) {
         super();
-        File dataFolder = RoyalCommands.dataFolder;
-        path = dataFolder + File.separator + filename;
-        pconfl = new File(path);
+        final File dataFolder = RoyalCommands.dataFolder;
+        this.path = dataFolder + File.separator + filename;
+        this.pconfl = new File(this.path);
         try {
-            load(pconfl);
+            this.load(this.pconfl);
         } catch (Exception ignored) {
         }
-        name = filename;
+        this.name = filename;
     }
 
     /**
@@ -53,75 +53,75 @@ public class ConfManager extends GeneralConfManager {
      */
     @SuppressWarnings("unused")
     private ConfManager() {
-        path = "";
-        name = "";
+        this.path = "";
+        this.name = "";
     }
 
     public static ConfManager getConfManager(String s) {
-        synchronized (confs) {
-            if (confs.containsKey(s)) return confs.get(s);
+        synchronized (ConfManager.confs) {
+            if (ConfManager.confs.containsKey(s)) return ConfManager.confs.get(s);
             final ConfManager cm = new ConfManager(s);
-            confs.put(s, cm);
+            ConfManager.confs.put(s, cm);
             return cm;
         }
     }
 
     public static boolean isManagerCreated(String s) {
-        synchronized (confs) {
-            return confs.containsKey(s);
+        synchronized (ConfManager.confs) {
+            return ConfManager.confs.containsKey(s);
         }
     }
 
     public static void saveAllManagers() {
-        synchronized (confs) {
-            for (ConfManager cm : confs.values()) cm.forceSave();
+        synchronized (ConfManager.confs) {
+            for (final ConfManager cm : ConfManager.confs.values()) cm.forceSave();
         }
     }
 
     public static void removeAllManagers() {
-        Collection<ConfManager> oldConfs = new ArrayList<>();
-        oldConfs.addAll(confs.values());
-        synchronized (confs) {
-            for (ConfManager cm : oldConfs) cm.discard(false);
+        final Collection<ConfManager> oldConfs = new ArrayList<>();
+        oldConfs.addAll(ConfManager.confs.values());
+        synchronized (ConfManager.confs) {
+            for (final ConfManager cm : oldConfs) cm.discard(false);
         }
     }
 
     public static int managersCreated() {
-        synchronized (confs) {
-            return confs.size();
+        synchronized (ConfManager.confs) {
+            return ConfManager.confs.size();
         }
     }
 
     public static Collection<ConfManager> getAllManagers() {
-        synchronized (confs) {
-            return Collections.synchronizedCollection(confs.values());
+        synchronized (ConfManager.confs) {
+            return Collections.synchronizedCollection(ConfManager.confs.values());
         }
     }
 
     public void reload() {
         forceSave();
         try {
-            load(pconfl);
+            this.load(this.pconfl);
         } catch (Exception ignored) {
         }
     }
 
     public boolean exists() {
-        return pconfl.exists();
+        return this.pconfl.exists();
     }
 
     public boolean createFile() {
         try {
-            return pconfl.createNewFile();
+            return this.pconfl.createNewFile();
         } catch (IOException ignored) {
             return false;
         }
     }
 
     public void forceSave() {
-        synchronized (saveLock) {
+        synchronized (this.saveLock) {
             try {
-                save(pconfl);
+                this.save(this.pconfl);
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (IllegalArgumentException ignored) {
@@ -133,7 +133,7 @@ public class ConfManager extends GeneralConfManager {
      * Removes the reference to this manager without saving.
      */
     public void discard() {
-        discard(false);
+        this.discard(false);
     }
 
     /**
@@ -142,9 +142,9 @@ public class ConfManager extends GeneralConfManager {
      * @param save Save manager before removing references?
      */
     public void discard(boolean save) {
-        synchronized (confs) {
-            if (save) forceSave();
-            confs.remove(name);
+        synchronized (ConfManager.confs) {
+            if (save) this.forceSave();
+            ConfManager.confs.remove(this.name);
         }
     }
 }

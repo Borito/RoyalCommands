@@ -13,14 +13,14 @@ public class ServerListener implements Listener {
     private final RoyalCommands plugin;
 
     public ServerListener(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnable(PluginEnableEvent e) {
         final Plugin p = e.getPlugin();
         if (!p.getName().equals("Vault")) return;
-        plugin.vh.setUpVault();
+        this.plugin.vh.setUpVault();
 
     }
 
@@ -28,7 +28,7 @@ public class ServerListener implements Listener {
     public void onPluginDisable(PluginDisableEvent e) {
         final Plugin p = e.getPlugin();
         if (!p.getName().equals("Vault")) return;
-        plugin.vh.removeVault();
+        this.plugin.vh.removeVault();
     }
 
 }
