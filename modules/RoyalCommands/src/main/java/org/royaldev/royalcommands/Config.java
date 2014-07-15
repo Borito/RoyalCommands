@@ -32,6 +32,7 @@ public class Config {
     public static boolean dumpUseInv;
     public static boolean explodeFire;
     public static boolean h2Convert;
+    public static boolean hastebinErrors;
     public static boolean itemSpawnTag;
     public static boolean kitPerms;
     public static boolean motdLogin;
@@ -175,6 +176,7 @@ public class Config {
         dumpUseInv = c.getBoolean("dump.use_inv", true);
         explodeFire = c.getBoolean("explode.fire", false);
         h2Convert = c.getBoolean("h2.convert", false);
+        hastebinErrors = c.getBoolean("security.errors.hastebin", true);
         itemSpawnTag = c.getBoolean("items.spawn.tag.enabled", false);
         kitPerms = c.getBoolean("use_exclusive_kit_perms", false);
         motdLogin = c.getBoolean("motd.options.display_on_login", true);
