@@ -52,12 +52,21 @@
                                 <includes>
                                     <include>org.royaldev:royalcommands-*</include>
                                     <include>org.shininet.bukkit:ItemRenamer</include>
+                                    <include>mkremins:fanciful</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
                                 <relocation>
                                     <pattern>org.shininet.bukkit</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.org.shininet.bukkit</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>mkremins.fanciful</pattern>
+                                    <shadedPattern>org.royaldev.royalcommands.shaded.mkremins.fanciful</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.amoebaman</pattern>
+                                    <shadedPattern>org.royaldev.royalcommands.shaded.net.amoebaman</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -210,7 +219,12 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.9-RC1</version>
+            <version>0.9.9-RC2</version>
+        </dependency>
+        <dependency>
+            <groupId>mkremins</groupId>
+            <artifactId>fanciful</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
