@@ -34,6 +34,7 @@ import org.royaldev.royalcommands.rcommands.CmdSeeInventory.InvSeeHolder;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class InventoryListener implements Listener {
 
@@ -151,17 +152,17 @@ public class InventoryListener implements Listener {
     }
 
     public Inventory getOfflinePlayerEnderInventory(OfflinePlayer op, String world) {
-        World w = plugin.getServer().getWorld(world);
+        final World w = plugin.getServer().getWorld(world);
         if (w == null) return null;
-        String group = getWorldGroup(w);
+        final String group = getWorldGroup(w);
         if (group == null) return null;
-        PConfManager pcm = PConfManager.getPConfManager(op);
+        final PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) pcm.createFile();
-        Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
-        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "OEC;" + world + ": " + op.getName());
-        if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
+        final int invSize = pcm.getInt("inventory." + group + ".ender.size");
+        final Inventory i = plugin.getServer().createInventory(new EnderInventoryHolder(w, op.getUniqueId()), InventoryType.PLAYER.getDefaultSize());
+        if (!pcm.isSet("inventory." + group + ".ender.slot")) return i;
         for (int slot = 0; slot < invSize; slot++) {
-            ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
+            final ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
             if (is == null) continue;
             i.setItem(slot, is);
         }
@@ -169,17 +170,17 @@ public class InventoryListener implements Listener {
     }
 
     public Inventory getOfflinePlayerInventory(OfflinePlayer op, String world) {
-        World w = plugin.getServer().getWorld(world);
+        final World w = plugin.getServer().getWorld(world);
         if (w == null) return null;
-        String group = getWorldGroup(w);
+        final String group = getWorldGroup(w);
         if (group == null) return null;
-        PConfManager pcm = PConfManager.getPConfManager(op);
+        final PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) pcm.createFile();
-        Integer invSize = pcm.getInt("inventory." + group + ".size");
-        final Inventory i = plugin.getServer().createInventory(null, InventoryType.PLAYER.getDefaultSize(), "OPI;" + world + ": " + op.getName());
-        if (pcm.get("inventory." + group + ".slot") == null) return i;
+        final int invSize = pcm.getInt("inventory." + group + ".size");
+        final Inventory i = plugin.getServer().createInventory(new OfflineInventoryHolder(w, op.getUniqueId()), InventoryType.PLAYER.getDefaultSize());
+        if (!pcm.isSet("inventory." + group + ".slot")) return i;
         for (int slot = 0; slot < invSize; slot++) {
-            ItemStack is = pcm.getItemStack("inventory." + group + ".slot." + slot);
+            final ItemStack is = pcm.getItemStack("inventory." + group + ".slot." + slot);
             if (is == null) continue;
             i.setItem(slot, is);
         }
@@ -330,18 +331,14 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void closeOfflineInventory(InventoryCloseEvent e) {
         Inventory i = e.getInventory();
-        if (i.getHolder() != null) return;
-        String name = i.getName();
-        String world;
-        String opName;
-        try {
-            world = name.split(";")[1].split(":")[0];
-            opName = name.split(": ")[1];
-        } catch (Exception ex) {
-            return;
+        final InventoryHolder ih = i.getHolder();
+        if (!(ih instanceof WorldHolder)) return;
+        final WorldHolder wh = (WorldHolder) ih;
+        if (wh instanceof OfflineInventoryHolder) {
+            this.saveInventory(this.plugin.getServer().getOfflinePlayer(wh.getUUID()), wh.getWorld().getName(), i);
+        } else if (wh instanceof EnderInventoryHolder) {
+            this.saveEnderInventory(this.plugin.getServer().getOfflinePlayer(wh.getUUID()), wh.getWorld().getName(), i);
         }
-        if (name.startsWith("OEC;")) saveEnderInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
-        else if (name.startsWith("OPI;")) saveInventory(plugin.getServer().getOfflinePlayer(opName), world, i);
     }
 
     @EventHandler
@@ -354,5 +351,41 @@ public class InventoryListener implements Listener {
     public void onInventoryDrag(InventoryDragEvent e) {
         if (!(e.getInventory().getHolder() instanceof InvSeeHolder)) return;
         e.setCancelled(true);
+    }
+
+    private abstract class WorldHolder implements InventoryHolder {
+        private final World w;
+        private final UUID u;
+
+        private WorldHolder(final World w, final UUID u) {
+            this.w = w;
+            this.u = u;
+        }
+
+        @Override
+        @Deprecated
+        public final Inventory getInventory() {
+            return null;
+        }
+
+        public World getWorld() {
+            return this.w;
+        }
+
+        public UUID getUUID() {
+            return this.u;
+        }
+    }
+
+    private class EnderInventoryHolder extends WorldHolder {
+        private EnderInventoryHolder(World w, UUID u) {
+            super(w, u);
+        }
+    }
+
+    private class OfflineInventoryHolder extends WorldHolder {
+        private OfflineInventoryHolder(World w, UUID u) {
+            super(w, u);
+        }
     }
 }
