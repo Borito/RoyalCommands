@@ -71,4 +71,13 @@ public class TestCommands {
         }
     }
 
+    @Test
+    public void testAnnotation() {
+        final Set<Class<?>> classes = this.getAllCommandClasses();
+        for (final Class<?> clazz : classes) {
+            if (!clazz.getSimpleName().startsWith("Cmd")) continue;
+            assertTrue(clazz.getName() + " does not have a ReflectCommand annotation.", clazz.isAnnotationPresent(ReflectCommand.class));
+        }
+    }
+
 }

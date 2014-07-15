@@ -15,6 +15,7 @@ import org.royaldev.royalcommands.spawninfo.Attributes.Operation;
 
 import java.util.UUID;
 
+@ReflectCommand
 public class CmdAttributes extends BaseCommand {
 
     public CmdAttributes(final RoyalCommands instance, final String name) {
