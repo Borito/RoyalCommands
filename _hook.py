@@ -3,6 +3,8 @@ from requests import post
 from json import dumps
 from sys import argv
 
+print(argv)
+
 if len(argv) < 4:
     quit()
 
@@ -18,5 +20,3 @@ RESULTS_URL = argv[3]
 
 # ${bamboo.buildKey} ${bamboo.buildResultsUrl} ${bamboo.buildNumber} ${bamboo.buildPlanName}
 ## DO NOT EDIT BELOW HERE ##
-
-print(argv)
