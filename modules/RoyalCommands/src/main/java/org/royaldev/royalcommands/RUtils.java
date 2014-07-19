@@ -59,47 +59,13 @@ import java.util.regex.Pattern;
 @SuppressWarnings("unused")
 public class RUtils {
 
-    // Borrowed list of materials from Essentials
     public static final Set<Material> AIR_MATERIALS = new HashSet<>();
 
     static {
-        AIR_MATERIALS.add(Material.AIR);
-        AIR_MATERIALS.add(Material.SAPLING);
-        AIR_MATERIALS.add(Material.POWERED_RAIL);
-        AIR_MATERIALS.add(Material.DETECTOR_RAIL);
-        AIR_MATERIALS.add(Material.LONG_GRASS);
-        AIR_MATERIALS.add(Material.DEAD_BUSH);
-        AIR_MATERIALS.add(Material.YELLOW_FLOWER);
-        AIR_MATERIALS.add(Material.RED_ROSE);
-        AIR_MATERIALS.add(Material.BROWN_MUSHROOM);
-        AIR_MATERIALS.add(Material.RED_MUSHROOM);
-        AIR_MATERIALS.add(Material.TORCH);
-        AIR_MATERIALS.add(Material.REDSTONE_WIRE);
-        AIR_MATERIALS.add(Material.SEEDS);
-        AIR_MATERIALS.add(Material.SIGN_POST);
-        AIR_MATERIALS.add(Material.WOODEN_DOOR);
-        AIR_MATERIALS.add(Material.LADDER);
-        AIR_MATERIALS.add(Material.RAILS);
-        AIR_MATERIALS.add(Material.WALL_SIGN);
-        AIR_MATERIALS.add(Material.LEVER);
-        AIR_MATERIALS.add(Material.STONE_PLATE);
-        AIR_MATERIALS.add(Material.IRON_DOOR_BLOCK);
-        AIR_MATERIALS.add(Material.WOOD_PLATE);
-        AIR_MATERIALS.add(Material.REDSTONE_TORCH_OFF);
-        AIR_MATERIALS.add(Material.REDSTONE_TORCH_ON);
-        AIR_MATERIALS.add(Material.STONE_BUTTON);
-        AIR_MATERIALS.add(Material.SUGAR_CANE_BLOCK);
-        AIR_MATERIALS.add(Material.DIODE_BLOCK_OFF);
-        AIR_MATERIALS.add(Material.DIODE_BLOCK_ON);
-        AIR_MATERIALS.add(Material.TRAP_DOOR);
-        AIR_MATERIALS.add(Material.PUMPKIN_STEM);
-        AIR_MATERIALS.add(Material.MELON_STEM);
-        AIR_MATERIALS.add(Material.VINE);
-        AIR_MATERIALS.add(Material.NETHER_WARTS);
-        AIR_MATERIALS.add(Material.WATER_LILY);
-        AIR_MATERIALS.add(Material.SNOW);
-        AIR_MATERIALS.add(Material.WATER);
-        AIR_MATERIALS.add(Material.STATIONARY_WATER);
+        for (final Material m : Material.values()) {
+            if (m.isSolid()) continue;
+            AIR_MATERIALS.add(m);
+        }
     }
 
     private final static Map<String, Integer> teleRunners = new HashMap<>();
