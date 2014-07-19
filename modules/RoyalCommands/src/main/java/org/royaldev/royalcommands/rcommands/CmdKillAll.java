@@ -16,8 +16,7 @@ public class CmdKillAll extends BaseCommand {
 
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        Player[] ps = plugin.getServer().getOnlinePlayers();
-        for (Player p : ps) {
+        for (Player p : this.plugin.getServer().getOnlinePlayers()) {
             if (plugin.isVanished(p, cs) || this.ah.isAuthorized(p, cmd, PermType.EXEMPT)) continue;
             if (cs instanceof Player) {
                 if (p == cs) continue;

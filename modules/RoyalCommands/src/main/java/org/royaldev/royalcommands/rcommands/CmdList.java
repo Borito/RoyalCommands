@@ -11,6 +11,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class CmdList extends BaseCommand {
     }
 
     public static String getSimpleList(CommandSender cs) {
-        Player[] pl = CmdList.pluginInstance.getServer().getOnlinePlayers();
+        Collection<? extends Player> pl = CmdList.pluginInstance.getServer().getOnlinePlayers();
         StringBuilder sb = new StringBuilder();
         for (Player p : pl) {
             if (CmdList.pluginInstance.isVanished(p) && CmdList.pluginInstance.ah.isAuthorized(cs, "rcmds.seehidden")) {
@@ -48,7 +49,7 @@ public class CmdList extends BaseCommand {
     }
 
     public static String[] getGroupList(CommandSender cs) {
-        Player[] pl = CmdList.pluginInstance.getServer().getOnlinePlayers();
+        Collection<? extends Player> pl = CmdList.pluginInstance.getServer().getOnlinePlayers();
         Map<String, List<String>> groups = new HashMap<>();
         StrBuilder sb = new StrBuilder();
         for (Player p : pl) {
@@ -147,7 +148,7 @@ public class CmdList extends BaseCommand {
 
     public String getNumOnline(CommandSender cs) {
         int hid = this.plugin.getNumberVanished();
-        int all = this.plugin.getServer().getOnlinePlayers().length;
+        int all = this.plugin.getServer().getOnlinePlayers().size();
         boolean canSeeVanished = this.ah.isAuthorized(cs, "rcmds.seehidden");
         String numPlayers;
         if (canSeeVanished && hid > 0) numPlayers = (all - hid) + "/" + hid;

@@ -45,8 +45,7 @@ public class CmdMessage extends BaseCommand {
         t.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + "] " + m);
         cs.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + t.getName() + MessageColor.NEUTRAL + "] " + m);
         if (!this.ah.isAuthorized(cs, cmd, PermType.EXEMPT)) {
-            Player[] ps = plugin.getServer().getOnlinePlayers();
-            for (Player p1 : ps) {
+            for (Player p1 : this.plugin.getServer().getOnlinePlayers()) {
                 if (PConfManager.getPConfManager(p1).getBoolean("messagespy")) {
                     if (t == p1 || cs == p1) continue;
                     p1.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + t.getName() + MessageColor.NEUTRAL + "] " + m);

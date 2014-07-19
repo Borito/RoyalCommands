@@ -19,7 +19,7 @@ public class CmdMessageOfTheDay extends BaseCommand {
 
     public static void showMotd(CommandSender cs) {
         String ps = (Config.simpleList) ? CmdList.getSimpleList(cs) : RUtils.join(CmdList.getGroupList(cs), "\n");
-        Integer onnum = CmdMessageOfTheDay.pluginInstance.getServer().getOnlinePlayers().length;
+        Integer onnum = CmdMessageOfTheDay.pluginInstance.getServer().getOnlinePlayers().size();
         int hid = CmdMessageOfTheDay.pluginInstance.getNumberVanished();
         String onlinenum;
         try {
