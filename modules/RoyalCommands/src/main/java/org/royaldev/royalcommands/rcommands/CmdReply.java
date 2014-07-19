@@ -8,7 +8,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
-// TODO: Rewrite, for the love of god.
+import java.util.Collection;
 
 // TODO: Rewrite, for the love of god.
 

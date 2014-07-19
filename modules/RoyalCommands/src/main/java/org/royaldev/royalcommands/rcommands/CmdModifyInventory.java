@@ -30,15 +30,15 @@ public class CmdModifyInventory extends BaseCommand {
             return true;
         }
         Player p = (Player) cs;
-        Player t = plugin.getServer().getPlayer(args[0]);
+        Player t = this.plugin.getServer().getPlayer(args[0]);
         if (t == null && args.length > 1) {
             if (!Config.separateInv) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Cannot open offline players' inventories unless inventory separation is on!");
                 return true;
             }
-            OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
+            final OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
             String world = args[1];
-            if (plugin.getServer().getWorld(world) == null) {
+            if (this.plugin.getServer().getWorld(world) == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Invalid world!");
                 return true;
             }
@@ -52,7 +52,7 @@ public class CmdModifyInventory extends BaseCommand {
             p.openInventory(i);
             return true;
         }
-        if (t == null || plugin.isVanished(t, cs)) {
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
             return true;
         }

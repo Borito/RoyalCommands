@@ -1484,4 +1484,22 @@ public class RUtils {
         }
         return tooltip.isEmpty() ? null : tooltip;
     }
+
+    public static FancyMessage addCommandTo(FancyMessage fm, String command) {
+        final Iterator i = fm.iterator();
+        for (final Object o : fm) {
+            try {
+                final Field can = o.getClass().getDeclaredField("clickActionName");
+                final Field cad = o.getClass().getDeclaredField("clickActionData");
+                can.setAccessible(true);
+                cad.setAccessible(true);
+                can.set(o, "run_command");
+                cad.set(o, command);
+            } catch (ReflectiveOperationException ex) {
+                ex.printStackTrace();
+                return fm;
+            }
+        }
+        return fm;
+    }
 }

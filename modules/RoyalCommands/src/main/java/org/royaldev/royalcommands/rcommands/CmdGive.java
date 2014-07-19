@@ -64,6 +64,7 @@ public class CmdGive extends BaseCommand {
                 .color(MessageColor.POSITIVE._())
             .then(target.getName())
                 .color(MessageColor.NEUTRAL._())
+                .formattedTooltip(RUtils.getPlayerTooltip(target))
             .then(".")
                 .color(MessageColor.POSITIVE._())
             .send(target);
@@ -83,19 +84,21 @@ public class CmdGive extends BaseCommand {
 
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (args.length < 2) {
+        final CommandArguments ca = this.getCommandArguments(args);
+        final String[] eargs = ca.getExtraParameters();
+        if (eargs.length < 2) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Player target = plugin.getServer().getPlayer(args[0]);
-        if (target == null) {
+        final Player t = plugin.getServer().getPlayer(eargs[0]);
+        if (t == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
             return true;
         }
         int amount = Config.defaultStack;
-        if (args.length == 3) {
+        if (eargs.length == 3) {
             try {
-                amount = Integer.parseInt(args[2]);
+                amount = Integer.parseInt(eargs[2]);
             } catch (Exception e) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The amount was not a number!");
                 return true;
@@ -105,7 +108,7 @@ public class CmdGive extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid amount! You must specify a positive amount.");
             return true;
         }
-        String name = args[1];
+        String name = eargs[1];
         ItemStack toInv;
         try {
             toInv = RUtils.getItemFromAlias(name, amount);
@@ -131,12 +134,12 @@ public class CmdGive extends BaseCommand {
         }
         toInv = CmdItem.applyMeta(toInv, ca, cs);
         if (Config.itemSpawnTag) toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));
-        HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
+        HashMap<Integer, ItemStack> left = t.getInventory().addItem(toInv);
         if (!left.isEmpty() && Config.dropExtras) {
             for (ItemStack item : left.values()) {
                 if (Config.itemSpawnTag)
                     item = RUtils.applySpawnLore(RUtils.setItemStackSpawned(item, cs.getName(), true));
-                target.getWorld().dropItemNaturally(target.getLocation(), item);
+                t.getWorld().dropItemNaturally(t.getLocation(), item);
             }
         }
         // @formatter:off
@@ -151,8 +154,9 @@ public class CmdGive extends BaseCommand {
                 .itemTooltip(toInv)
             .then(" to ")
                 .color(MessageColor.POSITIVE._())
-            .then(target.getName())
+            .then(t.getName())
                 .color(MessageColor.NEUTRAL._())
+                .formattedTooltip(RUtils.getPlayerTooltip(t))
             .then(".")
                 .color(MessageColor.POSITIVE._())
             .send(cs);
@@ -167,7 +171,7 @@ public class CmdGive extends BaseCommand {
                 .itemTooltip(toInv)
             .then(".")
                 .color(MessageColor.POSITIVE._())
-            .send(target);
+            .send(t);
         // @formatter:on
         return true;
     }

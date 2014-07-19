@@ -34,7 +34,7 @@ public class CmdCommandSpy extends BaseCommand {
             return true;
         }
         PConfManager pcm = PConfManager.getPConfManager(op);
-        boolean commandSpy = pcm.getBoolean("commandspy", false);
+        final boolean commandSpy = pcm.getBoolean("commandspy", false);
         pcm.set("commandspy", !commandSpy);
         cs.sendMessage(MessageColor.POSITIVE + "Command spy mode " + MessageColor.NEUTRAL + ((!commandSpy) ? "enabled" : "disabled") + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");
         if (op.isOnline() && !op.getName().equalsIgnoreCase(cs.getName()))

@@ -14,12 +14,12 @@ public class CmdWhitelist extends BaseCommand {
     }
 
     public void reloadWhitelist() {
-        Config.whitelist = plugin.whl.getStringList("whitelist");
+        Config.whitelist = this.plugin.whl.getStringList("whitelist");
     }
 
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (plugin.whl == null) {
+        if (this.plugin.whl == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "The whitelist.yml file was invalid! Cannot use whitelist.");
             return true;
         }
@@ -39,7 +39,7 @@ public class CmdWhitelist extends BaseCommand {
                 return true;
             }
             Config.whitelist.add(player);
-            plugin.whl.set("whitelist", Config.whitelist);
+            this.plugin.whl.set("whitelist", Config.whitelist);
             reloadWhitelist();
             cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + player + MessageColor.POSITIVE + " to whitelist.");
             return true;
@@ -49,7 +49,7 @@ public class CmdWhitelist extends BaseCommand {
                 return true;
             }
             Config.whitelist.remove(player);
-            plugin.whl.set("whitelist", Config.whitelist);
+            this.plugin.whl.set("whitelist", Config.whitelist);
             reloadWhitelist();
             cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + player + MessageColor.POSITIVE + " from whitelist.");
             return true;

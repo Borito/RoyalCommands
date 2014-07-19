@@ -17,7 +17,7 @@ public class CmdMute extends BaseCommand {
         super(instance, name, true);
     }
 
-    // muted & mutetime@Override
+    @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());

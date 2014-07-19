@@ -11,8 +11,6 @@ import org.royaldev.royalcommands.RoyalCommands;
 
 // TODO: Not set reason, but set leave message (cleaner)
 
-// TODO: Not set reason, but set leave message (cleaner)
-
 @ReflectCommand
 public class CmdKick extends BaseCommand {
 
