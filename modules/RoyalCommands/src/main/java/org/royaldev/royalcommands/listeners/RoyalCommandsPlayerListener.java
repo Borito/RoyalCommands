@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.listeners;
 
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -189,7 +190,6 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void commandSpy(PlayerCommandPreprocessEvent e) {
-        // TODO: Clickable
         if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.exempt.commandspy")) return;
         final PluginCommand pc = plugin.getServer().getPluginCommand(e.getMessage().split(" ")[0].substring(1));
         if (pc != null) {
@@ -199,7 +199,7 @@ public class RoyalCommandsPlayerListener implements Listener {
         for (Player p : e.getPlayer().getServer().getOnlinePlayers()) {
             if (!PConfManager.getPConfManager(p).getBoolean("commandspy", false)) continue;
             if (p.getName().equalsIgnoreCase(e.getPlayer().getName())) continue; // don't send to self
-            p.sendMessage(MessageColor.NEUTRAL + e.getPlayer().getName() + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + e.getMessage());
+            new FancyMessage(e.getPlayer().getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(e.getPlayer())).then(": ").color(MessageColor.POSITIVE._()).then(e.getMessage()).color(MessageColor.NEUTRAL._()).command(e.getMessage()).tooltip("Click here to execute this command.").send(p);
         }
     }
 
