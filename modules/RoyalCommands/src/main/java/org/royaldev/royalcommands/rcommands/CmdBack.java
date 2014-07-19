@@ -1,16 +1,19 @@
 package org.royaldev.royalcommands.rcommands;
 
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.UUID;
 @ReflectCommand
 public class CmdBack extends BaseCommand {
     private static final Map<UUID, List<Location>> backdb = new HashMap<>();
+    private final DecimalFormat df = new DecimalFormat("0.00");
 
     public CmdBack(final RoyalCommands instance, final String name) {
         super(instance, name, true);
@@ -62,8 +66,39 @@ public class CmdBack extends BaseCommand {
                 Location l = backs.get(i);
                 if (l == null) continue;
                 Block b = l.getBlock().getRelative(BlockFace.DOWN);
-                String onTopOf = "on " + MessageColor.NEUTRAL + RUtils.getItemName(b.getType()) + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(b.getBiome());
-                cs.sendMessage(MessageColor.NEUTRAL + "  " + (i + 1) + ": " + MessageColor.POSITIVE + onTopOf + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + l.getWorld().getName() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + MessageColor.POSITIVE + ")");
+                // @formatter:off
+                RUtils.addCommandTo(new FancyMessage("  ")
+                        .then(i + 1 + ": ")
+                            .color(MessageColor.NEUTRAL._())
+                        .then("on ")
+                            .color(MessageColor.POSITIVE._())
+                        .then(RUtils.getItemName(b.getType()))
+                            .color(MessageColor.NEUTRAL._())
+                            .itemTooltip(new ItemStack(b.getType()))
+                        .then(" in ")
+                            .color(MessageColor.POSITIVE._())
+                        .then(RUtils.getFriendlyEnumName(b.getBiome()))
+                            .color(MessageColor.NEUTRAL._())
+                        .then(" (")
+                            .color(MessageColor.POSITIVE._())
+                        .then(l.getWorld().getName())
+                            .color(MessageColor.NEUTRAL._())
+                        .then(", ")
+                            .color(MessageColor.POSITIVE._())
+                        .then(df.format(l.getX()))
+                            .color(MessageColor.NEUTRAL._())
+                        .then(", ")
+                            .color(MessageColor.POSITIVE._())
+                        .then(df.format(l.getY()))
+                            .color(MessageColor.NEUTRAL._())
+                        .then(", ")
+                            .color(MessageColor.POSITIVE._())
+                        .then(df.format(l.getZ()))
+                            .color(MessageColor.NEUTRAL._())
+                        .then(")")
+                            .color(MessageColor.POSITIVE._()), "/back " + (i + 1))
+                        .send(cs);
+                // @formatter:on
             }
             return true;
         }
