@@ -50,6 +50,7 @@ import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -228,9 +229,17 @@ public class RUtils {
     }
 
     public static void dispNoPerms(CommandSender cs, String... permissionsNeeded) {
-        final List<String> tooltip = new ArrayList<>(Arrays.asList(permissionsNeeded));
-        tooltip.add(0, "Missing permissions:");
-        new FancyMessage("You don't have permission for that!").color(MessageColor.NEGATIVE._()).tooltip(tooltip).send(cs);
+        final List<FancyMessage> tooltip = new ArrayList<>();
+        tooltip.add(new FancyMessage("Missing permissions").color(MessageColor.NEGATIVE._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+        for (final String missingPermission : permissionsNeeded)
+            tooltip.add(new FancyMessage(missingPermission).color(MessageColor.NEUTRAL._()));
+        // @formatter:off
+        new FancyMessage("You don't have permission for that!")
+                .color(MessageColor.NEGATIVE._())
+                .formattedTooltip(tooltip)
+            .send(cs);
+        // @formatter:on
+        RoyalCommands.instance.getLogger().warning(cs.getName() + " was denied access to that!");
     }
 
     /**
@@ -1444,9 +1453,10 @@ public class RUtils {
         final VaultHandler vh = RoyalCommands.instance.vh;
         if (o instanceof OfflinePlayer) {
             final OfflinePlayer op = (OfflinePlayer) o;
-            if (tooltip.size() < 1) tooltip.add(new FancyMessage("Offline Player").style(ChatColor.BOLD, ChatColor.UNDERLINE));
-            tooltip.add(new FancyMessage("Name: ").style(ChatColor.BOLD).then(op.getName()));
-            tooltip.add(new FancyMessage("Operator: ").style(ChatColor.BOLD).then(op.isOp() ? "Yes" : "No"));
+            if (tooltip.size() < 1)
+                tooltip.add(new FancyMessage("Offline Player").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            tooltip.add(new FancyMessage("Name: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.getName()).color(MessageColor.NEUTRAL._()));
+            tooltip.add(new FancyMessage("Operator: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.isOp() ? "Yes" : "No").color(MessageColor.NEUTRAL._()));
             if (vh.usingVault()) {
                 final String group = vh.getPermission().getPrimaryGroup(null, op);
                 String prefix = vh.getChat().getGroupPrefix((String) null, group);
@@ -1457,7 +1467,7 @@ public class RUtils {
                 if (suffix == null) suffix = "";
                 // TODO: Config format
                 if (!group.isEmpty()) {
-                    tooltip.add(new FancyMessage("Group: ").style(ChatColor.BOLD).then(ChatColor.translateAlternateColorCodes('&', prefix)).then(group).then(ChatColor.translateAlternateColorCodes('&', suffix)));
+                    tooltip.add(new FancyMessage("Group: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(ChatColor.translateAlternateColorCodes('&', prefix)).color(MessageColor.NEUTRAL._()).then(group).then(ChatColor.translateAlternateColorCodes('&', suffix)));
                 }
             }
         }
@@ -1465,11 +1475,12 @@ public class RUtils {
             final Player p = (Player) o;
             if (tooltip.size() > 0) { // Replace Offline Player with Player
                 tooltip.remove(0);
-                tooltip.add(0, new FancyMessage("Player").style(ChatColor.BOLD, ChatColor.UNDERLINE));
+                tooltip.add(0, new FancyMessage("Player").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
             }
         }
         if (o instanceof ConsoleCommandSender) {
-            if (tooltip.size() < 1) tooltip.add(new FancyMessage("Console").style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            if (tooltip.size() < 1)
+                tooltip.add(new FancyMessage("Console").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
         }
         return tooltip.isEmpty() ? null : tooltip;
     }
