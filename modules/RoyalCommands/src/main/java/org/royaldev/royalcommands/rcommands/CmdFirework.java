@@ -32,34 +32,29 @@ public class CmdFirework extends BaseCommand {
      */
     private FireworkMeta applyEffect(String[] args, FireworkMeta fm) throws IllegalArgumentException {
         Builder feb = FireworkEffect.builder();
-        for (String arg : args) {
-            if (arg.startsWith("fade:")) {
-                arg = arg.substring(5);
-                Color c = getColor(arg);
-                if (c == null) throw new IllegalArgumentException("Invalid fade color!");
-                feb.withFade(c);
-            } else if (arg.startsWith("power:")) {
-                arg = arg.substring(6);
-                int power = toInt(arg);
-                if (power < 0 || power > 128) throw new IllegalArgumentException("Power must be between 0 and 128!");
-                fm.setPower(power);
-            } else if (arg.startsWith("color:")) {
-                arg = arg.substring(6);
-                Color c = getColor(arg);
-                if (c == null) throw new IllegalArgumentException("Invalid color!");
-                feb.withColor(c);
-            } else if (arg.startsWith("shape:")) {
-                Type t = getShape(arg.substring(6));
-                if (t == null) throw new IllegalArgumentException("Invalid shape!");
-                feb.with(t);
-            } else if (arg.startsWith("effect:")) {
-                arg = arg.substring(7);
-                if (arg.equalsIgnoreCase("flicker") || arg.equalsIgnoreCase("sparkle") || arg.equalsIgnoreCase("twinkle"))
-                    feb.withFlicker();
-                else if (arg.equalsIgnoreCase("trail")) feb.withTrail();
-                else throw new IllegalArgumentException("Invalid effect!");
-            }
+        final CommandArguments ca = this.getCommandArguments(args);
+        for (String fadeArg : ca.getFlag("fade")) {
+            final Color c = this.getColor(fadeArg);
+            if (c == null) throw new IllegalArgumentException("Invalid fade color!");
+            feb.withFade(c);
         }
+        for (String powerArg : ca.getFlag("p", "power")) {
+            final int power = toInt(powerArg);
+            if (power < 0 || power > 128) throw new IllegalArgumentException("Power must be between 0 and 128!");
+            fm.setPower(power);
+        }
+        for (String colorArg : ca.getFlag("c", "color")) {
+            final Color c = getColor(colorArg);
+            if (c == null) throw new IllegalArgumentException("Invalid color!");
+            feb.withColor(c);
+        }
+        for (String shapeArg : ca.getFlag("s", "shape")) {
+            Type t = this.getShape(shapeArg);
+            if (t == null) throw new IllegalArgumentException("Invalid shape!");
+            feb.with(t);
+        }
+        if (ca.hasFlag("flicker", "sparkle", "twinkle")) feb.withFlicker();
+        if (ca.hasFlag("trail")) feb.withTrail();
         FireworkEffect fe;
         try {
             fe = feb.build();

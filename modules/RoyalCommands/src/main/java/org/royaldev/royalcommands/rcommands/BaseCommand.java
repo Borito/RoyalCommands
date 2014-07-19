@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import mkremins.fanciful.FancyMessage;
+import net.minecraft.util.org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,6 +20,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public abstract class BaseCommand implements CommandExecutor {
     final RoyalCommands plugin;
@@ -48,6 +53,10 @@ public abstract class BaseCommand implements CommandExecutor {
             this.handleException(cs, cmd, label, args, t);
             return true;
         }
+    }
+
+    CommandArguments getCommandArguments(String[] args) {
+        return new CommandArguments(args);
     }
 
     private String hastebin(String paste) throws IOException {
@@ -152,6 +161,82 @@ public abstract class BaseCommand implements CommandExecutor {
 
         public String getKey() {
             return this.key;
+        }
+    }
+
+    class CommandArguments extends HashMap<String, String[]> {
+
+        private String[] extraParameters = new String[0];
+
+        CommandArguments(final String[] givenArguments) {
+            this.processArguments(givenArguments);
+        }
+
+        CommandArguments(final String givenArguments) {
+            this(givenArguments.split(" "));
+        }
+
+        private boolean isFlag(String s) {
+            return s.startsWith("-") && !this.isFlagTerminator(s);
+        }
+
+        private boolean isFlagTerminator(String s) {
+            return s.equals("--");
+        }
+
+        private String getFlagName(String s) {
+            if (!this.isFlag(s)) throw new IllegalArgumentException("Not a flag.");
+            return s.substring(s.length() > 2 && s.substring(1).startsWith("-") ? 2 : 1);
+        }
+
+        String[] getExtraParameters() {
+            return this.extraParameters.clone();
+        }
+
+        String[] getFlag(String... flags) {
+            final List<String> combinedParameters = new ArrayList<>();
+            for (String flag : flags) {
+                if (!this.containsKey(flag)) continue;
+                combinedParameters.addAll(Arrays.asList(this.get(flag)));
+            }
+            return combinedParameters.toArray(new String[combinedParameters.size()]);
+        }
+
+        String getFlagString(String... flags) {
+            return RUtils.join(this.getFlag(flags), " ");
+        }
+
+        /**
+         * Checks if flags are set. Useful for boolean flags.
+         *
+         * @param flags Flags to check for
+         * @return boolean
+         */
+        boolean hasFlag(String... flags) {
+            for (final String flag : flags) {
+                if (!this.containsKey(flag)) continue;
+                return true;
+            }
+            return false;
+        }
+
+        void processArguments(String[] arguments) {
+            String currentFlag = null;
+            final List<String> parameters = new ArrayList<>();
+            final List<String> extraParameters = new ArrayList<>();
+            for (String arg : arguments) {
+                if (this.isFlag(arg) || this.isFlagTerminator(arg)) {
+                    this.put(currentFlag, parameters.toArray(new String[parameters.size()]));
+                    parameters.clear();
+                    currentFlag = this.isFlagTerminator(arg) ? null : this.getFlagName(arg);
+                    continue;
+                }
+                arg = arg.replace("\\-", "-");
+                if (currentFlag != null) parameters.add(arg);
+                else extraParameters.add(arg);
+            }
+            this.put(currentFlag, parameters.toArray(new String[parameters.size()])); // last arg can't be neglected
+            this.extraParameters = ArrayUtils.addAll(this.extraParameters, extraParameters.toArray(new String[extraParameters.size()]));
         }
     }
 }

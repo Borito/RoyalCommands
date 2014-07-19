@@ -6,13 +6,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @ReflectCommand
 public class CmdItem extends BaseCommand {
@@ -21,22 +24,46 @@ public class CmdItem extends BaseCommand {
         super(instance, name, true);
     }
 
+    static ItemStack applyMeta(ItemStack is, CommandArguments ca, CommandSender cs) {
+        final ItemMeta im = is.getItemMeta();
+        final String nameArgs = ca.getFlagString("n", "name", "displayname");
+        if (!nameArgs.isEmpty() && RoyalCommands.instance.ah.isAuthorized(cs, "rcmds.rename")) {
+            final String name = RUtils.colorize(nameArgs);
+            im.setDisplayName(name);
+        }
+        final String loreArgs = ca.getFlagString("l", "lore", "description");
+        if (!loreArgs.isEmpty() && RoyalCommands.instance.ah.isAuthorized(cs, "rcmds.lore")) {
+            final List<String> lore = new ArrayList<>();
+            for (String loreArg : loreArgs.split("(?<!\\\\)\\|")) {
+                loreArg = RUtils.colorize(loreArg.replace("\\|", "|"));
+                lore.add(loreArg);
+            }
+            im.setLore(lore);
+        }
+        // TODO: Enchantments
+        //final String[] enchantArgs = ca.getFlag("e", "enchant", "enchants", "enchantment", "enchantments");
+        is.setItemMeta(im);
+        return is;
+    }
+
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        if (args.length < 1) {
+        final CommandArguments ca = this.getCommandArguments(args);
+        final String[] eargs = ca.getExtraParameters();
+        if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Player p = (Player) cs;
-        String item = args[0];
+        final Player p = (Player) cs;
+        final String item = eargs[0];
         int amount = Config.defaultStack;
-        if (args.length == 2) {
+        if (eargs.length > 1) {
             try {
-                amount = Integer.parseInt(args[1]);
+                amount = Integer.parseInt(eargs[1]);
             } catch (Exception e) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The amount was not a number!");
                 return true;
@@ -69,6 +96,7 @@ public class CmdItem extends BaseCommand {
             this.plugin.getLogger().warning(cs.getName() + " was denied access to the command!");
             return true;
         }
+        toInv = CmdItem.applyMeta(toInv, ca, cs);
         // @formatter:off
         new FancyMessage("Giving ")
                 .color(MessageColor.POSITIVE._())

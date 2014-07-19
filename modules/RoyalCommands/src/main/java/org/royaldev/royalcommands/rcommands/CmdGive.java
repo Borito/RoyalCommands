@@ -129,6 +129,7 @@ public class CmdGive extends BaseCommand {
             this.plugin.getLogger().warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
             return true;
         }
+        toInv = CmdItem.applyMeta(toInv, ca, cs);
         if (Config.itemSpawnTag) toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));
         HashMap<Integer, ItemStack> left = target.getInventory().addItem(toInv);
         if (!left.isEmpty() && Config.dropExtras) {
