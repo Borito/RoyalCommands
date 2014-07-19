@@ -10,6 +10,8 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
+// TODO: Mute message (-m)
+
 @ReflectCommand
 public class CmdMute extends BaseCommand {
 

@@ -189,6 +189,7 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void commandSpy(PlayerCommandPreprocessEvent e) {
+        // TODO: Clickable
         if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.exempt.commandspy")) return;
         final PluginCommand pc = plugin.getServer().getPluginCommand(e.getMessage().split(" ")[0].substring(1));
         if (pc != null) {

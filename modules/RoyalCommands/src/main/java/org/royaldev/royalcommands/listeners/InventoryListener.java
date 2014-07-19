@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+// TODO: Inventory custom titles (offline & ender)
+
 public class InventoryListener implements Listener {
 
     private final RoyalCommands plugin;
