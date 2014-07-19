@@ -121,7 +121,7 @@ public class CmdSelectiveClearInventory extends BaseCommand {
             }
             if (Config.blockedItems.contains(iblock.toString()) && !this.ah.isAuthorized(cs, "rcmds.allowed.item") && !this.ah.isAuthorized(cs, "rcmds.allowed.item." + iblock.toString())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+                this.plugin.getLogger().warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             ItemStack toInv;

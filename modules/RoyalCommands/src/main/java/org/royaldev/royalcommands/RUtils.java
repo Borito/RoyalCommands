@@ -54,7 +54,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
@@ -105,7 +104,6 @@ public class RUtils {
 
     private final static Map<String, Integer> teleRunners = new HashMap<>();
     private final static List<String> teleAllowed = new ArrayList<>();
-    private final static Logger log = Logger.getLogger("Minecraft");
 
     /**
      * Wraps text to fit evenly in the chat box
@@ -249,7 +247,7 @@ public class RUtils {
      */
     public static void dispNoPerms(CommandSender cs) {
         cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
-        log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
+        RoyalCommands.instance.getLogger().warning(cs.getName() + " was denied access to that!");
     }
 
     /**
@@ -260,7 +258,7 @@ public class RUtils {
      */
     public static void dispNoPerms(CommandSender cs, String message) {
         cs.sendMessage(message);
-        log.warning("[RoyalCommands] " + cs.getName() + " was denied access to that!");
+        RoyalCommands.instance.getLogger().warning(cs.getName() + " was denied access to that!");
     }
 
     public static void dispNoPerms(CommandSender cs, String... permissionsNeeded) {

@@ -303,7 +303,7 @@ public class RoyalCommandsPlayerListener implements Listener {
                 howLong = " for " + MessageColor.NEUTRAL + RUtils.formatDateDiff(muteTime + mutedAt).substring(1) + MessageColor.NEGATIVE;
             }
             p.sendMessage(MessageColor.NEGATIVE + "You are muted and cannot speak" + howLong + ".");
-            plugin.log.info("[RoyalCommands] " + p.getName() + " is muted but tried to say \"" + event.getMessage() + "\"");
+            plugin.getLogger().info(p.getName() + " is muted but tried to say \"" + event.getMessage() + "\"");
             event.setFormat("");
             event.setCancelled(true);
         }

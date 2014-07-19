@@ -75,7 +75,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,17 +92,10 @@ public class RoyalCommands extends JavaPlugin {
 
     public static RoyalCommands instance;
     public static MultiverseCore mvc = null;
-    public final Logger log = Logger.getLogger("Minecraft");
     public final AuthorizationHandler ah = new AuthorizationHandler(this);
     public final VaultHandler vh = new VaultHandler(this);
     private final int minVersion = 2645;
-    private final RoyalCommandsPlayerListener playerListener = new RoyalCommandsPlayerListener(this);
-    private final RoyalCommandsBlockListener blockListener = new RoyalCommandsBlockListener(this);
-    private final RoyalCommandsEntityListener entityListener = new RoyalCommandsEntityListener(this);
 
-    private final SignListener signListener = new SignListener(this);
-    private final MonitorListener monitorListener = new MonitorListener(this);
-    private final ServerListener serverListener = new ServerListener(this);
     private final Pattern versionPattern = Pattern.compile("((\\d+\\.?){3})(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
     public ConfManager whl;
     public String version = null;
@@ -314,7 +306,7 @@ public class RoyalCommands extends JavaPlugin {
         Pattern p = Pattern.compile(".+b(\\d+)jnks.+");
         Matcher m = p.matcher(getServer().getVersion());
         if (!m.matches() || m.groupCount() < 1) {
-            this.log.warning("[RoyalCommands] Could not get CraftBukkit version! No version checking will take place.");
+            this.getLogger().warning("Could not get CraftBukkit version! No version checking will take place.");
             return true;
         }
         Integer currentVersion = RUtils.getInt(m.group(1));
@@ -335,10 +327,10 @@ public class RoyalCommands extends JavaPlugin {
         if (!file.exists()) {
             try {
                 boolean success = file.mkdir();
-                if (success) this.log.info("[RoyalCommands] Created userdata directory.");
+                if (success) this.getLogger().info("Created userdata directory.");
             } catch (Exception e) {
-                this.log.severe("[RoyalCommands] Failed to make userdata directory!");
-                this.log.severe(e.getMessage());
+                this.getLogger().severe("Failed to make userdata directory!");
+                this.getLogger().severe(e.getMessage());
             }
         }
     }
@@ -363,11 +355,11 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- ProtocolLib --//
 
-        if (pl != null) pl.uninitialize();
+        if (this.pl != null) this.pl.uninitialize();
 
         //-- We're done! --//
 
-        log.info("[RoyalCommands] RoyalCommands v" + version + " disabled.");
+        this.getLogger().info("[RoyalCommands] RoyalCommands v" + this.version + " disabled.");
     }
 
     @Override
@@ -398,27 +390,27 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Get help --//
 
-        h = new Help(this);
+        this.h = new Help(this);
 
         //-- Get configs --//
 
         this.loadConfiguration();
-        c = new Config(this);
-        c.reloadConfiguration();
+        this.c = new Config(this);
+        this.c.reloadConfiguration();
 
         //-- Check CB version --//
 
         if (!versionCheck()) {
-            log.severe("[RoyalCommands] This version of CraftBukkit is too old to run RoyalCommands!");
-            log.severe("[RoyalCommands] This version of RoyalCommands needs at least CraftBukkit " + minVersion + ".");
-            log.severe("[RoyalCommands] Disabling plugin. You can turn this check off in the config.");
-            this.setEnabled(false);
+            this.getLogger().severe("[RoyalCommands] This version of CraftBukkit is too old to run RoyalCommands!");
+            this.getLogger().severe("[RoyalCommands] This version of RoyalCommands needs at least CraftBukkit " + this.minVersion + ".");
+            this.getLogger().severe("[RoyalCommands] Disabling plugin. You can turn this check off in the config.");
+            this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
         //-- Set up Vault --//
 
-        vh.setUpVault();
+        this.vh.setUpVault();
 
         //-- Update old userdata --//
         if (Config.updateOldUserdata) this.update();
@@ -429,38 +421,38 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Get dependencies --//
 
-        vp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
-        wg = (WorldGuardPlugin) getServer().getPluginManager().getPlugin("WorldGuard");
-        lwc = (LWCPlugin) getServer().getPluginManager().getPlugin("LWC");
-        mvc = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
-        TagAPI ta = (TagAPI) getServer().getPluginManager().getPlugin("TagAPI");
+        this.vp = (VanishPlugin) this.getServer().getPluginManager().getPlugin("VanishNoPacket");
+        this.wg = (WorldGuardPlugin) this.getServer().getPluginManager().getPlugin("WorldGuard");
+        this.lwc = (LWCPlugin) this.getServer().getPluginManager().getPlugin("LWC");
+        RoyalCommands.mvc = (MultiverseCore) this.getServer().getPluginManager().getPlugin("Multiverse-Core");
+        final TagAPI ta = (TagAPI) this.getServer().getPluginManager().getPlugin("TagAPI");
 
         //-- Register events --//
 
-        final PluginManager pm = getServer().getPluginManager();
+        final PluginManager pm = this.getServer().getPluginManager();
 
-        pm.registerEvents(playerListener, this);
-        pm.registerEvents(entityListener, this);
-        pm.registerEvents(blockListener, this);
-        pm.registerEvents(signListener, this);
-        pm.registerEvents(monitorListener, this);
-        pm.registerEvents(serverListener, this);
+        pm.registerEvents(new RoyalCommandsPlayerListener(this), this);
+        pm.registerEvents(new RoyalCommandsEntityListener(this), this);
+        pm.registerEvents(new RoyalCommandsBlockListener(this), this);
+        pm.registerEvents(new SignListener(this), this);
+        pm.registerEvents(new MonitorListener(this), this);
+        pm.registerEvents(new ServerListener(this), this);
         pm.registerEvents(new ItemListener(this), this);
         pm.registerEvents(new BackpackListener(), this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(), this);
 
         //-- ProtocolLib things --//
 
-        final Plugin plPlugin = getServer().getPluginManager().getPlugin("ProtocolLib");
+        final Plugin plPlugin = this.getServer().getPluginManager().getPlugin("ProtocolLib");
         if (Config.useProtocolLib && plPlugin != null && plPlugin.isEnabled()) {
-            pl = new ProtocolListener(this);
-            pl.initialize();
+            this.pl = new ProtocolListener(this);
+            this.pl.initialize();
         }
 
         //-- Register commands --//
 
-        for (String command : this.getCommands().getValues(false).keySet()) {
-            final ConfigurationSection ci = getCommandInfo(command);
+        for (final String command : this.getCommands().getValues(false).keySet()) {
+            final ConfigurationSection ci = this.getCommandInfo(command);
             if (ci == null) continue;
             final String className = ci.getString("class");
             if (className == null) continue;
@@ -478,7 +470,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Make the API --//
 
-        api = new RApiMain();
+        this.api = new RApiMain();
 
         //-- Convert old backpacks --//
 
@@ -486,7 +478,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- We're done! --//
 
-        log.info("[RoyalCommands] RoyalCommands v" + version + " initiated.");
+        this.getLogger().info("[RoyalCommands] RoyalCommands v" + this.version + " initiated.");
     }
 
     private void initializeConfManagers() {
@@ -605,7 +597,7 @@ public class RoyalCommands extends JavaPlugin {
     private class BackpackConverter implements Listener {
         @EventHandler
         public void onJoin(PlayerJoinEvent e) {
-            Player p = e.getPlayer();
+            final Player p = e.getPlayer();
             final PConfManager pcm = PConfManager.getPConfManager(p);
             if (!pcm.isSet("backpack.item")) return;
             if (!pcm.exists()) pcm.createFile();
@@ -614,7 +606,7 @@ public class RoyalCommands extends JavaPlugin {
             if (invSize % 9 != 0) invSize = 36;
             final Inventory i = Bukkit.createInventory(p, invSize, "Backpack");
             for (int slot = 0; slot < invSize; slot++) {
-                ItemStack is = pcm.getItemStack("backpack.item." + slot);
+                final ItemStack is = pcm.getItemStack("backpack.item." + slot);
                 if (is == null) continue;
                 i.setItem(slot, is);
             }

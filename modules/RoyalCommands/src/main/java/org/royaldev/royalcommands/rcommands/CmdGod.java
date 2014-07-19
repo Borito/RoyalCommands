@@ -41,7 +41,7 @@ public class CmdGod extends BaseCommand {
         if (args.length > 0) {
             if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+                this.plugin.getLogger().warning(cs.getName() + " was denied access to the command!");
                 return true;
             }
             Player t = plugin.getServer().getPlayer(args[0]);

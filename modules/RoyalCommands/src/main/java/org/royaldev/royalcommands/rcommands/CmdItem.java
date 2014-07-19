@@ -66,7 +66,7 @@ public class CmdItem extends BaseCommand {
         }
         if (Config.blockedItems.contains(m.name()) && !this.ah.isAuthorized(cs, "rcmds.allowed.item." + m.name())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to spawn that item!");
-            plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+            this.plugin.getLogger().warning(cs.getName() + " was denied access to the command!");
             return true;
         }
         // @formatter:off

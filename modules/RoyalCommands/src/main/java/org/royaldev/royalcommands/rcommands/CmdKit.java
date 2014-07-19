@@ -61,7 +61,7 @@ public class CmdKit extends BaseCommand {
             if (lore == null) lore = new ArrayList<>();
             if (Config.kitPerms && !this.ah.isAuthorized(cs, "rcmds.kit." + kitname)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that kit!");
-                plugin.log.warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
+                this.plugin.getLogger().warning("[RoyalCommands] " + cs.getName() + " was denied access to the command!");
                 return true;
             }
             if (pcm.isSet("kits.list." + kitname + ".cooldown") && pcm.getLong("kits.list." + kitname + ".cooldown") < 0D) {

@@ -38,7 +38,7 @@ public class CmdSpeak extends BaseCommand {
             return true;
         }
         t.chat(RoyalCommands.getFinalArg(args, 1));
-        plugin.log.info(cs.getName() + " has spoofed a message from " + t.getName() + "!");
+        this.plugin.getLogger().info(cs.getName() + " has spoofed a message from " + t.getName() + "!");
         return true;
     }
 }
