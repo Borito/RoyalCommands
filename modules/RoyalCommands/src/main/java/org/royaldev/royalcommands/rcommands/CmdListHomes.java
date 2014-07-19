@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,6 +12,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
+import java.util.Iterator;
 import java.util.Map;
 
 @ReflectCommand
@@ -40,7 +42,7 @@ public class CmdListHomes extends BaseCommand {
             }
         }
 
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        final PConfManager pcm = PConfManager.getPConfManager(t);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
             return true;
@@ -55,19 +57,19 @@ public class CmdListHomes extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "No homes found!");
             return true;
         }
-        StringBuilder homes = new StringBuilder();
-        for (String home : opts.keySet()) {
-            homes.append(MessageColor.NEUTRAL);
-            homes.append(home);
-            homes.append(MessageColor.RESET);
-            homes.append(", ");
+        final FancyMessage fm = new FancyMessage("");
+        final Iterator<String> homes = opts.keySet().iterator();
+        while (homes.hasNext()) {
+            final String home = homes.next();
+            fm.then(home).color(MessageColor.NEUTRAL._()).command("/home " + home);
+            if (homes.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
         }
-        if (cs instanceof Player && (cs.getName().equalsIgnoreCase(t.getName()))) {
+        if (cs instanceof Player && cs.getName().equalsIgnoreCase(t.getName())) {
             final Player p = (Player) cs;
             final int homeLimit = RUtils.getHomeLimit(p);
             cs.sendMessage(MessageColor.POSITIVE + "Homes (" + MessageColor.NEUTRAL + RUtils.getCurrentHomes(p) + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + ((homeLimit < 0) ? "Unlimited" : homeLimit) + MessageColor.POSITIVE + "):");
         } else cs.sendMessage(MessageColor.POSITIVE + "Homes:");
-        cs.sendMessage(homes.substring(0, homes.length() - 4));
+        fm.send(cs);
         return true;
     }
 }
