@@ -1140,7 +1140,7 @@ reflectcommands:
     usage: /<command>
     aliases: [rcmds]
     version_added: Pre-0.2.7
-    class: CmdRcmds
+    class: CmdRoyalCommands
 
 permissions:
   rcmds.accountstatus:
