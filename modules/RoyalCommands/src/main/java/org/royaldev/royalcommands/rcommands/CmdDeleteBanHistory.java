@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
@@ -23,17 +24,15 @@ public class CmdDeleteBanHistory extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer op = this.plugin.getServer().getPlayer(args[0]);
-        if (op == null) op = this.plugin.getServer().getOfflinePlayer(args[0]);
-        PConfManager pcm = PConfManager.getPConfManager(op);
+        final OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
+        final PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
             return true;
         }
-        int banToRemove;
+        final int banToRemove;
         try {
-            banToRemove = Integer.parseInt(args[1]);
-            banToRemove--;
+            banToRemove = Integer.parseInt(args[1]) - 1;
         } catch (NumberFormatException e) {
             cs.sendMessage(MessageColor.NEGATIVE + "The ban number given was invalid!");
             return true;

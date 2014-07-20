@@ -11,20 +11,20 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 @ReflectCommand
-public class CmdHome extends BaseCommand {
+public class CmdHome extends CACommand {
 
     public CmdHome(final RoyalCommands instance, final String name) {
         super(instance, name, true);
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
         final Player p = (Player) cs;
-        String homeName = (args.length < 1) ? "home" : args[0];
+        String homeName = (eargs.length < 1) ? "home" : eargs[0];
         String homeOwner = cs.getName();
         if (homeName.contains(":")) {
             String[] split = homeName.split(":");
@@ -39,7 +39,14 @@ public class CmdHome extends BaseCommand {
             homeOwner = split[0];
             homeName = split[1];
         }
-        final PConfManager pcm = PConfManager.getPConfManager(this.plugin.getServer().getOfflinePlayer(homeOwner));
+        if (ca.hasContentFlag("p", "player")) {
+            homeOwner = ca.getFlagString("p", "player");
+            if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS) && !homeOwner.equalsIgnoreCase(cs.getName())) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to use other players' homes.");
+                return true;
+            }
+        }
+        final PConfManager pcm = PConfManager.getPConfManager(RUtils.getOfflinePlayer(homeOwner));
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such player exists!");
             return true;
