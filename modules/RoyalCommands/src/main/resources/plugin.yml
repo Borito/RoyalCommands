@@ -1568,7 +1568,7 @@ permissions:
     default: op
     description: Allows you to check the rank of a player.
   rcmds.royalcommands:
-    command: rcmds
+    command: royalcommands
     default: op
     description: Allows you to reload RoyalCommands' config.
   rcmds.realname:
