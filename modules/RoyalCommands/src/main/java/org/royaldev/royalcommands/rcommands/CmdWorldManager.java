@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.Random;
 
 @ReflectCommand
-public class CmdWorldManager extends BaseCommand {
+public class CmdWorldManager extends CACommand {
 
     private final Random r = new Random();
 
@@ -25,8 +25,8 @@ public class CmdWorldManager extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (args.length < 1) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+        if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
@@ -34,21 +34,32 @@ public class CmdWorldManager extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "WorldManager is disabled!");
             return true;
         }
-        String command = args[0].toLowerCase();
+        final String command = eargs[0].toLowerCase();
         switch (command) {
             case "create": {
-                if (args.length < 4) {
+                if (!ca.hasFlag("n", "name") || !ca.hasFlag("t", "type") || !ca.hasFlag("e", "env", "environment")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
                     return true;
                 }
-                String name = args[1];
+                final String name = ca.getFlagString("n", "name");
+                final WorldType type = WorldType.getByName(ca.getFlagString("t", "type"));
+                final Environment we;
+                try {
+                    we = Environment.valueOf(ca.getFlagString("e", "env", "environment").toUpperCase());
+                } catch (IllegalArgumentException ex) {
+                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid environment!");
+                    String types = "";
+                    for (Environment t : Environment.values())
+                        types = (types.equals("")) ? types.concat(MessageColor.NEUTRAL + t.name() + MessageColor.RESET) : types.concat(", " + MessageColor.NEUTRAL + t.name() + MessageColor.RESET);
+                    cs.sendMessage(types);
+                    return true;
+                }
                 for (World w : plugin.getServer().getWorlds()) {
                     if (w.getName().equals(name)) {
                         cs.sendMessage(MessageColor.NEGATIVE + "A world with that name already exists!");
                         return true;
                     }
                 }
-                WorldType type = WorldType.getByName(args[2].toUpperCase());
                 if (type == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Invalid world type!");
                     String types = "";
@@ -57,33 +68,24 @@ public class CmdWorldManager extends BaseCommand {
                     cs.sendMessage(types);
                     return true;
                 }
-                Environment we;
-                try {
-                    we = Environment.valueOf(args[3].toUpperCase());
-                } catch (Exception e) {
-                    cs.sendMessage(MessageColor.NEGATIVE + "Invalid environment!");
-                    String types = "";
-                    for (Environment t : Environment.values())
-                        types = (types.equals("")) ? types.concat(MessageColor.NEUTRAL + t.name() + MessageColor.RESET) : types.concat(", " + MessageColor.NEUTRAL + t.name() + MessageColor.RESET);
-                    cs.sendMessage(types);
-                    return true;
-                }
                 cs.sendMessage(MessageColor.POSITIVE + "Creating world...");
                 WorldCreator wc = new WorldCreator(name);
                 wc = wc.type(type);
                 wc = wc.environment(we);
-                if (args.length > 4) {
+                if (ca.hasFlag("s", "seed")) {
+                    final String seedString = ca.getFlagString("s", "seed");
                     long seed;
                     try {
-                        seed = Long.valueOf(args[4]);
+                        seed = Long.valueOf(seedString);
                     } catch (Exception e) {
-                        seed = args[4].hashCode();
+                        seed = seedString.hashCode();
                     }
                     wc = wc.seed(seed);
                 } else wc = wc.seed(r.nextLong());
-                if (args.length > 5) {
-                    wc = wc.generator(args[5]);
-                    RoyalCommands.wm.getConfig().set("worlds." + name + ".generator", args[5]);
+                if (ca.hasFlag("g", "gen", "generator")) {
+                    final String generator = ca.getFlagString("g", "gen", "generator");
+                    wc = wc.generator(generator);
+                    RoyalCommands.wm.getConfig().set("worlds." + name + ".generator", generator);
                 }
                 World w = wc.createWorld();
                 w.save();
@@ -91,36 +93,36 @@ public class CmdWorldManager extends BaseCommand {
                 return true;
             }
             case "unload": {
-                if (args.length < 2) {
+                if (!ca.hasFlag("n", "name")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
                     return true;
                 }
-                World w = plugin.getServer().getWorld(args[1]);
+                final boolean eject = ca.hasFlag("e", "eject");
+                final World w = plugin.getServer().getWorld(ca.getFlagString("n", "name"));
                 if (w == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                     return true;
                 }
                 cs.sendMessage(MessageColor.POSITIVE + "Unloading world...");
-                if (args.length > 2 && Boolean.getBoolean(args[2].toLowerCase())) for (Player p : w.getPlayers())
-                    p.kickPlayer("Your world is being unloaded!");
-                boolean success = plugin.getServer().unloadWorld(w, true);
+                if (eject) for (Player p : w.getPlayers()) p.kickPlayer("Your world is being unloaded!");
+                final boolean success = plugin.getServer().unloadWorld(w, true);
                 if (success) cs.sendMessage(MessageColor.POSITIVE + "World unloaded successfully!");
                 else cs.sendMessage(MessageColor.NEGATIVE + "Could not unload that world.");
                 return true;
             }
             case "delete": {
-                if (args.length < 2) {
+                if (!ca.hasFlag("n", "name")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
                     return true;
                 }
-                World w = plugin.getServer().getWorld(args[1]);
+                final World w = plugin.getServer().getWorld(ca.getFlagString("n", "name"));
                 if (w == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                     return true;
                 }
                 cs.sendMessage(MessageColor.POSITIVE + "Unloading world...");
-                if (args.length > 2 && args[2].equalsIgnoreCase("true")) for (Player p : w.getPlayers())
-                    p.kickPlayer("Your world is being unloaded!");
+                final boolean eject = ca.hasFlag("e", "eject");
+                if (eject) for (Player p : w.getPlayers()) p.kickPlayer("Your world is being unloaded!");
                 boolean success = plugin.getServer().unloadWorld(w, true);
                 if (success) cs.sendMessage(MessageColor.POSITIVE + "World unloaded successfully!");
                 else {
@@ -143,20 +145,22 @@ public class CmdWorldManager extends BaseCommand {
             case "help":
                 cs.sendMessage(MessageColor.POSITIVE + "RoyalCommands WorldManager Help");
                 cs.sendMessage(MessageColor.POSITIVE + "===============================");
-                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " create [name] [type] [environment] (seed) (generator)" + MessageColor.POSITIVE + " - Creates a new world.");
-                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " load [name]" + MessageColor.POSITIVE + " - Loads a world.");
-                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " unload [name] (true)" + MessageColor.POSITIVE + " - Unloads a world. If true is specified, will kick all players on the world.");
-                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " delete [name] (true)" + MessageColor.POSITIVE + " - Unloads and deletes a world. If true is specified, will kick all players on the world.");
-                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " info" + MessageColor.POSITIVE + " - Displays available world types and environments; if you are a player, displays information about your world.");
-                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.POSITIVE + " - Displays this help.");
-                cs.sendMessage("* " + MessageColor.NEUTRAL + "/" + label + " list" + MessageColor.POSITIVE + " - Lists all the loaded worlds.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "/" + label + " create -[n,name] [name] -[t,type] [type] -[e,env,environment] [environment] -(s,seed) (seed) -(g,gen,generator) (generator)" + MessageColor.POSITIVE + " - Creates a new world.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "/" + label + " load -[n,name] [name]" + MessageColor.POSITIVE + " - Loads a world.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "/" + label + " unload -[n,name] [name] -(e,eject)" + MessageColor.POSITIVE + " - Unloads a world. If true is specified, will kick all players on the world.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "/" + label + " delete -[n,name] [name] -(e,eject)" + MessageColor.POSITIVE + " - Unloads and deletes a world. If true is specified, will kick all players on the world.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "/" + label + " teleport -[n,name] [name]" + MessageColor.POSITIVE + " - Teleports to a world.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "/" + label + " who" + MessageColor.POSITIVE + " - Displays who is in all loaded worlds.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "/" + label + " info" + MessageColor.POSITIVE + " - Displays available world types and environments; if you are a player, displays information about your world.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.POSITIVE + " - Displays this help.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "/" + label + " list" + MessageColor.POSITIVE + " - Lists all the loaded worlds.");
                 return true;
             case "load": {
-                if (args.length < 2) {
+                if (!ca.hasFlag("n", "name")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
                     return true;
                 }
-                String name = args[1];
+                final String name = ca.getFlagString("n", "name");
                 boolean contains = false;
                 File[] fs = plugin.getServer().getWorldContainer().listFiles();
                 if (fs == null) {
@@ -208,12 +212,12 @@ public class CmdWorldManager extends BaseCommand {
                     cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                     return true;
                 }
-                if (args.length < 2) {
+                if (!ca.hasFlag("n", "name")) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
                     return true;
                 }
                 Player p = (Player) cs;
-                String world = args[1];
+                final String world = ca.getFlagString("n", "name");
                 World w = plugin.getServer().getWorld(world);
                 if (w == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That world does not exist!");
