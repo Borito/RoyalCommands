@@ -15,7 +15,7 @@ import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import java.util.HashMap;
 
 @ReflectCommand
-public class CmdGive extends BaseCommand {
+public class CmdGive extends CACommand {
 
     public CmdGive(final RoyalCommands instance, final String name) {
         super(instance, name, true);
@@ -83,9 +83,7 @@ public class CmdGive extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        final CommandArguments ca = this.getCommandArguments(args);
-        final String[] eargs = ca.getExtraParameters();
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
         if (eargs.length < 2) {
             cs.sendMessage(cmd.getDescription());
             return false;

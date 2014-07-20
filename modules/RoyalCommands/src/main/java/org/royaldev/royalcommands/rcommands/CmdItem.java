@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @ReflectCommand
-public class CmdItem extends BaseCommand {
+public class CmdItem extends CACommand {
 
     public CmdItem(final RoyalCommands instance, final String name) {
         super(instance, name, true);
@@ -47,13 +47,11 @@ public class CmdItem extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        final CommandArguments ca = this.getCommandArguments(args);
-        final String[] eargs = ca.getExtraParameters();
         if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

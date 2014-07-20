@@ -1,7 +1,5 @@
 package org.royaldev.royalcommands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Test;
@@ -44,7 +42,6 @@ public class TestCommands {
         for (final Class<?> clazz : classes) {
             if (!clazz.getSimpleName().startsWith("Cmd")) continue; // not a command, so ignore
             assertTrue(clazz.getName() + " is not annotated with ReflectCommand!", clazz.isAnnotationPresent(ReflectCommand.class));
-            clazz.getDeclaredMethod("runCommand", CommandSender.class, Command.class, String.class, String[].class);
         }
     }
 
