@@ -27,10 +27,21 @@ import java.util.List;
 
 public abstract class BaseCommand implements CommandExecutor {
     final RoyalCommands plugin;
+    /**
+     * The AuthorizationHandler for this command. This is essentially an alias of this.plugin.ah.
+     */
     final AuthorizationHandler ah;
     private final String name;
     private final boolean checkPermissions;
 
+    /**
+     * Constructs a BaseCommand. This command has some backend utilities to help speed up command development and make
+     * usage better overall.
+     *
+     * @param instance         The instance of RoyalCommands that this command is being registered with
+     * @param name             The name of this command
+     * @param checkPermissions Whether to check permissions using the auto-generated permission
+     */
     public BaseCommand(final RoyalCommands instance, final String name, final boolean checkPermissions) {
         this.plugin = instance;
         this.ah = this.plugin.ah;
@@ -38,8 +49,34 @@ public abstract class BaseCommand implements CommandExecutor {
         this.checkPermissions = checkPermissions;
     }
 
+    /**
+     * The body of the command to be run. Depending on the constructor
+     * ({@link #BaseCommand(org.royaldev.royalcommands.RoyalCommands, String, boolean)}), permissions will have already
+     * been checked. The command name matching the name of this command is already checked. All unhandled exceptions
+     * will be caught and displayed to the user in a friendly format.
+     *
+     * @param cs    The CommandSender using the command
+     * @param cmd   The Command being used
+     * @param label The label of the command (alias)
+     * @param args  The arguments passed to the command
+     * @return true to not display usage, false to display usage (essentially)
+     */
     abstract boolean runCommand(CommandSender cs, Command cmd, String label, String[] args);
 
+    /**
+     * The real onCommand that will be called by Bukkit. This checks for the command name to match, permissions if
+     * specified, and runs the
+     * {@link #runCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[])} method. If
+     * any exception is unhandled in that method, it will be handled and displayed to the user in a friendly format.
+     * <p/>
+     * Due to the nature of this class, this method cannot be overridden.
+     *
+     * @param cs    The CommandSender using the command
+     * @param cmd   The Command being used
+     * @param label The label of the command (alias)
+     * @param args  The arguments passed to the command
+     * @return true to not display usage, false to display usage (essentially)
+     */
     @Override
     public final boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (!cmd.getName().equalsIgnoreCase(this.name)) return false;
@@ -55,10 +92,24 @@ public abstract class BaseCommand implements CommandExecutor {
         }
     }
 
+    /**
+     * Gets the CommandArguments from the given arguments. This allows for flags to be used.
+     *
+     * @param args Arguments to generate CommandArguments from
+     * @return CommandArguments
+     * @see org.royaldev.royalcommands.rcommands.CACommand
+     */
     CommandArguments getCommandArguments(String[] args) {
         return new CommandArguments(args);
     }
 
+    /**
+     * Gets a link to a Hastebin paste with the given content.
+     *
+     * @param paste Content to paste
+     * @return Link to Hastebin paste with the given content
+     * @throws IOException Upon any issue
+     */
     private String hastebin(String paste) throws IOException {
         final URL obj = new URL("http://hastebin.com/documents");
         final HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -77,6 +128,12 @@ public abstract class BaseCommand implements CommandExecutor {
         return "http://hastebin.com/" + hd.getKey() + ".txt";
     }
 
+    /**
+     * Schedules a thread-safe implementation of {@link #hastebin(String)}.
+     *
+     * @param cs    CommandSender to send the generated link to
+     * @param paste Content to paste
+     */
     private void scheduleHastebin(final CommandSender cs, final String paste) {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
             @Override
@@ -114,6 +171,16 @@ public abstract class BaseCommand implements CommandExecutor {
         });
     }
 
+    /**
+     * Handles an exception. Generates a useful debug paste and sends it to the user if enabled. Also prints the stack
+     * trace to the console and tells the user that an exception occurred.
+     *
+     * @param cs    The CommandSender using the command
+     * @param cmd   The Command being used
+     * @param label The label of the command (alias)
+     * @param args  The arguments passed to the command
+     * @param t     The exception thrown
+     */
     private void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t) {
         new FancyMessage("An exception occurred while processing that command.").color(MessageColor.NEGATIVE._()).send(cs);
         t.printStackTrace();
@@ -163,6 +230,9 @@ public abstract class BaseCommand implements CommandExecutor {
         }
     }
 
+    /**
+     * A class that contains flags and their parameters, along with extra parameters.
+     */
     class CommandArguments extends HashMap<String, String[]> {
 
         private String[] extraParameters = new String[0];
@@ -175,23 +245,52 @@ public abstract class BaseCommand implements CommandExecutor {
             this(givenArguments.split(" "));
         }
 
+        /**
+         * Gets if this argument is a flag. This will not match the flag terminator.
+         *
+         * @param s Argument
+         * @return If the argument is a flag
+         */
         private boolean isFlag(String s) {
             return s.startsWith("-") && !this.isFlagTerminator(s);
         }
 
+        /**
+         * Gets if the argument is the flag terminator. In this implementation, this can occur multiple times.
+         *
+         * @param s Argument
+         * @return If the argument is the flag terminator
+         */
         private boolean isFlagTerminator(String s) {
             return s.equals("--");
         }
 
+        /**
+         * Gets the name of the given flag. This strips the beginning hyphen or double-hyphen.
+         *
+         * @param s Flag
+         * @return Flag name
+         */
         private String getFlagName(String s) {
             if (!this.isFlag(s)) throw new IllegalArgumentException("Not a flag.");
             return s.substring(s.length() > 2 && s.substring(1).startsWith("-") ? 2 : 1);
         }
 
+        /**
+         * Gets any parameters that did not belong to a flag.
+         *
+         * @return Extra parameters
+         */
         String[] getExtraParameters() {
             return this.extraParameters.clone();
         }
 
+        /**
+         * Gets any parameters that belonged to the given flags.
+         *
+         * @param flags Flags to get parameters for
+         * @return Parameters
+         */
         String[] getFlag(String... flags) {
             final List<String> combinedParameters = new ArrayList<>();
             for (String flag : flags) {
@@ -201,6 +300,12 @@ public abstract class BaseCommand implements CommandExecutor {
             return combinedParameters.toArray(new String[combinedParameters.size()]);
         }
 
+        /**
+         * Gets the result of {@link #getFlag(String...)} joined by a space.
+         *
+         * @param flags Flags to get parameters for
+         * @return Space-joined string of {@link #getFlag(String...)}
+         */
         String getFlagString(String... flags) {
             return RUtils.join(this.getFlag(flags), " ");
         }
@@ -219,6 +324,27 @@ public abstract class BaseCommand implements CommandExecutor {
             return false;
         }
 
+        /**
+         * The same as {@link #hasFlag(String...)}, except that it checks if the result of
+         * {@link #getFlagString(String...)} is not empty.
+         *
+         * @param flags Flags to check for
+         * @return boolean
+         */
+        boolean hasContentFlag(String... flags) {
+            for (final String flag : flags) {
+                if (!this.containsKey(flag)) continue;
+                if (this.getFlagString(flag).trim().isEmpty()) continue;
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Processes additional arguments for this instance.
+         *
+         * @param arguments Arguments to process
+         */
         void processArguments(String[] arguments) {
             String currentFlag = null;
             final List<String> parameters = new ArrayList<>();
