@@ -129,7 +129,7 @@ public class CmdAttributes extends BaseCommand {
         }
 
         private AttributeType getAttributeType() {
-            return at;
+            return this.at;
         }
     }
 }

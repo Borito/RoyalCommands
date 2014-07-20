@@ -40,16 +40,16 @@ public class CmdFurnace extends BaseCommand {
                     return true;
                 }
                 Furnace f = (Furnace) RUtils.getTarget(p).getState();
-                furnacedb.put(p.getUniqueId(), f);
+                this.furnacedb.put(p.getUniqueId(), f);
                 cs.sendMessage(MessageColor.POSITIVE + "Furnace set.");
                 return true;
             }
             case "show": {
-                if (!furnacedb.containsKey(p.getUniqueId())) {
+                if (!this.furnacedb.containsKey(p.getUniqueId())) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You must first set a furnace!");
                     return true;
                 }
-                Furnace f = furnacedb.get(p.getUniqueId());
+                Furnace f = this.furnacedb.get(p.getUniqueId());
                 if (!(f.getBlock().getState() instanceof Furnace)) {
                     cs.sendMessage(MessageColor.NEGATIVE + "The furnace is no longer there!");
                     return true;

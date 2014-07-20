@@ -136,8 +136,8 @@ public class CmdRecipe extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "Could not schedule task!");
             return true;
         }
-        CmdRecipe.this.cancelTask(p);
-        CmdRecipe.this.tasks.put(p.getName(), taskID);
+        this.cancelTask(p);
+        this.tasks.put(p.getName(), taskID);
         return true;
     }
 

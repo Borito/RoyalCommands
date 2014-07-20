@@ -25,7 +25,7 @@ public class CmdMuteAll extends BaseCommand {
                 if (p == cs) continue;
             }
             PConfManager pcm = PConfManager.getPConfManager(p);
-            if (!allMuted) {
+            if (!this.allMuted) {
                 pcm.set("muted", true);
                 p.sendMessage(MessageColor.NEGATIVE + "You have been muted!");
             } else {
@@ -33,12 +33,12 @@ public class CmdMuteAll extends BaseCommand {
                 p.sendMessage(MessageColor.POSITIVE + "You have been unmuted!");
             }
         }
-        if (!allMuted) {
+        if (!this.allMuted) {
             cs.sendMessage(MessageColor.POSITIVE + "You have muted all players.");
-            allMuted = true;
+            this.allMuted = true;
         } else {
             cs.sendMessage(MessageColor.POSITIVE + "You have unmuted all players.");
-            allMuted = false;
+            this.allMuted = false;
         }
         return true;
     }

@@ -81,7 +81,7 @@ public class CmdWorldManager extends CACommand {
                         seed = seedString.hashCode();
                     }
                     wc = wc.seed(seed);
-                } else wc = wc.seed(r.nextLong());
+                } else wc = wc.seed(this.r.nextLong());
                 if (ca.hasFlag("g", "gen", "generator")) {
                     final String generator = ca.getFlagString("g", "gen", "generator");
                     wc = wc.generator(generator);

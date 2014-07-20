@@ -61,7 +61,7 @@ public class CmdJail extends BaseCommand {
                 pcm.set("jailed", false);
                 cs.sendMessage(MessageColor.POSITIVE + "You have released " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
                 t.sendMessage(MessageColor.POSITIVE + "You have been released.");
-                if (jaildb.get(t.getUniqueId()) == null || jaildb.get(t.getUniqueId()).getWorld() == null) {
+                if (this.jaildb.get(t.getUniqueId()) == null || this.jaildb.get(t.getUniqueId()).getWorld() == null) {
                     t.sendMessage(MessageColor.NEGATIVE + "Your previous location no longer exists. Sending you to spawn.");
                     String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
                     if (!error.isEmpty()) {
@@ -70,7 +70,7 @@ public class CmdJail extends BaseCommand {
                     }
                     return true;
                 }
-                String error = RUtils.silentTeleport(t, jaildb.get(t.getUniqueId()));
+                String error = RUtils.silentTeleport(t, this.jaildb.get(t.getUniqueId()));
                 if (!error.isEmpty()) {
                     cs.sendMessage(MessageColor.NEGATIVE + error);
                     return true;
@@ -126,7 +126,7 @@ public class CmdJail extends BaseCommand {
             pcm.set("jailed", false);
             cs.sendMessage(MessageColor.POSITIVE + "You have released " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             t.sendMessage(MessageColor.POSITIVE + "You have been released.");
-            if (jaildb.get(t.getUniqueId()) == null || jaildb.get(t.getUniqueId()).getWorld() == null) {
+            if (this.jaildb.get(t.getUniqueId()) == null || this.jaildb.get(t.getUniqueId()).getWorld() == null) {
                 t.sendMessage(MessageColor.NEGATIVE + "Your previous location no longer exists. Sending you to spawn.");
                 String error = RUtils.silentTeleport(t, CmdSpawn.getWorldSpawn(t.getWorld()));
                 if (!error.isEmpty()) {
@@ -135,7 +135,7 @@ public class CmdJail extends BaseCommand {
                 }
                 return true;
             }
-            String error = RUtils.silentTeleport(t, jaildb.get(t.getUniqueId()));
+            String error = RUtils.silentTeleport(t, this.jaildb.get(t.getUniqueId()));
             if (!error.isEmpty()) {
                 cs.sendMessage(MessageColor.NEGATIVE + error);
                 return true;
@@ -147,7 +147,7 @@ public class CmdJail extends BaseCommand {
             }
             cs.sendMessage(MessageColor.POSITIVE + "You have jailed " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             t.sendMessage(MessageColor.NEGATIVE + "You have been jailed.");
-            jaildb.put(t.getUniqueId(), t.getLocation());
+            this.jaildb.put(t.getUniqueId(), t.getLocation());
             String error = RUtils.silentTeleport(t, jailLoc);
             if (!error.isEmpty()) {
                 cs.sendMessage(MessageColor.NEGATIVE + error);
