@@ -1135,10 +1135,10 @@ reflectcommands:
     version_added: 3.3.0
     class: CmdDocumentation
 
-  rcmds:
+  royalcommands:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
-    aliases: [royalcommands]
+    aliases: [rcmds]
     version_added: Pre-0.2.7
     class: CmdRcmds
 
@@ -1567,7 +1567,7 @@ permissions:
     command: rank
     default: op
     description: Allows you to check the rank of a player.
-  rcmds.rcmds:
+  rcmds.royalcommands:
     command: rcmds
     default: op
     description: Allows you to reload RoyalCommands' config.
@@ -2517,7 +2517,7 @@ permissions:
       rcmds.commandspy: true
       rcmds.kickhistory: true
       rcmds.documentation: true
-      rcmds.rcmds: true
+      rcmds.royalcommands: true
 
   rcmds.admin:
     description: Gives every permission.
@@ -2829,7 +2829,7 @@ permissions:
       rcmds.commandspy: true
       rcmds.kickhistory: true
       rcmds.documentation: true
-      rcmds.rcmds: true
+      rcmds.royalcommands: true
 
       rcmds.pluginmanager.*: true
 

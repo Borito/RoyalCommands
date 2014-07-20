@@ -8,9 +8,9 @@ import org.royaldev.royalcommands.configuration.ConfManager;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 @ReflectCommand
-public class CmdRcmds extends BaseCommand {
+public class CmdRoyalCommands extends BaseCommand {
 
-    public CmdRcmds(final RoyalCommands instance, final String name) {
+    public CmdRoyalCommands(final RoyalCommands instance, final String name) {
         super(instance, name, true);
     }
 
