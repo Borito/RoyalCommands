@@ -31,7 +31,7 @@ public class CmdTeleportAccept extends BaseCommand {
                 return true;
             }
         }
-        final Player t = plugin.getServer().getPlayer(args[0]);
+        final Player t = this.plugin.getServer().getPlayer(args[0]);
         if (t == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is not online.");
             return true;

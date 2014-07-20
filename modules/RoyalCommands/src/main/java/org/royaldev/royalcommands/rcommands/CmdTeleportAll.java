@@ -21,7 +21,7 @@ public class CmdTeleportAll extends BaseCommand {
             return true;
         }
         Player p = (Player) cs;
-        for (Player t : plugin.getServer().getOnlinePlayers()) {
+        for (Player t : this.plugin.getServer().getOnlinePlayers()) {
             if (!RUtils.isTeleportAllowed(t) && !this.ah.isAuthorized(cs, "rcmds.tpoverride")) continue;
             if (t.equals(p)) continue;
             String error = RUtils.teleport(t, p);

@@ -19,15 +19,15 @@ public class CmdRank extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Player victim = plugin.getServer().getPlayer(args[0]);
-        if (victim == null || plugin.isVanished(victim, cs)) {
+        Player victim = this.plugin.getServer().getPlayer(args[0]);
+        if (victim == null || this.plugin.isVanished(victim, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }
         String rank;
         try {
-            if (!plugin.vh.usingVault()) throw new Exception();
-            rank = plugin.vh.getPermission().getPrimaryGroup(victim);
+            if (!this.plugin.vh.usingVault()) throw new Exception();
+            rank = this.plugin.vh.getPermission().getPrimaryGroup(victim);
         } catch (Exception e) {
             rank = null;
         }

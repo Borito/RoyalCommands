@@ -23,9 +23,9 @@ public class CmdSpeak extends BaseCommand {
 
         Player t;
 
-        t = plugin.getServer().getPlayer(args[0]);
+        t = this.plugin.getServer().getPlayer(args[0]);
 
-        if (t == null || plugin.isVanished(t, cs)) {
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

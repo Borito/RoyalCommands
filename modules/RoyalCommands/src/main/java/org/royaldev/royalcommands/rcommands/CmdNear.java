@@ -31,7 +31,7 @@ public class CmdNear extends BaseCommand {
             for (Entity e : ents) {
                 if (!(e instanceof Player)) continue;
                 Player t = (Player) e;
-                if (plugin.isVanished(t, cs)) continue;
+                if (this.plugin.isVanished(t, cs)) continue;
                 double dist = p.getLocation().distanceSquared(t.getLocation());
                 p.sendMessage(MessageColor.NEUTRAL + t.getDisplayName() + ": " + MessageColor.RESET + Math.sqrt(dist));
                 amount++;
@@ -64,7 +64,7 @@ public class CmdNear extends BaseCommand {
             for (Entity e : ents) {
                 if (!(e instanceof Player)) continue;
                 Player t = (Player) e;
-                if (plugin.isVanished(t, cs)) continue;
+                if (this.plugin.isVanished(t, cs)) continue;
                 double dist = p.getLocation().distanceSquared(t.getLocation());
                 p.sendMessage(MessageColor.NEUTRAL + t.getDisplayName() + ": " + MessageColor.RESET + Math.sqrt(dist));
                 amount++;

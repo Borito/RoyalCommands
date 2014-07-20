@@ -28,8 +28,8 @@ public class CmdWhois extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
-        if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer t = this.plugin.getServer().getPlayer(args[0]);
+        if (t == null) t = this.plugin.getServer().getOfflinePlayer(args[0]);
         if (!t.isOnline() && !t.hasPlayedBefore()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
             return true;
@@ -64,7 +64,7 @@ public class CmdWhois extends BaseCommand {
             cs.sendMessage(MessageColor.POSITIVE + "Last world: " + MessageColor.NEUTRAL + RUtils.getMVWorldName(l.getWorld()) + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + l.getWorld().getName() + MessageColor.POSITIVE + ")");
         } else {
             String lP = "lastposition.";
-            World w = (pcm.isSet(lP + "world")) ? plugin.getServer().getWorld(pcm.getString(lP + "world")) : null;
+            World w = (pcm.isSet(lP + "world")) ? this.plugin.getServer().getWorld(pcm.getString(lP + "world")) : null;
             if (w != null) {
                 Location l = new Location(w, pcm.getDouble(lP + "x"), pcm.getDouble(lP + "y"), pcm.getDouble(lP + "z"));
                 cs.sendMessage(MessageColor.POSITIVE + "Last position: " + "(" + MessageColor.NEUTRAL + l.getX() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getY() + MessageColor.POSITIVE + ", " + MessageColor.NEUTRAL + l.getZ() + MessageColor.POSITIVE + ")");

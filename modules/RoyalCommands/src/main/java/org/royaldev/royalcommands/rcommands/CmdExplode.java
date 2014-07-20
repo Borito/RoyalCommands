@@ -64,8 +64,8 @@ public class CmdExplode extends BaseCommand {
             }
         }
         if (args.length > 0) {
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null || plugin.isVanished(t, cs)) {
+            Player t = this.plugin.getServer().getPlayer(args[0]);
+            if (t == null || this.plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }

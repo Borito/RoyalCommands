@@ -28,12 +28,12 @@ public class CmdFeed extends BaseCommand {
             t.setSaturation(20F);
             return true;
         }
-        Player t = plugin.getServer().getPlayer(args[0]);
+        Player t = this.plugin.getServer().getPlayer(args[0]);
         if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
             RUtils.dispNoPerms(cs);
             return true;
         }
-        if (t == null || plugin.isVanished(t, cs)) {
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

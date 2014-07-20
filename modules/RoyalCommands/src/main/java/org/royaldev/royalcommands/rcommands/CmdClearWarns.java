@@ -20,7 +20,7 @@ public class CmdClearWarns extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
         PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");

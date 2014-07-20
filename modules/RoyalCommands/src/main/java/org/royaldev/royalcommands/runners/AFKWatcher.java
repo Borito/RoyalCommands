@@ -15,30 +15,30 @@ public class AFKWatcher implements Runnable {
     private final RoyalCommands plugin;
 
     public AFKWatcher(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     @Override
     public void run() {
         long afkKickTime = Config.afkKickTime;
         long afkAutoTime = Config.afkAutoTime;
-        for (Player p : plugin.getServer().getOnlinePlayers()) {
+        for (Player p : this.plugin.getServer().getOnlinePlayers()) {
             if (p == null) continue;
             final long currentTime = System.currentTimeMillis();
             if (!AFKUtils.isAfk(p)) {
-                if (plugin.ah.isAuthorized(p, "rcmds.exempt.autoafk")) continue;
-                if (plugin.isVanished(p)) continue;
+                if (this.plugin.ah.isAuthorized(p, "rcmds.exempt.autoafk")) continue;
+                if (this.plugin.isVanished(p)) continue;
                 if (!AFKUtils.moveTimesContains(p)) continue;
                 if (afkAutoTime <= 0) continue;
                 final long lastMove = AFKUtils.getLastMove(p);
                 if ((lastMove + (afkAutoTime * 1000)) < currentTime) {
                     AFKUtils.setAfk(p, currentTime);
-                    plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.afkFormat, p)));
+                    this.plugin.getServer().broadcastMessage(RUtils.colorize(RUtils.replaceVars(Config.afkFormat, p)));
                 }
                 continue;
             }
             if (afkKickTime <= 0) continue;
-            if (plugin.ah.isAuthorized(p, "rcmds.exempt.afkkick")) return;
+            if (this.plugin.ah.isAuthorized(p, "rcmds.exempt.afkkick")) return;
             final long afkAt = AFKUtils.getAfkTime(p);
             if (afkAt + (afkKickTime * 1000) < currentTime) {
                 try {

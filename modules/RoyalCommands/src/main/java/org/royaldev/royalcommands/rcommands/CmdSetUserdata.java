@@ -23,7 +23,7 @@ public class CmdSetUserdata extends BaseCommand {
         String name = args[0];
         String node = args[1];
         String value = RoyalCommands.getFinalArg(args, 2);
-        OfflinePlayer op = plugin.getServer().getOfflinePlayer(name);
+        OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(name);
         PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists() || !op.hasPlayedBefore()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such player!");

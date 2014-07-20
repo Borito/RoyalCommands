@@ -16,7 +16,7 @@ public class CmdGetIP extends BaseCommand {
 
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (plugin.getConfig().getBoolean("disable_getip")) {
+        if (this.plugin.getConfig().getBoolean("disable_getip")) {
             cs.sendMessage(MessageColor.NEGATIVE + "/getip and /compareip have been disabled.");
             return true;
         }
@@ -24,7 +24,7 @@ public class CmdGetIP extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer oplayer = plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer oplayer = this.plugin.getServer().getOfflinePlayer(args[0]);
         PConfManager pcm = PConfManager.getPConfManager(oplayer);
         if (pcm.exists()) cs.sendMessage(MessageColor.NEUTRAL + oplayer.getName() + ": " + pcm.getString("ip"));
         else cs.sendMessage(MessageColor.NEGATIVE + "The player " + oplayer.getName() + " does not exist.");

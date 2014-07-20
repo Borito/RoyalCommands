@@ -36,7 +36,7 @@ public class CmdKit extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
                 return true;
             }
-            final FileConfiguration c = plugin.getConfig();
+            final FileConfiguration c = this.plugin.getConfig();
             Player p = (Player) cs;
             final PConfManager pcm = PConfManager.getPConfManager(p);
             if (!c.isSet("kits") || !c.isSet("kits.list")) {

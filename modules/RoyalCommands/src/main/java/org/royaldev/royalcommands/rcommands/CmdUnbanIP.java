@@ -37,14 +37,14 @@ public class CmdUnbanIP extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
         String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");
         if (ip == null) ip = args[0];
         if (!isValid(ip)) {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid IP (" + MessageColor.NEUTRAL + ip + MessageColor.NEGATIVE + ").");
             return true;
         }
-        plugin.getServer().unbanIP(ip);
+        this.plugin.getServer().unbanIP(ip);
         if (!op.hasPlayedBefore()) {
             cs.sendMessage(MessageColor.POSITIVE + "Unbanned IP " + MessageColor.NEUTRAL + ip + MessageColor.POSITIVE + ".");
             return true;

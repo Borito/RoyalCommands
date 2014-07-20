@@ -18,9 +18,9 @@ public class CmdOneHitKill extends BaseCommand {
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (args.length > 0) {
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null || plugin.isVanished(t, cs)) {
-                OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[0]);
+            Player t = this.plugin.getServer().getPlayer(args[0]);
+            if (t == null || this.plugin.isVanished(t, cs)) {
+                OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
                 PConfManager pcm = PConfManager.getPConfManager(op);
                 if (!pcm.exists()) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
@@ -36,7 +36,7 @@ public class CmdOneHitKill extends BaseCommand {
                 cs.sendMessage(MessageColor.POSITIVE + "You have disabled onehitkill mode for " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");
                 return true;
             }
-            Player p = plugin.getServer().getPlayer(args[0]);
+            Player p = this.plugin.getServer().getPlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(p);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");

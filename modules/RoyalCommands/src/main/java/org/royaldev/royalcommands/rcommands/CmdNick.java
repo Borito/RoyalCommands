@@ -24,7 +24,7 @@ public class CmdNick extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[0]);
         if (!t.equals(cs) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
             RUtils.dispNoPerms(cs);
             return true;

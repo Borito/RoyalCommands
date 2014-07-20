@@ -56,7 +56,7 @@ public class CmdDump extends BaseCommand {
                 return true;
             }
             Chest c = (Chest) bl.getState();
-            if (!plugin.canAccessChest(p, bl)) {
+            if (!this.plugin.canAccessChest(p, bl)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot access that chest!");
                 return true;
             }
@@ -71,7 +71,7 @@ public class CmdDump extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "Please make sure the block above is air.");
             return true;
         }
-        if (!plugin.canBuild(p, b)) {
+        if (!this.plugin.canBuild(p, b)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You're not allowed to create blocks there!");
             return true;
         }

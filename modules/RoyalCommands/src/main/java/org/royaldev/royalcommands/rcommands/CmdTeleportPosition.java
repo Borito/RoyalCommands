@@ -34,14 +34,14 @@ public class CmdTeleportPosition extends BaseCommand {
             return true;
         }
         Player p = (cs instanceof Player) ? (Player) cs : null;
-        Player toTeleport = (args.length > 4) ? plugin.getServer().getPlayer(args[4]) : p;
-        if (toTeleport == null || plugin.isVanished(toTeleport, cs)) {
+        Player toTeleport = (args.length > 4) ? this.plugin.getServer().getPlayer(args[4]) : p;
+        if (toTeleport == null || this.plugin.isVanished(toTeleport, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }
         Location pLoc;
         World w = toTeleport.getWorld();
-        if (args.length > 3) w = plugin.getServer().getWorld(args[3]);
+        if (args.length > 3) w = this.plugin.getServer().getWorld(args[3]);
         if (w == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "That world does not exist!");
             return true;

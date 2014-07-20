@@ -46,8 +46,8 @@ public class CmdJail extends BaseCommand {
             return true;
         }
 
-        Player t = plugin.getServer().getPlayer(args[0]);
-        if (t == null || plugin.isVanished(t, cs)) {
+        Player t = this.plugin.getServer().getPlayer(args[0]);
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }
@@ -116,7 +116,7 @@ public class CmdJail extends BaseCommand {
             jailZ = cm.getDouble("jails." + args[1] + ".z");
             jailYaw = Float.parseFloat(cm.getString("jails." + args[1] + ".yaw"));
             jailPitch = Float.parseFloat(cm.getString("jails." + args[1] + ".pitch"));
-            jailW = plugin.getServer().getWorld(cm.getString("jails." + args[1] + ".w"));
+            jailW = this.plugin.getServer().getWorld(cm.getString("jails." + args[1] + ".w"));
         } else {
             cs.sendMessage(MessageColor.NEGATIVE + "That jail does not exist.");
             return true;

@@ -33,8 +33,8 @@ public class CmdSetArmor extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            p = plugin.getServer().getPlayer(args[1]);
-            if (p == null || plugin.isVanished(p, cs)) {
+            p = this.plugin.getServer().getPlayer(args[1]);
+            if (p == null || this.plugin.isVanished(p, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }

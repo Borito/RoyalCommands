@@ -144,18 +144,18 @@ public class Config {
     private final RoyalCommands plugin;
 
     public Config(RoyalCommands instance) {
-        plugin = instance;
-        File config = new File(plugin.getDataFolder(), "config.yml");
+        this.plugin = instance;
+        File config = new File(this.plugin.getDataFolder(), "config.yml");
         if (!config.exists()) {
-            if (!config.getParentFile().mkdirs()) plugin.getLogger().warning("Could not create config.yml directory.");
-            plugin.saveDefaultConfig();
+            if (!config.getParentFile().mkdirs()) this.plugin.getLogger().warning("Could not create config.yml directory.");
+            this.plugin.saveDefaultConfig();
         }
         this.reloadConfiguration();
     }
 
     public void reloadConfiguration() {
-        plugin.reloadConfig();
-        final FileConfiguration c = plugin.getConfig();
+        this.plugin.reloadConfig();
+        final FileConfiguration c = this.plugin.getConfig();
 
         //-- Booleans --//
 
@@ -291,22 +291,22 @@ public class Config {
         neutralChatColor = c.getString("messages.options.colors.neutral", "GRAY");
         resetChatColor = c.getString("messages.options.colors.reset", "RESET");
 
-        if (plugin.whl.exists()) whitelist = plugin.whl.getStringList("whitelist");
+        if (this.plugin.whl.exists()) whitelist = this.plugin.whl.getStringList("whitelist");
 
-        plugin.h.reloadHelp();
+        this.plugin.h.reloadHelp();
 
         if (RoyalCommands.wm == null) RoyalCommands.wm = new WorldManager();
         RoyalCommands.wm.reloadConfig();
 
         Reader in = null;
         try {
-            in = new FileReader(new File(plugin.getDataFolder() + File.separator + "items.csv"));
+            in = new FileReader(new File(this.plugin.getDataFolder() + File.separator + "items.csv"));
             RoyalCommands.inm = new ItemNameManager(new CSVReader(in).readAll());
         } catch (FileNotFoundException e) {
-            plugin.getLogger().warning("items.csv was not found! Item aliases will not be used.");
+            this.plugin.getLogger().warning("items.csv was not found! Item aliases will not be used.");
             RoyalCommands.inm = null;
         } catch (IOException e) {
-            plugin.getLogger().warning("Internal input/output error loading items.csv. Item aliases will not be used.");
+            this.plugin.getLogger().warning("Internal input/output error loading items.csv. Item aliases will not be used.");
             RoyalCommands.inm = null;
         } finally {
             try {

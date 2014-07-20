@@ -43,8 +43,8 @@ public class CmdMegaStrike extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
                 return true;
             }
-            Player target = plugin.getServer().getPlayer(args[0]);
-            if (target == null || plugin.isVanished(target, cs)) {
+            Player target = this.plugin.getServer().getPlayer(args[0]);
+            if (target == null || this.plugin.isVanished(target, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }

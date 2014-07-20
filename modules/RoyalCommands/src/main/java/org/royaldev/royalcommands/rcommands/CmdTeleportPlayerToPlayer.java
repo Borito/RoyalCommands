@@ -20,9 +20,9 @@ public class CmdTeleportPlayerToPlayer extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Player t1 = plugin.getServer().getPlayer(args[0]);
-        Player t2 = plugin.getServer().getPlayer(args[1]);
-        if (t1 == null || t2 == null || plugin.isVanished(t1, cs) || plugin.isVanished(t2, cs)) {
+        Player t1 = this.plugin.getServer().getPlayer(args[0]);
+        Player t2 = this.plugin.getServer().getPlayer(args[1]);
+        if (t1 == null || t2 == null || this.plugin.isVanished(t1, cs) || this.plugin.isVanished(t2, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

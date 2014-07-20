@@ -24,17 +24,17 @@ public class CmdWorld extends BaseCommand {
             return true;
         }
         if (args.length < 1) {
-            List<World> ws = plugin.getServer().getWorlds();
+            List<World> ws = this.plugin.getServer().getWorlds();
             String worlds = "";
             for (World w : ws)
                 worlds = (worlds.equals("")) ? worlds.concat(MessageColor.NEUTRAL + RUtils.getMVWorldName(w)) : worlds.concat(MessageColor.RESET + ", " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w));
             cs.sendMessage(MessageColor.POSITIVE + "Worlds: " + worlds);
             return true;
         }
-        World w = plugin.getServer().getWorld(args[0]);
+        World w = this.plugin.getServer().getWorld(args[0]);
         if (w == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "That world does not exist!");
-            List<World> ws = plugin.getServer().getWorlds();
+            List<World> ws = this.plugin.getServer().getWorlds();
             String worlds = "";
             for (World w2 : ws) {
                 if (worlds.equals("")) worlds = worlds.concat(MessageColor.NEUTRAL + RUtils.getMVWorldName(w2));

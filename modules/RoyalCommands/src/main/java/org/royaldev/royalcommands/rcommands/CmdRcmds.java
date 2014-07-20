@@ -23,9 +23,9 @@ public class CmdRcmds extends BaseCommand {
         }
         PConfManager.removeAllManagers();
         ConfManager.removeAllManagers();
-        plugin.c.reloadConfiguration();
+        this.plugin.c.reloadConfiguration();
         RoyalCommands.wm.reloadConfig();
-        cs.sendMessage(MessageColor.POSITIVE + "RoyalCommands " + MessageColor.NEUTRAL + "v" + plugin.version + MessageColor.POSITIVE + " reloaded.");
+        cs.sendMessage(MessageColor.POSITIVE + "RoyalCommands " + MessageColor.NEUTRAL + "v" + this.plugin.version + MessageColor.POSITIVE + " reloaded.");
         return true;
     }
 }

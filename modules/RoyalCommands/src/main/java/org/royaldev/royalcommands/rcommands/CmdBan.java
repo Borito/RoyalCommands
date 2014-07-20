@@ -25,8 +25,8 @@ public class CmdBan extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
-        if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer t = this.plugin.getServer().getPlayer(args[0]);
+        if (t == null) t = this.plugin.getServer().getOfflinePlayer(args[0]);
         PConfManager pcm = PConfManager.getPConfManager(t);
 /*            if (!pcm.getConfExists()) {
                 if (args.length > 1 && args[1].equalsIgnoreCase("true")) {

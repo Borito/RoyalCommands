@@ -24,8 +24,8 @@ public class CmdSelectiveClearInventory extends BaseCommand {
             return false;
         }
         if (args.length < 3) {
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null || plugin.isVanished(t, cs)) {
+            Player t = this.plugin.getServer().getPlayer(args[0]);
+            if (t == null || this.plugin.isVanished(t, cs)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                 return true;
             }
@@ -82,7 +82,7 @@ public class CmdSelectiveClearInventory extends BaseCommand {
                 return true;
             }
         } else if (args.length == 3) {
-            Player target = plugin.getServer().getPlayer(args[0]);
+            Player target = this.plugin.getServer().getPlayer(args[0]);
             if (target == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
                 return true;

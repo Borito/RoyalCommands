@@ -27,8 +27,8 @@ public class CmdCompareIP extends BaseCommand {
         }
         OfflinePlayer player1;
         OfflinePlayer player2;
-        player1 = plugin.getServer().getOfflinePlayer(args[0]);
-        player2 = plugin.getServer().getOfflinePlayer(args[1]);
+        player1 = this.plugin.getServer().getOfflinePlayer(args[0]);
+        player2 = this.plugin.getServer().getOfflinePlayer(args[1]);
         PConfManager pcm1 = PConfManager.getPConfManager(player1);
         PConfManager pcm2 = PConfManager.getPConfManager(player2);
         if (pcm1.exists()) {

@@ -73,8 +73,7 @@ public abstract class BaseCommand implements CommandExecutor {
         final StringBuilder response = new StringBuilder();
         while ((inputLine = in.readLine()) != null) response.append(inputLine);
         in.close();
-        final Gson gson = new Gson();
-        final HastebinData hd = gson.fromJson(response.toString(), HastebinData.class);
+        final HastebinData hd = new Gson().fromJson(response.toString(), HastebinData.class);
         return "http://hastebin.com/" + hd.getKey() + ".txt";
     }
 
@@ -118,8 +117,6 @@ public abstract class BaseCommand implements CommandExecutor {
     private void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t) {
         new FancyMessage("An exception occurred while processing that command.").color(MessageColor.NEGATIVE._()).send(cs);
         t.printStackTrace();
-        final StringWriter sw = new StringWriter();
-        t.printStackTrace(new PrintWriter(sw));
         if (Config.hastebinErrors) {
             final StringBuilder sb = new StringBuilder();
             sb
@@ -150,6 +147,8 @@ public abstract class BaseCommand implements CommandExecutor {
             if (args != null) {
                 for (final String arg : args) sb.append("\n").append("\t").append(arg);
             } else sb.append("\t\tnull");
+            final StringWriter sw = new StringWriter();
+            t.printStackTrace(new PrintWriter(sw));
             sb.append("\n\n---STRACK TRACE---\n\n").append(sw.toString());
             this.scheduleHastebin(cs, sb.toString());
         }

@@ -14,11 +14,11 @@ public class VaultHandler {
     private final RoyalCommands plugin;
 
     public VaultHandler(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     public boolean usingVault() {
-        final Plugin p = plugin.getServer().getPluginManager().getPlugin("Vault");
+        final Plugin p = this.plugin.getServer().getPluginManager().getPlugin("Vault");
         return p != null && p.isEnabled();
     }
 
@@ -51,19 +51,19 @@ public class VaultHandler {
     }
 
     private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        RegisteredServiceProvider<Permission> permissionProvider = this.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) permission = permissionProvider.getProvider();
         return permission != null;
     }
 
     private boolean setupChat() {
-        RegisteredServiceProvider<Chat> chatProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        RegisteredServiceProvider<Chat> chatProvider = this.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
         if (chatProvider != null) chat = chatProvider.getProvider();
         return chat != null;
     }
 
     private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        RegisteredServiceProvider<Economy> economyProvider = this.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) economy = economyProvider.getProvider();
         return economy != null;
     }

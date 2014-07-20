@@ -66,7 +66,7 @@ public class CmdMap extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You must be holding a map to use this subcommand!");
             return true;
         }
-        MapView mv = plugin.getServer().getMap(hand.getDurability());
+        MapView mv = this.plugin.getServer().getMap(hand.getDurability());
         if (subcommandMatches(subcommand, "scale", "scaling", "setscale", "setscaling")) {
             if (args.length < 2) {
                 cs.sendMessage(combineEnums(Scale.values()));
@@ -110,7 +110,7 @@ public class CmdMap extends BaseCommand {
                 return true;
             }
             String sworld = args[0];
-            World w = plugin.getServer().getWorld(sworld);
+            World w = this.plugin.getServer().getWorld(sworld);
             if (w == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                 return true;

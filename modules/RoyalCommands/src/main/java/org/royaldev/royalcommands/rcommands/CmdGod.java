@@ -44,7 +44,7 @@ public class CmdGod extends BaseCommand {
                 this.plugin.getLogger().warning(cs.getName() + " was denied access to the command!");
                 return true;
             }
-            Player t = plugin.getServer().getPlayer(args[0]);
+            Player t = this.plugin.getServer().getPlayer(args[0]);
             PConfManager pcm = PConfManager.getPConfManager(t);
             if (t != null) {
                 if (!pcm.getBoolean("godmode")) {
@@ -70,7 +70,7 @@ public class CmdGod extends BaseCommand {
                 return true;
             }
         }
-        OfflinePlayer t2 = plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer t2 = this.plugin.getServer().getOfflinePlayer(args[0]);
         PConfManager pcm = PConfManager.getPConfManager(t2);
         if (!pcm.getBoolean("godmode")) {
             if (!pcm.exists()) {

@@ -22,7 +22,7 @@ public class CmdQuit extends BaseCommand {
         }
         Player p = (Player) cs;
         RUtils.silentKick(p, "You have left the game.");
-        plugin.getServer().broadcastMessage(MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " has left the game.");
+        this.plugin.getServer().broadcastMessage(MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " has left the game.");
         return true;
     }
 }

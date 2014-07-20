@@ -23,7 +23,7 @@ public class CmdHelp extends BaseCommand {
     }
 
     private Plugin getPlugin(String name) {
-        for (Plugin lp : plugin.getServer().getPluginManager().getPlugins()) {
+        for (Plugin lp : this.plugin.getServer().getPluginManager().getPlugins()) {
             if (!lp.getName().equalsIgnoreCase(name)) continue;
             return lp;
         }
@@ -31,7 +31,7 @@ public class CmdHelp extends BaseCommand {
     }
 
     private void displayCustomHelp(CommandSender cs, String page) {
-        String sb = plugin.h.getCustomHelp();
+        String sb = this.plugin.h.getCustomHelp();
         int pageNumber;
         try {
             pageNumber = Integer.parseInt(page);
@@ -58,7 +58,7 @@ public class CmdHelp extends BaseCommand {
     }
 
     private void displayPluginHelp(CommandSender cs, String pluginName, String page) {
-        final Map<String, List<PluginCommand>> commands = plugin.h.getCommands();
+        final Map<String, List<PluginCommand>> commands = this.plugin.h.getCommands();
         final Plugin p = getPlugin(pluginName);
         if (p == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
@@ -90,7 +90,7 @@ public class CmdHelp extends BaseCommand {
     }
 
     private void displayPluginList(CommandSender cs) {
-        final TreeMap<String, List<PluginCommand>> commands = plugin.h.getCommands();
+        final TreeMap<String, List<PluginCommand>> commands = this.plugin.h.getCommands();
         cs.sendMessage(MessageColor.POSITIVE + "There are " + MessageColor.NEUTRAL + commands.size() + MessageColor.POSITIVE + " plugins with help information:");
         for (Entry<String, ?> entry : commands.entrySet()) {
             final String pluginName = entry.getKey();

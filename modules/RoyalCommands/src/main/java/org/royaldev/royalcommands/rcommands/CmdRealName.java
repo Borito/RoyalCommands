@@ -20,9 +20,9 @@ public class CmdRealName extends BaseCommand {
             return false;
         }
         Player t = null;
-        for (Player p : plugin.getServer().getOnlinePlayers())
+        for (Player p : this.plugin.getServer().getOnlinePlayers())
             if (p.getDisplayName().equalsIgnoreCase(args[0])) t = p;
-        if (t == null || plugin.isVanished(t, cs)) {
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

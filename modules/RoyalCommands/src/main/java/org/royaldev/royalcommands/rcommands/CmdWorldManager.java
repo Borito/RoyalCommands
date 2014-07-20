@@ -54,7 +54,7 @@ public class CmdWorldManager extends CACommand {
                     cs.sendMessage(types);
                     return true;
                 }
-                for (World w : plugin.getServer().getWorlds()) {
+                for (World w : this.plugin.getServer().getWorlds()) {
                     if (w.getName().equals(name)) {
                         cs.sendMessage(MessageColor.NEGATIVE + "A world with that name already exists!");
                         return true;
@@ -98,14 +98,14 @@ public class CmdWorldManager extends CACommand {
                     return true;
                 }
                 final boolean eject = ca.hasFlag("e", "eject");
-                final World w = plugin.getServer().getWorld(ca.getFlagString("n", "name"));
+                final World w = this.plugin.getServer().getWorld(ca.getFlagString("n", "name"));
                 if (w == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                     return true;
                 }
                 cs.sendMessage(MessageColor.POSITIVE + "Unloading world...");
                 if (eject) for (Player p : w.getPlayers()) p.kickPlayer("Your world is being unloaded!");
-                final boolean success = plugin.getServer().unloadWorld(w, true);
+                final boolean success = this.plugin.getServer().unloadWorld(w, true);
                 if (success) cs.sendMessage(MessageColor.POSITIVE + "World unloaded successfully!");
                 else cs.sendMessage(MessageColor.NEGATIVE + "Could not unload that world.");
                 return true;
@@ -115,7 +115,7 @@ public class CmdWorldManager extends CACommand {
                     cs.sendMessage(MessageColor.NEGATIVE + "Not enough arguments! Try " + MessageColor.NEUTRAL + "/" + label + " help" + MessageColor.NEGATIVE + " for help.");
                     return true;
                 }
-                final World w = plugin.getServer().getWorld(ca.getFlagString("n", "name"));
+                final World w = this.plugin.getServer().getWorld(ca.getFlagString("n", "name"));
                 if (w == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                     return true;
@@ -123,7 +123,7 @@ public class CmdWorldManager extends CACommand {
                 cs.sendMessage(MessageColor.POSITIVE + "Unloading world...");
                 final boolean eject = ca.hasFlag("e", "eject");
                 if (eject) for (Player p : w.getPlayers()) p.kickPlayer("Your world is being unloaded!");
-                boolean success = plugin.getServer().unloadWorld(w, true);
+                boolean success = this.plugin.getServer().unloadWorld(w, true);
                 if (success) cs.sendMessage(MessageColor.POSITIVE + "World unloaded successfully!");
                 else {
                     cs.sendMessage(MessageColor.NEGATIVE + "Could not unload that world.");
@@ -138,7 +138,7 @@ public class CmdWorldManager extends CACommand {
             case "list":
                 cs.sendMessage(MessageColor.POSITIVE + "Worlds:");
                 String worlds = "";
-                for (World w : plugin.getServer().getWorlds())
+                for (World w : this.plugin.getServer().getWorlds())
                     worlds = (worlds.equals("")) ? worlds.concat(MessageColor.NEUTRAL + RUtils.getMVWorldName(w)) : worlds.concat(MessageColor.RESET + ", " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w));
                 cs.sendMessage(worlds);
                 return true;
@@ -162,7 +162,7 @@ public class CmdWorldManager extends CACommand {
                 }
                 final String name = ca.getFlagString("n", "name");
                 boolean contains = false;
-                File[] fs = plugin.getServer().getWorldContainer().listFiles();
+                File[] fs = this.plugin.getServer().getWorldContainer().listFiles();
                 if (fs == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "The world directory is invalid!");
                     return true;
@@ -218,7 +218,7 @@ public class CmdWorldManager extends CACommand {
                 }
                 Player p = (Player) cs;
                 final String world = ca.getFlagString("n", "name");
-                World w = plugin.getServer().getWorld(world);
+                World w = this.plugin.getServer().getWorld(world);
                 if (w == null) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That world does not exist!");
                     return true;
@@ -232,7 +232,7 @@ public class CmdWorldManager extends CACommand {
                 return true;
             }
             case "who":
-                for (World w : plugin.getServer().getWorlds()) {
+                for (World w : this.plugin.getServer().getWorlds()) {
                     StringBuilder sb = new StringBuilder(RUtils.getMVWorldName(w));
                     sb.append(": ");
                     if (w.getPlayers().isEmpty()) {

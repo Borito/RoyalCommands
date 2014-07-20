@@ -25,8 +25,8 @@ public class CmdSlap extends BaseCommand {
             return false;
         }
         Player t;
-        t = plugin.getServer().getPlayer(args[0]);
-        if (t == null || plugin.isVanished(t, cs)) {
+        t = this.plugin.getServer().getPlayer(args[0]);
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That person is not online!");
             return true;
         }
@@ -40,7 +40,7 @@ public class CmdSlap extends BaseCommand {
         push.setX(r.nextInt(4) - 2);
         push.setZ(r.nextInt(4) - 2);
         t.setVelocity(push);
-        plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + MessageColor.RESET + " slaps " + MessageColor.NEGATIVE + t.getName() + MessageColor.RESET + "!");
+        this.plugin.getServer().broadcastMessage(ChatColor.GOLD + cs.getName() + MessageColor.RESET + " slaps " + MessageColor.NEGATIVE + t.getName() + MessageColor.RESET + "!");
         return true;
     }
 }

@@ -76,7 +76,7 @@ public class CmdMail extends BaseCommand {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
-            OfflinePlayer op = plugin.getServer().getOfflinePlayer(args[1]);
+            OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[1]);
             if (!op.hasPlayedBefore()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;

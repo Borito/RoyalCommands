@@ -22,7 +22,7 @@ public class CmdKits extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final Map<String, Object> opts = plugin.getConfig().getConfigurationSection("kits").getValues(false);
+        final Map<String, Object> opts = this.plugin.getConfig().getConfigurationSection("kits").getValues(false);
         if (opts.keySet().isEmpty()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No kits found!");
             return true;

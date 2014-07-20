@@ -26,7 +26,7 @@ public class CmdVip extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "No player specified!");
                 return true;
             }
-            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
+            OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[1]);
             PConfManager pcm = PConfManager.getPConfManager(t);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
@@ -44,7 +44,7 @@ public class CmdVip extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "No player specified!");
                 return true;
             }
-            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
+            OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[1]);
             PConfManager pcm = PConfManager.getPConfManager(t);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
@@ -62,7 +62,7 @@ public class CmdVip extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "No player specified!");
                 return true;
             }
-            OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[1]);
+            OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[1]);
             PConfManager pcm = PConfManager.getPConfManager(t);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");

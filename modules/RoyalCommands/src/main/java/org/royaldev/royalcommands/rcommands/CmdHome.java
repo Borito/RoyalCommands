@@ -39,7 +39,7 @@ public class CmdHome extends BaseCommand {
             homeOwner = split[0];
             homeName = split[1];
         }
-        final PConfManager pcm = PConfManager.getPConfManager(plugin.getServer().getOfflinePlayer(homeOwner));
+        final PConfManager pcm = PConfManager.getPConfManager(this.plugin.getServer().getOfflinePlayer(homeOwner));
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such player exists!");
             return true;

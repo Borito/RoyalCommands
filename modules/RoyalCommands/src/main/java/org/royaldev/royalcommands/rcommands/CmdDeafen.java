@@ -27,8 +27,8 @@ public class CmdDeafen extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to deafen other players!");
             return true;
         }
-        Player t = plugin.getServer().getPlayer(name);
-        if (t == null || plugin.isVanished(t, cs)) {
+        Player t = this.plugin.getServer().getPlayer(name);
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

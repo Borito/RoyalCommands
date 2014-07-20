@@ -29,7 +29,7 @@ public class CmdListWarns extends BaseCommand {
             RUtils.dispNoPerms(cs, "You're not allowed to view other players' warnings.");
             return true;
         }
-        OfflinePlayer op = plugin.getServer().getOfflinePlayer((args.length > 0) ? args[0] : cs.getName());
+        OfflinePlayer op = this.plugin.getServer().getOfflinePlayer((args.length > 0) ? args[0] : cs.getName());
         PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");

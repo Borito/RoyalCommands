@@ -40,7 +40,7 @@ public class CmdSetJail extends BaseCommand {
         float locPitch = p.getLocation().getPitch();
         String locW = p.getWorld().getName();
 
-        File pconfl = new File(plugin.getDataFolder() + File.separator + "jails.yml");
+        File pconfl = new File(this.plugin.getDataFolder() + File.separator + "jails.yml");
         if (!pconfl.exists()) {
             try {
                 if (!pconfl.createNewFile()) {

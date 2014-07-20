@@ -1,6 +1,8 @@
 package org.royaldev.royalcommands.protocol;
 
 import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.PacketType.Play.Client;
+import com.comphenix.protocol.PacketType.Play.Server;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -39,7 +41,7 @@ public class ProtocolListener {
     }
 
     public void createSetSlotListener() {
-        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, PacketType.Play.Server.SET_SLOT)) {
+        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, Server.SET_SLOT)) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 if (!Config.useProtocolLib) return;
@@ -58,7 +60,7 @@ public class ProtocolListener {
     }
 
     public void createWindowItemsListener() {
-        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, PacketType.Play.Server.WINDOW_ITEMS)) {
+        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, Server.WINDOW_ITEMS)) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 if (!Config.useProtocolLib) return;
@@ -83,7 +85,7 @@ public class ProtocolListener {
     }
 
     public void createSetCreativeSlotListener() {
-        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, PacketType.Play.Client.SET_CREATIVE_SLOT).optionIntercept()) {
+        this.pm.addPacketListener(new PacketAdapter(PacketAdapter.params(this.plugin, Client.SET_CREATIVE_SLOT).optionIntercept()) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
                 if (!Config.useProtocolLib) return;

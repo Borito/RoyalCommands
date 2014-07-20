@@ -39,7 +39,7 @@ public class CmdEnderChest extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot open that player's ender chest!");
             return true;
         }
-        if (plugin.getServer().getWorld(args[1]) == null) {
+        if (this.plugin.getServer().getWorld(args[1]) == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid world specified!");
             return true;
         }

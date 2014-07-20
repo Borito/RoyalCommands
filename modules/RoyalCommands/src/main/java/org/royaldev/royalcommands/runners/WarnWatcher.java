@@ -14,13 +14,13 @@ public class WarnWatcher implements Runnable {
     private final RoyalCommands plugin;
 
     public WarnWatcher(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     @Override
     public void run() {
         if (Config.warnExpireTime < 1L) return;
-        OfflinePlayer[] players = plugin.getServer().getOfflinePlayers();
+        OfflinePlayer[] players = this.plugin.getServer().getOfflinePlayers();
         for (OfflinePlayer p : players) {
             PConfManager pcm = PConfManager.getPConfManager(p);
             if (!pcm.exists()) continue;

@@ -31,7 +31,7 @@ public class CmdLag extends BaseCommand {
         final double expms = runfor * 1000D;
         final double expsecs = runfor;
         final double expticks = tps * expsecs;
-        final World world = plugin.getServer().getWorlds().get(0);
+        final World world = this.plugin.getServer().getWorlds().get(0);
         final double started = System.currentTimeMillis();
         final double startedticks = world.getFullTime();
         cs.sendMessage(MessageColor.POSITIVE + "This measures in-game time, so please do not change the time for " + MessageColor.NEUTRAL + expsecs + MessageColor.POSITIVE + " seconds.");
@@ -67,7 +67,7 @@ public class CmdLag extends BaseCommand {
                 cs.sendMessage(MessageColor.POSITIVE + "Margin of error: " + MessageColor.NEUTRAL + df.format(error) + "%");
             }
         };
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, getlag, (long) expticks);
+        this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, getlag, (long) expticks);
         return true;
     }
 }

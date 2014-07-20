@@ -48,7 +48,7 @@ public class InventoryListener implements Listener {
 
     public void saveAllInventories() {
         if (!Config.separateInv) return;
-        for (Player p : plugin.getServer().getOnlinePlayers()) this.saveInventory(p, p.getInventory());
+        for (Player p : this.plugin.getServer().getOnlinePlayers()) this.saveInventory(p, p.getInventory());
     }
 
     /**
@@ -154,14 +154,14 @@ public class InventoryListener implements Listener {
     }
 
     public Inventory getOfflinePlayerEnderInventory(OfflinePlayer op, String world) {
-        final World w = plugin.getServer().getWorld(world);
+        final World w = this.plugin.getServer().getWorld(world);
         if (w == null) return null;
         final String group = getWorldGroup(w);
         if (group == null) return null;
         final PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) pcm.createFile();
         final int invSize = pcm.getInt("inventory." + group + ".ender.size");
-        final Inventory i = plugin.getServer().createInventory(new EnderInventoryHolder(w, op.getUniqueId()), InventoryType.PLAYER.getDefaultSize());
+        final Inventory i = this.plugin.getServer().createInventory(new EnderInventoryHolder(w, op.getUniqueId()), InventoryType.PLAYER.getDefaultSize());
         if (!pcm.isSet("inventory." + group + ".ender.slot")) return i;
         for (int slot = 0; slot < invSize; slot++) {
             final ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
@@ -172,14 +172,14 @@ public class InventoryListener implements Listener {
     }
 
     public Inventory getOfflinePlayerInventory(OfflinePlayer op, String world) {
-        final World w = plugin.getServer().getWorld(world);
+        final World w = this.plugin.getServer().getWorld(world);
         if (w == null) return null;
         final String group = getWorldGroup(w);
         if (group == null) return null;
         final PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) pcm.createFile();
         final int invSize = pcm.getInt("inventory." + group + ".size");
-        final Inventory i = plugin.getServer().createInventory(new OfflineInventoryHolder(w, op.getUniqueId()), InventoryType.PLAYER.getDefaultSize());
+        final Inventory i = this.plugin.getServer().createInventory(new OfflineInventoryHolder(w, op.getUniqueId()), InventoryType.PLAYER.getDefaultSize());
         if (!pcm.isSet("inventory." + group + ".slot")) return i;
         for (int slot = 0; slot < invSize; slot++) {
             final ItemStack is = pcm.getItemStack("inventory." + group + ".slot." + slot);

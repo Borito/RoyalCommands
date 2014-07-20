@@ -31,12 +31,12 @@ public class CmdStarve extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "The damage you entered is not within 1 and 20!");
             return true;
         }
-        Player t = plugin.getServer().getPlayer(args[0]);
+        Player t = this.plugin.getServer().getPlayer(args[0]);
         if (!cs.getName().equalsIgnoreCase(t.getName()) && this.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You may not starve that player.");
             return true;
         }
-        if (plugin.isVanished(t, cs)) {
+        if (this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That person is not online!");
             return true;
         }

@@ -24,7 +24,7 @@ public class CmdSuicide extends BaseCommand {
         Player p = (Player) cs;
         p.setLastDamageCause(new EntityDamageByEntityEvent(p, p, DamageCause.SUICIDE, 0D));
         p.setHealth(0);
-        plugin.getServer().broadcastMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + p.getDisplayName() + MessageColor.NEGATIVE + " committed suicide.");
+        this.plugin.getServer().broadcastMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + p.getDisplayName() + MessageColor.NEGATIVE + " committed suicide.");
         return true;
     }
 }

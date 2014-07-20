@@ -31,7 +31,7 @@ public class CmdRecipe extends BaseCommand {
 
     public CmdRecipe(final RoyalCommands instance, final String name) {
         super(instance, name, true);
-        this.plugin.getServer().getPluginManager().registerEvents(new WorkbenchCloseListener(), plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(new WorkbenchCloseListener(), this.plugin);
     }
 
     private void cancelTask(final Player p) {

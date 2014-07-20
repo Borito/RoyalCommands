@@ -32,7 +32,7 @@ public class CmdReply extends BaseCommand {
             }
         }
         String target = CmdMessage.replydb.get(cs.getName());
-        OfflinePlayer t = plugin.getServer().getOfflinePlayer(target);
+        OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(target);
         if (!t.isOnline()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is offline!");
             return true;
@@ -44,7 +44,7 @@ public class CmdReply extends BaseCommand {
         String m = RoyalCommands.getFinalArg(args, 0).trim();
         cs.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + p.getName() + MessageColor.NEUTRAL + "] " + m);
         p.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + "] " + m);
-        final Collection<? extends Player> ps = plugin.getServer().getOnlinePlayers();
+        final Collection<? extends Player> ps = this.plugin.getServer().getOnlinePlayers();
         for (Player p1 : ps) {
             if (PConfManager.getPConfManager(p1).getBoolean("messagespy")) {
                 if (t == p1 || cs == p1) continue;

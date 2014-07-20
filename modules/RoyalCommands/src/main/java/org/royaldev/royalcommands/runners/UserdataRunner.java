@@ -10,7 +10,7 @@ public class UserdataRunner implements Runnable {
     private final RoyalCommands plugin;
 
     public UserdataRunner(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class UserdataRunner implements Runnable {
         for (Object o : managers) {
             if (!(o instanceof PConfManager)) continue;
             final PConfManager pcm = (PConfManager) o;
-            if (plugin.getServer().getPlayer(pcm.getManagerPlayerUUID()) != null) continue;
+            if (this.plugin.getServer().getPlayer(pcm.getManagerPlayerUUID()) != null) continue;
             pcm.discard(true);
         }
     }

@@ -22,7 +22,7 @@ public class CmdFreezeTime extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        World w = plugin.getServer().getWorld(args[0]);
+        World w = this.plugin.getServer().getWorld(args[0]);
         if (w == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
             return true;

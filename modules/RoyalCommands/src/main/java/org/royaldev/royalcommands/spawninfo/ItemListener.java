@@ -17,6 +17,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.data.block.BlockData;
+import org.royaldev.royalcommands.data.block.BlockData.BlockLocation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +29,7 @@ public class ItemListener implements Listener {
 
     @SuppressWarnings("unchecked")
     public ItemListener(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -37,7 +38,7 @@ public class ItemListener implements Listener {
         final Block b = e.getBlock();
         final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(e.getItemInHand());
         if (!si.isSpawned() && !si.hasComponents()) return;
-        final BlockData bd = new BlockData(plugin, new BlockData.BlockLocation(b.getLocation()));
+        final BlockData bd = new BlockData(this.plugin, new BlockLocation(b.getLocation()));
         bd.set("spawninfo", si.toString());
         bd.caughtSave();
     }
@@ -47,7 +48,7 @@ public class ItemListener implements Listener {
         if (!Config.itemSpawnTag) return;
         final Player p = e.getPlayer();
         final Block b = e.getBlock();
-        final BlockData bd = new BlockData(plugin, new BlockData.BlockLocation(b.getLocation()));
+        final BlockData bd = new BlockData(this.plugin, new BlockLocation(b.getLocation()));
         final Object o = bd.get("spawninfo");
         if (o == null) return;
         final SpawnInfo si = new SpawnInfo(o.toString());

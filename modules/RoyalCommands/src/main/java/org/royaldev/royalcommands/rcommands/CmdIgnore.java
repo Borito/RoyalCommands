@@ -30,8 +30,8 @@ public class CmdIgnore extends BaseCommand {
         }
         String name = args[0].toLowerCase();
 
-        Player t = plugin.getServer().getPlayer(name);
-        if (t == null || plugin.isVanished(t, cs)) {
+        Player t = this.plugin.getServer().getPlayer(name);
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

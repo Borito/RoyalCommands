@@ -22,7 +22,7 @@ public class CmdPlayerSearch extends BaseCommand {
             return false;
         }
         final String search = RoyalCommands.getFinalArg(args, 0);
-        final OfflinePlayer[] ops = plugin.getServer().getOfflinePlayers();
+        final OfflinePlayer[] ops = this.plugin.getServer().getOfflinePlayers();
         final Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -40,7 +40,7 @@ public class CmdPlayerSearch extends BaseCommand {
                 cs.sendMessage(MessageColor.POSITIVE + "Search completed. " + MessageColor.NEUTRAL + found + MessageColor.POSITIVE + " results found.");
             }
         };
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
         return true;
     }
 }

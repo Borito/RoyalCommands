@@ -27,8 +27,8 @@ public class CmdTeleportRequestHere extends BaseCommand {
             return true;
         }
         final Player p = (Player) cs;
-        final Player t = plugin.getServer().getPlayer(args[0]);
-        if (t == null || plugin.isVanished(t, cs)) {
+        final Player t = this.plugin.getServer().getPlayer(args[0]);
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

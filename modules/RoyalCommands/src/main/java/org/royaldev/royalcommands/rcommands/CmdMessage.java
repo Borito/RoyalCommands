@@ -23,13 +23,13 @@ public class CmdMessage extends BaseCommand {
         if (args.length < 2) {
             return false;
         }
-        Player t = plugin.getServer().getPlayer(args[0]);
+        Player t = this.plugin.getServer().getPlayer(args[0]);
         String m = RoyalCommands.getFinalArg(args, 1).trim();
         if (t == null || t.getName().trim().equals("")) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
             return true;
         }
-        if (plugin.isVanished(t, cs)) {
+        if (this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

@@ -26,8 +26,8 @@ public class CmdTemporaryBan extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
-        if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer t = this.plugin.getServer().getPlayer(args[0]);
+        if (t == null) t = this.plugin.getServer().getOfflinePlayer(args[0]);
         PConfManager pcm = PConfManager.getPConfManager(t);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
@@ -53,7 +53,7 @@ public class CmdTemporaryBan extends BaseCommand {
         cs.sendMessage(MessageColor.POSITIVE + "You have banned " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + banreason + MessageColor.POSITIVE + ".");
         String igMessage = RUtils.getInGameMessage(Config.igTempbanFormat, banreason, t, cs);
         igMessage = igMessage.replace("{length}", RUtils.formatDateDiff((time * 1000L) + curTime).substring(1));
-        plugin.getServer().broadcast(igMessage, "rcmds.see.ban");
+        this.plugin.getServer().broadcast(igMessage, "rcmds.see.ban");
         String message = RUtils.getMessage(Config.tempbanFormat, banreason, cs);
         message = message.replace("{length}", RUtils.formatDateDiff((time * 1000L) + curTime).substring(1));
         if (t.isOnline()) ((Player) t).kickPlayer(message);

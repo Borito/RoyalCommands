@@ -22,7 +22,7 @@ public class CmdBroadcast extends BaseCommand {
         String message = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
         String format = Config.bcastFormat;
         message = format + message;
-        plugin.getServer().broadcastMessage(message);
+        this.plugin.getServer().broadcastMessage(message);
         return true;
     }
 }

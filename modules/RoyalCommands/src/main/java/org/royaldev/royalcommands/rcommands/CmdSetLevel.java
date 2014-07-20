@@ -32,8 +32,8 @@ public class CmdSetLevel extends BaseCommand {
             return true;
         }
 
-        Player t = plugin.getServer().getPlayer((args.length > 1) ? args[1] : cs.getName());
-        if (t == null || plugin.isVanished(t, cs)) {
+        Player t = this.plugin.getServer().getPlayer((args.length > 1) ? args[1] : cs.getName());
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

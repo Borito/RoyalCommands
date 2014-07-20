@@ -55,7 +55,7 @@ public class CmdPluginManager extends BaseCommand {
 
     private void unregisterAllPluginCommands(String pluginName) {
         try {
-            Object result = RUtils.getPrivateField(plugin.getServer().getPluginManager(), "commandMap");
+            Object result = RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "commandMap");
             SimpleCommandMap commandMap = (SimpleCommandMap) result;
             Object map = RUtils.getPrivateField(commandMap, "knownCommands");
             @SuppressWarnings("unchecked") HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
@@ -83,7 +83,7 @@ public class CmdPluginManager extends BaseCommand {
     private void removePluginFromList(Plugin p) {
         try {
             @SuppressWarnings("unchecked")
-            final List<Plugin> plugins = (List<Plugin>) RUtils.getPrivateField(plugin.getServer().getPluginManager(), "plugins");
+            final List<Plugin> plugins = (List<Plugin>) RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "plugins");
             plugins.remove(p);
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,7 +147,7 @@ public class CmdPluginManager extends BaseCommand {
             if (!fi.getName().endsWith(".jar")) continue;
             cs.sendMessage(MessageColor.POSITIVE + "Moving " + MessageColor.NEUTRAL + fi.getName() + MessageColor.POSITIVE + " to plugins folder...");
             try {
-                Files.move(fi, new File(plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
+                Files.move(fi, new File(this.plugin.getDataFolder().getParentFile() + File.separator + fi.getName()));
             } catch (IOException e) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Couldn't move " + MessageColor.NEUTRAL + fi.getName() + MessageColor.NEGATIVE + ": " + MessageColor.NEUTRAL + e.getMessage());
             }
@@ -179,7 +179,7 @@ public class CmdPluginManager extends BaseCommand {
      */
     private List<String> getDependedOnBy(String name) {
         final List<String> dependedOnBy = new ArrayList<>();
-        for (Plugin pl : plugin.getServer().getPluginManager().getPlugins()) {
+        for (Plugin pl : this.plugin.getServer().getPluginManager().getPlugins()) {
             if (pl == null) continue;
             if (!pl.isEnabled()) continue;
             PluginDescriptionFile pdf = pl.getDescription();
@@ -192,7 +192,7 @@ public class CmdPluginManager extends BaseCommand {
     }
 
     private String getCustomTag(String name) {
-        ConfigurationSection cs = plugin.getConfig().getConfigurationSection("pluginmanager.custom_tags");
+        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("pluginmanager.custom_tags");
         if (cs == null) return null;
         for (String key : cs.getKeys(false)) {
             if (!key.equalsIgnoreCase(name)) continue;
@@ -227,7 +227,7 @@ public class CmdPluginManager extends BaseCommand {
             return false;
         }
         String subcmd = args[0];
-        final PluginManager pm = plugin.getServer().getPluginManager();
+        final PluginManager pm = this.plugin.getServer().getPluginManager();
         if (subcmd.equalsIgnoreCase("load")) {
             if (!this.ah.isAuthorized(cs, "rcmds.pluginmanager.load")) {
                 RUtils.dispNoPerms(cs);
@@ -237,7 +237,7 @@ public class CmdPluginManager extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the jar to load!");
                 return true;
             }
-            File f = new File(plugin.getDataFolder().getParentFile() + File.separator + args[1]);
+            File f = new File(this.plugin.getDataFolder().getParentFile() + File.separator + args[1]);
             if (!f.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That file does not exist!");
                 return true;
@@ -379,14 +379,14 @@ public class CmdPluginManager extends BaseCommand {
                 public void run() {
                     unregisterAllPluginCommands(p.getName());
                     HandlerList.unregisterAll(p);
-                    plugin.getServer().getScheduler().cancelTasks(p);
+                    CmdPluginManager.this.plugin.getServer().getScheduler().cancelTasks(p);
                     pm.disablePlugin(p);
                     removePluginFromList(p);
                     cs.sendMessage(MessageColor.POSITIVE + "Unloaded " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + ".");
                 }
             };
             cs.sendMessage(MessageColor.POSITIVE + "Unloading...");
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
+            this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, r);
             return true;
         } else if (subcmd.equalsIgnoreCase("update")) {
             if (!this.ah.isAuthorized(cs, "rcmds.pluginmanager.update")) {
@@ -415,7 +415,7 @@ public class CmdPluginManager extends BaseCommand {
                 cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
                 return true;
             }
-            final File f = new File(plugin.getDataFolder().getParentFile() + File.separator + args[2]);
+            final File f = new File(this.plugin.getDataFolder().getParentFile() + File.separator + args[2]);
             if (!f.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That file does not exist!");
                 return true;
@@ -430,7 +430,7 @@ public class CmdPluginManager extends BaseCommand {
                 public void run() {
                     unregisterAllPluginCommands(p.getName());
                     HandlerList.unregisterAll(p);
-                    plugin.getServer().getScheduler().cancelTasks(p);
+                    CmdPluginManager.this.plugin.getServer().getScheduler().cancelTasks(p);
                     pm.disablePlugin(p);
                     try {
                         Plugin loadedPlugin = pm.loadPlugin(f);
@@ -454,7 +454,7 @@ public class CmdPluginManager extends BaseCommand {
                     cs.sendMessage(MessageColor.POSITIVE + "Updated " + MessageColor.NEUTRAL + p.getName() + MessageColor.POSITIVE + " successfully.");
                 }
             };
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
+            this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, r);
             return true;
         } else if (subcmd.equalsIgnoreCase("reloadall")) {
             if (!this.ah.isAuthorized(cs, "rcmds.pluginmanager.reloadall")) {
@@ -471,7 +471,7 @@ public class CmdPluginManager extends BaseCommand {
                     cs.sendMessage(MessageColor.POSITIVE + "Reloaded all plugins!");
                 }
             };
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
+            this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, r);
             return true;
         } else if (subcmd.equalsIgnoreCase("list")) {
             if (!this.ah.isAuthorized(cs, "rcmds.pluginmanager.list")) {
@@ -636,7 +636,7 @@ public class CmdPluginManager extends BaseCommand {
                     else cs.sendMessage(MessageColor.NEGATIVE + "Could not download that plugin. Please try again.");
                 }
             };
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
             return true;
         } else if (subcmd.equalsIgnoreCase("downloadlink")) {
             if (!this.ah.isAuthorized(cs, "rcmds.pluginmanager.downloadlink")) {
@@ -659,7 +659,7 @@ public class CmdPluginManager extends BaseCommand {
                     else cs.sendMessage(MessageColor.NEGATIVE + "Could not download that plugin. Please try again.");
                 }
             };
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
             return true;
         } else if (subcmd.equalsIgnoreCase("updatecheckall")) {
             if (!this.ah.isAuthorized(cs, "rcmds.pluginmanager.updatecheckall")) {
@@ -684,7 +684,7 @@ public class CmdPluginManager extends BaseCommand {
                     cs.sendMessage(MessageColor.POSITIVE + "Finished checking for updates.");
                 }
             };
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
             return true;
         } else if (subcmd.equalsIgnoreCase("updatecheck")) {
             if (!this.ah.isAuthorized(cs, "rcmds.pluginmanager.updatecheck")) {
@@ -794,7 +794,7 @@ public class CmdPluginManager extends BaseCommand {
                     }
                 }
             };
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
             return true;
         } else if (subcmd.equalsIgnoreCase("delete")) {
             if (!this.ah.isAuthorized(cs, "rcmds.pluginmanager.delete")) {
@@ -814,7 +814,7 @@ public class CmdPluginManager extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please don't try to leave the plugins directory!");
                 return true;
             }
-            File f = new File(plugin.getDataFolder().getParentFile() + File.separator + toDelete);
+            File f = new File(this.plugin.getDataFolder().getParentFile() + File.separator + toDelete);
             if (!f.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such file!");
                 return true;

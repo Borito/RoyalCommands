@@ -28,8 +28,8 @@ public class CmdWarn extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer op = plugin.getServer().getPlayer(args[0]);
-        if (op == null) op = plugin.getServer().getOfflinePlayer(args[0]);
+        OfflinePlayer op = this.plugin.getServer().getPlayer(args[0]);
+        if (op == null) op = this.plugin.getServer().getOfflinePlayer(args[0]);
         PConfManager pcm = PConfManager.getPConfManager(op);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
@@ -51,7 +51,7 @@ public class CmdWarn extends BaseCommand {
         if (Config.warnActions != null && Config.warnActions.getKeys(true).contains(String.valueOf(warns.size())) && Config.warnActions.get(String.valueOf(warns.size())) != null) {
             try {
                 String action = Config.warnActions.getString(String.valueOf(warns.size())).substring(1).replace("{reason}", reason).replace("{player}", op.getName());
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), action);
+                this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), action);
             } catch (StringIndexOutOfBoundsException ignored) {
                 // catch OOBE, debug further later (no OOBE should happen here)
             }

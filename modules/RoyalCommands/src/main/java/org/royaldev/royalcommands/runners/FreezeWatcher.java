@@ -11,12 +11,12 @@ public class FreezeWatcher implements Runnable {
     private final RoyalCommands plugin;
 
     public FreezeWatcher(RoyalCommands instance) {
-        plugin = instance;
+        this.plugin = instance;
     }
 
     @Override
     public void run() {
-        List<World> ws = plugin.getServer().getWorlds();
+        List<World> ws = this.plugin.getServer().getWorlds();
         ConfManager cm = RoyalCommands.wm.getConfig();
         for (World w : ws) {
             boolean isFrozen = cm.getBoolean("worlds." + w.getName() + ".freezetime");

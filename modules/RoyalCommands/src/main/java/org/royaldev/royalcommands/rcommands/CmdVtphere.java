@@ -19,7 +19,7 @@ public class CmdVtphere extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Player t = plugin.getServer().getPlayer(args[0]);
+        Player t = this.plugin.getServer().getPlayer(args[0]);
         if (t == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;

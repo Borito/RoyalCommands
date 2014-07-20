@@ -45,7 +45,7 @@ public class CmdFindIP extends BaseCommand {
         final boolean partial = !isValid(ip);
         if (partial) cs.sendMessage(MessageColor.POSITIVE + "Checking for a partial IP address.");
         final DecimalFormat df = new DecimalFormat("00.00");
-        final OfflinePlayer[] offlinePlayers = plugin.getServer().getOfflinePlayers();
+        final OfflinePlayer[] offlinePlayers = this.plugin.getServer().getOfflinePlayers();
         if (offlinePlayers.length < 1) {
             cs.sendMessage(MessageColor.NEGATIVE + "No players have played to check IPs for!");
             return true;
@@ -82,7 +82,7 @@ public class CmdFindIP extends BaseCommand {
                 }
             }
         };
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, r);
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
         return true;
     }
 }

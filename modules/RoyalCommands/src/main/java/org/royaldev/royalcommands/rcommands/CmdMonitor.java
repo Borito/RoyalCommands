@@ -34,10 +34,10 @@ public class CmdMonitor extends BaseCommand {
         }
         Player p = (Player) cs;
         if (monitors.containsKey(p.getName())) {
-            Player m = plugin.getServer().getPlayer(monitors.get(p.getName()));
+            Player m = this.plugin.getServer().getPlayer(monitors.get(p.getName()));
             RUtils.silentTeleport(p, locs.get(p.getName()));
             if (m != null) p.showPlayer(m);
-            for (Player pl : plugin.getServer().getOnlinePlayers()) pl.showPlayer(p);
+            for (Player pl : this.plugin.getServer().getOnlinePlayers()) pl.showPlayer(p);
             viewees.remove(monitors.get(p.getName()));
             monitors.remove(p.getName());
             locs.remove(p.getName());
@@ -52,8 +52,8 @@ public class CmdMonitor extends BaseCommand {
         if (toWatch.equals("")) {
             cs.sendMessage(MessageColor.NEGATIVE + "Monitoring all players is not yet supported.");
         } else {
-            Player t = plugin.getServer().getPlayer(toWatch);
-            if (t == null || plugin.isVanished(t)) {
+            Player t = this.plugin.getServer().getPlayer(toWatch);
+            if (t == null || this.plugin.isVanished(t)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
@@ -68,7 +68,7 @@ public class CmdMonitor extends BaseCommand {
             monitors.put(p.getName(), t.getName());
             viewees.put(t.getName(), p.getName());
             cs.sendMessage(MessageColor.POSITIVE + "You are now monitoring " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
-            for (Player pl : plugin.getServer().getOnlinePlayers()) {
+            for (Player pl : this.plugin.getServer().getOnlinePlayers()) {
                 if (pl.equals(p)) continue;
                 pl.hidePlayer(p);
             }

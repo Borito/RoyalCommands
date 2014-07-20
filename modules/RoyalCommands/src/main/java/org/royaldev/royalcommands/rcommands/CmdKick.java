@@ -24,8 +24,8 @@ public class CmdKick extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Player t = plugin.getServer().getPlayer(args[0]);
-        if (t == null || plugin.isVanished(t, cs)) {
+        Player t = this.plugin.getServer().getPlayer(args[0]);
+        if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }
@@ -34,12 +34,12 @@ public class CmdKick extends BaseCommand {
             return true;
         }
         if (args.length == 1) {
-            plugin.getServer().broadcast(RUtils.getInGameMessage(Config.igKickFormat, Config.kickMessage, t, cs), "rcmds.see.kick");
+            this.plugin.getServer().broadcast(RUtils.getInGameMessage(Config.igKickFormat, Config.kickMessage, t, cs), "rcmds.see.kick");
             RUtils.kickPlayer(t, cs, Config.kickMessage);
             return true;
         } else if (args.length > 1) {
             String kickMessage = RUtils.colorize(RoyalCommands.getFinalArg(args, 1));
-            plugin.getServer().broadcast(RUtils.getInGameMessage(Config.igKickFormat, kickMessage, t, cs), "rcmds.see.kick");
+            this.plugin.getServer().broadcast(RUtils.getInGameMessage(Config.igKickFormat, kickMessage, t, cs), "rcmds.see.kick");
             RUtils.kickPlayer(t, cs, kickMessage);
             return true;
         }

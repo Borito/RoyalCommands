@@ -88,7 +88,7 @@ public class CmdGive extends CACommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final Player t = plugin.getServer().getPlayer(eargs[0]);
+        final Player t = this.plugin.getServer().getPlayer(eargs[0]);
         if (t == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
             return true;

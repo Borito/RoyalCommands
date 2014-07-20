@@ -17,7 +17,7 @@ public class CmdBanList extends BaseCommand {
 
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        final Set<OfflinePlayer> banList = plugin.getServer().getBannedPlayers();
+        final Set<OfflinePlayer> banList = this.plugin.getServer().getBannedPlayers();
         if (banList.isEmpty()) {
             cs.sendMessage(MessageColor.NEGATIVE + "There are no banned players!");
             return true;

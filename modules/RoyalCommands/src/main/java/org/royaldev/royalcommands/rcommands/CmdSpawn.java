@@ -67,7 +67,7 @@ public class CmdSpawn extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to spawn in other worlds.");
                 return true;
             }
-            w = plugin.getServer().getWorld(args[0]);
+            w = this.plugin.getServer().getWorld(args[0]);
             if (w == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                 return true;

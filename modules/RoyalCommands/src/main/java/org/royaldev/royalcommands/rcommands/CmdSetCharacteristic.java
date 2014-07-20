@@ -43,8 +43,8 @@ public class CmdSetCharacteristic extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Player p = plugin.getServer().getPlayer(args[0]);
-        if (p == null || plugin.isVanished(p, cs)) {
+        Player p = this.plugin.getServer().getPlayer(args[0]);
+        if (p == null || this.plugin.isVanished(p, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }

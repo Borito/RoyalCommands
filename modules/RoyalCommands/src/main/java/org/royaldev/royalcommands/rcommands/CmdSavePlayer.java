@@ -20,7 +20,7 @@ public class CmdSavePlayer extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final Player t = plugin.getServer().getPlayer(args[0]);
+        final Player t = this.plugin.getServer().getPlayer(args[0]);
         if (t == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
             return true;

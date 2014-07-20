@@ -22,12 +22,12 @@ public class CmdSeen extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = plugin.getServer().getOfflinePlayer(args[0]);
-        if (t.isOnline() && !plugin.isVanished((Player) t, cs)) {
+        final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
+        if (t.isOnline() && !this.plugin.isVanished((Player) t, cs)) {
             cs.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " was last seen " + MessageColor.NEUTRAL + "now" + MessageColor.POSITIVE + ".");
             return true;
         }
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        final PConfManager pcm = PConfManager.getPConfManager(t);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
             return true;
@@ -36,12 +36,12 @@ public class CmdSeen extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "I don't know when that player was last seen!");
             return true;
         }
-        long seen = pcm.getLong("seen");
+        final long seen = pcm.getLong("seen");
         if (seen < 1L) {
             cs.sendMessage(MessageColor.NEGATIVE + "I don't know when that player was last seen!");
             return true;
         }
-        String lastseen = RUtils.formatDateDiff(seen);
+        final String lastseen = RUtils.formatDateDiff(seen);
         cs.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " was last seen" + MessageColor.NEUTRAL + lastseen + MessageColor.POSITIVE + " ago.");
         return true;
     }
