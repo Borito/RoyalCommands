@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.apache.commons.lang.BooleanUtils;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,21 +13,20 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 // TODO: Mute message (-m)
 
 @ReflectCommand
-public class CmdMute extends BaseCommand {
+public class CmdMute extends CACommand {
 
     public CmdMute(final RoyalCommands instance, final String name) {
         super(instance, name, true);
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (args.length < 1) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+        if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = plugin.getServer().getPlayer(args[0]);
-        if (t == null) t = plugin.getServer().getOfflinePlayer(args[0]);
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        final OfflinePlayer t = RUtils.getOfflinePlayer(eargs[0]);
+        final PConfManager pcm = PConfManager.getPConfManager(t);
         if (!pcm.exists()) {
             if (!t.isOnline() && !t.hasPlayedBefore()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
@@ -43,24 +42,37 @@ public class CmdMute extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't mute that player!");
             return true;
         }
-        boolean isMuted = pcm.getBoolean("muted");
+        final boolean wasMuted = pcm.getBoolean("muted");
         long muteTime = 0L;
-        if (args.length > 1) muteTime = (long) RUtils.timeFormatToSeconds(args[1]);
+        if (eargs.length > 1) muteTime = (long) RUtils.timeFormatToSeconds(eargs[1]);
         if (muteTime < 0L) {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid time format!");
             return true;
         }
-        pcm.set("muted", !isMuted);
-        if (muteTime > 0L && !isMuted) pcm.set("mutetime", muteTime);
-        else if (isMuted) pcm.set("mutetime", null);
+        final String reason = RUtils.colorize(ca.getFlagString("r", "reason", "m", "msg", "message"));
+        pcm.set("muted", !wasMuted);
+        if (muteTime > 0L && !wasMuted) pcm.set("mutetime", muteTime);
+        else if (wasMuted) pcm.set("mutetime", null);
         pcm.set("mutedat", System.currentTimeMillis());
-        String timePeriod = (muteTime > 0L && !isMuted) ? " for " + MessageColor.NEUTRAL + RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1) : "";
-        cs.sendMessage(MessageColor.POSITIVE + "You have toggled mute " + MessageColor.NEUTRAL + BooleanUtils.toStringOnOff(!isMuted) + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + timePeriod + MessageColor.POSITIVE + ".");
+        FancyMessage fm = new FancyMessage("You have toggled mute ").color(MessageColor.POSITIVE._()).then(wasMuted ? "off" : "on").color(MessageColor.NEUTRAL._()).then(" for ").color(MessageColor.POSITIVE._()).then(t.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(t));
+        if (muteTime > 0L && !wasMuted) {
+            fm.then(" for ").color(MessageColor.POSITIVE._()).then(RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1)).color(MessageColor.NEUTRAL._());
+        }
+        if (!reason.isEmpty()) {
+            fm.then(" for ").color(MessageColor.POSITIVE._()).then(reason).color(MessageColor.NEUTRAL._());
+        }
+        fm.then(".").color(MessageColor.POSITIVE._());
+        fm.send(cs);
         if (t.isOnline()) {
-            if (!isMuted) // if is being muted
-                t.getPlayer().sendMessage(MessageColor.NEGATIVE + "You have been muted by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.NEGATIVE + timePeriod + MessageColor.NEGATIVE + ".");
-            else
-                t.getPlayer().sendMessage(MessageColor.POSITIVE + "You have been unmuted by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
+            fm = new FancyMessage("You have been ").color(MessageColor.POSITIVE._()).then(wasMuted ? "unmuted" : "muted").color(MessageColor.NEUTRAL._()).then(" by ").color(MessageColor.POSITIVE._()).then(cs.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(cs));
+            if (muteTime > 0L && !wasMuted) {
+                fm.then(" for ").color(MessageColor.POSITIVE._()).then(RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1)).color(MessageColor.NEUTRAL._());
+            }
+            if (!reason.isEmpty()) {
+                fm.then(" for ").color(MessageColor.POSITIVE._()).then(reason).color(MessageColor.NEUTRAL._());
+            }
+            fm.then(".").color(MessageColor.POSITIVE._());
+            fm.send(t.getPlayer());
         }
         return true;
     }
