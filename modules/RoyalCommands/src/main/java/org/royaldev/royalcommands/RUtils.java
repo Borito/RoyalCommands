@@ -942,8 +942,7 @@ public class RUtils {
      * @return true or false
      */
     public static boolean isTeleportAllowed(OfflinePlayer p) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
-        return pcm.get("allow-tp") == null || pcm.getBoolean("allow-tp");
+        return PConfManager.getPConfManager(p).getBoolean("allow_tp", true);
     }
 
     /**

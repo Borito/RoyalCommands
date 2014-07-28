@@ -22,12 +22,12 @@ public class CmdTeleportToggle extends BaseCommand {
         }
         Player p = (Player) cs;
         PConfManager pcm = PConfManager.getPConfManager(p);
-        if (pcm.getBoolean("allow-tp")) {
-            pcm.set("allow-tp", false);
+        if (pcm.getBoolean("allow_tp")) {
+            pcm.set("allow_tp", false);
             cs.sendMessage(MessageColor.POSITIVE + "Disabled teleportation.");
             return true;
         }
-        pcm.set("allow-tp", true);
+        pcm.set("allow_tp", true);
         cs.sendMessage(MessageColor.POSITIVE + "Enabled teleportation.");
         return true;
     }

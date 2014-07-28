@@ -541,7 +541,7 @@ public class RoyalCommandsPlayerListener implements Listener {
             pcm.set("dispname", dispname);
             pcm.set("ip", event.getPlayer().getAddress().getAddress().toString().replace("/", ""));
             pcm.set("banreason", "");
-            pcm.set("allow-tp", true);
+            pcm.set("allow_tp", true);
             if (Config.stsNew)
                 RUtils.silentTeleport(event.getPlayer(), CmdSpawn.getWorldSpawn(event.getPlayer().getWorld()));
             pcm.setFirstJoin(false);
