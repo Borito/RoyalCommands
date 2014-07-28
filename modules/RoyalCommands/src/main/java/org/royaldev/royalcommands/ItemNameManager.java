@@ -3,8 +3,11 @@ package org.royaldev.royalcommands;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.tools.Pair;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -83,35 +86,18 @@ public class ItemNameManager {
         return is;
     }
 
-    private class Pair<T, U> {
-        private final T first;
-        private final U second;
-
-        private Pair(T first, U second) {
-            this.first = first;
-            this.second = second;
+    public List<String> getPossibleNames(String incompleteName) {
+        incompleteName = incompleteName.toLowerCase();
+        final List<String> possibleNames = new ArrayList<>();
+        for (final String possible[] : items.keySet()) {
+            for (String possibleName : possible) {
+                possibleName = possibleName.toLowerCase();
+                if (!possibleName.startsWith(incompleteName)) continue;
+                if (possibleName.equals(incompleteName)) possibleNames.add(0, possibleName);
+                else possibleNames.add(possibleName);
+            }
         }
-
-        public T getFirst() {
-            return this.first;
-        }
-
-        public U getSecond() {
-            return this.second;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == this) return true;
-            if (!(o instanceof Pair)) return false;
-            final Pair<?, ?> other = (Pair<?, ?>) o;
-            return this.getFirst().equals(other.getFirst()) && this.getSecond().equals(other.getSecond());
-        }
-
-        @Override
-        public String toString() {
-            return String.format("Pair<%s, %s>", this.getFirst().toString(), this.getSecond().toString());
-        }
+        return possibleNames;
     }
 
 }
