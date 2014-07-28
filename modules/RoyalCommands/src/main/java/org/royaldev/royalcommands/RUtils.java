@@ -1485,21 +1485,33 @@ public class RUtils {
         return tooltip.isEmpty() ? null : tooltip;
     }
 
-    public static FancyMessage addCommandTo(FancyMessage fm, String command) {
+    public static void setFields(Object o, String[] fields, Object... values) throws ReflectiveOperationException {
+        try {
+            for (int index = 0; index < fields.length; index++) {
+                final String field = fields[index];
+                final Field f = o.getClass().getDeclaredField(field);
+                f.setAccessible(true);
+                f.set(o, values[index]);
+            }
+        } catch (ReflectiveOperationException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static FancyMessage addDataTo(FancyMessage fm, String[] fields, Object... values) {
         final Iterator i = fm.iterator();
         for (final Object o : fm) {
             try {
-                final Field can = o.getClass().getDeclaredField("clickActionName");
-                final Field cad = o.getClass().getDeclaredField("clickActionData");
-                can.setAccessible(true);
-                cad.setAccessible(true);
-                can.set(o, "run_command");
-                cad.set(o, command);
+                RUtils.setFields(o, fields, values);
             } catch (ReflectiveOperationException ex) {
                 ex.printStackTrace();
                 return fm;
             }
         }
         return fm;
+    }
+
+    public static FancyMessage addCommandTo(FancyMessage fm, String command) {
+        return RUtils.addDataTo(fm, new String[]{"clickActionName", "clickActionData"}, "run_command", command);
     }
 }

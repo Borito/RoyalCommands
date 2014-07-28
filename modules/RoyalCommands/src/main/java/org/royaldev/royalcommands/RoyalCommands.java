@@ -17,7 +17,6 @@
  */
 package org.royaldev.royalcommands;
 
-import com.google.common.io.PatternFilenameFilter;
 import com.griefcraft.lwc.LWCPlugin;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.Bukkit;
@@ -65,6 +64,7 @@ import org.royaldev.royalcommands.spawninfo.ItemListener;
 import org.royaldev.royalcommands.tools.UUIDFetcher;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

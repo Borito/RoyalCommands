@@ -28,8 +28,7 @@ public class CmdWhois extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = this.plugin.getServer().getPlayer(args[0]);
-        if (t == null) t = this.plugin.getServer().getOfflinePlayer(args[0]);
+        final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
         if (!t.isOnline() && !t.hasPlayedBefore()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
             return true;

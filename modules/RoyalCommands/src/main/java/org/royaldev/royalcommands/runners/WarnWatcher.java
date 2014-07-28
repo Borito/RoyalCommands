@@ -6,8 +6,9 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+// TODO: Check when warns updated/queried, not in a runnable
 
 public class WarnWatcher implements Runnable {
 
@@ -37,7 +38,7 @@ public class WarnWatcher implements Runnable {
                 } catch (NumberFormatException e) {
                     continue;
                 }
-                long currentTime = new Date().getTime();
+                long currentTime = System.currentTimeMillis();
                 long timeExpires = timeSet + (Config.warnExpireTime * 1000);
                 if (timeExpires <= currentTime) warnsToRemove.add(s);
             }

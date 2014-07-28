@@ -53,7 +53,7 @@ public class PConfManager extends GeneralConfManager {
     }
 
     public static PConfManager getPConfManager(OfflinePlayer p) {
-        return getPConfManager(p.getUniqueId());
+        return PConfManager.getPConfManager(p.getUniqueId());
     }
 
     public static PConfManager getPConfManager(UUID u) {
@@ -66,7 +66,7 @@ public class PConfManager extends GeneralConfManager {
     }
 
     public static boolean isManagerCreated(OfflinePlayer p) {
-        return isManagerCreated(p.getUniqueId());
+        return PConfManager.isManagerCreated(p.getUniqueId());
     }
 
     public static boolean isManagerCreated(UUID u) {
