@@ -9,95 +9,90 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdWeather extends BaseCommand {
+public class CmdWeather extends TabCommand {
 
     public CmdWeather(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Integer[]{CompletionType.ENUM.getInt()});
     }
 
-    public static boolean changeWeather(Player p, String conds) {
+    public static boolean changeWeather(Player p, WeatherType wt) {
+        return CmdWeather.changeWeather(p, wt, null);
+    }
+
+    public static boolean changeWeather(Player p, WeatherType wt, Integer length) {
+        if (wt == null) {
+            p.sendMessage(MessageColor.NEGATIVE + "Invalid condition!");
+            return false;
+        }
+        if (length != null && length < 1) {
+            p.sendMessage(MessageColor.NEGATIVE + "The time specified was invalid!");
+            return false;
+        }
         World world = p.getWorld();
         String wName = RUtils.getMVWorldName(world);
-        if (conds.toLowerCase().trim().startsWith("sun")) {
-            world.setStorm(false);
-            world.setThundering(false);
-            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "sun" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + ".");
-            return true;
-        } else if (conds.toLowerCase().startsWith("rain")) {
-            world.setStorm(true);
-            world.setThundering(false);
-            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "rain" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + ".");
-            return true;
-        } else if (conds.toLowerCase().startsWith("storm")) {
-            world.setStorm(true);
-            world.setThundering(true);
-            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "storm" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + ".");
-            return true;
-        }
-        return false;
+        world.setStorm(wt.isStorm());
+        world.setThundering(wt.isThundering());
+        if (length != null) world.setWeatherDuration(length);
+        p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(wt) + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + ".");
+        return true;
     }
 
     public static boolean validWeather(String conds) {
         return conds.toLowerCase().startsWith("sun") || conds.toLowerCase().startsWith("rain") || conds.toLowerCase().startsWith("storm");
     }
 
-    public static boolean changeWeather(Player p, String conds, int length) {
-        if (length < 1) {
-            p.sendMessage(MessageColor.NEGATIVE + "The time specified was invalid!");
-            return false;
-        }
-        World world = p.getWorld();
-        String wName = RUtils.getMVWorldName(world);
-        if (conds.toLowerCase().trim().startsWith("sun")) {
-            world.setStorm(false);
-            world.setThundering(false);
-            world.setWeatherDuration(length * 20);
-            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "sun" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + length + MessageColor.POSITIVE + " seconds.");
-            return true;
-        } else if (conds.toLowerCase().startsWith("rain")) {
-            world.setStorm(true);
-            world.setThundering(false);
-            world.setWeatherDuration(length * 20);
-            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "rain" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + length + MessageColor.POSITIVE + " seconds.");
-            return true;
-        } else if (conds.toLowerCase().startsWith("storm")) {
-            world.setStorm(true);
-            world.setThundering(true);
-            world.setWeatherDuration(length * 20);
-            p.sendMessage(MessageColor.POSITIVE + "Set weather to " + MessageColor.NEUTRAL + "storm" + MessageColor.POSITIVE + " in " + MessageColor.NEUTRAL + wName + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + length + MessageColor.POSITIVE + " seconds.");
-            return true;
-        } else {
-            p.sendMessage(MessageColor.NEGATIVE + "Invalid condition!");
-            return false;
-        }
+    @Override
+    public Enum[] customEnum(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+        return WeatherType.values();
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (args.length < 1) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+        if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        if (args.length == 1) {
-            Player p = (Player) cs;
-            changeWeather(p, args[0]);
-            return true;
-        } else if (args.length > 1) {
-            Player p = (Player) cs;
-            String conds = args[0];
-            int length = RUtils.timeFormatToSeconds(args[1]);
-            if (length <= 0) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Invalid time specified.");
-                return true;
-            }
-            changeWeather(p, conds, length);
+        Player p = (Player) cs;
+        String conds = eargs[0];
+        Integer length = eargs.length > 1 ? RUtils.timeFormatToSeconds(eargs[1]) : null;
+        if (length != null && length <= 0) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Invalid time specified.");
             return true;
         }
+        CmdWeather.changeWeather(p, WeatherType.getWeatherType(conds), length);
         return true;
+    }
+
+    public enum WeatherType {
+        CLEAR(false, false),
+        RAIN(true, false),
+        STORM(true, true);
+
+        private final boolean storm, thundering;
+
+        private WeatherType(boolean storm, boolean thundering) {
+            this.storm = storm;
+            this.thundering = thundering;
+        }
+
+        public static WeatherType getWeatherType(String s) {
+            s = s.toLowerCase();
+            if (s.startsWith("clear") || s.startsWith("sun")) return WeatherType.CLEAR;
+            else if (s.startsWith("rain")) return WeatherType.RAIN;
+            else if (s.startsWith("storm")) return WeatherType.STORM;
+            return null;
+        }
+
+        public boolean isStorm() {
+            return this.storm;
+        }
+
+        public boolean isThundering() {
+            return this.thundering;
+        }
     }
 }

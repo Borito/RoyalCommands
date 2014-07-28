@@ -17,6 +17,7 @@ import org.royaldev.royalcommands.rcommands.CmdGive;
 import org.royaldev.royalcommands.rcommands.CmdTime;
 import org.royaldev.royalcommands.rcommands.CmdWarp;
 import org.royaldev.royalcommands.rcommands.CmdWeather;
+import org.royaldev.royalcommands.rcommands.CmdWeather.WeatherType;
 
 // This code is so ancient... It *really* needs a rewrite.
 // TODO: Rewrite
@@ -198,7 +199,7 @@ public class SignListener implements Listener {
                 boolean did = RUtils.chargePlayer(p, charge);
                 if (!did) return;
             }
-            CmdWeather.changeWeather(p, line2.trim());
+            CmdWeather.changeWeather(p, WeatherType.getWeatherType(line2.trim()));
         }
 
         //Give signs

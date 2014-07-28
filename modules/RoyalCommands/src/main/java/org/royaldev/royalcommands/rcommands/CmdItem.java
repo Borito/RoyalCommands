@@ -18,10 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 
 @ReflectCommand
-public class CmdItem extends CACommand {
+public class CmdItem extends TabCommand {
 
     public CmdItem(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Integer[]{CompletionType.ITEM_ALIAS.getInt()});
     }
 
     static ItemStack applyMeta(ItemStack is, CommandArguments ca, CommandSender cs) {

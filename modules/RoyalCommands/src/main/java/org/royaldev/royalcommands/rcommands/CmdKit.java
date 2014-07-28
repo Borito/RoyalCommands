@@ -18,17 +18,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// TODO: Fix one-time kits
+
 @ReflectCommand
-public class CmdKit extends BaseCommand {
+public class CmdKit extends TabCommand {
 
     public CmdKit(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Integer[]{CompletionType.LIST.getInt()});
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+        final List<String> kits = new ArrayList<>();
+        final FileConfiguration c = this.plugin.getConfig();
+        if (!c.isSet("kits") || !c.isSet("kits.list")) return kits;
+        for (final String kit : c.getConfigurationSection("kits.list").getKeys(false)) {
+            if (Config.kitPerms && !this.ah.isAuthorized(cs, "rcmds.kit." + kit)) continue;
+            kits.add(kit);
+        }
+        return kits;
+    }
+
+    @Override
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
         if (cmd.getName().equals("kit")) {
-            if (args.length < 1) {
+            if (eargs.length < 1) {
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
@@ -43,7 +57,7 @@ public class CmdKit extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "No kits defined!");
                 return true;
             }
-            String kitname = args[0];
+            String kitname = eargs[0];
             if (!c.isSet("kits.list." + kitname)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That kit does not exist!");
                 return true;

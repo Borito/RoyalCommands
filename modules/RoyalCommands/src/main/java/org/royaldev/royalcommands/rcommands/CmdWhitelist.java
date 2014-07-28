@@ -6,11 +6,19 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
+import java.util.Arrays;
+import java.util.List;
+
 @ReflectCommand
-public class CmdWhitelist extends BaseCommand {
+public class CmdWhitelist extends TabCommand {
 
     public CmdWhitelist(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Integer[]{CompletionType.LIST.getInt(), CompletionType.ONLINE_PLAYER.getInt()});
+    }
+
+    @Override
+    public List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+        return Arrays.asList("add", "remove", "check");
     }
 
     public void reloadWhitelist() {
@@ -18,21 +26,21 @@ public class CmdWhitelist extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
         if (this.plugin.whl == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "The whitelist.yml file was invalid! Cannot use whitelist.");
             return true;
         }
-        if (args.length < 1) {
+        if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        String command = args[0];
-        if (args.length < 2) {
+        String command = eargs[0];
+        if (eargs.length < 2) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        String player = args[1];
+        String player = eargs[1];
         if (command.equalsIgnoreCase("add")) {
             if (Config.whitelist.contains(player)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player is already whitelisted!");

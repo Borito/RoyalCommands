@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.Map;
 
 @ReflectCommand
-public class CmdRecipe extends BaseCommand {
+public class CmdRecipe extends TabCommand {
     private final Map<String, Integer> tasks = new HashMap<>();
 
     public CmdRecipe(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Integer[]{CompletionType.ITEM_ALIAS.getInt()});
         this.plugin.getServer().getPluginManager().registerEvents(new WorkbenchCloseListener(), this.plugin);
     }
 
@@ -42,8 +42,8 @@ public class CmdRecipe extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (args.length < 1) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+        if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
@@ -54,9 +54,9 @@ public class CmdRecipe extends BaseCommand {
         final Player p = (Player) cs;
         ItemStack is;
         try {
-            is = RUtils.getItemFromAlias(args[0], 1);
+            is = RUtils.getItemFromAlias(eargs[0], 1);
         } catch (InvalidItemNameException e) {
-            is = RUtils.getItem(args[0], 1);
+            is = RUtils.getItem(eargs[0], 1);
         } catch (NullPointerException e) {
             cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
             return true;
@@ -142,6 +142,16 @@ public class CmdRecipe extends BaseCommand {
     }
 
     private class WorkbenchCloseListener implements Listener {
+        @EventHandler(ignoreCancelled = true)
+        public void workbenchClick(InventoryClickEvent e) {
+            if (!(e.getWhoClicked() instanceof Player)) return;
+            final Player p = (Player) e.getWhoClicked();
+            final InventoryType it = e.getInventory().getType();
+            if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
+            if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
+            e.setCancelled(true);
+        }
+
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
         public void workbenchClose(InventoryCloseEvent e) {
             if (!(e.getPlayer() instanceof Player)) return;
@@ -154,16 +164,6 @@ public class CmdRecipe extends BaseCommand {
             if (taskID == -1) return;
             CmdRecipe.this.plugin.getServer().getScheduler().cancelTask(taskID);
             CmdRecipe.this.tasks.remove(p.getName());
-        }
-
-        @EventHandler(ignoreCancelled = true)
-        public void workbenchClick(InventoryClickEvent e) {
-            if (!(e.getWhoClicked() instanceof Player)) return;
-            final Player p = (Player) e.getWhoClicked();
-            final InventoryType it = e.getInventory().getType();
-            if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
-            if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
-            e.setCancelled(true);
         }
     }
 }

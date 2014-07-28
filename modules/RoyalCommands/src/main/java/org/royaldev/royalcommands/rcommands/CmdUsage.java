@@ -8,19 +8,19 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdUsage extends BaseCommand {
+public class CmdUsage extends TabCommand {
 
     public CmdUsage(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Integer[]{CompletionType.ANY_COMMAND.getInt()});
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (args.length < 1) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+        if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Command c = RUtils.getCommand(args[0]);
+        final Command c = RUtils.getCommand(eargs[0]);
         if (c == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such command!");
             return true;

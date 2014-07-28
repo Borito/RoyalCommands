@@ -15,15 +15,10 @@ import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import java.util.HashMap;
 
 @ReflectCommand
-public class CmdGive extends CACommand {
+public class CmdGive extends TabCommand {
 
     public CmdGive(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
-    }
-
-    public static boolean validItem(String itemname) {
-        ItemStack stack = RUtils.getItem(itemname, null);
-        return stack != null;
+        super(instance, name, true, new Integer[]{CompletionType.ONLINE_PLAYER.getInt(), CompletionType.ITEM_ALIAS.getInt()});
     }
 
     public static boolean giveItemStandalone(CommandSender cs, Player target, String itemname, int amount) {
@@ -80,6 +75,11 @@ public class CmdGive extends CACommand {
             }
         }
         return true;
+    }
+
+    public static boolean validItem(String itemname) {
+        ItemStack stack = RUtils.getItem(itemname, null);
+        return stack != null;
     }
 
     @Override

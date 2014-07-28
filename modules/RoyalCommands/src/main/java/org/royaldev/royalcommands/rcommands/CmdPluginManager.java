@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import com.google.common.io.Files;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -38,6 +39,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,47 +49,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @ReflectCommand
-public class CmdPluginManager extends BaseCommand {
+public class CmdPluginManager extends TabCommand {
 
     public CmdPluginManager(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
-    }
-
-    private void unregisterAllPluginCommands(String pluginName) {
-        try {
-            Object result = RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "commandMap");
-            SimpleCommandMap commandMap = (SimpleCommandMap) result;
-            Object map = RUtils.getPrivateField(commandMap, "knownCommands");
-            @SuppressWarnings("unchecked") HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
-            final List<Command> commands = new ArrayList<>(commandMap.getCommands());
-            for (Command c : commands) {
-                if (!(c instanceof PluginCommand)) continue;
-                final PluginCommand pc = (PluginCommand) c;
-                if (!pc.getPlugin().getName().equals(pluginName)) continue;
-                knownCommands.remove(pc.getName());
-                for (String alias : pc.getAliases()) {
-                    if (knownCommands.containsKey(alias)) {
-                        final Command ac = knownCommands.get(alias);
-                        if (!(ac instanceof PluginCommand)) continue;
-                        final PluginCommand apc = (PluginCommand) ac;
-                        if (!apc.getPlugin().getName().equals(pluginName)) continue;
-                        knownCommands.remove(alias);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void removePluginFromList(Plugin p) {
-        try {
-            @SuppressWarnings("unchecked")
-            final List<Plugin> plugins = (List<Plugin>) RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "plugins");
-            plugins.remove(p);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        super(instance, name, true, new Integer[]{CompletionType.LIST.getInt(), CompletionType.LIST.getInt()});
     }
 
     private boolean downloadAndMovePlugin(String url, String saveAs, boolean recursive, CommandSender cs) {
@@ -157,16 +122,14 @@ public class CmdPluginManager extends BaseCommand {
         return true;
     }
 
-    /**
-     * Gets the names of all plugins that depend on the specified plugin.
-     * <p/>
-     * This will not return plugins that are disabled.
-     *
-     * @param dep Plugin to find dependencies of
-     * @return List of dependencies, may be empty - never null
-     */
-    private List<String> getDependedOnBy(Plugin dep) {
-        return getDependedOnBy(dep.getName());
+    private String getCustomTag(String name) {
+        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("pluginmanager.custom_tags");
+        if (cs == null) return null;
+        for (String key : cs.getKeys(false)) {
+            if (!key.equalsIgnoreCase(name)) continue;
+            return cs.getString(key);
+        }
+        return null;
     }
 
     /**
@@ -191,53 +154,104 @@ public class CmdPluginManager extends BaseCommand {
         return dependedOnBy;
     }
 
-    private String getCustomTag(String name) {
-        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("pluginmanager.custom_tags");
-        if (cs == null) return null;
-        for (String key : cs.getKeys(false)) {
-            if (!key.equalsIgnoreCase(name)) continue;
-            return cs.getString(key);
-        }
-        return null;
+    /**
+     * Gets the names of all plugins that depend on the specified plugin.
+     * <p/>
+     * This will not return plugins that are disabled.
+     *
+     * @param dep Plugin to find dependencies of
+     * @return List of dependencies, may be empty - never null
+     */
+    private List<String> getDependedOnBy(Plugin dep) {
+        return getDependedOnBy(dep.getName());
     }
 
-    public String updateCheck(String name, String currentVersion) throws Exception {
-        String tag = getCustomTag(name);
-        if (tag == null) tag = name.toLowerCase();
-        String pluginUrlString = "http://dev.bukkit.org/bukkit-plugins/" + tag + "/files.rss";
-        URL url = new URL(pluginUrlString);
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
-        doc.getDocumentElement().normalize();
-        NodeList nodes = doc.getElementsByTagName("item");
-        Node firstNode = nodes.item(0);
-        if (firstNode.getNodeType() == 1) {
-            Element firstElement = (Element) firstNode;
-            NodeList firstElementTagName = firstElement.getElementsByTagName("title");
-            Element firstNameElement = (Element) firstElementTagName.item(0);
-            NodeList firstNodes = firstNameElement.getChildNodes();
-            return firstNodes.item(0).getNodeValue();
+    private List<String> getMatchingJarNames(String arg) {
+        final List<String> completions = new ArrayList<>();
+        for (final String name : this.plugin.getDataFolder().getParentFile().list()) {
+            final String lowerCase = name.toLowerCase();
+            if (!lowerCase.endsWith(".jar") || !lowerCase.startsWith(arg)) continue;
+            completions.add(lowerCase.equals(arg) ? 0 : completions.size(), name);
         }
-        return currentVersion;
+        return completions;
+    }
+
+    private void removePluginFromList(Plugin p) {
+        try {
+            @SuppressWarnings("unchecked")
+            final List<Plugin> plugins = (List<Plugin>) RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "plugins");
+            plugins.remove(p);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void unregisterAllPluginCommands(String pluginName) {
+        try {
+            Object result = RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "commandMap");
+            SimpleCommandMap commandMap = (SimpleCommandMap) result;
+            Object map = RUtils.getPrivateField(commandMap, "knownCommands");
+            @SuppressWarnings("unchecked") HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
+            final List<Command> commands = new ArrayList<>(commandMap.getCommands());
+            for (Command c : commands) {
+                if (!(c instanceof PluginCommand)) continue;
+                final PluginCommand pc = (PluginCommand) c;
+                if (!pc.getPlugin().getName().equals(pluginName)) continue;
+                knownCommands.remove(pc.getName());
+                for (String alias : pc.getAliases()) {
+                    if (knownCommands.containsKey(alias)) {
+                        final Command ac = knownCommands.get(alias);
+                        if (!(ac instanceof PluginCommand)) continue;
+                        final PluginCommand apc = (PluginCommand) ac;
+                        if (!apc.getPlugin().getName().equals(pluginName)) continue;
+                        knownCommands.remove(alias);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, Command cmd, String label, String[] args) {
-        if (args.length < 1) {
+    public List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+        arg = arg.toLowerCase();
+        final List<String> completions = new ArrayList<>();
+        if (args.length < 1) return completions;
+        else if (args.length == 1) {
+            return Arrays.asList("load", "unload", "disable", "enable", "reload", "reloadall", "delete", "update", "commands", "list", "info", "updatecheck", "updatecheckall", "download", "downloadlink", "findtag");
+        } else if (args.length == 2) {
+            if (ArrayUtils.contains(new String[]{"unload", "disable", "enable", "reload", "update", "commands", "info", "updatecheck"}, args[0])) {
+                completions.addAll(this.getPluginCompletions(arg));
+            } else if (args[0].equals("load") || args[0].equals("delete")) {
+                completions.addAll(this.getMatchingJarNames(arg));
+            }
+        } else if (args.length == 3) {
+            if (args[1].equals("update")) {
+                completions.addAll(this.getMatchingJarNames(arg));
+            }
+        }
+        return completions;
+    }
+
+    @Override
+    public boolean runCommand(final CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+        if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        String subcmd = args[0];
+        String subcmd = eargs[0];
         final PluginManager pm = this.plugin.getServer().getPluginManager();
         if (subcmd.equalsIgnoreCase("load")) {
             if (!this.ah.isAuthorized(cs, "rcmds.pluginmanager.load")) {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the jar to load!");
                 return true;
             }
-            File f = new File(this.plugin.getDataFolder().getParentFile() + File.separator + args[1]);
+            File f = new File(this.plugin.getDataFolder().getParentFile(), eargs[1]);
             if (!f.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That file does not exist!");
                 return true;
@@ -275,11 +289,11 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to disable!");
                 return true;
             }
-            Plugin p = pm.getPlugin(args[1]);
+            Plugin p = pm.getPlugin(eargs[1]);
             if (p == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                 return true;
@@ -310,11 +324,11 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to enable!");
                 return true;
             }
-            Plugin p = pm.getPlugin(args[1]);
+            Plugin p = pm.getPlugin(eargs[1]);
             if (p == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                 return true;
@@ -334,11 +348,11 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to reload!");
                 return true;
             }
-            Plugin p = pm.getPlugin(args[1]);
+            Plugin p = pm.getPlugin(eargs[1]);
             if (p == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                 return true;
@@ -352,11 +366,11 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to unload!");
                 return true;
             }
-            final Plugin p = pm.getPlugin(args[1]);
+            final Plugin p = pm.getPlugin(eargs[1]);
             if (p == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                 return true;
@@ -393,11 +407,11 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 3) {
+            if (eargs.length < 3) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin to update and its filename!");
                 return true;
             }
-            final Plugin p = pm.getPlugin(args[1]);
+            final Plugin p = pm.getPlugin(eargs[1]);
             if (p == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                 return true;
@@ -415,7 +429,7 @@ public class CmdPluginManager extends BaseCommand {
                 cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
                 return true;
             }
-            final File f = new File(this.plugin.getDataFolder().getParentFile() + File.separator + args[2]);
+            final File f = new File(this.plugin.getDataFolder().getParentFile() + File.separator + eargs[2]);
             if (!f.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That file does not exist!");
                 return true;
@@ -500,11 +514,11 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin!");
                 return true;
             }
-            Plugin p = pm.getPlugin(args[1]);
+            Plugin p = pm.getPlugin(eargs[1]);
             if (p == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                 return true;
@@ -542,11 +556,11 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin!");
                 return true;
             }
-            Plugin p = pm.getPlugin(args[1]);
+            Plugin p = pm.getPlugin(eargs[1]);
             if (p == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                 return true;
@@ -591,14 +605,14 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide plugin tag!");
                 cs.sendMessage(MessageColor.NEGATIVE + "http://dev.bukkit.org/server-mods/" + MessageColor.NEUTRAL + "royalcommands" + MessageColor.NEGATIVE + "/");
                 return true;
             }
-            final boolean recursive = args.length > 2 && args[2].equalsIgnoreCase("true");
-            String customTag = getCustomTag(args[1]);
-            final String tag = (customTag == null) ? args[1].toLowerCase() : customTag;
+            final boolean recursive = eargs.length > 2 && eargs[2].equalsIgnoreCase("true");
+            String customTag = getCustomTag(eargs[1]);
+            final String tag = (customTag == null) ? eargs[1].toLowerCase() : customTag;
             final String commandUsed = label;
             Runnable r = new Runnable() {
                 @Override
@@ -643,14 +657,14 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide a link to download from!");
                 return true;
             }
-            final boolean recursive = args.length > 3 && args[3].equalsIgnoreCase("true");
-            final String url = args[1];
+            final boolean recursive = eargs.length > 3 && eargs[3].equalsIgnoreCase("true");
+            final String url = eargs[1];
             final String commandUsed = label;
-            final String saveAs = args.length > 2 ? args[2].replaceAll("(\\\\|/)", "") : "";
+            final String saveAs = eargs.length > 2 ? eargs[2].replaceAll("(\\\\|/)", "") : "";
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
@@ -691,16 +705,16 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please provide the name of the plugin!");
                 return true;
             }
-            Plugin p = pm.getPlugin(args[1]);
+            Plugin p = pm.getPlugin(eargs[1]);
             if (p == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such plugin!");
                 return true;
             }
-            String tag = (args.length > 2) ? RoyalCommands.getFinalArg(args, 2) : p.getName();
+            String tag = (eargs.length > 2) ? RoyalCommands.getFinalArg(eargs, 2) : p.getName();
             try {
                 tag = URLEncoder.encode(tag, "UTF-8");
             } catch (UnsupportedEncodingException e) {
@@ -728,21 +742,21 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please specify a search term!");
                 return true;
             }
             int page = 1;
-            if (args.length > 2) {
+            if (eargs.length > 2) {
                 try {
-                    page = Integer.parseInt(args[args.length - 1]);
+                    page = Integer.parseInt(eargs[eargs.length - 1]);
                 } catch (NumberFormatException ignored) {
                     page = 1;
                 }
             }
             final String search;
             try {
-                search = URLEncoder.encode(RoyalCommands.getFinalArg(args, 1), "UTF-8");
+                search = URLEncoder.encode(RoyalCommands.getFinalArg(eargs, 1), "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Tell the developer enc1.");
                 return true;
@@ -801,11 +815,11 @@ public class CmdPluginManager extends BaseCommand {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 2) {
+            if (eargs.length < 2) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please specify the filename to delete!");
                 return true;
             }
-            String toDelete = args[1];
+            String toDelete = eargs[1];
             if (!toDelete.endsWith(".jar")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Please only specify jar files!");
                 return true;
@@ -830,5 +844,24 @@ public class CmdPluginManager extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "Try " + MessageColor.NEUTRAL + "/" + label + " help");
             return true;
         }
+    }
+
+    public String updateCheck(String name, String currentVersion) throws Exception {
+        String tag = getCustomTag(name);
+        if (tag == null) tag = name.toLowerCase();
+        String pluginUrlString = "http://dev.bukkit.org/bukkit-plugins/" + tag + "/files.rss";
+        URL url = new URL(pluginUrlString);
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
+        doc.getDocumentElement().normalize();
+        NodeList nodes = doc.getElementsByTagName("item");
+        Node firstNode = nodes.item(0);
+        if (firstNode.getNodeType() == 1) {
+            Element firstElement = (Element) firstNode;
+            NodeList firstElementTagName = firstElement.getElementsByTagName("title");
+            Element firstNameElement = (Element) firstElementTagName.item(0);
+            NodeList firstNodes = firstNameElement.getChildNodes();
+            return firstNodes.item(0).getNodeValue();
+        }
+        return currentVersion;
     }
 }
