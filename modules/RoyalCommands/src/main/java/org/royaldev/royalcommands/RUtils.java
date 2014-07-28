@@ -72,112 +72,86 @@ public class RUtils {
     private final static Map<String, Integer> teleRunners = new HashMap<>();
     private final static List<String> teleAllowed = new ArrayList<>();
 
-    /**
-     * Wraps text to fit evenly in the chat box
-     *
-     * @param text Text to wrap
-     * @param len  Length to wrap at
-     * @return Array of strings
-     */
-    @SuppressWarnings("unchecked")
-    public static String[] wrapText(String text, int len) {
-        // return empty array for null text
-        if (text == null) return new String[]{};
-        // return text if len is zero or less
-        if (len <= 0) return new String[]{text};
-        // return text if less than length
-        if (text.length() <= len) return new String[]{text};
-        char[] chars = text.toCharArray();
-        java.util.Vector lines = new java.util.Vector();
-        StringBuilder line = new StringBuilder();
-        StringBuilder word = new StringBuilder();
-        for (char aChar : chars) {
-            word.append(aChar);
-            if (aChar == ' ') {
-                if ((line.length() + word.length()) > len) {
-                    lines.add(line.toString());
-                    line.delete(0, line.length());
-                }
-                line.append(word);
-                word.delete(0, word.length());
+    public static FancyMessage addCommandTo(FancyMessage fm, String command) {
+        return RUtils.addDataTo(fm, new String[]{"clickActionName", "clickActionData"}, "run_command", command);
+    }
+
+    public static FancyMessage addDataTo(FancyMessage fm, String[] fields, Object... values) {
+        final Iterator i = fm.iterator();
+        for (final Object o : fm) {
+            try {
+                RUtils.setFields(o, fields, values);
+            } catch (ReflectiveOperationException ex) {
+                ex.printStackTrace();
+                return fm;
             }
         }
-        // handle any extra chars in current word
-        if (word.length() > 0) {
-            if ((line.length() + word.length()) > len) {
-                lines.add(line.toString());
-                line.delete(0, line.length());
+        return fm;
+    }
+
+    /**
+     * Adds lore to an ItemStack.
+     *
+     * @param is      ItemStack to add lore to
+     * @param newLore Lore to add
+     * @return ItemStack with added lore
+     */
+    public static ItemStack addLore(ItemStack is, String newLore) {
+        if (is == null) throw new IllegalArgumentException("ItemStack cannot be null!");
+        if (newLore == null) return is;
+        ItemMeta im = is.getItemMeta();
+        List<String> lores = im.getLore();
+        if (lores == null) lores = new ArrayList<>();
+        lores.add(newLore);
+        im.setLore(lores);
+        is.setItemMeta(im);
+        return is;
+    }
+
+    public static ItemStack applySpawnLore(ItemStack stack) {
+        final ItemMeta im = stack.getItemMeta();
+        final List<String> lore = (im.hasLore()) ? im.getLore() : new ArrayList<String>();
+        for (String s : Config.itemSpawnTagLore) lore.add(RUtils.colorize(s));
+        im.setLore(lore);
+        stack.setItemMeta(im);
+        return stack;
+    }
+
+    public static void banIP(String ip, CommandSender cs, String reason) {
+        final BanList bl = Bukkit.getBanList(BanList.Type.IP);
+        bl.addBan(ip, reason, null, cs.getName());
+    }
+
+    /**
+     * Bans a player. Message is not sent to banned player or person who banned.
+     * Message is broadcasted to those with rcmds.see.ban
+     * Kicks banned player if they're online.
+     * <p/>
+     * This is only used for permabans.
+     *
+     * @param t      Player to ban
+     * @param cs     CommandSender who issued the ban
+     * @param reason Reason for the ban
+     */
+    public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
+        reason = colorize(reason);
+        final BanList bl = Bukkit.getBanList(BanList.Type.NAME);
+        bl.addBan(t.getName(), reason, null, cs.getName());
+        writeBanHistory(t);
+        String inGameFormat = Config.igBanFormat;
+        String outFormat = Config.banFormat;
+        executeBanActions(t, cs, reason);
+        Bukkit.getServer().broadcast(getInGameMessage(inGameFormat, reason, t, cs), "rcmds.see.ban");
+        if (t.isOnline()) ((Player) t).kickPlayer(getMessage(outFormat, reason, cs));
+    }
+
+    public static void cancelTeleportRunner(final Player p) {
+        synchronized (teleRunners) {
+            if (teleRunners.containsKey(p.getName())) {
+                Bukkit.getScheduler().cancelTask(teleRunners.get(p.getName()));
+                teleRunners.remove(p.getName());
             }
-            line.append(word);
         }
-        // handle extra line
-        if (line.length() > 0) lines.add(line.toString());
-        String[] ret = new String[lines.size()];
-        int c = 0; // counter
-        for (Enumeration e = lines.elements(); e.hasMoreElements(); c++) ret[c] = (String) e.nextElement();
-        return ret;
-    }
-
-    /**
-     * Gets the block the player is looking at
-     *
-     * @param p Player to get block from
-     * @return Block player is looking at
-     */
-    @SuppressWarnings("deprecation")
-    public static Block getTarget(Player p) {
-        return p.getTargetBlock(null, 300); // waiting on method for Materials
-    }
-
-    public static String join(Iterable<String> i, String between) {
-        String ret = "";
-        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
-        return ret;
-    }
-
-    public static String join(String[] i, String between) {
-        String ret = "";
-        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
-        return ret;
-    }
-
-    public static String join(Object[] i, String between) {
-        String ret = "";
-        for (Object o : i)
-            ret = (ret.equals("")) ? ret.concat(o.toString().toLowerCase()) : ret.concat(between + o.toString().toLowerCase());
-        return ret;
-    }
-
-    /**
-     * Shows a chest filled of an item to player
-     *
-     * @param p    Player to show chest to
-     * @param name Name of item to fill chest with
-     */
-    public static void showFilledChest(Player p, String name) {
-        Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST);
-        ItemStack stack = getItem(name, 64);
-        for (int i = 0; i < inv.getSize(); i++) inv.addItem(stack);
-        p.openInventory(inv);
-    }
-
-    /**
-     * Shows a temporary empty chest to the player
-     *
-     * @param player Player to show chest to
-     */
-    public static void showEmptyChest(Player player) {
-        player.openInventory(Bukkit.createInventory(null, InventoryType.CHEST));
-    }
-
-    /**
-     * Shows a temporary empty chest to the player
-     *
-     * @param p    Player to show chest to
-     * @param name Name of chest
-     */
-    public static void showEmptyChest(Player p, String name) {
-        p.openInventory(Bukkit.createInventory(null, InventoryType.CHEST.getDefaultSize(), name));
     }
 
     /**
@@ -205,6 +179,117 @@ public class RUtils {
         RoyalCommands.instance.vh.getEconomy().withdrawPlayer(op, amount);
         cs.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + RoyalCommands.instance.vh.getEconomy().format(amount) + MessageColor.POSITIVE + " removed from your account.");
         return true;
+    }
+
+    public static void checkMail(Player p) {
+        PConfManager pcm = PConfManager.getPConfManager(p);
+        if (!pcm.getStringList("mail").isEmpty()) {
+            int count = pcm.getStringList("mail").size();
+            String poss = (count != 1) ? "s" : "";
+            p.sendMessage(MessageColor.POSITIVE + "Your mailbox contains " + MessageColor.NEUTRAL + count + MessageColor.POSITIVE + " message" + poss + ".");
+            if (RoyalCommands.instance.ah.isAuthorized(p, "rcmds.mail"))
+                p.sendMessage(MessageColor.POSITIVE + "View mail with " + MessageColor.NEUTRAL + "/mail read" + MessageColor.POSITIVE + ".");
+        }
+    }
+
+    /**
+     * Clears lore on an ItemStack.
+     *
+     * @param is ItemStack to clear lore from
+     * @return ItemStack with no lore
+     */
+    public static ItemStack clearLore(ItemStack is) {
+        if (is == null) throw new IllegalArgumentException("ItemStack cannot be null!");
+        ItemMeta im = is.getItemMeta();
+        im.setLore(null);
+        is.setItemMeta(im);
+        return is;
+    }
+
+    /**
+     * Replaces raw color codes with processed color codes
+     *
+     * @param text String with codes to be converted
+     * @return Processed string
+     */
+    public static String colorize(String text) {
+        if (text == null) return null;
+        return ChatColor.translateAlternateColorCodes('&', text);
+        // return text.replaceAll("(?i)&([a-f0-9k-or])", ChatColor.COLOR_CHAR + "$1");
+    }
+
+    /**
+     * Returns an empty inventory for use.
+     *
+     * @param handler May be null - owner of inventory
+     * @param size    Size of inventory - MUST be divisible by 9
+     * @param name    May be null (default to Chest) - name of inventory to open
+     * @return Inventory or null if size not divisible by 9
+     */
+    public static Inventory createInv(InventoryHolder handler, Integer size, String name) {
+        if (size == null) size = 27;
+        //if (size % 9 != 0) return null;
+        final Inventory i = Bukkit.getServer().createInventory(handler, size, name);
+        i.clear();
+        return i;
+    }
+
+    private static int dateDiff(int type, Calendar fromDate, Calendar toDate, boolean future) {
+        int diff = 0;
+        long savedDate = fromDate.getTimeInMillis();
+        while ((future && !fromDate.after(toDate)) || (!future && !fromDate.before(toDate))) {
+            savedDate = fromDate.getTimeInMillis();
+            fromDate.add(type, future ? 1 : -1);
+            diff++;
+        }
+        diff--;
+        fromDate.setTimeInMillis(savedDate);
+        return diff;
+    }
+
+    /**
+     * Removes color codes that have not been processed yet (&char)
+     * <p/>
+     * This fixes a common exploit where color codes can be embedded into other codes:
+     * &&aa (replaces &a, and the other letters combine to make &a again)
+     *
+     * @param message String with raw color codes
+     * @return String without raw color codes
+     */
+    public static String decolorize(String message) {
+        Pattern p = Pattern.compile("(?i)&[a-f0-9k-or]");
+        boolean contains = p.matcher(message).find();
+        while (contains) {
+            message = message.replaceAll("(?i)&[a-f0-9k-or]", "");
+            contains = p.matcher(message).find();
+        }
+        return message;
+    }
+
+    /**
+     * Recursively deletes a directory.
+     *
+     * @param f Directory to delete
+     * @return If all files were deleted, true, else false
+     */
+    public static boolean deleteDirectory(File f) {
+        boolean success = true;
+        if (!f.isDirectory()) return false;
+        File[] files = f.listFiles();
+        if (files == null) return false;
+        for (File delete : files) {
+            if (delete.isDirectory()) {
+                boolean recur = deleteDirectory(delete);
+                if (success) success = recur; // if all has been okay, set to new value.
+                continue;
+            }
+            if (!delete.delete()) {
+                RoyalCommands.instance.getLogger().warning("Could not delete " + delete.getAbsolutePath());
+                success = false;
+            }
+        }
+        if (success) success = f.delete(); // don't delete directory if files still remain
+        return success;
     }
 
     /**
@@ -242,80 +327,35 @@ public class RUtils {
         RoyalCommands.instance.getLogger().warning(cs.getName() + " was denied access to that!");
     }
 
-    /**
-     * Returns the Double from a String
-     *
-     * @param number String to get double from
-     * @return Double or null if string was not a valid double
-     */
-    public static Double getDouble(String number) {
-        try {
-            return Double.valueOf(number);
-        } catch (Exception e) {
-            return null;
+    private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {
+        if (!RoyalCommands.instance.getConfig().getKeys(false).contains("on_ban"))
+            return; // default values are not welcome here
+        final List<String> banActions = Config.onBanActions;
+        if (banActions == null || banActions.isEmpty()) return;
+        for (String command : banActions) {
+            if (command.trim().isEmpty()) continue;
+            boolean fromConsole = command.startsWith("@");
+            if (fromConsole) command = command.substring(1);
+
+            command = command.replace("{name}", banned.getName());
+            command = command.replace("{dispname}", (banned.isOnline()) ? ((Player) banned).getDisplayName() : banned.getName());
+            command = command.replace("{banner}", banner.getName());
+            command = command.replace("{bannerdispname}", (banner instanceof Player) ? ((Player) banner).getDisplayName() : banner.getName());
+            command = command.replace("{reason}", reason);
+
+            CommandSender sendFrom = (fromConsole) ? Bukkit.getConsoleSender() : banner;
+            Bukkit.dispatchCommand(sendFrom, command);
         }
     }
 
-    /**
-     * Returns the Integer from a String
-     *
-     * @param number String to get int from
-     * @return Integer or null if string was not a valid integer
-     */
-    public static Integer getInt(String number) {
+    public static String forceGetName(UUID u) {
+        String name;
         try {
-            return Integer.valueOf(number);
-        } catch (Exception e) {
-            return null;
+            name = RUtils.getName(u);
+        } catch (Exception ex) {
+            name = u.toString();
         }
-    }
-
-    /**
-     * Checks to see if the timestamp is greater than the current time.
-     *
-     * @param p     OfflinePlayer to check for
-     * @param title Path of timestamp to check
-     * @return true if the timestamp has not been passed, false if otherwise
-     */
-    public static boolean isTimeStampValid(OfflinePlayer p, String title) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
-        if (!pcm.isSet(title)) return false;
-        long time = System.currentTimeMillis();
-        long overall = pcm.getLong(title);
-        return time < overall;
-    }
-
-    public static boolean isTimeStampValidAddTime(OfflinePlayer p, String timestamp, String timeset) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
-        if (pcm.get(timestamp) == null || pcm.get(timeset) == null) return false;
-        long time = new Date().getTime();
-        long overall = (pcm.getLong(timestamp) * 1000L) + pcm.getLong(timeset);
-        return time < overall;
-    }
-
-    /**
-     * Sets a timestamp in a player's userdata file
-     *
-     * @param p       OfflinePlayer to set the timestamp on
-     * @param seconds Seconds relative to the current time for timestamp
-     * @param title   Path to timestamp
-     */
-    public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
-        pcm.set(title, (seconds * 1000) + new Date().getTime());
-    }
-
-    /**
-     * Gets a timestamp from a player's userdata file.
-     *
-     * @param p     OfflinePlayer to get timestamp from
-     * @param title Path of timestamp
-     * @return timestamp or -1 if there was no such timestamp
-     */
-    public static long getTimeStamp(OfflinePlayer p, String title) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
-        if (pcm.get(title) == null) return -1;
-        return pcm.getLong(title);
+        return name;
     }
 
     //if it isn't obvious, Essentials wrote this code. no way in hell I could manage this
@@ -324,19 +364,6 @@ public class RUtils {
         c.setTimeInMillis(date);
         Calendar now = new GregorianCalendar();
         return formatDateDiff(now, c);
-    }
-
-    private static int dateDiff(int type, Calendar fromDate, Calendar toDate, boolean future) {
-        int diff = 0;
-        long savedDate = fromDate.getTimeInMillis();
-        while ((future && !fromDate.after(toDate)) || (!future && !fromDate.before(toDate))) {
-            savedDate = fromDate.getTimeInMillis();
-            fromDate.add(type, future ? 1 : -1);
-            diff++;
-        }
-        diff--;
-        fromDate.setTimeInMillis(savedDate);
-        return diff;
     }
 
     public static String formatDateDiff(Calendar fromDate, Calendar toDate) {
@@ -354,46 +381,198 @@ public class RUtils {
         return sb.toString();
     }
 
-    /**
-     * Checks to see if teleport is allowed for the specified OfflinePlayer
-     *
-     * @param p OfflinePlayer to check teleportation status on
-     * @return true or false
-     */
-    public static boolean isTeleportAllowed(OfflinePlayer p) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
-        return pcm.get("allow-tp") == null || pcm.getBoolean("allow-tp");
+    public static List<String> getAssignment(ItemStack is, GeneralConfManager gcf) {
+        return gcf.getStringList(getAssignmentPath(is));
     }
 
-    /**
-     * Replaces raw color codes with processed color codes
-     *
-     * @param text String with codes to be converted
-     * @return Processed string
-     */
-    public static String colorize(String text) {
-        if (text == null) return null;
-        return ChatColor.translateAlternateColorCodes('&', text);
-        // return text.replaceAll("(?i)&([a-f0-9k-or])", ChatColor.COLOR_CHAR + "$1");
+    public static String getAssignmentPath(ItemStack is) {
+        return getAssignmentPath(is, Config.assignUseDisplayNames, Config.assignUseDurability);
     }
 
-    /**
-     * Removes color codes that have not been processed yet (&char)
-     * <p/>
-     * This fixes a common exploit where color codes can be embedded into other codes:
-     * &&aa (replaces &a, and the other letters combine to make &a again)
-     *
-     * @param message String with raw color codes
-     * @return String without raw color codes
-     */
-    public static String decolorize(String message) {
-        Pattern p = Pattern.compile("(?i)&[a-f0-9k-or]");
-        boolean contains = p.matcher(message).find();
-        while (contains) {
-            message = message.replaceAll("(?i)&[a-f0-9k-or]", "");
-            contains = p.matcher(message).find();
+    public static String getAssignmentPath(ItemStack is, boolean customNames, boolean durability) {
+        StringBuilder path = new StringBuilder("assign.");
+        path.append(is.getType().name());
+        if (customNames) {
+            ItemMeta im = is.getItemMeta();
+            if (im != null) {
+                String displayName = im.getDisplayName();
+                if (displayName != null) path.append(".").append(displayName.replace('.', ',')).append(".");
+                List<String> lore = im.getLore();
+                if (lore != null && !lore.isEmpty()) {
+                    for (String l : lore) {
+                        path.append(l.replace('.', ','));
+                        path.append(".");
+                    }
+                }
+            }
         }
+        if (durability) path.append(is.getDurability()).append(".");
+        path.append("commands");
+        return path.toString();
+    }
+
+    /**
+     * Gets a player backpack
+     *
+     * @param u UUID of player to get backpack for
+     * @return Backpack - never null
+     */
+    public static Inventory getBackpack(UUID u, World w) {
+        PConfManager pcm = PConfManager.getPConfManager(u);
+        String worldGroup = WorldManager.il.getWorldGroup(w);
+        if (worldGroup == null) worldGroup = "w-" + w.getName();
+        if (!pcm.exists()) pcm.createFile();
+        int invSize = pcm.getInt("backpack." + worldGroup + ".size", -1);
+        if (invSize < 9) invSize = 36;
+        if (invSize % 9 != 0) invSize = 36;
+        final Inventory i = Bukkit.createInventory(new BackpackListener.BackpackHolder(u, w), invSize, "Backpack");
+        if (!pcm.isSet("backpack." + worldGroup + ".item")) return i;
+        for (int slot = 0; slot < invSize; slot++) {
+            ItemStack is = pcm.getItemStack("backpack." + worldGroup + ".item." + slot);
+            if (is == null) continue;
+            i.setItem(slot, is);
+        }
+        return i;
+    }
+
+    /**
+     * Gets a player backpack
+     *
+     * @param p Player to get backpack for
+     * @return Backpack - never null
+     */
+    public static Inventory getBackpack(Player p) {
+        return getBackpack(p.getUniqueId(), p.getWorld());
+    }
+
+    public static Command getCommand(String name) {
+        try {
+            final Field map = RoyalCommands.instance.getServer().getPluginManager().getClass().getDeclaredField("commandMap");
+            map.setAccessible(true);
+            final CommandMap cm = (CommandMap) map.get(RoyalCommands.instance.getServer().getPluginManager());
+            return cm.getCommand(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static int getCurrentHomes(Player p) {
+        return getCurrentHomes(p.getUniqueId());
+    }
+
+    public static int getCurrentHomes(UUID u) {
+        ConfigurationSection pconf = PConfManager.getPConfManager(u).getConfigurationSection("home");
+        if (pconf == null) return 0;
+        return pconf.getValues(false).size();
+    }
+
+    /**
+     * Returns the Double from a String
+     *
+     * @param number String to get double from
+     * @return Double or null if string was not a valid double
+     */
+    public static Double getDouble(String number) {
+        try {
+            return Double.valueOf(number);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Gets an empty inventory with a backpack configuration.
+     *
+     * @return Backpack
+     */
+    public static Inventory getEmptyBackpack() {
+        return Bukkit.createInventory(null, 36, "Backpack");
+    }
+
+    /**
+     * Gets enchantments from form "name:level,..." (e.g. "damage_all:2,durability:1")
+     *
+     * @param enchant String of enchantment
+     * @return Map of Enchantments and their levels or null if invalid
+     */
+    public static Map<Enchantment, Integer> getEnchantments(String enchant) {
+        final Map<Enchantment, Integer> enchants = new HashMap<>();
+        for (String enc : enchant.split(",")) {
+            enc = enc.replace(" ", "");
+            String[] data = enc.split(":");
+            if (data.length < 2) return null;
+            String name = data[0];
+            int lvl;
+            try {
+                lvl = Integer.parseInt(data[1]);
+            } catch (NumberFormatException e) {
+                continue;
+            }
+            Enchantment e = Enchantment.getByName(name.toUpperCase());
+            if (e == null) continue;
+            enchants.put(e, lvl);
+        }
+        return enchants;
+    }
+
+    public static String getFriendlyEnumName(Enum e) {
+        return e.name().toLowerCase().replace("_", " ");
+    }
+
+    public static int getHomeLimit(Player p) {
+        String name = p.getName();
+        String group;
+        if (RoyalCommands.instance.vh.usingVault()) {
+            try {
+                group = RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p);
+            } catch (Exception e) {
+                group = "";
+            }
+        } else group = "";
+        if (group == null) group = "";
+        int limit;
+        final FileConfiguration c = RoyalCommands.instance.getConfig();
+        if (c.isSet("homes.limits.players." + name)) limit = c.getInt("homes.limits.players." + name, -1);
+        else limit = c.getInt("homes.limits.groups." + group, -1);
+        return limit;
+    }
+
+    /**
+     * Gets the message shown to other players on the server when someone is disconnected (kicked).
+     *
+     * @param format Format of the message
+     * @param reason Reason for disconnect
+     * @param kicked Person disconnected
+     * @param kicker Person who caused disconnect
+     * @return Formatted string
+     */
+    public static String getInGameMessage(final String format, final String reason, final OfflinePlayer kicked, final CommandSender kicker) {
+        if (reason == null || kicked == null || kicker == null) return null;
+        String message = format;
+        message = colorize(message);
+        if (kicked.isOnline()) message = message.replace("{kdispname}", ((Player) kicked).getDisplayName());
+        else message = message.replace("{kdispname}", kicked.getName());
+        message = message.replace("{kname}", kicked.getName());
+        message = message.replace("{name}", kicker.getName());
+        if (kicker instanceof Player) message = message.replace("{dispname}", ((Player) kicker).getDisplayName());
+        else message = message.replace("{dispname}", kicker.getName());
+        message = message.replace("{reason}", reason);
         return message;
+    }
+
+    /**
+     * Returns the Integer from a String
+     *
+     * @param number String to get int from
+     * @return Integer or null if string was not a valid integer
+     */
+    public static Integer getInt(String number) {
+        try {
+            return Integer.valueOf(number);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -434,38 +613,256 @@ public class RUtils {
         return stack;
     }
 
-    public static ItemStack setItemStackSpawned(ItemStack stack, String spawner, boolean spawned) {
-        final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(stack);
-        si.setSpawner(spawner);
-        si.setSpawned(spawned);
-        return SpawnInfo.SpawnInfoManager.applySpawnInfo(stack, si);
-    }
-
-    public static ItemStack applySpawnLore(ItemStack stack) {
-        final ItemMeta im = stack.getItemMeta();
-        final List<String> lore = (im.hasLore()) ? im.getLore() : new ArrayList<String>();
-        for (String s : Config.itemSpawnTagLore) lore.add(RUtils.colorize(s));
-        im.setLore(lore);
-        stack.setItemMeta(im);
-        return stack;
+    /**
+     * Gets an ItemStack from an alias and an amount.
+     *
+     * @param alias  Alias of the item name
+     * @param amount Amount of the item to be in the stack
+     * @return ItemStack
+     * @throws InvalidItemNameException If item alias is not valid
+     * @throws NullPointerException     If ItemNameManager is not loaded
+     */
+    public static ItemStack getItemFromAlias(String alias, int amount) throws InvalidItemNameException, NullPointerException {
+        ItemStack is;
+        if (RoyalCommands.inm == null) throw new NullPointerException("ItemNameManager is not loaded!");
+        is = RoyalCommands.inm.getItemStackFromAlias(alias);
+        if (is == null) throw new InvalidItemNameException(alias + " is not a valid alias!");
+        is.setAmount(amount);
+        return is;
     }
 
     /**
-     * Plays the configured teleport sound at a location.
+     * Returns formatted name of an ItemStack.
      *
-     * @param at Location to play sound at
+     * @param is ItemStack to get name for
+     * @return Name of item (formatted)
      */
-    private static void playTeleportSound(Location at) {
-        if (at == null) throw new IllegalArgumentException("Location cannot be null!");
-        if (!Config.teleportSoundEnabled) return;
-        Sound toPlay;
-        try {
-            toPlay = Sound.valueOf(Config.teleportSoundName);
-        } catch (IllegalArgumentException e) {
-            RoyalCommands.instance.getLogger().warning("A teleport sound was attempted, but teleport_sound.name was not a valid sound name!");
-            return;
+    public static String getItemName(ItemStack is) {
+        return getItemName(is.getType());
+    }
+
+    /**
+     * Returns formatted name of a Material
+     *
+     * @param m Material to get name for
+     * @return Name of item (formatted)
+     */
+    public static String getItemName(Material m) {
+        return m.name().toLowerCase().replace("_", " ");
+    }
+
+    public static String getMVWorldName(World w) {
+        if (w == null) throw new NullPointerException("w can't be null!");
+        if (!Config.multiverseNames || RoyalCommands.mvc == null)
+            return RoyalCommands.wm.getConfig().getString("worlds." + w.getName() + ".displayname", w.getName());
+        return RoyalCommands.mvc.getMVWorldManager().getMVWorld(w).getColoredWorldString();
+    }
+
+    /**
+     * Gets the message shown to a player on disconnect.
+     *
+     * @param message Format of the message
+     * @param reason  Reason for disconnect.
+     * @param kicker  Person who caused disconnect.
+     * @return Formatted string
+     */
+    public static String getMessage(final String message, final String reason, final CommandSender kicker) {
+        String format = message;
+        format = colorize(format);
+        if (kicker instanceof Player) format = format.replace("{dispname}", ((Player) kicker).getDisplayName());
+        else format = format.replace("{dispname}", kicker.getName());
+        format = format.replace("{name}", kicker.getName());
+        format = format.replace("{reason}", reason);
+        return format;
+    }
+
+    public static String getMessage(final String message, final String reason, final String kicker) {
+        String format = message;
+        format = colorize(format);
+        format = format.replace("{dispname}", kicker);
+        format = format.replace("{name}", kicker);
+        format = format.replace("{reason}", reason);
+        return format;
+    }
+
+    public static String getName(UUID u) throws Exception {
+        return new NameFetcher(Arrays.asList(u)).call().get(u);
+    }
+
+    /**
+     * Gets an OfflinePlayer with support for name completion. If no Player is on that matches the beginning of the
+     * name, the string provided will be used to get an OfflinePlayer to return. If there is a Player, it will be cast
+     * to OfflinePlayer and returned.
+     *
+     * @param name Name of player
+     * @return OfflinePlayer
+     */
+    @SuppressWarnings("deprecation")
+    public static OfflinePlayer getOfflinePlayer(String name) {
+        OfflinePlayer op = RoyalCommands.instance.getServer().getPlayerExact(name);
+        if (op == null) op = RoyalCommands.instance.getServer().getPlayer(name);
+        if (op == null) op = RoyalCommands.instance.getServer().getOfflinePlayer(name);
+        return op;
+    }
+
+    public static List<FancyMessage> getPlayerTooltip(final Object o) {
+        final List<FancyMessage> tooltip = new ArrayList<>();
+        final VaultHandler vh = RoyalCommands.instance.vh;
+        if (o instanceof OfflinePlayer) {
+            final OfflinePlayer op = (OfflinePlayer) o;
+            if (tooltip.size() < 1)
+                tooltip.add(new FancyMessage("Offline Player").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            tooltip.add(new FancyMessage("Name: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.getName()).color(MessageColor.NEUTRAL._()));
+            tooltip.add(new FancyMessage("Operator: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.isOp() ? "Yes" : "No").color(MessageColor.NEUTRAL._()));
+            if (vh.usingVault()) {
+                final String group = vh.getPermission().getPrimaryGroup(null, op);
+                String prefix = vh.getChat().getGroupPrefix((String) null, group);
+                if (prefix == null || prefix.isEmpty()) prefix = vh.getChat().getPlayerPrefix(null, op);
+                if (prefix == null) prefix = "";
+                String suffix = vh.getChat().getGroupSuffix((String) null, group);
+                if (suffix == null || suffix.isEmpty()) suffix = vh.getChat().getPlayerSuffix(null, op);
+                if (suffix == null) suffix = "";
+                // TODO: Config format
+                if (!group.isEmpty()) {
+                    tooltip.add(new FancyMessage("Group: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(ChatColor.translateAlternateColorCodes('&', prefix)).color(MessageColor.NEUTRAL._()).then(group).then(ChatColor.translateAlternateColorCodes('&', suffix)));
+                }
+            }
         }
-        at.getWorld().playSound(at, toPlay, Config.teleportSoundVolume, Config.teleportSoundPitch);
+        if (o instanceof Player) {
+            final Player p = (Player) o;
+            if (tooltip.size() > 0) { // Replace Offline Player with Player
+                tooltip.remove(0);
+                tooltip.add(0, new FancyMessage("Player").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            }
+        }
+        if (o instanceof ConsoleCommandSender) {
+            if (tooltip.size() < 1)
+                tooltip.add(new FancyMessage("Console").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+        }
+        return tooltip.isEmpty() ? null : tooltip;
+    }
+
+    public static Object getPrivateField(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Class<?> clazz = object.getClass();
+        Field objectField = clazz.getDeclaredField(field);
+        final boolean wasAccessible = objectField.isAccessible();
+        objectField.setAccessible(true);
+        Object result = objectField.get(object);
+        objectField.setAccessible(wasAccessible);
+        return result;
+    }
+
+    public static String getRChatGroupPrefix(final String s) {
+        try {
+            Class.forName("org.royaldev.royalchat.DataManager");
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
+        String prefix = rc.dm.getGroupPrefix(s);
+        if (prefix.isEmpty()) prefix = null;
+        return prefix;
+    }
+
+    public static String getRChatGroupSuffix(final String s) {
+        try {
+            Class.forName("org.royaldev.royalchat.DataManager");
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
+        String suffix = rc.dm.getGroupSuffix(s);
+        if (suffix.isEmpty()) suffix = null;
+        return suffix;
+    }
+
+    public static String getRChatPrefix(final Player p) {
+        try {
+            Class.forName("org.royaldev.royalchat.DataManager");
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
+        String prefix = rc.dm.getPrefix(p);
+        if (prefix.isEmpty()) prefix = null;
+        return prefix;
+    }
+
+    public static String getRChatSuffix(final Player p) {
+        try {
+            Class.forName("org.royaldev.royalchat.DataManager");
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
+        String suffix = rc.dm.getSuffix(p);
+        if (suffix.isEmpty()) suffix = null;
+        return suffix;
+    }
+
+    /**
+     * Returns a location that is always above ground.
+     * If there is no ground under the location, returns
+     * null.
+     *
+     * @param l Location to find safe location for
+     * @return Safe location or null if no ground
+     */
+    public static Location getSafeLocation(Location l) {
+        int unsafeY = l.getBlockY();
+        if (unsafeY < 0) return null;
+        for (int i = unsafeY; i >= 0; i--) {
+            if (i < 0) return null;
+            Block b = l.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ());
+            if (b == null) return null;
+            if (b.getType().equals(Material.AIR)) continue;
+            double safeY = l.getY() - (unsafeY - i);
+            return new Location(l.getWorld(), l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
+        }
+        return null;
+    }
+
+    /**
+     * Returns a location that is always above ground.
+     * If there is no ground under the location, returns
+     * null.
+     *
+     * @param e Entity to derive location from
+     * @return Safe location or null if no ground
+     */
+    public static Location getSafeLocation(Entity e) {
+        if (e == null) return null;
+        return getSafeLocation(e.getLocation());
+    }
+
+    /**
+     * Gets the block the player is looking at
+     *
+     * @param p Player to get block from
+     * @return Block player is looking at
+     */
+    @SuppressWarnings("deprecation")
+    public static Block getTarget(Player p) {
+        return p.getTargetBlock(null, 300); // waiting on method for Materials
+    }
+
+    /**
+     * Gets a timestamp from a player's userdata file.
+     *
+     * @param p     OfflinePlayer to get timestamp from
+     * @param title Path of timestamp
+     * @return timestamp or -1 if there was no such timestamp
+     */
+    public static long getTimeStamp(OfflinePlayer p, String title) {
+        PConfManager pcm = PConfManager.getPConfManager(p);
+        if (pcm.get(title) == null) return -1;
+        return pcm.getLong(title);
+    }
+
+    public static UUID getUUID(String name) throws Exception {
+        final Map<String, UUID> m = new UUIDFetcher(Arrays.asList(name)).call();
+        for (Map.Entry<String, UUID> e : m.entrySet()) if (e.getKey().equalsIgnoreCase(name)) return e.getValue();
+        throw new Exception("Couldn't find name in results.");
     }
 
     private static Entity getVehicleToTeleport(Entity rider) {
@@ -478,68 +875,154 @@ public class RUtils {
         return null;
     }
 
-    private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle) {
-        return teleportWithVehicle(l, passenger, vehicle, false);
+    /**
+     * Gets a world via its real name, Multiverse name, or WorldManager name.
+     *
+     * @param name Name of world to get
+     * @return World or null if none exists
+     */
+    public static World getWorld(String name) {
+        World w;
+        w = Bukkit.getWorld(name);
+        if (w != null) return w;
+        if (RoyalCommands.mvc != null) {
+            MultiverseWorld mvw = RoyalCommands.mvc.getMVWorldManager().getMVWorld(name);
+            w = (mvw == null) ? null : mvw.getCBWorld();
+            if (w != null) return w;
+        }
+        w = RoyalCommands.wm.getWorld(name);
+        return w;
     }
 
-    private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle, boolean silent) {
-        if (!Config.vehicleCrossWorldTeleport && !l.getWorld().getName().equals(vehicle.getWorld().getName()))
-            return "Passenger on vehicle cannot teleport to a different world!";
-        vehicle.eject();
-        if (!silent && passenger instanceof Player) {
-            final Player p = (Player) passenger;
-            CmdBack.addBackLocation(p, p.getLocation());
+    public static boolean isBanned(final Player p) {
+        final PConfManager pcm = PConfManager.getPConfManager(p);
+        if (pcm.isSet("bantime")) {
+            if (RUtils.isTimeStampValid(p, "bantime")) return true;
+            else {
+                pcm.set("bantime", null);
+                RUtils.unbanPlayer(p);
+                return false;
+            }
         }
-        passenger.setVelocity(new Vector(0, 0, 0));
-        passenger.setFallDistance(0F);
-        passenger.teleport(l);
-        vehicle.setVelocity(new Vector(0, 0, 0));
-        vehicle.setFallDistance(0F);
-        vehicle.teleport(l);
-        vehicle.setPassenger(passenger);
-        return "";
+        return p.isBanned();
+    }
+
+    public static boolean isIPBanned(Player p) {
+        return Bukkit.getIPBans().contains(p.getAddress().getAddress().toString().replace("/", ""));
+    }
+
+    public static boolean isIPBanned(String ip) {
+        return Bukkit.getIPBans().contains(ip);
+    }
+
+    private static boolean isInt(String s) {
+        Integer i;
+        try {
+            i = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            i = null;
+        }
+        return i != null;
+    }
+
+    private static boolean isInt(char c) {
+        Integer i;
+        try {
+            i = Integer.parseInt(String.valueOf(c));
+        } catch (NumberFormatException e) {
+            i = null;
+        }
+        return i != null;
     }
 
     /**
-     * Teleports a player and registers it in /back.
+     * Checks to see if teleport is allowed for the specified OfflinePlayer
      *
-     * @param p Player to teleport
-     * @param l Location to teleport to
-     * @return Error message if any.
+     * @param p OfflinePlayer to check teleportation status on
+     * @return true or false
      */
-    public static String teleport(Player p, Location l) {
-        synchronized (teleRunners) {
-            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.instance.ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
-                makeTeleportRunner(p, l);
-                return "";
-            } else if (Config.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
-                return "";
-            }
-        }
-        final Location toTele = (Config.safeTeleport) ? getSafeLocation(l) : l;
-        if (toTele == null) return "There is no ground below.";
-        final Chunk c = toTele.getChunk();
-        if (!c.isLoaded()) c.load(true);
-        final Entity vehicle = getVehicleToTeleport(p);
-        if (vehicle != null) {
-            return teleportWithVehicle(toTele, p, vehicle);
-        } else {
-            CmdBack.addBackLocation(p, p.getLocation());
-            p.setVelocity(new Vector(0, 0, 0));
-            p.setFallDistance(0F);
-            p.teleport(toTele);
-            playTeleportSound(toTele);
-            return "";
-        }
+    public static boolean isTeleportAllowed(OfflinePlayer p) {
+        PConfManager pcm = PConfManager.getPConfManager(p);
+        return pcm.get("allow-tp") == null || pcm.getBoolean("allow-tp");
     }
 
-    public static void cancelTeleportRunner(final Player p) {
-        synchronized (teleRunners) {
-            if (teleRunners.containsKey(p.getName())) {
-                Bukkit.getScheduler().cancelTask(teleRunners.get(p.getName()));
-                teleRunners.remove(p.getName());
+    /**
+     * Checks to see if the timestamp is greater than the current time.
+     *
+     * @param p     OfflinePlayer to check for
+     * @param title Path of timestamp to check
+     * @return true if the timestamp has not been passed, false if otherwise
+     */
+    public static boolean isTimeStampValid(OfflinePlayer p, String title) {
+        PConfManager pcm = PConfManager.getPConfManager(p);
+        if (!pcm.isSet(title)) return false;
+        long time = System.currentTimeMillis();
+        long overall = pcm.getLong(title);
+        return time < overall;
+    }
+
+    public static boolean isTimeStampValidAddTime(OfflinePlayer p, String timestamp, String timeset) {
+        PConfManager pcm = PConfManager.getPConfManager(p);
+        if (pcm.get(timestamp) == null || pcm.get(timeset) == null) return false;
+        long time = new Date().getTime();
+        long overall = (pcm.getLong(timestamp) * 1000L) + pcm.getLong(timeset);
+        return time < overall;
+    }
+
+    public static String join(Iterable<String> i, String between) {
+        String ret = "";
+        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        return ret;
+    }
+
+    public static String join(String[] i, String between) {
+        String ret = "";
+        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        return ret;
+    }
+
+    public static String join(Object[] i, String between) {
+        String ret = "";
+        for (Object o : i)
+            ret = (ret.equals("")) ? ret.concat(o.toString().toLowerCase()) : ret.concat(between + o.toString().toLowerCase());
+        return ret;
+    }
+
+    /**
+     * Kicks a player and sets the last kick for history writing.
+     *
+     * @param kicked Player to kick
+     * @param reason Reason for kick
+     */
+    public static void kickPlayer(final Player kicked, final CommandSender kicker, final String reason) {
+        final PConfManager pcm = PConfManager.getPConfManager(kicked);
+        pcm.set("last_kick.kicker", (kicker == null) ? "Unknown" : kicker.getName());
+        pcm.set("last_kick.reason", decolorize(reason));
+        pcm.set("last_kick.timestamp", System.currentTimeMillis());
+        kicked.kickPlayer(RUtils.getMessage(Config.kickFormat, reason, kicker));
+    }
+
+    /**
+     * Lists files in a directory.
+     *
+     * @param f         Directory to list files in
+     * @param recursive Recursively list files?
+     * @return List of files - never null
+     */
+    public static List<File> listFiles(File f, boolean recursive) {
+        List<File> fs = new ArrayList<>();
+        if (!f.isDirectory()) return fs;
+        File[] listed = f.listFiles();
+        if (listed == null) return fs;
+        for (File in : listed) {
+            if (in.isDirectory()) {
+                if (!recursive) continue;
+                fs.addAll(listFiles(in, true));
+                continue;
             }
+            fs.add(in);
         }
+        return fs;
     }
 
     /**
@@ -595,6 +1078,209 @@ public class RUtils {
         return makeTeleportRunner(p, t.getLocation());
     }
 
+    public static boolean nearEqual(double a, double b, double margin) {
+        return Math.abs(a - b) < margin;
+    }
+
+    public static boolean nearEqual(double a, double b) {
+        return nearEqual(a, b, .05D);
+    }
+
+    /**
+     * Plays the configured teleport sound at a location.
+     *
+     * @param at Location to play sound at
+     */
+    private static void playTeleportSound(Location at) {
+        if (at == null) throw new IllegalArgumentException("Location cannot be null!");
+        if (!Config.teleportSoundEnabled) return;
+        Sound toPlay;
+        try {
+            toPlay = Sound.valueOf(Config.teleportSoundName);
+        } catch (IllegalArgumentException e) {
+            RoyalCommands.instance.getLogger().warning("A teleport sound was attempted, but teleport_sound.name was not a valid sound name!");
+            return;
+        }
+        at.getWorld().playSound(at, toPlay, Config.teleportSoundVolume, Config.teleportSoundPitch);
+    }
+
+    public static void removeAssignment(ItemStack is, GeneralConfManager gcf) {
+        setAssignment(is, null, gcf);
+    }
+
+    /**
+     * Renames an ItemStack.
+     *
+     * @param is      ItemStack to rename
+     * @param newName Name to give ItemStack
+     * @return ItemStack with new name
+     */
+    public static ItemStack renameItem(ItemStack is, String newName) {
+        if (is == null) throw new IllegalArgumentException("ItemStack cannot be null!");
+        if (newName == null) return is;
+        ItemMeta im = is.getItemMeta();
+        im.setDisplayName(newName);
+        is.setItemMeta(im);
+        return is;
+    }
+
+    public static String replaceVars(final String orig, final Player p) {
+        String repld = orig;
+        repld = repld.replace("{name}", p.getName()).replace("{dispname}", p.getDisplayName()).replace("{world}", getMVWorldName(p.getWorld()));
+        if (!RoyalCommands.instance.vh.usingVault()) return repld;
+        try {
+            repld = repld.replace("{group}", RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p));
+        } catch (Exception ignored) {
+        }
+        try {
+            repld = repld.replace("{prefix}", RoyalCommands.instance.vh.getChat().getPlayerPrefix(p));
+        } catch (Exception ignored) {
+            String prefix = getRChatPrefix(p);
+            if (prefix != null) repld = repld.replace("{prefix}", prefix);
+        }
+        try {
+            repld = repld.replace("{suffix}", RoyalCommands.instance.vh.getChat().getPlayerSuffix(p));
+        } catch (Exception ignored) {
+            String suffix = getRChatSuffix(p);
+            if (suffix != null) repld = repld.replace("{suffix}", suffix);
+        }
+        return repld;
+    }
+
+    /**
+     * Saves player backpacks in a forwards-compatible method, using native Bukkit methods.
+     *
+     * @param p Player to save backpack for
+     * @param i Inventory to save as backpack
+     */
+    public static void saveBackpack(Player p, Inventory i) {
+        saveBackpack(p.getUniqueId(), p.getWorld(), i);
+    }
+
+    /**
+     * Saves player backpacks in a forwards-compatible method, using native Bukkit methods.
+     *
+     * @param u UUID of player to save backpack for
+     * @param i Inventory to save as backpack
+     */
+    public static void saveBackpack(UUID u, World w, Inventory i) {
+        final PConfManager pcm = PConfManager.getPConfManager(u);
+        if (w == null) return;
+        String worldGroup = WorldManager.il.getWorldGroup(w);
+        if (worldGroup == null) worldGroup = "w-" + w.getName();
+        for (int slot = 0; slot < i.getSize(); slot++)
+            pcm.set("backpack." + worldGroup + ".item." + slot, i.getItem(slot));
+        pcm.set("backpack." + worldGroup + ".size", i.getSize());
+    }
+
+    /**
+     * Schedules a player kick via the Bukkit scheduler. Will run as soon as a spot frees for the event.
+     *
+     * @param p      Player to kick
+     * @param reason Reason for kick
+     * @throws IllegalArgumentException If p or reason is null
+     * @throws NullPointerException     If method could not get the RoyalCommands plugin to schedule with via Bukkit
+     */
+    public static void scheduleKick(final Player p, final String reason) throws IllegalArgumentException, NullPointerException {
+        if (p == null) throw new IllegalArgumentException("Player cannot be null!");
+        if (reason == null) throw new IllegalArgumentException("Reason cannot be null!");
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                p.kickPlayer(reason);
+            }
+        };
+        Plugin plugin = RoyalCommands.instance;
+        if (plugin == null) throw new NullPointerException("Could not get the RoyalCommands plugin.");
+        RoyalCommands.instance.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
+    }
+
+    public static void setAssignment(ItemStack is, List<String> commands, GeneralConfManager gcf) {
+        if (is == null) return;
+        gcf.set(getAssignmentPath(is), commands);
+    }
+
+    public static void setFields(Object o, String[] fields, Object... values) throws ReflectiveOperationException {
+        try {
+            for (int index = 0; index < fields.length; index++) {
+                final String field = fields[index];
+                final Field f = o.getClass().getDeclaredField(field);
+                f.setAccessible(true);
+                f.set(o, values[index]);
+            }
+        } catch (ReflectiveOperationException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the holder of an Inventory
+     *
+     * @param i  Inventory to set holder of
+     * @param ih InventoryHolder to be set
+     * @return New inventory with updated holder
+     */
+    public static Inventory setHolder(Inventory i, InventoryHolder ih) {
+        Inventory ii = createInv(ih, i.getSize(), i.getName());
+        ii.setContents(i.getContents());
+        return ii;
+    }
+
+    public static ItemStack setItemStackSpawned(ItemStack stack, String spawner, boolean spawned) {
+        final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(stack);
+        si.setSpawner(spawner);
+        si.setSpawned(spawned);
+        return SpawnInfo.SpawnInfoManager.applySpawnInfo(stack, si);
+    }
+
+    /**
+     * Sets a timestamp in a player's userdata file
+     *
+     * @param p       OfflinePlayer to set the timestamp on
+     * @param seconds Seconds relative to the current time for timestamp
+     * @param title   Path to timestamp
+     */
+    public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
+        PConfManager pcm = PConfManager.getPConfManager(p);
+        pcm.set(title, (seconds * 1000) + new Date().getTime());
+    }
+
+    /**
+     * Shows a temporary empty chest to the player
+     *
+     * @param player Player to show chest to
+     */
+    public static void showEmptyChest(Player player) {
+        player.openInventory(Bukkit.createInventory(null, InventoryType.CHEST));
+    }
+
+    /**
+     * Shows a temporary empty chest to the player
+     *
+     * @param p    Player to show chest to
+     * @param name Name of chest
+     */
+    public static void showEmptyChest(Player p, String name) {
+        p.openInventory(Bukkit.createInventory(null, InventoryType.CHEST.getDefaultSize(), name));
+    }
+
+    /**
+     * Shows a chest filled of an item to player
+     *
+     * @param p    Player to show chest to
+     * @param name Name of item to fill chest with
+     */
+    public static void showFilledChest(Player p, String name) {
+        Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST);
+        ItemStack stack = getItem(name, 64);
+        for (int i = 0; i < inv.getSize(); i++) inv.addItem(stack);
+        p.openInventory(inv);
+    }
+
+    public static void silentKick(final Player t, final String reason) {
+        t.kickPlayer(reason + "\00-silent");
+    }
+
     /**
      * Teleports a player without registering it in /back.
      *
@@ -628,18 +1314,6 @@ public class RUtils {
     }
 
     /**
-     * Teleports a player and registers it in /back.
-     *
-     * @param p Player to teleport
-     * @param e Entity to teleport to
-     * @return Error message if any.
-     */
-    public static String teleport(Player p, Entity e) {
-        if (e == null) return "Entity was null";
-        return teleport(p, e.getLocation());
-    }
-
-    /**
      * Teleports a player without registering it in /back.
      *
      * @param p Player to teleport
@@ -652,320 +1326,70 @@ public class RUtils {
     }
 
     /**
-     * Returns a location that is always above ground.
-     * If there is no ground under the location, returns
-     * null.
+     * Teleports a player and registers it in /back.
      *
-     * @param l Location to find safe location for
-     * @return Safe location or null if no ground
+     * @param p Player to teleport
+     * @param l Location to teleport to
+     * @return Error message if any.
      */
-    public static Location getSafeLocation(Location l) {
-        int unsafeY = l.getBlockY();
-        if (unsafeY < 0) return null;
-        for (int i = unsafeY; i >= 0; i--) {
-            if (i < 0) return null;
-            Block b = l.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ());
-            if (b == null) return null;
-            if (b.getType().equals(Material.AIR)) continue;
-            double safeY = l.getY() - (unsafeY - i);
-            return new Location(l.getWorld(), l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
-        }
-        return null;
-    }
-
-    /**
-     * Returns a location that is always above ground.
-     * If there is no ground under the location, returns
-     * null.
-     *
-     * @param e Entity to derive location from
-     * @return Safe location or null if no ground
-     */
-    public static Location getSafeLocation(Entity e) {
-        if (e == null) return null;
-        return getSafeLocation(e.getLocation());
-    }
-
-    /**
-     * Returns formatted name of an ItemStack.
-     *
-     * @param is ItemStack to get name for
-     * @return Name of item (formatted)
-     */
-    public static String getItemName(ItemStack is) {
-        return getItemName(is.getType());
-    }
-
-    /**
-     * Returns formatted name of a Material
-     *
-     * @param m Material to get name for
-     * @return Name of item (formatted)
-     */
-    public static String getItemName(Material m) {
-        return m.name().toLowerCase().replace("_", " ");
-    }
-
-    /**
-     * Returns an empty inventory for use.
-     *
-     * @param handler May be null - owner of inventory
-     * @param size    Size of inventory - MUST be divisible by 9
-     * @param name    May be null (default to Chest) - name of inventory to open
-     * @return Inventory or null if size not divisible by 9
-     */
-    public static Inventory createInv(InventoryHolder handler, Integer size, String name) {
-        if (size == null) size = 27;
-        //if (size % 9 != 0) return null;
-        final Inventory i = Bukkit.getServer().createInventory(handler, size, name);
-        i.clear();
-        return i;
-    }
-
-    /**
-     * Sets the holder of an Inventory
-     *
-     * @param i  Inventory to set holder of
-     * @param ih InventoryHolder to be set
-     * @return New inventory with updated holder
-     */
-    public static Inventory setHolder(Inventory i, InventoryHolder ih) {
-        Inventory ii = createInv(ih, i.getSize(), i.getName());
-        ii.setContents(i.getContents());
-        return ii;
-    }
-
-    /**
-     * Kicks a player and sets the last kick for history writing.
-     *
-     * @param kicked Player to kick
-     * @param reason Reason for kick
-     */
-    public static void kickPlayer(final Player kicked, final CommandSender kicker, final String reason) {
-        final PConfManager pcm = PConfManager.getPConfManager(kicked);
-        pcm.set("last_kick.kicker", (kicker == null) ? "Unknown" : kicker.getName());
-        pcm.set("last_kick.reason", decolorize(reason));
-        pcm.set("last_kick.timestamp", System.currentTimeMillis());
-        kicked.kickPlayer(RUtils.getMessage(Config.kickFormat, reason, kicker));
-    }
-
-    /**
-     * Schedules a player kick via the Bukkit scheduler. Will run as soon as a spot frees for the event.
-     *
-     * @param p      Player to kick
-     * @param reason Reason for kick
-     * @throws IllegalArgumentException If p or reason is null
-     * @throws NullPointerException     If method could not get the RoyalCommands plugin to schedule with via Bukkit
-     */
-    public static void scheduleKick(final Player p, final String reason) throws IllegalArgumentException, NullPointerException {
-        if (p == null) throw new IllegalArgumentException("Player cannot be null!");
-        if (reason == null) throw new IllegalArgumentException("Reason cannot be null!");
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                p.kickPlayer(reason);
+    public static String teleport(Player p, Location l) {
+        synchronized (teleRunners) {
+            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.instance.ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
+                makeTeleportRunner(p, l);
+                return "";
+            } else if (Config.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
+                return "";
             }
-        };
-        Plugin plugin = RoyalCommands.instance;
-        if (plugin == null) throw new NullPointerException("Could not get the RoyalCommands plugin.");
-        RoyalCommands.instance.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
+        }
+        final Location toTele = (Config.safeTeleport) ? getSafeLocation(l) : l;
+        if (toTele == null) return "There is no ground below.";
+        final Chunk c = toTele.getChunk();
+        if (!c.isLoaded()) c.load(true);
+        final Entity vehicle = getVehicleToTeleport(p);
+        if (vehicle != null) {
+            return teleportWithVehicle(toTele, p, vehicle);
+        } else {
+            CmdBack.addBackLocation(p, p.getLocation());
+            p.setVelocity(new Vector(0, 0, 0));
+            p.setFallDistance(0F);
+            p.teleport(toTele);
+            playTeleportSound(toTele);
+            return "";
+        }
     }
 
     /**
-     * Gets an ItemStack from an alias and an amount.
+     * Teleports a player and registers it in /back.
      *
-     * @param alias  Alias of the item name
-     * @param amount Amount of the item to be in the stack
-     * @return ItemStack
-     * @throws InvalidItemNameException If item alias is not valid
-     * @throws NullPointerException     If ItemNameManager is not loaded
+     * @param p Player to teleport
+     * @param e Entity to teleport to
+     * @return Error message if any.
      */
-    public static ItemStack getItemFromAlias(String alias, int amount) throws InvalidItemNameException, NullPointerException {
-        ItemStack is;
-        if (RoyalCommands.inm == null) throw new NullPointerException("ItemNameManager is not loaded!");
-        is = RoyalCommands.inm.getItemStackFromAlias(alias);
-        if (is == null) throw new InvalidItemNameException(alias + " is not a valid alias!");
-        is.setAmount(amount);
-        return is;
+    public static String teleport(Player p, Entity e) {
+        if (e == null) return "Entity was null";
+        return teleport(p, e.getLocation());
     }
 
-    public static String getMVWorldName(World w) {
-        if (w == null) throw new NullPointerException("w can't be null!");
-        if (!Config.multiverseNames || RoyalCommands.mvc == null)
-            return RoyalCommands.wm.getConfig().getString("worlds." + w.getName() + ".displayname", w.getName());
-        return RoyalCommands.mvc.getMVWorldManager().getMVWorld(w).getColoredWorldString();
+    private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle) {
+        return teleportWithVehicle(l, passenger, vehicle, false);
     }
 
-    public static void silentKick(final Player t, final String reason) {
-        t.kickPlayer(reason + "\00-silent");
-    }
-
-    /**
-     * Gets a world via its real name, Multiverse name, or WorldManager name.
-     *
-     * @param name Name of world to get
-     * @return World or null if none exists
-     */
-    public static World getWorld(String name) {
-        World w;
-        w = Bukkit.getWorld(name);
-        if (w != null) return w;
-        if (RoyalCommands.mvc != null) {
-            MultiverseWorld mvw = RoyalCommands.mvc.getMVWorldManager().getMVWorld(name);
-            w = (mvw == null) ? null : mvw.getCBWorld();
-            if (w != null) return w;
+    private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle, boolean silent) {
+        if (!Config.vehicleCrossWorldTeleport && !l.getWorld().getName().equals(vehicle.getWorld().getName()))
+            return "Passenger on vehicle cannot teleport to a different world!";
+        vehicle.eject();
+        if (!silent && passenger instanceof Player) {
+            final Player p = (Player) passenger;
+            CmdBack.addBackLocation(p, p.getLocation());
         }
-        w = RoyalCommands.wm.getWorld(name);
-        return w;
-    }
-
-    public static String getRChatGroupPrefix(final String s) {
-        try {
-            Class.forName("org.royaldev.royalchat.DataManager");
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
-        String prefix = rc.dm.getGroupPrefix(s);
-        if (prefix.isEmpty()) prefix = null;
-        return prefix;
-    }
-
-    public static String getRChatGroupSuffix(final String s) {
-        try {
-            Class.forName("org.royaldev.royalchat.DataManager");
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
-        String suffix = rc.dm.getGroupSuffix(s);
-        if (suffix.isEmpty()) suffix = null;
-        return suffix;
-    }
-
-    public static String getRChatPrefix(final Player p) {
-        try {
-            Class.forName("org.royaldev.royalchat.DataManager");
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
-        String prefix = rc.dm.getPrefix(p);
-        if (prefix.isEmpty()) prefix = null;
-        return prefix;
-    }
-
-    public static String getRChatSuffix(final Player p) {
-        try {
-            Class.forName("org.royaldev.royalchat.DataManager");
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-        RoyalChat rc = (RoyalChat) Bukkit.getPluginManager().getPlugin("RoyalChat");
-        String suffix = rc.dm.getSuffix(p);
-        if (suffix.isEmpty()) suffix = null;
-        return suffix;
-    }
-
-    public static String replaceVars(final String orig, final Player p) {
-        String repld = orig;
-        repld = repld.replace("{name}", p.getName()).replace("{dispname}", p.getDisplayName()).replace("{world}", getMVWorldName(p.getWorld()));
-        if (!RoyalCommands.instance.vh.usingVault()) return repld;
-        try {
-            repld = repld.replace("{group}", RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p));
-        } catch (Exception ignored) {
-        }
-        try {
-            repld = repld.replace("{prefix}", RoyalCommands.instance.vh.getChat().getPlayerPrefix(p));
-        } catch (Exception ignored) {
-            String prefix = getRChatPrefix(p);
-            if (prefix != null) repld = repld.replace("{prefix}", prefix);
-        }
-        try {
-            repld = repld.replace("{suffix}", RoyalCommands.instance.vh.getChat().getPlayerSuffix(p));
-        } catch (Exception ignored) {
-            String suffix = getRChatSuffix(p);
-            if (suffix != null) repld = repld.replace("{suffix}", suffix);
-        }
-        return repld;
-    }
-
-    /**
-     * Gets the message shown to other players on the server when someone is disconnected (kicked).
-     *
-     * @param format Format of the message
-     * @param reason Reason for disconnect
-     * @param kicked Person disconnected
-     * @param kicker Person who caused disconnect
-     * @return Formatted string
-     */
-    public static String getInGameMessage(final String format, final String reason, final OfflinePlayer kicked, final CommandSender kicker) {
-        if (reason == null || kicked == null || kicker == null) return null;
-        String message = format;
-        message = colorize(message);
-        if (kicked.isOnline()) message = message.replace("{kdispname}", ((Player) kicked).getDisplayName());
-        else message = message.replace("{kdispname}", kicked.getName());
-        message = message.replace("{kname}", kicked.getName());
-        message = message.replace("{name}", kicker.getName());
-        if (kicker instanceof Player) message = message.replace("{dispname}", ((Player) kicker).getDisplayName());
-        else message = message.replace("{dispname}", kicker.getName());
-        message = message.replace("{reason}", reason);
-        return message;
-    }
-
-    /**
-     * Gets the message shown to a player on disconnect.
-     *
-     * @param message Format of the message
-     * @param reason  Reason for disconnect.
-     * @param kicker  Person who caused disconnect.
-     * @return Formatted string
-     */
-    public static String getMessage(final String message, final String reason, final CommandSender kicker) {
-        String format = message;
-        format = colorize(format);
-        if (kicker instanceof Player) format = format.replace("{dispname}", ((Player) kicker).getDisplayName());
-        else format = format.replace("{dispname}", kicker.getName());
-        format = format.replace("{name}", kicker.getName());
-        format = format.replace("{reason}", reason);
-        return format;
-    }
-
-    public static String getMessage(final String message, final String reason, final String kicker) {
-        String format = message;
-        format = colorize(format);
-        format = format.replace("{dispname}", kicker);
-        format = format.replace("{name}", kicker);
-        format = format.replace("{reason}", reason);
-        return format;
-    }
-
-    public static boolean isIPBanned(Player p) {
-        return Bukkit.getIPBans().contains(p.getAddress().getAddress().toString().replace("/", ""));
-    }
-
-    public static boolean isIPBanned(String ip) {
-        return Bukkit.getIPBans().contains(ip);
-    }
-
-    private static boolean isInt(String s) {
-        Integer i;
-        try {
-            i = Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            i = null;
-        }
-        return i != null;
-    }
-
-    private static boolean isInt(char c) {
-        Integer i;
-        try {
-            i = Integer.parseInt(String.valueOf(c));
-        } catch (NumberFormatException e) {
-            i = null;
-        }
-        return i != null;
+        passenger.setVelocity(new Vector(0, 0, 0));
+        passenger.setFallDistance(0F);
+        passenger.teleport(l);
+        vehicle.setVelocity(new Vector(0, 0, 0));
+        vehicle.setFallDistance(0F);
+        vehicle.teleport(l);
+        vehicle.setPassenger(passenger);
+        return "";
     }
 
     /**
@@ -1023,148 +1447,55 @@ public class RUtils {
         return seconds;
     }
 
+    public static void unbanPlayer(OfflinePlayer t) {
+        final BanList bl = Bukkit.getBanList(BanList.Type.NAME);
+        bl.pardon(t.getName());
+    }
+
     /**
-     * Gets enchantments from form "name:level,..." (e.g. "damage_all:2,durability:1")
+     * Wraps text to fit evenly in the chat box
      *
-     * @param enchant String of enchantment
-     * @return Map of Enchantments and their levels or null if invalid
+     * @param text Text to wrap
+     * @param len  Length to wrap at
+     * @return Array of strings
      */
-    public static Map<Enchantment, Integer> getEnchantments(String enchant) {
-        final Map<Enchantment, Integer> enchants = new HashMap<>();
-        for (String enc : enchant.split(",")) {
-            enc = enc.replace(" ", "");
-            String[] data = enc.split(":");
-            if (data.length < 2) return null;
-            String name = data[0];
-            int lvl;
-            try {
-                lvl = Integer.parseInt(data[1]);
-            } catch (NumberFormatException e) {
-                continue;
+    @SuppressWarnings("unchecked")
+    public static String[] wrapText(String text, int len) {
+        // return empty array for null text
+        if (text == null) return new String[]{};
+        // return text if len is zero or less
+        if (len <= 0) return new String[]{text};
+        // return text if less than length
+        if (text.length() <= len) return new String[]{text};
+        char[] chars = text.toCharArray();
+        java.util.Vector lines = new java.util.Vector();
+        StringBuilder line = new StringBuilder();
+        StringBuilder word = new StringBuilder();
+        for (char aChar : chars) {
+            word.append(aChar);
+            if (aChar == ' ') {
+                if ((line.length() + word.length()) > len) {
+                    lines.add(line.toString());
+                    line.delete(0, line.length());
+                }
+                line.append(word);
+                word.delete(0, word.length());
             }
-            Enchantment e = Enchantment.getByName(name.toUpperCase());
-            if (e == null) continue;
-            enchants.put(e, lvl);
         }
-        return enchants;
-    }
-
-    /**
-     * Renames an ItemStack.
-     *
-     * @param is      ItemStack to rename
-     * @param newName Name to give ItemStack
-     * @return ItemStack with new name
-     */
-    public static ItemStack renameItem(ItemStack is, String newName) {
-        if (is == null) throw new IllegalArgumentException("ItemStack cannot be null!");
-        if (newName == null) return is;
-        ItemMeta im = is.getItemMeta();
-        im.setDisplayName(newName);
-        is.setItemMeta(im);
-        return is;
-    }
-
-    /**
-     * Adds lore to an ItemStack.
-     *
-     * @param is      ItemStack to add lore to
-     * @param newLore Lore to add
-     * @return ItemStack with added lore
-     */
-    public static ItemStack addLore(ItemStack is, String newLore) {
-        if (is == null) throw new IllegalArgumentException("ItemStack cannot be null!");
-        if (newLore == null) return is;
-        ItemMeta im = is.getItemMeta();
-        List<String> lores = im.getLore();
-        if (lores == null) lores = new ArrayList<>();
-        lores.add(newLore);
-        im.setLore(lores);
-        is.setItemMeta(im);
-        return is;
-    }
-
-    /**
-     * Clears lore on an ItemStack.
-     *
-     * @param is ItemStack to clear lore from
-     * @return ItemStack with no lore
-     */
-    public static ItemStack clearLore(ItemStack is) {
-        if (is == null) throw new IllegalArgumentException("ItemStack cannot be null!");
-        ItemMeta im = is.getItemMeta();
-        im.setLore(null);
-        is.setItemMeta(im);
-        return is;
-    }
-
-    /**
-     * Gets an empty inventory with a backpack configuration.
-     *
-     * @return Backpack
-     */
-    public static Inventory getEmptyBackpack() {
-        return Bukkit.createInventory(null, 36, "Backpack");
-    }
-
-    /**
-     * Gets a player backpack
-     *
-     * @param u UUID of player to get backpack for
-     * @return Backpack - never null
-     */
-    public static Inventory getBackpack(UUID u, World w) {
-        PConfManager pcm = PConfManager.getPConfManager(u);
-        String worldGroup = WorldManager.il.getWorldGroup(w);
-        if (worldGroup == null) worldGroup = "w-" + w.getName();
-        if (!pcm.exists()) pcm.createFile();
-        int invSize = pcm.getInt("backpack." + worldGroup + ".size", -1);
-        if (invSize < 9) invSize = 36;
-        if (invSize % 9 != 0) invSize = 36;
-        final Inventory i = Bukkit.createInventory(new BackpackListener.BackpackHolder(u, w), invSize, "Backpack");
-        if (!pcm.isSet("backpack." + worldGroup + ".item")) return i;
-        for (int slot = 0; slot < invSize; slot++) {
-            ItemStack is = pcm.getItemStack("backpack." + worldGroup + ".item." + slot);
-            if (is == null) continue;
-            i.setItem(slot, is);
+        // handle any extra chars in current word
+        if (word.length() > 0) {
+            if ((line.length() + word.length()) > len) {
+                lines.add(line.toString());
+                line.delete(0, line.length());
+            }
+            line.append(word);
         }
-        return i;
-    }
-
-    /**
-     * Gets a player backpack
-     *
-     * @param p Player to get backpack for
-     * @return Backpack - never null
-     */
-    public static Inventory getBackpack(Player p) {
-        return getBackpack(p.getUniqueId(), p.getWorld());
-    }
-
-    /**
-     * Saves player backpacks in a forwards-compatible method, using native Bukkit methods.
-     *
-     * @param p Player to save backpack for
-     * @param i Inventory to save as backpack
-     */
-    public static void saveBackpack(Player p, Inventory i) {
-        saveBackpack(p.getUniqueId(), p.getWorld(), i);
-    }
-
-    /**
-     * Saves player backpacks in a forwards-compatible method, using native Bukkit methods.
-     *
-     * @param u UUID of player to save backpack for
-     * @param i Inventory to save as backpack
-     */
-    public static void saveBackpack(UUID u, World w, Inventory i) {
-        final PConfManager pcm = PConfManager.getPConfManager(u);
-        if (w == null) return;
-        String worldGroup = WorldManager.il.getWorldGroup(w);
-        if (worldGroup == null) worldGroup = "w-" + w.getName();
-        for (int slot = 0; slot < i.getSize(); slot++)
-            pcm.set("backpack." + worldGroup + ".item." + slot, i.getItem(slot));
-        pcm.set("backpack." + worldGroup + ".size", i.getSize());
+        // handle extra line
+        if (line.length() > 0) lines.add(line.toString());
+        String[] ret = new String[lines.size()];
+        int c = 0; // counter
+        for (Enumeration e = lines.elements(); e.hasMoreElements(); c++) ret[c] = (String) e.nextElement();
+        return ret;
     }
 
     /**
@@ -1182,336 +1513,5 @@ public class RUtils {
         // banner,banreason,bannedat,istempban
         prevBans.add(pcm.getString("banner") + "\u00b5" + pcm.getString("banreason") + "\u00b5" + pcm.getString("bannedat") + "\u00b5" + (pcm.get("bantime") != null));
         pcm.set("prevbans", prevBans);
-    }
-
-    /**
-     * Bans a player. Message is not sent to banned player or person who banned.
-     * Message is broadcasted to those with rcmds.see.ban
-     * Kicks banned player if they're online.
-     * <p/>
-     * This is only used for permabans.
-     *
-     * @param t      Player to ban
-     * @param cs     CommandSender who issued the ban
-     * @param reason Reason for the ban
-     */
-    public static void banPlayer(OfflinePlayer t, CommandSender cs, String reason) {
-        reason = colorize(reason);
-        final BanList bl = Bukkit.getBanList(BanList.Type.NAME);
-        bl.addBan(t.getName(), reason, null, cs.getName());
-        writeBanHistory(t);
-        String inGameFormat = Config.igBanFormat;
-        String outFormat = Config.banFormat;
-        executeBanActions(t, cs, reason);
-        Bukkit.getServer().broadcast(getInGameMessage(inGameFormat, reason, t, cs), "rcmds.see.ban");
-        if (t.isOnline()) ((Player) t).kickPlayer(getMessage(outFormat, reason, cs));
-    }
-
-    public static void unbanPlayer(OfflinePlayer t) {
-        final BanList bl = Bukkit.getBanList(BanList.Type.NAME);
-        bl.pardon(t.getName());
-    }
-
-    public static void banIP(String ip, CommandSender cs, String reason) {
-        final BanList bl = Bukkit.getBanList(BanList.Type.IP);
-        bl.addBan(ip, reason, null, cs.getName());
-    }
-
-    private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {
-        if (!RoyalCommands.instance.getConfig().getKeys(false).contains("on_ban"))
-            return; // default values are not welcome here
-        final List<String> banActions = Config.onBanActions;
-        if (banActions == null || banActions.isEmpty()) return;
-        for (String command : banActions) {
-            if (command.trim().isEmpty()) continue;
-            boolean fromConsole = command.startsWith("@");
-            if (fromConsole) command = command.substring(1);
-
-            command = command.replace("{name}", banned.getName());
-            command = command.replace("{dispname}", (banned.isOnline()) ? ((Player) banned).getDisplayName() : banned.getName());
-            command = command.replace("{banner}", banner.getName());
-            command = command.replace("{bannerdispname}", (banner instanceof Player) ? ((Player) banner).getDisplayName() : banner.getName());
-            command = command.replace("{reason}", reason);
-
-            CommandSender sendFrom = (fromConsole) ? Bukkit.getConsoleSender() : banner;
-            Bukkit.dispatchCommand(sendFrom, command);
-        }
-    }
-
-    /**
-     * Recursively deletes a directory.
-     *
-     * @param f Directory to delete
-     * @return If all files were deleted, true, else false
-     */
-    public static boolean deleteDirectory(File f) {
-        boolean success = true;
-        if (!f.isDirectory()) return false;
-        File[] files = f.listFiles();
-        if (files == null) return false;
-        for (File delete : files) {
-            if (delete.isDirectory()) {
-                boolean recur = deleteDirectory(delete);
-                if (success) success = recur; // if all has been okay, set to new value.
-                continue;
-            }
-            if (!delete.delete()) {
-                RoyalCommands.instance.getLogger().warning("Could not delete " + delete.getAbsolutePath());
-                success = false;
-            }
-        }
-        if (success) success = f.delete(); // don't delete directory if files still remain
-        return success;
-    }
-
-    /**
-     * Lists files in a directory.
-     *
-     * @param f         Directory to list files in
-     * @param recursive Recursively list files?
-     * @return List of files - never null
-     */
-    public static List<File> listFiles(File f, boolean recursive) {
-        List<File> fs = new ArrayList<>();
-        if (!f.isDirectory()) return fs;
-        File[] listed = f.listFiles();
-        if (listed == null) return fs;
-        for (File in : listed) {
-            if (in.isDirectory()) {
-                if (!recursive) continue;
-                fs.addAll(listFiles(in, true));
-                continue;
-            }
-            fs.add(in);
-        }
-        return fs;
-    }
-
-    public static void checkMail(Player p) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
-        if (!pcm.getStringList("mail").isEmpty()) {
-            int count = pcm.getStringList("mail").size();
-            String poss = (count != 1) ? "s" : "";
-            p.sendMessage(MessageColor.POSITIVE + "Your mailbox contains " + MessageColor.NEUTRAL + count + MessageColor.POSITIVE + " message" + poss + ".");
-            if (RoyalCommands.instance.ah.isAuthorized(p, "rcmds.mail"))
-                p.sendMessage(MessageColor.POSITIVE + "View mail with " + MessageColor.NEUTRAL + "/mail read" + MessageColor.POSITIVE + ".");
-        }
-    }
-
-    /**
-     * Gets an OfflinePlayer with support for name completion. If no Player is on that matches the beginning of the
-     * name, the string provided will be used to get an OfflinePlayer to return. If there is a Player, it will be cast
-     * to OfflinePlayer and returned.
-     *
-     * @param name Name of player
-     * @return OfflinePlayer
-     */
-    @SuppressWarnings("deprecation")
-    public static OfflinePlayer getOfflinePlayer(String name) {
-        OfflinePlayer op = RoyalCommands.instance.getServer().getPlayerExact(name);
-        if (op == null) op = RoyalCommands.instance.getServer().getPlayer(name);
-        if (op == null) op = RoyalCommands.instance.getServer().getOfflinePlayer(name);
-        return op;
-    }
-
-    public static String getAssignmentPath(ItemStack is) {
-        return getAssignmentPath(is, Config.assignUseDisplayNames, Config.assignUseDurability);
-    }
-
-    public static String getAssignmentPath(ItemStack is, boolean customNames, boolean durability) {
-        StringBuilder path = new StringBuilder("assign.");
-        path.append(is.getType().name());
-        if (customNames) {
-            ItemMeta im = is.getItemMeta();
-            if (im != null) {
-                String displayName = im.getDisplayName();
-                if (displayName != null) path.append(".").append(displayName.replace('.', ',')).append(".");
-                List<String> lore = im.getLore();
-                if (lore != null && !lore.isEmpty()) {
-                    for (String l : lore) {
-                        path.append(l.replace('.', ','));
-                        path.append(".");
-                    }
-                }
-            }
-        }
-        if (durability) path.append(is.getDurability()).append(".");
-        path.append("commands");
-        return path.toString();
-    }
-
-    public static List<String> getAssignment(ItemStack is, GeneralConfManager gcf) {
-        return gcf.getStringList(getAssignmentPath(is));
-    }
-
-    public static void removeAssignment(ItemStack is, GeneralConfManager gcf) {
-        setAssignment(is, null, gcf);
-    }
-
-    public static void setAssignment(ItemStack is, List<String> commands, GeneralConfManager gcf) {
-        if (is == null) return;
-        gcf.set(getAssignmentPath(is), commands);
-    }
-
-    public static String getFriendlyEnumName(Enum e) {
-        return e.name().toLowerCase().replace("_", " ");
-    }
-
-    public static Command getCommand(String name) {
-        try {
-            final Field map = RoyalCommands.instance.getServer().getPluginManager().getClass().getDeclaredField("commandMap");
-            map.setAccessible(true);
-            final CommandMap cm = (CommandMap) map.get(RoyalCommands.instance.getServer().getPluginManager());
-            return cm.getCommand(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static Object getPrivateField(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-        Class<?> clazz = object.getClass();
-        Field objectField = clazz.getDeclaredField(field);
-        final boolean wasAccessible = objectField.isAccessible();
-        objectField.setAccessible(true);
-        Object result = objectField.get(object);
-        objectField.setAccessible(wasAccessible);
-        return result;
-    }
-
-    public static int getHomeLimit(Player p) {
-        String name = p.getName();
-        String group;
-        if (RoyalCommands.instance.vh.usingVault()) {
-            try {
-                group = RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p);
-            } catch (Exception e) {
-                group = "";
-            }
-        } else group = "";
-        if (group == null) group = "";
-        int limit;
-        final FileConfiguration c = RoyalCommands.instance.getConfig();
-        if (c.isSet("homes.limits.players." + name)) limit = c.getInt("homes.limits.players." + name, -1);
-        else limit = c.getInt("homes.limits.groups." + group, -1);
-        return limit;
-    }
-
-    public static int getCurrentHomes(Player p) {
-        return getCurrentHomes(p.getUniqueId());
-    }
-
-    public static int getCurrentHomes(UUID u) {
-        ConfigurationSection pconf = PConfManager.getPConfManager(u).getConfigurationSection("home");
-        if (pconf == null) return 0;
-        return pconf.getValues(false).size();
-    }
-
-    public static boolean nearEqual(double a, double b, double margin) {
-        return Math.abs(a - b) < margin;
-    }
-
-    public static boolean nearEqual(double a, double b) {
-        return nearEqual(a, b, .05D);
-    }
-
-    public static boolean isBanned(final Player p) {
-        final PConfManager pcm = PConfManager.getPConfManager(p);
-        if (pcm.isSet("bantime")) {
-            if (RUtils.isTimeStampValid(p, "bantime")) return true;
-            else {
-                pcm.set("bantime", null);
-                RUtils.unbanPlayer(p);
-                return false;
-            }
-        }
-        return p.isBanned();
-    }
-
-    public static UUID getUUID(String name) throws Exception {
-        final Map<String, UUID> m = new UUIDFetcher(Arrays.asList(name)).call();
-        for (Map.Entry<String, UUID> e : m.entrySet()) if (e.getKey().equalsIgnoreCase(name)) return e.getValue();
-        throw new Exception("Couldn't find name in results.");
-    }
-
-    public static String getName(UUID u) throws Exception {
-        return new NameFetcher(Arrays.asList(u)).call().get(u);
-    }
-
-    public static String forceGetName(UUID u) {
-        String name;
-        try {
-            name = RUtils.getName(u);
-        } catch (Exception ex) {
-            name = u.toString();
-        }
-        return name;
-    }
-
-    public static List<FancyMessage> getPlayerTooltip(final Object o) {
-        final List<FancyMessage> tooltip = new ArrayList<>();
-        final VaultHandler vh = RoyalCommands.instance.vh;
-        if (o instanceof OfflinePlayer) {
-            final OfflinePlayer op = (OfflinePlayer) o;
-            if (tooltip.size() < 1)
-                tooltip.add(new FancyMessage("Offline Player").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
-            tooltip.add(new FancyMessage("Name: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.getName()).color(MessageColor.NEUTRAL._()));
-            tooltip.add(new FancyMessage("Operator: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.isOp() ? "Yes" : "No").color(MessageColor.NEUTRAL._()));
-            if (vh.usingVault()) {
-                final String group = vh.getPermission().getPrimaryGroup(null, op);
-                String prefix = vh.getChat().getGroupPrefix((String) null, group);
-                if (prefix == null || prefix.isEmpty()) prefix = vh.getChat().getPlayerPrefix(null, op);
-                if (prefix == null) prefix = "";
-                String suffix = vh.getChat().getGroupSuffix((String) null, group);
-                if (suffix == null || suffix.isEmpty()) suffix = vh.getChat().getPlayerSuffix(null, op);
-                if (suffix == null) suffix = "";
-                // TODO: Config format
-                if (!group.isEmpty()) {
-                    tooltip.add(new FancyMessage("Group: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(ChatColor.translateAlternateColorCodes('&', prefix)).color(MessageColor.NEUTRAL._()).then(group).then(ChatColor.translateAlternateColorCodes('&', suffix)));
-                }
-            }
-        }
-        if (o instanceof Player) {
-            final Player p = (Player) o;
-            if (tooltip.size() > 0) { // Replace Offline Player with Player
-                tooltip.remove(0);
-                tooltip.add(0, new FancyMessage("Player").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
-            }
-        }
-        if (o instanceof ConsoleCommandSender) {
-            if (tooltip.size() < 1)
-                tooltip.add(new FancyMessage("Console").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
-        }
-        return tooltip.isEmpty() ? null : tooltip;
-    }
-
-    public static void setFields(Object o, String[] fields, Object... values) throws ReflectiveOperationException {
-        try {
-            for (int index = 0; index < fields.length; index++) {
-                final String field = fields[index];
-                final Field f = o.getClass().getDeclaredField(field);
-                f.setAccessible(true);
-                f.set(o, values[index]);
-            }
-        } catch (ReflectiveOperationException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static FancyMessage addDataTo(FancyMessage fm, String[] fields, Object... values) {
-        final Iterator i = fm.iterator();
-        for (final Object o : fm) {
-            try {
-                RUtils.setFields(o, fields, values);
-            } catch (ReflectiveOperationException ex) {
-                ex.printStackTrace();
-                return fm;
-            }
-        }
-        return fm;
-    }
-
-    public static FancyMessage addCommandTo(FancyMessage fm, String command) {
-        return RUtils.addDataTo(fm, new String[]{"clickActionName", "clickActionData"}, "run_command", command);
     }
 }
