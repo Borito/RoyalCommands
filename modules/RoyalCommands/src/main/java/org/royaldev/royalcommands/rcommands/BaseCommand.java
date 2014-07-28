@@ -50,128 +50,6 @@ public abstract class BaseCommand implements CommandExecutor {
     }
 
     /**
-     * The body of the command to be run. Depending on the constructor
-     * ({@link #BaseCommand(org.royaldev.royalcommands.RoyalCommands, String, boolean)}), permissions will have already
-     * been checked. The command name matching the name of this command is already checked. All unhandled exceptions
-     * will be caught and displayed to the user in a friendly format.
-     *
-     * @param cs    The CommandSender using the command
-     * @param cmd   The Command being used
-     * @param label The label of the command (alias)
-     * @param args  The arguments passed to the command
-     * @return true to not display usage, false to display usage (essentially)
-     */
-    abstract boolean runCommand(CommandSender cs, Command cmd, String label, String[] args);
-
-    /**
-     * The real onCommand that will be called by Bukkit. This checks for the command name to match, permissions if
-     * specified, and runs the
-     * {@link #runCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[])} method. If
-     * any exception is unhandled in that method, it will be handled and displayed to the user in a friendly format.
-     * <p/>
-     * Due to the nature of this class, this method cannot be overridden.
-     *
-     * @param cs    The CommandSender using the command
-     * @param cmd   The Command being used
-     * @param label The label of the command (alias)
-     * @param args  The arguments passed to the command
-     * @return true to not display usage, false to display usage (essentially)
-     */
-    @Override
-    public final boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (!cmd.getName().equalsIgnoreCase(this.name)) return false;
-        if (this.checkPermissions && !this.ah.isAuthorized(cs, cmd)) {
-            RUtils.dispNoPerms(cs, new String[]{this.ah.getPermission(cmd)}); // ensure calling to varargs method
-            return true;
-        }
-        try {
-            return this.runCommand(cs, cmd, label, args);
-        } catch (Throwable t) {
-            this.handleException(cs, cmd, label, args, t);
-            return true;
-        }
-    }
-
-    /**
-     * Gets the CommandArguments from the given arguments. This allows for flags to be used.
-     *
-     * @param args Arguments to generate CommandArguments from
-     * @return CommandArguments
-     * @see org.royaldev.royalcommands.rcommands.CACommand
-     */
-    CommandArguments getCommandArguments(String[] args) {
-        return new CommandArguments(args);
-    }
-
-    /**
-     * Gets a link to a Hastebin paste with the given content.
-     *
-     * @param paste Content to paste
-     * @return Link to Hastebin paste with the given content
-     * @throws IOException Upon any issue
-     */
-    private String hastebin(String paste) throws IOException {
-        final URL obj = new URL("http://hastebin.com/documents");
-        final HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("POST");
-        con.setDoOutput(true);
-        final DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(paste);
-        wr.flush();
-        wr.close();
-        final BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        final StringBuilder response = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) response.append(inputLine);
-        in.close();
-        final HastebinData hd = new Gson().fromJson(response.toString(), HastebinData.class);
-        return "http://hastebin.com/" + hd.getKey() + ".txt";
-    }
-
-    /**
-     * Schedules a thread-safe implementation of {@link #hastebin(String)}.
-     *
-     * @param cs    CommandSender to send the generated link to
-     * @param paste Content to paste
-     */
-    private void scheduleHastebin(final CommandSender cs, final String paste) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
-            @Override
-            public void run() {
-                String tempURL;
-                try {
-                    tempURL = BaseCommand.this.hastebin(paste);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    tempURL = null;
-                }
-                final String url = tempURL;
-                BaseCommand.this.plugin.getServer().getScheduler().runTask(BaseCommand.this.plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (url != null) {
-                            BaseCommand.this.plugin.getLogger().warning("Error paste: " + url);
-                            // @formatter:off
-                            new FancyMessage("Click ")
-                                    .color(MessageColor.NEGATIVE._())
-                                .then("here")
-                                    .color(MessageColor.NEUTRAL._())
-                                    .tooltip("Click here to find out more.")
-                                    .link(url)
-                                .then(" to find out more.")
-                                    .color(MessageColor.NEGATIVE._())
-                                .send(cs);
-                            // @formatter:on
-                        } else {
-                            new FancyMessage(Config.hastebinErrors ? "An error occurred while trying to paste the stack trace." : "Error pasting is disabled.").color(MessageColor.NEGATIVE._()).send(cs);
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    /**
      * Handles an exception. Generates a useful debug paste and sends it to the user if enabled. Also prints the stack
      * trace to the console and tells the user that an exception occurred.
      *
@@ -217,8 +95,174 @@ public abstract class BaseCommand implements CommandExecutor {
             final StringWriter sw = new StringWriter();
             t.printStackTrace(new PrintWriter(sw));
             sb.append("\n\n---STRACK TRACE---\n\n").append(sw.toString());
-            this.scheduleHastebin(cs, sb.toString());
+            this.scheduleErrorHastebin(cs, sb.toString());
         }
+    }
+
+    /**
+     * Gets a link to a Hastebin paste with the given content.
+     *
+     * @param paste Content to paste
+     * @return Link to Hastebin paste with the given content
+     * @throws IOException Upon any issue
+     */
+    private String hastebin(String paste) throws IOException {
+        final URL obj = new URL("http://hastebin.com/documents");
+        final HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("POST");
+        con.setDoOutput(true);
+        final DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(paste);
+        wr.flush();
+        wr.close();
+        final BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        final StringBuilder response = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) response.append(inputLine);
+        in.close();
+        final HastebinData hd = new Gson().fromJson(response.toString(), HastebinData.class);
+        return "http://hastebin.com/" + hd.getKey() + ".txt";
+    }
+
+    /**
+     * Schedules a thread-safe implementation of {@link #hastebin(String)}.
+     *
+     * @param cs    CommandSender to send the generated link to
+     * @param paste Content to paste
+     */
+    private void scheduleErrorHastebin(final CommandSender cs, final String paste) {
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
+            @Override
+            public void run() {
+                String tempURL = null;
+                if (Config.hastebinErrors) {
+                    try {
+                        tempURL = BaseCommand.this.hastebin(paste);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        tempURL = null;
+                    }
+                }
+                final String url = tempURL;
+                BaseCommand.this.plugin.getServer().getScheduler().runTask(BaseCommand.this.plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (url != null) {
+                            BaseCommand.this.plugin.getLogger().warning("Error paste: " + url);
+                            // @formatter:off
+                            new FancyMessage("Click ")
+                                    .color(MessageColor.NEGATIVE._())
+                                .then("here")
+                                    .color(MessageColor.NEUTRAL._())
+                                    .tooltip("Click here to find out more.")
+                                    .link(url)
+                                .then(" to find out more.")
+                                    .color(MessageColor.NEGATIVE._())
+                                .send(cs);
+                            // @formatter:on
+                        } else {
+                            new FancyMessage(Config.hastebinErrors ? "An error occurred while trying to paste the stack trace." : "Error pasting is disabled.").color(MessageColor.NEGATIVE._()).send(cs);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Gets the CommandArguments from the given arguments. This allows for flags to be used.
+     *
+     * @param args Arguments to generate CommandArguments from
+     * @return CommandArguments
+     * @see org.royaldev.royalcommands.rcommands.CACommand
+     */
+    CommandArguments getCommandArguments(String[] args) {
+        return new CommandArguments(args);
+    }
+
+    /**
+     * The real onCommand that will be called by Bukkit. This checks for the command name to match, permissions if
+     * specified, and runs the
+     * {@link #runCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[])} method. If
+     * any exception is unhandled in that method, it will be handled and displayed to the user in a friendly format.
+     * <p/>
+     * Due to the nature of this class, this method cannot be overridden.
+     *
+     * @param cs    The CommandSender using the command
+     * @param cmd   The Command being used
+     * @param label The label of the command (alias)
+     * @param args  The arguments passed to the command
+     * @return true to not display usage, false to display usage (essentially)
+     */
+    @Override
+    public final boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if (!cmd.getName().equalsIgnoreCase(this.name)) return false;
+        if (this.checkPermissions && !this.ah.isAuthorized(cs, cmd)) {
+            RUtils.dispNoPerms(cs, new String[]{this.ah.getPermission(cmd)}); // ensure calling to varargs method
+            return true;
+        }
+        try {
+            return this.runCommand(cs, cmd, label, args);
+        } catch (Throwable t) {
+            this.handleException(cs, cmd, label, args, t);
+            return true;
+        }
+    }
+
+    /**
+     * The body of the command to be run. Depending on the constructor
+     * ({@link #BaseCommand(org.royaldev.royalcommands.RoyalCommands, String, boolean)}), permissions will have already
+     * been checked. The command name matching the name of this command is already checked. All unhandled exceptions
+     * will be caught and displayed to the user in a friendly format.
+     *
+     * @param cs    The CommandSender using the command
+     * @param cmd   The Command being used
+     * @param label The label of the command (alias)
+     * @param args  The arguments passed to the command
+     * @return true to not display usage, false to display usage (essentially)
+     */
+    abstract boolean runCommand(CommandSender cs, Command cmd, String label, String[] args);
+
+    /**
+     * /**
+     * Schedules a thread-safe implementation of {@link #hastebin(String)}.
+     *
+     * @param cs            CommandSender to send the generated link to
+     * @param paste         Content to paste
+     * @param messageBefore Message before the URL
+     * @param urlMessage    Message for the URL
+     * @param messageAfter  Message after the URL
+     * @param urlTooltip    Tooltip for the URL (can be null for none)
+     */
+    protected void scheduleHastebin(final CommandSender cs, final String paste, final String messageBefore, final String urlMessage, final String messageAfter, final String urlTooltip) {
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
+            @Override
+            public void run() {
+                String tempURL = null;
+                if (Config.hastebinGeneral) {
+                    try {
+                        tempURL = BaseCommand.this.hastebin(paste);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        tempURL = null;
+                    }
+                }
+                final String url = tempURL;
+                BaseCommand.this.plugin.getServer().getScheduler().runTask(BaseCommand.this.plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (url != null) {
+                            BaseCommand.this.plugin.getLogger().info("Paste: " + url);
+                            final FancyMessage fm = new FancyMessage(messageBefore).then(urlMessage);
+                            if (urlTooltip != null) fm.tooltip(urlTooltip);
+                            fm.link(url).then(messageAfter).send(cs);
+                        } else {
+                            new FancyMessage(Config.hastebinGeneral ? "An error occurred while trying to paste." : "Pasting is disabled.").color(MessageColor.NEGATIVE._()).send(cs);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private class HastebinData {
@@ -246,6 +290,17 @@ public abstract class BaseCommand implements CommandExecutor {
         }
 
         /**
+         * Gets the name of the given flag. This strips the beginning hyphen or double-hyphen.
+         *
+         * @param s Flag
+         * @return Flag name
+         */
+        private String getFlagName(String s) {
+            if (!this.isFlag(s)) throw new IllegalArgumentException("Not a flag.");
+            return s.substring(s.length() > 2 && s.substring(1).startsWith("-") ? 2 : 1);
+        }
+
+        /**
          * Gets if this argument is a flag. This will not match the flag terminator.
          *
          * @param s Argument
@@ -263,17 +318,6 @@ public abstract class BaseCommand implements CommandExecutor {
          */
         private boolean isFlagTerminator(String s) {
             return s.equals("--");
-        }
-
-        /**
-         * Gets the name of the given flag. This strips the beginning hyphen or double-hyphen.
-         *
-         * @param s Flag
-         * @return Flag name
-         */
-        private String getFlagName(String s) {
-            if (!this.isFlag(s)) throw new IllegalArgumentException("Not a flag.");
-            return s.substring(s.length() > 2 && s.substring(1).startsWith("-") ? 2 : 1);
         }
 
         /**
@@ -311,20 +355,6 @@ public abstract class BaseCommand implements CommandExecutor {
         }
 
         /**
-         * Checks if flags are set. Useful for boolean flags.
-         *
-         * @param flags Flags to check for
-         * @return boolean
-         */
-        boolean hasFlag(String... flags) {
-            for (final String flag : flags) {
-                if (!this.containsKey(flag)) continue;
-                return true;
-            }
-            return false;
-        }
-
-        /**
          * The same as {@link #hasFlag(String...)}, except that it checks if the result of
          * {@link #getFlagString(String...)} is not empty.
          *
@@ -335,6 +365,20 @@ public abstract class BaseCommand implements CommandExecutor {
             for (final String flag : flags) {
                 if (!this.containsKey(flag)) continue;
                 if (this.getFlagString(flag).trim().isEmpty()) continue;
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Checks if flags are set. Useful for boolean flags.
+         *
+         * @param flags Flags to check for
+         * @return boolean
+         */
+        boolean hasFlag(String... flags) {
+            for (final String flag : flags) {
+                if (!this.containsKey(flag)) continue;
                 return true;
             }
             return false;
