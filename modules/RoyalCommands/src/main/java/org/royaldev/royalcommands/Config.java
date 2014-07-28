@@ -33,6 +33,7 @@ public class Config {
     public static boolean explodeFire;
     public static boolean h2Convert;
     public static boolean hastebinErrors;
+    public static boolean hastebinGeneral;
     public static boolean itemSpawnTag;
     public static boolean kitPerms;
     public static boolean motdLogin;
@@ -147,7 +148,8 @@ public class Config {
         this.plugin = instance;
         File config = new File(this.plugin.getDataFolder(), "config.yml");
         if (!config.exists()) {
-            if (!config.getParentFile().mkdirs()) this.plugin.getLogger().warning("Could not create config.yml directory.");
+            if (!config.getParentFile().mkdirs())
+                this.plugin.getLogger().warning("Could not create config.yml directory.");
             this.plugin.saveDefaultConfig();
         }
         this.reloadConfiguration();
@@ -176,7 +178,8 @@ public class Config {
         dumpUseInv = c.getBoolean("dump.use_inv", true);
         explodeFire = c.getBoolean("explode.fire", false);
         h2Convert = c.getBoolean("h2.convert", false);
-        hastebinErrors = c.getBoolean("security.errors.hastebin", true);
+        hastebinErrors = c.getBoolean("security.hastebin.errors", true);
+        hastebinGeneral = c.getBoolean("security.hastebin.general", true);
         itemSpawnTag = c.getBoolean("items.spawn.tag.enabled", false);
         kitPerms = c.getBoolean("use_exclusive_kit_perms", false);
         motdLogin = c.getBoolean("motd.options.display_on_login", true);
