@@ -1135,6 +1135,13 @@ reflectcommands:
     version_added: 3.3.0
     class: CmdDocumentation
 
+  prune:
+    description: Prunes old userdata.
+    usage: /<command> -[time,t] [time]
+    aliases: [pruneuserdata]
+    version_added: 4.1.0
+    class: CmdPrune
+
   royalcommands:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1819,6 +1826,10 @@ permissions:
     command: documentation
     default: op
     description: Allows you to view documentation for commands or permission nodes.
+  rcmds.prune:
+    command: prune
+    default: op
+    description: Allows you to prune old userdata.
 
   rcmds.spawnmob.*:
     command: spawnmob
@@ -2517,6 +2528,7 @@ permissions:
       rcmds.commandspy: true
       rcmds.kickhistory: true
       rcmds.documentation: true
+      rcmds.prune: true
       rcmds.royalcommands: true
 
   rcmds.admin:
@@ -2829,6 +2841,7 @@ permissions:
       rcmds.commandspy: true
       rcmds.kickhistory: true
       rcmds.documentation: true
+      rcmds.prune: true
       rcmds.royalcommands: true
 
       rcmds.pluginmanager.*: true
