@@ -20,7 +20,6 @@ package org.royaldev.royalcommands;
 import com.google.common.io.PatternFilenameFilter;
 import com.griefcraft.lwc.LWCPlugin;
 import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -78,6 +77,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
 // TODO: Add banning for no-UUID players? Wait for Bukkit to fix? Investigate.
 // TODO: Rewrite /gm
 // TODO: Add config option for dangerous async (some people like living on the edge)
@@ -110,7 +111,7 @@ public class RoyalCommands extends JavaPlugin {
 
     private RApiMain api;
     private VanishPlugin vp = null;
-    private WorldGuardPlugin wg = null;
+    // private WorldGuardPlugin wg = null;
     private LWCPlugin lwc = null;
 
     private ProtocolListener pl = null;
@@ -128,53 +129,16 @@ public class RoyalCommands extends JavaPlugin {
         return sb.substring(0, sb.length() - 1);
     }
 
-    @SuppressWarnings("unused")
-    public RApiMain getAPI() {
-        return this.api;
+    private List<String> getAliases(String command) {
+        final List<String> aliasesList = this.getCommandInfo(command).getStringList("aliases");
+        if (aliasesList == null) return new ArrayList<>();
+        return aliasesList;
     }
 
-    @SuppressWarnings("unused")
-    public boolean canBuild(Player p, Location l) {
-        return this.wg == null || this.wg.canBuild(p, l);
-    }
-
-    public boolean canBuild(Player p, Block b) {
-        return this.wg == null || this.wg.canBuild(p, b);
-    }
-
-    public boolean canAccessChest(Player p, Block b) {
-        return this.lwc == null || this.lwc.getLWC().canAccessProtection(p, b);
-    }
-
-    public boolean isVanished(Player p) {
-        if (!Config.useVNP) return false;
-        if (this.vp == null) {
-            this.vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
-            return false;
-        } else return this.vp.getManager().isVanished(p);
-    }
-
-    public boolean isVanished(Player p, CommandSender cs) {
-        if (!Config.useVNP) return false;
-        if (this.vp == null) {
-            this.vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
-            return false;
-        }
-        return !this.ah.isAuthorized(cs, "rcmds.seehidden") && vp.getManager().isVanished(p);
-    }
-
-    public int getNumberVanished() {
-        int hid = 0;
-        for (Player p : getServer().getOnlinePlayers()) if (this.isVanished(p)) hid++;
-        return hid;
-    }
-
-    public YamlConfiguration getPluginYml() {
-        return this.pluginYml;
-    }
-
-    public NMSFace getNMSFace() {
-        return this.nmsFace;
+    private ConfigurationSection getCommandInfo(String command) {
+        final ConfigurationSection ci = this.getCommands().getConfigurationSection(command);
+        if (ci == null) throw new IllegalArgumentException("No such command registered!");
+        return ci;
     }
 
     private CommandMap getCommandMap() {
@@ -195,29 +159,136 @@ public class RoyalCommands extends JavaPlugin {
         return this.pluginYml.getConfigurationSection("reflectcommands");
     }
 
-    private ConfigurationSection getCommandInfo(String command) {
-        final ConfigurationSection ci = this.getCommands().getConfigurationSection(command);
-        if (ci == null) throw new IllegalArgumentException("No such command registered!");
-        return ci;
+    private String getDescription(String command) {
+        return this.getCommandInfo(command).getString("description", command);
     }
 
-    private List<String> getAliases(String command) {
-        final List<String> aliasesList = this.getCommandInfo(command).getStringList("aliases");
-        if (aliasesList == null) return new ArrayList<>();
-        return aliasesList;
+    private VUUpdater.VUUpdateInfo getNewestVersions() throws Exception {
+        return VUUpdater.getUpdateInfo("34507");
     }
 
     private String getUsage(String command) {
         return this.getCommandInfo(command).getString("usage", "/<command>");
     }
 
-    /*private boolean unregisterCommand(String command) {
-        final Command c = getCommandMap().getCommand(command);
-        return c != null && c.unregister(getCommandMap());
-    } save for overriding commands in the config*/
+    private void initializeConfManagers() {
+        final String[] cms = new String[]{"whitelist.yml", "warps.yml", "publicassignments.yml"};
+        for (final String name : cms) {
+            final ConfManager cm = ConfManager.getConfManager(name);
+            if (!cm.exists()) cm.createFile();
+            cm.forceSave();
+        }
+    }
 
-    private String getDescription(String command) {
-        return this.getCommandInfo(command).getString("description", command);
+    private void initializeMetrics() {
+        try {
+            this.m = new Metrics(this);
+            Matcher matcher = this.versionPattern.matcher(this.version);
+            if (matcher.matches()) {
+                // 1 = base version
+                // 3 = -SNAPSHOT
+                // 6 = build #
+                String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
+                String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
+                if (matcher.group(3) == null) build = "release";
+                Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
+                g.addPlotter(new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
+                    @Override
+                    public int getValue() {
+                        return 1; // this value doesn't matter
+                    }
+                }); // add the donut graph with major version inside and build outside
+                m.addGraph(g); // add the graph
+            }
+            if (!m.start())
+                this.getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
+            else this.getLogger().info("Metrics enabled. Thank you!");
+        } catch (Exception ignore) {
+            this.getLogger().warning("Could not start Metrics!");
+        }
+    }
+
+    private void initializeNMS() {
+        // Get full package string of CraftServer.
+        // org.bukkit.craftbukkit.versionstring (or for pre-refactor, just org.bukkit.craftbukkit
+        final String packageName = getServer().getClass().getPackage().getName();
+        // Get the last element of the package
+        // If the last element of the package was "craftbukkit" we are now pre-refactor
+        String versionNMS = packageName.substring(packageName.lastIndexOf('.') + 1);
+        if (versionNMS.equals("craftbukkit")) versionNMS = "NoSupport";
+        try {
+            // Check if we have a NMSHandler class at that location.
+            final Class<?> clazz = Class.forName("org.royaldev.royalcommands.nms." + versionNMS + ".NMSHandler");
+            // Make sure it actually implements NMS and set our handler
+            if (NMSFace.class.isAssignableFrom(clazz)) this.nmsFace = (NMSFace) clazz.getConstructor().newInstance();
+        } catch (final Exception e) {
+            this.getLogger().warning("Could not find support for this CraftBukkit version.");
+            this.getLogger().info("The BukkitDev page has links to the newest development builds to fix this.");
+            this.getLogger().info("For now, NMS/CB internal support will be disabled.");
+            this.nmsFace = new org.royaldev.royalcommands.nms.NoSupport.NMSHandler();
+        }
+        if (this.nmsFace.hasSupport()) getLogger().info("Loaded support for " + this.nmsFace.getVersion() + ".");
+    }
+
+    private void initializeTasks() {
+        final BukkitScheduler bs = this.getServer().getScheduler();
+        bs.runTaskTimerAsynchronously(this, new Runnable() {
+            @Override
+            public void run() {
+                if (!Config.updateCheck) return;
+                try {
+                    Matcher m = versionPattern.matcher(version);
+                    if (!m.matches()) return;
+                    final StringBuilder useVersion = new StringBuilder();
+                    if (m.group(1) != null) useVersion.append(m.group(1)); // add base version #
+                    if (m.group(3) != null) useVersion.append(m.group(3)); // add SNAPSHOT status
+                    /*
+                    This does not need to compare build numbers. Everyone would be out of date all the time if it did.
+                    This method will compare root versions.
+                     */
+                    final VUUpdater.VUUpdateInfo vuui = RoyalCommands.this.getNewestVersions();
+                    final String stable = vuui.getStable();
+                    final String dev = vuui.getDevelopment() + "-SNAPSHOT";
+                    String currentVersion = useVersion.toString().toLowerCase();
+                    if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
+                        RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
+                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
+                        RoyalCommands.this.getLogger().warning("Development builds are available at https://ci.royaldev.org/");
+                    } else if (!stable.equalsIgnoreCase(currentVersion) && !currentVersion.equalsIgnoreCase(dev)) {
+                        RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
+                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
+                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
+                    } else if (!stable.equalsIgnoreCase(currentVersion) && currentVersion.replace("-SNAPSHOT", "").equalsIgnoreCase(stable)) {
+                        RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
+                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
+                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
+                    }
+                } catch (Exception ignored) {}
+            }
+        }, 0L, 36000L);
+        bs.scheduleSyncDelayedTask(this, new Runnable() { // load after server starts up
+            @Override
+            public void run() {
+                h.reloadHelp();
+                RoyalCommands.this.getLogger().info("Help loaded for all plugins.");
+            }
+        });
+        bs.runTaskTimerAsynchronously(this, new AFKWatcher(this), 0L, 200L);
+        bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20L, 12000L);
+        bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20L, 100L);
+        long mail = RUtils.timeFormatToSeconds(Config.mailCheckTime);
+        if (mail > 0L) bs.scheduleSyncRepeatingTask(this, new MailRunner(this), 20L, mail * 20L);
+
+        long every = RUtils.timeFormatToSeconds(Config.saveInterval);
+        if (every < 1L) every = 600L; // 600s = 10m
+        bs.runTaskTimerAsynchronously(this, new UserdataRunner(this), 20L, every * 20L); // tick = 1/20s
+    }
+
+    private <T> List<List<T>> partitionList(List<T> original, int maxSize) {
+        final List<List<T>> partitions = new LinkedList<>();
+        for (int i = 0; i < original.size(); i += maxSize)
+            partitions.add(original.subList(i, i + Math.min(maxSize, original.size() - i)));
+        return partitions;
     }
 
     /**
@@ -242,19 +313,17 @@ public class RoyalCommands extends JavaPlugin {
         }
     }
 
-    private <T> List<List<T>> partitionList(List<T> original, int maxSize) {
-        final List<List<T>> partitions = new LinkedList<>();
-        for (int i = 0; i < original.size(); i += maxSize)
-            partitions.add(original.subList(i, i + Math.min(maxSize, original.size() - i)));
-        return partitions;
-    }
-
     private void update() {
         final File userdataFolder = new File(dataFolder, "userdata");
         if (!userdataFolder.exists() || !userdataFolder.isDirectory()) return;
         final List<String> playersToConvert = new ArrayList<>();
         final List<String> playersConverted = new ArrayList<>();
-        for (String fileName : userdataFolder.list(new PatternFilenameFilter("(?i)^.+\\.yml$"))) {
+        for (String fileName : userdataFolder.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".yml");
+            }
+        })) {
             String playerName = fileName.substring(0, fileName.length() - 4); // ".yml" = 4
             try {
                 //noinspection ResultOfMethodCallIgnored
@@ -300,6 +369,11 @@ public class RoyalCommands extends JavaPlugin {
         }
     }
 
+    /*private boolean unregisterCommand(String command) {
+        final Command c = getCommandMap().getCommand(command);
+        return c != null && c.unregister(getCommandMap());
+    } save for overriding commands in the config*/
+
     private boolean versionCheck() {
         // If someone happens to be looking through this and knows a better way, let me know.
         if (!Config.checkVersion) return true;
@@ -313,8 +387,55 @@ public class RoyalCommands extends JavaPlugin {
         return currentVersion == null || currentVersion >= minVersion;
     }
 
-    private VUUpdater.VUUpdateInfo getNewestVersions() throws Exception {
-        return VUUpdater.getUpdateInfo("34507");
+    public boolean canAccessChest(Player p, Block b) {
+        return this.lwc == null || this.lwc.getLWC().canAccessProtection(p, b);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean canBuild(Player p, Location l) {
+        // return this.wg == null || this.wg.canBuild(p, l);
+        return true;
+    }
+
+    public boolean canBuild(Player p, Block b) {
+        // return this.wg == null || this.wg.canBuild(p, b);
+        return true;
+    }
+
+    @SuppressWarnings("unused")
+    public RApiMain getAPI() {
+        return this.api;
+    }
+
+    public NMSFace getNMSFace() {
+        return this.nmsFace;
+    }
+
+    public int getNumberVanished() {
+        int hid = 0;
+        for (Player p : getServer().getOnlinePlayers()) if (this.isVanished(p)) hid++;
+        return hid;
+    }
+
+    public YamlConfiguration getPluginYml() {
+        return this.pluginYml;
+    }
+
+    public boolean isVanished(Player p) {
+        if (!Config.useVNP) return false;
+        if (this.vp == null) {
+            this.vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
+            return false;
+        } else return this.vp.getManager().isVanished(p);
+    }
+
+    public boolean isVanished(Player p, CommandSender cs) {
+        if (!Config.useVNP) return false;
+        if (this.vp == null) {
+            this.vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
+            return false;
+        }
+        return !this.ah.isAuthorized(cs, "rcmds.seehidden") && vp.getManager().isVanished(p);
     }
 
     public void loadConfiguration() {
@@ -359,7 +480,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- We're done! --//
 
-        this.getLogger().info("[RoyalCommands] RoyalCommands v" + this.version + " disabled.");
+        this.getLogger().info("RoyalCommands v" + this.version + " disabled.");
     }
 
     @Override
@@ -401,9 +522,9 @@ public class RoyalCommands extends JavaPlugin {
         //-- Check CB version --//
 
         if (!versionCheck()) {
-            this.getLogger().severe("[RoyalCommands] This version of CraftBukkit is too old to run RoyalCommands!");
-            this.getLogger().severe("[RoyalCommands] This version of RoyalCommands needs at least CraftBukkit " + this.minVersion + ".");
-            this.getLogger().severe("[RoyalCommands] Disabling plugin. You can turn this check off in the config.");
+            this.getLogger().severe("This version of CraftBukkit is too old to run RoyalCommands!");
+            this.getLogger().severe("This version of RoyalCommands needs at least CraftBukkit " + this.minVersion + ".");
+            this.getLogger().severe("Disabling plugin. You can turn this check off in the config.");
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -422,7 +543,7 @@ public class RoyalCommands extends JavaPlugin {
         //-- Get dependencies --//
 
         this.vp = (VanishPlugin) this.getServer().getPluginManager().getPlugin("VanishNoPacket");
-        this.wg = (WorldGuardPlugin) this.getServer().getPluginManager().getPlugin("WorldGuard");
+        // this.wg = (WorldGuardPlugin) this.getServer().getPluginManager().getPlugin("WorldGuard");
         this.lwc = (LWCPlugin) this.getServer().getPluginManager().getPlugin("LWC");
         RoyalCommands.mvc = (MultiverseCore) this.getServer().getPluginManager().getPlugin("Multiverse-Core");
         final TagAPI ta = (TagAPI) this.getServer().getPluginManager().getPlugin("TagAPI");
@@ -478,120 +599,7 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- We're done! --//
 
-        this.getLogger().info("[RoyalCommands] RoyalCommands v" + this.version + " initiated.");
-    }
-
-    private void initializeConfManagers() {
-        final String[] cms = new String[]{"whitelist.yml", "warps.yml", "publicassignments.yml"};
-        for (final String name : cms) {
-            final ConfManager cm = ConfManager.getConfManager(name);
-            if (!cm.exists()) cm.createFile();
-            cm.forceSave();
-        }
-    }
-
-    private void initializeNMS() {
-        // Get full package string of CraftServer.
-        // org.bukkit.craftbukkit.versionstring (or for pre-refactor, just org.bukkit.craftbukkit
-        final String packageName = getServer().getClass().getPackage().getName();
-        // Get the last element of the package
-        // If the last element of the package was "craftbukkit" we are now pre-refactor
-        String versionNMS = packageName.substring(packageName.lastIndexOf('.') + 1);
-        if (versionNMS.equals("craftbukkit")) versionNMS = "NoSupport";
-        try {
-            // Check if we have a NMSHandler class at that location.
-            final Class<?> clazz = Class.forName("org.royaldev.royalcommands.nms." + versionNMS + ".NMSHandler");
-            // Make sure it actually implements NMS and set our handler
-            if (NMSFace.class.isAssignableFrom(clazz)) this.nmsFace = (NMSFace) clazz.getConstructor().newInstance();
-        } catch (final Exception e) {
-            this.getLogger().warning("Could not find support for this CraftBukkit version.");
-            this.getLogger().info("The BukkitDev page has links to the newest development builds to fix this.");
-            this.getLogger().info("For now, NMS/CB internal support will be disabled.");
-            this.nmsFace = new org.royaldev.royalcommands.nms.NoSupport.NMSHandler();
-        }
-        if (this.nmsFace.hasSupport()) getLogger().info("Loaded support for " + this.nmsFace.getVersion() + ".");
-    }
-
-    private void initializeMetrics() {
-        try {
-            this.m = new Metrics(this);
-            Matcher matcher = this.versionPattern.matcher(this.version);
-            if (matcher.matches()) {
-                // 1 = base version
-                // 3 = -SNAPSHOT
-                // 6 = build #
-                String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
-                String build = (matcher.group(6) == null) ? "local build" : matcher.group(6);
-                if (matcher.group(3) == null) build = "release";
-                Metrics.Graph g = m.createGraph("Version"); // get our custom version graph
-                g.addPlotter(new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
-                    @Override
-                    public int getValue() {
-                        return 1; // this value doesn't matter
-                    }
-                }); // add the donut graph with major version inside and build outside
-                m.addGraph(g); // add the graph
-            }
-            if (!m.start())
-                this.getLogger().info("You have Metrics off! I like to keep accurate usage statistics, but okay. :(");
-            else this.getLogger().info("Metrics enabled. Thank you!");
-        } catch (Exception ignore) {
-            this.getLogger().warning("Could not start Metrics!");
-        }
-    }
-
-    private void initializeTasks() {
-        BukkitScheduler bs = getServer().getScheduler();
-        bs.runTaskTimerAsynchronously(this, new Runnable() {
-            @Override
-            public void run() {
-                if (!Config.updateCheck) return;
-                try {
-                    Matcher m = versionPattern.matcher(version);
-                    if (!m.matches()) return;
-                    final StringBuilder useVersion = new StringBuilder();
-                    if (m.group(1) != null) useVersion.append(m.group(1)); // add base version #
-                    if (m.group(3) != null) useVersion.append(m.group(3)); // add SNAPSHOT status
-                    /*
-                    This does not need to compare build numbers. Everyone would be out of date all the time if it did.
-                    This method will compare root versions.
-                     */
-                    final VUUpdater.VUUpdateInfo vuui = RoyalCommands.this.getNewestVersions();
-                    final String stable = vuui.getStable();
-                    final String dev = vuui.getDevelopment() + "-SNAPSHOT";
-                    String currentVersion = useVersion.toString().toLowerCase();
-                    if (!dev.equalsIgnoreCase(currentVersion) && currentVersion.contains("-SNAPSHOT")) {
-                        RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
-                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + dev);
-                        RoyalCommands.this.getLogger().warning("Development builds are available at https://ci.royaldev.org/");
-                    } else if (!stable.equalsIgnoreCase(currentVersion) && !currentVersion.equalsIgnoreCase(dev)) {
-                        RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
-                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
-                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
-                    } else if (!stable.equalsIgnoreCase(currentVersion) && currentVersion.replace("-SNAPSHOT", "").equalsIgnoreCase(stable)) {
-                        RoyalCommands.this.getLogger().warning("A newer version of RoyalCommands is available!");
-                        RoyalCommands.this.getLogger().warning("Currently installed: v" + currentVersion + ", newest: v" + stable);
-                        RoyalCommands.this.getLogger().warning("Stable builds are available at http://dev.bukkit.org/server-mods/royalcommands");
-                    }
-                } catch (Exception ignored) {}
-            }
-        }, 0L, 36000L);
-        bs.scheduleSyncDelayedTask(this, new Runnable() { // load after server starts up
-            @Override
-            public void run() {
-                h.reloadHelp();
-                RoyalCommands.this.getLogger().info("Help loaded for all plugins.");
-            }
-        });
-        bs.runTaskTimerAsynchronously(this, new AFKWatcher(this), 0L, 200L);
-        bs.runTaskTimerAsynchronously(this, new WarnWatcher(this), 20L, 12000L);
-        bs.scheduleSyncRepeatingTask(this, new FreezeWatcher(this), 20L, 100L);
-        long mail = RUtils.timeFormatToSeconds(Config.mailCheckTime);
-        if (mail > 0L) bs.scheduleSyncRepeatingTask(this, new MailRunner(this), 20L, mail * 20L);
-
-        long every = RUtils.timeFormatToSeconds(Config.saveInterval);
-        if (every < 1L) every = 600L; // 600s = 10m
-        bs.runTaskTimerAsynchronously(this, new UserdataRunner(this), 20L, every * 20L); // tick = 1/20s
+        this.getLogger().info("RoyalCommands v" + this.version + " initiated.");
     }
 
     private class BackpackConverter implements Listener {

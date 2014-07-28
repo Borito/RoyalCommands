@@ -189,11 +189,11 @@
             <artifactId>tagapi</artifactId>
             <version>RELEASE</version>
         </dependency>
-        <dependency>
+        <!--<dependency> Currently has broken repo.
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>LATEST</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
             <artifactId>Multiverse-Core</artifactId>
