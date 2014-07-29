@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 public class CmdUsage extends TabCommand {
 
     public CmdUsage(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Integer[]{CompletionType.ANY_COMMAND.getInt()});
+        super(instance, name, true, new Short[]{CompletionType.ANY_COMMAND.getShort()});
     }
 
     @Override

@@ -19,7 +19,7 @@ public class CmdWorkbench extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        Player p = (Player) cs;
+        final Player p = (Player) cs;
         p.openWorkbench(null, true);
         p.sendMessage(MessageColor.POSITIVE + "Opened a workbench for you.");
         return true;

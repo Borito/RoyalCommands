@@ -12,7 +12,7 @@ import org.royaldev.royalcommands.RoyalCommands;
 public class CmdWeather extends TabCommand {
 
     public CmdWeather(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Integer[]{CompletionType.ENUM.getInt()});
+        super(instance, name, true, new Short[]{CompletionType.ENUM.getShort()});
     }
 
     public static boolean changeWeather(Player p, WeatherType wt) {

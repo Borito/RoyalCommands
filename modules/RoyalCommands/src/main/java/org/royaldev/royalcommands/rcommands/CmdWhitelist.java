@@ -13,7 +13,7 @@ import java.util.List;
 public class CmdWhitelist extends TabCommand {
 
     public CmdWhitelist(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Integer[]{CompletionType.LIST.getInt(), CompletionType.ONLINE_PLAYER.getInt()});
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort(), CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override

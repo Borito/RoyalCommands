@@ -23,7 +23,7 @@ public class CmdWalkSpeed extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        Player p = (Player) cs;
+        final Player p = (Player) cs;
         float walkSpeed;
         try {
             walkSpeed = Float.valueOf(args[0]);

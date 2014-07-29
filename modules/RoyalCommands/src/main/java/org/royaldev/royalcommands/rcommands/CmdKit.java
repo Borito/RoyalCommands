@@ -24,7 +24,7 @@ import java.util.Map;
 public class CmdKit extends TabCommand {
 
     public CmdKit(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Integer[]{CompletionType.LIST.getInt()});
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort()});
     }
 
     @Override

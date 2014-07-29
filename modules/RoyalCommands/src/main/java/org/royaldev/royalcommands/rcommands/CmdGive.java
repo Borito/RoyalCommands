@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class CmdGive extends TabCommand {
 
     public CmdGive(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Integer[]{CompletionType.ONLINE_PLAYER.getInt(), CompletionType.ITEM_ALIAS.getInt()});
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.ITEM_ALIAS.getShort()});
     }
 
     public static boolean giveItemStandalone(CommandSender cs, Player target, String itemname, int amount) {

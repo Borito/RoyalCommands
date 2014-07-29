@@ -32,7 +32,7 @@ public class CmdRecipe extends TabCommand {
     private final Map<String, Integer> tasks = new HashMap<>();
 
     public CmdRecipe(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Integer[]{CompletionType.ITEM_ALIAS.getInt()});
+        super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});
         this.plugin.getServer().getPluginManager().registerEvents(new WorkbenchCloseListener(), this.plugin);
     }
 

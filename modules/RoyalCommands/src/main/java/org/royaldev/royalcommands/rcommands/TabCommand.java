@@ -17,13 +17,13 @@ import java.util.List;
 
 public abstract class TabCommand extends CACommand implements TabCompleter {
 
-    private final List<Integer> completionTypes = new ArrayList<>();
+    private final List<Short> completionTypes = new ArrayList<>();
 
-    TabCommand(RoyalCommands instance, String name, boolean checkPermissions, Integer[] cts) {
+    TabCommand(RoyalCommands instance, String name, boolean checkPermissions, Short[] cts) {
         super(instance, name, checkPermissions);
-        for (Integer i : cts) {
-            if (i == null) i = 0;
-            this.completionTypes.add(i);
+        for (Short s : cts) {
+            if (s == null) s = 0;
+            this.completionTypes.add(s);
         }
     }
 
@@ -209,65 +209,65 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
         /**
          * Completes for any online player.
          */
-        ONLINE_PLAYER(1),
+        ONLINE_PLAYER((short) 1),
         /**
          * Completes for any item alias in items.csv.
          */
-        ITEM_ALIAS(2),
+        ITEM_ALIAS((short) 2),
         /**
          * Completes for any material name (see {@link Material}).
          */
-        ITEM(4),
+        ITEM((short) 4),
         /**
          * Completes based on
          * {@link #getCustomCompletions(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[], String)},
          * which can be overridden.
          */
-        CUSTOM(8),
+        CUSTOM((short) 8),
         /**
          * Completes for any plugin loaded.
          */
-        PLUGIN(16),
+        PLUGIN((short) 16),
         /**
          * Completes for any world loaded.
          */
-        WORLD(32),
+        WORLD((short) 32),
         /**
          * Completes for a list specified by
          * {@link #customList(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[], String)}.
          */
-        LIST(64),
+        LIST((short) 64),
         /**
          * Completes for an enum specified by
          * {@link #customEnum(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[], String)}.
          */
-        ENUM(128),
+        ENUM((short) 128),
         /**
          * Completes for any RoyalCommands command.
          */
-        ROYALCOMMANDS_COMMAND(256),
+        ROYALCOMMANDS_COMMAND((short) 256),
         /**
          * Completes for any command.
          */
-        ANY_COMMAND(512);
+        ANY_COMMAND((short) 512);
 
-        private final int i;
+        private final short s;
 
-        CompletionType(int i) {
-            this.i = i;
+        CompletionType(short s) {
+            this.s = s;
         }
 
         public static List<CompletionType> getCompletionTypes(int i) {
             final List<CompletionType> cts = new ArrayList<>();
             for (final CompletionType ct : CompletionType.values()) {
-                if ((i & ct.getInt()) <= 0) continue;
+                if ((i & ct.getShort()) <= 0) continue;
                 cts.add(ct);
             }
             return cts;
         }
 
-        public int getInt() {
-            return this.i;
+        public short getShort() {
+            return this.s;
         }
     }
 }

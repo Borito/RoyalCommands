@@ -21,7 +21,7 @@ import java.util.List;
 public class CmdItem extends TabCommand {
 
     public CmdItem(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Integer[]{CompletionType.ITEM_ALIAS.getInt()});
+        super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});
     }
 
     static ItemStack applyMeta(ItemStack is, CommandArguments ca, CommandSender cs) {

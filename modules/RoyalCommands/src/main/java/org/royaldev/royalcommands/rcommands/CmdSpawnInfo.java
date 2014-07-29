@@ -13,22 +13,30 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo.SpawnInfoManager;
 
+import java.util.Arrays;
 import java.util.List;
 
 @ReflectCommand
-public class CmdSpawnInfo extends BaseCommand {
+public class CmdSpawnInfo extends TabCommand {
 
     public CmdSpawnInfo(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{
+                CompletionType.LIST.getShort()
+        });
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+        return Arrays.asList("check", "set", "remove", "help");
+    }
+
+    @Override
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        if (args.length < 1) {
+        if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
@@ -39,7 +47,7 @@ public class CmdSpawnInfo extends BaseCommand {
             return true;
         }
         final SpawnInfo si = SpawnInfoManager.getSpawnInfo(hand);
-        final String subcommand = args[0];
+        final String subcommand = eargs[0];
         if (subcommand.equalsIgnoreCase("check")) {
             cs.sendMessage(MessageColor.POSITIVE + "Spawn information on " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + ":" + hand.getDurability() + MessageColor.POSITIVE + ":");
             cs.sendMessage(MessageColor.POSITIVE + "  Is spawned: " + MessageColor.NEUTRAL + ((si.isSpawned()) ? "Yes" : "No"));

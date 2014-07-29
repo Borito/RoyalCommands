@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
 public class CmdPluginManager extends TabCommand {
 
     public CmdPluginManager(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Integer[]{CompletionType.LIST.getInt(), CompletionType.LIST.getInt()});
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort(), CompletionType.LIST.getShort()});
     }
 
     private boolean downloadAndMovePlugin(String url, String saveAs, boolean recursive, CommandSender cs) {
