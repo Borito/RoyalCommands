@@ -603,6 +603,7 @@ public class RoyalCommands extends JavaPlugin {
     }
 
     private class BackpackConverter implements Listener {
+
         @EventHandler
         public void onJoin(PlayerJoinEvent e) {
             final Player p = e.getPlayer();

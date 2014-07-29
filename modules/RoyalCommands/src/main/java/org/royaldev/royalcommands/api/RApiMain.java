@@ -11,21 +11,21 @@ public class RApiMain {
     private final RPlayerApi playerApi = new RPlayerApi();
 
     /**
-     * Gets the WorldAPI registered by RoyalCommands.
-     *
-     * @return RWorldApi
-     */
-    public RWorldApi getWorldAPI() {
-        return worldApi;
-    }
-
-    /**
      * Gets the PlayerAPI registered by RoyalCommands.
      *
      * @return RPlayerApi
      */
     public RPlayerApi getPlayerAPI() {
         return playerApi;
+    }
+
+    /**
+     * Gets the WorldAPI registered by RoyalCommands.
+     *
+     * @return RWorldApi
+     */
+    public RWorldApi getWorldAPI() {
+        return worldApi;
     }
 
 }

@@ -8,6 +8,16 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 public class RPlayerApi {
 
     /**
+     * Gets the player configuration manager of the OfflinePlayer.
+     *
+     * @param p OfflinePlayer to get config for
+     * @return A PConfManager - never null
+     */
+    public PConfManager getConfiguration(OfflinePlayer p) {
+        return PConfManager.getPConfManager(p);
+    }
+
+    /**
      * Returns the display name of a player. This will return a nickname set by /nick,
      * and if one is not set, it will return the player's default name.
      *
@@ -29,16 +39,6 @@ public class RPlayerApi {
      */
     public boolean isAfk(Player p) {
         return AFKUtils.isAfk(p);
-    }
-
-    /**
-     * Gets the player configuration manager of the OfflinePlayer.
-     *
-     * @param p OfflinePlayer to get config for
-     * @return A PConfManager - never null
-     */
-    public PConfManager getConfiguration(OfflinePlayer p) {
-        return PConfManager.getPConfManager(p);
     }
 
 }

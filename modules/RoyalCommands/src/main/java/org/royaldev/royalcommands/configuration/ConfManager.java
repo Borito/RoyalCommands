@@ -57,6 +57,12 @@ public class ConfManager extends GeneralConfManager {
         this.name = "";
     }
 
+    public static Collection<ConfManager> getAllManagers() {
+        synchronized (ConfManager.confs) {
+            return Collections.synchronizedCollection(ConfManager.confs.values());
+        }
+    }
+
     public static ConfManager getConfManager(String s) {
         synchronized (ConfManager.confs) {
             if (ConfManager.confs.containsKey(s)) return ConfManager.confs.get(s);
@@ -72,9 +78,9 @@ public class ConfManager extends GeneralConfManager {
         }
     }
 
-    public static void saveAllManagers() {
+    public static int managersCreated() {
         synchronized (ConfManager.confs) {
-            for (final ConfManager cm : ConfManager.confs.values()) cm.forceSave();
+            return ConfManager.confs.size();
         }
     }
 
@@ -86,28 +92,10 @@ public class ConfManager extends GeneralConfManager {
         }
     }
 
-    public static int managersCreated() {
+    public static void saveAllManagers() {
         synchronized (ConfManager.confs) {
-            return ConfManager.confs.size();
+            for (final ConfManager cm : ConfManager.confs.values()) cm.forceSave();
         }
-    }
-
-    public static Collection<ConfManager> getAllManagers() {
-        synchronized (ConfManager.confs) {
-            return Collections.synchronizedCollection(ConfManager.confs.values());
-        }
-    }
-
-    public void reload() {
-        forceSave();
-        try {
-            this.load(this.pconfl);
-        } catch (Exception ignored) {
-        }
-    }
-
-    public boolean exists() {
-        return this.pconfl.exists();
     }
 
     public boolean createFile() {
@@ -115,17 +103,6 @@ public class ConfManager extends GeneralConfManager {
             return this.pconfl.createNewFile();
         } catch (IOException ignored) {
             return false;
-        }
-    }
-
-    public void forceSave() {
-        synchronized (this.saveLock) {
-            try {
-                this.save(this.pconfl);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (IllegalArgumentException ignored) {
-            }
         }
     }
 
@@ -145,6 +122,29 @@ public class ConfManager extends GeneralConfManager {
         synchronized (ConfManager.confs) {
             if (save) this.forceSave();
             ConfManager.confs.remove(this.name);
+        }
+    }
+
+    public boolean exists() {
+        return this.pconfl.exists();
+    }
+
+    public void forceSave() {
+        synchronized (this.saveLock) {
+            try {
+                this.save(this.pconfl);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+    }
+
+    public void reload() {
+        forceSave();
+        try {
+            this.load(this.pconfl);
+        } catch (Exception ignored) {
         }
     }
 }

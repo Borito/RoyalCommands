@@ -17,14 +17,22 @@ public class VaultHandler {
         this.plugin = instance;
     }
 
-    public boolean usingVault() {
-        final Plugin p = this.plugin.getServer().getPluginManager().getPlugin("Vault");
-        return p != null && p.isEnabled();
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> chatProvider = this.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (chatProvider != null) chat = chatProvider.getProvider();
+        return chat != null;
     }
 
-    public Permission getPermission() {
-        if (!usingVault()) return null;
-        return permission;
+    private boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = this.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) economy = economyProvider.getProvider();
+        return economy != null;
+    }
+
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> permissionProvider = this.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) permission = permissionProvider.getProvider();
+        return permission != null;
     }
 
     public Chat getChat() {
@@ -37,11 +45,9 @@ public class VaultHandler {
         return economy;
     }
 
-    public void setUpVault() {
-        if (!usingVault()) return;
-        this.setupEconomy();
-        this.setupChat();
-        this.setupPermissions();
+    public Permission getPermission() {
+        if (!usingVault()) return null;
+        return permission;
     }
 
     public void removeVault() {
@@ -50,22 +56,16 @@ public class VaultHandler {
         economy = null;
     }
 
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = this.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) permission = permissionProvider.getProvider();
-        return permission != null;
+    public void setUpVault() {
+        if (!usingVault()) return;
+        this.setupEconomy();
+        this.setupChat();
+        this.setupPermissions();
     }
 
-    private boolean setupChat() {
-        RegisteredServiceProvider<Chat> chatProvider = this.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) chat = chatProvider.getProvider();
-        return chat != null;
-    }
-
-    private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = this.plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) economy = economyProvider.getProvider();
-        return economy != null;
+    public boolean usingVault() {
+        final Plugin p = this.plugin.getServer().getPluginManager().getPlugin("Vault");
+        return p != null && p.isEnabled();
     }
 
 }

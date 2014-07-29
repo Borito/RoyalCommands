@@ -18,8 +18,16 @@ public class RoyalCommandsBlockListener implements Listener {
         plugin = instance;
     }
 
+    @EventHandler
+    public void onBlockB(BlockBreakEvent e) {
+        if (e.isCancelled() || !Config.buildPerm) return;
+        if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.build")) return;
+        e.getPlayer().sendMessage(Config.noBuildMessage);
+        e.setCancelled(true);
+    }
+
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onBlockPlace(BlockPlaceEvent event) {
+    public void onBlockBreak(BlockBreakEvent event) {
         PConfManager pcm = PConfManager.getPConfManager(event.getPlayer());
         if (pcm.getBoolean("frozen")) event.setCancelled(true);
         if (pcm.getBoolean("jailed")) event.setCancelled(true);
@@ -33,16 +41,8 @@ public class RoyalCommandsBlockListener implements Listener {
         e.setCancelled(true);
     }
 
-    @EventHandler
-    public void onBlockB(BlockBreakEvent e) {
-        if (e.isCancelled() || !Config.buildPerm) return;
-        if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.build")) return;
-        e.getPlayer().sendMessage(Config.noBuildMessage);
-        e.setCancelled(true);
-    }
-
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onBlockBreak(BlockBreakEvent event) {
+    public void onBlockPlace(BlockPlaceEvent event) {
         PConfManager pcm = PConfManager.getPConfManager(event.getPlayer());
         if (pcm.getBoolean("frozen")) event.setCancelled(true);
         if (pcm.getBoolean("jailed")) event.setCancelled(true);

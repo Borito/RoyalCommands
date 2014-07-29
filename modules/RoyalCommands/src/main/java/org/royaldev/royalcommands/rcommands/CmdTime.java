@@ -25,24 +25,23 @@ public class CmdTime extends BaseCommand {
         CmdTime.pluginInstance = instance;
     }
 
-    public static void smoothTimeChange(long time, final World world) {
-        if (time > 24000L) time = time % 24000L;
-        if (time < 0L) time = 0L; // Clamp to 0 to prevent loop
-        final long ftime = time;
-        final Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                for (long i = world.getTime() + 1; i != ftime; i++) {
-                    if (i >= 24001L) {
-                        i -= 24001L;
-                        if (ftime == 0L) break;
-                    }
-                    world.setTime(i);
-                }
-                world.setTime(ftime);
-            }
-        };
-        CmdTime.pluginInstance.getServer().getScheduler().runTask(CmdTime.pluginInstance, r);
+    public static Map<String, String> getRealTime(long ticks) {
+        if (ticks > 24000L) ticks = ticks % 24000L;
+        if (ticks < 0L) ticks = 0L;
+        DecimalFormat df = new DecimalFormat("00");
+        df.setRoundingMode(RoundingMode.DOWN);
+        float thour = 1000F;
+        float tminute = 16F + (2F / 3F);
+        float hour = (ticks / thour) + 6F;
+        if (hour >= 24F) hour = hour - 24F;
+        float minute = (ticks % thour) / tminute;
+        String meridian = (hour >= 12F) ? "PM" : "AM";
+        float twelvehour = (hour > 12F) ? hour - 12F : hour;
+        if (df.format(twelvehour).equals("00")) twelvehour = 12F;
+        Map<String, String> toRet = new HashMap<>();
+        toRet.put("24h", df.format(hour) + ":" + df.format(minute));
+        toRet.put("12h", df.format(twelvehour) + ":" + df.format(minute) + " " + meridian);
+        return toRet;
     }
 
     public static Long getValidTime(String time) {
@@ -64,23 +63,24 @@ public class CmdTime extends BaseCommand {
         return vtime;
     }
 
-    public static Map<String, String> getRealTime(long ticks) {
-        if (ticks > 24000L) ticks = ticks % 24000L;
-        if (ticks < 0L) ticks = 0L;
-        DecimalFormat df = new DecimalFormat("00");
-        df.setRoundingMode(RoundingMode.DOWN);
-        float thour = 1000F;
-        float tminute = 16F + (2F / 3F);
-        float hour = (ticks / thour) + 6F;
-        if (hour >= 24F) hour = hour - 24F;
-        float minute = (ticks % thour) / tminute;
-        String meridian = (hour >= 12F) ? "PM" : "AM";
-        float twelvehour = (hour > 12F) ? hour - 12F : hour;
-        if (df.format(twelvehour).equals("00")) twelvehour = 12F;
-        Map<String, String> toRet = new HashMap<>();
-        toRet.put("24h", df.format(hour) + ":" + df.format(minute));
-        toRet.put("12h", df.format(twelvehour) + ":" + df.format(minute) + " " + meridian);
-        return toRet;
+    public static void smoothTimeChange(long time, final World world) {
+        if (time > 24000L) time = time % 24000L;
+        if (time < 0L) time = 0L; // Clamp to 0 to prevent loop
+        final long ftime = time;
+        final Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                for (long i = world.getTime() + 1; i != ftime; i++) {
+                    if (i >= 24001L) {
+                        i -= 24001L;
+                        if (ftime == 0L) break;
+                    }
+                    world.setTime(i);
+                }
+                world.setTime(ftime);
+            }
+        };
+        CmdTime.pluginInstance.getServer().getScheduler().runTask(CmdTime.pluginInstance, r);
     }
 
     @Override

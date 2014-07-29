@@ -28,6 +28,7 @@ import java.util.List;
  * @author Rainer Pruy
  */
 public class CSVParser {
+
     /**
      * The default separator to use if none is supplied to the constructor.
      */
@@ -92,19 +93,20 @@ public class CSVParser {
         return isSameCharacter(separator, quotechar) || isSameCharacter(separator, escape) || isSameCharacter(quotechar, escape);
     }
 
+    /**
+     * precondition: the current character is a quote or an escape
+     *
+     * @param nextLine the current line
+     * @param inQuotes true if the current context is quoted
+     * @param i        current index in line
+     * @return true if the following character is a quote
+     */
+    private boolean isNextCharacterEscapedQuote(String nextLine, boolean inQuotes, int i) {
+        return inQuotes && nextLine.length() > (i + 1) && nextLine.charAt(i + 1) == quotechar;
+    }
+
     private boolean isSameCharacter(char c1, char c2) {
         return c1 != NULL_CHARACTER && c1 == c2;
-    }
-
-    /**
-     * @return true if something was left over from last call(s)
-     */
-    public boolean isPending() {
-        return pending != null;
-    }
-
-    public String[] parseLineMulti(String nextLine) throws IOException {
-        return parseLine(nextLine, true);
     }
 
     /**
@@ -181,15 +183,17 @@ public class CSVParser {
     }
 
     /**
-     * precondition: the current character is a quote or an escape
+     * precondition: sb.length() > 0
      *
-     * @param nextLine the current line
-     * @param inQuotes true if the current context is quoted
-     * @param i        current index in line
-     * @return true if the following character is a quote
+     * @param sb A sequence of characters to examine
+     * @return true if every character in the sequence is whitespace
      */
-    private boolean isNextCharacterEscapedQuote(String nextLine, boolean inQuotes, int i) {
-        return inQuotes && nextLine.length() > (i + 1) && nextLine.charAt(i + 1) == quotechar;
+    protected boolean isAllWhiteSpace(CharSequence sb) {
+        for (int i = 0; i < sb.length(); i++) {
+            char c = sb.charAt(i);
+            if (!Character.isWhitespace(c)) return false;
+        }
+        return true;
     }
 
     /**
@@ -205,16 +209,13 @@ public class CSVParser {
     }
 
     /**
-     * precondition: sb.length() > 0
-     *
-     * @param sb A sequence of characters to examine
-     * @return true if every character in the sequence is whitespace
+     * @return true if something was left over from last call(s)
      */
-    protected boolean isAllWhiteSpace(CharSequence sb) {
-        for (int i = 0; i < sb.length(); i++) {
-            char c = sb.charAt(i);
-            if (!Character.isWhitespace(c)) return false;
-        }
-        return true;
+    public boolean isPending() {
+        return pending != null;
+    }
+
+    public String[] parseLineMulti(String nextLine) throws IOException {
+        return parseLine(nextLine, true);
     }
 }

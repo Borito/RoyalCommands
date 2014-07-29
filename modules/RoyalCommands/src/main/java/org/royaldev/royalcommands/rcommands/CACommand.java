@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.RoyalCommands;
 
 public abstract class CACommand extends BaseCommand {
+
     public CACommand(final RoyalCommands instance, final String name, final boolean checkPermissions) {
         super(instance, name, checkPermissions);
     }

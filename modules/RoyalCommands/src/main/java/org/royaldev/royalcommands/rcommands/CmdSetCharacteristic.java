@@ -13,17 +13,17 @@ public class CmdSetCharacteristic extends BaseCommand {
         super(instance, name, true);
     }
 
-    private Integer toInt(Object o) {
+    private Float toFloat(Object o) {
         try {
-            return Integer.parseInt(o.toString());
+            return Float.parseFloat(o.toString());
         } catch (NumberFormatException e) {
             return null;
         }
     }
 
-    private Float toFloat(Object o) {
+    private Integer toInt(Object o) {
         try {
-            return Float.parseFloat(o.toString());
+            return Integer.parseInt(o.toString());
         } catch (NumberFormatException e) {
             return null;
         }

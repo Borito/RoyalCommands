@@ -46,25 +46,48 @@ public class InventoryListener implements Listener {
         this.plugin = instance;
     }
 
-    public void saveAllInventories() {
-        if (!Config.separateInv) return;
-        for (Player p : this.plugin.getServer().getOnlinePlayers()) this.saveInventory(p, p.getInventory());
+    private Inventory getEnderInventory(Player p) {
+        World w = p.getWorld();
+        String group = getWorldGroup(w);
+        if (group == null) return null;
+        PConfManager pcm = PConfManager.getPConfManager(p);
+        if (!pcm.exists()) pcm.createFile();
+        Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
+        final Inventory i = Bukkit.createInventory(p, invSize);
+        if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
+        for (int slot = 0; slot < invSize; slot++) {
+            ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
+            if (is == null) continue;
+            i.setItem(slot, is);
+        }
+        return i;
     }
 
-    /**
-     * Gets the group of a world.
-     *
-     * @param w World to get group of
-     * @return String of group name or null if no group
-     */
-    public String getWorldGroup(World w) {
-        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("worldmanager.inventory_separation.groups");
-        Set<String> s = cs.getKeys(false);
-        for (String group : s) {
-            List<String> worlds = cs.getStringList(group);
-            if (worlds.contains(w.getName())) return group;
+    private PlayerInventory getInventory(Player p) {
+        String group = getWorldGroup(p.getWorld());
+        if (group == null) return null;
+        PConfManager pcm = PConfManager.getPConfManager(p);
+        if (!pcm.exists()) pcm.createFile();
+        Integer invSize = pcm.getInt("inventory." + group + ".size");
+        final PlayerInventory i = p.getInventory();
+        i.clear();
+        if (pcm.get("inventory." + group + ".slot") == null) return i;
+        for (int slot = 0; slot < invSize; slot++) {
+            ItemStack is = pcm.getItemStack("inventory." + group + ".slot." + slot);
+            if (is == null) continue;
+            i.setItem(slot, is);
         }
-        return null;
+        i.setHelmet(pcm.getItemStack("inventory." + group + ".slot.helm"));
+        i.setChestplate(pcm.getItemStack("inventory." + group + ".slot.chestplate"));
+        i.setLeggings(pcm.getItemStack("inventory." + group + ".slot.leggings"));
+        i.setBoots(pcm.getItemStack("inventory." + group + ".slot.boots"));
+        if (Config.separateXP) {
+            Float xp = pcm.getFloat("inventory." + group + ".xp");
+            Integer xpLevel = pcm.getInt("inventory." + group + ".xplevel");
+            p.setExp(xp);
+            p.setLevel(xpLevel);
+        }
+        return i;
     }
 
     private void saveEnderInventory(OfflinePlayer op, String world, Inventory i) {
@@ -91,46 +114,6 @@ public class InventoryListener implements Listener {
         pcm.set("inventory." + group + ".ender.size", i.getSize());
     }
 
-    private Inventory getEnderInventory(Player p) {
-        World w = p.getWorld();
-        String group = getWorldGroup(w);
-        if (group == null) return null;
-        PConfManager pcm = PConfManager.getPConfManager(p);
-        if (!pcm.exists()) pcm.createFile();
-        Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
-        final Inventory i = Bukkit.createInventory(p, invSize);
-        if (pcm.get("inventory." + group + ".ender.slot") == null) return i;
-        for (int slot = 0; slot < invSize; slot++) {
-            ItemStack is = pcm.getItemStack("inventory." + group + ".ender.slot." + slot);
-            if (is == null) continue;
-            i.setItem(slot, is);
-        }
-        return i;
-    }
-
-    public void saveInventory(OfflinePlayer op, String world, Inventory i) {
-        if (!Config.separateInv) return;
-        String group = this.getWorldGroup(this.plugin.getServer().getWorld(world));
-        if (group == null) return;
-        PConfManager pcm = PConfManager.getPConfManager(op);
-        for (int slot = 0; slot < i.getSize(); slot++) {
-            pcm.set("inventory." + group + ".slot." + slot, i.getItem(slot));
-        }
-        if (i instanceof PlayerInventory) {
-            PlayerInventory pi = (PlayerInventory) i;
-            pcm.set("inventory." + group + ".slot.helm", pi.getHelmet());
-            pcm.set("inventory." + group + ".slot.chestplate", pi.getChestplate());
-            pcm.set("inventory." + group + ".slot.leggings", pi.getLeggings());
-            pcm.set("inventory." + group + ".slot.boots", pi.getBoots());
-        }
-        pcm.set("inventory." + group + ".size", i.getSize());
-    }
-
-    private void saveInventory(Player p, Inventory i) {
-        if (!Config.separateInv) return;
-        this.saveInventory(p, i, p.getWorld());
-    }
-
     private void saveInventory(Player p, Inventory i, World w) {
         if (!Config.separateInv) return;
         String group = getWorldGroup(w);
@@ -150,6 +133,24 @@ public class InventoryListener implements Listener {
         if (Config.separateXP) {
             pcm.set("inventory." + group + ".xp", p.getExp());
             pcm.set("inventory." + group + ".xplevel", p.getLevel());
+        }
+    }
+
+    private void saveInventory(Player p, Inventory i) {
+        if (!Config.separateInv) return;
+        this.saveInventory(p, i, p.getWorld());
+    }
+
+    @EventHandler
+    public void closeOfflineInventory(InventoryCloseEvent e) {
+        Inventory i = e.getInventory();
+        final InventoryHolder ih = i.getHolder();
+        if (!(ih instanceof WorldHolder)) return;
+        final WorldHolder wh = (WorldHolder) ih;
+        if (wh instanceof OfflineInventoryHolder) {
+            this.saveInventory(this.plugin.getServer().getOfflinePlayer(wh.getUUID()), wh.getWorld().getName(), i);
+        } else if (wh instanceof EnderInventoryHolder) {
+            this.saveEnderInventory(this.plugin.getServer().getOfflinePlayer(wh.getUUID()), wh.getWorld().getName(), i);
         }
     }
 
@@ -189,84 +190,25 @@ public class InventoryListener implements Listener {
         return i;
     }
 
-    private PlayerInventory getInventory(Player p) {
-        String group = getWorldGroup(p.getWorld());
-        if (group == null) return null;
-        PConfManager pcm = PConfManager.getPConfManager(p);
-        if (!pcm.exists()) pcm.createFile();
-        Integer invSize = pcm.getInt("inventory." + group + ".size");
-        final PlayerInventory i = p.getInventory();
-        i.clear();
-        if (pcm.get("inventory." + group + ".slot") == null) return i;
-        for (int slot = 0; slot < invSize; slot++) {
-            ItemStack is = pcm.getItemStack("inventory." + group + ".slot." + slot);
-            if (is == null) continue;
-            i.setItem(slot, is);
+    /**
+     * Gets the group of a world.
+     *
+     * @param w World to get group of
+     * @return String of group name or null if no group
+     */
+    public String getWorldGroup(World w) {
+        ConfigurationSection cs = this.plugin.getConfig().getConfigurationSection("worldmanager.inventory_separation.groups");
+        Set<String> s = cs.getKeys(false);
+        for (String group : s) {
+            List<String> worlds = cs.getStringList(group);
+            if (worlds.contains(w.getName())) return group;
         }
-        i.setHelmet(pcm.getItemStack("inventory." + group + ".slot.helm"));
-        i.setChestplate(pcm.getItemStack("inventory." + group + ".slot.chestplate"));
-        i.setLeggings(pcm.getItemStack("inventory." + group + ".slot.leggings"));
-        i.setBoots(pcm.getItemStack("inventory." + group + ".slot.boots"));
-        if (Config.separateXP) {
-            Float xp = pcm.getFloat("inventory." + group + ".xp");
-            Integer xpLevel = pcm.getInt("inventory." + group + ".xplevel");
-            p.setExp(xp);
-            p.setLevel(xpLevel);
-        }
-        return i;
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        if (!Config.separateInv) return;
-        Player p = e.getPlayer();
-        if (getWorldGroup(p.getWorld()) == null) return; // only serve those configured
-        getInventory(p); // sets inv of player
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
-        if (!Config.separateInv) return;
-        Player p = e.getPlayer();
-        if (getWorldGroup(p.getWorld()) == null) return;
-        saveInventory(p, p.getInventory());
-    }
-
-    @EventHandler
-    public void onKick(PlayerKickEvent e) {
-        if (!Config.separateInv) return;
-        Player p = e.getPlayer();
-        if (getWorldGroup(p.getWorld()) == null) return;
-        saveInventory(p, p.getInventory());
-    }
-
-    @EventHandler
-    public void onPickup(PlayerPickupItemEvent e) {
-        Player p = e.getPlayer();
-        if (getWorldGroup(p.getWorld()) == null) return;
-        saveInventory(p, p.getInventory());
+        return null;
     }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         if (!Config.separateInv) return;
-        Player p = e.getPlayer();
-        if (getWorldGroup(p.getWorld()) == null) return;
-        saveInventory(p, p.getInventory());
-    }
-
-    @EventHandler
-    public void onPlace(BlockPlaceEvent e) {
-        if (!Config.separateInv) return;
-        Player p = e.getPlayer();
-        if (p.getGameMode() == GameMode.CREATIVE) return; // this doesn't affect us
-        if (getWorldGroup(p.getWorld()) == null) return;
-        saveInventory(p, p.getInventory());
-    }
-
-    @EventHandler
-    public void onXP(PlayerExpChangeEvent e) {
-        if (!Config.separateInv || !Config.separateXP) return;
         Player p = e.getPlayer();
         if (getWorldGroup(p.getWorld()) == null) return;
         saveInventory(p, p.getInventory());
@@ -294,6 +236,12 @@ public class InventoryListener implements Listener {
     }
 
     @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (!(e.getInventory().getHolder() instanceof InvSeeHolder)) return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
         if (!Config.separateInv) return;
         if (!(e.getPlayer() instanceof Player)) return;
@@ -309,6 +257,52 @@ public class InventoryListener implements Listener {
     }
 
     @EventHandler
+    public void onInventoryDrag(InventoryDragEvent e) {
+        if (!(e.getInventory().getHolder() instanceof InvSeeHolder)) return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        if (!Config.separateInv) return;
+        Player p = e.getPlayer();
+        if (getWorldGroup(p.getWorld()) == null) return; // only serve those configured
+        getInventory(p); // sets inv of player
+    }
+
+    @EventHandler
+    public void onKick(PlayerKickEvent e) {
+        if (!Config.separateInv) return;
+        Player p = e.getPlayer();
+        if (getWorldGroup(p.getWorld()) == null) return;
+        saveInventory(p, p.getInventory());
+    }
+
+    @EventHandler
+    public void onPickup(PlayerPickupItemEvent e) {
+        Player p = e.getPlayer();
+        if (getWorldGroup(p.getWorld()) == null) return;
+        saveInventory(p, p.getInventory());
+    }
+
+    @EventHandler
+    public void onPlace(BlockPlaceEvent e) {
+        if (!Config.separateInv) return;
+        Player p = e.getPlayer();
+        if (p.getGameMode() == GameMode.CREATIVE) return; // this doesn't affect us
+        if (getWorldGroup(p.getWorld()) == null) return;
+        saveInventory(p, p.getInventory());
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        if (!Config.separateInv) return;
+        Player p = e.getPlayer();
+        if (getWorldGroup(p.getWorld()) == null) return;
+        saveInventory(p, p.getInventory());
+    }
+
+    @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent e) {
         if (!Config.separateInv) return;
         Player p = e.getPlayer();
@@ -316,6 +310,14 @@ public class InventoryListener implements Listener {
         if (group == null) return; // only serve those configured
         saveInventory(p, p.getInventory(), e.getFrom()); // save old inventory
         getInventory(p); // sets inv of player
+    }
+
+    @EventHandler
+    public void onXP(PlayerExpChangeEvent e) {
+        if (!Config.separateInv || !Config.separateXP) return;
+        Player p = e.getPlayer();
+        if (getWorldGroup(p.getWorld()) == null) return;
+        saveInventory(p, p.getInventory());
     }
 
     @EventHandler
@@ -330,32 +332,31 @@ public class InventoryListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void closeOfflineInventory(InventoryCloseEvent e) {
-        Inventory i = e.getInventory();
-        final InventoryHolder ih = i.getHolder();
-        if (!(ih instanceof WorldHolder)) return;
-        final WorldHolder wh = (WorldHolder) ih;
-        if (wh instanceof OfflineInventoryHolder) {
-            this.saveInventory(this.plugin.getServer().getOfflinePlayer(wh.getUUID()), wh.getWorld().getName(), i);
-        } else if (wh instanceof EnderInventoryHolder) {
-            this.saveEnderInventory(this.plugin.getServer().getOfflinePlayer(wh.getUUID()), wh.getWorld().getName(), i);
+    public void saveAllInventories() {
+        if (!Config.separateInv) return;
+        for (Player p : this.plugin.getServer().getOnlinePlayers()) this.saveInventory(p, p.getInventory());
+    }
+
+    public void saveInventory(OfflinePlayer op, String world, Inventory i) {
+        if (!Config.separateInv) return;
+        String group = this.getWorldGroup(this.plugin.getServer().getWorld(world));
+        if (group == null) return;
+        PConfManager pcm = PConfManager.getPConfManager(op);
+        for (int slot = 0; slot < i.getSize(); slot++) {
+            pcm.set("inventory." + group + ".slot." + slot, i.getItem(slot));
         }
-    }
-
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-        if (!(e.getInventory().getHolder() instanceof InvSeeHolder)) return;
-        e.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onInventoryDrag(InventoryDragEvent e) {
-        if (!(e.getInventory().getHolder() instanceof InvSeeHolder)) return;
-        e.setCancelled(true);
+        if (i instanceof PlayerInventory) {
+            PlayerInventory pi = (PlayerInventory) i;
+            pcm.set("inventory." + group + ".slot.helm", pi.getHelmet());
+            pcm.set("inventory." + group + ".slot.chestplate", pi.getChestplate());
+            pcm.set("inventory." + group + ".slot.leggings", pi.getLeggings());
+            pcm.set("inventory." + group + ".slot.boots", pi.getBoots());
+        }
+        pcm.set("inventory." + group + ".size", i.getSize());
     }
 
     private abstract class WorldHolder implements InventoryHolder {
+
         private final World w;
         private final UUID u;
 
@@ -370,22 +371,24 @@ public class InventoryListener implements Listener {
             return null;
         }
 
-        public World getWorld() {
-            return this.w;
-        }
-
         public UUID getUUID() {
             return this.u;
+        }
+
+        public World getWorld() {
+            return this.w;
         }
     }
 
     private class EnderInventoryHolder extends WorldHolder {
+
         private EnderInventoryHolder(World w, UUID u) {
             super(w, u);
         }
     }
 
     private class OfflineInventoryHolder extends WorldHolder {
+
         private OfflineInventoryHolder(World w, UUID u) {
             super(w, u);
         }

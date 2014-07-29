@@ -22,14 +22,6 @@ public class CmdHelp extends BaseCommand {
         super(instance, name, true);
     }
 
-    private Plugin getPlugin(String name) {
-        for (Plugin lp : this.plugin.getServer().getPluginManager().getPlugins()) {
-            if (!lp.getName().equalsIgnoreCase(name)) continue;
-            return lp;
-        }
-        return null;
-    }
-
     private void displayCustomHelp(CommandSender cs, String page) {
         String sb = this.plugin.h.getCustomHelp();
         int pageNumber;
@@ -98,6 +90,14 @@ public class CmdHelp extends BaseCommand {
             if (p == null) continue;
             cs.sendMessage(MessageColor.NEUTRAL + p.getName());
         }
+    }
+
+    private Plugin getPlugin(String name) {
+        for (Plugin lp : this.plugin.getServer().getPluginManager().getPlugins()) {
+            if (!lp.getName().equalsIgnoreCase(name)) continue;
+            return lp;
+        }
+        return null;
     }
 
     @Override

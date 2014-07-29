@@ -159,31 +159,25 @@ public class VUUpdater {
         }
 
         /**
-         * Returns if the head byte has the given flag set.
+         * Converts a version string to version units.
+         * <p>
+         * Converts the following:
+         * </p>
+         * <p>
+         * <code>3.2.0</code> to <code>320</code><br/>
+         * <code>10.2.0</code> to <code>1020</code>
+         * </p>
          *
-         * @param flag Flag to check
-         * @return true if set, false if otherwise
+         * @param version Version string
+         * @return Version units
          */
-        public boolean hasFlag(VUFlag flag) {
-            return (this.vuBytes[0] & (1 << flag.getBitNumber())) > 0;
-        }
-
-        /**
-         * Gets the stable version string obtained from the VU bytes.
-         *
-         * @return Stable version string
-         */
-        public String getStable() {
-            return this.stable;
-        }
-
-        /**
-         * Gets the development version string obtained from the VU bytes.
-         *
-         * @return Development version string
-         */
-        public String getDevelopment() {
-            return this.devel;
+        private int versionToVU(String version) {
+            version = version.replace(".", "");
+            try {
+                return Integer.parseInt(version);
+            } catch (NumberFormatException ex) {
+                return -1;
+            }
         }
 
         /**
@@ -206,25 +200,31 @@ public class VUUpdater {
         }
 
         /**
-         * Converts a version string to version units.
-         * <p>
-         * Converts the following:
-         * </p>
-         * <p>
-         * <code>3.2.0</code> to <code>320</code><br/>
-         * <code>10.2.0</code> to <code>1020</code>
-         * </p>
+         * Gets the development version string obtained from the VU bytes.
          *
-         * @param version Version string
-         * @return Version units
+         * @return Development version string
          */
-        private int versionToVU(String version) {
-            version = version.replace(".", "");
-            try {
-                return Integer.parseInt(version);
-            } catch (NumberFormatException ex) {
-                return -1;
-            }
+        public String getDevelopment() {
+            return this.devel;
+        }
+
+        /**
+         * Gets the stable version string obtained from the VU bytes.
+         *
+         * @return Stable version string
+         */
+        public String getStable() {
+            return this.stable;
+        }
+
+        /**
+         * Returns if the head byte has the given flag set.
+         *
+         * @param flag Flag to check
+         * @return true if set, false if otherwise
+         */
+        public boolean hasFlag(VUFlag flag) {
+            return (this.vuBytes[0] & (1 << flag.getBitNumber())) > 0;
         }
 
         /**

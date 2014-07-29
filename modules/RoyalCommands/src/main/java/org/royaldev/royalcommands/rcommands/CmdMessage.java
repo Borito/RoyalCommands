@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 @ReflectCommand
 public class CmdMessage extends BaseCommand {
+
     public final static HashMap<String, String> replydb = new HashMap<>();
 
     public CmdMessage(final RoyalCommands instance, final String name) {

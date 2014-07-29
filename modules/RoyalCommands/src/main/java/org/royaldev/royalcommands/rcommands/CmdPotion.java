@@ -18,18 +18,6 @@ public class CmdPotion extends BaseCommand {
         super(instance, name, true);
     }
 
-    private void sendPotionTypes(CommandSender cs) {
-        StringBuilder sb = new StringBuilder();
-        for (PotionEffectType pet : PotionEffectType.values()) {
-            if (pet == null) continue;
-            sb.append(MessageColor.NEUTRAL);
-            sb.append(pet.getName());
-            sb.append(MessageColor.RESET);
-            sb.append(", ");
-        }
-        cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
-    }
-
     private PotionEffect getPotionEffect(String s) {
         String[] comp = s.split(",");
         if (comp.length < 3)
@@ -47,6 +35,18 @@ public class CmdPotion extends BaseCommand {
         }
         boolean ambient = comp.length > 3 && comp[3].equalsIgnoreCase("true");
         return new PotionEffect(pet, duration, amplifier, ambient);
+    }
+
+    private void sendPotionTypes(CommandSender cs) {
+        StringBuilder sb = new StringBuilder();
+        for (PotionEffectType pet : PotionEffectType.values()) {
+            if (pet == null) continue;
+            sb.append(MessageColor.NEUTRAL);
+            sb.append(pet.getName());
+            sb.append(MessageColor.RESET);
+            sb.append(", ");
+        }
+        cs.sendMessage(sb.substring(0, sb.length() - 4)); // "&r, " = 4
     }
 
     @Override

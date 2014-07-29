@@ -17,18 +17,18 @@ public class ServerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
+    public void onPluginDisable(PluginDisableEvent e) {
+        final Plugin p = e.getPlugin();
+        if (!p.getName().equals("Vault")) return;
+        this.plugin.vh.removeVault();
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnable(PluginEnableEvent e) {
         final Plugin p = e.getPlugin();
         if (!p.getName().equals("Vault")) return;
         this.plugin.vh.setUpVault();
 
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPluginDisable(PluginDisableEvent e) {
-        final Plugin p = e.getPlugin();
-        if (!p.getName().equals("Vault")) return;
-        this.plugin.vh.removeVault();
     }
 
 }

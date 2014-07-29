@@ -33,17 +33,6 @@ public class ItemListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBlockPlace(BlockPlaceEvent e) {
-        if (!Config.itemSpawnTag) return;
-        final Block b = e.getBlock();
-        final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(e.getItemInHand());
-        if (!si.isSpawned() && !si.hasComponents()) return;
-        final BlockData bd = new BlockData(this.plugin, new BlockLocation(b.getLocation()));
-        bd.set("spawninfo", si.toString());
-        bd.caughtSave();
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
         if (!Config.itemSpawnTag) return;
         final Player p = e.getPlayer();
@@ -67,6 +56,17 @@ public class ItemListener implements Listener {
         if (p.getGameMode() != GameMode.CREATIVE) // don't drop blocks in creative mode, obviously
             for (ItemStack drop : drops) b.getWorld().dropItemNaturally(b.getLocation(), drop);
         bd.remove("spawninfo");
+        bd.caughtSave();
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockPlace(BlockPlaceEvent e) {
+        if (!Config.itemSpawnTag) return;
+        final Block b = e.getBlock();
+        final SpawnInfo si = SpawnInfo.SpawnInfoManager.getSpawnInfo(e.getItemInHand());
+        if (!si.isSpawned() && !si.hasComponents()) return;
+        final BlockData bd = new BlockData(this.plugin, new BlockLocation(b.getLocation()));
+        bd.set("spawninfo", si.toString());
         bd.caughtSave();
     }
 

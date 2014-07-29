@@ -29,6 +29,7 @@ import java.util.List;
  * @author Glen Smith
  */
 public class CSVReader implements Closeable {
+
     /**
      * The default line to start reading.
      */
@@ -92,6 +93,31 @@ public class CSVReader implements Closeable {
     }
 
     /**
+     * Reads the next line from the file.
+     *
+     * @return the next line from the file without trailing newline
+     * @throws IOException if bad things happen during the read
+     */
+    private String getNextLine() throws IOException {
+        if (!this.linesSkipped) {
+            for (int i = 0; i < skipLines; i++) br.readLine();
+            this.linesSkipped = true;
+        }
+        String nextLine = br.readLine();
+        if (nextLine == null) hasNext = false;
+        return hasNext ? nextLine : null;
+    }
+
+    /**
+     * Closes the underlying reader.
+     *
+     * @throws IOException if the close fails
+     */
+    public void close() throws IOException {
+        br.close();
+    }
+
+    /**
      * Reads the entire file into a List with each element being a String[] of
      * tokens.
      *
@@ -133,31 +159,6 @@ public class CSVReader implements Closeable {
             }
         } while (parser.isPending());
         return result;
-    }
-
-    /**
-     * Reads the next line from the file.
-     *
-     * @return the next line from the file without trailing newline
-     * @throws IOException if bad things happen during the read
-     */
-    private String getNextLine() throws IOException {
-        if (!this.linesSkipped) {
-            for (int i = 0; i < skipLines; i++) br.readLine();
-            this.linesSkipped = true;
-        }
-        String nextLine = br.readLine();
-        if (nextLine == null) hasNext = false;
-        return hasNext ? nextLine : null;
-    }
-
-    /**
-     * Closes the underlying reader.
-     *
-     * @throws IOException if the close fails
-     */
-    public void close() throws IOException {
-        br.close();
     }
 
 }

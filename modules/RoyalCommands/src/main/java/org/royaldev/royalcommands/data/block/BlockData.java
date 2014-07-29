@@ -34,6 +34,40 @@ public class BlockData {
         }
     }
 
+    public boolean caughtLoad() {
+        try {
+            this.load();
+            return true;
+        } catch (EOFException ignored) {
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean caughtSave() {
+        try {
+            this.save();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean contains(String key) {
+        synchronized (this.thisData) {
+            return this.thisData.containsKey(key);
+        }
+    }
+
+    public Object get(String key) {
+        synchronized (this.thisData) {
+            return this.thisData.get(key);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public void load() throws IOException, ClassNotFoundException {
         final File f = new File(this.p.getDataFolder(), "blockdata.dat");
@@ -53,15 +87,9 @@ public class BlockData {
         }
     }
 
-    public boolean caughtLoad() {
-        try {
-            this.load();
-            return true;
-        } catch (EOFException ignored) {
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    public void remove(String key) {
+        synchronized (this.thisData) {
+            this.thisData.remove(key);
         }
     }
 
@@ -77,41 +105,14 @@ public class BlockData {
         oos.close();
     }
 
-    public boolean caughtSave() {
-        try {
-            this.save();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public void set(String key, Object value) {
         synchronized (this.thisData) {
             this.thisData.put(key, value);
         }
     }
 
-    public Object get(String key) {
-        synchronized (this.thisData) {
-            return this.thisData.get(key);
-        }
-    }
-
-    public boolean contains(String key) {
-        synchronized (this.thisData) {
-            return this.thisData.containsKey(key);
-        }
-    }
-
-    public void remove(String key) {
-        synchronized (this.thisData) {
-            this.thisData.remove(key);
-        }
-    }
-
     public static class BlockLocation implements Serializable {
+
         private static final long serialVersionUID = 3232014L;
 
         private String world;
@@ -131,6 +132,14 @@ public class BlockData {
             this.x = l.getBlockX();
             this.y = l.getBlockY();
             this.z = l.getBlockZ();
+        }
+
+        public String getWorld() {
+            return this.world;
+        }
+
+        public void setWorld(String world) {
+            this.world = world;
         }
 
         public int getX() {
@@ -155,14 +164,6 @@ public class BlockData {
 
         public void setZ(int z) {
             this.z = z;
-        }
-
-        public String getWorld() {
-            return this.world;
-        }
-
-        public void setWorld(String world) {
-            this.world = world;
         }
 
         @Override

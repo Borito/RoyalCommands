@@ -56,13 +56,133 @@ public class WorldManager {
         Bukkit.getPluginManager().registerEvents(new WorldWatcher(), RoyalCommands.instance);
     }
 
+    public void addNewToConfig() {
+        for (String ws : loadedWorlds) {
+            if (configuredWorlds.contains(ws)) continue;
+            World w = Bukkit.getWorld(ws);
+            if (w == null) continue;
+            String path = "worlds." + ws + ".";
+            config.set(path + "displayname", ws);
+            config.set(path + "spawnmonsters", w.getAllowMonsters());
+            config.set(path + "spawnanimals", w.getAllowAnimals());
+            config.set(path + "keepspawnloaded", w.getKeepSpawnInMemory());
+            config.set(path + "generatestructures", w.canGenerateStructures());
+            config.set(path + "pvp", w.getPVP());
+            config.set(path + "weather", true);
+            config.set(path + "maxheight", w.getMaxHeight());
+            config.set(path + "monsterspawnlimit", w.getMonsterSpawnLimit());
+            config.set(path + "animalspawnlimit", w.getAnimalSpawnLimit());
+            config.set(path + "wateranimalspawnlimit", w.getWaterAnimalSpawnLimit());
+            config.set(path + "animalspawnticks", w.getTicksPerAnimalSpawns());
+            config.set(path + "monsterspawnticks", w.getTicksPerMonsterSpawns());
+            config.set(path + "difficulty", w.getDifficulty().name());
+            config.set(path + "worldtype", w.getWorldType().name());
+            config.set(path + "environment", w.getEnvironment().name());
+            config.set(path + "gamemode", Bukkit.getServer().getDefaultGameMode().name());
+            if (w.getGenerator() == null) config.set(path + "generator", "DefaultGen");
+            config.set(path + "seed", w.getSeed());
+            config.set(path + "freezetime", false);
+            config.set(path + "loadatstartup", true);
+        }
+    }
+
+    public void addToLoadedWorlds(String name) {
+        synchronized (loadedWorlds) {
+            if (!loadedWorlds.contains(name)) loadedWorlds.add(name);
+        }
+    }
+
+    public void addToLoadedWorlds(World w) {
+        synchronized (loadedWorlds) {
+            if (!loadedWorlds.contains(w.getName())) loadedWorlds.add(w.getName());
+        }
+    }
+
+    /**
+     * Gets a world based on its alias (case-sensitive).
+     *
+     * @param name Alias of world
+     * @return World or null if no matching alias
+     */
+    public World getCaseSensitiveWorld(String name) {
+        World w;
+        for (String s : loadedWorlds) {
+            String path = "worlds." + s + ".";
+            if (config.getString(path + "displayname", "").equals(name)) {
+                w = Bukkit.getWorld(s);
+                return w;
+            }
+        }
+        return null;
+    }
+
     public ConfManager getConfig() {
         return config;
+    }
+
+    /**
+     * Gets a world based on its alias (case-insensitive).
+     *
+     * @param name Alias of world
+     * @return World or null if no matching alias
+     */
+    public World getWorld(String name) {
+        World w;
+        for (String s : loadedWorlds) {
+            String path = "worlds." + s + ".";
+            if (config.getString(path + "displayname", "").equalsIgnoreCase(name)) {
+                w = Bukkit.getWorld(s);
+                return w;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Attempts to load a world.
+     *
+     * @param name Name of world to load (i.e. folder name)
+     * @return Loaded world
+     * @throws IllegalArgumentException If there is no such world
+     * @throws NullPointerException     If could not read the world container's files
+     */
+    public World loadWorld(String name) throws IllegalArgumentException, NullPointerException {
+        if (Bukkit.getServer().getWorldContainer() == null)
+            throw new NullPointerException("Could not read world files!");
+        File world = new File(Bukkit.getServer().getWorldContainer(), name);
+        if (!world.exists()) throw new IllegalArgumentException("No such world!");
+        if (!world.isDirectory()) throw new IllegalArgumentException("World is not a directory!");
+        WorldCreator wc = new WorldCreator(name);
+        String generator = config.getString("worlds." + name + ".generator", "DefaultGen");
+        if (generator.equals("DefaultGen")) generator = null;
+        World w;
+        try {
+            wc.generator(generator);
+            w = wc.createWorld();
+        } catch (Exception e) { // catch silly generators using old code (may not actually catch)
+            throw new IllegalArgumentException("Generator (" + generator + ") is using old code: " + e.getMessage());
+        }
+        synchronized (loadedWorlds) {
+            loadedWorlds.add(w.getName());
+        }
+        return w;
     }
 
     public void reloadConfig() {
         config.reload();
         this.setupWorlds();
+    }
+
+    public void removeFromLoadedWorlds(String name) {
+        synchronized (loadedWorlds) {
+            if (loadedWorlds.contains(name)) loadedWorlds.remove(name);
+        }
+    }
+
+    public void removeFromLoadedWorlds(World w) {
+        synchronized (loadedWorlds) {
+            if (loadedWorlds.contains(w.getName())) loadedWorlds.remove(w.getName());
+        }
     }
 
     public void setupWorlds() {
@@ -104,60 +224,6 @@ public class WorldManager {
         }
     }
 
-    public void addToLoadedWorlds(String name) {
-        synchronized (loadedWorlds) {
-            if (!loadedWorlds.contains(name)) loadedWorlds.add(name);
-        }
-    }
-
-    public void addToLoadedWorlds(World w) {
-        synchronized (loadedWorlds) {
-            if (!loadedWorlds.contains(w.getName())) loadedWorlds.add(w.getName());
-        }
-    }
-
-    public void removeFromLoadedWorlds(String name) {
-        synchronized (loadedWorlds) {
-            if (loadedWorlds.contains(name)) loadedWorlds.remove(name);
-        }
-    }
-
-    public void removeFromLoadedWorlds(World w) {
-        synchronized (loadedWorlds) {
-            if (loadedWorlds.contains(w.getName())) loadedWorlds.remove(w.getName());
-        }
-    }
-
-    /**
-     * Attempts to load a world.
-     *
-     * @param name Name of world to load (i.e. folder name)
-     * @return Loaded world
-     * @throws IllegalArgumentException If there is no such world
-     * @throws NullPointerException     If could not read the world container's files
-     */
-    public World loadWorld(String name) throws IllegalArgumentException, NullPointerException {
-        if (Bukkit.getServer().getWorldContainer() == null)
-            throw new NullPointerException("Could not read world files!");
-        File world = new File(Bukkit.getServer().getWorldContainer(), name);
-        if (!world.exists()) throw new IllegalArgumentException("No such world!");
-        if (!world.isDirectory()) throw new IllegalArgumentException("World is not a directory!");
-        WorldCreator wc = new WorldCreator(name);
-        String generator = config.getString("worlds." + name + ".generator", "DefaultGen");
-        if (generator.equals("DefaultGen")) generator = null;
-        World w;
-        try {
-            wc.generator(generator);
-            w = wc.createWorld();
-        } catch (Exception e) { // catch silly generators using old code (may not actually catch)
-            throw new IllegalArgumentException("Generator (" + generator + ") is using old code: " + e.getMessage());
-        }
-        synchronized (loadedWorlds) {
-            loadedWorlds.add(w.getName());
-        }
-        return w;
-    }
-
     /**
      * Attempts to unload a world
      *
@@ -186,87 +252,26 @@ public class WorldManager {
         return worked;
     }
 
-    public void addNewToConfig() {
-        for (String ws : loadedWorlds) {
-            if (configuredWorlds.contains(ws)) continue;
-            World w = Bukkit.getWorld(ws);
-            if (w == null) continue;
-            String path = "worlds." + ws + ".";
-            config.set(path + "displayname", ws);
-            config.set(path + "spawnmonsters", w.getAllowMonsters());
-            config.set(path + "spawnanimals", w.getAllowAnimals());
-            config.set(path + "keepspawnloaded", w.getKeepSpawnInMemory());
-            config.set(path + "generatestructures", w.canGenerateStructures());
-            config.set(path + "pvp", w.getPVP());
-            config.set(path + "weather", true);
-            config.set(path + "maxheight", w.getMaxHeight());
-            config.set(path + "monsterspawnlimit", w.getMonsterSpawnLimit());
-            config.set(path + "animalspawnlimit", w.getAnimalSpawnLimit());
-            config.set(path + "wateranimalspawnlimit", w.getWaterAnimalSpawnLimit());
-            config.set(path + "animalspawnticks", w.getTicksPerAnimalSpawns());
-            config.set(path + "monsterspawnticks", w.getTicksPerMonsterSpawns());
-            config.set(path + "difficulty", w.getDifficulty().name());
-            config.set(path + "worldtype", w.getWorldType().name());
-            config.set(path + "environment", w.getEnvironment().name());
-            config.set(path + "gamemode", Bukkit.getServer().getDefaultGameMode().name());
-            if (w.getGenerator() == null) config.set(path + "generator", "DefaultGen");
-            config.set(path + "seed", w.getSeed());
-            config.set(path + "freezetime", false);
-            config.set(path + "loadatstartup", true);
-        }
-    }
-
-    /**
-     * Gets a world based on its alias (case-insensitive).
-     *
-     * @param name Alias of world
-     * @return World or null if no matching alias
-     */
-    public World getWorld(String name) {
-        World w;
-        for (String s : loadedWorlds) {
-            String path = "worlds." + s + ".";
-            if (config.getString(path + "displayname", "").equalsIgnoreCase(name)) {
-                w = Bukkit.getWorld(s);
-                return w;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Gets a world based on its alias (case-sensitive).
-     *
-     * @param name Alias of world
-     * @return World or null if no matching alias
-     */
-    public World getCaseSensitiveWorld(String name) {
-        World w;
-        for (String s : loadedWorlds) {
-            String path = "worlds." + s + ".";
-            if (config.getString(path + "displayname", "").equals(name)) {
-                w = Bukkit.getWorld(s);
-                return w;
-            }
-        }
-        return null;
-    }
-
     private class WorldWatcher implements Listener {
+
         @EventHandler
-        public void worldUnload(WorldUnloadEvent e) {
+        public void onThunder(ThunderChangeEvent e) {
             if (e.isCancelled()) return;
-            synchronized (loadedWorlds) {
-                if (loadedWorlds.contains(e.getWorld().getName())) loadedWorlds.remove(e.getWorld().getName());
-            }
+            World w = e.getWorld();
+            if (!configuredWorlds.contains(w.getName())) return;
+            if (!loadedWorlds.contains(w.getName())) return;
+            boolean allowWeather = config.getBoolean("worlds." + w.getName() + ".weather", true);
+            if (!allowWeather) e.setCancelled(true);
         }
 
         @EventHandler
-        public void worldLoad(WorldLoadEvent e) {
-            synchronized (loadedWorlds) {
-                if (!loadedWorlds.contains(e.getWorld().getName())) loadedWorlds.add(e.getWorld().getName());
-                WorldManager.this.addNewToConfig();
-            }
+        public void onWeather(WeatherChangeEvent e) {
+            if (e.isCancelled()) return;
+            World w = e.getWorld();
+            if (!configuredWorlds.contains(w.getName())) return;
+            if (!loadedWorlds.contains(w.getName())) return;
+            boolean allowWeather = config.getBoolean("worlds." + w.getName() + ".weather", true);
+            if (!allowWeather) e.setCancelled(true);
         }
 
         @EventHandler
@@ -285,23 +290,19 @@ public class WorldManager {
         }
 
         @EventHandler
-        public void onWeather(WeatherChangeEvent e) {
-            if (e.isCancelled()) return;
-            World w = e.getWorld();
-            if (!configuredWorlds.contains(w.getName())) return;
-            if (!loadedWorlds.contains(w.getName())) return;
-            boolean allowWeather = config.getBoolean("worlds." + w.getName() + ".weather", true);
-            if (!allowWeather) e.setCancelled(true);
+        public void worldLoad(WorldLoadEvent e) {
+            synchronized (loadedWorlds) {
+                if (!loadedWorlds.contains(e.getWorld().getName())) loadedWorlds.add(e.getWorld().getName());
+                WorldManager.this.addNewToConfig();
+            }
         }
 
         @EventHandler
-        public void onThunder(ThunderChangeEvent e) {
+        public void worldUnload(WorldUnloadEvent e) {
             if (e.isCancelled()) return;
-            World w = e.getWorld();
-            if (!configuredWorlds.contains(w.getName())) return;
-            if (!loadedWorlds.contains(w.getName())) return;
-            boolean allowWeather = config.getBoolean("worlds." + w.getName() + ".weather", true);
-            if (!allowWeather) e.setCancelled(true);
+            synchronized (loadedWorlds) {
+                if (loadedWorlds.contains(e.getWorld().getName())) loadedWorlds.remove(e.getWorld().getName());
+            }
         }
 
     }

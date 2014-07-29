@@ -18,20 +18,6 @@ public class CmdSpawn extends BaseCommand {
     }
 
     /**
-     * Get the custom spawn location of a world. If none is set, it will return the default.
-     *
-     * @param world World to get spawn for
-     * @return Custom spawn or default spawn if not set
-     */
-    public static Location getWorldSpawn(World world) {
-        ConfManager cm = ConfManager.getConfManager("spawns.yml");
-        String w = world.getName();
-        Location l = cm.getLocation("spawns." + w, world.getName());
-        if (l == null) l = world.getSpawnLocation();
-        return l;
-    }
-
-    /**
      * Gets the group-specific spawn for a player and a world.
      *
      * @param p     Player to get spawn for
@@ -52,6 +38,20 @@ public class CmdSpawn extends BaseCommand {
         if (group == null || group.isEmpty()) return null;
         group = "." + group.toLowerCase();
         return cm.getLocation("spawns." + world.getName() + group, world.getName());
+    }
+
+    /**
+     * Get the custom spawn location of a world. If none is set, it will return the default.
+     *
+     * @param world World to get spawn for
+     * @return Custom spawn or default spawn if not set
+     */
+    public static Location getWorldSpawn(World world) {
+        ConfManager cm = ConfManager.getConfManager("spawns.yml");
+        String w = world.getName();
+        Location l = cm.getLocation("spawns." + w, world.getName());
+        if (l == null) l = world.getSpawnLocation();
+        return l;
     }
 
     @Override

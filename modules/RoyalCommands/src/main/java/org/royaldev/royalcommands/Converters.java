@@ -6,15 +6,37 @@ public class Converters {
     Strongly based upon code from Bukkit.
      */
 
-    public static int toInt(Object o) {
-        if (o instanceof Number) {
-            return ((Number) o).intValue();
+    public static boolean toBoolean(Object o) {
+        if (o instanceof Boolean) {
+            return (Boolean) o;
         }
         try {
-            return Integer.valueOf(o.toString());
+            return Boolean.valueOf(o.toString());
+        } catch (NullPointerException ignored) {
+        }
+        return false;
+    }
+
+    public static byte toByte(Object o) {
+        if (o instanceof Number) {
+            return ((Number) o).byteValue();
+        }
+        try {
+            return Byte.valueOf(o.toString());
         } catch (NumberFormatException | NullPointerException ignored) {
         }
-        return 0;
+        return (byte) 0;
+    }
+
+    public static double toDouble(Object o) {
+        if (o instanceof Number) {
+            return ((Number) o).doubleValue();
+        }
+        try {
+            return Double.valueOf(o.toString());
+        } catch (NumberFormatException | NullPointerException ignored) {
+        }
+        return 0D;
     }
 
     public static float toFloat(Object o) {
@@ -28,15 +50,15 @@ public class Converters {
         return 0F;
     }
 
-    public static double toDouble(Object o) {
+    public static int toInt(Object o) {
         if (o instanceof Number) {
-            return ((Number) o).doubleValue();
+            return ((Number) o).intValue();
         }
         try {
-            return Double.valueOf(o.toString());
+            return Integer.valueOf(o.toString());
         } catch (NumberFormatException | NullPointerException ignored) {
         }
-        return 0D;
+        return 0;
     }
 
     public static long toLong(Object o) {
@@ -61,17 +83,6 @@ public class Converters {
         return (short) 0;
     }
 
-    public static byte toByte(Object o) {
-        if (o instanceof Number) {
-            return ((Number) o).byteValue();
-        }
-        try {
-            return Byte.valueOf(o.toString());
-        } catch (NumberFormatException | NullPointerException ignored) {
-        }
-        return (byte) 0;
-    }
-
     public static String toStringy(Object o) {
         if (o instanceof String) {
             return (String) o;
@@ -81,17 +92,6 @@ public class Converters {
         } catch (NullPointerException ignored) {
         }
         return "";
-    }
-
-    public static boolean toBoolean(Object o) {
-        if (o instanceof Boolean) {
-            return (Boolean) o;
-        }
-        try {
-            return Boolean.valueOf(o.toString());
-        } catch (NullPointerException ignored) {
-        }
-        return false;
     }
 
 }

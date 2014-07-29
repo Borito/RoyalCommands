@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @ReflectCommand
 public class CmdFurnace extends BaseCommand {
+
     public final Map<UUID, Furnace> furnacedb = new HashMap<>();
 
     public CmdFurnace(final RoyalCommands instance, final String name) {

@@ -19,17 +19,17 @@ public enum MessageColor {
         }
     }
 
-    @Override
-    public String toString() {
-        return this.c.toString();
+    public ChatColor _() {
+        return this.getChatColor();
     }
 
     public ChatColor getChatColor() {
         return this.c;
     }
 
-    public ChatColor _() {
-        return this.getChatColor();
+    @Override
+    public String toString() {
+        return this.c.toString();
     }
 
 }

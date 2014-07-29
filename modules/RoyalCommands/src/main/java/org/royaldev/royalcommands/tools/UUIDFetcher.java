@@ -18,6 +18,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 
 public class UUIDFetcher implements Callable<Map<String, UUID>> {
+
     private static final int MAX_SEARCH = 100;
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/page/";
     private static final String AGENT = "minecraft";
@@ -28,11 +29,16 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         this.names = ImmutableList.copyOf(names);
     }
 
-    private static void writeBody(HttpURLConnection connection, String body) throws Exception {
-        DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
-        writer.write(body.getBytes());
-        writer.flush();
-        writer.close();
+    @SuppressWarnings("unchecked")
+    private static String buildBody(List<String> names) {
+        List<JSONObject> lookups = new ArrayList<>();
+        for (String name : names) {
+            JSONObject obj = new JSONObject();
+            obj.put("name", name);
+            obj.put("agent", AGENT);
+            lookups.add(obj);
+        }
+        return JSONValue.toJSONString(lookups);
     }
 
     private static HttpURLConnection createConnection(int page) throws Exception {
@@ -46,16 +52,11 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         return connection;
     }
 
-    @SuppressWarnings("unchecked")
-    private static String buildBody(List<String> names) {
-        List<JSONObject> lookups = new ArrayList<>();
-        for (String name : names) {
-            JSONObject obj = new JSONObject();
-            obj.put("name", name);
-            obj.put("agent", AGENT);
-            lookups.add(obj);
-        }
-        return JSONValue.toJSONString(lookups);
+    private static void writeBody(HttpURLConnection connection, String body) throws Exception {
+        DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
+        writer.write(body.getBytes());
+        writer.flush();
+        writer.close();
     }
 
     public Map<String, UUID> call() throws Exception {

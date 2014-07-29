@@ -27,25 +27,34 @@ public class CmdList extends BaseCommand {
         CmdList.pluginInstance = pluginInstance;
     }
 
-    public static String getSimpleList(CommandSender cs) {
-        Collection<? extends Player> pl = CmdList.pluginInstance.getServer().getOnlinePlayers();
-        StringBuilder sb = new StringBuilder();
-        for (Player p : pl) {
-            if (CmdList.pluginInstance.isVanished(p) && CmdList.pluginInstance.ah.isAuthorized(cs, "rcmds.seehidden")) {
-                sb.append(MessageColor.NEUTRAL);
-                sb.append("[HIDDEN]");
-                sb.append(MessageColor.RESET);
-                sb.append(formatPrepend(p));
-                sb.append(MessageColor.RESET);
-                sb.append(", ");
-            } else if (!CmdList.pluginInstance.isVanished(p)) {
-                if (AFKUtils.isAfk(p)) sb.append(MessageColor.NEUTRAL).append("[AFK]");
-                sb.append(formatPrepend(p));
-                sb.append(MessageColor.RESET).append(", ");
-            }
+    public static String formatPrepend(Player p) {
+        String format = Config.whoFormat;
+        try {
+            if (!CmdList.pluginInstance.vh.usingVault()) throw new Exception();
+            format = format.replaceAll("(?i)\\{prefix}", CmdList.pluginInstance.vh.getChat().getPlayerPrefix(p));
+        } catch (Exception e) {
+            String prefix = RUtils.getRChatPrefix(p);
+            if (prefix != null) format = format.replace("{prefix}", prefix);
+            else format = format.replace("{prefix}", "");
         }
-        if (sb.length() < 2) return "";
-        return MessageColor.NEUTRAL + "Online Players: " + MessageColor.RESET + sb.toString().substring(0, sb.length() - 2);
+        try {
+            if (!CmdList.pluginInstance.vh.usingVault()) throw new Exception();
+            format = format.replaceAll("(?i)\\{group}", CmdList.pluginInstance.vh.getPermission().getPrimaryGroup(p));
+        } catch (Exception e) {
+            format = format.replaceAll("(?i)\\{group}", "");
+        }
+        try {
+            if (CmdList.pluginInstance.vh.usingVault())
+                format = format.replaceAll("(?i)\\{suffix}", CmdList.pluginInstance.vh.getChat().getPlayerSuffix(p));
+        } catch (Exception e) {
+            String suffix = RUtils.getRChatSuffix(p);
+            if (suffix != null) format = format.replace("{suffix}", suffix);
+            else format = format.replace("{suffix}", "");
+        }
+        format = format.replaceAll("(?i)\\{name}", p.getName());
+        format = format.replaceAll("(?i)\\{dispname}", p.getDisplayName());
+        format = RUtils.colorize(format);
+        return format;
     }
 
     public static String[] getGroupList(CommandSender cs) {
@@ -93,6 +102,27 @@ public class CmdList extends BaseCommand {
         return toRet.toArray(new String[toRet.size()]);
     }
 
+    public static String getSimpleList(CommandSender cs) {
+        Collection<? extends Player> pl = CmdList.pluginInstance.getServer().getOnlinePlayers();
+        StringBuilder sb = new StringBuilder();
+        for (Player p : pl) {
+            if (CmdList.pluginInstance.isVanished(p) && CmdList.pluginInstance.ah.isAuthorized(cs, "rcmds.seehidden")) {
+                sb.append(MessageColor.NEUTRAL);
+                sb.append("[HIDDEN]");
+                sb.append(MessageColor.RESET);
+                sb.append(formatPrepend(p));
+                sb.append(MessageColor.RESET);
+                sb.append(", ");
+            } else if (!CmdList.pluginInstance.isVanished(p)) {
+                if (AFKUtils.isAfk(p)) sb.append(MessageColor.NEUTRAL).append("[AFK]");
+                sb.append(formatPrepend(p));
+                sb.append(MessageColor.RESET).append(", ");
+            }
+        }
+        if (sb.length() < 2) return "";
+        return MessageColor.NEUTRAL + "Online Players: " + MessageColor.RESET + sb.toString().substring(0, sb.length() - 2);
+    }
+
     public static String groupPrepend(String group) {
         String format = Config.whoGroupFormat;
         try {
@@ -112,36 +142,6 @@ public class CmdList extends BaseCommand {
             else format = format.replace("{suffix}", "");
         }
         format = format.replace("{group}", group);
-        format = RUtils.colorize(format);
-        return format;
-    }
-
-    public static String formatPrepend(Player p) {
-        String format = Config.whoFormat;
-        try {
-            if (!CmdList.pluginInstance.vh.usingVault()) throw new Exception();
-            format = format.replaceAll("(?i)\\{prefix}", CmdList.pluginInstance.vh.getChat().getPlayerPrefix(p));
-        } catch (Exception e) {
-            String prefix = RUtils.getRChatPrefix(p);
-            if (prefix != null) format = format.replace("{prefix}", prefix);
-            else format = format.replace("{prefix}", "");
-        }
-        try {
-            if (!CmdList.pluginInstance.vh.usingVault()) throw new Exception();
-            format = format.replaceAll("(?i)\\{group}", CmdList.pluginInstance.vh.getPermission().getPrimaryGroup(p));
-        } catch (Exception e) {
-            format = format.replaceAll("(?i)\\{group}", "");
-        }
-        try {
-            if (CmdList.pluginInstance.vh.usingVault())
-                format = format.replaceAll("(?i)\\{suffix}", CmdList.pluginInstance.vh.getChat().getPlayerSuffix(p));
-        } catch (Exception e) {
-            String suffix = RUtils.getRChatSuffix(p);
-            if (suffix != null) format = format.replace("{suffix}", suffix);
-            else format = format.replace("{suffix}", "");
-        }
-        format = format.replaceAll("(?i)\\{name}", p.getName());
-        format = format.replaceAll("(?i)\\{dispname}", p.getDisplayName());
         format = RUtils.colorize(format);
         return format;
     }

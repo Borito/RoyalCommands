@@ -24,6 +24,26 @@ public class CmdTrade extends BaseCommand {
         super(instance, name, true);
     }
 
+    /**
+     * Gets the trade inventory between two players. If no trade inventory has been made, this will return null.
+     * <p/>
+     * Note that the order of the player arguments does not matter. It may be called as
+     * <code>getTradeInv(playerA, playerB)</code> or <code>getTradeInv(playerB, playerA)</code>.
+     *
+     * @param p One player
+     * @param t Other player
+     * @return Inventory or null if no such inventory
+     */
+    public static Inventory getTradeInv(Player p, Player t) {
+        synchronized (CmdTrade.trades) {
+            for (final Map<UUID, UUID> set : CmdTrade.trades.keySet()) {
+                if ((set.containsKey(t.getUniqueId()) && set.get(t.getUniqueId()).equals(p.getUniqueId())) || (set.containsKey(p.getUniqueId()) && set.get(p.getUniqueId()).equals(t.getUniqueId())))
+                    return CmdTrade.trades.get(set);
+            }
+        }
+        return null;
+    }
+
     public static void sendTradeRequest(Player target, Player sender) {
         CmdTrade.tradedb.put(sender.getUniqueId(), target.getUniqueId());
         // @formatter:off
@@ -43,26 +63,6 @@ public class CmdTrade extends BaseCommand {
                 .color(MessageColor.POSITIVE._())
             .send(target);
         // @formatter:on
-    }
-
-    /**
-     * Gets the trade inventory between two players. If no trade inventory has been made, this will return null.
-     * <p/>
-     * Note that the order of the player arguments does not matter. It may be called as
-     * <code>getTradeInv(playerA, playerB)</code> or <code>getTradeInv(playerB, playerA)</code>.
-     *
-     * @param p One player
-     * @param t Other player
-     * @return Inventory or null if no such inventory
-     */
-    public static Inventory getTradeInv(Player p, Player t) {
-        synchronized (CmdTrade.trades) {
-            for (final Map<UUID, UUID> set : CmdTrade.trades.keySet()) {
-                if ((set.containsKey(t.getUniqueId()) && set.get(t.getUniqueId()).equals(p.getUniqueId())) || (set.containsKey(p.getUniqueId()) && set.get(p.getUniqueId()).equals(t.getUniqueId())))
-                    return CmdTrade.trades.get(set);
-            }
-        }
-        return null;
     }
 
     @Override

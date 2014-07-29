@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class BaseCommand implements CommandExecutor {
+
     final RoyalCommands plugin;
     /**
      * The AuthorizationHandler for this command. This is essentially an alias of this.plugin.ah.
@@ -271,6 +272,7 @@ public abstract class BaseCommand implements CommandExecutor {
     }
 
     private class HastebinData {
+
         @SuppressWarnings("UnusedDeclaration")
         private String key;
 

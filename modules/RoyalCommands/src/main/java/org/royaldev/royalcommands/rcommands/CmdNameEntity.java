@@ -19,26 +19,14 @@ public class CmdNameEntity extends BaseCommand {
         super(instance, name, true);
     }
 
-    /**
-     * Checks to see if the player has a name to give to an entity.
-     *
-     * @param s Name of player to check
-     * @return true if naming, false if not
-     */
-    public static boolean isNaming(String s) {
-        synchronized (names) {
-            return names.containsKey(s);
-        }
+    public static void cancelNaming(CommandSender cs) {
+        cancelNaming(cs.getName());
     }
 
-    /**
-     * Checks to see if the player has a name to give to an entity.
-     *
-     * @param cs CommandSender to check
-     * @return true if naming, false if not
-     */
-    public static boolean isNaming(CommandSender cs) {
-        return isNaming(cs.getName());
+    public static void cancelNaming(String s) {
+        synchronized (names) {
+            names.remove(s);
+        }
     }
 
     /**
@@ -63,14 +51,26 @@ public class CmdNameEntity extends BaseCommand {
         }
     }
 
-    public static void cancelNaming(CommandSender cs) {
-        cancelNaming(cs.getName());
+    /**
+     * Checks to see if the player has a name to give to an entity.
+     *
+     * @param s Name of player to check
+     * @return true if naming, false if not
+     */
+    public static boolean isNaming(String s) {
+        synchronized (names) {
+            return names.containsKey(s);
+        }
     }
 
-    public static void cancelNaming(String s) {
-        synchronized (names) {
-            names.remove(s);
-        }
+    /**
+     * Checks to see if the player has a name to give to an entity.
+     *
+     * @param cs CommandSender to check
+     * @return true if naming, false if not
+     */
+    public static boolean isNaming(CommandSender cs) {
+        return isNaming(cs.getName());
     }
 
     private static void setNamingName(CommandSender cs, String namingName) {

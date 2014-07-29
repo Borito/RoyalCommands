@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @ReflectCommand
 public class CmdSetHome extends BaseCommand {
+
     private final Map<UUID, Map<String, Long>> overwrites = new HashMap<>();
 
     public CmdSetHome(final RoyalCommands instance, final String name) {

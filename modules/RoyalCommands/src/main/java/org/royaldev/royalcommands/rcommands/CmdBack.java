@@ -22,6 +22,7 @@ import java.util.UUID;
 
 @ReflectCommand
 public class CmdBack extends BaseCommand {
+
     private static final Map<UUID, List<Location>> backdb = new HashMap<>();
     private final DecimalFormat df = new DecimalFormat("0.00");
 

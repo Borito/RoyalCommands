@@ -15,10 +15,6 @@ public class AuthorizationHandler {
         this.plugin = instance;
     }
 
-    private boolean permissionsLoaded() {
-        return this.plugin.vh.usingVault() && this.plugin.vh.getPermission() != null;
-    }
-
     private boolean chatLoaded() {
         return this.plugin.vh.usingVault() && this.plugin.vh.getChat() != null;
     }
@@ -27,12 +23,56 @@ public class AuthorizationHandler {
         return this.plugin.vh.usingVault() && this.plugin.vh.getEconomy() != null;
     }
 
-    public boolean isAuthorized(Object o, Command cmd) {
-        return this.isAuthorized(o, this.getPermission(cmd));
+    private boolean iABlockCommandSender(BlockCommandSender cb, String node) {
+        return true;
     }
 
-    public boolean isAuthorized(Object o, Command cmd, PermType type) {
-        return this.isAuthorized(o, this.getPermission(cmd, type));
+    private boolean iACommandSender(CommandSender cs, String node) {
+        if (this.plugin.vh.usingVault() && permissionsLoaded()) return this.plugin.vh.getPermission().has(cs, node);
+        return cs.hasPermission(node);
+    }
+
+    private boolean iAOfflinePlayer(OfflinePlayer op, String node) {
+        if (op.isOnline()) return this.iAPlayer(op.getPlayer(), node);
+        if (this.plugin.vh.usingVault() && this.permissionsLoaded()) {
+            final String world = this.plugin.getServer().getWorlds().get(0).getName();
+            return this.plugin.vh.getPermission().has(world, op.getName(), node);
+        }
+        return false;
+    }
+
+    private boolean iAPlayer(Player p, String node) {
+        if (this.plugin.vh.usingVault() && this.permissionsLoaded()) return this.plugin.vh.getPermission().has(p, node);
+        return p.hasPermission(node);
+    }
+
+    private boolean iARemoteConsoleCommandSender(RemoteConsoleCommandSender rccs, String node) {
+        return true;
+    }
+
+    private boolean permissionsLoaded() {
+        return this.plugin.vh.usingVault() && this.plugin.vh.getPermission() != null;
+    }
+
+    /**
+     * Gets the permission node for this command.
+     *
+     * @param cmd Command to get node for
+     * @return Permission node
+     */
+    public String getPermission(Command cmd) {
+        return this.getPermission(cmd, PermType.NORMAL);
+    }
+
+    /**
+     * Gets the permission node for this command and the given type.
+     *
+     * @param cmd  Command to get node for
+     * @param type Type of node to get
+     * @return Permission node
+     */
+    public String getPermission(Command cmd, PermType type) {
+        return "rcmds." + type + cmd.getName().toLowerCase();
     }
 
     /**
@@ -61,52 +101,12 @@ public class AuthorizationHandler {
         else throw new IllegalArgumentException("Object was not a valid authorizable!");
     }
 
-    private boolean iAPlayer(Player p, String node) {
-        if (this.plugin.vh.usingVault() && this.permissionsLoaded()) return this.plugin.vh.getPermission().has(p, node);
-        return p.hasPermission(node);
+    public boolean isAuthorized(Object o, Command cmd) {
+        return this.isAuthorized(o, this.getPermission(cmd));
     }
 
-    private boolean iAOfflinePlayer(OfflinePlayer op, String node) {
-        if (op.isOnline()) return this.iAPlayer(op.getPlayer(), node);
-        if (this.plugin.vh.usingVault() && this.permissionsLoaded()) {
-            final String world = this.plugin.getServer().getWorlds().get(0).getName();
-            return this.plugin.vh.getPermission().has(world, op.getName(), node);
-        }
-        return false;
-    }
-
-    private boolean iARemoteConsoleCommandSender(RemoteConsoleCommandSender rccs, String node) {
-        return true;
-    }
-
-    private boolean iABlockCommandSender(BlockCommandSender cb, String node) {
-        return true;
-    }
-
-    private boolean iACommandSender(CommandSender cs, String node) {
-        if (this.plugin.vh.usingVault() && permissionsLoaded()) return this.plugin.vh.getPermission().has(cs, node);
-        return cs.hasPermission(node);
-    }
-
-    /**
-     * Gets the permission node for this command.
-     *
-     * @param cmd Command to get node for
-     * @return Permission node
-     */
-    public String getPermission(Command cmd) {
-        return this.getPermission(cmd, PermType.NORMAL);
-    }
-
-    /**
-     * Gets the permission node for this command and the given type.
-     *
-     * @param cmd  Command to get node for
-     * @param type Type of node to get
-     * @return Permission node
-     */
-    public String getPermission(Command cmd, PermType type) {
-        return "rcmds." + type + cmd.getName().toLowerCase();
+    public boolean isAuthorized(Object o, Command cmd, PermType type) {
+        return this.isAuthorized(o, this.getPermission(cmd, type));
     }
 
     public enum PermType {

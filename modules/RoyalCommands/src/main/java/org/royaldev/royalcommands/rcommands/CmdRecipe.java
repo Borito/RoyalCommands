@@ -28,6 +28,7 @@ import java.util.Map;
 
 @ReflectCommand
 public class CmdRecipe extends TabCommand {
+
     private final Map<String, Integer> tasks = new HashMap<>();
 
     public CmdRecipe(final RoyalCommands instance, final String name) {
@@ -141,6 +142,7 @@ public class CmdRecipe extends TabCommand {
     }
 
     private class WorkbenchCloseListener implements Listener {
+
         @EventHandler(ignoreCancelled = true)
         public void workbenchClick(InventoryClickEvent e) {
             if (!(e.getWhoClicked() instanceof Player)) return;
@@ -171,17 +173,17 @@ public class CmdRecipe extends TabCommand {
 
         private boolean closing = false;
 
-        @Override
-        public Inventory getInventory() {
-            return null;
-        }
-
         private boolean isClosing() {
             return this.closing;
         }
 
         private void setClosing(boolean closing) {
             this.closing = closing;
+        }
+
+        @Override
+        public Inventory getInventory() {
+            return null;
         }
     }
 }

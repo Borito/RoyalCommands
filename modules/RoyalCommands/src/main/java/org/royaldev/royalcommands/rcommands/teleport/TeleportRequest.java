@@ -37,6 +37,45 @@ public class TeleportRequest {
     }
 
     /**
+     * Gets the first registered TeleportRequest with the given requester and target names.
+     *
+     * @param requester Requester's name
+     * @param target    Target's name
+     * @return First matching TeleportRequest or null
+     */
+    public static TeleportRequest getFirstRequest(String requester, String target) {
+        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
+        if (trs == null) return null;
+        for (TeleportRequest tr : trs) {
+            if (tr == null || !tr.getRequester().equalsIgnoreCase(requester) || !tr.getTarget().equalsIgnoreCase(target))
+                continue;
+            return tr;
+        }
+        return null;
+    }
+
+    /**
+     * Gets the latest request for the given target name. If there are no requests, this will return null.
+     *
+     * @param target Target's name
+     * @return Latest TeleportRequest or null
+     */
+    public static TeleportRequest getLatestRequest(String target) {
+        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
+        if (trs == null) return null;
+        long highest = -1L;
+        TeleportRequest latest = null;
+        for (TeleportRequest tr : trs) {
+            if (tr == null || !tr.getTarget().equalsIgnoreCase(target)) continue;
+            if (highest == -1L || tr.getDate() > highest) {
+                highest = tr.getDate();
+                latest = tr;
+            }
+        }
+        return latest;
+    }
+
+    /**
      * Gets all teleport requests currently pending.
      *
      * @return Map&lt;Target Name, List&lt;TeleportRequest&gt;&gt;
@@ -46,14 +85,21 @@ public class TeleportRequest {
     }
 
     /**
-     * Sends a teleport request to the target from the requester.
+     * Checks to see if a request with the given requester and target names exists, regardless of the request type.
      *
-     * @param requester    Requester of the teleport
-     * @param target       Target of the teleport
-     * @param teleportType Type of teleport
+     * @param requester Requester's name
+     * @param target    Target's name
+     * @return true if requests exist, false if not
      */
-    public static void send(Player requester, Player target, TeleportType teleportType) {
-        TeleportRequest.send(requester, target, teleportType, true);
+    private static boolean hasPendingRequest(String requester, String target) {
+        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
+        if (trs == null) return false;
+        for (TeleportRequest tr : trs) {
+            if (tr == null || !tr.getRequester().equalsIgnoreCase(requester) || !tr.getTarget().equalsIgnoreCase(target))
+                continue;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -106,86 +152,14 @@ public class TeleportRequest {
     }
 
     /**
-     * Checks to see if a request with the given requester and target names exists, regardless of the request type.
+     * Sends a teleport request to the target from the requester.
      *
-     * @param requester Requester's name
-     * @param target    Target's name
-     * @return true if requests exist, false if not
+     * @param requester    Requester of the teleport
+     * @param target       Target of the teleport
+     * @param teleportType Type of teleport
      */
-    private static boolean hasPendingRequest(String requester, String target) {
-        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
-        if (trs == null) return false;
-        for (TeleportRequest tr : trs) {
-            if (tr == null || !tr.getRequester().equalsIgnoreCase(requester) || !tr.getTarget().equalsIgnoreCase(target))
-                continue;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Gets the first registered TeleportRequest with the given requester and target names.
-     *
-     * @param requester Requester's name
-     * @param target    Target's name
-     * @return First matching TeleportRequest or null
-     */
-    public static TeleportRequest getFirstRequest(String requester, String target) {
-        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
-        if (trs == null) return null;
-        for (TeleportRequest tr : trs) {
-            if (tr == null || !tr.getRequester().equalsIgnoreCase(requester) || !tr.getTarget().equalsIgnoreCase(target))
-                continue;
-            return tr;
-        }
-        return null;
-    }
-
-    /**
-     * Gets the latest request for the given target name. If there are no requests, this will return null.
-     *
-     * @param target Target's name
-     * @return Latest TeleportRequest or null
-     */
-    public static TeleportRequest getLatestRequest(String target) {
-        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
-        if (trs == null) return null;
-        long highest = -1L;
-        TeleportRequest latest = null;
-        for (TeleportRequest tr : trs) {
-            if (tr == null || !tr.getTarget().equalsIgnoreCase(target)) continue;
-            if (highest == -1L || tr.getDate() > highest) {
-                highest = tr.getDate();
-                latest = tr;
-            }
-        }
-        return latest;
-    }
-
-    public String getRequester() {
-        return this.requester;
-    }
-
-    public String getTarget() {
-        return this.target;
-    }
-
-    public TeleportType getType() {
-        return this.teleportType;
-    }
-
-    public long getDate() {
-        return this.date;
-    }
-
-    /**
-     * Causes this TeleportRequest to expire, removing it from the registered list of requests.
-     */
-    public void expire() {
-        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(this.getTarget());
-        if (trs == null) return; // not registered, then
-        trs.remove(this);
-        TeleportRequest.getRequests().put(this.getRequester(), trs);
+    public static void send(Player requester, Player target, TeleportType teleportType) {
+        TeleportRequest.send(requester, target, teleportType, true);
     }
 
     /**
@@ -234,6 +208,32 @@ public class TeleportRequest {
         if (target != null) target.sendMessage(message);
     }
 
+    /**
+     * Causes this TeleportRequest to expire, removing it from the registered list of requests.
+     */
+    public void expire() {
+        final List<TeleportRequest> trs = TeleportRequest.getRequests().get(this.getTarget());
+        if (trs == null) return; // not registered, then
+        trs.remove(this);
+        TeleportRequest.getRequests().put(this.getRequester(), trs);
+    }
+
+    public long getDate() {
+        return this.date;
+    }
+
+    public String getRequester() {
+        return this.requester;
+    }
+
+    public String getTarget() {
+        return this.target;
+    }
+
+    public TeleportType getType() {
+        return this.teleportType;
+    }
+
     public enum TeleportType {
         /**
          * Teleporting the requester to the target.
@@ -248,16 +248,6 @@ public class TeleportRequest {
 
         TeleportType(String requestMessage) {
             this.requestMessage = requestMessage;
-        }
-
-        /**
-         * Gets the message to send to the target. Must be formatted using {@link java.lang.String#format} to insert the
-         * requester's name.
-         *
-         * @return Unformatted message
-         */
-        public String getRequestMessage() {
-            return this.requestMessage;
         }
 
         /**
@@ -278,6 +268,16 @@ public class TeleportRequest {
          */
         public String getMessage(CommandSender cs) {
             return this.getMessage(cs.getName());
+        }
+
+        /**
+         * Gets the message to send to the target. Must be formatted using {@link java.lang.String#format} to insert the
+         * requester's name.
+         *
+         * @return Unformatted message
+         */
+        public String getRequestMessage() {
+            return this.requestMessage;
         }
     }
 }

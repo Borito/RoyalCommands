@@ -71,6 +71,7 @@ public class CmdSeeInventory extends BaseCommand {
     }
 
     public class InvSeeHolder implements InventoryHolder {
+
         @Override
         public Inventory getInventory() {
             return null;

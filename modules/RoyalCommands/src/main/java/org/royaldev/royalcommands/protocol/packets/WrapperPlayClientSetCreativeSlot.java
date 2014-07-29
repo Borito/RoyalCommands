@@ -22,6 +22,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.inventory.ItemStack;
 
 public class WrapperPlayClientSetCreativeSlot extends AbstractPacket {
+
     public static final PacketType TYPE = PacketType.Play.Client.SET_CREATIVE_SLOT;
 
     public WrapperPlayClientSetCreativeSlot() {

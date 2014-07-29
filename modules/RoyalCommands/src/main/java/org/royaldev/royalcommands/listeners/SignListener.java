@@ -45,6 +45,13 @@ public class SignListener implements Listener {
     }
 
     @EventHandler
+    public void colorSigns(SignChangeEvent e) {
+        Player p = e.getPlayer();
+        if (!this.plugin.ah.isAuthorized(p, "rcmds.signedit.color")) return;
+        for (int i = 0; i < 4; i++) e.setLine(i, RUtils.colorize(e.getLine(i)));
+    }
+
+    @EventHandler
     public void onInt(PlayerInteractEvent e) {
         if (e.isCancelled()) return;
         if (e.getClickedBlock() == null) return;
@@ -464,13 +471,6 @@ public class SignListener implements Listener {
             p.sendMessage(MessageColor.POSITIVE + "Command sign created successfully.");
             e.setLine(0, MessageColor.POSITIVE + line1);
         }
-    }
-
-    @EventHandler
-    public void colorSigns(SignChangeEvent e) {
-        Player p = e.getPlayer();
-        if (!this.plugin.ah.isAuthorized(p, "rcmds.signedit.color")) return;
-        for (int i = 0; i < 4; i++) e.setLine(i, RUtils.colorize(e.getLine(i)));
     }
 
 }

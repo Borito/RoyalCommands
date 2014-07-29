@@ -165,6 +165,7 @@ public class CmdUses extends TabCommand {
     }
 
     private class WorkbenchCloseListener implements Listener {
+
         @EventHandler(ignoreCancelled = true)
         public void workbenchClick(InventoryClickEvent e) {
             if (!(e.getWhoClicked() instanceof Player)) return;
@@ -192,6 +193,7 @@ public class CmdUses extends TabCommand {
     }
 
     private class UsesHolder implements InventoryHolder {
+
         private boolean closing = false;
 
         private boolean isClosing() {

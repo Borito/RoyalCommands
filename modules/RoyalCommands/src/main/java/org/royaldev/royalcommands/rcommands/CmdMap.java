@@ -19,11 +19,6 @@ public class CmdMap extends BaseCommand {
         super(instance, name, true);
     }
 
-    private boolean subcommandMatches(String subcommand, String... matchAgainst) {
-        for (String aMatchAgainst : matchAgainst) if (subcommand.equalsIgnoreCase(aMatchAgainst)) return true;
-        return false;
-    }
-
     private String combineEnums(Enum[] es) {
         StringBuilder sb = new StringBuilder();
         for (Enum e : es) {
@@ -33,6 +28,11 @@ public class CmdMap extends BaseCommand {
             sb.append(", ");
         }
         return sb.substring(0, sb.length() - 4);
+    }
+
+    private boolean subcommandMatches(String subcommand, String... matchAgainst) {
+        for (String aMatchAgainst : matchAgainst) if (subcommand.equalsIgnoreCase(aMatchAgainst)) return true;
+        return false;
     }
 
     private void updateMap(Player p, MapView mv) {

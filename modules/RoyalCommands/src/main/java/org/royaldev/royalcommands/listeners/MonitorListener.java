@@ -39,34 +39,50 @@ public class MonitorListener implements Listener {
         this.plugin = instance;
     }
 
-    private Player getVP(Player p) {
-        final String name = CmdMonitor.viewees.get(p.getName());
-        if (name == null) return null;
-        return this.plugin.getServer().getPlayer(name);
-    }
-
     private Player getMP(Player p) {
         final String name = CmdMonitor.monitors.get(p.getName());
         if (name == null) return null;
         return this.plugin.getServer().getPlayer(name);
     }
 
-    @EventHandler
-    public void onMove(PlayerMoveEvent e) {
-        if (!CmdMonitor.monitors.containsValue(e.getPlayer().getName())) return;
-        final Player p = this.getVP(e.getPlayer());
-        if (p == null) return;
-        RUtils.silentTeleport(p, e.getPlayer());
-        if (e.getPlayer().canSee(p)) e.getPlayer().hidePlayer(p);
+    private Player getVP(Player p) {
+        final String name = CmdMonitor.viewees.get(p.getName());
+        if (name == null) return null;
+        return this.plugin.getServer().getPlayer(name);
     }
 
     @EventHandler
-    public void onChangeHold(PlayerItemHeldEvent e) {
+    public void blockBreak(BlockBreakEvent e) {
+        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void blockPlace(BlockPlaceEvent e) {
+        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void interact(PlayerInteractEvent e) {
+        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
+        if (e.getClickedBlock() == null) return; // Fixed NPE below?
+        if (e.getClickedBlock().getState() instanceof Chest) {
+            final Chest c = (Chest) e.getClickedBlock().getState();
+            final Inventory i = this.plugin.getServer().createInventory(c.getInventory().getHolder(), c.getInventory().getSize());
+            i.setContents(c.getInventory().getContents());
+            e.getPlayer().openInventory(i);
+            e.getPlayer().sendMessage(MessageColor.POSITIVE + "Opened chest in read-only mode; you can't make changes.");
+        }
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void joinViewee(PlayerJoinEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
         final Player t = this.getVP(e.getPlayer());
         if (t == null) return;
-        t.getInventory().setContents(e.getPlayer().getInventory().getContents());
-        t.getInventory().setHeldItemSlot(e.getNewSlot());
+        t.hidePlayer(e.getPlayer());
     }
 
     @EventHandler
@@ -78,19 +94,12 @@ public class MonitorListener implements Listener {
     }
 
     @EventHandler
-    public void onItemDropViewee(PlayerDropItemEvent e) {
+    public void onChangeHold(PlayerItemHeldEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
         final Player t = this.getVP(e.getPlayer());
         if (t == null) return;
         t.getInventory().setContents(e.getPlayer().getInventory().getContents());
-    }
-
-    @EventHandler
-    public void onItemPickupViewee(PlayerPickupItemEvent e) {
-        if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        final Player t = this.getVP(e.getPlayer());
-        if (t == null) return;
-        t.getInventory().setContents(e.getPlayer().getInventory().getContents());
+        t.getInventory().setHeldItemSlot(e.getNewSlot());
     }
 
     @EventHandler
@@ -105,15 +114,9 @@ public class MonitorListener implements Listener {
     }
 
     @EventHandler
-    public void onRegainViewee(EntityRegainHealthEvent e) {
-        if (!(e.getEntity() instanceof Player)) return;
-        final Player p = (Player) e.getEntity();
-        if (!CmdMonitor.viewees.containsKey(p.getName())) return;
-        final Player t = this.getVP(p);
-        if (t == null) return;
-        if (p.getHealth() < 1) return;
-        if (p.getHealth() < t.getHealth()) return;
-        t.setHealth(p.getHealth());
+    public void onDrop(PlayerDropItemEvent e) {
+        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
+        e.setCancelled(true);
     }
 
     @EventHandler
@@ -126,6 +129,29 @@ public class MonitorListener implements Listener {
         if (p.getFoodLevel() < 1) return;
         t.setFoodLevel(p.getFoodLevel());
         t.setSaturation(p.getSaturation());
+    }
+
+    @EventHandler
+    public void onInvClick(InventoryClickEvent e) {
+        if (!MonitorListener.openInvs.contains(e.getWhoClicked().getName())) return;
+        e.setCancelled(true);
+    }
+
+    /*@EventHandler
+    public void onInvCloseMonitor(InventoryCloseEvent e) {
+        if (!MonitorListener.openInvs.contains(e.getPlayer().getName())) return;
+        e.getPlayer().openInventory(e.getInventory());
+    }*/
+    // Seems a bit harsh ^
+
+    @EventHandler
+    public void onInvCloseViewee(InventoryCloseEvent e) {
+        if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
+        if (!(e.getPlayer() instanceof Player)) return;
+        final Player t = this.getVP((Player) e.getPlayer());
+        if (t == null) return;
+        t.closeInventory();
+        MonitorListener.openInvs.remove(t.getName());
     }
 
     @EventHandler
@@ -156,41 +182,28 @@ public class MonitorListener implements Listener {
     }
 
     @EventHandler
-    public void onInvClick(InventoryClickEvent e) {
-        if (!MonitorListener.openInvs.contains(e.getWhoClicked().getName())) return;
-        e.setCancelled(true);
-    }
-
-    /*@EventHandler
-    public void onInvCloseMonitor(InventoryCloseEvent e) {
-        if (!MonitorListener.openInvs.contains(e.getPlayer().getName())) return;
-        e.getPlayer().openInventory(e.getInventory());
-    }*/
-    // Seems a bit harsh ^
-
-    @EventHandler
-    public void onInvCloseViewee(InventoryCloseEvent e) {
+    public void onItemDropViewee(PlayerDropItemEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        if (!(e.getPlayer() instanceof Player)) return;
-        final Player t = this.getVP((Player) e.getPlayer());
+        final Player t = this.getVP(e.getPlayer());
         if (t == null) return;
-        t.closeInventory();
-        MonitorListener.openInvs.remove(t.getName());
+        t.getInventory().setContents(e.getPlayer().getInventory().getContents());
     }
 
     @EventHandler
-    public void onTele(PlayerTeleportEvent e) {
+    public void onItemPickupViewee(PlayerPickupItemEvent e) {
         if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
+        final Player t = this.getVP(e.getPlayer());
+        if (t == null) return;
+        t.getInventory().setContents(e.getPlayer().getInventory().getContents());
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent e) {
+        if (!CmdMonitor.monitors.containsValue(e.getPlayer().getName())) return;
         final Player p = this.getVP(e.getPlayer());
         if (p == null) return;
         RUtils.silentTeleport(p, e.getPlayer());
-        e.getPlayer().hidePlayer(p);
-    }
-
-    @EventHandler
-    public void onDrop(PlayerDropItemEvent e) {
-        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
-        e.setCancelled(true);
+        if (e.getPlayer().canSee(p)) e.getPlayer().hidePlayer(p);
     }
 
     @EventHandler
@@ -210,37 +223,24 @@ public class MonitorListener implements Listener {
     }
 
     @EventHandler
-    public void joinViewee(PlayerJoinEvent e) {
-        if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
-        final Player t = this.getVP(e.getPlayer());
+    public void onRegainViewee(EntityRegainHealthEvent e) {
+        if (!(e.getEntity() instanceof Player)) return;
+        final Player p = (Player) e.getEntity();
+        if (!CmdMonitor.viewees.containsKey(p.getName())) return;
+        final Player t = this.getVP(p);
         if (t == null) return;
-        t.hidePlayer(e.getPlayer());
+        if (p.getHealth() < 1) return;
+        if (p.getHealth() < t.getHealth()) return;
+        t.setHealth(p.getHealth());
     }
 
     @EventHandler
-    public void blockBreak(BlockBreakEvent e) {
-        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
-        e.setCancelled(true);
-    }
-
-    @EventHandler
-    public void blockPlace(BlockPlaceEvent e) {
-        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
-        e.setCancelled(true);
-    }
-
-    @EventHandler
-    public void interact(PlayerInteractEvent e) {
-        if (!CmdMonitor.monitors.containsKey(e.getPlayer().getName())) return;
-        if (e.getClickedBlock() == null) return; // Fixed NPE below?
-        if (e.getClickedBlock().getState() instanceof Chest) {
-            final Chest c = (Chest) e.getClickedBlock().getState();
-            final Inventory i = this.plugin.getServer().createInventory(c.getInventory().getHolder(), c.getInventory().getSize());
-            i.setContents(c.getInventory().getContents());
-            e.getPlayer().openInventory(i);
-            e.getPlayer().sendMessage(MessageColor.POSITIVE + "Opened chest in read-only mode; you can't make changes.");
-        }
-        e.setCancelled(true);
+    public void onTele(PlayerTeleportEvent e) {
+        if (!CmdMonitor.viewees.containsKey(e.getPlayer().getName())) return;
+        final Player p = this.getVP(e.getPlayer());
+        if (p == null) return;
+        RUtils.silentTeleport(p, e.getPlayer());
+        e.getPlayer().hidePlayer(p);
     }
 
 }

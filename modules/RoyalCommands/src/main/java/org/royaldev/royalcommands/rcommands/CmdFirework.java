@@ -65,21 +65,6 @@ public class CmdFirework extends BaseCommand {
         return fm;
     }
 
-    private Type getShape(String c) {
-        if (c.equalsIgnoreCase("ball") || c.equalsIgnoreCase("small_ball") || c.equalsIgnoreCase("ball_small")) {
-            return Type.BALL;
-        } else if (c.equalsIgnoreCase("large_ball") || c.equalsIgnoreCase("ball_large") || c.equalsIgnoreCase("big_ball") || c.equalsIgnoreCase("ball_big")) {
-            return Type.BALL_LARGE;
-        } else if (c.equalsIgnoreCase("star")) {
-            return Type.STAR;
-        } else if (c.equalsIgnoreCase("head") || c.equalsIgnoreCase("creeper") || c.equalsIgnoreCase("creeper_head")) {
-            return Type.CREEPER;
-        } else if (c.equalsIgnoreCase("burst")) {
-            return Type.BURST;
-        }
-        return null;
-    }
-
     private Color getColor(String c) {
         if (c.startsWith("rgb:")) {
             c = c.substring(4);
@@ -144,6 +129,21 @@ public class CmdFirework extends BaseCommand {
             return Color.LIME;
         } else if (c.equalsIgnoreCase("navy")) {
             return Color.NAVY;
+        }
+        return null;
+    }
+
+    private Type getShape(String c) {
+        if (c.equalsIgnoreCase("ball") || c.equalsIgnoreCase("small_ball") || c.equalsIgnoreCase("ball_small")) {
+            return Type.BALL;
+        } else if (c.equalsIgnoreCase("large_ball") || c.equalsIgnoreCase("ball_large") || c.equalsIgnoreCase("big_ball") || c.equalsIgnoreCase("ball_big")) {
+            return Type.BALL_LARGE;
+        } else if (c.equalsIgnoreCase("star")) {
+            return Type.STAR;
+        } else if (c.equalsIgnoreCase("head") || c.equalsIgnoreCase("creeper") || c.equalsIgnoreCase("creeper_head")) {
+            return Type.CREEPER;
+        } else if (c.equalsIgnoreCase("burst")) {
+            return Type.BURST;
         }
         return null;
     }

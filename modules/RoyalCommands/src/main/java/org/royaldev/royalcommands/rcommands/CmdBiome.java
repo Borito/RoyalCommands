@@ -15,13 +15,6 @@ public class CmdBiome extends BaseCommand {
         super(instance, name, true);
     }
 
-    public void sendBiomeList(CommandSender cs) {
-        String biomes = "";
-        for (Biome b : Biome.values())
-            biomes = (biomes.equals("")) ? biomes.concat(b.name() + MessageColor.RESET) : biomes.concat(", " + b.name() + MessageColor.RESET);
-        cs.sendMessage(biomes);
-    }
-
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (!(cs instanceof Player)) {
@@ -76,5 +69,12 @@ public class CmdBiome extends BaseCommand {
         };
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
         return true;
+    }
+
+    public void sendBiomeList(CommandSender cs) {
+        String biomes = "";
+        for (Biome b : Biome.values())
+            biomes = (biomes.equals("")) ? biomes.concat(b.name() + MessageColor.RESET) : biomes.concat(", " + b.name() + MessageColor.RESET);
+        cs.sendMessage(biomes);
     }
 }

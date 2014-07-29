@@ -29,41 +29,6 @@ public class RoyalCommandsEntityListener implements Listener {
         plugin = instance;
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onEntityDeath(EntityDeathEvent ent) {
-        if (!(ent instanceof PlayerDeathEvent)) return;
-        if (!Config.backDeath) return;
-        PlayerDeathEvent e = (PlayerDeathEvent) ent;
-        if (e.getEntity() == null) return;
-        Player p = e.getEntity();
-        Location pLoc = p.getLocation();
-        CmdBack.addBackLocation(p, pLoc);
-        if (plugin.ah.isAuthorized(p, "rcmds.back"))
-            p.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/back" + MessageColor.POSITIVE + " to go back to where you died.");
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void oneHitKill(EntityDamageEvent event) {
-        if (!(event instanceof EntityDamageByEntityEvent)) return;
-        EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
-        Entity e = ev.getDamager();
-        Entity ed = ev.getEntity();
-        if (!(e instanceof Player)) return;
-        Player p = (Player) e;
-        if (!PConfManager.getPConfManager(p).getBoolean("ohk")) return;
-        if (ed instanceof LivingEntity) {
-            LivingEntity le = (LivingEntity) ed;
-            le.damage(le.getHealth() * 1000);
-            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1D));
-        }
-        if (ed instanceof EnderDragonPart) {
-            EnderDragonPart ldp = (EnderDragonPart) ed;
-            LivingEntity le = ldp.getParent();
-            le.damage(le.getHealth() * 1000);
-            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1D));
-        }
-    }
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void buddhaMode(EntityDamageEvent e) {
         Entity ent = e.getEntity();
@@ -88,6 +53,19 @@ public class RoyalCommandsEntityListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
+    public void onEntityDeath(EntityDeathEvent ent) {
+        if (!(ent instanceof PlayerDeathEvent)) return;
+        if (!Config.backDeath) return;
+        PlayerDeathEvent e = (PlayerDeathEvent) ent;
+        if (e.getEntity() == null) return;
+        Player p = e.getEntity();
+        Location pLoc = p.getLocation();
+        CmdBack.addBackLocation(p, pLoc);
+        if (plugin.ah.isAuthorized(p, "rcmds.back"))
+            p.sendMessage(MessageColor.POSITIVE + "Type " + MessageColor.NEUTRAL + "/back" + MessageColor.POSITIVE + " to go back to where you died.");
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityTarget(EntityTargetEvent event) {
         if (!(event.getTarget() instanceof Player)) return;
         Player p = (Player) event.getTarget();
@@ -101,6 +79,28 @@ public class RoyalCommandsEntityListener implements Listener {
         if (!PConfManager.getPConfManager(p).getBoolean("godmode")) return;
         event.setFoodLevel(20);
         p.setSaturation(20F);
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void oneHitKill(EntityDamageEvent event) {
+        if (!(event instanceof EntityDamageByEntityEvent)) return;
+        EntityDamageByEntityEvent ev = (EntityDamageByEntityEvent) event;
+        Entity e = ev.getDamager();
+        Entity ed = ev.getEntity();
+        if (!(e instanceof Player)) return;
+        Player p = (Player) e;
+        if (!PConfManager.getPConfManager(p).getBoolean("ohk")) return;
+        if (ed instanceof LivingEntity) {
+            LivingEntity le = (LivingEntity) ed;
+            le.damage(le.getHealth() * 1000);
+            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1D));
+        }
+        if (ed instanceof EnderDragonPart) {
+            EnderDragonPart ldp = (EnderDragonPart) ed;
+            LivingEntity le = ldp.getParent();
+            le.damage(le.getHealth() * 1000);
+            le.setLastDamageCause(new EntityDamageByEntityEvent(p, le, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1D));
+        }
     }
 
 }

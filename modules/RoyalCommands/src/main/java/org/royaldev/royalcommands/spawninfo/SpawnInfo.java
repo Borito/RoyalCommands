@@ -27,6 +27,7 @@ import java.util.UUID;
  * @since 3.2.1
  */
 public class SpawnInfo implements Serializable {
+
     private static final long serialVersionUID = 3232013L;
     /**
      * List of <em>spawned</em> components used in the creation of this item.
@@ -177,6 +178,7 @@ public class SpawnInfo implements Serializable {
     }
 
     public static class SpawnInfoManager {
+
         private final static UUID uuid = UUID.fromString("553ade7d-86cd-469e-a4ff-c6fbb564d961");
         private final static UUID defaultUUID = UUID.fromString("4f0925a7-abf4-4a61-8c81-2028d453ff92");
         private final static Map<Material, Attributes.Attribute> defaults = new HashMap<>();

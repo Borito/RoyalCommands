@@ -16,6 +16,15 @@ import java.util.UUID;
 public class BackpackListener implements Listener {
 
     @EventHandler
+    public void backpackClearOnDeath(PlayerDeathEvent e) {
+        if (!Config.backpackReset) return;
+        final Player p = e.getEntity();
+        final Inventory backpack = RUtils.getBackpack(p);
+        backpack.clear();
+        RUtils.saveBackpack(p, backpack);
+    }
+
+    @EventHandler
     public void backpackClose(InventoryCloseEvent e) {
         if (e.getInventory() == null || e.getInventory().getName() == null) return; // modpacks
         final InventoryHolder ih = e.getInventory().getHolder();
@@ -24,15 +33,6 @@ public class BackpackListener implements Listener {
         final Inventory backpack = RUtils.getBackpack(bh.getOwnerUUID(), bh.getWorld());
         backpack.setContents(e.getInventory().getContents());
         RUtils.saveBackpack(bh.getOwnerUUID(), bh.getWorld(), backpack);
-    }
-
-    @EventHandler
-    public void backpackClearOnDeath(PlayerDeathEvent e) {
-        if (!Config.backpackReset) return;
-        final Player p = e.getEntity();
-        final Inventory backpack = RUtils.getBackpack(p);
-        backpack.clear();
-        RUtils.saveBackpack(p, backpack);
     }
 
     public static class BackpackHolder implements InventoryHolder {
@@ -45,14 +45,6 @@ public class BackpackListener implements Listener {
             this.w = w;
         }
 
-        public UUID getOwnerUUID() {
-            return this.ownerUUID;
-        }
-
-        public World getWorld() {
-            return this.w;
-        }
-
         /**
          * No function.
          *
@@ -63,6 +55,14 @@ public class BackpackListener implements Listener {
         @Deprecated
         public Inventory getInventory() {
             return null;
+        }
+
+        public UUID getOwnerUUID() {
+            return this.ownerUUID;
+        }
+
+        public World getWorld() {
+            return this.w;
         }
     }
 
