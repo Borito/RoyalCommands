@@ -1142,6 +1142,13 @@ reflectcommands:
     version_added: 4.1.0
     class: CmdPrune
 
+  uses:
+    description: Displays uses for any item.
+    usage: /<command> [item]
+    aliases: [use]
+    version_added: 4.1.0
+    class: CmdUses
+
   royalcommands:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1830,6 +1837,10 @@ permissions:
     command: prune
     default: op
     description: Allows you to prune old userdata.
+  rcmds.uses:
+    command: uses
+    default: op
+    description: Allows you to display uses for any item.
 
   rcmds.spawnmob.*:
     command: spawnmob
@@ -2529,6 +2540,7 @@ permissions:
       rcmds.kickhistory: true
       rcmds.documentation: true
       rcmds.prune: true
+      rcmds.uses: true
       rcmds.royalcommands: true
 
   rcmds.admin:
@@ -2842,6 +2854,7 @@ permissions:
       rcmds.kickhistory: true
       rcmds.documentation: true
       rcmds.prune: true
+      rcmds.uses: true
       rcmds.royalcommands: true
 
       rcmds.pluginmanager.*: true
