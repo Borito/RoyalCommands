@@ -1,5 +1,10 @@
 package org.royaldev.royalcommands.rcommands;
 
+import com.comphenix.attribute.Attributes;
+import com.comphenix.attribute.Attributes.Attribute;
+import com.comphenix.attribute.Attributes.Attribute.Builder;
+import com.comphenix.attribute.Attributes.AttributeType;
+import com.comphenix.attribute.Attributes.Operation;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -7,11 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.spawninfo.Attributes;
-import org.royaldev.royalcommands.spawninfo.Attributes.Attribute;
-import org.royaldev.royalcommands.spawninfo.Attributes.Attribute.Builder;
-import org.royaldev.royalcommands.spawninfo.Attributes.AttributeType;
-import org.royaldev.royalcommands.spawninfo.Attributes.Operation;
 
 import java.util.UUID;
 

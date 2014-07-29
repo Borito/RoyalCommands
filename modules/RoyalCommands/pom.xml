@@ -53,6 +53,7 @@
                                     <include>org.royaldev:royalcommands-*</include>
                                     <include>org.shininet.bukkit:ItemRenamer</include>
                                     <include>mkremins:fanciful</include>
+                                    <include>com.comphenix.attribute:AttributeStorage</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -67,6 +68,10 @@
                                 <relocation>
                                     <pattern>net.amoebaman</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.net.amoebaman</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.comphenix.attribute</pattern>
+                                    <shadedPattern>org.royaldev.royalcommands.shaded.com.comphenix.attribute</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -218,7 +223,12 @@
         <dependency>
             <groupId>org.shininet.bukkit</groupId>
             <artifactId>ItemRenamer</artifactId>
-            <version>2.1.0-SNAPSHOT</version>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comphenix.attribute</groupId>
+            <artifactId>AttributeStorage</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>

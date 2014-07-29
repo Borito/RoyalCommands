@@ -20,29 +20,6 @@ public class SpawnRenameProcessor extends AbstractRenameProcessor {
         super("org.royaldev.royalcommands.spawninfo.TempSpawn");
     }
 
-    @Override
-    protected void processSnapshot(Player player, RenamerSnapshot itemStacks) {
-        // We don't use this at all.
-    }
-
-    protected void unprocessFieldStack(PacketEvent event) {
-        DataInputStream input = event.getNetworkMarker().getInputStream();
-        // Skip simulated packets
-        if (input == null) return;
-        try {
-            // Read slot
-            if (event.getPacketType() == PacketType.Play.Client.SET_CREATIVE_SLOT) input.skipBytes(2);
-            else if (event.getPacketType() == PacketType.Play.Client.BLOCK_PLACE) input.skipBytes(10);
-            ItemStack stack = readItemStack(input, new StreamSerializer());
-            // Now we can properly unprocess it
-            this.unprocess(stack);
-            // And write it back
-            event.getPacket().getItemModifier().write(0, stack);
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot undo NBT scrubber.", e);
-        }
-    }
-
     /**
      * Read an ItemStack from a input stream without "scrubbing" the NBT content.
      *
@@ -65,5 +42,28 @@ public class SpawnRenameProcessor extends AbstractRenameProcessor {
             }
         }
         return result;
+    }
+
+    @Override
+    protected void processSnapshot(Player player, RenamerSnapshot itemStacks) {
+        // We don't use this at all.
+    }
+
+    protected void unprocessFieldStack(PacketEvent event) {
+        DataInputStream input = event.getNetworkMarker().getInputStream();
+        // Skip simulated packets
+        if (input == null) return;
+        try {
+            // Read slot
+            if (event.getPacketType() == PacketType.Play.Client.SET_CREATIVE_SLOT) input.skipBytes(2);
+            else if (event.getPacketType() == PacketType.Play.Client.BLOCK_PLACE) input.skipBytes(10);
+            ItemStack stack = readItemStack(input, new StreamSerializer());
+            // Now we can properly unprocess it
+            this.unprocess(stack);
+            // And write it back
+            event.getPacket().getItemModifier().write(0, stack);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot undo NBT scrubber.", e);
+        }
     }
 }

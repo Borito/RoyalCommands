@@ -21,42 +21,16 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.inventory.ItemStack;
 
-public class PacketSetSlot extends AbstractPacket {
+public class WrapperPlayServerSetSlot extends AbstractPacket {
     public static final PacketType TYPE = PacketType.Play.Server.SET_SLOT;
 
-    public PacketSetSlot() {
-        super(new PacketContainer(TYPE), TYPE);
+    public WrapperPlayServerSetSlot() {
+        super(new PacketContainer(WrapperPlayServerSetSlot.TYPE), WrapperPlayServerSetSlot.TYPE);
         this.handle.getModifier().writeDefaults();
     }
 
-    public PacketSetSlot(PacketContainer packet) {
-        super(packet, TYPE);
-    }
-
-    /**
-     * Retrieve the window which is being updated.
-     * <p/>
-     * Use 0 for the player inventory. This packet will only be sent for the currently opened window while the player is
-     * performing actions, even if it affects the player inventory. After the window is closed, a number of these packets
-     * are sent to update the player's inventory window.
-     *
-     * @return The current Window id
-     */
-    public byte getWindowId() {
-        return this.handle.getIntegers().read(0).byteValue();
-    }
-
-    /**
-     * Set the window which is being updated.
-     * <p/>
-     * Use 0 for the player inventory. This packet will only be sent for the currently opened window while the player is
-     * performing actions, even if it affects the player inventory. After the window is closed, a number of these packets
-     * are sent to update the player's inventory window.
-     *
-     * @param value - new value.
-     */
-    public void setWindowId(byte value) {
-        this.handle.getIntegers().write(0, (int) value);
+    public WrapperPlayServerSetSlot(PacketContainer packet) {
+        super(packet, WrapperPlayServerSetSlot.TYPE);
     }
 
     /**
@@ -94,6 +68,30 @@ public class PacketSetSlot extends AbstractPacket {
     public void setSlotData(ItemStack value) {
         this.handle.getItemModifier().write(0, value);
     }
+
+    /**
+     * Retrieve the window which is being updated.
+     * <p/>
+     * Use 0 for the player inventory. This packet will only be sent for the currently opened window while the player is
+     * performing actions, even if it affects the player inventory. After the window is closed, a number of these packets
+     * are sent to update the player's inventory window.
+     *
+     * @return The current Window id
+     */
+    public byte getWindowId() {
+        return this.handle.getIntegers().read(0).byteValue();
+    }
+
+    /**
+     * Set the window which is being updated.
+     * <p/>
+     * Use 0 for the player inventory. This packet will only be sent for the currently opened window while the player is
+     * performing actions, even if it affects the player inventory. After the window is closed, a number of these packets
+     * are sent to update the player's inventory window.
+     *
+     * @param value - new value.
+     */
+    public void setWindowId(byte value) {
+        this.handle.getIntegers().write(0, (int) value);
+    }
 }
-
-

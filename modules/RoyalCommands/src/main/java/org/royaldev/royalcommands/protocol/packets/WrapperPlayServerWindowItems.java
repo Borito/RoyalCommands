@@ -21,16 +21,34 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.inventory.ItemStack;
 
-public class PacketSetWindowItems extends AbstractPacket {
+public class WrapperPlayServerWindowItems extends AbstractPacket {
     public static final PacketType TYPE = PacketType.Play.Server.WINDOW_ITEMS;
 
-    public PacketSetWindowItems() {
-        super(new PacketContainer(TYPE), TYPE);
+    public WrapperPlayServerWindowItems() {
+        super(new PacketContainer(WrapperPlayServerWindowItems.TYPE), WrapperPlayServerWindowItems.TYPE);
         this.handle.getModifier().writeDefaults();
     }
 
-    public PacketSetWindowItems(PacketContainer packet) {
-        super(packet, TYPE);
+    public WrapperPlayServerWindowItems(PacketContainer packet) {
+        super(packet, WrapperPlayServerWindowItems.TYPE);
+    }
+
+    /**
+     * Retrieve the items in the inventory indexed by slot index.
+     *
+     * @return The items that will fill the inventory.
+     */
+    public ItemStack[] getItems() {
+        return this.handle.getItemArrayModifier().read(0);
+    }
+
+    /**
+     * Set the items in the inventory indexed by slot index.
+     *
+     * @param value - new value.
+     */
+    public void setItems(ItemStack[] value) {
+        this.handle.getItemArrayModifier().write(0, value);
     }
 
     /**
@@ -54,23 +72,4 @@ public class PacketSetWindowItems extends AbstractPacket {
     public void setWindowId(byte value) {
         this.handle.getIntegers().write(0, (int) value);
     }
-
-    /**
-     * Retrieve the items in the inventory indexed by slot index.
-     *
-     * @return The items that will fill the inventory.
-     */
-    public ItemStack[] getItems() {
-        return this.handle.getItemArrayModifier().read(0);
-    }
-
-    /**
-     * Set the items in the inventory indexed by slot index.
-     *
-     * @param value - new value.
-     */
-    public void setItems(ItemStack[] value) {
-        this.handle.getItemArrayModifier().write(0, value);
-    }
 }
-

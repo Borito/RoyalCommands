@@ -1,9 +1,14 @@
 package org.royaldev.royalcommands.spawninfo;
 
+import com.comphenix.attribute.AttributeStorage;
+import com.comphenix.attribute.Attributes;
+import com.comphenix.attribute.NbtFactory;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -96,6 +101,16 @@ public class SpawnInfo implements Serializable {
     }
 
     /**
+     * Gets the <em>spawned</em> components used to make this item. If there are none, an empty list will be returned.
+     * Never returns null.
+     *
+     * @return List of spawned components; never null
+     */
+    public List<String> getComponents() {
+        return components;
+    }
+
+    /**
      * Gets the name of the player that spawned this item. <strong>May be null</strong> if the item was not spawned or
      * has no spawner.
      *
@@ -112,6 +127,15 @@ public class SpawnInfo implements Serializable {
      */
     public void setSpawner(String spawner) {
         this.spawner = spawner;
+    }
+
+    /**
+     * Returns if the item was made with spawned components.
+     *
+     * @return boolean
+     */
+    public boolean hasComponents() {
+        return hasComponents;
     }
 
     /**
@@ -133,31 +157,12 @@ public class SpawnInfo implements Serializable {
     }
 
     /**
-     * Returns if the item was made with spawned components.
-     *
-     * @return boolean
-     */
-    public boolean hasComponents() {
-        return hasComponents;
-    }
-
-    /**
      * Sets if the item was made with spawned components.
      *
      * @param hasComponents true if made with spawned components, false if not
      */
     public void setHasComponents(boolean hasComponents) {
         this.hasComponents = hasComponents;
-    }
-
-    /**
-     * Gets the <em>spawned</em> components used to make this item. If there are none, an empty list will be returned.
-     * Never returns null.
-     *
-     * @return List of spawned components; never null
-     */
-    public List<String> getComponents() {
-        return components;
     }
 
     /**
@@ -203,10 +208,6 @@ public class SpawnInfo implements Serializable {
             }
         }
 
-        private static Attributes.Attribute createAttribute(double amount, UUID uuid) {
-            return Attributes.Attribute.newBuilder().name("default").type(Attributes.AttributeType.GENERIC_ATTACK_DAMAGE).operation(Attributes.Operation.ADD_NUMBER).amount(amount).uuid(uuid).build();
-        }
-
         /**
          * Applies the default attributes on items (e.g. Diamond Sword: +7 attack damage).
          *
@@ -217,22 +218,6 @@ public class SpawnInfo implements Serializable {
             if (!defaults.containsKey(is.getType())) return is;
             final Attributes attr = new Attributes(is);
             attr.add(defaults.get(is.getType()));
-            return attr.getStack();
-        }
-
-        /**
-         * Removes the attributes applied in
-         * {@link SpawnInfo.SpawnInfoManager#applyDefaultAttributes(org.bukkit.inventory.ItemStack)}.
-         *
-         * @param is ItemStack to remove default attributes from
-         * @return ItemStack with default attributes removed
-         */
-        public static ItemStack removeDefaultAttributes(ItemStack is) {
-            final Attributes attr = new Attributes(is);
-            for (Attributes.Attribute a : attr.values()) {
-                if (!a.getUUID().equals(defaultUUID)) continue;
-                attr.remove(a);
-            }
             return attr.getStack();
         }
 
@@ -268,18 +253,29 @@ public class SpawnInfo implements Serializable {
             return as.getTarget();
         }
 
+        private static Attributes.Attribute createAttribute(double amount, UUID uuid) {
+            return Attributes.Attribute.newBuilder().name("default").type(Attributes.AttributeType.GENERIC_ATTACK_DAMAGE).operation(Attributes.Operation.ADD_NUMBER).amount(amount).uuid(uuid).build();
+        }
+
         /**
-         * Removes all SpawnInfo from an ItemStack, leaving it as it was prior to SpawnInfo application.
+         * Retrieve the data stored in the item's attribute.
          *
-         * @param is ItemStack to remove SpawnInfo from
-         * @return ItemStack without SpawnInfo
+         * @return The stored data, or defaultValue if not found.
          */
-        public static ItemStack removeSpawnInfo(ItemStack is) {
-            if (is.getType() == Material.AIR) return is; // silly air
-            is = removeDefaultAttributes(is);
-            final AttributeStorage as = AttributeStorage.newTarget(is, uuid);
-            as.removeData();
-            return as.getTarget();
+        public static String getData(AttributeStorage as) {
+            Attributes attr = new Attributes(as.getTarget());
+            try {
+                final Method getAttribute = AttributeStorage.class.getDeclaredMethod("getAttribute", Attributes.class, UUID.class);
+                final Field uniqueKey = AttributeStorage.class.getDeclaredField("uniqueKey");
+                getAttribute.setAccessible(true);
+                uniqueKey.setAccessible(true);
+                final Attributes.Attribute current = (Attributes.Attribute) getAttribute.invoke(as, attr, uniqueKey.get(as));
+                SpawnInfoManager.removeTagIfEmpty(attr);
+                return current != null ? current.getName() : null;
+            } catch (ReflectiveOperationException ex) {
+                ex.printStackTrace();
+            }
+            return null;
         }
 
         /**
@@ -295,9 +291,67 @@ public class SpawnInfo implements Serializable {
         public static SpawnInfo getSpawnInfo(ItemStack is) {
             if (is.getType() == Material.AIR) return new SpawnInfo(); // air cannot contain NBT data
             final AttributeStorage as = AttributeStorage.newTarget(is, uuid);
-            String stored = as.getData();
+            String stored = SpawnInfoManager.getData(as);
             if (stored == null) stored = "false/null/false/null";
             return new SpawnInfo(stored);
+        }
+
+        /**
+         * Removes the data stored in the attributes.
+         */
+        public static void removeData(AttributeStorage as) {
+            final Attributes attributes = new Attributes(as.getTarget());
+            try {
+                final Method getAttribute = AttributeStorage.class.getDeclaredMethod("getAttribute", Attributes.class, UUID.class);
+                final Field uniqueKey = AttributeStorage.class.getDeclaredField("uniqueKey");
+                getAttribute.setAccessible(true);
+                uniqueKey.setAccessible(true);
+                final Attributes.Attribute current = (Attributes.Attribute) getAttribute.invoke(as, attributes, uniqueKey.get(as));
+                if (current == null) return;
+                attributes.remove(current);
+                SpawnInfoManager.removeTagIfEmpty(attributes);
+                final Field target = AttributeStorage.class.getDeclaredField("target");
+                target.set(as, attributes.getStack());
+            } catch (ReflectiveOperationException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        /**
+         * Removes the attributes applied in
+         * {@link SpawnInfo.SpawnInfoManager#applyDefaultAttributes(org.bukkit.inventory.ItemStack)}.
+         *
+         * @param is ItemStack to remove default attributes from
+         * @return ItemStack with default attributes removed
+         */
+        public static ItemStack removeDefaultAttributes(ItemStack is) {
+            final Attributes attr = new Attributes(is);
+            for (Attributes.Attribute a : attr.values()) {
+                if (!a.getUUID().equals(defaultUUID)) continue;
+                attr.remove(a);
+            }
+            return attr.getStack();
+        }
+
+        /**
+         * Removes all SpawnInfo from an ItemStack, leaving it as it was prior to SpawnInfo application.
+         *
+         * @param is ItemStack to remove SpawnInfo from
+         * @return ItemStack without SpawnInfo
+         */
+        public static ItemStack removeSpawnInfo(ItemStack is) {
+            if (is.getType() == Material.AIR) return is; // silly air
+            is = SpawnInfoManager.removeDefaultAttributes(is);
+            final AttributeStorage as = AttributeStorage.newTarget(is, uuid);
+            SpawnInfoManager.removeData(as);
+            return as.getTarget();
+        }
+
+        public static void removeTagIfEmpty(Attributes a) {
+            if (a.size() <= 0) return;
+            NbtFactory.NbtCompound nbt = NbtFactory.fromItemTag(a.stack);
+            nbt.remove("AttributeModifiers");
+            if (nbt.isEmpty()) NbtFactory.setItemTag(a.stack, null);
         }
 
     }
