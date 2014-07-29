@@ -190,13 +190,19 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender cs, Command cmd, String label, String[] args) {
-        final ArrayList<String> possibilities = new ArrayList<>();
-        final int lastArgIndex = args.length - 1;
-        if (lastArgIndex >= this.completionTypes.size()) return possibilities;
-        for (final CompletionType ct : CompletionType.getCompletionTypes(this.completionTypes.get(lastArgIndex))) {
-            possibilities.addAll(this.getCompletionsFor(cs, cmd, label, args, ct));
+        try {
+            final ArrayList<String> possibilities = new ArrayList<>();
+            final String[] eargs = this.getCommandArguments(args).getExtraParameters();
+            final int lastArgIndex = eargs.length - 1;
+            if (lastArgIndex < 0 || lastArgIndex >= this.completionTypes.size()) return possibilities;
+            for (final CompletionType ct : CompletionType.getCompletionTypes(this.completionTypes.get(lastArgIndex))) {
+                possibilities.addAll(this.getCompletionsFor(cs, cmd, label, eargs, ct));
+            }
+            return possibilities;
+        } catch (Throwable t) {
+            this.handleException(cs, cmd, label, args, t, "An exception occurred while tab-completing that command.");
+            return null;
         }
-        return possibilities;
     }
 
     enum CompletionType {
