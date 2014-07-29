@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -71,10 +72,10 @@ public class CmdRecipe extends TabCommand {
             return true;
         }
         final List<Inventory> workbenches = new ArrayList<>();
-        for (Recipe r : rs) {
+        for (final Recipe r : rs) {
             final Inventory i;
             if (r instanceof ShapedRecipe) {
-                i = this.plugin.getServer().createInventory(null, InventoryType.WORKBENCH);
+                i = this.plugin.getServer().createInventory(new RecipeHolder(), InventoryType.WORKBENCH);
                 final ShapedRecipe sr = (ShapedRecipe) r;
                 final Map<Character, ItemStack> im = sr.getIngredientMap();
                 final String[] lines = sr.getShape();
@@ -89,7 +90,7 @@ public class CmdRecipe extends TabCommand {
                 }
                 i.setItem(0, sr.getResult());
             } else if (r instanceof ShapelessRecipe) {
-                i = this.plugin.getServer().createInventory(null, InventoryType.WORKBENCH);
+                i = this.plugin.getServer().createInventory(new RecipeHolder(), InventoryType.WORKBENCH);
                 final ShapelessRecipe sr = (ShapelessRecipe) r;
                 final List<ItemStack> ingredients = sr.getIngredientList();
                 for (int slot = 1; slot <= ingredients.size(); slot++) {
@@ -98,7 +99,7 @@ public class CmdRecipe extends TabCommand {
                 }
                 i.setItem(0, sr.getResult());
             } else if (r instanceof FurnaceRecipe) {
-                i = this.plugin.getServer().createInventory(null, InventoryType.FURNACE);
+                i = this.plugin.getServer().createInventory(new RecipeHolder(), InventoryType.FURNACE);
                 final FurnaceRecipe fr = (FurnaceRecipe) r;
                 i.setItem(0, fr.getInput());
                 i.setItem(2, fr.getResult());
@@ -109,13 +110,11 @@ public class CmdRecipe extends TabCommand {
             private int currentRecipe = 0;
             private boolean display = true;
 
-            private void setRecipeMaxStackSize(final Player p, final int size) {
-                final Inventory i = p.getOpenInventory().getTopInventory();
-                switch (i.getType()) {
-                    case FURNACE:
-                    case WORKBENCH:
-                        i.setMaxStackSize(size);
-                }
+            private void setClosing(boolean closing) {
+                final InventoryHolder ih = p.getOpenInventory().getTopInventory().getHolder();
+                if (!(ih instanceof RecipeHolder)) return;
+                final RecipeHolder rh = (RecipeHolder) ih;
+                rh.setClosing(closing);
             }
 
             @Override
@@ -124,9 +123,9 @@ public class CmdRecipe extends TabCommand {
                 if (!this.display) return;
                 if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
                 if (this.currentRecipe >= workbenches.size()) this.currentRecipe = 0;
-                setRecipeMaxStackSize(p, 65);
+                this.setClosing(true);
                 p.openInventory(workbenches.get(this.currentRecipe));
-                setRecipeMaxStackSize(p, 64);
+                this.setClosing(false);
                 this.currentRecipe++;
                 if (workbenches.size() == 1) this.display = false;
             }
@@ -145,10 +144,9 @@ public class CmdRecipe extends TabCommand {
         @EventHandler(ignoreCancelled = true)
         public void workbenchClick(InventoryClickEvent e) {
             if (!(e.getWhoClicked() instanceof Player)) return;
-            final Player p = (Player) e.getWhoClicked();
             final InventoryType it = e.getInventory().getType();
             if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
-            if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
+            if (!(e.getInventory().getHolder() instanceof RecipeHolder)) return;
             e.setCancelled(true);
         }
 
@@ -159,11 +157,31 @@ public class CmdRecipe extends TabCommand {
             final InventoryType it = e.getInventory().getType();
             if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
             if (!CmdRecipe.this.tasks.containsKey(p.getName())) return;
-            if (e.getInventory().getMaxStackSize() == 65) return;
+            if (!(e.getInventory().getHolder() instanceof RecipeHolder)) return;
+            final RecipeHolder rh = (RecipeHolder) e.getInventory().getHolder();
+            if (rh.isClosing()) return;
             final int taskID = CmdRecipe.this.tasks.get(p.getName());
             if (taskID == -1) return;
             CmdRecipe.this.plugin.getServer().getScheduler().cancelTask(taskID);
             CmdRecipe.this.tasks.remove(p.getName());
+        }
+    }
+
+    private class RecipeHolder implements InventoryHolder {
+
+        private boolean closing = false;
+
+        @Override
+        public Inventory getInventory() {
+            return null;
+        }
+
+        private boolean isClosing() {
+            return this.closing;
+        }
+
+        private void setClosing(boolean closing) {
+            this.closing = closing;
         }
     }
 }
