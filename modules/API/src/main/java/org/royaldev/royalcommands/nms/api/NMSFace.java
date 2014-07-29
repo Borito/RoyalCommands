@@ -4,15 +4,12 @@ import org.bukkit.entity.Player;
 
 public interface NMSFace {
     /**
-     * Checks to see if this is offering NMS/CB internals support.
-     * <p/>
-     * Note that if this returns false, calling any method besides this and getVersion() will throw an
-     * {@link UnsupportedOperationException}.
-     * If this is true, NMS support is enabled.
+     * Gets the ping reported to the server by the client.
      *
-     * @return true/false
+     * @param p Player to get ping of
+     * @return ping
      */
-    public boolean hasSupport();
+    public int getPing(Player p);
 
     /**
      * Gets the version of the NMS support (e.g. v1_4_5).
@@ -22,11 +19,14 @@ public interface NMSFace {
     public String getVersion();
 
     /**
-     * Gets the ping reported to the server by the client.
+     * Checks to see if this is offering NMS/CB internals support.
+     * <p/>
+     * Note that if this returns false, calling any method besides this and getVersion() will throw an
+     * {@link UnsupportedOperationException}.
+     * If this is true, NMS support is enabled.
      *
-     * @param p Player to get ping of
-     * @return ping
+     * @return true/false
      */
-    public int getPing(Player p);
+    public boolean hasSupport();
 
 }

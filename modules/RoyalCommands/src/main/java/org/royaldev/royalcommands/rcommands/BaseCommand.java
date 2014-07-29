@@ -50,56 +50,6 @@ public abstract class BaseCommand implements CommandExecutor {
     }
 
     /**
-     * Handles an exception. Generates a useful debug paste and sends it to the user if enabled. Also prints the stack
-     * trace to the console and tells the user that an exception occurred.
-     *
-     * @param cs    The CommandSender using the command
-     * @param cmd   The Command being used
-     * @param label The label of the command (alias)
-     * @param args  The arguments passed to the command
-     * @param t     The exception thrown
-     */
-    private void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t) {
-        new FancyMessage("An exception occurred while processing that command.").color(MessageColor.NEGATIVE._()).send(cs);
-        t.printStackTrace();
-        if (Config.hastebinErrors) {
-            final StringBuilder sb = new StringBuilder();
-            sb
-                    // @formatter:off
-                    .append("An error occurred while handling a command. Please report this to jkcclemens or WizardCM.\n")
-                    .append("They are available at #bukkit @ irc.royaldev.org. If you don't know what that means, then\n")
-                    .append("go to the following URL: https://irc.royaldev.org/#bukkit\n\n")
-                    .append("---DEBUG INFO---\n\n");
-                    // @formatter:on
-            if (cs != null) {
-                sb
-                        // @formatter:off
-                        .append("CommandSender\n")
-                        .append("\tName:\t\t").append(cs.getName()).append("\n")
-                        .append("\tClass:\t\t").append(cs.getClass().getName());
-                        // @formatter:on
-            } else sb.append("CommandSender:\t\tnull");
-            if (cmd != null) {
-                sb
-                        // @formatter:off
-                        .append("\n\nCommand\n")
-                        .append("\tName:\t\t").append(cmd.getName()).append("\n")
-                        .append("\tClass:\t\t").append(cmd.getClass().getName());
-                        // @formatter:on
-            } else sb.append("\n\nCommand:\t\tnull");
-            sb.append("\n\nLabel:\t\t").append(label);
-            sb.append("\n\nArguments");
-            if (args != null) {
-                for (final String arg : args) sb.append("\n").append("\t").append(arg);
-            } else sb.append("\t\tnull");
-            final StringWriter sw = new StringWriter();
-            t.printStackTrace(new PrintWriter(sw));
-            sb.append("\n\n---STRACK TRACE---\n\n").append(sw.toString());
-            this.scheduleErrorHastebin(cs, sb.toString());
-        }
-    }
-
-    /**
      * Gets a link to a Hastebin paste with the given content.
      *
      * @param paste Content to paste
@@ -178,6 +128,61 @@ public abstract class BaseCommand implements CommandExecutor {
      */
     CommandArguments getCommandArguments(String[] args) {
         return new CommandArguments(args);
+    }
+
+    void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t) {
+        this.handleException(cs, cmd, label, args, t, "An exception occurred while processing that command.");
+    }
+
+    /**
+     * Handles an exception. Generates a useful debug paste and sends it to the user if enabled. Also prints the stack
+     * trace to the console and tells the user that an exception occurred.
+     *
+     * @param cs      The CommandSender using the command
+     * @param cmd     The Command being used
+     * @param label   The label of the command (alias)
+     * @param args    The arguments passed to the command
+     * @param message Message to be shown about the exception
+     * @param t       The exception thrown
+     */
+    void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t, String message) {
+        new FancyMessage(message).color(MessageColor.NEGATIVE._()).send(cs);
+        t.printStackTrace();
+        if (Config.hastebinErrors) {
+            final StringBuilder sb = new StringBuilder();
+            sb
+                    // @formatter:off
+                    .append("An error occurred while handling a command. Please report this to jkcclemens or WizardCM.\n")
+                    .append("They are available at #bukkit @ irc.royaldev.org. If you don't know what that means, then\n")
+                    .append("go to the following URL: https://irc.royaldev.org/#bukkit\n\n")
+                    .append("---DEBUG INFO---\n\n");
+                    // @formatter:on
+            if (cs != null) {
+                sb
+                        // @formatter:off
+                        .append("CommandSender\n")
+                        .append("\tName:\t\t").append(cs.getName()).append("\n")
+                        .append("\tClass:\t\t").append(cs.getClass().getName());
+                        // @formatter:on
+            } else sb.append("CommandSender:\t\tnull");
+            if (cmd != null) {
+                sb
+                        // @formatter:off
+                        .append("\n\nCommand\n")
+                        .append("\tName:\t\t").append(cmd.getName()).append("\n")
+                        .append("\tClass:\t\t").append(cmd.getClass().getName());
+                        // @formatter:on
+            } else sb.append("\n\nCommand:\t\tnull");
+            sb.append("\n\nLabel:\t\t").append(label);
+            sb.append("\n\nArguments");
+            if (args != null) {
+                for (final String arg : args) sb.append("\n").append("\t").append(arg);
+            } else sb.append("\t\tnull");
+            final StringWriter sw = new StringWriter();
+            t.printStackTrace(new PrintWriter(sw));
+            sb.append("\n\n---STRACK TRACE---\n\n").append(sw.toString());
+            this.scheduleErrorHastebin(cs, sb.toString());
+        }
     }
 
     /**

@@ -5,8 +5,8 @@ import org.royaldev.royalcommands.nms.api.NMSFace;
 
 public class NMSHandler implements NMSFace {
     @Override
-    public boolean hasSupport() {
-        return false;
+    public int getPing(Player p) {
+        throw new UnsupportedOperationException("No NMS support enabled!");
     }
 
     @Override
@@ -15,8 +15,8 @@ public class NMSHandler implements NMSFace {
     }
 
     @Override
-    public int getPing(Player p) {
-        throw new UnsupportedOperationException("No NMS support enabled!");
+    public boolean hasSupport() {
+        return false;
     }
 
 }
