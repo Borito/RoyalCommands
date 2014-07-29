@@ -14,43 +14,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ReflectCommand
-public class CmdAssign extends BaseCommand {
+public class CmdAssign extends TabCommand {
 
     public CmdAssign(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Integer[]{CompletionType.ANY_COMMAND.getInt()});
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        if (args.length < 1) {
-            Player p = (Player) cs;
-            ItemStack hand = p.getItemInHand();
-            if (hand == null || hand.getType() == Material.AIR) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You can't remove commands from air!");
-                return true;
-            }
-            RUtils.removeAssignment(hand, PConfManager.getPConfManager(p));
-            p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(hand.getType()) + MessageColor.POSITIVE + ".");
-            return true;
-        }
-        String command = args[0];
-        Player p = (Player) cs;
+        final Player p = (Player) cs;
         final PConfManager pcm = PConfManager.getPConfManager(p);
-        ItemStack hand = p.getItemInHand();
+        final ItemStack hand = p.getItemInHand();
         if (hand == null || hand.getType() == Material.AIR) {
-            cs.sendMessage(MessageColor.NEGATIVE + "You can't assign commands to air!");
+            cs.sendMessage(MessageColor.NEGATIVE + "You can't modify commands on air!");
             return true;
         }
         List<String> cmds = RUtils.getAssignment(hand, pcm);
         if (cmds == null) cmds = new ArrayList<>();
-        if (command.matches("\\-\\d+")) {
+        if (ca.hasFlag("r", "remove")) {
+            final String content = ca.getFlagString("r", "remove");
+            if (content.isEmpty()) {
+                cs.sendMessage(MessageColor.NEGATIVE + "Please include a number to remove.");
+                return true;
+            }
             int toRemove;
             try {
-                toRemove = Integer.parseInt(command.substring(1));
+                toRemove = Integer.parseInt(content);
             } catch (NumberFormatException e) {
                 cs.sendMessage(MessageColor.NEGATIVE + "The number specified to remove was not a valid number!");
                 return true;
@@ -64,7 +57,7 @@ public class CmdAssign extends BaseCommand {
             RUtils.setAssignment(hand, cmds, pcm);
             cs.sendMessage(MessageColor.POSITIVE + "Removed command " + MessageColor.NEUTRAL + (toRemove + 1) + MessageColor.POSITIVE + ".");
             return true;
-        } else if (command.equals("~")) {
+        } else if (ca.hasFlag("l", "list")) {
             cs.sendMessage(MessageColor.POSITIVE + "Commands on " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ":");
             if (cmds.isEmpty()) {
                 cs.sendMessage(MessageColor.NEUTRAL + "None.");
@@ -74,9 +67,14 @@ public class CmdAssign extends BaseCommand {
                 cs.sendMessage("  " + MessageColor.NEUTRAL + (i + 1) + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + cmds.get(i));
             return true;
         }
-        cmds.add(RoyalCommands.getFinalArg(args, 0));
+        if (eargs.length < 1) {
+            RUtils.removeAssignment(hand, PConfManager.getPConfManager(p));
+            p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(hand.getType()) + MessageColor.POSITIVE + ".");
+            return true;
+        }
+        cmds.add(RoyalCommands.getFinalArg(eargs, 0));
         RUtils.setAssignment(hand, cmds, pcm);
-        String message = (RoyalCommands.getFinalArg(args, 0).toLowerCase().startsWith("c:")) ? MessageColor.POSITIVE + "Added message " + MessageColor.NEUTRAL + RoyalCommands.getFinalArg(args, 0).substring(2) + MessageColor.POSITIVE + " to that item." : MessageColor.POSITIVE + "Added command " + MessageColor.NEUTRAL + "/" + RoyalCommands.getFinalArg(args, 0) + MessageColor.POSITIVE + " to that item.";
+        String message = (RoyalCommands.getFinalArg(eargs, 0).toLowerCase().startsWith("c:")) ? MessageColor.POSITIVE + "Added message " + MessageColor.NEUTRAL + RoyalCommands.getFinalArg(eargs, 0).substring(2) + MessageColor.POSITIVE + " to that item." : MessageColor.POSITIVE + "Added command " + MessageColor.NEUTRAL + "/" + RoyalCommands.getFinalArg(eargs, 0) + MessageColor.POSITIVE + " to that item.";
         p.sendMessage(message);
         return true;
     }
