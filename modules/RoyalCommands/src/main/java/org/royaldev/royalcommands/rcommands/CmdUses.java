@@ -63,7 +63,7 @@ public class CmdUses extends TabCommand {
     }
 
     @Override
-    boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+    protected boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
         if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

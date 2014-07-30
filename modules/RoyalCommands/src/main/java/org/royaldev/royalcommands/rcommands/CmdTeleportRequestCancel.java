@@ -19,7 +19,7 @@ public class CmdTeleportRequestCancel extends TabCommand {
     }
 
     @Override
-    List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
         final List<String> completions = new ArrayList<>();
         for (final List<TeleportRequest> entry : TeleportRequest.getRequests().values()) {
             for (final TeleportRequest request : entry) {

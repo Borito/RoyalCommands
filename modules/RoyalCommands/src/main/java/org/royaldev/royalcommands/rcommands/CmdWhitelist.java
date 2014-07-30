@@ -17,7 +17,7 @@ public class CmdWhitelist extends TabCommand {
     }
 
     @Override
-    public List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
         return Arrays.asList("add", "remove", "check");
     }
 

@@ -20,13 +20,11 @@ import java.util.List;
 public class CmdSpawnInfo extends TabCommand {
 
     public CmdSpawnInfo(final RoyalCommands instance, final String name) {
-        super(instance, name, true, new Short[]{
-                CompletionType.LIST.getShort()
-        });
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort()});
     }
 
     @Override
-    List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
         return Arrays.asList("check", "set", "remove", "help");
     }
 

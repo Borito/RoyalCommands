@@ -18,7 +18,7 @@ public class CmdTeleportAccept extends TabCommand {
     }
 
     @Override
-    List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
         final List<String> completions = new ArrayList<>();
         final List<TeleportRequest> requests = TeleportRequest.getRequests().get(cs.getName());
         if (requests == null) return completions;

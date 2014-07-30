@@ -13,13 +13,15 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class TabCommand extends CACommand implements TabCompleter {
 
     private final List<Short> completionTypes = new ArrayList<>();
+    private CompletionType alwaysUse = null;
 
-    TabCommand(RoyalCommands instance, String name, boolean checkPermissions, Short[] cts) {
+    protected TabCommand(RoyalCommands instance, String name, boolean checkPermissions, Short[] cts) {
         super(instance, name, checkPermissions);
         for (Short s : cts) {
             if (s == null) s = 0;
@@ -27,7 +29,54 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
         }
     }
 
-    private List<String> getCompletionsFor(CommandSender cs, Command cmd, String label, String[] args, final CompletionType ct) {
+    /**
+     * An array of all Enum values used by {@link org.royaldev.royalcommands.rcommands.TabCommand.CompletionType#ENUM}.
+     *
+     * @param cs    CommandSender completing
+     * @param cmd   Command being completed
+     * @param label Label of command being completed
+     * @param args  All arguments
+     * @param arg   Argument to complete
+     * @return Array of Enums to be checked
+     */
+    @SuppressWarnings("UnusedParameters")
+    protected Enum[] customEnum(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+        return new Enum[0];
+    }
+
+    /**
+     * A list of values used by {@link org.royaldev.royalcommands.rcommands.TabCommand.CompletionType#LIST}.
+     *
+     * @param cs    CommandSender completing
+     * @param cmd   Command being completed
+     * @param label Label of command being completed
+     * @param args  All arguments
+     * @param arg   Argument to complete
+     * @return List of values to be checked
+     */
+    @SuppressWarnings("UnusedParameters")
+    protected List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+        return new ArrayList<>();
+    }
+
+    /**
+     * Filters all completions just before they are returned. This should be overridden by any class extending
+     * TabCommand if necessary.
+     *
+     * @param completions Completions before filtering
+     * @param cs          CommandSender completing
+     * @param cmd         Command being completed
+     * @param label       Label of command being completed
+     * @param args        All arguments
+     * @param arg         Argument to complete
+     * @return Filtered completions to return
+     */
+    @SuppressWarnings("UnusedParameters")
+    protected List<String> filterCompletions(List<String> completions, CommandSender cs, Command cmd, String label, String[] args, String arg) {
+        return completions;
+    }
+
+    protected List<String> getCompletionsFor(CommandSender cs, Command cmd, String label, String[] args, final CompletionType ct) {
         final List<String> possibilities = new ArrayList<>();
         if (args.length < 1) return possibilities;
         final String arg = args[args.length - 1].toLowerCase();
@@ -115,53 +164,6 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
     }
 
     /**
-     * An array of all Enum values used by {@link org.royaldev.royalcommands.rcommands.TabCommand.CompletionType#ENUM}.
-     *
-     * @param cs    CommandSender completing
-     * @param cmd   Command being completed
-     * @param label Label of command being completed
-     * @param args  All arguments
-     * @param arg   Argument to complete
-     * @return Array of Enums to be checked
-     */
-    @SuppressWarnings("UnusedParameters")
-    Enum[] customEnum(CommandSender cs, Command cmd, String label, String[] args, String arg) {
-        return new Enum[0];
-    }
-
-    /**
-     * A list of values used by {@link org.royaldev.royalcommands.rcommands.TabCommand.CompletionType#LIST}.
-     *
-     * @param cs    CommandSender completing
-     * @param cmd   Command being completed
-     * @param label Label of command being completed
-     * @param args  All arguments
-     * @param arg   Argument to complete
-     * @return List of values to be checked
-     */
-    @SuppressWarnings("UnusedParameters")
-    List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
-        return new ArrayList<>();
-    }
-
-    /**
-     * Filters all completions just before they are returned. This should be overridden by any class extending
-     * TabCommand if necessary.
-     *
-     * @param completions Completions before filtering
-     * @param cs          CommandSender completing
-     * @param cmd         Command being completed
-     * @param label       Label of command being completed
-     * @param args        All arguments
-     * @param arg         Argument to complete
-     * @return Filtered completions to return
-     */
-    @SuppressWarnings("UnusedParameters")
-    List<String> filterCompletions(List<String> completions, CommandSender cs, Command cmd, String label, String[] args, String arg) {
-        return completions;
-    }
-
-    /**
      * Gets the custom completions for an argument. This should be overridden by any class extending TabCommand. This
      * will be called on any argument with a CompletionType of CUSTOM.
      *
@@ -173,11 +175,11 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
      * @return List of possible completions (not null)
      */
     @SuppressWarnings("UnusedParameters")
-    List<String> getCustomCompletions(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected List<String> getCustomCompletions(CommandSender cs, Command cmd, String label, String[] args, String arg) {
         return new ArrayList<>();
     }
 
-    List<String> getPluginCompletions(String arg) {
+    protected List<String> getPluginCompletions(String arg) {
         final List<String> possibilities = new ArrayList<>();
         for (final Plugin p : this.plugin.getServer().getPluginManager().getPlugins()) {
             final String name = p.getName();
@@ -194,8 +196,12 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
             final ArrayList<String> possibilities = new ArrayList<>();
             final String[] eargs = this.getCommandArguments(args).getExtraParameters();
             final int lastArgIndex = eargs.length - 1;
-            if (lastArgIndex < 0 || lastArgIndex >= this.completionTypes.size()) return possibilities;
-            for (final CompletionType ct : CompletionType.getCompletionTypes(this.completionTypes.get(lastArgIndex))) {
+            final List<CompletionType> cts;
+            if (lastArgIndex < 0 || lastArgIndex >= this.completionTypes.size()) {
+                if (this.alwaysUse == null) return possibilities;
+                else cts = Arrays.asList(this.alwaysUse);
+            } else cts = CompletionType.getCompletionTypes(this.completionTypes.get(lastArgIndex));
+            for (final CompletionType ct : cts) {
                 possibilities.addAll(this.getCompletionsFor(cs, cmd, label, eargs, ct));
             }
             return possibilities;
@@ -205,7 +211,11 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
         }
     }
 
-    enum CompletionType {
+    protected void setAlwaysUse(CompletionType alwaysUse) {
+        this.alwaysUse = alwaysUse;
+    }
+
+    protected enum CompletionType {
         /**
          * Completes for any online player.
          */

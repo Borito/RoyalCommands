@@ -27,11 +27,11 @@ import java.util.List;
 
 public abstract class BaseCommand implements CommandExecutor {
 
-    final RoyalCommands plugin;
+    protected final RoyalCommands plugin;
     /**
      * The AuthorizationHandler for this command. This is essentially an alias of this.plugin.ah.
      */
-    final AuthorizationHandler ah;
+    protected final AuthorizationHandler ah;
     private final String name;
     private final boolean checkPermissions;
 
@@ -127,12 +127,17 @@ public abstract class BaseCommand implements CommandExecutor {
      * @return CommandArguments
      * @see org.royaldev.royalcommands.rcommands.CACommand
      */
-    CommandArguments getCommandArguments(String[] args) {
+    protected CommandArguments getCommandArguments(String[] args) {
         return new CommandArguments(args);
     }
 
-    void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t) {
-        this.handleException(cs, cmd, label, args, t, "An exception occurred while processing that command.");
+    /**
+     * Gets the name of this command.
+     *
+     * @return Name
+     */
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -146,7 +151,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * @param message Message to be shown about the exception
      * @param t       The exception thrown
      */
-    void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t, String message) {
+    protected void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t, String message) {
         new FancyMessage(message).color(MessageColor.NEGATIVE._()).send(cs);
         t.printStackTrace();
         if (Config.hastebinErrors) {
@@ -184,6 +189,10 @@ public abstract class BaseCommand implements CommandExecutor {
             sb.append("\n\n---STRACK TRACE---\n\n").append(sw.toString());
             this.scheduleErrorHastebin(cs, sb.toString());
         }
+    }
+
+    protected void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t) {
+        this.handleException(cs, cmd, label, args, t, "An exception occurred while processing that command.");
     }
 
     /**
@@ -227,7 +236,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * @param args  The arguments passed to the command
      * @return true to not display usage, false to display usage (essentially)
      */
-    abstract boolean runCommand(CommandSender cs, Command cmd, String label, String[] args);
+    protected abstract boolean runCommand(CommandSender cs, Command cmd, String label, String[] args);
 
     /**
      * /**
@@ -284,7 +293,7 @@ public abstract class BaseCommand implements CommandExecutor {
     /**
      * A class that contains flags and their parameters, along with extra parameters.
      */
-    class CommandArguments extends HashMap<String, String[]> {
+    protected class CommandArguments extends HashMap<String, String[]> {
 
         private String[] extraParameters = new String[0];
 
