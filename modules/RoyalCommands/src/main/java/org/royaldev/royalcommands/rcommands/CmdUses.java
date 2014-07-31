@@ -74,13 +74,17 @@ public class CmdUses extends TabCommand {
         }
         final Player p = (Player) cs;
         ItemStack is;
-        try {
-            is = RUtils.getItemFromAlias(eargs[0], 1);
-        } catch (InvalidItemNameException e) {
-            is = RUtils.getItem(eargs[0], 1);
-        } catch (NullPointerException e) {
-            cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
-            return true;
+        if (eargs[0].equalsIgnoreCase("hand")) {
+            is = p.getItemInHand();
+        } else {
+            try {
+                is = RUtils.getItemFromAlias(eargs[0], 1);
+            } catch (InvalidItemNameException e) {
+                is = RUtils.getItem(eargs[0], 1);
+            } catch (NullPointerException e) {
+                cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
+                return true;
+            }
         }
         if (is == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
