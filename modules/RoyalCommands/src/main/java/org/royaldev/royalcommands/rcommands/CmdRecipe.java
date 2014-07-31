@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,42 +40,15 @@ public class CmdRecipe extends TabCommand {
     private void cancelTask(final Player p) {
         if (!this.tasks.containsKey(p.getName())) return;
         final int taskID = this.tasks.get(p.getName());
-        if (taskID == -1) return;
-        this.plugin.getServer().getScheduler().cancelTask(taskID);
+        if (taskID != -1) this.plugin.getServer().getScheduler().cancelTask(taskID);
+        this.tasks.remove(p.getName());
     }
 
-    @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
-        if (eargs.length < 1) {
-            cs.sendMessage(cmd.getDescription());
-            return false;
-        }
-        if (!(cs instanceof Player)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-            return true;
-        }
-        final Player p = (Player) cs;
-        ItemStack is;
-        if (eargs[0].equalsIgnoreCase("hand")) {
-            is = p.getItemInHand();
-        } else {
-            try {
-                is = RUtils.getItemFromAlias(eargs[0], 1);
-            } catch (InvalidItemNameException e) {
-                is = RUtils.getItem(eargs[0], 1);
-            } catch (NullPointerException e) {
-                cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
-                return true;
-            }
-        }
-        if (is == null) {
-            cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
-            return true;
-        }
+    private void scheduleRecipeTask(final Player p, ItemStack is) {
         final List<Recipe> rs = this.plugin.getServer().getRecipesFor(is);
         if (rs.size() < 1) {
-            cs.sendMessage(MessageColor.NEGATIVE + "No recipes for that item!");
-            return true;
+            p.sendMessage(MessageColor.NEGATIVE + "No recipes for that item!");
+            return;
         }
         final List<Inventory> workbenches = new ArrayList<>();
         for (final Recipe r : rs) {
@@ -137,11 +111,42 @@ public class CmdRecipe extends TabCommand {
         };
         int taskID = this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.plugin, r, 0L, 30L);
         if (taskID == -1) {
-            cs.sendMessage(MessageColor.NEGATIVE + "Could not schedule task!");
-            return true;
+            p.sendMessage(MessageColor.NEGATIVE + "Could not schedule task!");
+            return;
         }
         this.cancelTask(p);
         this.tasks.put(p.getName(), taskID);
+    }
+
+    @Override
+    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+        if (eargs.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
+            return true;
+        }
+        final Player p = (Player) cs;
+        ItemStack is;
+        if (eargs[0].equalsIgnoreCase("hand")) {
+            is = p.getItemInHand();
+        } else {
+            try {
+                is = RUtils.getItemFromAlias(eargs[0], 1);
+            } catch (InvalidItemNameException e) {
+                is = RUtils.getItem(eargs[0], 1);
+            } catch (NullPointerException e) {
+                cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
+                return true;
+            }
+        }
+        if (is == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
+            return true;
+        }
+        this.scheduleRecipeTask(p, is);
         return true;
     }
 
@@ -150,10 +155,15 @@ public class CmdRecipe extends TabCommand {
         @EventHandler(ignoreCancelled = true)
         public void workbenchClick(InventoryClickEvent e) {
             if (!(e.getWhoClicked() instanceof Player)) return;
+            final ItemStack is = e.getCurrentItem();
+            if (is == null || is.getType() == Material.AIR) return;
             final InventoryType it = e.getInventory().getType();
             if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
             if (!(e.getInventory().getHolder() instanceof RecipeHolder)) return;
             e.setCancelled(true);
+            if (!(e.getWhoClicked() instanceof Player)) return;
+            final Player p = (Player) e.getWhoClicked();
+            CmdRecipe.this.scheduleRecipeTask(p, is);
         }
 
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -166,10 +176,7 @@ public class CmdRecipe extends TabCommand {
             if (!(e.getInventory().getHolder() instanceof RecipeHolder)) return;
             final RecipeHolder rh = (RecipeHolder) e.getInventory().getHolder();
             if (rh.isClosing()) return;
-            final int taskID = CmdRecipe.this.tasks.get(p.getName());
-            if (taskID == -1) return;
-            CmdRecipe.this.plugin.getServer().getScheduler().cancelTask(taskID);
-            CmdRecipe.this.tasks.remove(p.getName());
+            CmdRecipe.this.cancelTask(p);
         }
     }
 

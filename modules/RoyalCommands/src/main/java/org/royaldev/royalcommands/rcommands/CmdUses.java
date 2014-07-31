@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -41,8 +42,8 @@ public class CmdUses extends TabCommand {
     private void cancelTask(final Player p) {
         if (!this.tasks.containsKey(p.getName())) return;
         final int taskID = this.tasks.get(p.getName());
-        if (taskID == -1) return;
-        this.plugin.getServer().getScheduler().cancelTask(taskID);
+        if (taskID != -1) this.plugin.getServer().getScheduler().cancelTask(taskID);
+        this.tasks.remove(p.getName());
     }
 
     private boolean containsItemStack(Collection<? extends ItemStack> collection, ItemStack b) {
@@ -56,40 +57,7 @@ public class CmdUses extends TabCommand {
         return !(a == null || b == null) && a.getType() == b.getType() && (a.getDurability() == -1 || a.getDurability() == Short.MAX_VALUE || a.getDurability() == b.getDurability());
     }
 
-    private ItemStack syncDurabilities(ItemStack base, ItemStack copyDurability) {
-        if (base.getDurability() != -1 && base.getDurability() != Short.MAX_VALUE) return base;
-        base.setDurability(copyDurability.getDurability());
-        return base;
-    }
-
-    @Override
-    protected boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
-        if (eargs.length < 1) {
-            cs.sendMessage(cmd.getDescription());
-            return false;
-        }
-        if (!(cs instanceof Player)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
-            return true;
-        }
-        final Player p = (Player) cs;
-        ItemStack is;
-        if (eargs[0].equalsIgnoreCase("hand")) {
-            is = p.getItemInHand();
-        } else {
-            try {
-                is = RUtils.getItemFromAlias(eargs[0], 1);
-            } catch (InvalidItemNameException e) {
-                is = RUtils.getItem(eargs[0], 1);
-            } catch (NullPointerException e) {
-                cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
-                return true;
-            }
-        }
-        if (is == null) {
-            cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
-            return true;
-        }
+    private void scheduleUsesTask(final Player p, ItemStack is) {
         final List<Inventory> workbenches = new ArrayList<>();
         final Iterator<Recipe> recipeIterator = this.plugin.getServer().recipeIterator();
         while (recipeIterator.hasNext()) {
@@ -131,8 +99,8 @@ public class CmdUses extends TabCommand {
             workbenches.add(i);
         }
         if (workbenches.size() < 1) {
-            cs.sendMessage(MessageColor.NEGATIVE + "No uses for that item!");
-            return true;
+            p.sendMessage(MessageColor.NEGATIVE + "No uses for that item!");
+            return;
         }
         final Runnable r = new Runnable() {
             private int currentRecipe = 0;
@@ -158,13 +126,51 @@ public class CmdUses extends TabCommand {
                 if (workbenches.size() == 1) this.display = false;
             }
         };
-        int taskID = this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.plugin, r, 0L, 30L);
+        final int taskID = this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.plugin, r, 0L, 30L);
         if (taskID == -1) {
-            cs.sendMessage(MessageColor.NEGATIVE + "Could not schedule task!");
-            return true;
+            p.sendMessage(MessageColor.NEGATIVE + "Could not schedule task!");
+            return;
         }
         this.cancelTask(p);
         this.tasks.put(p.getName(), taskID);
+    }
+
+    private ItemStack syncDurabilities(ItemStack base, ItemStack copyDurability) {
+        if (base.getType() != copyDurability.getType()) return base;
+        if (base.getDurability() != -1 && base.getDurability() != Short.MAX_VALUE) return base;
+        base.setDurability(copyDurability.getDurability());
+        return base;
+    }
+
+    @Override
+    protected boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+        if (eargs.length < 1) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        if (!(cs instanceof Player)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
+            return true;
+        }
+        final Player p = (Player) cs;
+        ItemStack is;
+        if (eargs[0].equalsIgnoreCase("hand")) {
+            is = p.getItemInHand();
+        } else {
+            try {
+                is = RUtils.getItemFromAlias(eargs[0], 1);
+            } catch (InvalidItemNameException e) {
+                is = RUtils.getItem(eargs[0], 1);
+            } catch (NullPointerException e) {
+                cs.sendMessage(MessageColor.NEGATIVE + "ItemNameManager was not loaded. Let an administrator know.");
+                return true;
+            }
+        }
+        if (is == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Invalid item name!");
+            return true;
+        }
+        this.scheduleUsesTask(p, is);
         return true;
     }
 
@@ -173,10 +179,15 @@ public class CmdUses extends TabCommand {
         @EventHandler(ignoreCancelled = true)
         public void workbenchClick(InventoryClickEvent e) {
             if (!(e.getWhoClicked() instanceof Player)) return;
+            final ItemStack is = e.getCurrentItem();
+            if (is == null || is.getType() == Material.AIR) return;
             final InventoryType it = e.getInventory().getType();
             if (it != InventoryType.WORKBENCH && it != InventoryType.FURNACE) return;
             if (!(e.getInventory().getHolder() instanceof UsesHolder)) return;
             e.setCancelled(true);
+            if (!(e.getWhoClicked() instanceof Player)) return;
+            final Player p = (Player) e.getWhoClicked();
+            CmdUses.this.scheduleUsesTask(p, is);
         }
 
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -189,10 +200,7 @@ public class CmdUses extends TabCommand {
             if (!(e.getInventory().getHolder() instanceof UsesHolder)) return;
             final UsesHolder uh = (UsesHolder) e.getInventory().getHolder();
             if (uh.isClosing()) return;
-            final int taskID = CmdUses.this.tasks.get(p.getName());
-            if (taskID == -1) return;
-            CmdUses.this.plugin.getServer().getScheduler().cancelTask(taskID);
-            CmdUses.this.tasks.remove(p.getName());
+            CmdUses.this.cancelTask(p);
         }
     }
 
