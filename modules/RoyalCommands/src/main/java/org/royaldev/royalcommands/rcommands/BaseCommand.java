@@ -1,7 +1,9 @@
 package org.royaldev.royalcommands.rcommands;
 
+import com.google.common.base.Preconditions;
 import mkremins.fanciful.FancyMessage;
-import net.minecraft.util.org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class BaseCommand implements CommandExecutor {
@@ -34,6 +36,8 @@ public abstract class BaseCommand implements CommandExecutor {
     protected final AuthorizationHandler ah;
     private final String name;
     private final boolean checkPermissions;
+    private final List<Flag> expectedFlags = new ArrayList<>();
+    private final List<String> helpNames = Arrays.asList("help", "h", "?");
 
     /**
      * Constructs a BaseCommand. This command has some backend utilities to help speed up command development and make
@@ -120,6 +124,23 @@ public abstract class BaseCommand implements CommandExecutor {
         });
     }
 
+    private void showFlagHelp(CommandSender cs, Command cmd, String label) {
+        cs.sendMessage(cmd.getDescription());
+        cs.sendMessage(cmd.getUsage().replaceFirst("<command>", label));
+        cs.sendMessage(MessageColor.POSITIVE + "Expected flags:");
+        for (final Flag f : this.getExpectedFlags()) {
+            String message = "  " + MessageColor.NEUTRAL + "-" + f.getNames();
+            if (f.getType() != null) message += " [" + f.getType().getSimpleName() + "]";
+            cs.sendMessage(message);
+        }
+    }
+
+    protected void addExpectedFlag(final Flag f) {
+        Preconditions.checkNotNull(f, "f cannot be null");
+        if (this.expectedFlags.contains(f)) throw new IllegalArgumentException("Flag already exists!");
+        this.expectedFlags.add(f);
+    }
+
     /**
      * Gets the CommandArguments from the given arguments. This allows for flags to be used.
      *
@@ -129,6 +150,10 @@ public abstract class BaseCommand implements CommandExecutor {
      */
     protected CommandArguments getCommandArguments(String[] args) {
         return new CommandArguments(args);
+    }
+
+    public List<Flag> getExpectedFlags() {
+        return this.expectedFlags;
     }
 
     /**
@@ -216,6 +241,19 @@ public abstract class BaseCommand implements CommandExecutor {
             RUtils.dispNoPerms(cs, new String[]{this.ah.getPermission(cmd)}); // ensure calling to varargs method
             return true;
         }
+        final List<Flag> expectedFlags = this.getExpectedFlags();
+        if (expectedFlags.size() > 0) {
+            for (final Flag f : new CommandArguments(args)) {
+                if (!expectedFlags.contains(f)) {
+                    if (this.helpNames.containsAll(f.getNames())) {
+                        this.showFlagHelp(cs, cmd, label);
+                        return true;
+                    }
+                    cs.sendMessage(MessageColor.NEGATIVE + "Unexpected flag \"" + f.getFirstName() + ".\"");
+                    return true;
+                }
+            }
+        }
         try {
             return this.runCommand(cs, cmd, label, args);
         } catch (Throwable t) {
@@ -280,6 +318,80 @@ public abstract class BaseCommand implements CommandExecutor {
         });
     }
 
+    public static class Flag<T> {
+
+        private final List<String> names = new ArrayList<>();
+        private final T value;
+        private final Class<T> clazz;
+
+        public Flag(final String... names) {
+            Preconditions.checkNotNull(names, "names cannot be null");
+            if (names.length < 1) throw new IllegalArgumentException("names cannot be empty");
+            this.clazz = null;
+            Collections.addAll(this.names, names);
+            this.value = null; // used for template flags
+        }
+
+        public Flag(final Class<T> clazz, final String... names) {
+            Preconditions.checkNotNull(names, "names cannot be null");
+            if (names.length < 1) throw new IllegalArgumentException("names cannot be empty");
+            this.clazz = clazz;
+            Collections.addAll(this.names, names);
+            this.value = null; // used for template flags
+        }
+
+        public Flag(final Class<T> clazz, final String[] names, final T value) {
+            Preconditions.checkNotNull(names, "names cannot be null");
+            if (names.length < 1) throw new IllegalArgumentException("names cannot be empty");
+            this.clazz = clazz;
+            Collections.addAll(this.names, names);
+            this.value = value;
+        }
+
+        /**
+         * A Flag is considered equal to another Flag if any of the names are the same and the value is the same. If the
+         * value of this Flag is null, the values will not be checked when checking for equality.
+         *
+         * @param obj Object to check equality with
+         * @return true if equal, false if otherwise
+         */
+        @Override
+        public boolean equals(final Object obj) {
+            if (this == obj) return true;
+            if (!(obj instanceof Flag)) return false;
+            final Flag f = (Flag) obj;
+            // Like, seriously. There is no way this can really be unchecked (f.getNames().containsAll()).
+            //noinspection unchecked
+            return !(this.clazz != null && f.getType() != null && !this.clazz.equals(f.getType())) && !(this.value != null && f.getValue() != null && !this.value.equals(f.getValue())) && (f.getNames().containsAll(this.getNames()) || this.getNames().containsAll(f.getNames()));
+        }
+
+        @Override
+        public String toString() {
+            return this.getNames() + " (" + this.getType() + "): " + this.getValue();
+        }
+
+        public String getFirstName() {
+            if (this.names.size() < 1) return null;
+            return this.names.get(0);
+        }
+
+        public List<String> getNames() {
+            return this.names;
+        }
+
+        public Class<T> getType() {
+            return this.clazz;
+        }
+
+        public T getValue() {
+            return this.value;
+        }
+
+        public T getValue(final T defaultValue) {
+            return this.value == null ? defaultValue : this.value;
+        }
+    }
+
     private class HastebinData {
 
         @SuppressWarnings("UnusedDeclaration")
@@ -293,7 +405,7 @@ public abstract class BaseCommand implements CommandExecutor {
     /**
      * A class that contains flags and their parameters, along with extra parameters.
      */
-    protected class CommandArguments extends HashMap<String, String[]> {
+    protected class CommandArguments extends ArrayList<Flag> {
 
         private String[] extraParameters = new String[0];
 
@@ -303,6 +415,66 @@ public abstract class BaseCommand implements CommandExecutor {
 
         CommandArguments(final String givenArguments) {
             this(givenArguments.split(" "));
+        }
+
+        /**
+         * Attempts to convert the given values to the given class.
+         *
+         * @param values Values to convert (will be joined if necessary)
+         * @param clazz  Class to convert to
+         * @param <T>    Type to return (will cast)
+         * @return Converted value
+         */
+        @SuppressWarnings("unchecked")
+        private <T> T convertFlag(final String[] values, final Class<T> clazz) {
+            final String joined = StringUtils.join(values, ' ');
+            if (String[].class.isAssignableFrom(clazz)) {
+                return (T) values;
+            } else if (String.class.isAssignableFrom(clazz)) {
+                return (T) joined;
+            } else if (Integer.class.isAssignableFrom(clazz)) {
+                return (T) (Integer) Integer.parseInt(joined);
+            } else if (Short.class.isAssignableFrom(clazz)) {
+                return (T) (Short) Short.parseShort(joined);
+            } else if (Long.class.isAssignableFrom(clazz)) {
+                return (T) (Long) Long.parseLong(joined);
+            } else if (Float.class.isAssignableFrom(clazz)) {
+                return (T) (Float) Float.parseFloat(joined);
+            }
+            return null;
+        }
+
+        /**
+         * Creates a Flag based on expected flags, the given alias, and the given arguments. If there is an expected
+         * flag with a matching alias, the given arguments will be converted to the expected type or to a String if no
+         * expected type is given (by using {@link #convertFlag(String[], Class)}.
+         *
+         * @param alias Alias of the flag
+         * @param args  Arguments passed to the flag
+         * @return Flag
+         */
+        private Flag createFlag(String alias, String[] args) {
+            Preconditions.checkNotNull(args, "args cannot be null");
+            final Flag templateFlag = new Flag(alias);
+            final Flag realFlag;
+            if (BaseCommand.this.expectedFlags.contains(templateFlag)) {
+                realFlag = BaseCommand.this.expectedFlags.get(BaseCommand.this.expectedFlags.indexOf(templateFlag));
+            } else {
+                realFlag = null;
+            }
+            Object o;
+            try {
+                o = args.length < 1 ? null : this.convertFlag(args, realFlag == null ? String.class : realFlag.getType());
+            } catch (Exception ex) {
+                o = null;
+            }
+            if (args.length < 1) {
+                //noinspection unchecked
+                return new Flag(null, new String[]{alias}, o);
+            } else {
+                //noinspection unchecked
+                return new Flag<>(realFlag == null ? String.class : realFlag.getType(), new String[]{alias}, o);
+            }
         }
 
         /**
@@ -341,63 +513,41 @@ public abstract class BaseCommand implements CommandExecutor {
          *
          * @return Extra parameters
          */
-        String[] getExtraParameters() {
+        public String[] getExtraParameters() {
             return this.extraParameters.clone();
         }
 
         /**
-         * Gets any parameters that belonged to the given flags.
+         * Gets the corresponding Flag with values.
          *
-         * @param flags Flags to get parameters for
-         * @return Parameters
+         * @param flag Flag to get parameters for
+         * @return Flag with values
          */
-        String[] getFlag(String... flags) {
-            final List<String> combinedParameters = new ArrayList<>();
-            for (String flag : flags) {
-                if (!this.containsKey(flag)) continue;
-                combinedParameters.addAll(Arrays.asList(this.get(flag)));
-            }
-            return combinedParameters.toArray(new String[combinedParameters.size()]);
+        public <T> Flag<T> getFlag(final Flag<T> flag) {
+            if (!this.contains(flag)) return null;
+            //noinspection unchecked
+            return this.get(this.indexOf(flag));
         }
 
         /**
-         * Gets the result of {@link #getFlag(String...)} joined by a space.
+         * Checks to see if the given flag exists and has a value.
          *
-         * @param flags Flags to get parameters for
-         * @return Space-joined string of {@link #getFlag(String...)}
-         */
-        String getFlagString(String... flags) {
-            return RUtils.join(this.getFlag(flags), " ");
-        }
-
-        /**
-         * The same as {@link #hasFlag(String...)}, except that it checks if the result of
-         * {@link #getFlagString(String...)} is not empty.
-         *
-         * @param flags Flags to check for
+         * @param flag Flag to check for
          * @return boolean
          */
-        boolean hasContentFlag(String... flags) {
-            for (final String flag : flags) {
-                if (!this.containsKey(flag)) continue;
-                if (this.getFlagString(flag).trim().isEmpty()) continue;
-                return true;
-            }
-            return false;
+        public boolean hasContentFlag(final Flag flag) {
+            final Flag storedFlag = this.getFlag(flag);
+            return storedFlag != null && storedFlag.getValue() != null;
         }
 
         /**
-         * Checks if flags are set. Useful for boolean flags.
+         * Checks if the given Flag is set. Useful for boolean expectedFlags.
          *
-         * @param flags Flags to check for
+         * @param flag Flag to check for
          * @return boolean
          */
-        boolean hasFlag(String... flags) {
-            for (final String flag : flags) {
-                if (!this.containsKey(flag)) continue;
-                return true;
-            }
-            return false;
+        public boolean hasFlag(final Flag flag) {
+            return this.getFlag(flag) != null;
         }
 
         /**
@@ -405,23 +555,29 @@ public abstract class BaseCommand implements CommandExecutor {
          *
          * @param arguments Arguments to process
          */
-        void processArguments(String[] arguments) {
-            String currentFlag = null;
+        public void processArguments(String[] arguments) {
+            String currentFlagName = null;
             final List<String> parameters = new ArrayList<>();
             final List<String> extraParameters = new ArrayList<>();
             for (String arg : arguments) {
                 if (this.isFlag(arg) || this.isFlagTerminator(arg)) {
-                    this.put(currentFlag, parameters.toArray(new String[parameters.size()]));
+                    if (currentFlagName != null) {
+                        final Flag f = this.createFlag(currentFlagName, parameters.toArray(new String[parameters.size()]));
+                        this.add(f);
+                    }
                     parameters.clear();
-                    currentFlag = this.isFlagTerminator(arg) ? null : this.getFlagName(arg);
+                    currentFlagName = this.isFlagTerminator(arg) ? null : this.getFlagName(arg);
                     continue;
                 }
                 arg = arg.replace("\\-", "-");
-                if (currentFlag != null) parameters.add(arg);
+                if (currentFlagName != null) parameters.add(arg);
                 else extraParameters.add(arg);
             }
-            this.put(currentFlag, parameters.toArray(new String[parameters.size()])); // last arg can't be neglected
-            this.extraParameters = ArrayUtils.addAll(this.extraParameters, extraParameters.toArray(new String[extraParameters.size()]));
+            if (currentFlagName != null) {
+                final Flag f = this.createFlag(currentFlagName, parameters.toArray(new String[parameters.size()]));
+                this.add(f); // last arg can't be neglected
+            }
+            this.extraParameters = (String[]) ArrayUtils.addAll(this.extraParameters, extraParameters.toArray(new String[extraParameters.size()]));
         }
     }
 }

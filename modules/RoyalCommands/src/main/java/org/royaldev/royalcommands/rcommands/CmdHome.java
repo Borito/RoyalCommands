@@ -13,6 +13,8 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 @ReflectCommand
 public class CmdHome extends CACommand {
 
+    private final Flag<String> playerFlag = new Flag<>(String.class, "player", "p");
+
     public CmdHome(final RoyalCommands instance, final String name) {
         super(instance, name, true);
     }
@@ -39,8 +41,8 @@ public class CmdHome extends CACommand {
             homeOwner = split[0];
             homeName = split[1];
         }
-        if (ca.hasContentFlag("p", "player")) {
-            homeOwner = ca.getFlagString("p", "player");
+        if (ca.hasContentFlag(this.playerFlag)) {
+            homeOwner = ca.getFlag(this.playerFlag).getValue();
             if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS) && !homeOwner.equalsIgnoreCase(cs.getName())) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to use other players' homes.");
                 return true;

@@ -20,23 +20,34 @@ import java.util.List;
 @ReflectCommand
 public class CmdItem extends TabCommand {
 
+    private final static Flag<String> nameFlag = new Flag<>(String.class, "displayname", "name", "n");
+    private final static Flag<String> loreFlag = new Flag<>(String.class, "description", "lore", "l");
+
     public CmdItem(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});
+        this.addExpectedFlag(CmdItem.nameFlag);
+        this.addExpectedFlag(CmdItem.loreFlag);
     }
 
     static ItemStack applyMeta(ItemStack is, CommandArguments ca, CommandSender cs) {
         final ItemMeta im = is.getItemMeta();
-        final String nameArgs = ca.getFlagString("n", "name", "displayname");
-        if (!nameArgs.isEmpty() && RoyalCommands.instance.ah.isAuthorized(cs, "rcmds.rename")) {
-            final String name = RUtils.colorize(nameArgs);
+        if (ca.hasFlag(CmdItem.nameFlag) && RoyalCommands.instance.ah.isAuthorized(cs, "rcmds.rename")) {
+            final String name = RUtils.colorize(ca.getFlag(CmdItem.nameFlag).getValue());
+            if (name == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You must supply a name.");
+                return null;
+            }
             im.setDisplayName(name);
         }
-        final String loreArgs = ca.getFlagString("l", "lore", "description");
-        if (!loreArgs.isEmpty() && RoyalCommands.instance.ah.isAuthorized(cs, "rcmds.lore")) {
+        if (ca.hasFlag(CmdItem.loreFlag) && RoyalCommands.instance.ah.isAuthorized(cs, "rcmds.lore")) {
+            final String loreArgs = ca.getFlag(CmdItem.loreFlag).getValue();
+            if (loreArgs == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "You must supply lore.");
+                return null;
+            }
             final List<String> lore = new ArrayList<>();
-            for (String loreArg : loreArgs.split("(?<!\\\\)\\|")) {
-                loreArg = RUtils.colorize(loreArg.replace("\\|", "|"));
-                lore.add(loreArg);
+            for (final String loreArg : loreArgs.split("(?<!\\\\)\\|")) {
+                lore.add(RUtils.colorize(loreArg.replace("\\|", "|")));
             }
             im.setLore(lore);
         }
@@ -95,6 +106,7 @@ public class CmdItem extends TabCommand {
             return true;
         }
         toInv = CmdItem.applyMeta(toInv, ca, cs);
+        if (toInv == null) return true; // display error message in applyMeta
         // @formatter:off
         new FancyMessage("Giving ")
                 .color(MessageColor.POSITIVE._())

@@ -1809,10 +1809,6 @@ permissions:
     command: weather
     default: op
     description: Allows you to change weather.
-  rcmds.whitelist:
-    command: whitelist
-    default: op
-    description: Allows you to manage the dynamic whitelist.
   rcmds.whois:
     command: whois
     default: op
@@ -1863,6 +1859,30 @@ permissions:
     children:
       rcmds.enchant.levels: true
       rcmds.enchant.illegal: true
+
+  rcmds.whitelist.*:
+    command: whitelist
+    description: Allows use of all whitelist subcommands.
+    default: op
+    children:
+      rcmds.whitelist.add: true
+      rcmds.whitelist.check: true
+      rcmds.whitelist.remove: true
+
+  rcmds.whitelist.add:
+    command: whitelist
+    description: Allows addition of a player into the whitelist.
+    default: false
+
+  rcmds.whitelist.check:
+    command: whitelist
+    description: Allows a player to check if a player is in the whitelist.
+    default: false
+
+  rcmds.whitelist.remove:
+    command: whitelist
+    description: Allows removal of a player from the whitelist.
+    default: false
 
   rcmds.pluginmanager.*:
     command: pluginmanager
@@ -2365,6 +2385,7 @@ permissions:
       rcmds.others.*: true
       rcmds.seehidden: true
       rcmds.see.*: true
+      rcmds.whitelist.*: true
       rcmds.nick.color: true
       rcmds.updates: true
       rcmds.tpoverride: true
@@ -2486,7 +2507,6 @@ permissions:
       rcmds.enchant: true
       rcmds.fireball: true
       rcmds.fly: true
-      rcmds.whitelist: true
       rcmds.playertime: true
       rcmds.compass: true
       rcmds.helmet: true
@@ -2801,7 +2821,6 @@ permissions:
       rcmds.enchant: true
       rcmds.fireball: true
       rcmds.fly: true
-      rcmds.whitelist: true
       rcmds.playertime: true
       rcmds.compass: true
       rcmds.helmet: true
@@ -2878,3 +2897,5 @@ permissions:
       rcmds.sign.*: true
 
       rcmds.setarmor.*: true
+
+      rcmds.whitelist.*: true

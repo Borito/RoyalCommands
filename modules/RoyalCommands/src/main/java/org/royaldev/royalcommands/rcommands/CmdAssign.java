@@ -16,8 +16,13 @@ import java.util.List;
 @ReflectCommand
 public class CmdAssign extends TabCommand {
 
+    private final Flag<Integer> removeFlag = new Flag<>(Integer.class, "remove", "r");
+    private final Flag listFlag = new Flag("list", "l");
+
     public CmdAssign(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.ANY_COMMAND.getShort()});
+        this.addExpectedFlag(this.removeFlag);
+        this.addExpectedFlag(this.listFlag);
     }
 
     @Override
@@ -35,17 +40,10 @@ public class CmdAssign extends TabCommand {
         }
         List<String> cmds = RUtils.getAssignment(hand, pcm);
         if (cmds == null) cmds = new ArrayList<>();
-        if (ca.hasFlag("r", "remove")) {
-            final String content = ca.getFlagString("r", "remove");
-            if (content.isEmpty()) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Please include a number to remove.");
-                return true;
-            }
-            int toRemove;
-            try {
-                toRemove = Integer.parseInt(content);
-            } catch (NumberFormatException e) {
-                cs.sendMessage(MessageColor.NEGATIVE + "The number specified to remove was not a valid number!");
+        if (ca.hasFlag(this.removeFlag)) {
+            Integer toRemove = ca.getFlag(this.removeFlag).getValue();
+            if (toRemove == null) {
+                cs.sendMessage(MessageColor.NEGATIVE + "Please include a valid number to remove.");
                 return true;
             }
             if (toRemove <= 0 || toRemove > cmds.size()) {
@@ -53,18 +51,19 @@ public class CmdAssign extends TabCommand {
                 return true;
             }
             toRemove--;
-            cmds.remove(toRemove);
+            cmds.remove((int) toRemove);
             RUtils.setAssignment(hand, cmds, pcm);
             cs.sendMessage(MessageColor.POSITIVE + "Removed command " + MessageColor.NEUTRAL + (toRemove + 1) + MessageColor.POSITIVE + ".");
             return true;
-        } else if (ca.hasFlag("l", "list")) {
+        } else if (ca.hasFlag(this.listFlag)) {
             cs.sendMessage(MessageColor.POSITIVE + "Commands on " + MessageColor.NEUTRAL + RUtils.getItemName(hand) + MessageColor.POSITIVE + ":");
             if (cmds.isEmpty()) {
-                cs.sendMessage(MessageColor.NEUTRAL + "None.");
+                cs.sendMessage("  " + MessageColor.NEUTRAL + "None.");
                 return true;
             }
-            for (int i = 0; i < cmds.size(); i++)
+            for (int i = 0; i < cmds.size(); i++) {
                 cs.sendMessage("  " + MessageColor.NEUTRAL + (i + 1) + MessageColor.POSITIVE + ": " + MessageColor.NEUTRAL + cmds.get(i));
+            }
             return true;
         }
         if (eargs.length < 1) {

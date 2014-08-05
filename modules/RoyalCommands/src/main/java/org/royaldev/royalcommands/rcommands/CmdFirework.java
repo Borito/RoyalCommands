@@ -18,8 +18,21 @@ import static org.royaldev.royalcommands.Converters.toInt;
 @ReflectCommand
 public class CmdFirework extends BaseCommand {
 
+    private final Flag<String> fadeFlag = new Flag<>(String.class, "fade");
+    private final Flag<Integer> powerFlag = new Flag<>(Integer.class, "power", "p");
+    private final Flag<String> colorFlag = new Flag<>(String.class, "color", "c");
+    private final Flag<String> shapeFlag = new Flag<>(String.class, "shape", "s", "type", "t");
+    private final Flag flickerFlag = new Flag("flicker", "sparkle", "twinkle");
+    private final Flag trailFlag = new Flag("trail");
+
     public CmdFirework(final RoyalCommands instance, final String name) {
         super(instance, name, true);
+        this.addExpectedFlag(this.fadeFlag);
+        this.addExpectedFlag(this.powerFlag);
+        this.addExpectedFlag(this.colorFlag);
+        this.addExpectedFlag(this.shapeFlag);
+        this.addExpectedFlag(this.flickerFlag);
+        this.addExpectedFlag(this.trailFlag);
     }
 
     /**
@@ -33,29 +46,34 @@ public class CmdFirework extends BaseCommand {
     private FireworkMeta applyEffect(String[] args, FireworkMeta fm) throws IllegalArgumentException {
         Builder feb = FireworkEffect.builder();
         final CommandArguments ca = this.getCommandArguments(args);
-        for (String fadeArg : ca.getFlag("fade")) {
-            final Color c = this.getColor(fadeArg);
+        if (ca.hasFlag(this.fadeFlag)) {
+            final Flag<String> fadeFlag = ca.getFlag(this.fadeFlag);
+            final Color c = this.getColor(fadeFlag.getValue());
             if (c == null) throw new IllegalArgumentException("Invalid fade color!");
             feb.withFade(c);
         }
-        for (String powerArg : ca.getFlag("p", "power")) {
-            final int power = toInt(powerArg);
+        if (ca.hasFlag(this.powerFlag)) {
+            final Flag<Integer> powerFlag = ca.getFlag(this.powerFlag);
+            final Integer power = powerFlag.getValue();
+            if (power == null) throw new IllegalArgumentException("Invalid power!");
             if (power < 0 || power > 128) throw new IllegalArgumentException("Power must be between 0 and 128!");
             fm.setPower(power);
         }
-        for (String colorArg : ca.getFlag("c", "color")) {
-            final Color c = getColor(colorArg);
+        if (ca.hasFlag(this.colorFlag)) {
+            final Flag<String> colorFlag = ca.getFlag(this.colorFlag);
+            final Color c = this.getColor(colorFlag.getValue());
             if (c == null) throw new IllegalArgumentException("Invalid color!");
             feb.withColor(c);
         }
-        for (String shapeArg : ca.getFlag("s", "shape")) {
-            Type t = this.getShape(shapeArg);
+        if (ca.hasFlag(this.shapeFlag)) {
+            final Flag<String> shapeFlag = ca.getFlag(this.shapeFlag);
+            final Type t = this.getShape(shapeFlag.getValue());
             if (t == null) throw new IllegalArgumentException("Invalid shape!");
             feb.with(t);
         }
-        if (ca.hasFlag("flicker", "sparkle", "twinkle")) feb.withFlicker();
-        if (ca.hasFlag("trail")) feb.withTrail();
-        FireworkEffect fe;
+        if (ca.hasFlag(this.flickerFlag)) feb.withFlicker();
+        if (ca.hasFlag(this.trailFlag)) feb.withTrail();
+        final FireworkEffect fe;
         try {
             fe = feb.build();
         } catch (Exception e) {
@@ -66,6 +84,7 @@ public class CmdFirework extends BaseCommand {
     }
 
     private Color getColor(String c) {
+        if (c == null) throw new IllegalArgumentException("You must provide a color.");
         if (c.startsWith("rgb:")) {
             c = c.substring(4);
             if (c.contains(",")) {
@@ -134,6 +153,7 @@ public class CmdFirework extends BaseCommand {
     }
 
     private Type getShape(String c) {
+        if (c == null) throw new IllegalArgumentException("You must provide a shape.");
         if (c.equalsIgnoreCase("ball") || c.equalsIgnoreCase("small_ball") || c.equalsIgnoreCase("ball_small")) {
             return Type.BALL;
         } else if (c.equalsIgnoreCase("large_ball") || c.equalsIgnoreCase("ball_large") || c.equalsIgnoreCase("big_ball") || c.equalsIgnoreCase("ball_big")) {

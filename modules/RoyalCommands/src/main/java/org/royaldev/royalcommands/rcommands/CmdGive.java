@@ -131,6 +131,7 @@ public class CmdGive extends TabCommand {
             return true;
         }
         toInv = CmdItem.applyMeta(toInv, ca, cs);
+        if (toInv == null) return true; // error message in applyMeta
         if (Config.itemSpawnTag) toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));
         HashMap<Integer, ItemStack> left = t.getInventory().addItem(toInv);
         if (!left.isEmpty() && Config.dropExtras) {

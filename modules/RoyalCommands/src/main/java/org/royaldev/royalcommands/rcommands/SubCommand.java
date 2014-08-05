@@ -2,7 +2,7 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.royaldev.royalcommands.RoyalCommands;
 
-public abstract class SubCommand<T extends BaseCommand> extends TabCommand {
+public abstract class SubCommand<T extends ParentCommand> extends TabCommand {
 
     private final T parent;
     private final String name, description, usage;

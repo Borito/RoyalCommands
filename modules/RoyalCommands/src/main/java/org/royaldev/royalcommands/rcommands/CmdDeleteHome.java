@@ -13,8 +13,11 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 @ReflectCommand
 public class CmdDeleteHome extends CACommand {
 
+    private final Flag<String> playerFlag = new Flag<>(String.class, "player", "p");
+
     public CmdDeleteHome(final RoyalCommands instance, final String name) {
         super(instance, name, true);
+        this.addExpectedFlag(this.playerFlag);
     }
 
     @Override
@@ -46,8 +49,8 @@ public class CmdDeleteHome extends CACommand {
             }
             pcm = PConfManager.getPConfManager(RUtils.getOfflinePlayer(ss[0]));
             name = ss[1];
-        } else if (ca.hasContentFlag("p", "player") && this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
-            final OfflinePlayer op = RUtils.getOfflinePlayer(ca.getFlagString("p", "player"));
+        } else if (ca.hasContentFlag(this.playerFlag) && this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
+            final OfflinePlayer op = RUtils.getOfflinePlayer(ca.getFlag(this.playerFlag).getValue());
             if (this.ah.isAuthorized(op, cmd, PermType.EXEMPT)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You cannot delete that player's home!");
                 return true;

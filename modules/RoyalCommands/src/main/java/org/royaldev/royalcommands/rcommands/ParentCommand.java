@@ -23,7 +23,7 @@ public class ParentCommand extends TabCommand {
         return this.ah.isAuthorized(o, "rcmds." + sc.getName());
     }
 
-    private void showHelp(CommandSender cs, String label) {
+    public void showHelp(CommandSender cs, String label) {
         cs.sendMessage(MessageColor.POSITIVE + "/" + label + " Help");
         final StringBuilder sb = new StringBuilder();
         sb.append(MessageColor.POSITIVE);

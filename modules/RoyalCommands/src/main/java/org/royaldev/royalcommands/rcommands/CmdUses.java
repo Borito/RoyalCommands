@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+// TODO: Use inventory gui (3 rows, with forward/back buttons)
+
 @ReflectCommand
 public class CmdUses extends TabCommand {
 
