@@ -3,6 +3,8 @@ RoyalCommands
 
 ![RoyalCommands](http://dev.bukkit.org/media/images/56/527/RoyalCommandsLogo.png)
 
+[![tip for next commit](https://tip4commit.com/projects/894.svg)](https://tip4commit.com/github/RoyalDev/RoyalCommands)
+
 RoyalCommands is a general plugin with lots of commands. Yeah, that's my description. Go look at the [BukkitDev](http://dev.bukkit.org/server-mods/royalcommands) if you want a better one.
 
 RoyalCommands is coded in IntelliJ with the following libraries:
