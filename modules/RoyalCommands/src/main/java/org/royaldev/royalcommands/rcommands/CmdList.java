@@ -69,6 +69,7 @@ public class CmdList extends BaseCommand {
             } catch (Exception e) {
                 group = "No Group";
             }
+            if (group == null) group = "No Group";
             List<String> inGroup = (groups.containsKey(group)) ? groups.get(group) : new ArrayList<String>();
             if (CmdList.pluginInstance.isVanished(p) && CmdList.pluginInstance.ah.isAuthorized(cs, "rcmds.seehidden"))
                 inGroup.add(MessageColor.NEUTRAL + "[HIDDEN]" + MessageColor.RESET + formatPrepend(p));
