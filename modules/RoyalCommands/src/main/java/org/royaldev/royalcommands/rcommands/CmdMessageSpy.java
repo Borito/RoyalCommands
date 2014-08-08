@@ -24,7 +24,7 @@ public class CmdMessageSpy extends BaseCommand {
             return true;
         }
         final OfflinePlayer op = (args.length > 0) ? RUtils.getOfflinePlayer(args[0]) : (Player) cs;
-        boolean isSamePerson = !op.getName().equalsIgnoreCase(cs.getName());
+        final boolean isSamePerson = op.getName().equalsIgnoreCase(cs.getName());
         if (!isSamePerson && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to toggle chat spy for other players.");
             return true;
@@ -33,12 +33,13 @@ public class CmdMessageSpy extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't toggle chat spy for this player.");
             return true;
         }
-        PConfManager pcm = PConfManager.getPConfManager(op);
-        boolean messageSpy = pcm.getBoolean("messagespy", false);
+        final PConfManager pcm = PConfManager.getPConfManager(op);
+        final boolean messageSpy = pcm.getBoolean("messagespy", false);
         pcm.set("messagespy", !messageSpy);
         cs.sendMessage(MessageColor.POSITIVE + "Chat spy mode " + MessageColor.NEUTRAL + ((!messageSpy) ? "enabled" : "disabled") + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");
-        if (op.isOnline() && !op.getName().equalsIgnoreCase(cs.getName()))
+        if (op.isOnline() && !op.getName().equalsIgnoreCase(cs.getName())) {
             ((Player) op).sendMessage(MessageColor.POSITIVE + "Chat spy mode has been " + MessageColor.NEUTRAL + ((!messageSpy) ? "enabled" : "disabled") + MessageColor.POSITIVE + " for you by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
+        }
         return true;
     }
 }
