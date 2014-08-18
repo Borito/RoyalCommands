@@ -2,6 +2,7 @@ package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import mkremins.fanciful.FancyMessage;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -714,13 +715,14 @@ public class RUtils {
                 tooltip.add(new FancyMessage("Offline Player").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
             tooltip.add(new FancyMessage("Name: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.getName()).color(MessageColor.NEUTRAL._()));
             tooltip.add(new FancyMessage("Operator: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.isOp() ? "Yes" : "No").color(MessageColor.NEUTRAL._()));
-            if (vh.usingVault()) {
+            if (vh.usingVault() && vh.getPermission().hasGroupSupport()) {
                 final String group = vh.getPermission().getPrimaryGroup(null, op);
-                String prefix = vh.getChat().getGroupPrefix((String) null, group);
-                if (prefix == null || prefix.isEmpty()) prefix = vh.getChat().getPlayerPrefix(null, op);
+                final Chat c = vh.getChat();
+                String prefix = c == null ? null : c.getGroupPrefix((String) null, group);
+                if (prefix == null || prefix.isEmpty()) prefix = c == null ? null : c.getPlayerPrefix(null, op);
                 if (prefix == null) prefix = "";
-                String suffix = vh.getChat().getGroupSuffix((String) null, group);
-                if (suffix == null || suffix.isEmpty()) suffix = vh.getChat().getPlayerSuffix(null, op);
+                String suffix = c == null ? null : c.getGroupSuffix((String) null, group);
+                if (suffix == null || suffix.isEmpty()) suffix = c == null ? null : c.getPlayerSuffix(null, op);
                 if (suffix == null) suffix = "";
                 // TODO: Config format
                 if (!group.isEmpty()) {
@@ -736,8 +738,9 @@ public class RUtils {
             }
         }
         if (o instanceof ConsoleCommandSender) {
-            if (tooltip.size() < 1)
+            if (tooltip.size() < 1) {
                 tooltip.add(new FancyMessage("Console").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            }
         }
         return tooltip.isEmpty() ? null : tooltip;
     }
