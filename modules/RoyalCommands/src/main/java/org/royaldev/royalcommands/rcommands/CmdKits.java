@@ -2,12 +2,11 @@ package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.util.Map;
+import java.util.Set;
 
 @ReflectCommand
 public class CmdKits extends BaseCommand {
@@ -18,19 +17,15 @@ public class CmdKits extends BaseCommand {
 
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (!(cs instanceof Player) && args.length < 1) {
-            cs.sendMessage(cmd.getDescription());
-            return false;
-        }
-        final Map<String, Object> opts = this.plugin.getConfig().getConfigurationSection("kits").getValues(false);
-        if (opts.keySet().isEmpty()) {
+        final Set<String> kits = this.plugin.getConfig().getConfigurationSection("kits.list").getKeys(false);
+        if (kits.isEmpty()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No kits found!");
             return true;
         }
         final StringBuilder sb = new StringBuilder();
-        for (String s : opts.keySet()) {
-            if (Config.kitPerms && this.ah.isAuthorized(cs, "rcmds.kit." + s)) sb.append(s).append(", ");
-            else if (!Config.kitPerms) sb.append(s).append(", ");
+        for (final String kit : kits) {
+            if (Config.kitPerms && !this.ah.isAuthorized(cs, "rcmds.kit." + kit)) continue;
+            sb.append(kit).append(", ");
         }
         cs.sendMessage(MessageColor.POSITIVE + "Kits:");
         if (sb.length() == 0) return true;
