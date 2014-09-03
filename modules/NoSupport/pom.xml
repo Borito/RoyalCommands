@@ -15,12 +15,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>LATEST</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalcommands-api</artifactId>
             <!-- Depend on the API! -->
