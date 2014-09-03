@@ -19,7 +19,7 @@ public class CmdMuteAll extends BaseCommand {
 
     @Override
     public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        for (Player p : this.plugin.getServer().getOnlinePlayers()) {
+        for (final Player p : this.plugin.getServer().getOnlinePlayers()) {
             if (this.plugin.isVanished(p, cs) || this.ah.isAuthorized(p, cmd, PermType.EXEMPT)) continue;
             if (cs instanceof Player) {
                 if (p == cs) continue;
