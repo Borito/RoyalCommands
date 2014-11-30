@@ -357,7 +357,8 @@ public class RoyalCommands extends JavaPlugin {
         }
         playersToConvert.removeAll(playersConverted); // left over should be offline-mode players
         if (playersToConvert.size() > 0) this.getLogger().info("Converting offline-mode players.");
-        for (String name : playersToConvert) {
+        for (final String name : playersToConvert) {
+            if (name.trim().isEmpty()) continue;
             //noinspection deprecation
             final UUID uuid = this.getServer().getOfflinePlayer(name).getUniqueId();
             try {
