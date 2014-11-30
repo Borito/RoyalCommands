@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands.teleport;
 
-import mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

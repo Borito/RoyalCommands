@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

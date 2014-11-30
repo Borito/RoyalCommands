@@ -1,7 +1,7 @@
 package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;

@@ -1,6 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
-import mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

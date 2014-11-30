@@ -1,7 +1,7 @@
 package org.royaldev.royalcommands.rcommands;
 
 import com.google.common.base.Preconditions;
-import mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;

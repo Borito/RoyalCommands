@@ -52,7 +52,7 @@
                                 <includes>
                                     <include>org.royaldev:royalcommands-*</include>
                                     <include>org.shininet.bukkit:ItemRenamer</include>
-                                    <include>mkremins:fanciful</include>
+                                    <!--<include>mkremins:fanciful</include>-->
                                     <include>com.comphenix.attribute:AttributeStorage</include>
                                 </includes>
                             </artifactSet>
@@ -61,10 +61,10 @@
                                     <pattern>org.shininet.bukkit</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.org.shininet.bukkit</shadedPattern>
                                 </relocation>
-                                <relocation>
+                                <!--<relocation>
                                     <pattern>mkremins.fanciful</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.mkremins.fanciful</shadedPattern>
-                                </relocation>
+                                </relocation>-->
                                 <relocation>
                                     <pattern>net.amoebaman</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.net.amoebaman</shadedPattern>
@@ -168,10 +168,10 @@
             <id>royal-repo</id>
             <url>http://minor.royaldev.org:8081/nexus/content/groups/public/</url>
         </repository>
-        <repository>
+        <!--<repository>
             <id>fanciful-mvn-repo</id>
             <url>https://raw.github.com/mkremins/fanciful/mvn-repo/</url>
-        </repository>
+        </repository>-->
     </repositories>
     <dependencies>
         <dependency>
@@ -235,11 +235,11 @@
             <artifactId>reflections</artifactId>
             <version>0.9.9-RC2</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
             <version>0.2.0-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalchat</artifactId>
