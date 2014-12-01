@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -8,68 +7,53 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.rcommands.home.Home;
+import org.royaldev.royalcommands.wrappers.RPlayer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ReflectCommand
-public class CmdHome extends CACommand {
+public class CmdHome extends TabCommand {
 
     private final Flag<String> playerFlag = new Flag<>(String.class, "player", "p");
 
     public CmdHome(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort()});
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        if (!(cs instanceof Player)) return new ArrayList<>(); // TODO: Console fun
+        final RPlayer rp = RPlayer.getRPlayer((Player) cs);
+        return new ArrayList<>(rp.getHomeNames());
+    }
+
+    @Override
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
         final Player p = (Player) cs;
-        String homeName = (eargs.length < 1) ? "home" : eargs[0];
-        String homeOwner = cs.getName();
-        if (homeName.contains(":")) {
-            String[] split = homeName.split(":");
-            if (split.length < 2) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Home name format invalid!");
-                return true;
-            }
-            if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS) && !cs.getName().equalsIgnoreCase(split[0])) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to use other players' homes.");
-                return true;
-            }
-            homeOwner = split[0];
-            homeName = split[1];
-        }
+        String homeName = eargs.length < 1 ? "home" : eargs[0];
         if (ca.hasContentFlag(this.playerFlag)) {
-            homeOwner = ca.getFlag(this.playerFlag).getValue();
-            if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS) && !homeOwner.equalsIgnoreCase(cs.getName())) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to use other players' homes.");
-                return true;
-            }
+            homeName = ca.getFlag(this.playerFlag).getValue() + ":" + homeName;
         }
-        final PConfManager pcm = PConfManager.getPConfManager(RUtils.getOfflinePlayer(homeOwner));
-        if (!pcm.exists()) {
-            cs.sendMessage(MessageColor.NEGATIVE + "No such player exists!");
+        final Home home = Home.fromNotation(p.getUniqueId(), homeName);
+        if (home == null) {
+            cs.sendMessage(MessageColor.NEGATIVE + "The home " + MessageColor.NEUTRAL + homeName + MessageColor.NEGATIVE + " does not exist.");
             return true;
         }
-        String homePath = "home." + homeName;
-        if (!pcm.contains(homePath)) {
-            cs.sendMessage(MessageColor.NEGATIVE + "The home " + MessageColor.NEUTRAL + homeName + MessageColor.NEGATIVE + " for " + MessageColor.NEUTRAL + homeOwner + MessageColor.NEGATIVE + " does not exist.");
+        if (!home.getUUID().equals(p.getUniqueId()) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
+            cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to use other players' homes.");
             return true;
         }
-        Location l;
-        try {
-            l = pcm.getLocation(homePath);
-        } catch (Exception e) {
-            cs.sendMessage(MessageColor.NEGATIVE + "There was an error loading that home!");
-            cs.sendMessage(MessageColor.NEGATIVE + e.getClass().getSimpleName() + MessageColor.NEUTRAL + ": " + e.getMessage());
-            return true;
-        }
-        String error = RUtils.teleport(p, l);
+        final String error = RUtils.teleport(p, home.getLocation());
         if (!error.isEmpty()) cs.sendMessage(MessageColor.NEGATIVE + error);
-        else
-            cs.sendMessage(MessageColor.POSITIVE + "Teleported to home " + MessageColor.NEUTRAL + homeName + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + homeOwner + MessageColor.POSITIVE + ".");
+        else {
+            cs.sendMessage(MessageColor.POSITIVE + "Teleported to home " + MessageColor.NEUTRAL + home.getName() + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + home.getRPlayer().getName() + MessageColor.POSITIVE + ".");
+        }
         return true;
     }
 }

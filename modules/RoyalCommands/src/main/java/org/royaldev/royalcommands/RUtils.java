@@ -417,7 +417,9 @@ public class RUtils {
      *
      * @param u UUID of player to get backpack for
      * @return Backpack - never null
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getBackpack}.
      */
+    @Deprecated
     public static Inventory getBackpack(UUID u, World w) {
         PConfManager pcm = PConfManager.getPConfManager(u);
         String worldGroup = WorldManager.il.getWorldGroup(w);
@@ -441,7 +443,9 @@ public class RUtils {
      *
      * @param p Player to get backpack for
      * @return Backpack - never null
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getBackpack}.
      */
+    @Deprecated
     public static Inventory getBackpack(Player p) {
         return getBackpack(p.getUniqueId(), p.getWorld());
     }
@@ -458,10 +462,18 @@ public class RUtils {
         }
     }
 
+    /**
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getBackpack}.size()
+     */
+    @Deprecated
     public static int getCurrentHomes(Player p) {
         return getCurrentHomes(p.getUniqueId());
     }
 
+    /**
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getBackpack}.size()
+     */
+    @Deprecated
     public static int getCurrentHomes(UUID u) {
         ConfigurationSection pconf = PConfManager.getPConfManager(u).getConfigurationSection("home");
         if (pconf == null) return 0;
