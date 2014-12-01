@@ -43,6 +43,12 @@ public class Home {
         }
     }
 
+    public void delete() {
+        final PConfManager pcm = this.getRPlayer().getPConfManager();
+        pcm.set("home." + this.getName(), null);
+        pcm.forceSave();
+    }
+
     public Location getLocation() {
         return this.location;
     }
