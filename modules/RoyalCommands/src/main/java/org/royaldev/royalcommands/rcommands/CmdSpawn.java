@@ -28,8 +28,8 @@ public class CmdSpawn extends BaseCommand {
         ConfManager cm = ConfManager.getConfManager("spawns.yml");
         String group;
         try {
-            if (!RoyalCommands.instance.vh.usingVault()) throw new UnsupportedOperationException();
-            group = RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p);
+            if (!RoyalCommands.getInstance().vh.usingVault()) throw new UnsupportedOperationException();
+            group = RoyalCommands.getInstance().vh.getPermission().getPrimaryGroup(p);
         } catch (UnsupportedOperationException e) {
             group = null;
         } catch (NullPointerException e) {

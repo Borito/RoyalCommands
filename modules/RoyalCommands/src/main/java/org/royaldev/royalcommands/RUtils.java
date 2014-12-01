@@ -165,20 +165,20 @@ public class RUtils {
     public static boolean chargePlayer(CommandSender cs, double amount) {
         if (!(cs instanceof OfflinePlayer)) return false;
         final OfflinePlayer op = (OfflinePlayer) cs;
-        if (!RoyalCommands.instance.vh.usingVault() || RoyalCommands.instance.vh.getEconomy() == null) {
+        if (!RoyalCommands.getInstance().vh.usingVault() || RoyalCommands.getInstance().vh.getEconomy() == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No economy! Continuing without charging.");
             return true;
         }
-        if (!RoyalCommands.instance.vh.getEconomy().hasAccount(op)) {
+        if (!RoyalCommands.getInstance().vh.getEconomy().hasAccount(op)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You don't have a bank account!");
             return false;
         }
-        if (RoyalCommands.instance.vh.getEconomy().getBalance(op) < amount) {
+        if (RoyalCommands.getInstance().vh.getEconomy().getBalance(op) < amount) {
             cs.sendMessage(MessageColor.NEGATIVE + "You don't have enough money!");
             return false;
         }
-        RoyalCommands.instance.vh.getEconomy().withdrawPlayer(op, amount);
-        cs.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + RoyalCommands.instance.vh.getEconomy().format(amount) + MessageColor.POSITIVE + " removed from your account.");
+        RoyalCommands.getInstance().vh.getEconomy().withdrawPlayer(op, amount);
+        cs.sendMessage(MessageColor.POSITIVE + "You have had " + MessageColor.NEUTRAL + RoyalCommands.getInstance().vh.getEconomy().format(amount) + MessageColor.POSITIVE + " removed from your account.");
         return true;
     }
 
@@ -188,7 +188,7 @@ public class RUtils {
             int count = pcm.getStringList("mail").size();
             String poss = (count != 1) ? "s" : "";
             p.sendMessage(MessageColor.POSITIVE + "Your mailbox contains " + MessageColor.NEUTRAL + count + MessageColor.POSITIVE + " message" + poss + ".");
-            if (RoyalCommands.instance.ah.isAuthorized(p, "rcmds.mail"))
+            if (RoyalCommands.getInstance().ah.isAuthorized(p, "rcmds.mail"))
                 p.sendMessage(MessageColor.POSITIVE + "View mail with " + MessageColor.NEUTRAL + "/mail read" + MessageColor.POSITIVE + ".");
         }
     }
@@ -285,7 +285,7 @@ public class RUtils {
                 continue;
             }
             if (!delete.delete()) {
-                RoyalCommands.instance.getLogger().warning("Could not delete " + delete.getAbsolutePath());
+                RoyalCommands.getInstance().getLogger().warning("Could not delete " + delete.getAbsolutePath());
                 success = false;
             }
         }
@@ -300,7 +300,7 @@ public class RUtils {
      */
     public static void dispNoPerms(CommandSender cs) {
         cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission for that!");
-        RoyalCommands.instance.getLogger().warning(cs.getName() + " was denied access to that!");
+        RoyalCommands.getInstance().getLogger().warning(cs.getName() + " was denied access to that!");
     }
 
     /**
@@ -311,7 +311,7 @@ public class RUtils {
      */
     public static void dispNoPerms(CommandSender cs, String message) {
         cs.sendMessage(message);
-        RoyalCommands.instance.getLogger().warning(cs.getName() + " was denied access to that!");
+        RoyalCommands.getInstance().getLogger().warning(cs.getName() + " was denied access to that!");
     }
 
     public static void dispNoPerms(CommandSender cs, String... permissionsNeeded) {
@@ -325,11 +325,11 @@ public class RUtils {
                 .formattedTooltip(tooltip)
             .send(cs);
         // @formatter:on
-        RoyalCommands.instance.getLogger().warning(cs.getName() + " was denied access to that!");
+        RoyalCommands.getInstance().getLogger().warning(cs.getName() + " was denied access to that!");
     }
 
     private static void executeBanActions(OfflinePlayer banned, CommandSender banner, String reason) {
-        if (!RoyalCommands.instance.getConfig().getKeys(false).contains("on_ban"))
+        if (!RoyalCommands.getInstance().getConfig().getKeys(false).contains("on_ban"))
             return; // default values are not welcome here
         final List<String> banActions = Config.onBanActions;
         if (banActions == null || banActions.isEmpty()) return;
@@ -448,9 +448,9 @@ public class RUtils {
 
     public static Command getCommand(String name) {
         try {
-            final Field map = RoyalCommands.instance.getServer().getPluginManager().getClass().getDeclaredField("commandMap");
+            final Field map = RoyalCommands.getInstance().getServer().getPluginManager().getClass().getDeclaredField("commandMap");
             map.setAccessible(true);
-            final CommandMap cm = (CommandMap) map.get(RoyalCommands.instance.getServer().getPluginManager());
+            final CommandMap cm = (CommandMap) map.get(RoyalCommands.getInstance().getServer().getPluginManager());
             return cm.getCommand(name);
         } catch (Exception e) {
             e.printStackTrace();
@@ -524,16 +524,16 @@ public class RUtils {
     public static int getHomeLimit(Player p) {
         String name = p.getName();
         String group;
-        if (RoyalCommands.instance.vh.usingVault()) {
+        if (RoyalCommands.getInstance().vh.usingVault()) {
             try {
-                group = RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p);
+                group = RoyalCommands.getInstance().vh.getPermission().getPrimaryGroup(p);
             } catch (Exception e) {
                 group = "";
             }
         } else group = "";
         if (group == null) group = "";
         int limit;
-        final FileConfiguration c = RoyalCommands.instance.getConfig();
+        final FileConfiguration c = RoyalCommands.getInstance().getConfig();
         if (c.isSet("homes.limits.players." + name)) limit = c.getInt("homes.limits.players." + name, -1);
         else limit = c.getInt("homes.limits.groups." + group, -1);
         return limit;
@@ -700,15 +700,15 @@ public class RUtils {
      */
     @SuppressWarnings("deprecation")
     public static OfflinePlayer getOfflinePlayer(String name) {
-        OfflinePlayer op = RoyalCommands.instance.getServer().getPlayerExact(name);
-        if (op == null) op = RoyalCommands.instance.getServer().getPlayer(name);
-        if (op == null) op = RoyalCommands.instance.getServer().getOfflinePlayer(name);
+        OfflinePlayer op = RoyalCommands.getInstance().getServer().getPlayerExact(name);
+        if (op == null) op = RoyalCommands.getInstance().getServer().getPlayer(name);
+        if (op == null) op = RoyalCommands.getInstance().getServer().getOfflinePlayer(name);
         return op;
     }
 
     public static List<FancyMessage> getPlayerTooltip(final Object o) {
         final List<FancyMessage> tooltip = new ArrayList<>();
-        final VaultHandler vh = RoyalCommands.instance.vh;
+        final VaultHandler vh = RoyalCommands.getInstance().vh;
         if (o instanceof OfflinePlayer) {
             final OfflinePlayer op = (OfflinePlayer) o;
             if (tooltip.size() < 1)
@@ -1062,7 +1062,7 @@ public class RUtils {
                 }
             }
         };
-        int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(RoyalCommands.instance, r, 0, 10);
+        int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(RoyalCommands.getInstance(), r, 0, 10);
         synchronized (teleRunners) {
             teleRunners.put(p.getName(), id);
         }
@@ -1100,7 +1100,7 @@ public class RUtils {
         try {
             toPlay = Sound.valueOf(Config.teleportSoundName);
         } catch (IllegalArgumentException e) {
-            RoyalCommands.instance.getLogger().warning("A teleport sound was attempted, but teleport_sound.name was not a valid sound name!");
+            RoyalCommands.getInstance().getLogger().warning("A teleport sound was attempted, but teleport_sound.name was not a valid sound name!");
             return;
         }
         at.getWorld().playSound(at, toPlay, Config.teleportSoundVolume, Config.teleportSoundPitch);
@@ -1129,19 +1129,19 @@ public class RUtils {
     public static String replaceVars(final String orig, final Player p) {
         String repld = orig;
         repld = repld.replace("{name}", p.getName()).replace("{dispname}", p.getDisplayName()).replace("{world}", getMVWorldName(p.getWorld()));
-        if (!RoyalCommands.instance.vh.usingVault()) return repld;
+        if (!RoyalCommands.getInstance().vh.usingVault()) return repld;
         try {
-            repld = repld.replace("{group}", RoyalCommands.instance.vh.getPermission().getPrimaryGroup(p));
+            repld = repld.replace("{group}", RoyalCommands.getInstance().vh.getPermission().getPrimaryGroup(p));
         } catch (Exception ignored) {
         }
         try {
-            repld = repld.replace("{prefix}", RoyalCommands.instance.vh.getChat().getPlayerPrefix(p));
+            repld = repld.replace("{prefix}", RoyalCommands.getInstance().vh.getChat().getPlayerPrefix(p));
         } catch (Exception ignored) {
             String prefix = getRChatPrefix(p);
             if (prefix != null) repld = repld.replace("{prefix}", prefix);
         }
         try {
-            repld = repld.replace("{suffix}", RoyalCommands.instance.vh.getChat().getPlayerSuffix(p));
+            repld = repld.replace("{suffix}", RoyalCommands.getInstance().vh.getChat().getPlayerSuffix(p));
         } catch (Exception ignored) {
             String suffix = getRChatSuffix(p);
             if (suffix != null) repld = repld.replace("{suffix}", suffix);
@@ -1192,9 +1192,9 @@ public class RUtils {
                 p.kickPlayer(reason);
             }
         };
-        Plugin plugin = RoyalCommands.instance;
+        Plugin plugin = RoyalCommands.getInstance();
         if (plugin == null) throw new NullPointerException("Could not get the RoyalCommands plugin.");
-        RoyalCommands.instance.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
+        RoyalCommands.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
     }
 
     public static void setAssignment(ItemStack is, List<String> commands, GeneralConfManager gcf) {
@@ -1292,7 +1292,7 @@ public class RUtils {
      */
     public static String silentTeleport(Player p, Location l) {
         synchronized (teleRunners) {
-            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.instance.ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
+            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.getInstance().ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, l);
                 return "";
             } else if (Config.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {
@@ -1336,7 +1336,7 @@ public class RUtils {
      */
     public static String teleport(Player p, Location l) {
         synchronized (teleRunners) {
-            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.instance.ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
+            if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.getInstance().ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
                 makeTeleportRunner(p, l);
                 return "";
             } else if (Config.teleportWarmup > 0 && teleRunners.containsKey(p.getName()) && !teleAllowed.contains(p.getName())) {

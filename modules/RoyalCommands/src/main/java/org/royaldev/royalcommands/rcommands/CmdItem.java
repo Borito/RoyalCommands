@@ -31,7 +31,7 @@ public class CmdItem extends TabCommand {
 
     static ItemStack applyMeta(ItemStack is, CommandArguments ca, CommandSender cs) {
         final ItemMeta im = is.getItemMeta();
-        if (ca.hasFlag(CmdItem.nameFlag) && RoyalCommands.instance.ah.isAuthorized(cs, "rcmds.rename")) {
+        if (ca.hasFlag(CmdItem.nameFlag) && RoyalCommands.getInstance().ah.isAuthorized(cs, "rcmds.rename")) {
             final String name = RUtils.colorize(ca.getFlag(CmdItem.nameFlag).getValue());
             if (name == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You must supply a name.");
@@ -39,7 +39,7 @@ public class CmdItem extends TabCommand {
             }
             im.setDisplayName(name);
         }
-        if (ca.hasFlag(CmdItem.loreFlag) && RoyalCommands.instance.ah.isAuthorized(cs, "rcmds.lore")) {
+        if (ca.hasFlag(CmdItem.loreFlag) && RoyalCommands.getInstance().ah.isAuthorized(cs, "rcmds.lore")) {
             final String loreArgs = ca.getFlag(CmdItem.loreFlag).getValue();
             if (loreArgs == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You must supply lore.");

@@ -33,13 +33,13 @@ public class ItemNameManager {
             try {
                 m = Material.valueOf(s[0]);
             } catch (IllegalArgumentException ex) {
-                RoyalCommands.instance.getLogger().warning("Material in items.csv is invalid: " + s[0]);
+                RoyalCommands.getInstance().getLogger().warning("Material in items.csv is invalid: " + s[0]);
                 continue;
             }
             try {
                 data = Short.valueOf(s[1]);
             } catch (NumberFormatException e) {
-                RoyalCommands.instance.getLogger().warning("Data in items.csv file is invalid: " + s[1]);
+                RoyalCommands.getInstance().getLogger().warning("Data in items.csv file is invalid: " + s[1]);
                 continue;
             }
             synchronized (items) {

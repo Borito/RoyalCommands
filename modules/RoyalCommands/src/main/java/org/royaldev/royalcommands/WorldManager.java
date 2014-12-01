@@ -26,10 +26,10 @@ public class WorldManager {
     private final List<String> loadedWorlds = new ArrayList<>();
     private final List<String> configuredWorlds = new ArrayList<>();
     private final ConfManager config = ConfManager.getConfManager("worlds.yml");
-    private final Logger log = RoyalCommands.instance.getLogger();
+    private final Logger log = RoyalCommands.getInstance().getLogger();
 
     public WorldManager() {
-        il = new InventoryListener(RoyalCommands.instance);
+        il = new InventoryListener(RoyalCommands.getInstance());
         if (!Config.useWorldManager) return;
         if (!config.exists()) config.createFile();
         if (config.getConfigurationSection("worlds") != null) {
@@ -52,8 +52,8 @@ public class WorldManager {
             boolean isStorming = config.getBoolean("worlds." + w.getName() + ".is_storming_if_weather_false", false);
             w.setStorm(isStorming);
         }
-        Bukkit.getPluginManager().registerEvents(il, RoyalCommands.instance);
-        Bukkit.getPluginManager().registerEvents(new WorldWatcher(), RoyalCommands.instance);
+        Bukkit.getPluginManager().registerEvents(il, RoyalCommands.getInstance());
+        Bukkit.getPluginManager().registerEvents(new WorldWatcher(), RoyalCommands.getInstance());
     }
 
     public void addNewToConfig() {

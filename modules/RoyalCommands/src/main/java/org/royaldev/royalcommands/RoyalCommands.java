@@ -90,9 +90,8 @@ public class RoyalCommands extends JavaPlugin {
     public static File dataFolder;
     public static ItemNameManager inm;
     public static WorldManager wm = null;
-
-    public static RoyalCommands instance;
     public static MultiverseCore mvc = null;
+    private static RoyalCommands instance;
     public final AuthorizationHandler ah = new AuthorizationHandler(this);
     public final VaultHandler vh = new VaultHandler(this);
     private final int minVersion = 2645;
@@ -127,6 +126,10 @@ public class RoyalCommands extends JavaPlugin {
         final StringBuilder sb = new StringBuilder();
         for (int i = position; i < array.length; i++) sb.append(array[i]).append(" ");
         return sb.substring(0, sb.length() - 1);
+    }
+
+    public static RoyalCommands getInstance() {
+        return RoyalCommands.instance;
     }
 
     private List<String> getAliases(String command) {
