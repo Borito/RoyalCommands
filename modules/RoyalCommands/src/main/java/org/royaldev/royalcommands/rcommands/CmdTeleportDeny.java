@@ -32,7 +32,7 @@ public class CmdTeleportDeny extends TabCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players.");
             return true;

@@ -1,7 +1,6 @@
 package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -37,6 +36,7 @@ import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.rcommands.CmdBack;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
 import org.royaldev.royalcommands.tools.NameFetcher;
 import org.royaldev.royalcommands.tools.UUIDFetcher;

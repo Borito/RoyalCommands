@@ -136,7 +136,7 @@ public class PConfManager extends GeneralConfManager {
         synchronized (this.saveLock) {
             try {
                 this.save(this.pconfl);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         }

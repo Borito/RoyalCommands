@@ -21,7 +21,7 @@ public class CmdDeleteHome extends CACommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
         if (eargs.length < 1) {
             cs.sendMessage(MessageColor.NEGATIVE + "Type \"" + MessageColor.NEUTRAL + "/" + label + " home" + MessageColor.NEGATIVE + "\" to delete your default home.");
             return true;

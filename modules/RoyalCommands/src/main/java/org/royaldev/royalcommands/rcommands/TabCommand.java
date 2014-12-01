@@ -21,7 +21,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
     private final List<Short> completionTypes = new ArrayList<>();
     private CompletionType alwaysUse = null;
 
-    protected TabCommand(RoyalCommands instance, String name, boolean checkPermissions, Short[] cts) {
+    protected TabCommand(final RoyalCommands instance, final String name, final boolean checkPermissions, final Short[] cts) {
         super(instance, name, checkPermissions);
         for (Short s : cts) {
             if (s == null) s = 0;
@@ -40,7 +40,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
      * @return Array of Enums to be checked
      */
     @SuppressWarnings("UnusedParameters")
-    protected Enum[] customEnum(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected Enum[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return new Enum[0];
     }
 
@@ -55,7 +55,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
      * @return List of values to be checked
      */
     @SuppressWarnings("UnusedParameters")
-    protected List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return new ArrayList<>();
     }
 
@@ -72,11 +72,11 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
      * @return Filtered completions to return
      */
     @SuppressWarnings("UnusedParameters")
-    protected List<String> filterCompletions(List<String> completions, CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected List<String> filterCompletions(final List<String> completions, final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return completions;
     }
 
-    protected List<String> getCompletionsFor(CommandSender cs, Command cmd, String label, String[] args, final CompletionType ct) {
+    protected List<String> getCompletionsFor(final CommandSender cs, final Command cmd, final String label, final String[] args, final CompletionType ct) {
         final List<String> possibilities = new ArrayList<>();
         if (args.length < 1) return possibilities;
         final String arg = args[args.length - 1].toLowerCase();
@@ -137,7 +137,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
             case ANY_COMMAND:
                 final SimpleCommandMap commandMap;
                 try {
-                    Object result = RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "commandMap");
+                    final Object result = RUtils.getPrivateField(this.plugin.getServer().getPluginManager(), "commandMap");
                     commandMap = (SimpleCommandMap) result;
                 } catch (Exception e) {
                     break;
@@ -175,11 +175,11 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
      * @return List of possible completions (not null)
      */
     @SuppressWarnings("UnusedParameters")
-    protected List<String> getCustomCompletions(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         return new ArrayList<>();
     }
 
-    protected List<String> getPluginCompletions(String arg) {
+    protected List<String> getPluginCompletions(final String arg) {
         final List<String> possibilities = new ArrayList<>();
         for (final Plugin p : this.plugin.getServer().getPluginManager().getPlugins()) {
             final String name = p.getName();
@@ -191,7 +191,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender cs, Command cmd, String label, String[] args) {
+    public List<String> onTabComplete(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         try {
             final ArrayList<String> possibilities = new ArrayList<>();
             final String[] eargs = this.getCommandArguments(args).getExtraParameters();
@@ -205,13 +205,13 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                 possibilities.addAll(this.getCompletionsFor(cs, cmd, label, eargs, ct));
             }
             return possibilities;
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             this.handleException(cs, cmd, label, args, t, "An exception occurred while tab-completing that command.");
             return null;
         }
     }
 
-    protected void setAlwaysUse(CompletionType alwaysUse) {
+    protected void setAlwaysUse(final CompletionType alwaysUse) {
         this.alwaysUse = alwaysUse;
     }
 
@@ -263,11 +263,11 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
 
         private final short s;
 
-        CompletionType(short s) {
+        CompletionType(final short s) {
             this.s = s;
         }
 
-        public static List<CompletionType> getCompletionTypes(int i) {
+        public static List<CompletionType> getCompletionTypes(final int i) {
             final List<CompletionType> cts = new ArrayList<>();
             for (final CompletionType ct : CompletionType.values()) {
                 if ((i & ct.getShort()) <= 0) continue;

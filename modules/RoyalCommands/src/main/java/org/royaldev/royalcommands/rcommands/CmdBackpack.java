@@ -24,7 +24,7 @@ public class CmdBackpack extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        Player p = (Player) cs;
+        final Player p = (Player) cs;
         if (args.length > 0) {
             if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
                 RUtils.dispNoPerms(cs);
@@ -34,7 +34,7 @@ public class CmdBackpack extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "No world specified.");
                 return true;
             }
-            World w = this.plugin.getServer().getWorld(args[1]);
+            final World w = this.plugin.getServer().getWorld(args[1]);
             if (w == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
                 return true;

@@ -1,11 +1,11 @@
 package org.royaldev.royalcommands.rcommands.teleport;
 
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class TeleportRequest {
      * @param teleportType Type of teleport
      * @param date         Time teleport was requested
      */
-    public TeleportRequest(String requester, String target, TeleportType teleportType, long date) {
+    public TeleportRequest(final String requester, final String target, final TeleportType teleportType, final long date) {
         this.requester = requester;
         this.target = target;
         this.teleportType = teleportType;
@@ -43,7 +43,7 @@ public class TeleportRequest {
      * @param target    Target's name
      * @return First matching TeleportRequest or null
      */
-    public static TeleportRequest getFirstRequest(String requester, String target) {
+    public static TeleportRequest getFirstRequest(final String requester, final String target) {
         final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
         if (trs == null) return null;
         for (TeleportRequest tr : trs) {
@@ -60,7 +60,7 @@ public class TeleportRequest {
      * @param target Target's name
      * @return Latest TeleportRequest or null
      */
-    public static TeleportRequest getLatestRequest(String target) {
+    public static TeleportRequest getLatestRequest(final String target) {
         final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
         if (trs == null) return null;
         long highest = -1L;
@@ -91,7 +91,7 @@ public class TeleportRequest {
      * @param target    Target's name
      * @return true if requests exist, false if not
      */
-    private static boolean hasPendingRequest(String requester, String target) {
+    private static boolean hasPendingRequest(final String requester, final String target) {
         final List<TeleportRequest> trs = TeleportRequest.getRequests().get(target);
         if (trs == null) return false;
         for (TeleportRequest tr : trs) {
@@ -110,7 +110,7 @@ public class TeleportRequest {
      * @param teleportType Type of teleport
      * @param confirmation If a confirmation of the request should be sent to the requester
      */
-    public static void send(Player requester, Player target, TeleportType teleportType, boolean confirmation) {
+    public static void send(final Player requester, final Player target, final TeleportType teleportType, final boolean confirmation) {
         if (requester.getName().equalsIgnoreCase(target.getName())) {
             requester.sendMessage(MessageColor.NEGATIVE + "You cannot teleport to yourself.");
             return;
@@ -158,7 +158,7 @@ public class TeleportRequest {
      * @param target       Target of the teleport
      * @param teleportType Type of teleport
      */
-    public static void send(Player requester, Player target, TeleportType teleportType) {
+    public static void send(final Player requester, final Player target, final TeleportType teleportType) {
         TeleportRequest.send(requester, target, teleportType, true);
     }
 
@@ -246,7 +246,7 @@ public class TeleportRequest {
 
         private final String requestMessage;
 
-        TeleportType(String requestMessage) {
+        TeleportType(final String requestMessage) {
             this.requestMessage = requestMessage;
         }
 
@@ -256,7 +256,7 @@ public class TeleportRequest {
          * @param name Name to insert into the message
          * @return Formatted message
          */
-        public String getMessage(String name) {
+        public String getMessage(final String name) {
             return String.format(this.requestMessage, name);
         }
 
@@ -266,7 +266,7 @@ public class TeleportRequest {
          * @param cs CommandSender to get name from to insert into the message
          * @return Formatted message
          */
-        public String getMessage(CommandSender cs) {
+        public String getMessage(final CommandSender cs) {
             return this.getMessage(cs.getName());
         }
 

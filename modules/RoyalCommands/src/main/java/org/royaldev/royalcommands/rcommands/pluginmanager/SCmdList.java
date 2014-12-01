@@ -16,7 +16,7 @@ public class SCmdList extends SubCommand<CmdPluginManager> {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
         final PluginManager pm = this.plugin.getServer().getPluginManager();
         final Plugin[] ps = pm.getPlugins();
         final StringBuilder list = new StringBuilder();

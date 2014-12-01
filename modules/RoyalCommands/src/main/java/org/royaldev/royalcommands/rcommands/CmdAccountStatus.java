@@ -51,14 +51,14 @@ public class CmdAccountStatus extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
                 return true;
             } else isPremium = line.equalsIgnoreCase("true");
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
             cs.sendMessage(MessageColor.NEGATIVE + ex.getMessage());
             return true;
         } finally {
             try {
                 if (br != null) br.close();
-            } catch (IOException ignored) {
+            } catch (final IOException ignored) {
             }
         }
         // @formatter:off

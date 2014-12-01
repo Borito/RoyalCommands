@@ -48,18 +48,18 @@ public class CmdUses extends TabCommand {
         this.tasks.remove(p.getName());
     }
 
-    private boolean containsItemStack(Collection<? extends ItemStack> collection, ItemStack b) {
+    private boolean containsItemStack(final Collection<? extends ItemStack> collection, final ItemStack b) {
         for (final ItemStack a : collection) {
             if (this.itemStackEquals(a, b)) return true;
         }
         return false;
     }
 
-    private boolean itemStackEquals(ItemStack a, ItemStack b) {
+    private boolean itemStackEquals(final ItemStack a, final ItemStack b) {
         return !(a == null || b == null) && a.getType() == b.getType() && (a.getDurability() == -1 || a.getDurability() == Short.MAX_VALUE || a.getDurability() == b.getDurability());
     }
 
-    private void scheduleUsesTask(final Player p, ItemStack is) {
+    private void scheduleUsesTask(final Player p, final ItemStack is) {
         final List<Inventory> workbenches = new ArrayList<>();
         final Iterator<Recipe> recipeIterator = this.plugin.getServer().recipeIterator();
         while (recipeIterator.hasNext()) {
@@ -108,7 +108,7 @@ public class CmdUses extends TabCommand {
             private int currentRecipe = 0;
             private boolean display = true;
 
-            private void setClosing(boolean closing) {
+            private void setClosing(final boolean closing) {
                 final InventoryHolder ih = p.getOpenInventory().getTopInventory().getHolder();
                 if (!(ih instanceof UsesHolder)) return;
                 final UsesHolder uh = (UsesHolder) ih;
@@ -137,7 +137,7 @@ public class CmdUses extends TabCommand {
         this.tasks.put(p.getName(), taskID);
     }
 
-    private ItemStack syncDurabilities(ItemStack base, ItemStack copyDurability) {
+    private ItemStack syncDurabilities(final ItemStack base, final ItemStack copyDurability) {
         if (base.getType() != copyDurability.getType()) return base;
         if (base.getDurability() != -1 && base.getDurability() != Short.MAX_VALUE) return base;
         base.setDurability(copyDurability.getDurability());
@@ -145,7 +145,7 @@ public class CmdUses extends TabCommand {
     }
 
     @Override
-    protected boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+    protected boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
         if (eargs.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
@@ -179,7 +179,7 @@ public class CmdUses extends TabCommand {
     private class WorkbenchCloseListener implements Listener {
 
         @EventHandler(ignoreCancelled = true)
-        public void workbenchClick(InventoryClickEvent e) {
+        public void workbenchClick(final InventoryClickEvent e) {
             if (!(e.getWhoClicked() instanceof Player)) return;
             final ItemStack is = e.getCurrentItem();
             if (is == null || is.getType() == Material.AIR) return;
@@ -193,7 +193,7 @@ public class CmdUses extends TabCommand {
         }
 
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-        public void workbenchClose(InventoryCloseEvent e) {
+        public void workbenchClose(final InventoryCloseEvent e) {
             if (!(e.getPlayer() instanceof Player)) return;
             final Player p = (Player) e.getPlayer();
             final InventoryType it = e.getInventory().getType();
@@ -214,7 +214,7 @@ public class CmdUses extends TabCommand {
             return this.closing;
         }
 
-        private void setClosing(boolean closing) {
+        private void setClosing(final boolean closing) {
             this.closing = closing;
         }
 

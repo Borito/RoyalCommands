@@ -47,7 +47,7 @@ public class CmdListHomes extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
             return true;
         }
-        ConfigurationSection cfgs = pcm.getConfigurationSection("home");
+        final ConfigurationSection cfgs = pcm.getConfigurationSection("home");
         if (cfgs == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No homes found!");
             return true;
