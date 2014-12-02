@@ -463,7 +463,7 @@ public class RUtils {
     }
 
     /**
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getBackpack}.size()
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getHomes}.size()
      */
     @Deprecated
     public static int getCurrentHomes(Player p) {
@@ -471,7 +471,7 @@ public class RUtils {
     }
 
     /**
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getBackpack}.size()
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getHomes}.size()
      */
     @Deprecated
     public static int getCurrentHomes(UUID u) {
@@ -533,6 +533,10 @@ public class RUtils {
         return e.name().toLowerCase().replace("_", " ");
     }
 
+    /**
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getHomeLimit}
+     */
+    @Deprecated
     public static int getHomeLimit(Player p) {
         String name = p.getName();
         String group;

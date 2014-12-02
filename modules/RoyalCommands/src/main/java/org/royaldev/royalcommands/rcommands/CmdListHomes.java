@@ -1,19 +1,18 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.rcommands.home.Home;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.RPlayer;
 
 import java.util.Iterator;
-import java.util.Map;
 
 @ReflectCommand
 public class CmdListHomes extends BaseCommand {
@@ -23,12 +22,12 @@ public class CmdListHomes extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (!(cs instanceof Player) && args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t;
+        final OfflinePlayer t;
         if (args.length < 1) t = (OfflinePlayer) cs;
         else {
             if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
@@ -41,34 +40,16 @@ public class CmdListHomes extends BaseCommand {
                 return true;
             }
         }
-
-        final PConfManager pcm = PConfManager.getPConfManager(t);
-        if (!pcm.exists()) {
-            cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
-            return true;
-        }
-        final ConfigurationSection cfgs = pcm.getConfigurationSection("home");
-        if (cfgs == null) {
-            cs.sendMessage(MessageColor.NEGATIVE + "No homes found!");
-            return true;
-        }
-        final Map<String, Object> opts = cfgs.getValues(false);
-        if (opts.keySet().isEmpty()) {
-            cs.sendMessage(MessageColor.NEGATIVE + "No homes found!");
-            return true;
-        }
+        final RPlayer rp = RPlayer.getRPlayer(t);
+        final Iterator<Home> homes = rp.getHomes().iterator();
         final FancyMessage fm = new FancyMessage("");
-        final Iterator<String> homes = opts.keySet().iterator();
         while (homes.hasNext()) {
-            final String home = homes.next();
-            fm.then(home).color(MessageColor.NEUTRAL._()).command("/home " + home);
+            final Home home = homes.next();
+            fm.then(home.getName()).color(MessageColor.NEUTRAL._()).command("/home " + home.getName());
             if (homes.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
         }
-        if (cs instanceof Player && cs.getName().equalsIgnoreCase(t.getName())) {
-            final Player p = (Player) cs;
-            final int homeLimit = RUtils.getHomeLimit(p);
-            cs.sendMessage(MessageColor.POSITIVE + "Homes (" + MessageColor.NEUTRAL + RUtils.getCurrentHomes(p) + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + ((homeLimit < 0) ? "Unlimited" : homeLimit) + MessageColor.POSITIVE + "):");
-        } else cs.sendMessage(MessageColor.POSITIVE + "Homes:");
+        final int homeLimit = rp.getHomeLimit();
+        cs.sendMessage(MessageColor.POSITIVE + "Homes (" + MessageColor.NEUTRAL + rp.getHomes().size() + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + ((homeLimit < 0) ? "Unlimited" : homeLimit) + MessageColor.POSITIVE + "):");
         fm.send(cs);
         return true;
     }

@@ -11,7 +11,7 @@ public class Home {
 
     private final UUID uuid;
     private final String name;
-    private final Location location;
+    private Location location;
 
     public Home(final UUID uuid, final String name, final Location location) {
         this.uuid = uuid;
@@ -51,6 +51,10 @@ public class Home {
 
     public Location getLocation() {
         return this.location;
+    }
+
+    public void setLocation(final Location location) {
+        this.location = location;
     }
 
     public String getName() {
