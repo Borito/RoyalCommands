@@ -1149,6 +1149,13 @@ reflectcommands:
     version_added: 4.1.0
     class: CmdUses
 
+  uptime:
+    description: Displays the amount of time the server has been up for.
+    usage: /<command>
+    aliases: [ut]
+    version_added: 4.1.0
+    class: CmdUptime
+
   royalcommands:
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
@@ -1837,6 +1844,10 @@ permissions:
     command: uses
     default: op
     description: Allows you to display uses for any item.
+  rcmds.uptime:
+    command: uptime
+    default: op
+    description: Allows you to see how long the server has been running for.
 
   rcmds.spawnmob.*:
     command: spawnmob
@@ -2561,6 +2572,7 @@ permissions:
       rcmds.documentation: true
       rcmds.prune: true
       rcmds.uses: true
+      rcmds.uptime: true
       rcmds.royalcommands: true
 
   rcmds.admin:
@@ -2874,6 +2886,7 @@ permissions:
       rcmds.documentation: true
       rcmds.prune: true
       rcmds.uses: true
+      rcmds.uptime: true
       rcmds.royalcommands: true
 
       rcmds.pluginmanager.*: true

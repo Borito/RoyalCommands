@@ -97,6 +97,7 @@ public class RoyalCommands extends JavaPlugin {
     private final int minVersion = 2645;
 
     private final Pattern versionPattern = Pattern.compile("((\\d+\\.?){3})(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
+    private final long startTime = System.currentTimeMillis();
     public ConfManager whl;
     public String version = null;
     public String newVersion = null;
@@ -423,6 +424,10 @@ public class RoyalCommands extends JavaPlugin {
 
     public YamlConfiguration getPluginYml() {
         return this.pluginYml;
+    }
+
+    public long getStartTime() {
+        return this.startTime;
     }
 
     public boolean isVanished(Player p) {
