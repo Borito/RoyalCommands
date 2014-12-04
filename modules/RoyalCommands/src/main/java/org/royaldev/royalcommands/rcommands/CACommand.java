@@ -11,10 +11,10 @@ public abstract class CACommand extends BaseCommand {
     }
 
     @Override
-    protected boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    protected boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         final CommandArguments ca = this.getCommandArguments(args);
         return this.runCommand(cs, cmd, label, ca.getExtraParameters(), ca);
     }
 
-    protected abstract boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca);
+    protected abstract boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca);
 }

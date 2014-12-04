@@ -14,7 +14,7 @@ public class CmdLevel extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command can only be used by players!");
             return true;

@@ -54,7 +54,7 @@ public class CmdWarp extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
 
         if (!(cs instanceof Player) && args.length < 2) {
             cs.sendMessage(cmd.getDescription());

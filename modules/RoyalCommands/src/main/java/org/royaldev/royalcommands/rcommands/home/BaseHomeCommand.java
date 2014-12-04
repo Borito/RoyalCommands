@@ -20,16 +20,28 @@ public abstract class BaseHomeCommand extends TabCommand {
 
     protected BaseHomeCommand(final RoyalCommands instance, final String name, final boolean checkPermissions, final Short[] cts, final boolean consoleAllowed) {
         super(instance, name, checkPermissions, cts);
-        this.consoleAllowed =  consoleAllowed;
+        this.consoleAllowed = consoleAllowed;
     }
 
-    protected abstract boolean continueCommand(final CommandSender cs, final Player p, final Command cmd, final String label, final String[] eargs, final CommandArguments ca, final Home home);
+    protected abstract boolean runCommand(final CommandSender cs, final Player p, final Command cmd, final String label, final String[] eargs, final CommandArguments ca, final Home home);
+
+    protected List<String> completeHomes(final RPlayer rp, final String name) {
+        final String[] parts = name.split(":");
+        final String playerName = parts.length > 1 ? parts[0] : null;
+        if (playerName == null) return rp.getHomeNames();
+        final List<Home> homes = RPlayer.getRPlayer(playerName).getHomes();
+        final List<String> completeNames = new ArrayList<>();
+        for (final Home h : homes) {
+            completeNames.add(h.getName());
+        }
+        return completeNames;
+    }
 
     @Override
     protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         if (!(cs instanceof Player)) return new ArrayList<>();
         final RPlayer rp = RPlayer.getRPlayer((Player) cs);
-        return new ArrayList<>(rp.getHomeNames());
+        return new ArrayList<>(this.completeHomes(rp, arg));
     }
 
     @Override
@@ -57,6 +69,6 @@ public abstract class BaseHomeCommand extends TabCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to use other players' homes.");
             return true;
         }
-        return this.continueCommand(cs, p, cmd, label, eargs, ca, home);
+        return this.runCommand(cs, p, cmd, label, eargs, ca, home);
     }
 }

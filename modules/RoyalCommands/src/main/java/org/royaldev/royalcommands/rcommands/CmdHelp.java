@@ -101,7 +101,7 @@ public class CmdHelp extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (Config.customHelp) displayCustomHelp(cs, (args.length > 0) ? args[0] : "1");
         else if (args.length < 1 && !Config.customHelp) displayPluginList(cs);
         else if (args.length > 0 && !Config.customHelp)

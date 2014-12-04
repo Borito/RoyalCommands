@@ -16,7 +16,7 @@ public class CmdOneHitKill extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (args.length > 0) {
             Player t = this.plugin.getServer().getPlayer(args[0]);
             if (t == null || this.plugin.isVanished(t, cs)) {

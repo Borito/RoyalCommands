@@ -25,16 +25,18 @@ public class CmdIngot2Block extends BaseCommand {
         int remainder = hand.getAmount() % 9;
         int amount = hand.getAmount() - remainder;
         int blocks = amount / 9;
-        final ItemStack blocka = new ItemStack(block, blocks);
-        final ItemStack ingots = new ItemStack(ingot, amount, data);
-        p.getInventory().removeItem(ingots);
-        final HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
-        if (!left.isEmpty()) for (ItemStack s : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), s);
+        if (blocks > 0) {
+            final ItemStack blocka = new ItemStack(block, blocks);
+            final ItemStack ingots = new ItemStack(ingot, amount, data);
+            p.getInventory().removeItem(ingots);
+            final HashMap<Integer, ItemStack> left = p.getInventory().addItem(blocka);
+            if (!left.isEmpty()) for (ItemStack s : left.values()) p.getWorld().dropItemNaturally(p.getLocation(), s);
+        }
         p.sendMessage(MessageColor.POSITIVE + "Made " + MessageColor.NEUTRAL + blocks + " block(s) " + MessageColor.POSITIVE + "and had " + MessageColor.NEUTRAL + remainder + " material(s) " + MessageColor.POSITIVE + "left over.");
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;

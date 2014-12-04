@@ -19,29 +19,16 @@ public class ParentCommand extends TabCommand {
         this.setAlwaysUse(CompletionType.LIST);
     }
 
-    private boolean isAuthorized(Object o, SubCommand sc) {
+    private boolean isAuthorized(final Object o, final SubCommand sc) {
         return this.ah.isAuthorized(o, "rcmds." + sc.getName());
     }
 
-    public void showHelp(CommandSender cs, String label) {
-        cs.sendMessage(MessageColor.POSITIVE + "/" + label + " Help");
-        final StringBuilder sb = new StringBuilder();
-        sb.append(MessageColor.POSITIVE);
-        for (int i = 0; i < label.length() + 6; i++) sb.append("=");
-        cs.sendMessage(sb.toString());
-        for (final SubCommand sc : this.subcommands) {
-            if (!this.isAuthorized(cs, sc)) continue;
-            cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + " " + sc.getUsage().replace("<command>", sc.getShortName()));
-            cs.sendMessage("    " + MessageColor.NEUTRAL + sc.getDescription());
-        }
-    }
-
-    protected void addSubCommand(SubCommand sc) {
+    protected void addSubCommand(final SubCommand sc) {
         this.subcommands.add(sc);
     }
 
     @Override
-    protected List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, String[] args, final String arg) {
         // It's not pretty, but it works
         final List<String> completions = new ArrayList<>();
         if (args.length > 1) {
@@ -67,7 +54,7 @@ public class ParentCommand extends TabCommand {
         return completions;
     }
 
-    protected SubCommand getSubCommand(String name) {
+    protected SubCommand getSubCommand(final String name) {
         for (final SubCommand sc : this.subcommands) {
             if (sc.getShortName().equalsIgnoreCase(name)) return sc;
             for (final String alias : sc.getAliases()) {
@@ -78,7 +65,7 @@ public class ParentCommand extends TabCommand {
     }
 
     @Override
-    protected boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+    protected boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
         if (eargs.length < 1) {
             this.showHelp(cs, label);
             return true;
@@ -94,5 +81,18 @@ public class ParentCommand extends TabCommand {
         }
         // Exceptions already caught, since we're in a runCommand
         return sc.runCommand(cs, cmd, label, (String[]) ArrayUtils.subarray(eargs, 1, eargs.length), ca);
+    }
+
+    public void showHelp(final CommandSender cs, final String label) {
+        cs.sendMessage(MessageColor.POSITIVE + "/" + label + " Help");
+        final StringBuilder sb = new StringBuilder();
+        sb.append(MessageColor.POSITIVE);
+        for (int i = 0; i < label.length() + 6; i++) sb.append("=");
+        cs.sendMessage(sb.toString());
+        for (final SubCommand sc : this.subcommands) {
+            if (!this.isAuthorized(cs, sc)) continue;
+            cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + " " + sc.getUsage().replace("<command>", sc.getShortName()));
+            cs.sendMessage("    " + MessageColor.NEUTRAL + sc.getDescription());
+        }
     }
 }

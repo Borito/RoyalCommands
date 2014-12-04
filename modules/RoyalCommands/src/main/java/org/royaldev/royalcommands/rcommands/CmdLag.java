@@ -16,8 +16,8 @@ public class CmdLag extends BaseCommand {
         super(instance, name, true);
     }
 
-    // Give them most credit@Override
-    public boolean runCommand(final CommandSender cs, Command cmd, String label, String[] args) {
+    @Override
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         double tps = 20D;
         double runfor = 5D;
         if (args.length > 0) {

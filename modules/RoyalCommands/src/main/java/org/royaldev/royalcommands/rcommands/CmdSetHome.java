@@ -26,7 +26,7 @@ public class CmdSetHome extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (args.length > 0 && !this.ah.isAuthorized(cs, "rcmds.sethome.multi")) {
             RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You don't have permission for multiple homes!");
             return true;

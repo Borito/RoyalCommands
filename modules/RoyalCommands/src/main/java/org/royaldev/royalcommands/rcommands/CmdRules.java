@@ -22,7 +22,7 @@ public class CmdRules extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         File rulesf = new File(this.plugin.getDataFolder() + File.separator + "rules.txt");
         if (!rulesf.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "The rules.txt file was not found! Tell an admin.");

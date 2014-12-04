@@ -24,7 +24,7 @@ public class CmdAccountStatus extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
@@ -35,10 +35,10 @@ public class CmdAccountStatus extends BaseCommand {
         URL u;
         try {
             u = new URL("https://minecraft.net/haspaid.jsp?user=" + URLEncoder.encode(name, "UTF-8"));
-        } catch (MalformedURLException ex) {
+        } catch (final MalformedURLException ex) {
             cs.sendMessage(MessageColor.NEGATIVE + "An unthinkable error happened. Please let the developer know.");
             return true;
-        } catch (UnsupportedEncodingException ex) {
+        } catch (final UnsupportedEncodingException ex) {
             cs.sendMessage(MessageColor.NEGATIVE + "The UTF-8 encoding is not supported on this system!");
             return true;
         }

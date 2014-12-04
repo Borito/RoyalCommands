@@ -26,7 +26,7 @@ public class CmdJail extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         ConfManager cm = ConfManager.getConfManager("jails.yml");
 
         if (args.length < 1) {

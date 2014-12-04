@@ -16,7 +16,7 @@ public class CmdFeed extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (args.length < 1) {
             if (!(cs instanceof Player)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't feed the console!");

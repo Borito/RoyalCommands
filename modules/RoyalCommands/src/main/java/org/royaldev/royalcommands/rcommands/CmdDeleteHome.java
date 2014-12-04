@@ -17,7 +17,7 @@ public class CmdDeleteHome extends BaseHomeCommand {
     }
 
     @Override
-    protected boolean continueCommand(final CommandSender cs, final Player p, final Command cmd, final String label, final String[] eargs, final CommandArguments ca, final Home home) {
+    protected boolean runCommand(final CommandSender cs, final Player p, final Command cmd, final String label, final String[] eargs, final CommandArguments ca, final Home home) {
         if (eargs.length < 1 && home.getName().equalsIgnoreCase("home")) {
             cs.sendMessage(MessageColor.NEGATIVE + "Type " + MessageColor.NEUTRAL + "/" + label + " home" + MessageColor.NEGATIVE + " to delete your default home.");
             return true;

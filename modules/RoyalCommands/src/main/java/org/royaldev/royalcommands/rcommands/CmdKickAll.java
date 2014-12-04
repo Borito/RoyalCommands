@@ -15,7 +15,7 @@ public class CmdKickAll extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         String kickreason = Config.kickMessage;
         if (args.length > 0) kickreason = RoyalCommands.getFinalArg(args, 0);
         kickreason = RUtils.colorize(kickreason);

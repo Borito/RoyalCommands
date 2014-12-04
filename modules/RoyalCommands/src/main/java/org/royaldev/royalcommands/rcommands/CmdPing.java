@@ -16,7 +16,7 @@ public class CmdPing extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (!this.plugin.getNMSFace().hasSupport() || (!(cs instanceof Player) && args.length < 1)) {
             cs.sendMessage(MessageColor.POSITIVE + "Pong!");
             return true;

@@ -38,7 +38,7 @@ public class CmdPlayerTime extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (cmd.getName().equals("playertime")) {
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());

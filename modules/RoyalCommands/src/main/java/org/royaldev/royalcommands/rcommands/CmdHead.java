@@ -20,7 +20,7 @@ public class CmdHead extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
@@ -29,13 +29,13 @@ public class CmdHead extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Player p = (Player) cs;
-        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        final Player p = (Player) cs;
+        final ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
         if (!(head.getItemMeta() instanceof SkullMeta)) {
             cs.sendMessage(MessageColor.NEGATIVE + "The head had incorrect item metadata!");
             return true;
         }
-        SkullMeta sm = (SkullMeta) head.getItemMeta();
+        final SkullMeta sm = (SkullMeta) head.getItemMeta();
         final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
         if (!t.getName().equalsIgnoreCase(p.getName()) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
             RUtils.dispNoPerms(cs);
@@ -47,7 +47,6 @@ public class CmdHead extends BaseCommand {
         }
         sm.setOwner(t.getName());
         head.setItemMeta(sm);
-        head = RUtils.renameItem(head, "Head of " + t.getName());
         p.getInventory().addItem(head);
         cs.sendMessage(MessageColor.POSITIVE + "You have been given the head of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
         return true;

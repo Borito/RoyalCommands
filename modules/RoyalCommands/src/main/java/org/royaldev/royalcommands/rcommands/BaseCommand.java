@@ -61,21 +61,21 @@ public abstract class BaseCommand implements CommandExecutor {
      * @return Link to Hastebin paste with the given content
      * @throws IOException Upon any issue
      */
-    private String hastebin(String paste) throws IOException {
-        final URL obj = new URL("http://hastebin.com/documents");
-        final HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("POST");
-        con.setDoOutput(true);
-        final DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(paste);
-        wr.flush();
-        wr.close();
-        final BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+    private String hastebin(final String paste) throws IOException {
+        final URL url = new URL("http://hastebin.com/documents");
+        final HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+        huc.setRequestMethod("POST");
+        huc.setDoOutput(true);
+        final DataOutputStream dos = new DataOutputStream(huc.getOutputStream());
+        dos.writeBytes(paste);
+        dos.flush();
+        dos.close();
+        final BufferedReader br = new BufferedReader(new InputStreamReader(huc.getInputStream()));
         String inputLine;
-        final StringBuilder response = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) response.append(inputLine);
-        in.close();
-        final HastebinData hd = new Gson().fromJson(response.toString(), HastebinData.class);
+        final StringBuilder sb = new StringBuilder();
+        while ((inputLine = br.readLine()) != null) sb.append(inputLine);
+        br.close();
+        final HastebinData hd = new Gson().fromJson(sb.toString(), HastebinData.class);
         return "http://hastebin.com/" + hd.getKey() + ".txt";
     }
 
@@ -124,7 +124,7 @@ public abstract class BaseCommand implements CommandExecutor {
         });
     }
 
-    private void showFlagHelp(CommandSender cs, Command cmd, String label) {
+    private void showFlagHelp(final CommandSender cs, final Command cmd, final String label) {
         cs.sendMessage(cmd.getDescription());
         cs.sendMessage(cmd.getUsage().replaceFirst("<command>", label));
         cs.sendMessage(MessageColor.POSITIVE + "Expected flags:");
@@ -148,7 +148,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * @return CommandArguments
      * @see org.royaldev.royalcommands.rcommands.CACommand
      */
-    protected CommandArguments getCommandArguments(String[] args) {
+    protected CommandArguments getCommandArguments(final String[] args) {
         return new CommandArguments(args);
     }
 
@@ -176,7 +176,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * @param message Message to be shown about the exception
      * @param t       The exception thrown
      */
-    protected void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t, String message) {
+    protected void handleException(final CommandSender cs, final Command cmd, final String label, final String[] args, final Throwable t, final String message) {
         new FancyMessage(message).color(MessageColor.NEGATIVE._()).send(cs);
         t.printStackTrace();
         if (Config.hastebinErrors) {
@@ -216,7 +216,7 @@ public abstract class BaseCommand implements CommandExecutor {
         }
     }
 
-    protected void handleException(CommandSender cs, Command cmd, String label, String[] args, Throwable t) {
+    protected void handleException(final CommandSender cs, final Command cmd, final String label, final String[] args, final Throwable t) {
         this.handleException(cs, cmd, label, args, t, "An exception occurred while processing that command.");
     }
 
@@ -235,7 +235,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * @return true to not display usage, false to display usage (essentially)
      */
     @Override
-    public final boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public final boolean onCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (!cmd.getName().equalsIgnoreCase(this.name)) return false;
         if (this.checkPermissions && !this.ah.isAuthorized(cs, cmd)) {
             RUtils.dispNoPerms(cs, new String[]{this.ah.getPermission(cmd)}); // ensure calling to varargs method
@@ -256,7 +256,7 @@ public abstract class BaseCommand implements CommandExecutor {
         }
         try {
             return this.runCommand(cs, cmd, label, args);
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             this.handleException(cs, cmd, label, args, t);
             return true;
         }
@@ -274,7 +274,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * @param args  The arguments passed to the command
      * @return true to not display usage, false to display usage (essentially)
      */
-    protected abstract boolean runCommand(CommandSender cs, Command cmd, String label, String[] args);
+    protected abstract boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args);
 
     /**
      * /**
@@ -453,7 +453,7 @@ public abstract class BaseCommand implements CommandExecutor {
          * @param args  Arguments passed to the flag
          * @return Flag
          */
-        private Flag createFlag(String alias, String[] args) {
+        private Flag createFlag(final String alias, final String[] args) {
             Preconditions.checkNotNull(args, "args cannot be null");
             final Flag templateFlag = new Flag(alias);
             final Flag realFlag;
@@ -465,7 +465,7 @@ public abstract class BaseCommand implements CommandExecutor {
             Object o;
             try {
                 o = args.length < 1 ? null : this.convertFlag(args, realFlag == null ? String.class : realFlag.getType());
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 o = null;
             }
             if (args.length < 1) {
@@ -483,7 +483,7 @@ public abstract class BaseCommand implements CommandExecutor {
          * @param s Flag
          * @return Flag name
          */
-        private String getFlagName(String s) {
+        private String getFlagName(final String s) {
             if (!this.isFlag(s)) throw new IllegalArgumentException("Not a flag.");
             return s.substring(s.length() > 2 && s.substring(1).startsWith("-") ? 2 : 1);
         }
@@ -494,7 +494,7 @@ public abstract class BaseCommand implements CommandExecutor {
          * @param s Argument
          * @return If the argument is a flag
          */
-        private boolean isFlag(String s) {
+        private boolean isFlag(final String s) {
             return s.startsWith("-") && !this.isFlagTerminator(s);
         }
 
@@ -504,7 +504,7 @@ public abstract class BaseCommand implements CommandExecutor {
          * @param s Argument
          * @return If the argument is the flag terminator
          */
-        private boolean isFlagTerminator(String s) {
+        private boolean isFlagTerminator(final String s) {
             return s.equals("--");
         }
 
@@ -555,7 +555,7 @@ public abstract class BaseCommand implements CommandExecutor {
          *
          * @param arguments Arguments to process
          */
-        public void processArguments(String[] arguments) {
+        public void processArguments(final String[] arguments) {
             String currentFlagName = null;
             final List<String> parameters = new ArrayList<>();
             final List<String> extraParameters = new ArrayList<>();

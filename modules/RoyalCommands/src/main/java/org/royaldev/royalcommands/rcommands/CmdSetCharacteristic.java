@@ -30,7 +30,7 @@ public class CmdSetCharacteristic extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
             cs.sendMessage(MessageColor.POSITIVE + "/" + label + " help:");
             cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] maxhealth [half-hearts]");

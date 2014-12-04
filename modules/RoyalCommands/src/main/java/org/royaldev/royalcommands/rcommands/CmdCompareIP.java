@@ -16,7 +16,7 @@ public class CmdCompareIP extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         if (Config.disablegetip) {
             cs.sendMessage(MessageColor.NEGATIVE + "/getip and /compareip have been disabled.");
             return true;

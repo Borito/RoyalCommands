@@ -17,7 +17,7 @@ public class CmdHome extends BaseHomeCommand {
     }
 
     @Override
-    public boolean continueCommand(final CommandSender cs, final Player p, final Command cmd, final String label, final String[] eargs, final CommandArguments ca, final Home home) {
+    public boolean runCommand(final CommandSender cs, final Player p, final Command cmd, final String label, final String[] eargs, final CommandArguments ca, final Home home) {
         final String error = RUtils.teleport(p, home.getLocation());
         if (!error.isEmpty()) cs.sendMessage(MessageColor.NEGATIVE + error);
         else {

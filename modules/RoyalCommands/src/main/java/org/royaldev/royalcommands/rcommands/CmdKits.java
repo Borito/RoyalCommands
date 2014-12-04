@@ -16,7 +16,7 @@ public class CmdKits extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         final Set<String> kits = this.plugin.getConfig().getConfigurationSection("kits.list").getKeys(false);
         if (kits.isEmpty()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No kits found!");

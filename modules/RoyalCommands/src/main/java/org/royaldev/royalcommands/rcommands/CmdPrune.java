@@ -25,7 +25,7 @@ public class CmdPrune extends CACommand {
     }
 
     @Override
-    protected boolean runCommand(CommandSender cs, Command cmd, String label, String[] eargs, CommandArguments ca) {
+    protected boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
         if (!ca.hasContentFlag(this.timeFlag)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You must include a time (-[t,time]) flag.");
             return true;
