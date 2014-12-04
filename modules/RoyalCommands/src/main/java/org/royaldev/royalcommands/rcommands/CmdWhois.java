@@ -41,6 +41,7 @@ public class CmdWhois extends BaseCommand {
         cs.sendMessage(MessageColor.POSITIVE + "=====================");
         cs.sendMessage(MessageColor.POSITIVE + ((t.isOnline()) ? "Whois" : "Whowas") + " for " + MessageColor.NEUTRAL + name);
         cs.sendMessage(MessageColor.POSITIVE + "Nickname: " + MessageColor.NEUTRAL + dispname);
+        cs.sendMessage(MessageColor.POSITIVE + "UUID: " + MessageColor.NEUTRAL + t.getUniqueId());
         cs.sendMessage(MessageColor.POSITIVE + "IP: " + MessageColor.NEUTRAL + ip);
         cs.sendMessage(MessageColor.POSITIVE + "Is VIP: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("vip")));
         cs.sendMessage(MessageColor.POSITIVE + "Is muted: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(pcm.getBoolean("muted")));
