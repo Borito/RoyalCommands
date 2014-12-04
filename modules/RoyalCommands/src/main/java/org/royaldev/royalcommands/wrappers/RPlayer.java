@@ -32,7 +32,6 @@ public class RPlayer {
     private RPlayer(final OfflinePlayer op) {
         this.uuid = op.getUniqueId();
         this.pcm = PConfManager.getPConfManager(this.uuid);
-        if (!this.pcm.exists()) this.pcm.createFile();
     }
 
     private RPlayer(final String name) {
@@ -122,7 +121,9 @@ public class RPlayer {
      */
     public List<Home> getHomes() {
         final List<Home> homes = new ArrayList<>();
-        for (final String name : this.getPConfManager().getConfigurationSection("home").getKeys(false)) {
+        final PConfManager pcm = this.getPConfManager();
+        if (pcm == null || !pcm.isSet("home")) return homes;
+        for (final String name : pcm.getConfigurationSection("home").getKeys(false)) {
             homes.add(Home.fromPConfManager(this.getPConfManager(), name));
         }
         return homes;

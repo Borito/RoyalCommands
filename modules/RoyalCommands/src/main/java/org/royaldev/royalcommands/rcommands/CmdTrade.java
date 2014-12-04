@@ -107,7 +107,7 @@ public class CmdTrade extends BaseCommand {
             return true;
         } else {
             CmdTrade.sendTradeRequest(t, p);
-            new FancyMessage("Sent a trade request to").color(MessageColor.POSITIVE._()).then(t.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(".").color(MessageColor.POSITIVE._()).send(p);
+            new FancyMessage("Sent a trade request to ").color(MessageColor.POSITIVE._()).then(t.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(".").color(MessageColor.POSITIVE._()).send(p);
             return true;
         }
     }
