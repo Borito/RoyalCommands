@@ -81,6 +81,7 @@ public class Home {
         final PConfManager pcm = this.getRPlayer().getPConfManager();
         pcm.setLocation(this.getPath(), this.getLocation());
         pcm.forceSave();
+    }
 
     @Override
     public String toString() {
