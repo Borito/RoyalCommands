@@ -45,7 +45,7 @@ public class CmdListHomes extends BaseCommand {
         final FancyMessage fm = new FancyMessage("");
         while (homes.hasNext()) {
             final Home home = homes.next();
-            fm.then(home.getName()).color(MessageColor.NEUTRAL._()).command("/home " + home.getName());
+            fm.then(home.getName()).color(MessageColor.NEUTRAL._()).command("/home " + home.getFullName());
             if (homes.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
         }
         final int homeLimit = rp.getHomeLimit();
