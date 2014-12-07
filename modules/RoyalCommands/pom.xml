@@ -52,6 +52,7 @@
                                 <includes>
                                     <include>org.royaldev:royalcommands-*</include>
                                     <include>org.shininet.bukkit:ItemRenamer</include>
+                                    <!--<include>com.google.code.gson:gson</include>-->
                                     <!--<include>mkremins:fanciful</include>-->
                                     <include>com.comphenix.attribute:AttributeStorage</include>
                                 </includes>
@@ -61,6 +62,10 @@
                                     <pattern>org.shininet.bukkit</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.org.shininet.bukkit</shadedPattern>
                                 </relocation>
+                                <!--<relocation>
+                                    <pattern>com.google.code.gson</pattern>
+                                    <shadedPattern>org.royaldev.royalcommands.shaded.com.google.code.gson</shadedPattern>
+                                </relocation>-->
                                 <!--<relocation>
                                     <pattern>mkremins.fanciful</pattern>
                                     <shadedPattern>org.royaldev.royalcommands.shaded.mkremins.fanciful</shadedPattern>
@@ -165,6 +170,10 @@
     </build>
     <repositories>
         <repository>
+            <id>spigot</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
             <id>royal-repo</id>
             <url>http://minor.royaldev.org:8081/nexus/content/groups/public/</url>
         </repository>
@@ -177,7 +186,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.9-R0.2</version>
+            <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -235,6 +244,11 @@
             <artifactId>reflections</artifactId>
             <version>0.9.9-RC2</version>
         </dependency>
+        <!--<dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
+        </dependency>-->
         <!--<dependency>
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>

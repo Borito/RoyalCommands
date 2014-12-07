@@ -16,10 +16,10 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 @ReflectCommand
-public class CmdHelp extends BaseCommand {
+public class CmdHelp extends TabCommand {
 
     public CmdHelp(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.PLUGIN.getShort()});
     }
 
     private void displayCustomHelp(CommandSender cs, String page) {
@@ -101,11 +101,12 @@ public class CmdHelp extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
-        if (Config.customHelp) displayCustomHelp(cs, (args.length > 0) ? args[0] : "1");
-        else if (args.length < 1 && !Config.customHelp) displayPluginList(cs);
-        else if (args.length > 0 && !Config.customHelp)
-            displayPluginHelp(cs, args[0], (args.length > 1) ? args[1] : "1");
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
+        if (Config.customHelp) displayCustomHelp(cs, (eargs.length > 0) ? eargs[0] : "1");
+        else if (eargs.length < 1 && !Config.customHelp) this.displayPluginList(cs);
+        else if (eargs.length > 0 && !Config.customHelp) {
+            this.displayPluginHelp(cs, eargs[0], (eargs.length > 1) ? eargs[1] : "1");
+        }
         return true;
     }
 }

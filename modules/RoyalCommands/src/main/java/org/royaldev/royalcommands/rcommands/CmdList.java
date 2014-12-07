@@ -146,7 +146,7 @@ public class CmdList extends BaseCommand {
 
     public String getNumOnline(CommandSender cs) {
         int hid = this.plugin.getNumberVanished();
-        int all = this.plugin.getServer().getOnlinePlayers().length;
+        int all = this.plugin.getServer().getOnlinePlayers().size();
         boolean canSeeVanished = this.ah.isAuthorized(cs, "rcmds.seehidden");
         String numPlayers;
         if (canSeeVanished && hid > 0) numPlayers = (all - hid) + "/" + hid;

@@ -105,15 +105,12 @@ public class RoyalCommands extends JavaPlugin {
     public Config c;
     public Help h;
     private NMSFace nmsFace;
-
     private CommandMap cm = null;
     private YamlConfiguration pluginYml = null;
-
     private RApiMain api;
     private VanishPlugin vp = null;
     // private WorldGuardPlugin wg = null;
     private LWCPlugin lwc = null;
-
     private ProtocolListener pl = null;
 
     /**

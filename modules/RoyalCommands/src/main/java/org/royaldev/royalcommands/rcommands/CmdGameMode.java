@@ -41,6 +41,9 @@ public class CmdGameMode extends BaseCommand {
                     case 2:
                         toRet = GameMode.ADVENTURE;
                         break;
+                    case 3:
+                        toRet = GameMode.SPECTATOR;
+                        break;
                     default:
                         toRet = null;
                 }

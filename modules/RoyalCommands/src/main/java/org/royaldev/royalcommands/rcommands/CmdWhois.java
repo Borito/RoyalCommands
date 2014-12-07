@@ -52,7 +52,7 @@ public class CmdWhois extends BaseCommand {
         cs.sendMessage(MessageColor.POSITIVE + "Last seen:" + MessageColor.NEUTRAL + ((t.isOnline()) ? " now" : lastseen));
         cs.sendMessage(MessageColor.POSITIVE + "First played:" + MessageColor.NEUTRAL + RUtils.formatDateDiff(t.getFirstPlayed()));
         if (t.isOnline()) {
-            Player p = (Player) t;
+            final Player p = (Player) t;
             cs.sendMessage(MessageColor.POSITIVE + "Gamemode: " + MessageColor.NEUTRAL + p.getGameMode().name().toLowerCase());
             cs.sendMessage(MessageColor.POSITIVE + "Can fly: " + MessageColor.NEUTRAL + BooleanUtils.toStringYesNo(p.getAllowFlight()));
             cs.sendMessage(MessageColor.POSITIVE + "Health/Hunger/Saturation: " + MessageColor.NEUTRAL + p.getHealth() / 2 + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + p.getFoodLevel() / 2 + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + p.getSaturation() / 2);
