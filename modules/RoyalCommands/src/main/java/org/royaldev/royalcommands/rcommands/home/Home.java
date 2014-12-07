@@ -43,10 +43,18 @@ public class Home {
         }
     }
 
+    private String getPath() {
+        return "home." + this.getName();
+    }
+
     public void delete() {
         final PConfManager pcm = this.getRPlayer().getPConfManager();
-        pcm.set("home." + this.getName(), null);
+        pcm.set(this.getPath(), null);
         pcm.forceSave();
+    }
+
+    public String getFullName() {
+        return this.getRPlayer().getName() + ":" + this.getName();
     }
 
     public Location getLocation() {
@@ -71,7 +79,16 @@ public class Home {
 
     public void save() {
         final PConfManager pcm = this.getRPlayer().getPConfManager();
-        pcm.setLocation("home." + this.getName(), this.getLocation());
+        pcm.setLocation(this.getPath(), this.getLocation());
         pcm.forceSave();
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Home[uuid=%s, name=%s, location=%s]",
+            this.uuid,
+            this.name,
+            this.location
+        );
     }
 }
