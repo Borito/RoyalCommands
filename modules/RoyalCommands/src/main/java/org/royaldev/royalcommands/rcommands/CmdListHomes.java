@@ -56,7 +56,8 @@ public class CmdListHomes extends BaseCommand {
         final int homeLimit = rp.getHomeLimit();
         cs.sendMessage(MessageColor.POSITIVE + "Homes (" + MessageColor.NEUTRAL + rp.getHomes().size() + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + ((homeLimit < 0) ? "Unlimited" : homeLimit) + MessageColor.POSITIVE + "):");
         for (final Map.Entry<World, List<Home>> entry : sortedHomes.entrySet()) {
-            cs.sendMessage(MessageColor.POSITIVE + "  Homes for " + MessageColor.NEUTRAL + entry.getKey().getName() + MessageColor.POSITIVE + ":");
+            final World w = entry.getKey();
+            cs.sendMessage(MessageColor.POSITIVE + "  Homes for " + MessageColor.NEUTRAL + (w == null ? "an invalid world" : w.getName()) + MessageColor.POSITIVE + ":");
             final FancyMessage fm = new FancyMessage("    ");
             final Iterator<Home> homes = entry.getValue().iterator();
             while (homes.hasNext()) {
