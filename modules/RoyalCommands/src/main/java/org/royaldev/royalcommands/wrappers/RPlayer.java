@@ -27,21 +27,17 @@ public class RPlayer {
 
     private final static Map<UUID, RPlayer> players = Collections.synchronizedMap(new HashMap<UUID, RPlayer>());
     private final UUID uuid;
-    private final PConfManager pcm;
 
     private RPlayer(final OfflinePlayer op) {
         this.uuid = op.getUniqueId();
-        this.pcm = PConfManager.getPConfManager(this.uuid);
     }
 
     private RPlayer(final String name) {
         this.uuid = RoyalCommands.getInstance().getServer().getOfflinePlayer(name).getUniqueId();
-        this.pcm = PConfManager.getPConfManager(this.uuid);
     }
 
     private RPlayer(final UUID uuid) {
         this.uuid = uuid;
-        this.pcm = PConfManager.getPConfManager(this.uuid);
     }
 
     public static RPlayer getRPlayer(final OfflinePlayer op) {
@@ -70,13 +66,13 @@ public class RPlayer {
     public Inventory getBackpack(final World w) {
         String worldGroup = WorldManager.il.getWorldGroup(w);
         if (worldGroup == null) worldGroup = "w-" + w.getName();
-        int invSize = this.pcm.getInt("backpack." + worldGroup + ".size", -1);
+        int invSize = this.getPConfManager().getInt("backpack." + worldGroup + ".size", -1);
         if (invSize < 9) invSize = 36;
         if (invSize % 9 != 0) invSize = 36;
         final Inventory i = Bukkit.createInventory(new BackpackListener.BackpackHolder(this.getUUID(), w), invSize, "Backpack");
-        if (!this.pcm.isSet("backpack." + worldGroup + ".item")) return i;
+        if (!this.getPConfManager().isSet("backpack." + worldGroup + ".item")) return i;
         for (int slot = 0; slot < invSize; slot++) {
-            final ItemStack is = this.pcm.getItemStack("backpack." + worldGroup + ".item." + slot);
+            final ItemStack is = this.getPConfManager().getItemStack("backpack." + worldGroup + ".item." + slot);
             if (is == null) continue;
             i.setItem(slot, is);
         }
@@ -138,7 +134,7 @@ public class RPlayer {
     }
 
     public PConfManager getPConfManager() {
-        return this.pcm;
+        return PConfManager.getPConfManager(this.uuid);
     }
 
     public Player getPlayer() {
