@@ -1,7 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
 import com.google.common.base.Preconditions;
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
@@ -13,6 +12,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -53,6 +53,20 @@ public abstract class BaseCommand implements CommandExecutor {
         this.name = name;
         this.checkPermissions = checkPermissions;
     }
+
+    /**
+     * The body of the command to be run. Depending on the constructor
+     * ({@link #BaseCommand(org.royaldev.royalcommands.RoyalCommands, String, boolean)}), permissions will have already
+     * been checked. The command name matching the name of this command is already checked. All unhandled exceptions
+     * will be caught and displayed to the user in a friendly format.
+     *
+     * @param cs    The CommandSender using the command
+     * @param cmd   The Command being used
+     * @param label The label of the command (alias)
+     * @param args  The arguments passed to the command
+     * @return true to not display usage, false to display usage (essentially)
+     */
+    protected abstract boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args);
 
     /**
      * Gets a link to a Hastebin paste with the given content.
@@ -182,29 +196,33 @@ public abstract class BaseCommand implements CommandExecutor {
         if (Config.hastebinErrors) {
             final StringBuilder sb = new StringBuilder();
             sb
-                    // @formatter:off
-                    .append("An error occurred while handling a command. Please report this to jkcclemens or WizardCM.\n")
-                    .append("They are available at #bukkit @ irc.royaldev.org. If you don't know what that means, then\n")
-                    .append("go to the following URL: https://irc.royaldev.org/#bukkit\n\n")
-                    .append("---DEBUG INFO---\n\n");
-                    // @formatter:on
+                .append("An error occurred while handling a command. Please report this to jkcclemens or WizardCM.\n")
+                .append("They are available at #bukkit @ irc.royaldev.org. If you don't know what that means, then\n")
+                .append("go to the following URL: https://irc.royaldev.org/#bukkit\n\n")
+                .append("---DEBUG INFO---\n\n");
+            try {
+                sb
+                    .append("RoyalCommands Version\n\t")
+                    .append(this.plugin.getDescription().getVersion());
+            } catch (final Throwable tt) {
+                sb.append("Could not get RoyalCommands version:\n");
+                final StringWriter sw = new StringWriter();
+                tt.printStackTrace(new PrintWriter(sw));
+                sb.append(sw.toString());
+            }
             if (cs != null) {
                 sb
-                        // @formatter:off
-                        .append("CommandSender\n")
-                        .append("\tName:\t\t").append(cs.getName()).append("\n")
-                        .append("\tClass:\t\t").append(cs.getClass().getName());
-                        // @formatter:on
+                    .append("\n\nCommandSender\n")
+                    .append("\tName:\t\t").append(cs.getName()).append("\n")
+                    .append("\tClass:\t\t").append(cs.getClass().getName());
             } else sb.append("CommandSender:\t\tnull");
             if (cmd != null) {
                 sb
-                        // @formatter:off
-                        .append("\n\nCommand\n")
-                        .append("\tName:\t\t").append(cmd.getName()).append("\n")
-                        .append("\tClass:\t\t").append(cmd.getClass().getName());
-                        // @formatter:on
+                    .append("\n\nCommand\n")
+                    .append("\tName:\t\t").append(cmd.getName()).append("\n")
+                    .append("\tClass:\t\t").append(cmd.getClass().getName());
             } else sb.append("\n\nCommand:\t\tnull");
-            sb.append("\n\nLabel:\t\t").append(label);
+            sb.append("\n\nLabel\n\t").append(label);
             sb.append("\n\nArguments");
             if (args != null) {
                 for (final String arg : args) sb.append("\n").append("\t").append(arg);
@@ -261,20 +279,6 @@ public abstract class BaseCommand implements CommandExecutor {
             return true;
         }
     }
-
-    /**
-     * The body of the command to be run. Depending on the constructor
-     * ({@link #BaseCommand(org.royaldev.royalcommands.RoyalCommands, String, boolean)}), permissions will have already
-     * been checked. The command name matching the name of this command is already checked. All unhandled exceptions
-     * will be caught and displayed to the user in a friendly format.
-     *
-     * @param cs    The CommandSender using the command
-     * @param cmd   The Command being used
-     * @param label The label of the command (alias)
-     * @param args  The arguments passed to the command
-     * @return true to not display usage, false to display usage (essentially)
-     */
-    protected abstract boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args);
 
     /**
      * /**
