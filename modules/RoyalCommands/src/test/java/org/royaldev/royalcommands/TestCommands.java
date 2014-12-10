@@ -50,7 +50,7 @@ public class TestCommands {
         final YamlConfiguration pluginYml = this.getPluginYml();
         final ConfigurationSection reflectCommands = pluginYml.getConfigurationSection("reflectcommands");
         final List<String> registeredClasses = new ArrayList<>();
-        for (String key : reflectCommands.getKeys(false)) {
+        for (final String key : reflectCommands.getKeys(false)) {
             if (reflectCommands.isSet(key + ".class")) registeredClasses.add(reflectCommands.getString(key + ".class"));
         }
         final Set<Class<? extends BaseCommand>> classes = this.getAllCommandClasses();

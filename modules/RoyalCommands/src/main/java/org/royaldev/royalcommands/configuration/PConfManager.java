@@ -24,7 +24,7 @@ public class PConfManager extends GeneralConfManager {
      *
      * @param p Player to manage
      */
-    PConfManager(OfflinePlayer p) {
+    PConfManager(final OfflinePlayer p) {
         this(p.getUniqueId());
     }
 
@@ -33,7 +33,7 @@ public class PConfManager extends GeneralConfManager {
      *
      * @param u Player UUID to manage
      */
-    PConfManager(UUID u) {
+    PConfManager(final UUID u) {
         super();
         final File dataFolder = RoyalCommands.dataFolder;
         this.pconfl = new File(dataFolder + File.separator + "userdata" + File.separator + u + ".yml");
@@ -58,7 +58,7 @@ public class PConfManager extends GeneralConfManager {
         }
     }
 
-    public static PConfManager getPConfManager(UUID u) {
+    public static PConfManager getPConfManager(final UUID u) {
         synchronized (PConfManager.pcms) {
             if (PConfManager.pcms.containsKey(u)) return PConfManager.pcms.get(u);
             final PConfManager pcm = new PConfManager(u);
@@ -67,11 +67,11 @@ public class PConfManager extends GeneralConfManager {
         }
     }
 
-    public static PConfManager getPConfManager(OfflinePlayer p) {
+    public static PConfManager getPConfManager(final OfflinePlayer p) {
         return PConfManager.getPConfManager(p.getUniqueId());
     }
 
-    public static boolean isManagerCreated(UUID u) {
+    public static boolean isManagerCreated(final UUID u) {
         synchronized (PConfManager.pcms) {
             return PConfManager.pcms.containsKey(u);
         }
@@ -162,5 +162,10 @@ public class PConfManager extends GeneralConfManager {
 
     public void setFirstJoin(boolean firstJoin) {
         this.set("first_join", firstJoin);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("PConfManager@%s[playerUUID=%s, pconfl=%s]", this.hashCode(), this.playerUUID, this.pconfl);
     }
 }

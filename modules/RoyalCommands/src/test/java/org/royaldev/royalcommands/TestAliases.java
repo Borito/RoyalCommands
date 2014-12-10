@@ -49,10 +49,10 @@ public class TestAliases {
     public void testCommandAliases() throws Throwable {
         final ConfigurationSection reflectCommands = this.getPluginYml().getConfigurationSection("reflectcommands");
         final List<String> usedAliases = new ArrayList<>();
-        for (String key : reflectCommands.getKeys(false)) {
+        for (final String key : reflectCommands.getKeys(false)) {
             final ConfigurationSection cs = reflectCommands.getConfigurationSection(key);
             final List<String> aliases = cs.getStringList("aliases");
-            for (String alias : aliases) {
+            for (final String alias : aliases) {
                 assertFalse("Alias " + alias + " is reused in command " + key + ".", usedAliases.contains(alias));
             }
             usedAliases.addAll(aliases);
