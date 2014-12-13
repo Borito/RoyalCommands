@@ -53,7 +53,7 @@ public class CmdNick extends BaseCommand {
                 return true;
             }
         }
-        if (!this.ah.isAuthorized(cs, "rcmds.exempt.nickspecialcharacters") && !args[1].matches(Config.nickRegex)) {
+        if (cs instanceof Player && !this.ah.isAuthorized(cs, "rcmds.exempt.nickspecialcharacters") && !args[1].matches(Config.nickRegex)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That nickname contains invalid characters!");
             return true;
         }
