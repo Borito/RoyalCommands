@@ -19,7 +19,7 @@ public class UserdataRunner implements Runnable {
         ConfManager.saveAllManagers();
         if (!Config.purgeUnusedUserdata) return;
         final Object[] managers = PConfManager.getAllManagers().toArray();
-        for (Object o : managers) {
+        for (final Object o : managers) {
             if (!(o instanceof PConfManager)) continue;
             final PConfManager pcm = (PConfManager) o;
             if (this.plugin.getServer().getPlayer(pcm.getManagerPlayerUUID()) != null) continue;

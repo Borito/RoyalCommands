@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.wrappers.RPlayer;
 
 @ReflectCommand
 public class CmdTeleportAll extends BaseCommand {
@@ -20,11 +21,12 @@ public class CmdTeleportAll extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        Player p = (Player) cs;
-        for (Player t : this.plugin.getServer().getOnlinePlayers()) {
+        final Player p = (Player) cs;
+        for (final Player t : this.plugin.getServer().getOnlinePlayers()) {
             if (!RUtils.isTeleportAllowed(t) && !this.ah.isAuthorized(cs, "rcmds.tpoverride")) continue;
             if (t.equals(p)) continue;
-            String error = RUtils.teleport(t, p);
+            final RPlayer rp = RPlayer.getRPlayer(t);
+            final String error = rp.getTeleporter().teleport(p);
             if (!error.isEmpty()) {
                 p.sendMessage(MessageColor.NEGATIVE + error);
                 return true;

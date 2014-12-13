@@ -430,18 +430,17 @@ public class RoyalCommands extends JavaPlugin {
     public boolean isVanished(Player p) {
         if (!Config.useVNP) return false;
         if (this.vp == null) {
-            this.vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
-            return false;
-        } else return this.vp.getManager().isVanished(p);
+            this.vp = (VanishPlugin) this.getServer().getPluginManager().getPlugin("VanishNoPacket");
+        }
+        return this.vp.getManager().isVanished(p);
     }
 
     public boolean isVanished(Player p, CommandSender cs) {
         if (!Config.useVNP) return false;
         if (this.vp == null) {
-            this.vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
-            return false;
+            this.vp = (VanishPlugin) this.getServer().getPluginManager().getPlugin("VanishNoPacket");
         }
-        return !this.ah.isAuthorized(cs, "rcmds.seehidden") && vp.getManager().isVanished(p);
+        return !this.ah.isAuthorized(cs, "rcmds.seehidden") && this.vp.getManager().isVanished(p);
     }
 
     public void loadConfiguration() {

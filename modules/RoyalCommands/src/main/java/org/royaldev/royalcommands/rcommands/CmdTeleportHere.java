@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.wrappers.RPlayer;
 
 @ReflectCommand
 public class CmdTeleportHere extends BaseCommand {
@@ -24,7 +25,7 @@ public class CmdTeleportHere extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Player t = this.plugin.getServer().getPlayer(args[0]);
+        final Player t = this.plugin.getServer().getPlayer(args[0]);
         if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
@@ -33,9 +34,10 @@ public class CmdTeleportHere extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "That player has teleportation off!");
             return true;
         }
-        Player p = (Player) cs;
+        final Player p = (Player) cs;
         p.sendMessage(MessageColor.POSITIVE + "Teleporting " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " to you.");
-        String error = RUtils.teleport(t, p);
+        final RPlayer rp = RPlayer.getRPlayer(t);
+        final String error = rp.getTeleporter().teleport(p);
         if (!error.isEmpty()) {
             p.sendMessage(MessageColor.NEGATIVE + error);
             return true;

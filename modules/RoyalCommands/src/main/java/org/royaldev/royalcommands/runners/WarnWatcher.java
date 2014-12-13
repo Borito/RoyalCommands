@@ -21,25 +21,25 @@ public class WarnWatcher implements Runnable {
     @Override
     public void run() {
         if (Config.warnExpireTime < 1L) return;
-        OfflinePlayer[] players = this.plugin.getServer().getOfflinePlayers();
-        for (OfflinePlayer p : players) {
-            PConfManager pcm = PConfManager.getPConfManager(p);
+        final OfflinePlayer[] players = this.plugin.getServer().getOfflinePlayers();
+        for (final OfflinePlayer p : players) {
+            final PConfManager pcm = PConfManager.getPConfManager(p);
             if (!pcm.exists()) continue;
             if (pcm.get("warns") == null) continue;
-            List<String> warns = pcm.getStringList("warns");
-            List<String> warnsToRemove = new ArrayList<>();
+            final List<String> warns = pcm.getStringList("warns");
+            final List<String> warnsToRemove = new ArrayList<>();
             if (warns == null) return;
-            for (String s : warns) {
-                String[] reason = s.split("\\u00b5");
+            for (final String s : warns) {
+                final String[] reason = s.split("\\u00b5");
                 if (reason.length < 2) continue;
-                long timeSet;
+                final long timeSet;
                 try {
                     timeSet = Long.valueOf(reason[1]);
-                } catch (NumberFormatException e) {
+                } catch (final NumberFormatException e) {
                     continue;
                 }
-                long currentTime = System.currentTimeMillis();
-                long timeExpires = timeSet + (Config.warnExpireTime * 1000);
+                final long currentTime = System.currentTimeMillis();
+                final long timeExpires = timeSet + (Config.warnExpireTime * 1000);
                 if (timeExpires <= currentTime) warnsToRemove.add(s);
             }
             warns.removeAll(warnsToRemove);

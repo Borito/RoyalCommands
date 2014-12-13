@@ -33,7 +33,7 @@ public class RPlayer {
     }
 
     private RPlayer(final String name) {
-        this.uuid = RoyalCommands.getInstance().getServer().getOfflinePlayer(name).getUniqueId();
+        this.uuid = this.getRoyalCommands().getServer().getOfflinePlayer(name).getUniqueId();
     }
 
     private RPlayer(final UUID uuid) {
@@ -139,6 +139,16 @@ public class RPlayer {
 
     public Player getPlayer() {
         return RoyalCommands.getInstance().getServer().getPlayer(this.getUUID());
+    }
+
+    public RoyalCommands getRoyalCommands() {
+        return RoyalCommands.getInstance();
+    }
+
+    public Teleporter getTeleporter() {
+        final Player p = this.getPlayer();
+        if (p == null) return null;
+        return new Teleporter(p);
     }
 
     public UUID getUUID() {

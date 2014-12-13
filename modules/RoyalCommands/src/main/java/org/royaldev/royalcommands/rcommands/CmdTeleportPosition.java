@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.wrappers.RPlayer;
 
 @ReflectCommand
 public class CmdTeleportPosition extends BaseCommand {
@@ -26,20 +27,20 @@ public class CmdTeleportPosition extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Double x = RUtils.getDouble(args[0]);
-        Double y = RUtils.getDouble(args[1]);
-        Double z = RUtils.getDouble(args[2]);
+        final Double x = RUtils.getDouble(args[0]);
+        final Double y = RUtils.getDouble(args[1]);
+        final Double z = RUtils.getDouble(args[2]);
         if (x == null || y == null || z == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "One of the coordinates was invalid.");
             return true;
         }
-        Player p = (cs instanceof Player) ? (Player) cs : null;
-        Player toTeleport = (args.length > 4) ? this.plugin.getServer().getPlayer(args[4]) : p;
+        final Player p = (cs instanceof Player) ? (Player) cs : null;
+        final Player toTeleport = (args.length > 4) ? this.plugin.getServer().getPlayer(args[4]) : p;
         if (toTeleport == null || this.plugin.isVanished(toTeleport, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;
         }
-        Location pLoc;
+        final Location pLoc;
         World w = toTeleport.getWorld();
         if (args.length > 3) w = this.plugin.getServer().getWorld(args[3]);
         if (w == null) {
@@ -47,10 +48,12 @@ public class CmdTeleportPosition extends BaseCommand {
             return true;
         }
         pLoc = new Location(w, x, y, z);
-        if (!toTeleport.getName().equals(cs.getName()))
+        if (!toTeleport.getName().equals(cs.getName())) {
             cs.sendMessage(MessageColor.POSITIVE + "Teleporting " + MessageColor.NEUTRAL + toTeleport.getName() + MessageColor.POSITIVE + " to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
+        }
         toTeleport.sendMessage(MessageColor.POSITIVE + "Teleporting you to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
-        String error = RUtils.teleport(toTeleport, pLoc);
+        final RPlayer rp = RPlayer.getRPlayer(toTeleport);
+        final String error = rp.getTeleporter().teleport(pLoc);
         if (!error.isEmpty()) {
             toTeleport.sendMessage(MessageColor.NEGATIVE + error);
             return true;

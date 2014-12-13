@@ -24,12 +24,12 @@ public class CmdNick extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[0]);
+        final OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[0]);
         if (!t.equals(cs) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
             RUtils.dispNoPerms(cs);
             return true;
         }
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        final PConfManager pcm = PConfManager.getPConfManager(t);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
             return true;
@@ -37,11 +37,12 @@ public class CmdNick extends BaseCommand {
         if (args[1].equalsIgnoreCase("off")) {
             pcm.set("dispname", t.getName());
             if (t.isOnline()) {
-                Player p = (Player) t;
+                final Player p = (Player) t;
                 p.setDisplayName(t.getName());
                 if (t.getName().length() <= 16) p.setPlayerListName(t.getName());
-                if (!(cs instanceof Player) || !cs.equals(p))
+                if (!(cs instanceof Player) || !cs.equals(p)) {
                     p.sendMessage(MessageColor.POSITIVE + "Your nickname was reset by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
+                }
             }
             cs.sendMessage(MessageColor.POSITIVE + "You reset the nickname of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
             return true;
@@ -63,11 +64,12 @@ public class CmdNick extends BaseCommand {
         pcm.set("dispname", newName);
         pcm.set("nick.lastchange", System.currentTimeMillis());
         if (t.isOnline()) {
-            Player p = (Player) t;
+            final Player p = (Player) t;
             p.setDisplayName(newName);
             if (newName.length() <= 16) p.setPlayerListName(newName);
-            if (!(cs instanceof Player) || !cs.equals(p))
+            if (!(cs instanceof Player) || !cs.equals(p)) {
                 p.sendMessage(MessageColor.POSITIVE + "Your nickname was changed to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + " by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
+            }
         }
         cs.sendMessage(MessageColor.POSITIVE + "Changed the nick of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
         return true;

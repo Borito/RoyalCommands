@@ -884,7 +884,8 @@ public class RUtils {
         throw new Exception("Couldn't find name in results.");
     }
 
-    private static Entity getVehicleToTeleport(Entity rider) {
+    @Deprecated
+    public static Entity getVehicleToTeleport(final Entity rider) {
         if (!Config.vehicleTeleportEnabled) return null;
         final Entity vehicle = rider.getVehicle();
         if (vehicle == null) return null;
@@ -1109,7 +1110,7 @@ public class RUtils {
      *
      * @param at Location to play sound at
      */
-    private static void playTeleportSound(Location at) {
+    public static void playTeleportSound(Location at) {
         if (at == null) throw new IllegalArgumentException("Location cannot be null!");
         if (!Config.teleportSoundEnabled) return;
         Sound toPlay;
@@ -1306,6 +1307,7 @@ public class RUtils {
      * @param l Location to teleport to
      * @return Error message if any.
      */
+    @Deprecated
     public static String silentTeleport(Player p, Location l) {
         synchronized (teleRunners) {
             if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.getInstance().ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
@@ -1338,6 +1340,7 @@ public class RUtils {
      * @param e Entity to teleport to
      * @return Error message if any.
      */
+    @Deprecated
     public static String silentTeleport(Player p, Entity e) {
         if (e == null) return "Entity was null";
         return silentTeleport(p, e.getLocation());
@@ -1349,7 +1352,9 @@ public class RUtils {
      * @param p Player to teleport
      * @param l Location to teleport to
      * @return Error message if any.
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getTeleporter}.
      */
+    @Deprecated
     public static String teleport(Player p, Location l) {
         synchronized (teleRunners) {
             if (Config.teleportWarmup > 0 && !teleRunners.containsKey(p.getName()) && !RoyalCommands.getInstance().ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) {
@@ -1383,15 +1388,18 @@ public class RUtils {
      * @param e Entity to teleport to
      * @return Error message if any.
      */
+    @Deprecated
     public static String teleport(Player p, Entity e) {
         if (e == null) return "Entity was null";
         return teleport(p, e.getLocation());
     }
 
+    @Deprecated
     private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle) {
         return teleportWithVehicle(l, passenger, vehicle, false);
     }
 
+    @Deprecated
     private static String teleportWithVehicle(Location l, Entity passenger, Entity vehicle, boolean silent) {
         if (!Config.vehicleCrossWorldTeleport && !l.getWorld().getName().equals(vehicle.getWorld().getName()))
             return "Passenger on vehicle cannot teleport to a different world!";
