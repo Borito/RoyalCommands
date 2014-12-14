@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.wrappers.RPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
 public class CmdTeleportPosition extends BaseCommand {

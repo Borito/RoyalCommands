@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.home.Home;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
-import org.royaldev.royalcommands.wrappers.RPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

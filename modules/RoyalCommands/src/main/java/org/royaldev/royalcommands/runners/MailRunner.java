@@ -14,7 +14,7 @@ public class MailRunner implements Runnable {
 
     @Override
     public void run() {
-        for (Player p : this.plugin.getServer().getOnlinePlayers()) {
+        for (final Player p : this.plugin.getServer().getOnlinePlayers()) {
             RUtils.checkMail(p);
         }
     }

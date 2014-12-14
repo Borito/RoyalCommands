@@ -1,4 +1,4 @@
-package org.royaldev.royalcommands.wrappers;
+package org.royaldev.royalcommands.wrappers.teleport;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -15,12 +15,13 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.rcommands.CmdBack;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
-public class Teleporter {
+public class PlayerTeleporter implements ITeleporter<Player>, ISilentTeleporter<Player> {
 
-    private final Entity teleportee;
+    private final Player teleportee;
 
-    public Teleporter(final Entity teleportee) {
+    public PlayerTeleporter(final Player teleportee) {
         this.teleportee = teleportee;
     }
 
@@ -63,22 +64,20 @@ public class Teleporter {
     }
 
     private int getWarmupTaskID() {
-        if (!(this.getTeleportee() instanceof Player)) return -1;
-        final Player p = (Player) this.getTeleportee();
+        final Player p = this.getTeleportee();
         final RPlayer rp = RPlayer.getRPlayer(p);
         return rp.getPConfManager().getInt("teleport_warmup_taskid", -1);
     }
 
     private void setWarmupTaskID(final int id) {
-        if (!(this.getTeleportee() instanceof Player)) return;
-        final Player p = (Player) this.getTeleportee();
+        final Player p = this.getTeleportee();
         final RPlayer rp = RPlayer.getRPlayer(p);
         rp.getPConfManager().set("teleport_warmup_taskid", id);
     }
 
     private boolean handleWarmup(final Location location, final boolean silent) {
-        if (Config.teleportWarmup <= 0 || !(this.getTeleportee() instanceof Player)) return false;
-        final Player p = (Player) this.getTeleportee();
+        if (Config.teleportWarmup <= 0) return false;
+        final Player p = this.getTeleportee();
         if (RoyalCommands.getInstance().ah.isAuthorized(p, "rcmds.exempt.teleportwarmup")) return false;
         if (this.getWarmupTaskID() != -1) {
             this.cancelWarmupTask();
@@ -87,8 +86,8 @@ public class Teleporter {
         return this.makeWarmupTask(p, location, silent);
     }
 
-    private boolean isVanished(final Entity entity) {
-        return entity instanceof Player && RoyalCommands.getInstance().isVanished((Player) entity);
+    private boolean isVanished(final Player player) {
+        return RoyalCommands.getInstance().isVanished(player);
     }
 
     private void loadChunk(final Chunk chunk) {
@@ -107,14 +106,14 @@ public class Teleporter {
                 if (!p.isOnline()) return;
                 final RPlayer rp = RPlayer.getRPlayer(p);
                 if (rp.getPConfManager().getInt("teleport_warmup", -1) == -1) {
-                    Teleporter.this.cancelWarmupTask();
+                    PlayerTeleporter.this.cancelWarmupTask();
                     return;
                 }
-                if (!Teleporter.this.warmupExpired()) return;
+                if (!PlayerTeleporter.this.warmupExpired()) return;
                 p.sendMessage(MessageColor.POSITIVE + "Teleporting...");
-                final String error = Teleporter.this.teleport(location, silent);
+                final String error = PlayerTeleporter.this.teleport(location, silent);
                 if (!error.isEmpty()) p.sendMessage(MessageColor.NEGATIVE + error);
-                Teleporter.this.cancelWarmupTask();
+                PlayerTeleporter.this.cancelWarmupTask();
             }
         };
         final int warmupTaskID = p.getServer().getScheduler().scheduleSyncRepeatingTask(RoyalCommands.getInstance(), r, 0, 10);
@@ -141,36 +140,42 @@ public class Teleporter {
     }
 
     private boolean warmupExpired() {
-        if (!(this.getTeleportee() instanceof Player)) return false;
-        final RPlayer rp = RPlayer.getRPlayer((Player) this.getTeleportee());
+        final RPlayer rp = RPlayer.getRPlayer(this.getTeleportee());
         final long l = rp.getPConfManager().getLong("teleport_warmup", -1L);
         return l != -1 && l + Config.teleportWarmup * 1000L < System.currentTimeMillis();
     }
 
-    public Entity getTeleportee() {
+    @Override
+    public Player getTeleportee() {
         return this.teleportee;
     }
 
+    @Override
     public String teleport(final Block block) {
         return this.teleport(block.getLocation(), false);
     }
 
+    @Override
     public String teleport(final Block block, final boolean silent) {
         return this.teleport(block.getLocation(), silent);
     }
 
+    @Override
     public String teleport(final Entity entity) {
         return this.teleport(entity.getLocation(), false);
     }
 
+    @Override
     public String teleport(final Entity entity, final boolean silent) {
         return this.teleport(entity.getLocation(), silent);
     }
 
+    @Override
     public String teleport(final Location location) {
         return this.teleport(location, false);
     }
 
+    @Override
     public String teleport(final Location location, final boolean silent) {
         if (this.handleWarmup(location, silent)) return "";
         final Entity vehicle = this.getVehicleToTeleport();

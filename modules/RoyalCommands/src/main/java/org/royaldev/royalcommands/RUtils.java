@@ -417,7 +417,7 @@ public class RUtils {
      *
      * @param u UUID of player to get backpack for
      * @return Backpack - never null
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getBackpack}.
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getBackpack}.
      */
     @Deprecated
     public static Inventory getBackpack(UUID u, World w) {
@@ -443,7 +443,7 @@ public class RUtils {
      *
      * @param p Player to get backpack for
      * @return Backpack - never null
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getBackpack}.
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getBackpack}.
      */
     @Deprecated
     public static Inventory getBackpack(Player p) {
@@ -463,7 +463,7 @@ public class RUtils {
     }
 
     /**
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getHomes}.size()
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getHomes}.size()
      */
     @Deprecated
     public static int getCurrentHomes(Player p) {
@@ -471,7 +471,7 @@ public class RUtils {
     }
 
     /**
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getHomes}.size()
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getHomes}.size()
      */
     @Deprecated
     public static int getCurrentHomes(UUID u) {
@@ -534,7 +534,7 @@ public class RUtils {
     }
 
     /**
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getHomeLimit}
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getHomeLimit}
      */
     @Deprecated
     public static int getHomeLimit(Player p) {
@@ -1352,7 +1352,7 @@ public class RUtils {
      * @param p Player to teleport
      * @param l Location to teleport to
      * @return Error message if any.
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.RPlayer#getTeleporter}.
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getTeleporter}.
      */
     @Deprecated
     public static String teleport(Player p, Location l) {

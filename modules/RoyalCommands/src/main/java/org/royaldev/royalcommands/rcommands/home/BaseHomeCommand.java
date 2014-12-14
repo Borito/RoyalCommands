@@ -8,7 +8,7 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.TabCommand;
-import org.royaldev.royalcommands.wrappers.RPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

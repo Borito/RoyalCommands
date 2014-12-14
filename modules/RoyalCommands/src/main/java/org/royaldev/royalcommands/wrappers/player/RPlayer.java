@@ -1,4 +1,4 @@
-package org.royaldev.royalcommands.wrappers;
+package org.royaldev.royalcommands.wrappers.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -12,6 +12,7 @@ import org.royaldev.royalcommands.WorldManager;
 import org.royaldev.royalcommands.configuration.PConfManager;
 import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.rcommands.home.Home;
+import org.royaldev.royalcommands.wrappers.teleport.PlayerTeleporter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -145,10 +146,10 @@ public class RPlayer {
         return RoyalCommands.getInstance();
     }
 
-    public Teleporter getTeleporter() {
+    public PlayerTeleporter getTeleporter() {
         final Player p = this.getPlayer();
         if (p == null) return null;
-        return new Teleporter(p);
+        return new PlayerTeleporter(p);
     }
 
     public UUID getUUID() {

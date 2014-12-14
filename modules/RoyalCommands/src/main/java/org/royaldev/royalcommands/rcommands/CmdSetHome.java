@@ -8,7 +8,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.home.Home;
-import org.royaldev.royalcommands.wrappers.RPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.HashMap;
 import java.util.Map;

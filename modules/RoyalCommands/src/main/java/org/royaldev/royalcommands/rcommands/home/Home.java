@@ -3,7 +3,7 @@ package org.royaldev.royalcommands.rcommands.home;
 import org.bukkit.Location;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
-import org.royaldev.royalcommands.wrappers.RPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.UUID;
 
