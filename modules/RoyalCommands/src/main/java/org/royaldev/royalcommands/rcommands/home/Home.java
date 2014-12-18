@@ -19,6 +19,16 @@ public class Home {
         this.location = location;
     }
 
+    public static Home createEmptyFromNotation(final UUID uuid, final String notation) {
+        final String[] parts = notation.split(":");
+        final String playerName = parts.length > 1 ? parts[0] : null;
+        final String homeName = parts[parts.length > 1 ? 1 : 0];
+        final PConfManager pcm;
+        if (playerName == null) pcm = PConfManager.getPConfManager(uuid);
+        else pcm = PConfManager.getPConfManager(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
+        return new Home(pcm.getManagerPlayerUUID(), homeName, null);
+    }
+
     /**
      * @param uuid     UUID of requester
      * @param notation Notation used

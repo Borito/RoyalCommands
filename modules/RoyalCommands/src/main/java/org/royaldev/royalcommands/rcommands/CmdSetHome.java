@@ -40,22 +40,8 @@ public class CmdSetHome extends BaseCommand {
         final Location l = p.getLocation();
         String name = "";
         if (args.length > 0) name = args[0];
-        if (name.contains(":")) {
-            cs.sendMessage(MessageColor.NEGATIVE + "The name of your home cannot contain \":\"!");
-            return true;
-        }
-        final int limit = rp.getHomeLimit();
-        final int curHomes = rp.getHomes().size();
-        if (limit == 0) {
-            RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "Your home limit is set to " + MessageColor.NEUTRAL + "0" + MessageColor.NEGATIVE + "!");
-            cs.sendMessage(MessageColor.NEGATIVE + "You can't set any homes!");
-            return true;
-        } else if (curHomes >= limit && limit > -1) {
-            RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You've reached your max number of homes! (" + MessageColor.NEUTRAL + limit + MessageColor.NEGATIVE + ")");
-            return true;
-        }
         if (name.isEmpty()) name = "home";
-        Home h = Home.fromPConfManager(rp.getPConfManager(), name);
+        Home h = Home.fromNotation(p.getUniqueId(), name);
         if (h != null) {
             boolean overwrite = false;
             Map<String, Long> hto = this.overwrites.get(p.getUniqueId());
@@ -76,12 +62,27 @@ public class CmdSetHome extends BaseCommand {
                 this.overwrites.put(p.getUniqueId(), hto);
             }
         } else {
-            h = new Home(rp.getUUID(), name, l);
+            h = Home.createEmptyFromNotation(rp.getUUID(), name);
+            if (!h.getUUID().equals(p.getUniqueId()) && !this.ah.isAuthorized(cs, "rcmds.others.sethome")) {
+                RUtils.dispNoPerms(cs, new String[]{"rcmds.others.sethome"});
+                return true;
+            }
+        }
+        final RPlayer homeRPlayer = h.getRPlayer();
+        final int limit = homeRPlayer.getHomeLimit();
+        final int curHomes = homeRPlayer.getHomes().size();
+        if (limit == 0) {
+            RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "The home limit for " + MessageColor.NEUTRAL + homeRPlayer.getName() + MessageColor.POSITIVE + " is set to " + MessageColor.NEUTRAL + "0" + MessageColor.NEGATIVE + "!");
+            cs.sendMessage(MessageColor.NEGATIVE + "Homes cannot be set!");
+            return true;
+        } else if (curHomes >= limit && limit > -1) {
+            RUtils.dispNoPerms(cs, MessageColor.NEUTRAL + homeRPlayer.getName() + MessageColor.NEGATIVE + " has reached their maximum number of homes! (" + MessageColor.NEUTRAL + limit + MessageColor.NEGATIVE + ")");
+            return true;
         }
         h.setLocation(l);
         h.save();
         if (args.length > 0) {
-            p.sendMessage(MessageColor.POSITIVE + "Home " + MessageColor.NEUTRAL + h.getName() + MessageColor.POSITIVE + " set.");
+            p.sendMessage(MessageColor.POSITIVE + "Home " + MessageColor.NEUTRAL + h.getName() + MessageColor.POSITIVE + " set for " + MessageColor.NEUTRAL + h.getRPlayer().getName() + MessageColor.POSITIVE + ".");
         } else p.sendMessage(MessageColor.POSITIVE + "Home set.");
         return true;
     }
