@@ -2277,6 +2277,10 @@ permissions:
     command: setarmor
     default: op
     description: Allows the player to /setarmor other players.
+  rcmds.others.sethome:
+    command: sethome
+    default: op
+    description: Allows the player to /sethome other players.
   rcmds.others.strike:
     command: strike
     default: op
@@ -2611,6 +2615,7 @@ permissions:
       rcmds.others.messagespy: true
       rcmds.others.commandspy: true
       rcmds.others.kickhistory: true
+      rcmds.others.sethome: true
 
   rcmds.see.*:
     description: Gives every see permission.
