@@ -58,6 +58,14 @@ public class RPlayer {
         }
     }
 
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null || obj.getClass() != RPlayer.class) return false;
+        final RPlayer other = (RPlayer) obj;
+        final UUID otherUUID = other.getUUID();
+        return otherUUID != null && otherUUID.equals(this.getUUID());
+    }
+
     /**
      * Gets this player's backpack.
      *
@@ -131,7 +139,8 @@ public class RPlayer {
     }
 
     public OfflinePlayer getOfflinePlayer() {
-        return RoyalCommands.getInstance().getServer().getOfflinePlayer(this.getUUID());
+        final Player online = this.getPlayer();
+        return online != null ? online : RoyalCommands.getInstance().getServer().getOfflinePlayer(this.getUUID());
     }
 
     public PConfManager getPConfManager() {
@@ -154,5 +163,13 @@ public class RPlayer {
 
     public UUID getUUID() {
         return this.uuid;
+    }
+
+    public boolean isSameAs(final UUID uuid) {
+        return this.getUUID() != null && this.getUUID().equals(uuid);
+    }
+
+    public boolean isSameAs(final OfflinePlayer op) {
+        return this.isSameAs(op.getUniqueId());
     }
 }

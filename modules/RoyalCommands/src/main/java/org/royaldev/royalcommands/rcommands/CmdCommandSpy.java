@@ -9,6 +9,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
 public class CmdCommandSpy extends BaseCommand {
@@ -23,8 +24,10 @@ public class CmdCommandSpy extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        final OfflinePlayer op = (args.length > 0) ? RUtils.getOfflinePlayer(args[0]) : (Player) cs;
-        final boolean isSamePerson = op.getName().equalsIgnoreCase(cs.getName());
+        final Player p = (Player) cs;
+        final RPlayer rp = RPlayer.getRPlayer(args.length > 0 ? RUtils.getOfflinePlayer(args[0]) : (Player) cs);
+        final OfflinePlayer op = rp.getOfflinePlayer();
+        final boolean isSamePerson = rp.isSameAs(p);
         if (!isSamePerson && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to toggle command spy for other players.");
             return true;
@@ -33,12 +36,13 @@ public class CmdCommandSpy extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't toggle command spy for this player.");
             return true;
         }
-        final PConfManager pcm = PConfManager.getPConfManager(op);
+        final PConfManager pcm = rp.getPConfManager();
         final boolean commandSpy = pcm.getBoolean("commandspy", false);
         pcm.set("commandspy", !commandSpy);
         cs.sendMessage(MessageColor.POSITIVE + "Command spy mode " + MessageColor.NEUTRAL + ((!commandSpy) ? "enabled" : "disabled") + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");
-        if (op.isOnline() && !op.getName().equalsIgnoreCase(cs.getName()))
-            ((Player) op).sendMessage(MessageColor.POSITIVE + "Command spy mode has been " + MessageColor.NEUTRAL + ((!commandSpy) ? "enabled" : "disabled") + MessageColor.POSITIVE + " for you by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
+        if (op.isOnline() && !isSamePerson) {
+            ((Player) op).sendMessage(MessageColor.POSITIVE + "Command spy mode has been " + MessageColor.NEUTRAL + (!commandSpy ? "enabled" : "disabled") + MessageColor.POSITIVE + " for you by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
+        }
         return true;
     }
 }
