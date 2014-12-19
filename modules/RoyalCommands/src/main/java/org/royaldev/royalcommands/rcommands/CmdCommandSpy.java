@@ -24,7 +24,7 @@ public class CmdCommandSpy extends BaseCommand {
             return true;
         }
         final OfflinePlayer op = (args.length > 0) ? RUtils.getOfflinePlayer(args[0]) : (Player) cs;
-        boolean isSamePerson = !op.getName().equalsIgnoreCase(cs.getName());
+        final boolean isSamePerson = op.getName().equalsIgnoreCase(cs.getName());
         if (!isSamePerson && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to toggle command spy for other players.");
             return true;
