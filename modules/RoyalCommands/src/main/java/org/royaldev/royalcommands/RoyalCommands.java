@@ -431,6 +431,7 @@ public class RoyalCommands extends JavaPlugin {
         if (!Config.useVNP) return false;
         if (this.vp == null) {
             this.vp = (VanishPlugin) this.getServer().getPluginManager().getPlugin("VanishNoPacket");
+            return false;
         }
         return this.vp.getManager().isVanished(p);
     }
@@ -439,6 +440,7 @@ public class RoyalCommands extends JavaPlugin {
         if (!Config.useVNP) return false;
         if (this.vp == null) {
             this.vp = (VanishPlugin) this.getServer().getPluginManager().getPlugin("VanishNoPacket");
+            return false;
         }
         return !this.ah.isAuthorized(cs, "rcmds.seehidden") && this.vp.getManager().isVanished(p);
     }
