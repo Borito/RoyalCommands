@@ -6,7 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdMobIgnore extends BaseCommand {
@@ -23,7 +24,7 @@ public class CmdMobIgnore extends BaseCommand {
                 return false;
             }
             Player p = (Player) cs;
-            PConfManager pcm = PConfManager.getPConfManager(p);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             boolean isHidden = pcm.getBoolean("mobignored");
             pcm.set("mobignored", !isHidden);
             String status = BooleanUtils.toStringOnOff(isHidden);
@@ -35,7 +36,7 @@ public class CmdMobIgnore extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist.");
             return true;
         }
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         boolean isHidden = pcm.getBoolean("mobignored", false);
         pcm.set("mobignored", !isHidden);
         String status = BooleanUtils.toStringOnOff(isHidden);

@@ -6,7 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdPlayerSearch extends BaseCommand {
@@ -29,7 +30,7 @@ public class CmdPlayerSearch extends BaseCommand {
                 int found = 0;
                 for (OfflinePlayer op : ops) {
                     if (!op.getName().toLowerCase().contains(search.toLowerCase())) continue;
-                    PConfManager pcm = PConfManager.getPConfManager(op);
+                    PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
                     if (!pcm.exists()) continue;
                     long seen = pcm.getLong("seen");
                     if (seen < 1L) continue;

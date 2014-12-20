@@ -28,7 +28,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.rcommands.CmdSeeInventory.InvSeeHolder;
 
 import java.util.Collection;
@@ -50,7 +51,7 @@ public class InventoryListener implements Listener {
         World w = p.getWorld();
         String group = getWorldGroup(w);
         if (group == null) return null;
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".ender.size");
         final Inventory i = Bukkit.createInventory(p, invSize);
@@ -66,7 +67,7 @@ public class InventoryListener implements Listener {
     private PlayerInventory getInventory(Player p) {
         String group = getWorldGroup(p.getWorld());
         if (group == null) return null;
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (!pcm.exists()) pcm.createFile();
         Integer invSize = pcm.getInt("inventory." + group + ".size");
         final PlayerInventory i = p.getInventory();
@@ -95,7 +96,7 @@ public class InventoryListener implements Listener {
         World w = this.plugin.getServer().getWorld(world);
         String group = getWorldGroup(w);
         if (group == null) return;
-        PConfManager pcm = PConfManager.getPConfManager(op);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         for (int slot = 0; slot < i.getSize(); slot++) {
             pcm.set("inventory." + group + ".ender.slot." + slot, i.getItem(slot));
         }
@@ -107,7 +108,7 @@ public class InventoryListener implements Listener {
         World w = p.getWorld();
         String group = getWorldGroup(w);
         if (group == null) return;
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         for (int slot = 0; slot < i.getSize(); slot++) {
             pcm.set("inventory." + group + ".ender.slot." + slot, i.getItem(slot));
         }
@@ -118,7 +119,7 @@ public class InventoryListener implements Listener {
         if (!Config.separateInv) return;
         String group = getWorldGroup(w);
         if (group == null) return;
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         for (int slot = 0; slot < i.getSize(); slot++) {
             pcm.set("inventory." + group + ".slot." + slot, i.getItem(slot));
         }
@@ -159,7 +160,7 @@ public class InventoryListener implements Listener {
         if (w == null) return null;
         final String group = getWorldGroup(w);
         if (group == null) return null;
-        final PConfManager pcm = PConfManager.getPConfManager(op);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) pcm.createFile();
         final int invSize = pcm.getInt("inventory." + group + ".ender.size");
         final Inventory i = this.plugin.getServer().createInventory(new EnderInventoryHolder(w, op.getUniqueId()), InventoryType.PLAYER.getDefaultSize());
@@ -177,7 +178,7 @@ public class InventoryListener implements Listener {
         if (w == null) return null;
         final String group = getWorldGroup(w);
         if (group == null) return null;
-        final PConfManager pcm = PConfManager.getPConfManager(op);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) pcm.createFile();
         final int invSize = pcm.getInt("inventory." + group + ".size");
         final Inventory i = this.plugin.getServer().createInventory(new OfflineInventoryHolder(w, op.getUniqueId()), InventoryType.PLAYER.getDefaultSize());
@@ -341,7 +342,7 @@ public class InventoryListener implements Listener {
         if (!Config.separateInv) return;
         String group = this.getWorldGroup(this.plugin.getServer().getWorld(world));
         if (group == null) return;
-        PConfManager pcm = PConfManager.getPConfManager(op);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         for (int slot = 0; slot < i.getSize(); slot++) {
             pcm.set("inventory." + group + ".slot." + slot, i.getItem(slot));
         }

@@ -9,8 +9,9 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class CmdJail extends BaseCommand {
 
     @Override
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
-        ConfManager cm = ConfManager.getConfManager("jails.yml");
+        Configuration cm = Configuration.getConfiguration("jails.yml");
 
         if (args.length < 1) {
             if (!cm.exists() || cm.get("jails") == null) {
@@ -55,7 +56,7 @@ public class CmdJail extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot jail that player.");
             return true;
         }
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (args.length < 2) {
             if (pcm.getBoolean("jailed")) {
                 pcm.set("jailed", false);

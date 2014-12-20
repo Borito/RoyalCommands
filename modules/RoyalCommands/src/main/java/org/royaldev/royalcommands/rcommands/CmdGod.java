@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdGod extends BaseCommand {
@@ -24,7 +25,7 @@ public class CmdGod extends BaseCommand {
                 return false;
             }
             Player t = (Player) cs;
-            PConfManager pcm = PConfManager.getPConfManager(t);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             t.setHealth(t.getMaxHealth());
             t.setFoodLevel(20);
             t.setSaturation(20F);
@@ -45,7 +46,7 @@ public class CmdGod extends BaseCommand {
                 return true;
             }
             Player t = this.plugin.getServer().getPlayer(args[0]);
-            PConfManager pcm = PConfManager.getPConfManager(t);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             if (t != null) {
                 if (!pcm.getBoolean("godmode")) {
                     if (!pcm.exists()) {
@@ -71,7 +72,7 @@ public class CmdGod extends BaseCommand {
             }
         }
         OfflinePlayer t2 = this.plugin.getServer().getOfflinePlayer(args[0]);
-        PConfManager pcm = PConfManager.getPConfManager(t2);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t2);
         if (!pcm.getBoolean("godmode")) {
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");

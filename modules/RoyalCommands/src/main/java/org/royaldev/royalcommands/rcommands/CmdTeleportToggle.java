@@ -5,7 +5,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdTeleportToggle extends BaseCommand {
@@ -21,7 +22,7 @@ public class CmdTeleportToggle extends BaseCommand {
             return true;
         }
         Player p = (Player) cs;
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (pcm.getBoolean("allow_tp")) {
             pcm.set("allow_tp", false);
             cs.sendMessage(MessageColor.POSITIVE + "Disabled teleportation.");

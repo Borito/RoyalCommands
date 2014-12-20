@@ -9,22 +9,10 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.text.SimpleDateFormat;
-
-/*
-FROM PLAYER
-  /kh          : Show kick history of self (first)
-  /kh 2        : Show kick history of self (second)
-  /kh person   : Show kick history of person (first)
-  /kh person 2 : Show kick history of person (second)
-FROM CONSOLE
-  /kh          : Usage
-  /kh 2        : Usage
-  /kh player   : Show kick history of player (first)
-  /kh player 2 : Show kick history of player (second)
-*/
 
 /*
 FROM PLAYER
@@ -80,7 +68,7 @@ public class CmdKickHistory extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot view the kicks of that player.");
             return true;
         }
-        final PConfManager pcm = PConfManager.getPConfManager(t);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!pcm.isSet("kick_history." + index)) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such kick for " + MessageColor.NEUTRAL + t.getName() + MessageColor.NEGATIVE + ".");
             return true;

@@ -41,8 +41,9 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
-import org.royaldev.royalcommands.configuration.ConfManager;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
@@ -98,7 +99,7 @@ public class RoyalCommands extends JavaPlugin {
 
     private final Pattern versionPattern = Pattern.compile("((\\d+\\.?){3})(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
     private final long startTime = System.currentTimeMillis();
-    public ConfManager whl;
+    public Configuration whl;
     public String version = null;
     public String newVersion = null;
     public Metrics m = null;
@@ -175,7 +176,7 @@ public class RoyalCommands extends JavaPlugin {
     private void initializeConfManagers() {
         final String[] cms = new String[]{"whitelist.yml", "warps.yml", "publicassignments.yml"};
         for (final String name : cms) {
-            final ConfManager cm = ConfManager.getConfManager(name);
+            final Configuration cm = Configuration.getConfiguration(name);
             if (!cm.exists()) cm.createFile();
             cm.forceSave();
         }
@@ -476,9 +477,9 @@ public class RoyalCommands extends JavaPlugin {
 
         //-- Save all userdata --//
 
-        this.getLogger().info("Saving userdata and configurations (" + (PConfManager.managersCreated() + ConfManager.managersCreated()) + " files in all)...");
-        PConfManager.saveAllManagers();
-        ConfManager.saveAllManagers();
+        this.getLogger().info("Saving userdata and configurations (" + (PlayerConfigurationManager.configurationsCreated() + Configuration.configurationsCreated()) + " files in all)...");
+        PlayerConfigurationManager.saveAllConfigurations();
+        Configuration.saveAllConfigurations();
         this.getLogger().info("Userdata saved.");
 
         //-- ProtocolLib --//
@@ -500,7 +501,7 @@ public class RoyalCommands extends JavaPlugin {
         //noinspection deprecation
         this.pluginYml = YamlConfiguration.loadConfiguration(this.getResource("plugin.yml"));
         RoyalCommands.dataFolder = getDataFolder();
-        this.whl = ConfManager.getConfManager("whitelist.yml");
+        this.whl = Configuration.getConfiguration("whitelist.yml");
         RoyalCommands.commands = pluginYml.getConfigurationSection("reflectcommands");
         this.version = getDescription().getVersion();
 
@@ -614,7 +615,7 @@ public class RoyalCommands extends JavaPlugin {
         @EventHandler
         public void onJoin(PlayerJoinEvent e) {
             final Player p = e.getPlayer();
-            final PConfManager pcm = PConfManager.getPConfManager(p);
+            final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             if (!pcm.isSet("backpack.item")) return;
             if (!pcm.exists()) pcm.createFile();
             int invSize = pcm.getInt("backpack.size", -1);

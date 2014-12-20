@@ -5,7 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdSetUserdata extends BaseCommand {
@@ -24,7 +25,7 @@ public class CmdSetUserdata extends BaseCommand {
         String node = args[1];
         String value = RoyalCommands.getFinalArg(args, 2);
         OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(name);
-        PConfManager pcm = PConfManager.getPConfManager(op);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists() || !op.hasPlayedBefore()) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
             return true;

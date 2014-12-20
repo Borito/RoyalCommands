@@ -7,7 +7,8 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdBuddha extends BaseCommand {
@@ -28,7 +29,7 @@ public class CmdBuddha extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
             }
-            PConfManager pcm = PConfManager.getPConfManager(t);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             if (!pcm.getBoolean("buddha")) {
                 pcm.set("buddha", true);
                 t.sendMessage(MessageColor.POSITIVE + "Buddha mode enabled by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
@@ -45,7 +46,7 @@ public class CmdBuddha extends BaseCommand {
             return true;
         }
         Player p = (Player) cs;
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (!pcm.getBoolean("buddha")) {
             pcm.set("buddha", true);
             cs.sendMessage(MessageColor.POSITIVE + "Enabled buddha mode for yourself.");

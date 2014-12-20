@@ -6,7 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -63,8 +64,8 @@ public class CmdFindIP extends BaseCommand {
                         double percentage = ((double) runThrough / (double) offlinePlayers.length) * 100D;
                         cs.sendMessage(MessageColor.POSITIVE + "Searching. " + MessageColor.NEUTRAL + df.format(percentage) + "%" + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + runThrough + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + offlinePlayers.length + MessageColor.POSITIVE + ") complete.");
                     }
-                    boolean alreadyPresent = PConfManager.isManagerCreated(op);
-                    PConfManager pcm = PConfManager.getPConfManager(op);
+                    boolean alreadyPresent = PlayerConfigurationManager.isConfigurationCreated(op);
+                    PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
                     String pip = pcm.getString("ip");
                     if (pip == null) continue;
                     if (pip.contains(ip)) {

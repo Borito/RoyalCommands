@@ -8,7 +8,8 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdMessageSpy extends BaseCommand {
@@ -33,7 +34,7 @@ public class CmdMessageSpy extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't toggle chat spy for this player.");
             return true;
         }
-        final PConfManager pcm = PConfManager.getPConfManager(op);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         final boolean messageSpy = pcm.getBoolean("messagespy", false);
         pcm.set("messagespy", !messageSpy);
         cs.sendMessage(MessageColor.POSITIVE + "Chat spy mode " + MessageColor.NEUTRAL + ((!messageSpy) ? "enabled" : "disabled") + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");

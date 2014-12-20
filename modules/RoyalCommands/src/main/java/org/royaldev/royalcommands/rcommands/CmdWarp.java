@@ -11,7 +11,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
 
 import java.util.Map;
 
@@ -31,7 +31,7 @@ public class CmdWarp extends BaseCommand {
         Float warpPitch;
         World warpW;
 
-        ConfManager cm = ConfManager.getConfManager("warps.yml");
+        Configuration cm = Configuration.getConfiguration("warps.yml");
         if (!cm.exists()) return null;
         warpSet = cm.getBoolean("warps." + name + ".set");
         if (!warpSet) return null;
@@ -62,7 +62,7 @@ public class CmdWarp extends BaseCommand {
         }
 
         if (args.length < 1) {
-            ConfManager cm = ConfManager.getConfManager("warps.yml");
+            Configuration cm = Configuration.getConfiguration("warps.yml");
             if (!cm.exists() || cm.get("warps") == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "There are no warps!");
                 return true;

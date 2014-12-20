@@ -9,7 +9,8 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 
 @ReflectCommand
@@ -30,7 +31,7 @@ public class CmdHelmet extends BaseCommand {
             return false;
         }
         Player p = (Player) cs;
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         String name = args[0];
         if (name.equalsIgnoreCase("none")) {
             ItemStack helm = p.getInventory().getHelmet();

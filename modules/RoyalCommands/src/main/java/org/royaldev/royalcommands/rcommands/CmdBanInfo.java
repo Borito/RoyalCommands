@@ -6,7 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +26,7 @@ public class CmdBanInfo extends BaseCommand {
             return false;
         }
         final OfflinePlayer op = RUtils.getOfflinePlayer(args[0]);
-        final PConfManager pcm = PConfManager.getPConfManager(op);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
             return true;

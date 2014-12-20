@@ -6,7 +6,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdMuteAll extends BaseCommand {
@@ -24,7 +25,7 @@ public class CmdMuteAll extends BaseCommand {
             if (cs instanceof Player) {
                 if (p == cs) continue;
             }
-            PConfManager pcm = PConfManager.getPConfManager(p);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             if (!this.allMuted) {
                 pcm.set("muted", true);
                 p.sendMessage(MessageColor.NEGATIVE + "You have been muted!");

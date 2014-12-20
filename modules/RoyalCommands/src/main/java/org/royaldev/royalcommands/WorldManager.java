@@ -12,7 +12,7 @@ import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.listeners.InventoryListener;
 
 import java.io.File;
@@ -25,7 +25,7 @@ public class WorldManager {
     public static InventoryListener il;
     private final List<String> loadedWorlds = new ArrayList<>();
     private final List<String> configuredWorlds = new ArrayList<>();
-    private final ConfManager config = ConfManager.getConfManager("worlds.yml");
+    private final Configuration config = Configuration.getConfiguration("worlds.yml");
     private final Logger log = RoyalCommands.getInstance().getLogger();
 
     public WorldManager() {
@@ -116,7 +116,7 @@ public class WorldManager {
         return null;
     }
 
-    public ConfManager getConfig() {
+    public Configuration getConfig() {
         return config;
     }
 

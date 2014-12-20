@@ -5,7 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdClearWarns extends BaseCommand {
@@ -21,7 +22,7 @@ public class CmdClearWarns extends BaseCommand {
             return false;
         }
         OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
-        PConfManager pcm = PConfManager.getPConfManager(op);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;

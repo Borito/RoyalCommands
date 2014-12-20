@@ -31,8 +31,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.royaldev.royalchat.RoyalChat;
-import org.royaldev.royalcommands.configuration.GeneralConfManager;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.GeneralConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.rcommands.CmdBack;
@@ -183,7 +184,7 @@ public class RUtils {
     }
 
     public static void checkMail(Player p) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (!pcm.getStringList("mail").isEmpty()) {
             int count = pcm.getStringList("mail").size();
             String poss = (count != 1) ? "s" : "";
@@ -382,7 +383,7 @@ public class RUtils {
         return sb.toString();
     }
 
-    public static List<String> getAssignment(ItemStack is, GeneralConfManager gcf) {
+    public static List<String> getAssignment(ItemStack is, GeneralConfiguration gcf) {
         return gcf.getStringList(getAssignmentPath(is));
     }
 
@@ -421,7 +422,7 @@ public class RUtils {
      */
     @Deprecated
     public static Inventory getBackpack(UUID u, World w) {
-        PConfManager pcm = PConfManager.getPConfManager(u);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(u);
         String worldGroup = WorldManager.il.getWorldGroup(w);
         if (worldGroup == null) worldGroup = "w-" + w.getName();
         if (!pcm.exists()) pcm.createFile();
@@ -475,7 +476,7 @@ public class RUtils {
      */
     @Deprecated
     public static int getCurrentHomes(UUID u) {
-        ConfigurationSection pconf = PConfManager.getPConfManager(u).getConfigurationSection("home");
+        ConfigurationSection pconf = PlayerConfigurationManager.getConfiguration(u).getConfigurationSection("home");
         if (pconf == null) return 0;
         return pconf.getValues(false).size();
     }
@@ -873,7 +874,7 @@ public class RUtils {
      * @return timestamp or -1 if there was no such timestamp
      */
     public static long getTimeStamp(OfflinePlayer p, String title) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (pcm.get(title) == null) return -1;
         return pcm.getLong(title);
     }
@@ -915,7 +916,7 @@ public class RUtils {
     }
 
     public static boolean isBanned(final Player p) {
-        final PConfManager pcm = PConfManager.getPConfManager(p);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (pcm.isSet("bantime")) {
             if (RUtils.isTimeStampValid(p, "bantime")) return true;
             else {
@@ -962,7 +963,7 @@ public class RUtils {
      * @return true or false
      */
     public static boolean isTeleportAllowed(OfflinePlayer p) {
-        return PConfManager.getPConfManager(p).getBoolean("allow_tp", true);
+        return PlayerConfigurationManager.getConfiguration(p).getBoolean("allow_tp", true);
     }
 
     /**
@@ -973,7 +974,7 @@ public class RUtils {
      * @return true if the timestamp has not been passed, false if otherwise
      */
     public static boolean isTimeStampValid(OfflinePlayer p, String title) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (!pcm.isSet(title)) return false;
         long time = System.currentTimeMillis();
         long overall = pcm.getLong(title);
@@ -981,7 +982,7 @@ public class RUtils {
     }
 
     public static boolean isTimeStampValidAddTime(OfflinePlayer p, String timestamp, String timeset) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         if (pcm.get(timestamp) == null || pcm.get(timeset) == null) return false;
         long time = new Date().getTime();
         long overall = (pcm.getLong(timestamp) * 1000L) + pcm.getLong(timeset);
@@ -1014,7 +1015,7 @@ public class RUtils {
      * @param reason Reason for kick
      */
     public static void kickPlayer(final Player kicked, final CommandSender kicker, final String reason) {
-        final PConfManager pcm = PConfManager.getPConfManager(kicked);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(kicked);
         pcm.set("last_kick.kicker", (kicker == null) ? "Unknown" : kicker.getName());
         pcm.set("last_kick.reason", decolorize(reason));
         pcm.set("last_kick.timestamp", System.currentTimeMillis());
@@ -1056,7 +1057,7 @@ public class RUtils {
             if (teleRunners.containsKey(p.getName())) cancelTeleportRunner(p);
         }
         p.sendMessage(MessageColor.POSITIVE + "Please wait " + MessageColor.NEUTRAL + Config.teleportWarmup + MessageColor.POSITIVE + " seconds for your teleport.");
-        final PConfManager pcm = PConfManager.getPConfManager(p);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         pcm.set("teleport_warmup", new Date().getTime());
         final Runnable r = new Runnable() {
             @Override
@@ -1123,7 +1124,7 @@ public class RUtils {
         at.getWorld().playSound(at, toPlay, Config.teleportSoundVolume, Config.teleportSoundPitch);
     }
 
-    public static void removeAssignment(ItemStack is, GeneralConfManager gcf) {
+    public static void removeAssignment(ItemStack is, GeneralConfiguration gcf) {
         setAssignment(is, null, gcf);
     }
 
@@ -1183,7 +1184,7 @@ public class RUtils {
      * @param i Inventory to save as backpack
      */
     public static void saveBackpack(UUID u, World w, Inventory i) {
-        final PConfManager pcm = PConfManager.getPConfManager(u);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(u);
         if (w == null) return;
         String worldGroup = WorldManager.il.getWorldGroup(w);
         if (worldGroup == null) worldGroup = "w-" + w.getName();
@@ -1214,7 +1215,7 @@ public class RUtils {
         RoyalCommands.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
     }
 
-    public static void setAssignment(ItemStack is, List<String> commands, GeneralConfManager gcf) {
+    public static void setAssignment(ItemStack is, List<String> commands, GeneralConfiguration gcf) {
         if (is == null) return;
         gcf.set(getAssignmentPath(is), commands);
     }
@@ -1260,7 +1261,7 @@ public class RUtils {
      * @param title   Path to timestamp
      */
     public static void setTimeStamp(OfflinePlayer p, long seconds, String title) {
-        PConfManager pcm = PConfManager.getPConfManager(p);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         pcm.set(title, (seconds * 1000) + new Date().getTime());
     }
 
@@ -1532,7 +1533,7 @@ public class RUtils {
      */
     public static void writeBanHistory(OfflinePlayer t) {
         if (!t.isBanned()) return;
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!pcm.exists()) pcm.createFile();
         List<String> prevBans = pcm.getStringList("prevbans");
         if (prevBans == null) prevBans = new ArrayList<>();

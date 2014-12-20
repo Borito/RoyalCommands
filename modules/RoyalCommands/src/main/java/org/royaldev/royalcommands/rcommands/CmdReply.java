@@ -6,9 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
-
-import java.util.Collection;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 // TODO: Rewrite, for the love of god.
 
@@ -45,7 +43,7 @@ public class CmdReply extends BaseCommand {
         cs.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + p.getName() + MessageColor.NEUTRAL + "] " + m);
         p.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + "] " + m);
         for (final Player p1 : this.plugin.getServer().getOnlinePlayers()) {
-            if (PConfManager.getPConfManager(p1).getBoolean("messagespy")) {
+            if (PlayerConfigurationManager.getConfiguration(p1).getBoolean("messagespy")) {
                 if (t == p1 || cs == p1) continue;
                 p1.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + p.getName() + MessageColor.NEUTRAL + "] " + m);
             }

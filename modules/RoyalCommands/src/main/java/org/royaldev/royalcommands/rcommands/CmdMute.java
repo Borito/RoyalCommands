@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,7 +7,9 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 @ReflectCommand
 public class CmdMute extends CACommand {
@@ -27,7 +28,7 @@ public class CmdMute extends CACommand {
             return false;
         }
         final OfflinePlayer t = RUtils.getOfflinePlayer(eargs[0]);
-        final PConfManager pcm = PConfManager.getPConfManager(t);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!pcm.exists()) {
             if (!t.isOnline() && !t.hasPlayedBefore()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");

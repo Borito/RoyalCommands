@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
 
 @ReflectCommand
 public class CmdSetWarp extends BaseCommand {
@@ -36,7 +36,7 @@ public class CmdSetWarp extends BaseCommand {
         String locW = p.getWorld().getName();
         String name = args[0].toLowerCase();
 
-        ConfManager warps = ConfManager.getConfManager("warps.yml");
+        Configuration warps = Configuration.getConfiguration("warps.yml");
         if (!warps.exists()) warps.createFile();
         warps.set("warps." + name + ".set", true);
         warps.set("warps." + name + ".x", locX);

@@ -13,7 +13,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
@@ -66,13 +66,13 @@ public class PlayerTeleporter implements ITeleporter<Player>, ISilentTeleporter<
     private int getWarmupTaskID() {
         final Player p = this.getTeleportee();
         final RPlayer rp = RPlayer.getRPlayer(p);
-        return rp.getPConfManager().getInt("teleport_warmup_taskid", -1);
+        return rp.getPlayerConfiguration().getInt("teleport_warmup_taskid", -1);
     }
 
     private void setWarmupTaskID(final int id) {
         final Player p = this.getTeleportee();
         final RPlayer rp = RPlayer.getRPlayer(p);
-        rp.getPConfManager().set("teleport_warmup_taskid", id);
+        rp.getPlayerConfiguration().set("teleport_warmup_taskid", id);
     }
 
     private boolean handleWarmup(final Location location, final boolean silent) {
@@ -97,7 +97,7 @@ public class PlayerTeleporter implements ITeleporter<Player>, ISilentTeleporter<
     private boolean makeWarmupTask(final Player p, final Location location, final boolean silent) {
         if (Config.teleportWarmup <= 0) return false;
         final RPlayer rp = RPlayer.getRPlayer(p);
-        final PConfManager pcm = rp.getPConfManager();
+        final PlayerConfiguration pcm = rp.getPlayerConfiguration();
         final long time = System.currentTimeMillis();
         pcm.set("teleport_warmup", time);
         final Runnable r = new Runnable() {
@@ -105,7 +105,7 @@ public class PlayerTeleporter implements ITeleporter<Player>, ISilentTeleporter<
             public void run() {
                 if (!p.isOnline()) return;
                 final RPlayer rp = RPlayer.getRPlayer(p);
-                if (rp.getPConfManager().getInt("teleport_warmup", -1) == -1) {
+                if (rp.getPlayerConfiguration().getInt("teleport_warmup", -1) == -1) {
                     PlayerTeleporter.this.cancelWarmupTask();
                     return;
                 }
@@ -141,7 +141,7 @@ public class PlayerTeleporter implements ITeleporter<Player>, ISilentTeleporter<
 
     private boolean warmupExpired() {
         final RPlayer rp = RPlayer.getRPlayer(this.getTeleportee());
-        final long l = rp.getPConfManager().getLong("teleport_warmup", -1L);
+        final long l = rp.getPlayerConfiguration().getLong("teleport_warmup", -1L);
         return l != -1 && l + Config.teleportWarmup * 1000L < System.currentTimeMillis();
     }
 

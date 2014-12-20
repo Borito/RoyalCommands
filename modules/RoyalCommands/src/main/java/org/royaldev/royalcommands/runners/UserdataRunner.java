@@ -2,8 +2,10 @@ package org.royaldev.royalcommands.runners;
 
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
+import org.royaldev.royalcommands.configuration.FilePlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 public class UserdataRunner implements Runnable {
 
@@ -15,13 +17,13 @@ public class UserdataRunner implements Runnable {
 
     @Override
     public void run() {
-        PConfManager.saveAllManagers();
-        ConfManager.saveAllManagers();
+        PlayerConfigurationManager.saveAllConfigurations();
+        Configuration.saveAllConfigurations();
         if (!Config.purgeUnusedUserdata) return;
-        final Object[] managers = PConfManager.getAllManagers().toArray();
+        final Object[] managers = PlayerConfigurationManager.getAllConfigurations().toArray();
         for (final Object o : managers) {
-            if (!(o instanceof PConfManager)) continue;
-            final PConfManager pcm = (PConfManager) o;
+            if (!(o instanceof FilePlayerConfiguration)) continue;
+            final PlayerConfiguration pcm = (PlayerConfiguration) o;
             if (this.plugin.getServer().getPlayer(pcm.getManagerPlayerUUID()) != null) continue;
             pcm.discard(true);
         }

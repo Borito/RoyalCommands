@@ -7,7 +7,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdBanIP extends BaseCommand {
@@ -39,7 +39,7 @@ public class CmdBanIP extends BaseCommand {
             return false;
         }
         OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
-        String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");
+        String ip = (!op.hasPlayedBefore()) ? args[0] : PlayerConfigurationManager.getConfiguration(op).getString("ip");
         String banreason = (args.length > 1) ? RoyalCommands.getFinalArg(args, 1) : Config.banMessage;
         banreason = RUtils.colorize(banreason);
         if (ip == null) ip = args[0];

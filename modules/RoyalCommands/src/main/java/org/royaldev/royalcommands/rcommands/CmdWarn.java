@@ -9,7 +9,8 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +31,7 @@ public class CmdWarn extends BaseCommand {
         }
         OfflinePlayer op = this.plugin.getServer().getPlayer(args[0]);
         if (op == null) op = this.plugin.getServer().getOfflinePlayer(args[0]);
-        PConfManager pcm = PConfManager.getPConfManager(op);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
             return true;

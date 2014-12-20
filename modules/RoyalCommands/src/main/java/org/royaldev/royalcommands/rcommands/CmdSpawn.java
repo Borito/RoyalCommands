@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
 
 @ReflectCommand
 public class CmdSpawn extends BaseCommand {
@@ -25,7 +25,7 @@ public class CmdSpawn extends BaseCommand {
      * @return null if no group-specific spawn or Location if existent
      */
     private static Location getGroupSpawn(Player p, World world) {
-        ConfManager cm = ConfManager.getConfManager("spawns.yml");
+        Configuration cm = Configuration.getConfiguration("spawns.yml");
         String group;
         try {
             if (!RoyalCommands.getInstance().vh.usingVault()) throw new UnsupportedOperationException();
@@ -47,7 +47,7 @@ public class CmdSpawn extends BaseCommand {
      * @return Custom spawn or default spawn if not set
      */
     public static Location getWorldSpawn(World world) {
-        ConfManager cm = ConfManager.getConfManager("spawns.yml");
+        Configuration cm = Configuration.getConfiguration("spawns.yml");
         String w = world.getName();
         Location l = cm.getLocation("spawns." + w, world.getName());
         if (l == null) l = world.getSpawnLocation();

@@ -5,7 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdVip extends BaseCommand {
@@ -27,7 +28,7 @@ public class CmdVip extends BaseCommand {
                 return true;
             }
             OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[1]);
-            PConfManager pcm = PConfManager.getPConfManager(t);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
@@ -45,7 +46,7 @@ public class CmdVip extends BaseCommand {
                 return true;
             }
             OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[1]);
-            PConfManager pcm = PConfManager.getPConfManager(t);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
@@ -63,7 +64,7 @@ public class CmdVip extends BaseCommand {
                 return true;
             }
             OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[1]);
-            PConfManager pcm = PConfManager.getPConfManager(t);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;

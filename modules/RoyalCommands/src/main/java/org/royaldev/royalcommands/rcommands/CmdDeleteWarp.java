@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
 
 @ReflectCommand
 public class CmdDeleteWarp extends BaseCommand {
@@ -24,7 +24,7 @@ public class CmdDeleteWarp extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final ConfManager cm = ConfManager.getConfManager("warps.yml");
+        final Configuration cm = Configuration.getConfiguration("warps.yml");
         if (!cm.isSet("warps." + args[0])) {
             cs.sendMessage(MessageColor.NEGATIVE + "That warp does not exist!");
             return true;

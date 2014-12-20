@@ -17,7 +17,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 
 @SuppressWarnings("unused")
@@ -34,7 +34,7 @@ public class RoyalCommandsEntityListener implements Listener {
         Entity ent = e.getEntity();
         if (!(ent instanceof Player)) return;
         Player p = (Player) ent;
-        if (!PConfManager.getPConfManager(p).getBoolean("buddha")) return;
+        if (!PlayerConfigurationManager.getConfiguration(p).getBoolean("buddha")) return;
         e.setDamage(0);
         if (e.getDamage() >= p.getHealth()) p.setHealth(1);
         if (p.getHealth() == 1) e.setCancelled(true);
@@ -49,7 +49,7 @@ public class RoyalCommandsEntityListener implements Listener {
         Entity ent = e.getEntity();
         if (!(ent instanceof Player)) return;
         Player p = (Player) ent;
-        if (PConfManager.getPConfManager(p).getBoolean("godmode")) e.setCancelled(true);
+        if (PlayerConfigurationManager.getConfiguration(p).getBoolean("godmode")) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -69,14 +69,14 @@ public class RoyalCommandsEntityListener implements Listener {
     public void onEntityTarget(EntityTargetEvent event) {
         if (!(event.getTarget() instanceof Player)) return;
         Player p = (Player) event.getTarget();
-        if (PConfManager.getPConfManager(p).getBoolean("mobignored")) event.setTarget(null);
+        if (PlayerConfigurationManager.getConfiguration(p).getBoolean("mobignored")) event.setTarget(null);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Player p = (Player) event.getEntity();
-        if (!PConfManager.getPConfManager(p).getBoolean("godmode")) return;
+        if (!PlayerConfigurationManager.getConfiguration(p).getBoolean("godmode")) return;
         event.setFoodLevel(20);
         p.setSaturation(20F);
     }
@@ -89,7 +89,7 @@ public class RoyalCommandsEntityListener implements Listener {
         Entity ed = ev.getEntity();
         if (!(e instanceof Player)) return;
         Player p = (Player) e;
-        if (!PConfManager.getPConfManager(p).getBoolean("ohk")) return;
+        if (!PlayerConfigurationManager.getConfiguration(p).getBoolean("ohk")) return;
         if (ed instanceof LivingEntity) {
             LivingEntity le = (LivingEntity) ed;
             le.damage(le.getHealth() * 1000);

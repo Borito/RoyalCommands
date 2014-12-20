@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdUnbanIP extends BaseCommand {
@@ -38,7 +38,7 @@ public class CmdUnbanIP extends BaseCommand {
             return false;
         }
         OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
-        String ip = (!op.hasPlayedBefore()) ? args[0] : PConfManager.getPConfManager(op).getString("ip");
+        String ip = (!op.hasPlayedBefore()) ? args[0] : PlayerConfigurationManager.getConfiguration(op).getString("ip");
         if (ip == null) ip = args[0];
         if (!isValid(ip)) {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid IP (" + MessageColor.NEUTRAL + ip + MessageColor.NEGATIVE + ").");

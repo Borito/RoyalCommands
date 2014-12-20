@@ -8,7 +8,7 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
@@ -36,7 +36,7 @@ public class CmdCommandSpy extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't toggle command spy for this player.");
             return true;
         }
-        final PConfManager pcm = rp.getPConfManager();
+        final PlayerConfiguration pcm = rp.getPlayerConfiguration();
         final boolean commandSpy = pcm.getBoolean("commandspy", false);
         pcm.set("commandspy", !commandSpy);
         cs.sendMessage(MessageColor.POSITIVE + "Command spy mode " + MessageColor.NEUTRAL + ((!commandSpy) ? "enabled" : "disabled") + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + op.getName() + MessageColor.POSITIVE + ".");

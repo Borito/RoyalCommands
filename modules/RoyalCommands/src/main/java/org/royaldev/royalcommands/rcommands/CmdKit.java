@@ -11,7 +11,8 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +53,7 @@ public class CmdKit extends TabCommand {
             }
             final FileConfiguration c = this.plugin.getConfig();
             Player p = (Player) cs;
-            final PConfManager pcm = PConfManager.getPConfManager(p);
+            final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             if (!c.isSet("kits") || !c.isSet("kits.list")) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No kits defined!");
                 return true;

@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdDeafen extends BaseCommand {
@@ -36,7 +37,7 @@ public class CmdDeafen extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "You are not allowed to deafen that player!");
             return true;
         }
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         final boolean isDeaf = pcm.getBoolean("deaf");
         pcm.set("deaf", !isDeaf);
         cs.sendMessage(MessageColor.POSITIVE + "Toggled deaf " + MessageColor.NEUTRAL + BooleanUtils.toStringOnOff(!isDeaf) + MessageColor.POSITIVE + " for " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");

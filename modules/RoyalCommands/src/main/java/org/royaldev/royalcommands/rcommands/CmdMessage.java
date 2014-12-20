@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.util.HashMap;
 
@@ -47,7 +47,7 @@ public class CmdMessage extends BaseCommand {
         cs.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + "You" + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + t.getName() + MessageColor.NEUTRAL + "] " + m);
         if (!this.ah.isAuthorized(cs, cmd, PermType.EXEMPT)) {
             for (final Player p1 : this.plugin.getServer().getOnlinePlayers()) {
-                if (PConfManager.getPConfManager(p1).getBoolean("messagespy")) {
+                if (PlayerConfigurationManager.getConfiguration(p1).getBoolean("messagespy")) {
                     if (t == p1 || cs == p1) continue;
                     p1.sendMessage(MessageColor.NEUTRAL + "[" + MessageColor.POSITIVE + cs.getName() + MessageColor.NEUTRAL + " -> " + MessageColor.POSITIVE + t.getName() + MessageColor.NEUTRAL + "] " + m);
                 }

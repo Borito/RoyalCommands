@@ -3,7 +3,8 @@ package org.royaldev.royalcommands.runners;
 import org.bukkit.OfflinePlayer;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class WarnWatcher implements Runnable {
         if (Config.warnExpireTime < 1L) return;
         final OfflinePlayer[] players = this.plugin.getServer().getOfflinePlayers();
         for (final OfflinePlayer p : players) {
-            final PConfManager pcm = PConfManager.getPConfManager(p);
+            final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             if (!pcm.exists()) continue;
             if (pcm.get("warns") == null) continue;
             final List<String> warns = pcm.getStringList("warns");

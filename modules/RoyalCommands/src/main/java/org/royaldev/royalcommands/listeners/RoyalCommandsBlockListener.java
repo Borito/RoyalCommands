@@ -7,7 +7,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @SuppressWarnings("unused")
 public class RoyalCommandsBlockListener implements Listener {
@@ -28,7 +29,7 @@ public class RoyalCommandsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(BlockBreakEvent event) {
-        PConfManager pcm = PConfManager.getPConfManager(event.getPlayer());
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(event.getPlayer());
         if (pcm.getBoolean("frozen")) event.setCancelled(true);
         if (pcm.getBoolean("jailed")) event.setCancelled(true);
     }
@@ -43,7 +44,7 @@ public class RoyalCommandsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlace(BlockPlaceEvent event) {
-        PConfManager pcm = PConfManager.getPConfManager(event.getPlayer());
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(event.getPlayer());
         if (pcm.getBoolean("frozen")) event.setCancelled(true);
         if (pcm.getBoolean("jailed")) event.setCancelled(true);
     }

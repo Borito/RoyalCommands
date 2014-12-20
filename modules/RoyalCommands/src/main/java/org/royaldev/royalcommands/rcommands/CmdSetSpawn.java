@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
 
 @ReflectCommand
 public class CmdSetSpawn extends BaseCommand {
@@ -23,7 +23,7 @@ public class CmdSetSpawn extends BaseCommand {
         }
         Player p = (Player) cs;
         String group = (args.length > 0) ? "." + args[0].toLowerCase() : "";
-        ConfManager spawns = ConfManager.getConfManager("spawns.yml");
+        Configuration spawns = Configuration.getConfiguration("spawns.yml");
         double x = p.getLocation().getX();
         double y = p.getLocation().getY();
         double z = p.getLocation().getZ();

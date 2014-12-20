@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class CmdMail extends BaseCommand {
                 return true;
             }
             Player p = (Player) cs;
-            final PConfManager pcm = PConfManager.getPConfManager(p);
+            final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             final List<String> mails = pcm.getStringList("mail");
             if (mails.isEmpty()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You have no mail!");
@@ -63,7 +64,7 @@ public class CmdMail extends BaseCommand {
                 return true;
             }
             Player p = (Player) cs;
-            final PConfManager pcm = PConfManager.getPConfManager(p);
+            final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             if (!pcm.exists()) pcm.createFile();
             if (pcm.isSet("mail")) pcm.set("mail", null);
             cs.sendMessage(MessageColor.POSITIVE + "Your mailbox has been cleared.");
@@ -83,7 +84,7 @@ public class CmdMail extends BaseCommand {
             }
             final String senderName = cs.getName();
             final String newmail = senderName + ": " + RoyalCommands.getFinalArg(args, 2);
-            final PConfManager pcm = PConfManager.getPConfManager(op);
+            final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
             List<String> mail = pcm.getStringList("mail");
             mail.add(newmail);
             pcm.set("mail", mail);

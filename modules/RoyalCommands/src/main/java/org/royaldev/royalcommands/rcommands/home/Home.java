@@ -2,7 +2,8 @@ package org.royaldev.royalcommands.rcommands.home;
 
 import org.bukkit.Location;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.UUID;
@@ -23,9 +24,9 @@ public class Home {
         final String[] parts = notation.split(":");
         final String playerName = parts.length > 1 ? parts[0] : null;
         final String homeName = parts[parts.length > 1 ? 1 : 0];
-        final PConfManager pcm;
-        if (playerName == null) pcm = PConfManager.getPConfManager(uuid);
-        else pcm = PConfManager.getPConfManager(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
+        final PlayerConfiguration pcm;
+        if (playerName == null) pcm = PlayerConfigurationManager.getConfiguration(uuid);
+        else pcm = PlayerConfigurationManager.getConfiguration(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
         return new Home(pcm.getManagerPlayerUUID(), homeName, null);
     }
 
@@ -38,13 +39,13 @@ public class Home {
         final String[] parts = notation.split(":");
         final String playerName = parts.length > 1 ? parts[0] : null;
         final String homeName = parts[parts.length > 1 ? 1 : 0];
-        final PConfManager pcm;
-        if (playerName == null) pcm = PConfManager.getPConfManager(uuid);
-        else pcm = PConfManager.getPConfManager(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
+        final PlayerConfiguration pcm;
+        if (playerName == null) pcm = PlayerConfigurationManager.getConfiguration(uuid);
+        else pcm = PlayerConfigurationManager.getConfiguration(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
         return Home.fromPConfManager(pcm, homeName);
     }
 
-    public static Home fromPConfManager(final PConfManager pcm, final String name) {
+    public static Home fromPConfManager(final PlayerConfiguration pcm, final String name) {
         if (!pcm.isSet("home." + name)) return null;
         try {
             return new Home(pcm.getManagerPlayerUUID(), name, pcm.getLocation("home." + name));
@@ -58,7 +59,7 @@ public class Home {
     }
 
     public void delete() {
-        final PConfManager pcm = this.getRPlayer().getPConfManager();
+        final PlayerConfiguration pcm = this.getRPlayer().getPlayerConfiguration();
         pcm.set(this.getPath(), null);
         pcm.forceSave();
     }
@@ -88,7 +89,7 @@ public class Home {
     }
 
     public void save() {
-        final PConfManager pcm = this.getRPlayer().getPConfManager();
+        final PlayerConfiguration pcm = this.getRPlayer().getPlayerConfiguration();
         pcm.setLocation(this.getPath(), this.getLocation());
         pcm.forceSave();
     }

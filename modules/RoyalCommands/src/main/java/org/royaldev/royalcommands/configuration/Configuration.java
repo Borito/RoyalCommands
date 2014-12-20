@@ -10,9 +10,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConfManager extends GeneralConfManager {
+public class Configuration extends FileGeneralConfiguration {
 
-    private static final Map<String, ConfManager> confs = new HashMap<>();
+    private static final Map<String, Configuration> confs = new HashMap<>();
     private final Object saveLock = new Object();
     private final String path;
     private final String name;
@@ -25,7 +25,7 @@ public class ConfManager extends GeneralConfManager {
      *
      * @param filename Filename (local) for the config
      */
-    ConfManager(String filename) {
+    Configuration(String filename) {
         super();
         final File dataFolder = RoyalCommands.dataFolder;
         this.path = dataFolder + File.separator + filename;
@@ -44,7 +44,7 @@ public class ConfManager extends GeneralConfManager {
      *
      * @param file File object for the config
      */
-    ConfManager(File file) {
+    Configuration(File file) {
         this(file.getName());
     }
 
@@ -52,49 +52,49 @@ public class ConfManager extends GeneralConfManager {
      * Just to prevent construction outside of package.
      */
     @SuppressWarnings("unused")
-    private ConfManager() {
+    private Configuration() {
         this.path = "";
         this.name = "";
     }
 
-    public static Collection<ConfManager> getAllManagers() {
-        synchronized (ConfManager.confs) {
-            return Collections.synchronizedCollection(ConfManager.confs.values());
+    public static Collection<Configuration> getAllConfigurations() {
+        synchronized (Configuration.confs) {
+            return Collections.synchronizedCollection(Configuration.confs.values());
         }
     }
 
-    public static ConfManager getConfManager(String s) {
-        synchronized (ConfManager.confs) {
-            if (ConfManager.confs.containsKey(s)) return ConfManager.confs.get(s);
-            final ConfManager cm = new ConfManager(s);
-            ConfManager.confs.put(s, cm);
+    public static Configuration getConfiguration(String s) {
+        synchronized (Configuration.confs) {
+            if (Configuration.confs.containsKey(s)) return Configuration.confs.get(s);
+            final Configuration cm = new Configuration(s);
+            Configuration.confs.put(s, cm);
             return cm;
         }
     }
 
-    public static boolean isManagerCreated(String s) {
-        synchronized (ConfManager.confs) {
-            return ConfManager.confs.containsKey(s);
+    public static boolean isConfigurationCreated(String s) {
+        synchronized (Configuration.confs) {
+            return Configuration.confs.containsKey(s);
         }
     }
 
-    public static int managersCreated() {
-        synchronized (ConfManager.confs) {
-            return ConfManager.confs.size();
+    public static int configurationsCreated() {
+        synchronized (Configuration.confs) {
+            return Configuration.confs.size();
         }
     }
 
-    public static void removeAllManagers() {
-        final Collection<ConfManager> oldConfs = new ArrayList<>();
-        oldConfs.addAll(ConfManager.confs.values());
-        synchronized (ConfManager.confs) {
-            for (final ConfManager cm : oldConfs) cm.discard(false);
+    public static void removeAllConfigurations() {
+        final Collection<Configuration> oldConfs = new ArrayList<>();
+        oldConfs.addAll(Configuration.confs.values());
+        synchronized (Configuration.confs) {
+            for (final Configuration cm : oldConfs) cm.discard(false);
         }
     }
 
-    public static void saveAllManagers() {
-        synchronized (ConfManager.confs) {
-            for (final ConfManager cm : ConfManager.confs.values()) cm.forceSave();
+    public static void saveAllConfigurations() {
+        synchronized (Configuration.confs) {
+            for (final Configuration cm : Configuration.confs.values()) cm.forceSave();
         }
     }
 
@@ -119,9 +119,9 @@ public class ConfManager extends GeneralConfManager {
      * @param save Save manager before removing references?
      */
     public void discard(boolean save) {
-        synchronized (ConfManager.confs) {
+        synchronized (Configuration.confs) {
             if (save) this.forceSave();
-            ConfManager.confs.remove(this.name);
+            Configuration.confs.remove(this.name);
         }
     }
 

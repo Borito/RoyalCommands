@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdSeen extends BaseCommand {
@@ -27,7 +28,7 @@ public class CmdSeen extends BaseCommand {
             cs.sendMessage(MessageColor.POSITIVE + "The player " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " was last seen " + MessageColor.NEUTRAL + "now" + MessageColor.POSITIVE + ".");
             return true;
         }
-        final PConfManager pcm = PConfManager.getPConfManager(t);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
             return true;

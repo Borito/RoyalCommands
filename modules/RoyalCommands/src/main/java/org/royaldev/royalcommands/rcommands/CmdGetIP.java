@@ -5,7 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdGetIP extends BaseCommand {
@@ -25,7 +26,7 @@ public class CmdGetIP extends BaseCommand {
             return false;
         }
         OfflinePlayer oplayer = this.plugin.getServer().getOfflinePlayer(args[0]);
-        PConfManager pcm = PConfManager.getPConfManager(oplayer);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(oplayer);
         if (pcm.exists()) cs.sendMessage(MessageColor.NEUTRAL + oplayer.getName() + ": " + pcm.getString("ip"));
         else cs.sendMessage(MessageColor.NEGATIVE + "The player " + oplayer.getName() + " does not exist.");
         return true;

@@ -10,7 +10,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class CmdWhois extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "That player has never played before!");
             return true;
         }
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         DecimalFormat df = new DecimalFormat("#.##");
         String ip = pcm.getString("ip");
         String name = pcm.getString("name");

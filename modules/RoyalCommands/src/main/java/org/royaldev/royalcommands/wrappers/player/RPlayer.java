@@ -9,7 +9,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.WorldManager;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.rcommands.home.Home;
 import org.royaldev.royalcommands.wrappers.teleport.PlayerTeleporter;
@@ -75,13 +76,13 @@ public class RPlayer {
     public Inventory getBackpack(final World w) {
         String worldGroup = WorldManager.il.getWorldGroup(w);
         if (worldGroup == null) worldGroup = "w-" + w.getName();
-        int invSize = this.getPConfManager().getInt("backpack." + worldGroup + ".size", -1);
+        int invSize = this.getPlayerConfiguration().getInt("backpack." + worldGroup + ".size", -1);
         if (invSize < 9) invSize = 36;
         if (invSize % 9 != 0) invSize = 36;
         final Inventory i = Bukkit.createInventory(new BackpackListener.BackpackHolder(this.getUUID(), w), invSize, "Backpack");
-        if (!this.getPConfManager().isSet("backpack." + worldGroup + ".item")) return i;
+        if (!this.getPlayerConfiguration().isSet("backpack." + worldGroup + ".item")) return i;
         for (int slot = 0; slot < invSize; slot++) {
-            final ItemStack is = this.getPConfManager().getItemStack("backpack." + worldGroup + ".item." + slot);
+            final ItemStack is = this.getPlayerConfiguration().getItemStack("backpack." + worldGroup + ".item." + slot);
             if (is == null) continue;
             i.setItem(slot, is);
         }
@@ -126,10 +127,10 @@ public class RPlayer {
      */
     public List<Home> getHomes() {
         final List<Home> homes = new ArrayList<>();
-        final PConfManager pcm = this.getPConfManager();
-        if (pcm == null || !pcm.isSet("home")) return homes;
-        for (final String name : pcm.getConfigurationSection("home").getKeys(false)) {
-            homes.add(Home.fromPConfManager(this.getPConfManager(), name));
+        final PlayerConfiguration pc = this.getPlayerConfiguration();
+        if (pc == null || !pc.isSet("home")) return homes;
+        for (final String name : pc.getConfigurationSection("home").getKeys(false)) {
+            homes.add(Home.fromPConfManager(this.getPlayerConfiguration(), name));
         }
         return homes;
     }
@@ -143,8 +144,8 @@ public class RPlayer {
         return online != null ? online : RoyalCommands.getInstance().getServer().getOfflinePlayer(this.getUUID());
     }
 
-    public PConfManager getPConfManager() {
-        return PConfManager.getPConfManager(this.uuid);
+    public PlayerConfiguration getPlayerConfiguration() {
+        return PlayerConfigurationManager.getConfiguration(this.uuid);
     }
 
     public Player getPlayer() {

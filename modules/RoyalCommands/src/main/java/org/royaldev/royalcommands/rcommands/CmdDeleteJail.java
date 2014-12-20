@@ -4,7 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
 
 @ReflectCommand
 public class CmdDeleteJail extends BaseCommand {
@@ -19,7 +19,7 @@ public class CmdDeleteJail extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final ConfManager cm = ConfManager.getConfManager("jails.yml");
+        final Configuration cm = Configuration.getConfiguration("jails.yml");
         if (!cm.isSet("jails." + args[0])) {
             cs.sendMessage(MessageColor.NEGATIVE + "That jail does not exist!");
             return true;

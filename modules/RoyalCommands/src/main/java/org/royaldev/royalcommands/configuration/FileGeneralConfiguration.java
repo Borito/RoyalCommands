@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public abstract class GeneralConfManager extends YamlConfiguration {
+public abstract class FileGeneralConfiguration extends YamlConfiguration implements GeneralConfiguration {
 
     /**
      * Gets a float. This method only casts a double from getDouble to a float.
@@ -12,6 +12,7 @@ public abstract class GeneralConfManager extends YamlConfiguration {
      * @param path Path to get float from
      * @return float
      */
+    @Override
     public float getFloat(final String path) {
         return (float) this.getDouble(path);
     }
@@ -25,6 +26,7 @@ public abstract class GeneralConfManager extends YamlConfiguration {
      * @param worldName World name to specify manually
      * @return Location or null if path does not exist or if config doesn't exist
      */
+    @Override
     public Location getLocation(final String path, final String worldName) {
         if (!this.isSet(path)) return null;
         final double x = this.getDouble(path + ".x");
@@ -43,6 +45,7 @@ public abstract class GeneralConfManager extends YamlConfiguration {
      * @param path Path in the yml to fetch from
      * @return Location or null if path does not exist or if config doesn't exist
      */
+    @Override
     public Location getLocation(final String path) {
         if (!this.isSet(path)) return null;
         final String world = this.getString(path + ".w");
@@ -60,6 +63,7 @@ public abstract class GeneralConfManager extends YamlConfiguration {
      * @param value Location to set
      * @param path  Path in the yml to set
      */
+    @Override
     public void setLocation(final String path, final Location value) {
         this.set(path + ".w", value.getWorld().getName());
         this.set(path + ".x", value.getX());

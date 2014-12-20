@@ -9,7 +9,8 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdNick extends BaseCommand {
@@ -29,7 +30,7 @@ public class CmdNick extends BaseCommand {
             RUtils.dispNoPerms(cs);
             return true;
         }
-        final PConfManager pcm = PConfManager.getPConfManager(t);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
             return true;

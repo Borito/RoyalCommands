@@ -6,7 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdCompareIP extends BaseCommand {
@@ -29,8 +30,8 @@ public class CmdCompareIP extends BaseCommand {
         OfflinePlayer player2;
         player1 = this.plugin.getServer().getOfflinePlayer(args[0]);
         player2 = this.plugin.getServer().getOfflinePlayer(args[1]);
-        PConfManager pcm1 = PConfManager.getPConfManager(player1);
-        PConfManager pcm2 = PConfManager.getPConfManager(player2);
+        PlayerConfiguration pcm1 = PlayerConfigurationManager.getConfiguration(player1);
+        PlayerConfiguration pcm2 = PlayerConfigurationManager.getConfiguration(player2);
         if (pcm1.exists()) {
             if (pcm2.exists()) {
                 String p1ip = pcm1.getString("ip");

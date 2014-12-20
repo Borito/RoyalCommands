@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdFreeze extends BaseCommand {
@@ -23,7 +24,7 @@ public class CmdFreeze extends BaseCommand {
             return false;
         }
         final OfflinePlayer t = RUtils.getOfflinePlayer(args[0]);
-        final PConfManager pcm = PConfManager.getPConfManager(t);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         final boolean wasFrozen = pcm.getBoolean("frozen", false);
         pcm.set("frozen", !wasFrozen);
         final String status = (wasFrozen) ? "thawed" : "frozen";

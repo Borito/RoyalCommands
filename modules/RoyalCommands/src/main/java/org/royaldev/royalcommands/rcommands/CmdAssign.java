@@ -8,7 +8,8 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class CmdAssign extends TabCommand {
             return true;
         }
         final Player p = (Player) cs;
-        final PConfManager pcm = PConfManager.getPConfManager(p);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         final ItemStack hand = p.getItemInHand();
         if (hand == null || hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't modify commands on air!");
@@ -67,7 +68,7 @@ public class CmdAssign extends TabCommand {
             return true;
         }
         if (eargs.length < 1) {
-            RUtils.removeAssignment(hand, PConfManager.getPConfManager(p));
+            RUtils.removeAssignment(hand, PlayerConfigurationManager.getConfiguration(p));
             p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(hand.getType()) + MessageColor.POSITIVE + ".");
             return true;
         }

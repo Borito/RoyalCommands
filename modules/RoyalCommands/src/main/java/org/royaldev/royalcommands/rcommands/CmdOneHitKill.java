@@ -6,7 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
 public class CmdOneHitKill extends BaseCommand {
@@ -21,7 +22,7 @@ public class CmdOneHitKill extends BaseCommand {
             Player t = this.plugin.getServer().getPlayer(args[0]);
             if (t == null || this.plugin.isVanished(t, cs)) {
                 OfflinePlayer op = this.plugin.getServer().getOfflinePlayer(args[0]);
-                PConfManager pcm = PConfManager.getPConfManager(op);
+                PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
                 if (!pcm.exists()) {
                     cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                     return true;
@@ -37,7 +38,7 @@ public class CmdOneHitKill extends BaseCommand {
                 return true;
             }
             Player p = this.plugin.getServer().getPlayer(args[0]);
-            PConfManager pcm = PConfManager.getPConfManager(p);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             if (!pcm.exists()) {
                 cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
                 return true;
@@ -60,7 +61,7 @@ public class CmdOneHitKill extends BaseCommand {
                 return false;
             }
             Player p = (Player) cs;
-            PConfManager pcm = PConfManager.getPConfManager(p);
+            PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
             boolean ohk = pcm.getBoolean("ohk");
             if (!ohk) {
                 pcm.set("ohk", true);

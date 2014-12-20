@@ -10,7 +10,7 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +40,13 @@ public class CmdPublicAssign extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't remove commands from air!");
                 return true;
             }
-            RUtils.removeAssignment(hand, ConfManager.getConfManager("publicassignments.yml"));
+            RUtils.removeAssignment(hand, Configuration.getConfiguration("publicassignments.yml"));
             p.sendMessage(MessageColor.POSITIVE + "All commands removed from " + MessageColor.NEUTRAL + RUtils.getFriendlyEnumName(hand.getType()) + MessageColor.POSITIVE + ".");
             return true;
         }
         String command = args[0];
         Player p = (Player) cs;
-        final ConfManager cm = ConfManager.getConfManager("publicassignments.yml");
+        final Configuration cm = Configuration.getConfiguration("publicassignments.yml");
         ItemStack hand = p.getItemInHand();
         if (hand == null || hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't assign commands to air!");

@@ -9,7 +9,8 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.PConfManager;
+import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class CmdTemporaryBan extends BaseCommand {
         }
         OfflinePlayer t = this.plugin.getServer().getPlayer(args[0]);
         if (t == null) t = this.plugin.getServer().getOfflinePlayer(args[0]);
-        PConfManager pcm = PConfManager.getPConfManager(t);
+        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
             return true;

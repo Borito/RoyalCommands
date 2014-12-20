@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-import org.royaldev.royalcommands.configuration.ConfManager;
+import org.royaldev.royalcommands.configuration.Configuration;
 
 @ReflectCommand
 public class CmdFreezeTime extends BaseCommand {
@@ -27,7 +27,7 @@ public class CmdFreezeTime extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "No such world!");
             return true;
         }
-        ConfManager cm = RoyalCommands.wm.getConfig();
+        Configuration cm = RoyalCommands.wm.getConfig();
         boolean isFrozen = cm.getBoolean("worlds." + w.getName() + ".freezetime", false);
         cm.set("worlds." + w.getName() + ".freezetime", !isFrozen);
         cm.set("worlds." + w.getName() + ".frozenat", w.getTime());
