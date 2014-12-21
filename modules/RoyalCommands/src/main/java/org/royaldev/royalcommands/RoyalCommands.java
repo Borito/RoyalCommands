@@ -44,6 +44,7 @@ import org.royaldev.royalcommands.api.RApiMain;
 import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
+import org.royaldev.royalcommands.gui.inventory.ClickListener;
 import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
@@ -568,6 +569,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(new ServerListener(this), this);
         pm.registerEvents(new ItemListener(this), this);
         pm.registerEvents(new BackpackListener(), this);
+        pm.registerEvents(new ClickListener(), this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(), this);
 
         //-- ProtocolLib things --//

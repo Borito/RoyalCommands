@@ -1,14 +1,15 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.rcommands.trade.Trade;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -76,6 +77,11 @@ public class CmdTrade extends BaseCommand {
             return false;
         }
         final Player p = (Player) cs;
+        final RPlayer rp = RPlayer.getRPlayer(p);
+        final Trade trade = new Trade(rp.getUUID(), RPlayer.getRPlayer(args[0]).getUUID());
+        trade.showInventoryGUI(rp.getUUID());
+        return true;
+        /*final Player p = (Player) cs;
         final Player t = this.plugin.getServer().getPlayer(args[0]);
         if (t == null || this.plugin.isVanished(t, cs)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player does not exist!");
@@ -109,6 +115,6 @@ public class CmdTrade extends BaseCommand {
             CmdTrade.sendTradeRequest(t, p);
             new FancyMessage("Sent a trade request to ").color(MessageColor.POSITIVE._()).then(t.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(".").color(MessageColor.POSITIVE._()).send(p);
             return true;
-        }
+        }*/
     }
 }
