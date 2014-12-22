@@ -18,6 +18,27 @@ public class TradableItem implements Tradable {
         this.stack = stack;
     }
 
+    @Override
+    public boolean destroy() {
+        this.trade.getInventoryGUI().getBase().remove(this.stack);
+        return true;
+    }
+
+    /**
+     * Trades an item.
+     *
+     * @param from Party providing the item.
+     * @param to   Party receiving the item.
+     * @return If the trade was successful
+     */
+    @Override
+    public boolean trade(final Party from, final Party to) {
+        final Player p = this.trade.getPlayer(to);
+        if (p == null) return false;
+        this.leftOver = p.getInventory().addItem(this.stack);
+        return this.leftOver.isEmpty();
+    }
+
     /**
      * Gets a clone of the item to be traded.
      *
@@ -35,20 +56,5 @@ public class TradableItem implements Tradable {
      */
     public Map<Integer, ItemStack> getLeftOver() {
         return this.leftOver;
-    }
-
-    /**
-     * Trades an item.
-     *
-     * @param from Party providing the item.
-     * @param to   Party receiving the item.
-     * @return If the trade was successful
-     */
-    @Override
-    public boolean trade(final Party from, final Party to) {
-        final Player p = this.trade.getPlayer(to);
-        if (p == null) return false;
-        this.leftOver = p.getInventory().addItem(this.stack);
-        return this.leftOver.isEmpty();
     }
 }

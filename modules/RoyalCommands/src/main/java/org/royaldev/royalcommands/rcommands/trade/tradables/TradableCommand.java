@@ -15,6 +15,16 @@ public class TradableCommand implements Tradable {
     }
 
     /**
+     * Always returns false. At the moment, a tradable command cannot be destroyed.
+     *
+     * @return false
+     */
+    @Override
+    public boolean destroy() {
+        return false;
+    }
+
+    /**
      * Trades a command. In this case, it's less of a trade and more of an agreed-upon action.
      *
      * @param from Party requesting the command

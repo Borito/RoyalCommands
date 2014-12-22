@@ -44,11 +44,12 @@ import org.royaldev.royalcommands.api.RApiMain;
 import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
-import org.royaldev.royalcommands.gui.inventory.ClickListener;
+import org.royaldev.royalcommands.gui.inventory.listeners.ClickListener;
+import org.royaldev.royalcommands.gui.inventory.listeners.InventoryGUIEventListener;
 import org.royaldev.royalcommands.listeners.BackpackListener;
-import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.BlockListener;
 import org.royaldev.royalcommands.listeners.EntityListener;
+import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.PlayerListener;
 import org.royaldev.royalcommands.listeners.ServerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
@@ -572,6 +573,7 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(new BackpackListener(), this);
         pm.registerEvents(new ClickListener(), this);
         pm.registerEvents(new TradeListener(), this);
+        pm.registerEvents(new InventoryGUIEventListener(), this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(), this);
 
         //-- ProtocolLib things --//

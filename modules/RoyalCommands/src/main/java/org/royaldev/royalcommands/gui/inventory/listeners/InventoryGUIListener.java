@@ -1,4 +1,4 @@
-package org.royaldev.royalcommands.gui.inventory;
+package org.royaldev.royalcommands.gui.inventory.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -7,6 +7,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.royaldev.royalcommands.gui.inventory.ClickHandler;
+import org.royaldev.royalcommands.gui.inventory.GUIHolder;
+import org.royaldev.royalcommands.gui.inventory.InventoryGUI;
 
 public abstract class InventoryGUIListener implements Listener {
 

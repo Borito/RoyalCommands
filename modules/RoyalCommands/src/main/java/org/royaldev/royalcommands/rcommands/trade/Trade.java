@@ -28,7 +28,7 @@ import java.util.UUID;
 
 public class Trade {
 
-    private final static Map<Pair<UUID, UUID>, Trade> trades = new HashMap<>();
+    private static final Map<Pair<UUID, UUID>, Trade> trades = new HashMap<>();
     private final Map<Party, UUID> parties = new HashMap<>();
     private final Map<Party, Boolean> acceptances = new HashMap<>();
     private final InventoryGUI inventoryGUI;
@@ -74,6 +74,14 @@ public class Trade {
             }
         }
         return trades;
+    }
+
+    private void destroy() {
+        for (final Map.Entry<Pair<UUID, UUID>, Trade> entry : Trade.trades.entrySet()) {
+            if (!entry.getValue().equals(this)) continue;
+            Trade.trades.remove(entry.getKey());
+            break;
+        }
     }
 
     private String getName(final Party party) {
@@ -137,6 +145,13 @@ public class Trade {
         return null;
     }
 
+    private void sendMessageToAll(final String message) {
+        final Player trader = this.getPlayer(Party.TRADER);
+        final Player tradee = this.getPlayer(Party.TRADEE);
+        if (trader != null) trader.sendMessage(message);
+        if (tradee != null) tradee.sendMessage(message);
+    }
+
     private boolean trade() {
         final List<Tradable> tradeeTradables = this.getTradeablesFor(Party.TRADEE); // tradee has offered
         final List<Tradable> traderTradables = this.getTradeablesFor(Party.TRADER); // trader has offered
@@ -144,11 +159,20 @@ public class Trade {
         boolean allSuccessful = true;
         for (final Tradable trade : tradeeTradables) {
             final boolean success = trade.trade(Party.TRADEE, Party.TRADER);
+            if (success) trade.destroy();
             if (allSuccessful) allSuccessful = success;
         }
         for (final Tradable trade : traderTradables) {
             final boolean success = trade.trade(Party.TRADER, Party.TRADEE);
+            if (success) trade.destroy();
             if (allSuccessful) allSuccessful = success;
+        }
+        if (allSuccessful) {
+            this.destroy();
+        } else {
+            this.sendMessageToAll(MessageColor.NEGATIVE + "The trade did not successfully complete. Please check the trade to see any remaining items.");
+            this.setAcceptance(Party.TRADER, false);
+            this.setAcceptance(Party.TRADEE, false);
         }
         return allSuccessful;
     }
@@ -162,6 +186,13 @@ public class Trade {
 
     public boolean areBothPartiesOnline() {
         return this.getPlayer(Party.TRADEE) != null && this.getPlayer(Party.TRADER) != null;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null || !(obj instanceof Trade)) return false;
+        final Trade t = (Trade) obj;
+        return this.getInventoryGUI().equals(t.getInventoryGUI()) && this.parties.equals(t.parties);
     }
 
     public UUID get(final Party party) {
@@ -213,6 +244,12 @@ public class Trade {
         return this.hasAccepted(Party.TRADER) && this.hasAccepted(Party.TRADEE);
     }
 
+    public boolean setAcceptance(final Party party, final boolean acceptance) {
+        this.acceptances.put(party, acceptance);
+        if (this.haveBothAccepted()) this.trade();
+        return acceptance;
+    }
+
     public void showInventoryGUI(final UUID uuid) {
         final Party party = this.get(uuid);
         if (party == null) throw new IllegalArgumentException("No such UUID");
@@ -222,10 +259,7 @@ public class Trade {
     }
 
     public boolean toggleAcceptance(final Party party) {
-        final boolean acceptance = !this.acceptances.get(party);
-        this.acceptances.put(party, acceptance);
-        if (this.haveBothAccepted()) this.trade();
-        return acceptance;
+        return this.setAcceptance(party, !this.acceptances.get(party));
     }
 
     public boolean toggleAcceptance(final UUID uuid) {
@@ -233,5 +267,4 @@ public class Trade {
         if (party == null) throw new IllegalArgumentException("No such UUID");
         return this.toggleAcceptance(party);
     }
-
 }

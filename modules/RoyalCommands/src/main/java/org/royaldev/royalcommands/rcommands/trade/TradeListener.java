@@ -2,14 +2,19 @@ package org.royaldev.royalcommands.rcommands.trade;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.gui.inventory.InventoryGUI;
-import org.royaldev.royalcommands.gui.inventory.InventoryGUIListener;
+import org.royaldev.royalcommands.gui.inventory.events.InventoryGUIClickEvent;
 
 import java.util.List;
 
-public class TradeListener extends InventoryGUIListener {
+public class TradeListener implements Listener {
+
+    private Trade getTrade(final InventoryGUIClickEvent e) {
+        return this.getTradeFor(Trade.getTradesFor(e.getClicker().getUniqueId()), e.getInventoryGUI());
+    }
 
     private Trade getTradeFor(final List<Trade> trades, final InventoryGUI ig) {
         for (final Trade trade : trades) {
@@ -18,13 +23,29 @@ public class TradeListener extends InventoryGUIListener {
         return null;
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onClick(final InventoryClickEvent e) {
-        final InventoryGUI ig = this.getInventoryGUI(e.getInventory());
-        final Player p = this.getPlayer(e.getWhoClicked());
-        final Trade t = this.getTradeFor(Trade.getTradesFor(p.getUniqueId()), ig);
+    private boolean isInInventoryGUI(final InventoryGUIClickEvent e, final InventoryGUI ig) {
+        return e.getRawSlot() <= ig.getBase().getSize();
+    }
+
+    @EventHandler
+    public void freeze(final InventoryGUIClickEvent e) {
+        final InventoryGUI ig = e.getInventoryGUI();
+        if (!this.isInInventoryGUI(e, ig)) return;
+        final Trade t = this.getTrade(e);
         if (t == null) return;
-        if (e.getRawSlot() > ig.getBase().getSize()) return;
+        final Party p = t.get(e.getClicker().getUniqueId());
+        if (!t.hasAccepted(p)) return;
+        e.setCancelled(true);
+        e.getClicker().sendMessage(MessageColor.NEGATIVE + "You cannot modify a trade once you have accepted it.");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onClick(final InventoryGUIClickEvent e) {
+        final InventoryGUI ig = e.getInventoryGUI();
+        final Player p = e.getClicker();
+        final Trade t = this.getTrade(e);
+        if (t == null) return;
+        if (!this.isInInventoryGUI(e, ig)) return;
         final Party party = t.get(p.getUniqueId());
         if (party == null) return;
         if (e.getSlot() % 9 == 4 && e.getAction() == InventoryAction.PICKUP_ALL) {

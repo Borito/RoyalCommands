@@ -1,0 +1,20 @@
+package org.royaldev.royalcommands.gui.inventory.listeners;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.royaldev.royalcommands.gui.inventory.ClickEvent;
+import org.royaldev.royalcommands.gui.inventory.ClickHandler;
+import org.royaldev.royalcommands.gui.inventory.events.InventoryGUIClickEvent;
+
+public class ClickListener extends InventoryGUIListener {
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onClick(final InventoryGUIClickEvent e) {
+        final ClickHandler ch = e.getClickHandler();
+        if (ch == null) return;
+        if (!ch.onClick(new ClickEvent(e.getClicked(), e.getClicker(), e.getSlot()))) {
+            e.setCancelled(true);
+        }
+    }
+
+}
