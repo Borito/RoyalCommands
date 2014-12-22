@@ -47,9 +47,9 @@ import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.gui.inventory.ClickListener;
 import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.listeners.MonitorListener;
-import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
-import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
-import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
+import org.royaldev.royalcommands.listeners.BlockListener;
+import org.royaldev.royalcommands.listeners.EntityListener;
+import org.royaldev.royalcommands.listeners.PlayerListener;
 import org.royaldev.royalcommands.listeners.ServerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
@@ -57,6 +57,7 @@ import org.royaldev.royalcommands.nms.api.NMSFace;
 import org.royaldev.royalcommands.protocol.ProtocolListener;
 import org.royaldev.royalcommands.rcommands.BaseCommand;
 import org.royaldev.royalcommands.rcommands.ReflectCommand;
+import org.royaldev.royalcommands.rcommands.trade.TradeListener;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.MailRunner;
@@ -561,15 +562,16 @@ public class RoyalCommands extends JavaPlugin {
 
         final PluginManager pm = this.getServer().getPluginManager();
 
-        pm.registerEvents(new RoyalCommandsPlayerListener(this), this);
-        pm.registerEvents(new RoyalCommandsEntityListener(this), this);
-        pm.registerEvents(new RoyalCommandsBlockListener(this), this);
+        pm.registerEvents(new PlayerListener(this), this);
+        pm.registerEvents(new EntityListener(this), this);
+        pm.registerEvents(new BlockListener(this), this);
         pm.registerEvents(new SignListener(this), this);
         pm.registerEvents(new MonitorListener(this), this);
         pm.registerEvents(new ServerListener(this), this);
         pm.registerEvents(new ItemListener(this), this);
         pm.registerEvents(new BackpackListener(), this);
         pm.registerEvents(new ClickListener(), this);
+        pm.registerEvents(new TradeListener(), this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(), this);
 
         //-- ProtocolLib things --//

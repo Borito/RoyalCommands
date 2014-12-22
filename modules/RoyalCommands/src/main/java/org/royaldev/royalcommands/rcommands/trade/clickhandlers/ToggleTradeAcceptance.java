@@ -5,7 +5,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.gui.inventory.ClickEvent;
 import org.royaldev.royalcommands.gui.inventory.ClickHandler;
 import org.royaldev.royalcommands.rcommands.trade.Trade;
-import org.royaldev.royalcommands.rcommands.trade.Trade.Party;
+import org.royaldev.royalcommands.rcommands.trade.Party;
 
 public class ToggleTradeAcceptance implements ClickHandler {
 
@@ -17,9 +17,7 @@ public class ToggleTradeAcceptance implements ClickHandler {
 
     @Override
     public boolean onClick(final ClickEvent clickEvent) {
-        System.out.println("accepted before? " + this.trade.hasAccepted(Party.TRADER));
-        System.out.print(this.trade.toggleAcceptance(clickEvent.getClicker().getUniqueId()));
-        System.out.println("accepted now? " + this.trade.hasAccepted(Party.TRADER));
+        this.trade.toggleAcceptance(clickEvent.getClicker().getUniqueId());
         final ItemStack clicked = clickEvent.getClickedItem();
         this.trade.getInventoryGUI().updateItemStack(this.trade.getInventoryGUI().setItemMeta(
             clicked,

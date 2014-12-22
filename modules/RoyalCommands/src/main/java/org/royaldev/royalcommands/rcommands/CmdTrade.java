@@ -78,7 +78,11 @@ public class CmdTrade extends BaseCommand {
         }
         final Player p = (Player) cs;
         final RPlayer rp = RPlayer.getRPlayer(p);
-        final Trade trade = new Trade(rp.getUUID(), RPlayer.getRPlayer(args[0]).getUUID());
+        final UUID other = RPlayer.getRPlayer(args[0]).getUUID();
+        Trade trade = Trade.getTradeFor(rp.getUUID(), other);
+        if (trade == null) {
+            trade = new Trade(rp.getUUID(), other);
+        }
         trade.showInventoryGUI(rp.getUUID());
         return true;
         /*final Player p = (Player) cs;

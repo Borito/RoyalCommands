@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.tools.Vector2D;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,30 +22,22 @@ public class InventoryGUI {
     private final static String TAG_NAME = "IG:Tag";
     private final Inventory base;
     private final Map<UUID, ClickHandler> clickHandlers = new HashMap<>();
+    private final UUID identifier = UUID.randomUUID();
 
-    public InventoryGUI() {
-        this(45);
+    public InventoryGUI(final String name) {
+        this(name, 45);
     }
 
-    public InventoryGUI(final int size) {
-        this.base = RoyalCommands.getInstance().getServer().createInventory(new GUIHolder(this), size);
+    public InventoryGUI(final String name, final int size) {
+        this.base = RoyalCommands.getInstance().getServer().createInventory(new GUIHolder(this), size, name);
     }
 
     public InventoryGUI(final Inventory base) {
         this.base = base;
     }
 
-    private UUID getTag(final ItemStack is) {
-        if (is == null) return null;
-        final Attributes as = new Attributes(is);
-        for (final Attribute a : as.values()) {
-            if (!a.getName().equals(InventoryGUI.TAG_NAME)) continue;
-            return a.getUUID();
-        }
-        return null;
-    }
-
     private ItemStack tagItem(final ItemStack is, final UUID uuid) {
+        if (is == null || is.getType() == Material.AIR) return is;
         final Builder b = Attributes.Attribute.newBuilder();
         final Attribute a = b.name(InventoryGUI.TAG_NAME).uuid(uuid).type(AttributeType.GENERIC_FOLLOW_RANGE).amount(0D).operation(Operation.ADD_NUMBER).build();
         final Attributes as = new Attributes(is);
@@ -67,6 +60,13 @@ public class InventoryGUI {
         return this.setItemMeta(new ItemStack(material), name, lore);
     }
 
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null || !(obj instanceof InventoryGUI)) return false;
+        final InventoryGUI other = (InventoryGUI) obj;
+        return other.getIdentifier().equals(this.getIdentifier());
+    }
+
     public Inventory getBase() {
         return this.base;
     }
@@ -80,6 +80,10 @@ public class InventoryGUI {
         return this.clickHandlers;
     }
 
+    public UUID getIdentifier() {
+        return this.identifier;
+    }
+
     public ItemStack getItemStack(final UUID uuid) {
         if (uuid == null) return null;
         for (final ItemStack is : this.getBase()) {
@@ -91,6 +95,26 @@ public class InventoryGUI {
 
     public int getSlot(final int x, final int y) {
         return ((y - 1) * 9) + (x - 1);
+    }
+
+    public UUID getTag(final ItemStack is) {
+        if (is == null) return null;
+        final Attributes as = new Attributes(is);
+        for (final Attribute a : as.values()) {
+            if (!a.getName().equals(InventoryGUI.TAG_NAME)) continue;
+            return a.getUUID();
+        }
+        return null;
+    }
+
+    public Vector2D getXYFromSlot(final int slot) {
+        final int xraw = slot % 9;
+        final int yraw = (slot - xraw) / 9;
+        return new Vector2D(xraw + 1, yraw + 1);
+    }
+
+    public void replaceItemStack(final ItemStack original, final ItemStack replacement) {
+        this.replaceItemStack(this.getTag(original), replacement);
     }
 
     public void replaceItemStack(final UUID uuid, final ItemStack replacement) {

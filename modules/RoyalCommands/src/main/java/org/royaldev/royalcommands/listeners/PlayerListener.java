@@ -53,14 +53,13 @@ import java.util.regex.Pattern;
 
 import static org.royaldev.royalcommands.RUtils.nearEqual;
 
-@SuppressWarnings("unused")
-public class RoyalCommandsPlayerListener implements Listener {
+public class PlayerListener implements Listener {
 
-    public static RoyalCommands plugin;
+    private final RoyalCommands plugin;
     private final Logger log = Logger.getLogger("Minecraft");
 
-    public RoyalCommandsPlayerListener(RoyalCommands instance) {
-        plugin = instance;
+    public PlayerListener(final RoyalCommands instance) {
+        this.plugin = instance;
     }
 
     @EventHandler
@@ -83,7 +82,9 @@ public class RoyalCommandsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void assign(PlayerInteractEvent event) {
         //if (event.isCancelled()) return;
-        if (PlayerConfigurationManager.getConfiguration(event.getPlayer()).getBoolean("jailed")) event.setCancelled(true);
+        if (PlayerConfigurationManager.getConfiguration(event.getPlayer()).getBoolean("jailed")) {
+            event.setCancelled(true);
+        }
         Action act = event.getAction();
         if (act.equals(Action.PHYSICAL)) return;
         ItemStack id = event.getItem();
@@ -311,7 +312,9 @@ public class RoyalCommandsPlayerListener implements Listener {
 
     @EventHandler
     public void onPInt(PlayerInteractEvent event) {
-        if (PlayerConfigurationManager.getConfiguration(event.getPlayer()).getBoolean("frozen")) event.setCancelled(true);
+        if (PlayerConfigurationManager.getConfiguration(event.getPlayer()).getBoolean("frozen")) {
+            event.setCancelled(true);
+        }
         if (Config.buildPerm && !plugin.ah.isAuthorized(event.getPlayer(), "rcmds.build")) event.setCancelled(true);
     }
 
