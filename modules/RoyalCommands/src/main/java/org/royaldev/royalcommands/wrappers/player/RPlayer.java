@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 public class RPlayer {
 
-    private final static Map<UUID, RPlayer> players = Collections.synchronizedMap(new HashMap<UUID, RPlayer>());
+    private static final Map<UUID, RPlayer> players = Collections.synchronizedMap(new HashMap<UUID, RPlayer>());
     private final UUID uuid;
 
     private RPlayer(final OfflinePlayer op) {
@@ -144,12 +144,12 @@ public class RPlayer {
         return online != null ? online : RoyalCommands.getInstance().getServer().getOfflinePlayer(this.getUUID());
     }
 
-    public PlayerConfiguration getPlayerConfiguration() {
-        return PlayerConfigurationManager.getConfiguration(this.uuid);
-    }
-
     public Player getPlayer() {
         return RoyalCommands.getInstance().getServer().getPlayer(this.getUUID());
+    }
+
+    public PlayerConfiguration getPlayerConfiguration() {
+        return PlayerConfigurationManager.getConfiguration(this.uuid);
     }
 
     public RoyalCommands getRoyalCommands() {

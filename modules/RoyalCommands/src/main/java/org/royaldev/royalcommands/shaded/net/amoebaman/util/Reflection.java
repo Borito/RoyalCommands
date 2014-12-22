@@ -17,17 +17,17 @@ public final class Reflection {
     /**
      * Stores loaded classes from the {@code net.minecraft.server} package.
      */
-    private static final Map<String, Class<?>> _loadedNMSClasses = new HashMap<String, Class<?>>();
+    private static final Map<String, Class<?>> _loadedNMSClasses = new HashMap<>();
     /**
      * Stores loaded classes from the {@code org.bukkit.craftbukkit} package (and subpackages).
      */
-    private static final Map<String, Class<?>> _loadedOBCClasses = new HashMap<String, Class<?>>();
-    private static final Map<Class<?>, Map<String, Field>> _loadedFields = new HashMap<Class<?>, Map<String, Field>>();
+    private static final Map<String, Class<?>> _loadedOBCClasses = new HashMap<>();
+    private static final Map<Class<?>, Map<String, Field>> _loadedFields = new HashMap<>();
     /**
      * Contains loaded methods in a cache.
      * The map maps [types to maps of [method names to maps of [parameter types to method instances]]].
      */
-    private static final Map<Class<?>, Map<String, Map<ArrayWrapper<Class<?>>, Method>>> _loadedMethods = new HashMap<Class<?>, Map<String, Map<ArrayWrapper<Class<?>>, Method>>>();
+    private static final Map<Class<?>, Map<String, Map<ArrayWrapper<Class<?>>, Method>>> _loadedMethods = new HashMap<>();
     private static String _versionString;
 
     private Reflection() {
@@ -52,10 +52,10 @@ public final class Reflection {
      * @return A field object with the specified name declared by the specified class.
      * @see Class#getDeclaredField(String)
      */
-    public synchronized static Field getField(Class<?> clazz, String name) {
+    public static synchronized Field getField(Class<?> clazz, String name) {
         Map<String, Field> loaded;
         if (!_loadedFields.containsKey(clazz)) {
-            loaded = new HashMap<String, Field>();
+            loaded = new HashMap<>();
             _loadedFields.put(clazz, loaded);
         } else {
             loaded = _loadedFields.get(clazz);
@@ -87,7 +87,7 @@ public final class Reflection {
      * @param obj The object for which to retrieve an NMS handle.
      * @return The NMS handle of the specified object, or {@code null} if it could not be retrieved using {@code getHandle()}.
      */
-    public synchronized static Object getHandle(Object obj) {
+    public static synchronized Object getHandle(Object obj) {
         try {
             return getMethod(obj.getClass(), "getHandle").invoke(obj);
         } catch (Exception e) {
@@ -117,7 +117,7 @@ public final class Reflection {
      * @param args  The formal argument types of the method.
      * @return A method object with the specified name declared by the specified class.
      */
-    public synchronized static Method getMethod(Class<?> clazz, String name,
+    public static synchronized Method getMethod(Class<?> clazz, String name,
         Class<?>... args) {
         if (!_loadedMethods.containsKey(clazz)) {
             _loadedMethods.put(clazz, new HashMap<String, Map<ArrayWrapper<Class<?>>, Method>>());
@@ -129,7 +129,7 @@ public final class Reflection {
         }
 
         Map<ArrayWrapper<Class<?>>, Method> loadedSignatures = loadedMethodNames.get(name);
-        ArrayWrapper<Class<?>> wrappedArg = new ArrayWrapper<Class<?>>(args);
+        ArrayWrapper<Class<?>> wrappedArg = new ArrayWrapper<>(args);
         if (loadedSignatures.containsKey(wrappedArg)) {
             return loadedSignatures.get(wrappedArg);
         }
@@ -151,13 +151,13 @@ public final class Reflection {
      * @param className The name of the class, excluding the package, within NMS.
      * @return The class instance representing the specified NMS class, or {@code null} if it could not be loaded.
      */
-    public synchronized static Class<?> getNMSClass(String className) {
+    public static synchronized Class<?> getNMSClass(String className) {
         if (_loadedNMSClasses.containsKey(className)) {
             return _loadedNMSClasses.get(className);
         }
 
         String fullName = "net.minecraft.server." + getVersion() + className;
-        Class<?> clazz = null;
+        Class<?> clazz;
         try {
             clazz = Class.forName(fullName);
         } catch (Exception e) {
@@ -176,13 +176,13 @@ public final class Reflection {
      * @param className The name of the class, excluding the package, within OBC. This name may contain a subpackage name, such as {@code inventory.CraftItemStack}.
      * @return The class instance representing the specified OBC class, or {@code null} if it could not be loaded.
      */
-    public synchronized static Class<?> getOBCClass(String className) {
+    public static synchronized Class<?> getOBCClass(String className) {
         if (_loadedOBCClasses.containsKey(className)) {
             return _loadedOBCClasses.get(className);
         }
 
         String fullName = "org.bukkit.craftbukkit." + getVersion() + className;
-        Class<?> clazz = null;
+        Class<?> clazz;
         try {
             clazz = Class.forName(fullName);
         } catch (Exception e) {
@@ -200,7 +200,7 @@ public final class Reflection {
      *
      * @return The version string of the OBC and NMS packages, <em>including the trailing dot</em>.
      */
-    public synchronized static String getVersion() {
+    public static synchronized String getVersion() {
         if (_versionString == null) {
             if (Bukkit.getServer() == null) {
                 // The server hasn't started, static initializer call?

@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -12,6 +11,8 @@ import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -55,12 +56,13 @@ public class CmdBack extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        Player p = (Player) cs;
+        final Player p = (Player) cs;
+        final RPlayer rp = RPlayer.getRPlayer(p);
         if (!backdb.containsKey(p.getUniqueId())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You have no place to go back to!");
             return true;
         }
-        if (label.equalsIgnoreCase("backs")) {
+        if ("backs".equalsIgnoreCase(label)) {
             final List<Location> backs = backdb.get(p.getUniqueId());
             cs.sendMessage(MessageColor.NEUTRAL + "/back locations:");
             for (int i = 0; i < backs.size(); i++) {
@@ -118,7 +120,7 @@ public class CmdBack extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "No such back number!");
             return true;
         }
-        String error = RUtils.teleport(p, backs.get(index));
+        final String error = rp.getTeleporter().teleport(backs.get(index));
         if (!error.isEmpty()) {
             p.sendMessage(MessageColor.NEGATIVE + error);
             return true;

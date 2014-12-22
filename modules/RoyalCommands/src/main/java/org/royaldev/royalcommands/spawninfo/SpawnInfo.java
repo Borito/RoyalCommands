@@ -68,10 +68,11 @@ public class SpawnInfo implements Serializable {
         final String[] splitStored = stored.split("/");
         if (splitStored.length < 4) throw new IllegalArgumentException("Invalid stored string!");
         this.spawner = splitStored[1];
-        this.spawned = splitStored[0].equalsIgnoreCase("true");
-        this.hasComponents = splitStored[2].equalsIgnoreCase("true");
-        if (splitStored[3].startsWith("[") && splitStored[3].endsWith("]"))
+        this.spawned = "true".equalsIgnoreCase(splitStored[0]);
+        this.hasComponents = "true".equalsIgnoreCase(splitStored[2]);
+        if (splitStored[3].startsWith("[") && splitStored[3].endsWith("]")) {
             this.components.addAll(Arrays.asList(splitStored[3].substring(1, splitStored[3].length() - 1).split(", ")));
+        }
     }
 
     /**
@@ -177,11 +178,11 @@ public class SpawnInfo implements Serializable {
         return String.valueOf(this.spawned) + "/" + this.spawner + "/" + this.hasComponents + "/" + this.components.toString();
     }
 
-    public static class SpawnInfoManager {
+    public static final class SpawnInfoManager {
 
-        private final static UUID uuid = UUID.fromString("553ade7d-86cd-469e-a4ff-c6fbb564d961");
-        private final static UUID defaultUUID = UUID.fromString("4f0925a7-abf4-4a61-8c81-2028d453ff92");
-        private final static Map<Material, Attributes.Attribute> defaults = new HashMap<>();
+        private static final UUID uuid = UUID.fromString("553ade7d-86cd-469e-a4ff-c6fbb564d961");
+        private static final UUID defaultUUID = UUID.fromString("4f0925a7-abf4-4a61-8c81-2028d453ff92");
+        private static final Map<Material, Attributes.Attribute> defaults = new HashMap<>();
 
         static {
             try {
@@ -353,7 +354,7 @@ public class SpawnInfo implements Serializable {
             if (a.size() <= 0) return;
             NbtFactory.NbtCompound nbt = NbtFactory.fromItemTag(a.stack);
             nbt.remove("AttributeModifiers");
-            if (nbt.isEmpty()) NbtFactory.setItemTag(a.stack, null);
+            if (nbt.isEmpty()) NbtFactory.setItemTag(a.stack, null); // FIXME: null
         }
 
     }

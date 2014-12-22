@@ -26,7 +26,8 @@ public class Home {
         final String homeName = parts[parts.length > 1 ? 1 : 0];
         final PlayerConfiguration pcm;
         if (playerName == null) pcm = PlayerConfigurationManager.getConfiguration(uuid);
-        else pcm = PlayerConfigurationManager.getConfiguration(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
+        else
+            pcm = PlayerConfigurationManager.getConfiguration(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
         return new Home(pcm.getManagerPlayerUUID(), homeName, null);
     }
 
@@ -41,7 +42,8 @@ public class Home {
         final String homeName = parts[parts.length > 1 ? 1 : 0];
         final PlayerConfiguration pcm;
         if (playerName == null) pcm = PlayerConfigurationManager.getConfiguration(uuid);
-        else pcm = PlayerConfigurationManager.getConfiguration(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
+        else
+            pcm = PlayerConfigurationManager.getConfiguration(RoyalCommands.getInstance().getServer().getOfflinePlayer(playerName));
         return Home.fromPConfManager(pcm, homeName);
     }
 

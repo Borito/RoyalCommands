@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.gui.inventory.ClickEvent;
 import org.royaldev.royalcommands.gui.inventory.ClickHandler;
-import org.royaldev.royalcommands.rcommands.trade.Trade;
 import org.royaldev.royalcommands.rcommands.trade.Party;
+import org.royaldev.royalcommands.rcommands.trade.Trade;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 

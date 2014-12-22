@@ -101,9 +101,6 @@ public final class ArrayWrapper<E> {
     @SuppressWarnings("rawtypes")
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ArrayWrapper)) {
-            return false;
-        }
-        return Arrays.equals(_array, ((ArrayWrapper) other)._array);
+        return other instanceof ArrayWrapper && Arrays.equals(_array, ((ArrayWrapper) other)._array);
     }
 }

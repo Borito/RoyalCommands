@@ -60,7 +60,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
-public class RUtils {
+public final class RUtils {
 
     public static final Set<Material> AIR_MATERIALS = new HashSet<>();
 
@@ -71,8 +71,8 @@ public class RUtils {
         }
     }
 
-    private final static Map<String, Integer> teleRunners = new HashMap<>();
-    private final static List<String> teleAllowed = new ArrayList<>();
+    private static final Map<String, Integer> teleRunners = new HashMap<>();
+    private static final List<String> teleAllowed = new ArrayList<>();
 
     public static FancyMessage addCommandTo(FancyMessage fm, String command) {
         return RUtils.addDataTo(fm, new String[]{"clickActionName", "clickActionData"}, "run_command", command);
@@ -835,7 +835,7 @@ public class RUtils {
             if (i < 0) return null;
             Block b = l.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ());
             if (b == null) return null;
-            if (b.getType().equals(Material.AIR)) continue;
+            if (b.getType() == Material.AIR) continue;
             double safeY = l.getY() - (unsafeY - i);
             return new Location(l.getWorld(), l.getX(), safeY + 1, l.getZ(), l.getYaw(), l.getPitch());
         }
@@ -991,20 +991,20 @@ public class RUtils {
 
     public static String join(Iterable<String> i, String between) {
         String ret = "";
-        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        for (String s : i) ret = ("".equals(ret)) ? ret.concat(s) : ret.concat(between + s);
         return ret;
     }
 
     public static String join(String[] i, String between) {
         String ret = "";
-        for (String s : i) ret = (ret.equals("")) ? ret.concat(s) : ret.concat(between + s);
+        for (String s : i) ret = ("".equals(ret)) ? ret.concat(s) : ret.concat(between + s);
         return ret;
     }
 
     public static String join(Object[] i, String between) {
         String ret = "";
         for (Object o : i)
-            ret = (ret.equals("")) ? ret.concat(o.toString().toLowerCase()) : ret.concat(between + o.toString().toLowerCase());
+            ret = ("".equals(ret)) ? ret.concat(o.toString().toLowerCase()) : ret.concat(between + o.toString().toLowerCase());
         return ret;
     }
 

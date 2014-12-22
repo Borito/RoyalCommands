@@ -156,23 +156,23 @@ public class PlayerTeleporter implements ITeleporter<Player>, ISilentTeleporter<
     }
 
     @Override
-    public String teleport(final Block block, final boolean silent) {
-        return this.teleport(block.getLocation(), silent);
-    }
-
-    @Override
     public String teleport(final Entity entity) {
         return this.teleport(entity.getLocation(), false);
     }
 
     @Override
-    public String teleport(final Entity entity, final boolean silent) {
-        return this.teleport(entity.getLocation(), silent);
+    public String teleport(final Location location) {
+        return this.teleport(location, false);
     }
 
     @Override
-    public String teleport(final Location location) {
-        return this.teleport(location, false);
+    public String teleport(final Block block, final boolean silent) {
+        return this.teleport(block.getLocation(), silent);
+    }
+
+    @Override
+    public String teleport(final Entity entity, final boolean silent) {
+        return this.teleport(entity.getLocation(), silent);
     }
 
     @Override

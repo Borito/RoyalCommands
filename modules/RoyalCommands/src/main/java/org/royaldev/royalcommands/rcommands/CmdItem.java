@@ -1,6 +1,5 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,6 +11,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +20,8 @@ import java.util.List;
 @ReflectCommand
 public class CmdItem extends TabCommand {
 
-    private final static Flag<String> nameFlag = new Flag<>(String.class, "displayname", "name", "n");
-    private final static Flag<String> loreFlag = new Flag<>(String.class, "description", "lore", "l");
+    private static final Flag<String> nameFlag = new Flag<>(String.class, "displayname", "name", "n");
+    private static final Flag<String> loreFlag = new Flag<>(String.class, "description", "lore", "l");
 
     public CmdItem(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});

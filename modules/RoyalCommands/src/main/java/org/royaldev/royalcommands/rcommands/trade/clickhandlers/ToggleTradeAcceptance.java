@@ -4,8 +4,8 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.gui.inventory.ClickEvent;
 import org.royaldev.royalcommands.gui.inventory.ClickHandler;
-import org.royaldev.royalcommands.rcommands.trade.Trade;
 import org.royaldev.royalcommands.rcommands.trade.Party;
+import org.royaldev.royalcommands.rcommands.trade.Trade;
 
 public class ToggleTradeAcceptance implements ClickHandler {
 

@@ -65,7 +65,7 @@ public class Metrics {
     /**
      * The current revision number
      */
-    private final static int REVISION = 6;
+    private static final int REVISION = 6;
     /**
      * The base url of the metrics domain
      */
@@ -563,7 +563,9 @@ public class Metrics {
          */
         public void removePlotter(final Plotter plotter) {
             plotters.remove(plotter);
-        }        @Override
+        }
+
+        @Override
         public boolean equals(final Object object) {
             if (!(object instanceof Graph)) {
                 return false;
@@ -579,7 +581,7 @@ public class Metrics {
     /**
      * Interface used to collect custom data for a plugin
      */
-    public static abstract class Plotter {
+    public abstract static class Plotter {
 
         /**
          * The plot's name
@@ -603,15 +605,6 @@ public class Metrics {
         }
 
         /**
-         * Get the column name for the plotted point
-         *
-         * @return the plotted point's column name
-         */
-        public String getColumnName() {
-            return name;
-        }
-
-        /**
          * Get the current value for the plotted point. Since this function defers to an external function it may or may
          * not return immediately thus cannot be guaranteed to be thread friendly or safe. This function can be called
          * from any thread so care should be taken when accessing resources that need to be synchronized.
@@ -619,6 +612,15 @@ public class Metrics {
          * @return the current value for the point to be plotted.
          */
         public abstract int getValue();
+
+        /**
+         * Get the column name for the plotted point
+         *
+         * @return the plotted point's column name
+         */
+        public String getColumnName() {
+            return name;
+        }
 
         /**
          * Called after the website graphs have been updated

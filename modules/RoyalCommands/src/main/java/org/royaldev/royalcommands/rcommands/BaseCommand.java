@@ -509,7 +509,7 @@ public abstract class BaseCommand implements CommandExecutor {
          * @return If the argument is the flag terminator
          */
         private boolean isFlagTerminator(final String s) {
-            return s.equals("--");
+            return "--".equals(s);
         }
 
         /**

@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class InventoryGUI {
 
-    private final static String TAG_NAME = "IG:Tag";
+    private static final String TAG_NAME = "IG:Tag";
     private final Inventory base;
     private final Map<UUID, ClickHandler> clickHandlers = new HashMap<>();
     private final UUID identifier = UUID.randomUUID();

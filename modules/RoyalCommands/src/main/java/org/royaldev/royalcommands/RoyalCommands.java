@@ -38,6 +38,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.Contract;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
@@ -124,7 +125,9 @@ public class RoyalCommands extends JavaPlugin {
      * @param position Position to start joining from
      * @return Joined string
      */
-    public static String getFinalArg(String[] array, int position) {
+    @Contract("null, _ -> null; !null, _ -> !null")
+    public static String getFinalArg(final String[] array, final int position) {
+        if (array == null) return null;
         final StringBuilder sb = new StringBuilder();
         for (int i = position; i < array.length; i++) sb.append(array[i]).append(" ");
         return sb.substring(0, sb.length() - 1);
@@ -220,7 +223,7 @@ public class RoyalCommands extends JavaPlugin {
         // Get the last element of the package
         // If the last element of the package was "craftbukkit" we are now pre-refactor
         String versionNMS = packageName.substring(packageName.lastIndexOf('.') + 1);
-        if (versionNMS.equals("craftbukkit")) versionNMS = "NoSupport";
+        if ("craftbukkit".equals(versionNMS)) versionNMS = "NoSupport";
         try {
             // Check if we have a NMSHandler class at that location.
             final Class<?> clazz = Class.forName("org.royaldev.royalcommands.nms." + versionNMS + ".NMSHandler");

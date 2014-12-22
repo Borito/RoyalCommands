@@ -1,12 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
-import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class CmdAccountStatus extends BaseCommand {
             if (line == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
                 return true;
-            } else isPremium = line.equalsIgnoreCase("true");
+            } else isPremium = "true".equalsIgnoreCase(line);
         } catch (final IOException ex) {
             cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
             cs.sendMessage(MessageColor.NEGATIVE + ex.getMessage());
