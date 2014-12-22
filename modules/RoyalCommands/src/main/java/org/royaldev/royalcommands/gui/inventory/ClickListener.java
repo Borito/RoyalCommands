@@ -10,8 +10,6 @@ public class ClickListener extends InventoryGUIListener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onClick(final InventoryClickEvent e) {
-        System.out.println("ClickListener.onClick");
-        System.out.println("e = [" + e + "]");
         final InventoryGUI ig = this.getInventoryGUI(e.getInventory());
         final ItemStack clicked = e.getCurrentItem();
         final ClickHandler ch = this.getClickHandler(ig, clicked);
