@@ -101,7 +101,7 @@ public class InventoryGUI {
     }
 
     public UUID getTag(final ItemStack is) {
-        if (is == null) return null;
+        if (is == null || is.getType() == Material.AIR) return null;
         final Attributes as = new Attributes(is);
         for (final Attribute a : as.values()) {
             if (!a.getName().equals(InventoryGUI.TAG_NAME)) continue;
