@@ -10,6 +10,7 @@ import org.royaldev.royalcommands.gui.inventory.ClickHandler;
 import org.royaldev.royalcommands.gui.inventory.InventoryGUI;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.AddPartyCommand;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.RemindOtherParty;
+import org.royaldev.royalcommands.rcommands.trade.clickhandlers.RemoveItem;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.ToggleTradeAcceptance;
 import org.royaldev.royalcommands.rcommands.trade.tradables.Tradable;
 import org.royaldev.royalcommands.rcommands.trade.tradables.TradableCommand;
@@ -133,7 +134,7 @@ public class Trade {
 
     private List<Tradable> processSpecialItems(final ItemStack is) {
         final List<Tradable> trades = new ArrayList<>();
-        if (this.getInventoryGUI().getClickHandler(is) instanceof AddPartyCommand) {
+        if (this.getInventoryGUI().getClickHandler(is) instanceof RemoveItem) { // TODO: Do this better
             // TODO: Extract logic
             final ItemMeta im = is.getItemMeta();
             for (final String lore : im.getLore()) {
