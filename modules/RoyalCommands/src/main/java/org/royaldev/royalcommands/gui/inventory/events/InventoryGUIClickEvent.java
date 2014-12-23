@@ -1,6 +1,7 @@
 package org.royaldev.royalcommands.gui.inventory.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
@@ -9,6 +10,7 @@ import org.royaldev.royalcommands.gui.inventory.InventoryGUI;
 
 public class InventoryGUIClickEvent extends InventoryGUIEvent {
 
+    private static final HandlerList handlers = new HandlerList();
     private final InventoryGUI inventoryGUI;
     private final Player clicker;
     private final ClickType clickType;
@@ -29,6 +31,10 @@ public class InventoryGUIClickEvent extends InventoryGUIEvent {
         this.slot = slot;
     }
 
+    public static HandlerList getHandlerList() {
+        return InventoryGUIClickEvent.handlers;
+    }
+
     public InventoryAction getAction() {
         return this.action;
     }
@@ -47,6 +53,11 @@ public class InventoryGUIClickEvent extends InventoryGUIEvent {
 
     public Player getClicker() {
         return this.clicker;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return InventoryGUIClickEvent.handlers;
     }
 
     public InventoryGUI getInventoryGUI() {
