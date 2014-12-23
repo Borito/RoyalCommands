@@ -90,9 +90,16 @@ public class Trade {
         return RPlayer.getRPlayer(this.get(party)).getName();
     }
 
+    private String getTradeName() {
+        final String traderName = RPlayer.getRPlayer(this.get(Party.TRADER)).getName();
+        final String tradeeName = RPlayer.getRPlayer(this.get(Party.TRADEE)).getName();
+        final String tradeName = traderName + "/" + tradeeName;
+        return tradeName.length() > 32 ? tradeName.substring(0, 32) : tradeName;
+    }
+
     private InventoryGUI makeInventoryGUI() {
         if (this.getInventoryGUI() != null) return null;
-        final InventoryGUI inventoryGUI = new InventoryGUI("Trade");
+        final InventoryGUI inventoryGUI = new InventoryGUI(this.getTradeName());
         inventoryGUI.addItem(
             new AddPartyCommand(this, Party.TRADER),
             5, 1,
