@@ -7,10 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.gui.inventory.ClickHandler;
 import org.royaldev.royalcommands.gui.inventory.InventoryGUI;
 
-public class InventoryGUIClickEvent extends InventoryGUIEvent {
+public class InventoryGUIClickEvent extends InventoryGUIPlayerEvent {
 
-    private final InventoryGUI inventoryGUI;
-    private final Player clicker;
     private final ClickType clickType;
     private final ItemStack clicked;
     private final ClickHandler clickHandler;
@@ -18,14 +16,13 @@ public class InventoryGUIClickEvent extends InventoryGUIEvent {
     private final int slot;
     private final int rawSlot;
 
-    public InventoryGUIClickEvent(final InventoryGUI gui, final Player clicker, final ClickType type, final ItemStack clicked, final InventoryAction action, final int slot, final int rawSlot) {
-        this.inventoryGUI = gui;
-        this.clicker = clicker;
+    public InventoryGUIClickEvent(final InventoryGUI inventoryGUI, final Player clicker, final ClickType type, final ItemStack clicked, final InventoryAction action, final int slot, final int rawSlot) {
+        super(inventoryGUI, clicker);
         this.clickType = type;
         this.clicked = clicked;
         this.action = action;
         this.rawSlot = rawSlot;
-        this.clickHandler = this.inventoryGUI.getClickHandler(this.clicked);
+        this.clickHandler = this.getInventoryGUI().getClickHandler(this.clicked);
         this.slot = slot;
     }
 
@@ -45,19 +42,28 @@ public class InventoryGUIClickEvent extends InventoryGUIEvent {
         return this.clicked;
     }
 
-    public Player getClicker() {
-        return this.clicker;
-    }
-
-    public InventoryGUI getInventoryGUI() {
-        return this.inventoryGUI;
-    }
-
     public int getRawSlot() {
         return this.rawSlot;
     }
 
     public int getSlot() {
         return this.slot;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "%s@%s[inventoryGUI=%s, player=%s, clickType=%s, clicked=%s, clickHandler=%s, action=%s, slot=%s, rawSlot=%s]",
+            this.getClass().getName(),
+            this.hashCode(),
+            this.getInventoryGUI(),
+            this.getPlayer(),
+            this.clickType,
+            this.clicked,
+            this.clickHandler,
+            this.action,
+            this.slot,
+            this.rawSlot
+        );
     }
 }

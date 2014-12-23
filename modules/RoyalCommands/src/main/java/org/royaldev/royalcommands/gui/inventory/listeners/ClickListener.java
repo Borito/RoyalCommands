@@ -13,7 +13,7 @@ public class ClickListener implements Listener {
     public void onClick(final InventoryGUIClickEvent e) {
         final ClickHandler ch = e.getClickHandler();
         if (ch == null) return;
-        if (!ch.onClick(new ClickEvent(e.getClicked(), e.getClicker(), e.getSlot()))) {
+        if (!ch.onClick(new ClickEvent(e.getClicked(), e.getPlayer(), e.getSlot()))) {
             e.setCancelled(true);
         }
     }

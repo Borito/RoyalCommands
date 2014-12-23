@@ -28,4 +28,8 @@ public abstract class InventoryGUIListener implements Listener {
         return he instanceof Player ? (Player) he : null;
     }
 
+    public Player getPlayer(final InventoryHolder ih) {
+        return ih instanceof Player ? (Player) ih : null;
+    }
+
 }
