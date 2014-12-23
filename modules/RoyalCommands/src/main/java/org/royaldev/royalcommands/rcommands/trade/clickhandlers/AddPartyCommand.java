@@ -39,6 +39,7 @@ public class AddPartyCommand implements ClickHandler {
                         MessageColor.RESET + "Commands",
                         commands.toArray(new String[commands.size()])
                     );
+                    AddPartyCommand.this.trade.setAcceptance(party.getOther(), false);
                 }
             });
     }
