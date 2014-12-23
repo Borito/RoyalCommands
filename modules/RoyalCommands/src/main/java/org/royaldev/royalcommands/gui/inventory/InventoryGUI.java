@@ -45,15 +45,18 @@ public class InventoryGUI {
         return as.getStack();
     }
 
-    public void addItem(final ClickHandler clickHandler, final int x, final int y, final Material m, final String name, final String... lore) {
+    public void addItem(final UUID uuid, final ClickHandler clickHandler, final int x, final int y, final Material m, final String name, final String... lore) {
         final int slot = this.getSlot(x, y);
         if (slot > this.getBase().getSize() - 1) {
             throw new IllegalArgumentException("Location does not exist.");
         }
-        final UUID uuid = UUID.randomUUID();
         final ItemStack is = this.tagItem(this.createItem(m, name, lore), uuid);
         this.getClickHandlers().put(uuid, clickHandler);
         this.getBase().setItem(slot, is);
+    }
+
+    public void addItem(final ClickHandler clickHandler, final int x, final int y, final Material m, final String name, final String... lore) {
+        this.addItem(UUID.randomUUID(), clickHandler, x, y, m, name, lore);
     }
 
     public ItemStack createItem(final Material material, final String name, final String... lore) {

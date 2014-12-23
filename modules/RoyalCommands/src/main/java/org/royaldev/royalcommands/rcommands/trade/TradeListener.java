@@ -2,6 +2,7 @@ package org.royaldev.royalcommands.rcommands.trade;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.royaldev.royalcommands.MessageColor;
@@ -27,14 +28,15 @@ public class TradeListener implements Listener {
         return e.getRawSlot() <= ig.getBase().getSize();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void freeze(final InventoryGUIClickEvent e) {
         final InventoryGUI ig = e.getInventoryGUI();
         if (!this.isInInventoryGUI(e, ig)) return;
         final Trade t = this.getTrade(e);
         if (t == null) return;
         final Party p = t.get(e.getClicker().getUniqueId());
-        if (!t.hasAccepted(p)) return;
+        // If he hasn't accepted or the item has a command
+        if (!t.hasAccepted(p) || e.getClickHandler() != null) return;
         e.setCancelled(true);
         e.getClicker().sendMessage(MessageColor.NEGATIVE + "You cannot modify a trade once you have accepted it.");
     }
@@ -55,9 +57,7 @@ public class TradeListener implements Listener {
             e.setCancelled(true);
             return; // don't change acceptance if nothing happens
         }
-        if (t.hasAccepted(party.getOther())) { // decline if changes are made
-            t.toggleAcceptance(party.getOther());
-        }
+        t.setAcceptance(party.getOther(), false); // decline if changes are made
     }
 
 }

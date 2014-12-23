@@ -27,13 +27,13 @@ public class TradableCommand implements Tradable {
     /**
      * Trades a command. In this case, it's less of a trade and more of an agreed-upon action.
      *
-     * @param from Party requesting the command
-     * @param to   Party performing the command
+     * @param from Party performing the command
+     * @param to   Party requesting the command
      * @return If the trade was successful
      */
     @Override
     public boolean trade(final Party from, final Party to) {
-        final Player p = this.trade.getPlayer(to);
+        final Player p = this.trade.getPlayer(from);
         return p != null && p.performCommand(this.command);
     }
 }

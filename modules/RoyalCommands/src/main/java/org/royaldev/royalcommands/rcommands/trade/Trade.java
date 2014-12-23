@@ -33,6 +33,7 @@ public class Trade {
     private final Map<Party, UUID> parties = new HashMap<>();
     private final Map<Party, Boolean> acceptances = new HashMap<>();
     private final InventoryGUI inventoryGUI;
+    private final UUID acceptButtonUUID = UUID.randomUUID();
 
     public Trade(final UUID trader, final UUID tradee) {
         this.parties.put(Party.TRADER, trader);
@@ -111,6 +112,7 @@ public class Trade {
             MessageColor.NEUTRAL + "The tradee is " + this.getName(Party.TRADEE) + "."
         );
         inventoryGUI.addItem(
+            this.acceptButtonUUID,
             new ToggleTradeAcceptance(this),
             5, 3,
             Material.BOOK_AND_QUILL,
@@ -247,6 +249,7 @@ public class Trade {
 
     public boolean setAcceptance(final Party party, final boolean acceptance) {
         this.acceptances.put(party, acceptance);
+        this.updateAcceptButton();
         if (this.haveBothAccepted()) this.trade();
         return acceptance;
     }
@@ -267,5 +270,17 @@ public class Trade {
         final Party party = this.get(uuid);
         if (party == null) throw new IllegalArgumentException("No such UUID");
         return this.toggleAcceptance(party);
+    }
+
+    public void updateAcceptButton() {
+        final ItemStack updateButton = this.getInventoryGUI().getItemStack(this.acceptButtonUUID);
+        this.getInventoryGUI().updateItemStack(this.getInventoryGUI().setItemMeta(
+            updateButton,
+            null,
+            MessageColor.NEUTRAL + "This toggles your acceptance of the trade.",
+            MessageColor.NEUTRAL + "Once both sides have accepted, the trade will process.",
+            this.getTradeStatusLore(Party.TRADER),
+            this.getTradeStatusLore(Party.TRADEE)
+        ));
     }
 }
