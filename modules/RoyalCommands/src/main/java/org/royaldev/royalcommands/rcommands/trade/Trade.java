@@ -7,11 +7,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.gui.inventory.ClickHandler;
+import org.royaldev.royalcommands.gui.inventory.GUIItem;
 import org.royaldev.royalcommands.gui.inventory.InventoryGUI;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.AddPartyCommand;
+import org.royaldev.royalcommands.rcommands.trade.clickhandlers.GiveHelpBook;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.RemindOtherParty;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.RemoveItem;
 import org.royaldev.royalcommands.rcommands.trade.clickhandlers.ToggleTradeAcceptance;
+import org.royaldev.royalcommands.rcommands.trade.guiitems.AddCommandItem;
+import org.royaldev.royalcommands.rcommands.trade.guiitems.HelpItem;
+import org.royaldev.royalcommands.rcommands.trade.guiitems.RemindItem;
+import org.royaldev.royalcommands.rcommands.trade.guiitems.ToggleAcceptanceItem;
 import org.royaldev.royalcommands.rcommands.trade.tradables.Tradable;
 import org.royaldev.royalcommands.rcommands.trade.tradables.TradableCommand;
 import org.royaldev.royalcommands.rcommands.trade.tradables.TradableItem;
@@ -25,7 +31,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-// TODO: Help
+/*
+* FIXME:
+* Trade accept button sometimes doesn't update until reopen (?)
+ */
 
 public class Trade {
 
@@ -86,10 +95,6 @@ public class Trade {
         }
     }
 
-    private String getName(final Party party) {
-        return RPlayer.getRPlayer(this.get(party)).getName();
-    }
-
     private String getTradeName() {
         final String traderName = RPlayer.getRPlayer(this.get(Party.TRADER)).getName();
         final String tradeeName = RPlayer.getRPlayer(this.get(Party.TRADEE)).getName();
@@ -103,40 +108,28 @@ public class Trade {
         inventoryGUI.addItem(
             new AddPartyCommand(this, Party.TRADER),
             5, 1,
-            Material.COMMAND,
-            MessageColor.RESET + "Add Trader Command",
-            MessageColor.NEUTRAL + "Adds a command for the trader",
-            MessageColor.NEUTRAL + "to perform when the trade processes.",
-            MessageColor.NEUTRAL + "The trader is " + this.getName(Party.TRADER) + "."
+            new AddCommandItem(this, Party.TRADER)
         );
         inventoryGUI.addItem(
             new AddPartyCommand(this, Party.TRADEE),
             5, 2,
-            Material.COMMAND,
-            MessageColor.RESET + "Add Tradee Command",
-            MessageColor.NEUTRAL + "Adds a command for the tradee",
-            MessageColor.NEUTRAL + "to perform when the trade processes.",
-            MessageColor.NEUTRAL + "The tradee is " + this.getName(Party.TRADEE) + "."
+            new AddCommandItem(this, Party.TRADEE)
         );
         inventoryGUI.addItem(
             this.acceptButtonUUID,
             new ToggleTradeAcceptance(this),
             5, 3,
-            Material.BOOK_AND_QUILL,
-            MessageColor.RESET + "Toggle Acceptance",
-            MessageColor.NEUTRAL + "This toggles your acceptance of the trade.",
-            MessageColor.NEUTRAL + "Once both sides have accepted,",
-            MessageColor.NEUTRAL + "the trade will process.",
-            this.getTradeStatusLore(Party.TRADER),
-            this.getTradeStatusLore(Party.TRADEE)
+            new ToggleAcceptanceItem(this)
         );
         inventoryGUI.addItem(
             new RemindOtherParty(this),
             5, 4,
-            Material.BEACON,
-            MessageColor.RESET + "Remind Other Party",
-            MessageColor.NEUTRAL + "Sends a notification to the",
-            MessageColor.NEUTRAL + "other party to check this trade."
+            new RemindItem()
+        );
+        inventoryGUI.addItem(
+            new GiveHelpBook(),
+            5, 5,
+            new HelpItem()
         );
         return inventoryGUI;
     }
@@ -184,14 +177,16 @@ public class Trade {
             this.setAcceptance(Party.TRADER, false);
             this.setAcceptance(Party.TRADEE, false);
         }
+        Party.TRADER.closeTrade(this);
+        Party.TRADEE.closeTrade(this);
         return allSuccessful;
     }
 
-    public void addItem(final ClickHandler clickHandler, final Party party, final Material m, final String name, final String... lore) {
+    public void addItem(final ClickHandler clickHandler, final Party party, final GUIItem guiItem) {
         final int freeSlot = party.getNextFreeSlot(this.getInventoryGUI().getBase());
         if (freeSlot == -1) return; // TODO: Throw?
         final Vector2D xy = this.getInventoryGUI().getXYFromSlot(freeSlot);
-        this.getInventoryGUI().addItem(clickHandler, xy.getX(), xy.getY(), m, name, lore);
+        this.getInventoryGUI().addItem(clickHandler, xy.getX(), xy.getY(), guiItem);
     }
 
     public boolean areBothPartiesOnline() {
@@ -219,6 +214,10 @@ public class Trade {
 
     public InventoryGUI getInventoryGUI() {
         return this.inventoryGUI;
+    }
+
+    public String getName(final Party party) {
+        return RPlayer.getRPlayer(this.get(party)).getName();
     }
 
     public Player getPlayer(final Party party) {
@@ -281,13 +280,11 @@ public class Trade {
 
     public void updateAcceptButton() {
         final ItemStack updateButton = this.getInventoryGUI().getItemStack(this.acceptButtonUUID);
+        final List<String> lore = new ToggleAcceptanceItem(this).getLore();
         this.getInventoryGUI().updateItemStack(this.getInventoryGUI().setItemMeta(
             updateButton,
             null,
-            MessageColor.NEUTRAL + "This toggles your acceptance of the trade.",
-            MessageColor.NEUTRAL + "Once both sides have accepted, the trade will process.",
-            this.getTradeStatusLore(Party.TRADER),
-            this.getTradeStatusLore(Party.TRADEE)
+            lore.toArray(new String[lore.size()])
         ));
     }
 }
