@@ -65,6 +65,7 @@ import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.MailRunner;
 import org.royaldev.royalcommands.runners.UserdataRunner;
 import org.royaldev.royalcommands.runners.WarnWatcher;
+import org.royaldev.royalcommands.shaded.com.sk89q.util.config.FancyConfiguration;
 import org.royaldev.royalcommands.spawninfo.ItemListener;
 import org.royaldev.royalcommands.tools.UUIDFetcher;
 
@@ -414,6 +415,12 @@ public class RoyalCommands extends JavaPlugin {
     @SuppressWarnings("unused")
     public RApiMain getAPI() {
         return this.api;
+    }
+
+    public FancyConfiguration getFancyConfig() {
+        final FancyConfiguration fc = new FancyConfiguration(new File(this.getDataFolder(), "config.yml"));
+        fc.load();
+        return fc;
     }
 
     public NMSFace getNMSFace() {
