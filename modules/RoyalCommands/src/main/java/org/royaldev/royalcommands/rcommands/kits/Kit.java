@@ -25,13 +25,13 @@ public class Kit {
         for (final ConfigurationNode enchantment : enchantments) {
             final Enchantment realEnchantment = this.getEnchantment(enchantment);
             if (realEnchantment == null) continue;
-            is.addEnchantment(realEnchantment, enchantment.getInt("level", 1));
+            is.addUnsafeEnchantment(realEnchantment, enchantment.getInt("level", 1));
         }
         return is;
     }
 
     private Enchantment getEnchantment(final ConfigurationNode enchantment) {
-        return Enchantment.getByName(enchantment.getString("name"));
+        return Enchantment.getByName(enchantment.getString("type", "").toUpperCase());
     }
 
     private ItemStack getItemStack(final ConfigurationNode item) {
