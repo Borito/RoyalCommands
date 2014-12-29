@@ -134,6 +134,7 @@ public class Config {
     public static String saveInterval;
     public static String teleportSoundName;
     public static String tempbanFormat;
+    public static String tradeHelp;
     public static String welcomeMessage;
     public static String whitelistMessage;
     public static String whoFormat;
@@ -286,6 +287,7 @@ public class Config {
         saveInterval = c.getString("userdata.saving.save_on_interval", "10m");
         teleportSoundName = c.getString("teleports.sound.sound", "ENDERMAN_TELEPORT");
         tempbanFormat = c.getString("bans.temp.messages.format", "&4Tempbanned&r: {length}&rnFor {reason}&r by {dispname}");
+        tradeHelp = c.getString("trade.help", "<book><title>Oops!</title><author>RoyalCommands</author><page>Looks like the administrators didn't set this up! Please tell them to.</page></book>");
         welcomeMessage = RUtils.colorize(c.getString("messages.welcome", "&5Welcome {name} to the server!"));
         whitelistMessage = RUtils.colorize(c.getString("whitelist.message", "You are not whitelisted on this server!"));
         whoFormat = c.getString("playerlist.format", "{prefix}{dispname}");
