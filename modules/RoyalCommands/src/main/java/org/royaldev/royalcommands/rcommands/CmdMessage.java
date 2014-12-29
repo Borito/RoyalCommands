@@ -13,7 +13,7 @@ import java.util.HashMap;
 @ReflectCommand
 public class CmdMessage extends BaseCommand {
 
-    public final static HashMap<String, String> replydb = new HashMap<>();
+    public static final HashMap<String, String> replydb = new HashMap<>();
 
     public CmdMessage(final RoyalCommands instance, final String name) {
         super(instance, name, true);
@@ -24,9 +24,9 @@ public class CmdMessage extends BaseCommand {
         if (args.length < 2) {
             return false;
         }
-        Player t = this.plugin.getServer().getPlayer(args[0]);
-        String m = RoyalCommands.getFinalArg(args, 1).trim();
-        if (t == null || t.getName().trim().equals("")) {
+        final Player t = this.plugin.getServer().getPlayer(args[0]);
+        final String m = RoyalCommands.getFinalArg(args, 1).trim();
+        if (t == null || "".equals(t.getName().trim())) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
             return true;
         }
@@ -39,7 +39,7 @@ public class CmdMessage extends BaseCommand {
             replydb.put(cs.getName(), t.getName());
         }
 
-        if (m.equals("")) {
+        if ("".equals(m)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You entered no message!");
             return true;
         }

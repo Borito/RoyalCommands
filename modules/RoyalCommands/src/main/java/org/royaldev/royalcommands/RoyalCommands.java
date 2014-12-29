@@ -38,17 +38,20 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.Contract;
 import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
 import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
+import org.royaldev.royalcommands.gui.inventory.listeners.ClickListener;
+import org.royaldev.royalcommands.gui.inventory.listeners.InventoryGUIEventListener;
 import org.royaldev.royalcommands.listeners.BackpackListener;
+import org.royaldev.royalcommands.listeners.BlockListener;
+import org.royaldev.royalcommands.listeners.EntityListener;
 import org.royaldev.royalcommands.listeners.MonitorListener;
-import org.royaldev.royalcommands.listeners.RoyalCommandsBlockListener;
-import org.royaldev.royalcommands.listeners.RoyalCommandsEntityListener;
-import org.royaldev.royalcommands.listeners.RoyalCommandsPlayerListener;
+import org.royaldev.royalcommands.listeners.PlayerListener;
 import org.royaldev.royalcommands.listeners.ServerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
 import org.royaldev.royalcommands.listeners.TagAPIListener;
@@ -56,6 +59,7 @@ import org.royaldev.royalcommands.nms.api.NMSFace;
 import org.royaldev.royalcommands.protocol.ProtocolListener;
 import org.royaldev.royalcommands.rcommands.BaseCommand;
 import org.royaldev.royalcommands.rcommands.ReflectCommand;
+import org.royaldev.royalcommands.rcommands.trade.TradeListener;
 import org.royaldev.royalcommands.runners.AFKWatcher;
 import org.royaldev.royalcommands.runners.FreezeWatcher;
 import org.royaldev.royalcommands.runners.MailRunner;
@@ -121,7 +125,9 @@ public class RoyalCommands extends JavaPlugin {
      * @param position Position to start joining from
      * @return Joined string
      */
-    public static String getFinalArg(String[] array, int position) {
+    @Contract("null, _ -> null; !null, _ -> !null")
+    public static String getFinalArg(final String[] array, final int position) {
+        if (array == null) return null;
         final StringBuilder sb = new StringBuilder();
         for (int i = position; i < array.length; i++) sb.append(array[i]).append(" ");
         return sb.substring(0, sb.length() - 1);
@@ -217,7 +223,7 @@ public class RoyalCommands extends JavaPlugin {
         // Get the last element of the package
         // If the last element of the package was "craftbukkit" we are now pre-refactor
         String versionNMS = packageName.substring(packageName.lastIndexOf('.') + 1);
-        if (versionNMS.equals("craftbukkit")) versionNMS = "NoSupport";
+        if ("craftbukkit".equals(versionNMS)) versionNMS = "NoSupport";
         try {
             // Check if we have a NMSHandler class at that location.
             final Class<?> clazz = Class.forName("org.royaldev.royalcommands.nms." + versionNMS + ".NMSHandler");
@@ -560,14 +566,17 @@ public class RoyalCommands extends JavaPlugin {
 
         final PluginManager pm = this.getServer().getPluginManager();
 
-        pm.registerEvents(new RoyalCommandsPlayerListener(this), this);
-        pm.registerEvents(new RoyalCommandsEntityListener(this), this);
-        pm.registerEvents(new RoyalCommandsBlockListener(this), this);
+        pm.registerEvents(new PlayerListener(this), this);
+        pm.registerEvents(new EntityListener(this), this);
+        pm.registerEvents(new BlockListener(this), this);
         pm.registerEvents(new SignListener(this), this);
         pm.registerEvents(new MonitorListener(this), this);
         pm.registerEvents(new ServerListener(this), this);
         pm.registerEvents(new ItemListener(this), this);
         pm.registerEvents(new BackpackListener(), this);
+        pm.registerEvents(new ClickListener(), this);
+        pm.registerEvents(new TradeListener(), this);
+        pm.registerEvents(new InventoryGUIEventListener(), this);
         if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(), this);
 
         //-- ProtocolLib things --//

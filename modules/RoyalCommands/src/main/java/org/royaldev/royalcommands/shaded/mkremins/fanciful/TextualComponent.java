@@ -35,7 +35,7 @@ public abstract class TextualComponent implements Cloneable {
     }
 
     static boolean isTextKey(String key) {
-        return key.equals("translate") || key.equals("text") || key.equals("score") || key.equals("selector");
+        return "translate".equals(key) || "text".equals(key) || "score".equals(key) || "selector".equals(key);
     }
 
     /**
@@ -177,11 +177,6 @@ public abstract class TextualComponent implements Cloneable {
             return _value;
         }
 
-        @Override
-        public String getKey() {
-            return _key;
-        }
-
         public void setValue(String value) {
             Preconditions.checkArgument(value != null, "The value must be specified.");
             _value = value;
@@ -193,7 +188,12 @@ public abstract class TextualComponent implements Cloneable {
                 put("key", getKey());
                 put("value", getValue());
             }};
+        }        @Override
+        public String getKey() {
+            return _key;
         }
+
+
 
         public void setKey(String key) {
             Preconditions.checkArgument(key != null && !key.isEmpty(), "The key must be specified.");
@@ -227,20 +227,15 @@ public abstract class TextualComponent implements Cloneable {
 
         public static ComplexTextTypeComponent deserialize(Map<String, Object> map) {
             String key = null;
-            Map<String, String> value = new HashMap<String, String>();
+            Map<String, String> value = new HashMap<>();
             for (Map.Entry<String, Object> valEntry : map.entrySet()) {
-                if (valEntry.getKey().equals("key")) {
+                if ("key".equals(valEntry.getKey())) {
                     key = (String) valEntry.getValue();
                 } else if (valEntry.getKey().startsWith("value.")) {
-                    value.put(((String) valEntry.getKey()).substring(6) /* Strips out the value prefix */, valEntry.getValue().toString());
+                    value.put(valEntry.getKey().substring(6) /* Strips out the value prefix */, valEntry.getValue().toString());
                 }
             }
             return new ComplexTextTypeComponent(key, value);
-        }
-
-        @Override
-        public String getKey() {
-            return _key;
         }
 
         public Map<String, String> getValue() {
@@ -250,7 +245,12 @@ public abstract class TextualComponent implements Cloneable {
         public void setValue(Map<String, String> value) {
             Preconditions.checkArgument(value != null, "The value must be specified.");
             _value = value;
+        }        @Override
+        public String getKey() {
+            return _key;
         }
+
+
 
         public void setKey(String key) {
             Preconditions.checkArgument(key != null && !key.isEmpty(), "The key must be specified.");

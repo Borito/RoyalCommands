@@ -10,26 +10,25 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
-@SuppressWarnings("unused")
-public class RoyalCommandsBlockListener implements Listener {
+public class BlockListener implements Listener {
 
-    public static RoyalCommands plugin;
+    private final RoyalCommands plugin;
 
-    public RoyalCommandsBlockListener(RoyalCommands instance) {
-        plugin = instance;
+    public BlockListener(final RoyalCommands instance) {
+        this.plugin = instance;
     }
 
     @EventHandler
     public void onBlockB(BlockBreakEvent e) {
         if (e.isCancelled() || !Config.buildPerm) return;
-        if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.build")) return;
+        if (this.plugin.ah.isAuthorized(e.getPlayer(), "rcmds.build")) return;
         e.getPlayer().sendMessage(Config.noBuildMessage);
         e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(BlockBreakEvent event) {
-        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(event.getPlayer());
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(event.getPlayer());
         if (pcm.getBoolean("frozen")) event.setCancelled(true);
         if (pcm.getBoolean("jailed")) event.setCancelled(true);
     }
@@ -37,14 +36,14 @@ public class RoyalCommandsBlockListener implements Listener {
     @EventHandler
     public void onBlockP(BlockPlaceEvent e) {
         if (e.isCancelled() || !Config.buildPerm) return;
-        if (plugin.ah.isAuthorized(e.getPlayer(), "rcmds.build")) return;
+        if (this.plugin.ah.isAuthorized(e.getPlayer(), "rcmds.build")) return;
         e.getPlayer().sendMessage(Config.noBuildMessage);
         e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlace(BlockPlaceEvent event) {
-        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(event.getPlayer());
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(event.getPlayer());
         if (pcm.getBoolean("frozen")) event.setCancelled(true);
         if (pcm.getBoolean("jailed")) event.setCancelled(true);
     }

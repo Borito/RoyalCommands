@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
+@SuppressWarnings("StaticNonFinalField")
 public class Config {
 
     public static boolean assignPublicOnGeneric;
@@ -308,13 +309,13 @@ public class Config {
         } catch (FileNotFoundException e) {
             this.plugin.getLogger().warning("items.csv was not found! Item aliases will not be used.");
             RoyalCommands.inm = null;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             this.plugin.getLogger().warning("Internal input/output error loading items.csv. Item aliases will not be used.");
             RoyalCommands.inm = null;
         } finally {
             try {
                 if (in != null) in.close();
-            } catch (IOException ignored) {
+            } catch (final IOException ignored) {
             }
         }
 

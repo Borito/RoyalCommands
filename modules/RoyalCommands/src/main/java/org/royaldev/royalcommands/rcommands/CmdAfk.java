@@ -16,8 +16,8 @@ import java.util.Map;
 @ReflectCommand
 public class CmdAfk extends BaseCommand {
 
-    public final static Map<Player, Long> afkdb = new HashMap<>();
-    public final static Map<Player, Long> movetimes = new HashMap<>();
+    public static final Map<Player, Long> afkdb = new HashMap<>();
+    public static final Map<Player, Long> movetimes = new HashMap<>();
 
     public CmdAfk(final RoyalCommands instance, final String name) {
         super(instance, name, true);

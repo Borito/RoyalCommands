@@ -103,6 +103,83 @@ warps:
 trade:
   # Allow trades between players with different gamemodes?
   between_gamemodes: false
+  help: |
+    <book>
+    <title>Trade Help</title>
+    <author>RoyalCommands</author>
+    <page>
+    Welcome to the trade system in RoyalCommands.
+    This book aims to detail the methods in which the system works and how to best utilize it.
+    </page>
+    <page>
+    §lTable of Contents§0
+    I. Understanding Trades
+    II. Initiating a Trade
+    III. Updating a Trade
+    IV. Completing a Trade
+    </page>
+    <page>
+    §lI. Understanding Trades§0
+    A trade is a controlled exchange of items (and commands) between two players. Both players must be in agreeance before a trade can be made.
+    The initiator of a trade is called the "trader." The
+    </page>
+    <page>
+    recipient is the "tradee."
+    The trader always has the left side of a trade to make offers in, and the tradee always has the right side. If you're unsure which side you have, the title of the trade (above the trade inventory) will have your name on
+    </page>
+    <page>
+    either the left or right of a slash ("/"), and that corresponds to the side you have.
+    Both parties may add items they wish to trade and commands that they want to perform or have the other party perform. Neither party may modify
+    </page>
+    <page>
+    the other side of the trade.
+    In order for a trade to be completed, both sides must agree by using the button in the middle of the middle column. Once you have agreed to a trade, you may not modify your offer unless you disagree by clicking the
+    </page>
+    <page>
+    button again. If the other party changes their trade after you have agreed, you will automatically decline the trade so you can review the new offer before agreeing.
+    Once a trade has been agreed to by both sides, a series of events will unfold.
+    </page>
+    <page>
+    First, the trade will be closed. Starting with the offer the trader made, items will be transferred to the tradee. If any commands were specified for the trader to perform, he will perform them when the item representing them is met.
+    </page>
+    <page>
+    Next, the tradee's offer will be processed in the same manner as the trader's.
+    Finally, the trade will destroy itself if it is successful, allowing for a new trade to be made. If unsuccessful, the trade will remain open with any items
+    </page>
+    <page>
+    unable to be traded still present.
+    </page>
+    <page>
+    §lII. Initiating a Trade§0
+    Now that you understand what trades are and how they work, you should know how to start a trade.
+    To do so, use the following command: /trade name
+    Replace name with
+    </page>
+    <page>
+    the name of the person you would like to trade with. This person does not need to be online, but please note that any trades made will be lost if the server restarts.
+    If someone else has started a trade with you, you perform the same command to
+    </page>
+    <page>
+    access it.
+    After performing this command, the trade interface will open before you.
+    </page>
+    <page>
+    §lIII. Updating a Trade§0
+    You may now add items to your trade. If you need to close the trade, do so. It will not go away. You can open the trade again at any time using
+    </page>
+    <page>
+    the same command you used to create it.
+    </page>
+    <page>
+    §lIV. Completing a Trade§0
+    Once you have made your offer, you may then accept the trade. If the other person modifies their offer, you will automatically decline the trade to review the new offer. Once the other
+    </page>
+    <page>
+    person accepts the offer, the trade will process as defined in section I.
+    The trade is now complete!
+    If you have any additional questions, contact a server administrator.
+    </page>
+    </book>
 
 ###
 # PluginManager #

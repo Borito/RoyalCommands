@@ -57,6 +57,12 @@ public class Configuration extends FileGeneralConfiguration {
         this.name = "";
     }
 
+    public static int configurationsCreated() {
+        synchronized (Configuration.confs) {
+            return Configuration.confs.size();
+        }
+    }
+
     public static Collection<Configuration> getAllConfigurations() {
         synchronized (Configuration.confs) {
             return Collections.synchronizedCollection(Configuration.confs.values());
@@ -75,12 +81,6 @@ public class Configuration extends FileGeneralConfiguration {
     public static boolean isConfigurationCreated(String s) {
         synchronized (Configuration.confs) {
             return Configuration.confs.containsKey(s);
-        }
-    }
-
-    public static int configurationsCreated() {
-        synchronized (Configuration.confs) {
-            return Configuration.confs.size();
         }
     }
 

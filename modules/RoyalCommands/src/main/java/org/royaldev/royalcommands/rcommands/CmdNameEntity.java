@@ -13,7 +13,7 @@ import java.util.Map;
 @ReflectCommand
 public class CmdNameEntity extends BaseCommand {
 
-    private final static Map<String, String> names = new HashMap<>();
+    private static final Map<String, String> names = new HashMap<>();
 
     public CmdNameEntity(final RoyalCommands instance, final String name) {
         super(instance, name, true);
@@ -93,8 +93,8 @@ public class CmdNameEntity extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
-        if (newName.equalsIgnoreCase("reset") || newName.equalsIgnoreCase("clear") || newName.equals("remove")) {
+        final String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
+        if ("reset".equalsIgnoreCase(newName) || "clear".equalsIgnoreCase(newName) || "remove".equals(newName)) {
             setNamingName(cs, "");
             cs.sendMessage(MessageColor.POSITIVE + "Right click on the entity you want to remove a custom name from.");
         }

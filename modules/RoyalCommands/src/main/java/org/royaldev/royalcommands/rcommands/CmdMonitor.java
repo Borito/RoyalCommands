@@ -10,6 +10,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.listeners.MonitorListener;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +18,10 @@ import java.util.Map;
 @ReflectCommand
 public class CmdMonitor extends BaseCommand {
 
-    public final static Map<String, String> monitors = new HashMap<>();
-    public final static Map<String, String> viewees = new HashMap<>();
-    public final static Map<String, ItemStack[]> invs = new HashMap<>();
-    public final static Map<String, Location> locs = new HashMap<>();
+    public static final Map<String, String> monitors = new HashMap<>();
+    public static final Map<String, String> viewees = new HashMap<>();
+    public static final Map<String, ItemStack[]> invs = new HashMap<>();
+    public static final Map<String, Location> locs = new HashMap<>();
 
     public CmdMonitor(final RoyalCommands instance, final String name) {
         super(instance, name, true);
@@ -49,7 +50,7 @@ public class CmdMonitor extends BaseCommand {
             return true;
         }
         String toWatch = (args.length > 0) ? args[0] : "";
-        if (toWatch.equals("")) {
+        if ("".equals(toWatch)) {
             cs.sendMessage(MessageColor.NEGATIVE + "Monitoring all players is not yet supported.");
         } else {
             Player t = this.plugin.getServer().getPlayer(toWatch);
@@ -81,7 +82,8 @@ public class CmdMonitor extends BaseCommand {
             p.setHealth(t.getHealth());
             p.setFoodLevel(t.getFoodLevel());
             p.setSaturation(t.getSaturation());
-            RUtils.silentTeleport(p, t);
+            final RPlayer rp = RPlayer.getRPlayer(p);
+            rp.getTeleporter().teleport(t, true);
             return true;
         }
         return true;

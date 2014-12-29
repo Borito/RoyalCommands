@@ -15,7 +15,7 @@ import java.util.Map;
 public class TeleportRequest {
 
     // NOTE: Not using UUIDs, because this is so temporary that it should NOT matter. It will just add lag time.
-    private final static Map<String, List<TeleportRequest>> teleportRequests = new HashMap<>();
+    private static final Map<String, List<TeleportRequest>> teleportRequests = new HashMap<>();
     private final String requester;
     private final String target;
     private final TeleportType teleportType;

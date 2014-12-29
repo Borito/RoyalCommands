@@ -21,11 +21,11 @@ import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.rcommands.CmdBack;
 
 @SuppressWarnings("unused")
-public class RoyalCommandsEntityListener implements Listener {
+public class EntityListener implements Listener {
 
     public static RoyalCommands plugin;
 
-    public RoyalCommandsEntityListener(RoyalCommands instance) {
+    public EntityListener(RoyalCommands instance) {
         plugin = instance;
     }
 

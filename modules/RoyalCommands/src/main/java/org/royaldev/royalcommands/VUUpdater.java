@@ -18,12 +18,12 @@ import java.util.regex.Pattern;
  * Class that gets VU update data from the CurseForge API. {@link #getUpdateInfo(String)} is the main method of this
  * class.
  */
-public class VUUpdater {
+public final class VUUpdater {
 
     /**
      * Matches "PluginName vA.B.C (V1V2V3)" according to the spec.
      */
-    private final static Pattern vuPattern = Pattern.compile("^(.+)\\s+v(\\d+(\\.\\d){2}).*\\((([0-9a-f]{2}){1,3})\\)$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern vuPattern = Pattern.compile("^(.+)\\s+v(\\d+(\\.\\d){2}).*\\((([0-9a-f]{2}){1,3})\\)$", Pattern.CASE_INSENSITIVE);
 
     /**
      * Checks for an update for the given plugin and plugin ID. This will check if the plugin version contains
