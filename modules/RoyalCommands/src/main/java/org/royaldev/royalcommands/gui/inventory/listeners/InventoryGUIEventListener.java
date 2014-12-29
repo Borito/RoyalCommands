@@ -16,7 +16,7 @@ public class InventoryGUIEventListener extends InventoryGUIListener {
         final InventoryGUI ig = this.getInventoryGUI(e.getInventory()); // TODO: Extract some sort of logic
         final ItemStack item = e.getOldCursor();
         final Player p = this.getPlayer(e.getWhoClicked());
-        if (p == null) return;
+        if (ig == null || p == null) return;
         final InventoryGUIDragEvent igde = new InventoryGUIDragEvent(ig, p, item, e.getInventorySlots(), e.getRawSlots());
         p.getServer().getPluginManager().callEvent(igde);
         if (igde.isCancelled()) e.setCancelled(true);
@@ -27,7 +27,7 @@ public class InventoryGUIEventListener extends InventoryGUIListener {
         final InventoryGUI ig = this.getInventoryGUI(e.getInventory());
         final ItemStack clicked = e.getCurrentItem();
         final Player p = this.getPlayer(e.getWhoClicked());
-        if (p == null) return;
+        if (ig == null || p == null) return;
         final InventoryGUIClickEvent igce = new InventoryGUIClickEvent(ig, p, e.getClick(), clicked, e.getAction(), e.getSlot(), e.getRawSlot());
         p.getServer().getPluginManager().callEvent(igce);
         if (igce.isCancelled()) e.setCancelled(true);
