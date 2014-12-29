@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.UUID;
@@ -83,7 +84,7 @@ public class Home {
     }
 
     public RPlayer getRPlayer() {
-        return RPlayer.getRPlayer(this.uuid);
+        return MemoryRPlayer.getRPlayer(this.uuid);
     }
 
     public UUID getUUID() {

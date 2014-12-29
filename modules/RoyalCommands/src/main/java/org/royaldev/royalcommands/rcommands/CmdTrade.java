@@ -9,6 +9,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.trade.Trade;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.HashMap;
@@ -77,8 +78,8 @@ public class CmdTrade extends BaseCommand {
             return false;
         }
         final Player p = (Player) cs;
-        final RPlayer rp = RPlayer.getRPlayer(p);
-        final UUID other = RPlayer.getRPlayer(args[0]).getUUID();
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
+        final UUID other = MemoryRPlayer.getRPlayer(args[0]).getUUID();
         Trade trade = Trade.getTradeFor(rp.getUUID(), other);
         if (trade == null) {
             trade = new Trade(rp.getUUID(), other);

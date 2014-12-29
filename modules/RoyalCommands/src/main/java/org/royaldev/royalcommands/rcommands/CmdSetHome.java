@@ -8,6 +8,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.home.Home;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class CmdSetHome extends BaseCommand {
             return true;
         }
         final Player p = (Player) cs;
-        final RPlayer rp = RPlayer.getRPlayer(p);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
         final Location l = p.getLocation();
         String name = "";
         if (args.length > 0) name = args[0];

@@ -8,6 +8,7 @@ import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.TabCommand;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public abstract class BaseHomeCommand extends TabCommand {
         final String[] parts = name.split(":");
         final String playerName = parts.length > 1 ? parts[0] : null;
         if (playerName == null) return rp.getHomeNames();
-        final List<Home> homes = RPlayer.getRPlayer(playerName).getHomes();
+        final List<Home> homes = MemoryRPlayer.getRPlayer(playerName).getHomes();
         final List<String> completeNames = new ArrayList<>();
         for (final Home h : homes) {
             completeNames.add(h.getName());
@@ -40,7 +41,7 @@ public abstract class BaseHomeCommand extends TabCommand {
     @Override
     protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
         if (!(cs instanceof Player)) return new ArrayList<>();
-        final RPlayer rp = RPlayer.getRPlayer((Player) cs);
+        final RPlayer rp = MemoryRPlayer.getRPlayer((Player) cs);
         return new ArrayList<>(this.completeHomes(rp, arg));
     }
 

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
@@ -36,7 +37,7 @@ public class CmdTeleportHere extends BaseCommand {
         }
         final Player p = (Player) cs;
         p.sendMessage(MessageColor.POSITIVE + "Teleporting " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " to you.");
-        final RPlayer rp = RPlayer.getRPlayer(t);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(t);
         final String error = rp.getTeleporter().teleport(p);
         if (!error.isEmpty()) {
             p.sendMessage(MessageColor.NEGATIVE + error);

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
@@ -52,7 +53,7 @@ public class CmdTeleportPosition extends BaseCommand {
             cs.sendMessage(MessageColor.POSITIVE + "Teleporting " + MessageColor.NEUTRAL + toTeleport.getName() + MessageColor.POSITIVE + " to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
         }
         toTeleport.sendMessage(MessageColor.POSITIVE + "Teleporting you to x: " + MessageColor.NEUTRAL + x + MessageColor.POSITIVE + ", y: " + MessageColor.NEUTRAL + y + MessageColor.POSITIVE + ", z: " + MessageColor.NEUTRAL + z + MessageColor.POSITIVE + " in world " + MessageColor.NEUTRAL + w.getName() + MessageColor.POSITIVE + ".");
-        final RPlayer rp = RPlayer.getRPlayer(toTeleport);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(toTeleport);
         final String error = rp.getTeleporter().teleport(pLoc);
         if (!error.isEmpty()) {
             toTeleport.sendMessage(MessageColor.NEGATIVE + error);

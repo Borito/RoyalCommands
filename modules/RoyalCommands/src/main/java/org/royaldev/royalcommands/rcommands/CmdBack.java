@@ -12,6 +12,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.text.DecimalFormat;
@@ -57,7 +58,7 @@ public class CmdBack extends BaseCommand {
             return true;
         }
         final Player p = (Player) cs;
-        final RPlayer rp = RPlayer.getRPlayer(p);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
         if (!backdb.containsKey(p.getUniqueId())) {
             cs.sendMessage(MessageColor.NEGATIVE + "You have no place to go back to!");
             return true;

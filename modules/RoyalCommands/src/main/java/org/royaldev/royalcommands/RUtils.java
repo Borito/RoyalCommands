@@ -360,7 +360,6 @@ public final class RUtils {
         return name;
     }
 
-    //if it isn't obvious, Essentials wrote this code. no way in hell I could manage this
     public static String formatDateDiff(long date) {
         Calendar c = new GregorianCalendar();
         c.setTimeInMillis(date);
@@ -418,7 +417,7 @@ public final class RUtils {
      *
      * @param u UUID of player to get backpack for
      * @return Backpack - never null
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getBackpack}.
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getBackpack}.
      */
     @Deprecated
     public static Inventory getBackpack(UUID u, World w) {
@@ -444,7 +443,7 @@ public final class RUtils {
      *
      * @param p Player to get backpack for
      * @return Backpack - never null
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getBackpack}.
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getBackpack}.
      */
     @Deprecated
     public static Inventory getBackpack(Player p) {
@@ -464,7 +463,7 @@ public final class RUtils {
     }
 
     /**
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getHomes}.size()
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getHomes}.size()
      */
     @Deprecated
     public static int getCurrentHomes(Player p) {
@@ -472,7 +471,7 @@ public final class RUtils {
     }
 
     /**
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getHomes}.size()
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getHomes}.size()
      */
     @Deprecated
     public static int getCurrentHomes(UUID u) {
@@ -535,7 +534,7 @@ public final class RUtils {
     }
 
     /**
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getHomeLimit}
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getHomeLimit}
      */
     @Deprecated
     public static int getHomeLimit(Player p) {
@@ -1353,7 +1352,7 @@ public final class RUtils {
      * @param p Player to teleport
      * @param l Location to teleport to
      * @return Error message if any.
-     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.RPlayer#getTeleporter}.
+     * @deprecated Use {@link org.royaldev.royalcommands.wrappers.player.MemoryRPlayer#getTeleporter}.
      */
     @Deprecated
     public static String teleport(Player p, Location l) {

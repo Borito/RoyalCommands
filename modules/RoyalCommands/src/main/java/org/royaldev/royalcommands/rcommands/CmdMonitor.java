@@ -10,6 +10,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.listeners.MonitorListener;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.HashMap;
@@ -82,7 +83,7 @@ public class CmdMonitor extends BaseCommand {
             p.setHealth(t.getHealth());
             p.setFoodLevel(t.getFoodLevel());
             p.setSaturation(t.getSaturation());
-            final RPlayer rp = RPlayer.getRPlayer(p);
+            final RPlayer rp = MemoryRPlayer.getRPlayer(p);
             rp.getTeleporter().teleport(t, true);
             return true;
         }

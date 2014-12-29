@@ -7,6 +7,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +30,7 @@ public class CmdBanHistory extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final RPlayer rp = RPlayer.getRPlayer(args[0]);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(args[0]);
         final OfflinePlayer op = rp.getOfflinePlayer();
         final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
         if (!pcm.exists()) {

@@ -23,7 +23,7 @@ import org.royaldev.royalcommands.rcommands.trade.tradables.TradableCommand;
 import org.royaldev.royalcommands.rcommands.trade.tradables.TradableItem;
 import org.royaldev.royalcommands.tools.Pair;
 import org.royaldev.royalcommands.tools.Vector2D;
-import org.royaldev.royalcommands.wrappers.player.RPlayer;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,8 +96,8 @@ public class Trade {
     }
 
     private String getTradeName() {
-        final String traderName = RPlayer.getRPlayer(this.get(Party.TRADER)).getName();
-        final String tradeeName = RPlayer.getRPlayer(this.get(Party.TRADEE)).getName();
+        final String traderName = MemoryRPlayer.getRPlayer(this.get(Party.TRADER)).getName();
+        final String tradeeName = MemoryRPlayer.getRPlayer(this.get(Party.TRADEE)).getName();
         final String tradeName = traderName + "/" + tradeeName;
         return tradeName.length() > 32 ? tradeName.substring(0, 32) : tradeName;
     }
@@ -217,11 +217,11 @@ public class Trade {
     }
 
     public String getName(final Party party) {
-        return RPlayer.getRPlayer(this.get(party)).getName();
+        return MemoryRPlayer.getRPlayer(this.get(party)).getName();
     }
 
     public Player getPlayer(final Party party) {
-        return RPlayer.getRPlayer(this.get(party)).getPlayer();
+        return MemoryRPlayer.getRPlayer(this.get(party)).getPlayer();
     }
 
     public String getTradeStatusLore(final Party party) {
@@ -263,7 +263,7 @@ public class Trade {
     public void showInventoryGUI(final UUID uuid) {
         final Party party = this.get(uuid);
         if (party == null) throw new IllegalArgumentException("No such UUID");
-        final Player p = RPlayer.getRPlayer(uuid).getPlayer();
+        final Player p = MemoryRPlayer.getRPlayer(uuid).getPlayer();
         if (p == null) return;
         p.openInventory(this.getInventoryGUI().getBase());
     }

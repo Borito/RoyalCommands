@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
@@ -25,7 +26,7 @@ public class CmdTeleportAll extends BaseCommand {
         for (final Player t : this.plugin.getServer().getOnlinePlayers()) {
             if (!RUtils.isTeleportAllowed(t) && !this.ah.isAuthorized(cs, "rcmds.tpoverride")) continue;
             if (t.equals(p)) continue;
-            final RPlayer rp = RPlayer.getRPlayer(t);
+            final RPlayer rp = MemoryRPlayer.getRPlayer(t);
             final String error = rp.getTeleporter().teleport(p);
             if (!error.isEmpty()) {
                 p.sendMessage(MessageColor.NEGATIVE + error);

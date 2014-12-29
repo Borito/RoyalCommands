@@ -11,6 +11,7 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.home.Home;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class CmdListHomes extends BaseCommand {
                 return true;
             }
         }
-        final RPlayer rp = RPlayer.getRPlayer(t);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(t);
         final Map<World, List<Home>> sortedHomes = new HashMap<>();
         for (final Home h : rp.getHomes()) {
             final World w = h.getLocation().getWorld();

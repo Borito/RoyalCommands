@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.AuthorizationHandler.PermType;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
 public class CmdLoadPlayer extends BaseCommand {
@@ -20,12 +22,13 @@ public class CmdLoadPlayer extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final Player t = this.plugin.getServer().getPlayer(args[0]);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(args[0]);
+        final Player t = rp.getPlayer();
         if (t == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "No such player!");
             return true;
         }
-        if (!t.getName().equals(cs.getName()) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
+        if ((cs instanceof Player && !rp.isSameAs((Player) cs)) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot load other players' data!");
             return true;
         }

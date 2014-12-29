@@ -9,6 +9,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
@@ -25,7 +26,7 @@ public class CmdCommandSpy extends BaseCommand {
             return true;
         }
         final Player p = (Player) cs;
-        final RPlayer rp = RPlayer.getRPlayer(args.length > 0 ? RUtils.getOfflinePlayer(args[0]) : (Player) cs);
+        final RPlayer rp = MemoryRPlayer.getRPlayer(args.length > 0 ? RUtils.getOfflinePlayer(args[0]) : (Player) cs);
         final OfflinePlayer op = rp.getOfflinePlayer();
         final boolean isSamePerson = rp.isSameAs(p);
         if (!isSamePerson && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
