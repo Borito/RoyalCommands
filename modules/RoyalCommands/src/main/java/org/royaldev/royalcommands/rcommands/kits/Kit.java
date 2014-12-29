@@ -3,6 +3,7 @@ package org.royaldev.royalcommands.rcommands.kits;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.shaded.com.sk89q.util.config.ConfigurationNode;
 
@@ -12,13 +13,15 @@ import java.util.List;
 public class Kit {
 
     private final String name;
+    private final String description;
     private final List<ItemStack> items;
     private final long cooldown;
 
     public Kit(final String name, final ConfigurationNode kit) {
         this.name = name;
         this.items = this.getItemStacks(kit.getNodeList("items", new ArrayList<ConfigurationNode>()));
-        this.cooldown = kit.getLong("cooldown", -1L);
+        this.cooldown = RUtils.timeFormatToSeconds(kit.getString("cooldown", "0"));
+        this.description = RUtils.colorize(kit.getString("description", ""));
     }
 
     private ItemStack addEnchantments(final ItemStack is, final List<ConfigurationNode> enchantments) {
@@ -40,8 +43,8 @@ public class Kit {
         is.setAmount(item.getInt("amount", 1));
         is.setDurability(item.getShort("damage", (short) 0));
         final ItemMeta im = is.getItemMeta();
-        im.setDisplayName(item.getString("name"));
-        im.setLore(item.getStringList("lore", new ArrayList<String>()));
+        im.setDisplayName(RUtils.colorize(item.getString("name")));
+        im.setLore(this.getLore(item));
         is.setItemMeta(im);
         this.addEnchantments(is, item.getNodeList("enchantments", new ArrayList<ConfigurationNode>()));
         return is;
@@ -57,8 +60,21 @@ public class Kit {
         return itemStacks;
     }
 
+    private List<String> getLore(final ConfigurationNode item) {
+        final List<String> lore = new ArrayList<>();
+        if (item == null) return lore;
+        for (final String loreItem : item.getStringList("lore", new ArrayList<String>())) {
+            lore.add(RUtils.colorize(loreItem));
+        }
+        return lore;
+    }
+
     public long getCooldown() {
         return this.cooldown;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     public List<ItemStack> getItems() {

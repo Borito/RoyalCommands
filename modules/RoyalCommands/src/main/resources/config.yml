@@ -214,33 +214,33 @@ kits:
   options:
     # Use rcmds.kit.[kit-name] (true) or just rcmds.kit (false)
     exclusive_perms: false
-  # Define kits here - only use Material names & you MUST use amounts (WOOD:1 is one of wood)
+  # Define kits here
   list:
-    # The kit "default" has 10 wood, 5 stone, 25 dirt, and 64 cobblestone. <item>:<amount>
+    # Kit name. This kit will be called "default"
     default:
+      # Description shown to the player on /kits.
+      description: An example kit.
+      # List of items for this kit
       items:
       - type: WOOD
         amount: 1
-        name: "Wood of Champions"
+        # You can use colors in lore and names
+        name: "&rWood of Champions"
       - type: WOOD_SWORD
         amount: 1
-        meta:
         name: "Skyforge Wood Sword"
         lore:
         - "Wooden sword forged in the Skyforge"
+        # Enchantments that can't naturally be applied can be used here
         enchantments:
-          - type: DAMAGE_ALL
-            level: 2
-          - type: DURABILITY
-            level: 1
-      # 1 = 1 second
-      # 60 = 1 minute
-      # 3600 = 1 hour
-      # 86400 = 1 day
-      # 604800 = 1 week
-      cooldown: 86400
-    # The kit "wool" has 64 red wool and 35 black wool <item>:<amount>:<data>
+        - type: DAMAGE_ALL
+          level: 2
+        - type: DURABILITY
+          level: 1
+      # Cooldown of one day
+      cooldown: "1d"
     wool:
+      description: A kit containing wool.
       items:
       - type: WOOL
         damage: 14
@@ -250,7 +250,7 @@ kits:
         amount: 35
     # This kit can only be used once (cooldown of -1)
     onetime:
-      # Remember to include " around colons
+      description: A kit that can only be used one time.
       items:
       - type: IRON_SWORD
         amount: 1

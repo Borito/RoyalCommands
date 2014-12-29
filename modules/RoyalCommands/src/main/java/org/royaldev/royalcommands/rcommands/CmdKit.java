@@ -7,22 +7,45 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
+import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.kits.Kit;
 import org.royaldev.royalcommands.shaded.com.sk89q.util.config.ConfigurationNode;
 import org.royaldev.royalcommands.shaded.com.sk89q.util.config.FancyConfiguration;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-// TODO: Fix one-time kits
 
 @ReflectCommand
 public class CmdKit extends TabCommand {
 
     public CmdKit(final RoyalCommands instance, final String name) {
         super(instance, name, true, new Short[]{CompletionType.LIST.getShort()});
+    }
+
+    private long getCooldown(final RPlayer rp, final Kit kit) {
+        final long lastUsed = this.getLastUsed(rp, kit);
+        return kit.getCooldown() + lastUsed;
+    }
+
+    private long getLastUsed(final RPlayer rp, final Kit kit) {
+        return rp.getPlayerConfiguration().getLong("kits." + kit.getName() + ".last_used", 0L) * 1000L;
+    }
+
+    /**
+     * Checks to see if the cooldown time has passed for the player using this kit. If this returns true, the player can
+     * use the kit, if not, he can't.
+     *
+     * @param rp  RPlayer using kit
+     * @param kit Kit being used
+     * @return If the player can use the kit
+     */
+    private boolean hasCooldownPassed(final RPlayer rp, final Kit kit) {
+        final long lastUsed = this.getLastUsed(rp, kit);
+        return !(kit.getCooldown() == -1L && lastUsed != 0L) && lastUsed + (kit.getCooldown() * 1000L) < System.currentTimeMillis();
     }
 
     @Override
@@ -48,6 +71,7 @@ public class CmdKit extends TabCommand {
             return true;
         }
         final Player p = (Player) cs;
+        final RPlayer rp = MemoryRPlayer.getRPlayer(p);
         final String kitName = eargs[0];
         final FancyConfiguration config = this.plugin.getFancyConfig();
         final ConfigurationNode kitNode = config.getNode("kits.list." + kitName);
@@ -56,6 +80,13 @@ public class CmdKit extends TabCommand {
             return true;
         }
         final Kit kit = new Kit(kitName, kitNode);
+        if (!this.hasCooldownPassed(rp, kit)) {
+            if (kit.getCooldown() == -1L) {
+                cs.sendMessage(MessageColor.NEGATIVE + "This kit can only be used once.");
+            } else {
+                cs.sendMessage(MessageColor.NEGATIVE + "The cooldown for this kit has not ended. You still have to wait" + MessageColor.NEUTRAL + RUtils.formatDateDiff(this.getCooldown(rp, kit)) + MessageColor.NEGATIVE + ".");
+            }
+        }
         final List<ItemStack> items = kit.getItems();
         final Map<Integer, ItemStack> leftOver = p.getInventory().addItem(items.toArray(new ItemStack[items.size()]));
         for (final ItemStack is : leftOver.values()) {
