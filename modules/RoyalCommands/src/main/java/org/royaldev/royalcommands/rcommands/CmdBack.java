@@ -6,7 +6,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -78,7 +77,6 @@ public class CmdBack extends BaseCommand {
                         .color(MessageColor.POSITIVE._())
                     .then(RUtils.getItemName(b.getType()))
                         .color(MessageColor.NEUTRAL._())
-                        .itemTooltip(new ItemStack(b.getType()))
                     .then(" in ")
                         .color(MessageColor.POSITIVE._())
                     .then(RUtils.getFriendlyEnumName(b.getBiome()))
