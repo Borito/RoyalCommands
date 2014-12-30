@@ -1,7 +1,7 @@
 package org.royaldev.royalcommands.shaded.mkremins.fanciful;
 
+import com.google.gson.stream.JsonWriter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
 
 import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
@@ -31,7 +31,7 @@ final class JsonString implements JsonRepresentedObject, ConfigurationSerializab
     }
 
     public Map<String, Object> serialize() {
-        HashMap<String, Object> theSingleValue = new HashMap<String, Object>();
+        HashMap<String, Object> theSingleValue = new HashMap<>();
         theSingleValue.put("stringValue", _value);
         return theSingleValue;
     }
@@ -41,6 +41,7 @@ final class JsonString implements JsonRepresentedObject, ConfigurationSerializab
         return _value;
     }
 
+    @Override
     public void writeJson(JsonWriter writer) throws IOException {
         writer.value(getValue());
     }

@@ -2,9 +2,9 @@ package org.royaldev.royalcommands.shaded.mkremins.fanciful;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.stream.JsonWriter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -182,18 +182,18 @@ public abstract class TextualComponent implements Cloneable {
             _value = value;
         }
 
+        @Override
+        public String getKey() {
+            return _key;
+        }
+
         @SuppressWarnings("serial")
         public Map<String, Object> serialize() {
             return new HashMap<String, Object>() {{
                 put("key", getKey());
                 put("value", getValue());
             }};
-        }        @Override
-        public String getKey() {
-            return _key;
         }
-
-
 
         public void setKey(String key) {
             Preconditions.checkArgument(key != null && !key.isEmpty(), "The key must be specified.");
@@ -242,15 +242,15 @@ public abstract class TextualComponent implements Cloneable {
             return _value;
         }
 
-        public void setValue(Map<String, String> value) {
-            Preconditions.checkArgument(value != null, "The value must be specified.");
-            _value = value;
-        }        @Override
+        @Override
         public String getKey() {
             return _key;
         }
 
-
+        public void setValue(Map<String, String> value) {
+            Preconditions.checkArgument(value != null, "The value must be specified.");
+            _value = value;
+        }
 
         public void setKey(String key) {
             Preconditions.checkArgument(key != null && !key.isEmpty(), "The key must be specified.");

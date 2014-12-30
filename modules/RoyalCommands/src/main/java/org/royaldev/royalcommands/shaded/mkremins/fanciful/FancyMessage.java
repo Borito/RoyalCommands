@@ -1,5 +1,10 @@
 package org.royaldev.royalcommands.shaded.mkremins.fanciful;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonWriter;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,12 +14,6 @@ import org.bukkit.Statistic.Type;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonArray;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonElement;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonObject;
-import org.bukkit.craftbukkit.libs.com.google.gson.JsonParser;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +25,7 @@ import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +55,8 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     private static Constructor<?> nmsPacketPlayOutChatConstructor;
     // The ChatSerializer's instance of Gson
-    private static Gson nmsChatSerializerGsonInstance;
+    private static Object nmsChatSerializerGsonInstance;
+    private static Method fromJsonMethod;
     private static JsonParser _stringParser = new JsonParser();
     private List<MessagePart> messageParts;
     private String jsonString;
@@ -71,7 +72,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     }
 
     public FancyMessage(final TextualComponent firstPartText) {
-        messageParts = new ArrayList<MessagePart>();
+        messageParts = new ArrayList<>();
         messageParts.add(new MessagePart(firstPartText));
         jsonString = null;
         dirty = false;
@@ -146,13 +147,13 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
                     if (entry.getValue().getAsBoolean()) {
                         component.styles.add(MessagePart.stylesToNames.inverse().get(entry.getKey()));
                     }
-                } else if (entry.getKey().equals("color")) {
+                } else if ("color".equals(entry.getKey())) {
                     component.color = ChatColor.valueOf(entry.getValue().getAsString().toUpperCase());
-                } else if (entry.getKey().equals("clickEvent")) {
+                } else if ("clickEvent".equals(entry.getKey())) {
                     JsonObject object = entry.getValue().getAsJsonObject();
                     component.clickActionName = object.get("action").getAsString();
                     component.clickActionData = object.get("value").getAsString();
-                } else if (entry.getKey().equals("hoverEvent")) {
+                } else if ("hoverEvent".equals(entry.getKey())) {
                     JsonObject object = entry.getValue().getAsJsonObject();
                     component.hoverActionName = object.get("action").getAsString();
                     if (object.get("value").isJsonPrimitive()) {
@@ -171,14 +172,15 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
         return returnVal;
     }
 
-    private Object createChatPacket(String json) throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    private Object createChatPacket(String json) throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
         if (nmsChatSerializerGsonInstance == null) {
             // Find the field and its value, completely bypassing obfuscation
             for (Field declaredField : Reflection.getNMSClass("ChatSerializer").getDeclaredFields()) {
-                if (Modifier.isFinal(declaredField.getModifiers()) && Modifier.isStatic(declaredField.getModifiers()) && declaredField.getType() == Gson.class) {
+                if (Modifier.isFinal(declaredField.getModifiers()) && Modifier.isStatic(declaredField.getModifiers()) && declaredField.getType().getName().endsWith("Gson")) {
                     // We've found our field
                     declaredField.setAccessible(true);
-                    nmsChatSerializerGsonInstance = (Gson) declaredField.get(null);
+                    nmsChatSerializerGsonInstance = declaredField.get(null);
+                    fromJsonMethod = nmsChatSerializerGsonInstance.getClass().getMethod("fromJson", String.class, Class.class);
                     break;
                 }
             }
@@ -186,7 +188,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
         // Since the method is so simple, and all the obfuscated methods have the same name, it's easier to reimplement 'IChatBaseComponent a(String)' than to reflectively call it
         // Of course, the implementation may change, but fuzzy matches might break with signature changes
-        Object serializedChatComponent = nmsChatSerializerGsonInstance.fromJson(json, Reflection.getNMSClass("IChatBaseComponent"));
+        Object serializedChatComponent = fromJsonMethod.invoke(nmsChatSerializerGsonInstance, json, Reflection.getNMSClass("IChatBaseComponent"));
 
         return nmsPacketPlayOutChatConstructor.newInstance(serializedChatComponent);
     }
@@ -227,6 +229,8 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
             Bukkit.getLogger().log(Level.WARNING, "Underlying class is abstract.", e);
         } catch (InvocationTargetException e) {
             Bukkit.getLogger().log(Level.WARNING, "A error has occured durring invoking of method.", e);
+        } catch (NoSuchMethodException e) {
+            Bukkit.getLogger().log(Level.WARNING, "Could not find method.", e);
         }
     }
 
@@ -268,7 +272,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     @Override
     public FancyMessage clone() throws CloneNotSupportedException {
         FancyMessage instance = (FancyMessage) super.clone();
-        instance.messageParts = new ArrayList<MessagePart>(messageParts.size());
+        instance.messageParts = new ArrayList<>(messageParts.size());
         for (int i = 0; i < messageParts.size(); i++) {
             instance.messageParts.add(i, messageParts.get(i).clone());
         }
@@ -468,7 +472,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     // Doc copied from interface
     public Map<String, Object> serialize() {
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("messageParts", messageParts);
         //		map.put("JSON", toJSONString());
         return map;
@@ -760,6 +764,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
         return this;
     }
 
+    @Override
     public void writeJson(JsonWriter writer) throws IOException {
         if (messageParts.size() == 1) {
             latest().writeJson(writer);
@@ -771,5 +776,4 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
             writer.endArray().endObject();
         }
     }
-
 }

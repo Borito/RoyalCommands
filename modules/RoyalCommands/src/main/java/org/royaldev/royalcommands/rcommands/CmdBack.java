@@ -1,8 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
@@ -72,40 +70,38 @@ public class CmdBack extends BaseCommand {
                 Location l = backs.get(i);
                 if (l == null) continue;
                 final Block b = l.getBlock().getRelative(BlockFace.DOWN);
-                final Material m = b == null ? Material.AIR : b.getType();
-                final Biome biome = b == null ? Biome.SKY : b.getBiome();
                 // @formatter:off
                 RUtils.addCommandTo(new FancyMessage("  ")
-                        .then(i + 1 + ": ")
-                            .color(MessageColor.NEUTRAL._())
-                        .then("on ")
-                            .color(MessageColor.POSITIVE._())
-                        .then(RUtils.getItemName(m))
-                            .color(MessageColor.NEUTRAL._())
-                            .itemTooltip(new ItemStack(m))
-                        .then(" in ")
-                            .color(MessageColor.POSITIVE._())
-                        .then(RUtils.getFriendlyEnumName(biome))
-                            .color(MessageColor.NEUTRAL._())
-                        .then(" (")
-                            .color(MessageColor.POSITIVE._())
-                        .then(l.getWorld().getName())
-                            .color(MessageColor.NEUTRAL._())
-                        .then(", ")
-                            .color(MessageColor.POSITIVE._())
-                        .then(this.df.format(l.getX()))
-                            .color(MessageColor.NEUTRAL._())
-                        .then(", ")
-                            .color(MessageColor.POSITIVE._())
-                        .then(this.df.format(l.getY()))
-                            .color(MessageColor.NEUTRAL._())
-                        .then(", ")
-                            .color(MessageColor.POSITIVE._())
-                        .then(this.df.format(l.getZ()))
-                            .color(MessageColor.NEUTRAL._())
-                        .then(")")
-                            .color(MessageColor.POSITIVE._()), "/back " + (i + 1))
-                        .send(cs);
+                    .then(i + 1 + ": ")
+                        .color(MessageColor.NEUTRAL._())
+                    .then("on ")
+                        .color(MessageColor.POSITIVE._())
+                    .then(RUtils.getItemName(b.getType()))
+                        .color(MessageColor.NEUTRAL._())
+                        .itemTooltip(new ItemStack(b.getType()))
+                    .then(" in ")
+                        .color(MessageColor.POSITIVE._())
+                    .then(RUtils.getFriendlyEnumName(b.getBiome()))
+                        .color(MessageColor.NEUTRAL._())
+                    .then(" (")
+                        .color(MessageColor.POSITIVE._())
+                    .then(l.getWorld().getName())
+                        .color(MessageColor.NEUTRAL._())
+                    .then(", ")
+                        .color(MessageColor.POSITIVE._())
+                    .then(this.df.format(l.getX()))
+                        .color(MessageColor.NEUTRAL._())
+                    .then(", ")
+                        .color(MessageColor.POSITIVE._())
+                    .then(this.df.format(l.getY()))
+                        .color(MessageColor.NEUTRAL._())
+                    .then(", ")
+                        .color(MessageColor.POSITIVE._())
+                    .then(this.df.format(l.getZ()))
+                        .color(MessageColor.NEUTRAL._())
+                    .then(")")
+                        .color(MessageColor.POSITIVE._()), "/back " + (i + 1))
+                    .send(cs);
                 // @formatter:on
             }
             return true;

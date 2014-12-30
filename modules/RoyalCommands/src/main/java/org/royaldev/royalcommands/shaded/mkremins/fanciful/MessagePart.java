@@ -2,11 +2,11 @@ package org.royaldev.royalcommands.shaded.mkremins.fanciful;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
+import com.google.gson.stream.JsonWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ final class MessagePart implements JsonRepresentedObject, ConfigurationSerializa
     }
 
     public Map<String, Object> serialize() {
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("text", text);
         map.put("styles", styles);
         map.put("color", color.getChar());
