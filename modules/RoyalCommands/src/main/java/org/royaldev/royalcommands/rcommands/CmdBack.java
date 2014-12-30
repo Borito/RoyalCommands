@@ -1,6 +1,8 @@
 package org.royaldev.royalcommands.rcommands;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
@@ -69,19 +71,21 @@ public class CmdBack extends BaseCommand {
             for (int i = 0; i < backs.size(); i++) {
                 Location l = backs.get(i);
                 if (l == null) continue;
-                Block b = l.getBlock().getRelative(BlockFace.DOWN);
+                final Block b = l.getBlock().getRelative(BlockFace.DOWN);
+                final Material m = b == null ? Material.AIR : b.getType();
+                final Biome biome = b == null ? Biome.SKY : b.getBiome();
                 // @formatter:off
                 RUtils.addCommandTo(new FancyMessage("  ")
                         .then(i + 1 + ": ")
                             .color(MessageColor.NEUTRAL._())
                         .then("on ")
                             .color(MessageColor.POSITIVE._())
-                        .then(RUtils.getItemName(b.getType()))
+                        .then(RUtils.getItemName(m))
                             .color(MessageColor.NEUTRAL._())
-                            .itemTooltip(new ItemStack(b.getType()))
+                            .itemTooltip(new ItemStack(m))
                         .then(" in ")
                             .color(MessageColor.POSITIVE._())
-                        .then(RUtils.getFriendlyEnumName(b.getBiome()))
+                        .then(RUtils.getFriendlyEnumName(biome))
                             .color(MessageColor.NEUTRAL._())
                         .then(" (")
                             .color(MessageColor.POSITIVE._())
