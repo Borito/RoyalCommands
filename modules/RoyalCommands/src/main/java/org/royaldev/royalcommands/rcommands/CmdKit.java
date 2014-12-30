@@ -26,28 +26,6 @@ public class CmdKit extends TabCommand {
         super(instance, name, true, new Short[]{CompletionType.LIST.getShort()});
     }
 
-    private long getCooldown(final RPlayer rp, final Kit kit) {
-        final long lastUsed = this.getLastUsed(rp, kit);
-        return kit.getCooldown() + lastUsed;
-    }
-
-    private long getLastUsed(final RPlayer rp, final Kit kit) {
-        return rp.getPlayerConfiguration().getLong("kits." + kit.getName() + ".last_used", 0L) * 1000L;
-    }
-
-    /**
-     * Checks to see if the cooldown time has passed for the player using this kit. If this returns true, the player can
-     * use the kit, if not, he can't.
-     *
-     * @param rp  RPlayer using kit
-     * @param kit Kit being used
-     * @return If the player can use the kit
-     */
-    private boolean hasCooldownPassed(final RPlayer rp, final Kit kit) {
-        final long lastUsed = this.getLastUsed(rp, kit);
-        return !(kit.getCooldown() == -1L && lastUsed != 0L) && lastUsed + (kit.getCooldown() * 1000L) < System.currentTimeMillis();
-    }
-
     @Override
     public List<String> customList(CommandSender cs, Command cmd, String label, String[] args, String arg) {
         final List<String> kits = new ArrayList<>();
@@ -80,18 +58,20 @@ public class CmdKit extends TabCommand {
             return true;
         }
         final Kit kit = new Kit(kitName, kitNode);
-        if (!this.hasCooldownPassed(rp, kit)) {
+        if (!kit.hasCooldownPassedFor(rp)) {
             if (kit.getCooldown() == -1L) {
                 cs.sendMessage(MessageColor.NEGATIVE + "This kit can only be used once.");
             } else {
-                cs.sendMessage(MessageColor.NEGATIVE + "The cooldown for this kit has not ended. You still have to wait" + MessageColor.NEUTRAL + RUtils.formatDateDiff(this.getCooldown(rp, kit)) + MessageColor.NEGATIVE + ".");
+                cs.sendMessage(MessageColor.NEGATIVE + "The cooldown for this kit has not ended. You still have to wait" + MessageColor.NEUTRAL + RUtils.formatDateDiff(kit.getCooldownFor(rp)) + MessageColor.NEGATIVE + ".");
             }
+            return true;
         }
         final List<ItemStack> items = kit.getItems();
         final Map<Integer, ItemStack> leftOver = p.getInventory().addItem(items.toArray(new ItemStack[items.size()]));
         for (final ItemStack is : leftOver.values()) {
             p.getWorld().dropItemNaturally(p.getLocation(), is);
         }
+        kit.setLastUsed(rp, System.currentTimeMillis());
         cs.sendMessage(MessageColor.POSITIVE + "You have been given kit " + MessageColor.NEUTRAL + kit.getName() + MessageColor.POSITIVE + ".");
         return true;
     }
