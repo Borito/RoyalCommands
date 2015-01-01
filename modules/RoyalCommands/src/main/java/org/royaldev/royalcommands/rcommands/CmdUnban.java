@@ -23,8 +23,8 @@ public class CmdUnban extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[0]);
-        PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
+        final OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[0]);
+        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
         if (!t.isBanned()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player isn't banned!");
             return true;
@@ -32,7 +32,7 @@ public class CmdUnban extends BaseCommand {
         RUtils.unbanPlayer(t);
         if (pcm.exists()) pcm.set("bantime", null);
         cs.sendMessage(MessageColor.POSITIVE + "You have unbanned " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
-        String message = RUtils.getInGameMessage(Config.igUnbanFormat, "", t, cs); // "" because there is no reason for unbans;
+        final String message = RUtils.getInGameMessage(Config.igUnbanFormat, "", t, cs); // "" because there is no reason for unbans;
         this.plugin.getServer().broadcast(message, "rcmds.see.unban");
         return true;
     }

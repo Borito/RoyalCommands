@@ -1,12 +1,12 @@
 package org.royaldev.royalcommands.rcommands;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.Gson;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.royaldev.royalcommands.AuthorizationHandler;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
@@ -225,8 +225,8 @@ public abstract class BaseCommand implements CommandExecutor {
             sb.append("\n\nLabel\n\t").append(label);
             sb.append("\n\nArguments");
             if (args != null) {
-                for (final String arg : args) sb.append("\n").append("\t").append(arg);
-            } else sb.append("\t\tnull");
+                for (final String arg : args) sb.append("\n\t").append(arg);
+            } else sb.append("\n\tnull");
             final StringWriter sw = new StringWriter();
             t.printStackTrace(new PrintWriter(sw));
             sb.append("\n\n---STRACK TRACE---\n\n").append(sw.toString());

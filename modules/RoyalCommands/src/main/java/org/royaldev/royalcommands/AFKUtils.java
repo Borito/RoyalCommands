@@ -3,7 +3,7 @@ package org.royaldev.royalcommands;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.rcommands.CmdAfk;
 
-public class AFKUtils {
+public final class AFKUtils {
 
     public static long getAfkTime(Player p) {
         synchronized (CmdAfk.afkdb) {

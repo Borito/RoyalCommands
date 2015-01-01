@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerConfigurationManager {
+public final class PlayerConfigurationManager {
 
     static final Map<UUID, PlayerConfiguration> pcs = Collections.synchronizedMap(new HashMap<UUID, PlayerConfiguration>());
 
