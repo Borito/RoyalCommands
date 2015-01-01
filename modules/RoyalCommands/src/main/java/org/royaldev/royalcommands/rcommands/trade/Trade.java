@@ -36,6 +36,9 @@ import java.util.UUID;
 * Trade accept button sometimes doesn't update until reopen (?)
  */
 
+/**
+ * A trade between two {@link Party Parties} involving a mix of items and commands.
+ */
 public class Trade {
 
     private static final Map<Pair<UUID, UUID>, Trade> trades = new HashMap<>();
@@ -87,6 +90,9 @@ public class Trade {
         return trades;
     }
 
+    /**
+     * Removes this trade from the map of open trades. It should be picked up by garbage collection.
+     */
     private void destroy() {
         for (final Map.Entry<Pair<UUID, UUID>, Trade> entry : Trade.trades.entrySet()) {
             if (!entry.getValue().equals(this)) continue;
@@ -95,6 +101,11 @@ public class Trade {
         }
     }
 
+    /**
+     * Gets the name of this trade, formulated as "trader name/tradee name"
+     *
+     * @return Name of trade
+     */
     private String getTradeName() {
         final String traderName = MemoryRPlayer.getRPlayer(this.get(Party.TRADER)).getName();
         final String tradeeName = MemoryRPlayer.getRPlayer(this.get(Party.TRADEE)).getName();
@@ -102,6 +113,13 @@ public class Trade {
         return tradeName.length() > 32 ? tradeName.substring(0, 32) : tradeName;
     }
 
+    /**
+     * Creates an {@link org.royaldev.royalcommands.gui.inventory.InventoryGUI} for this trade. If this has already been
+     * called, it will return null. Otherwise, it will return a new InventoryGUI. To get it after it has already been
+     * created, use {@link #getInventoryGUI()}.
+     *
+     * @return InventoryGUI or null
+     */
     private InventoryGUI makeInventoryGUI() {
         if (this.getInventoryGUI() != null) return null;
         final InventoryGUI inventoryGUI = new InventoryGUI(this.getTradeName());
@@ -134,7 +152,14 @@ public class Trade {
         return inventoryGUI;
     }
 
-    private List<Tradable> processSpecialItems(final ItemStack is) {
+    /**
+     * Processes this ItemStack before adding to the inventory. If it is a special, it will be processed into whatever
+     * it should be and added to the returned list.
+     *
+     * @param is ItemStack to process
+     * @return List, never null
+     */
+    private List<Tradable> processSpecialItem(final ItemStack is) {
         final List<Tradable> trades = new ArrayList<>();
         if (this.getInventoryGUI().getClickHandler(is) instanceof RemoveItem) { // TODO: Do this better
             // TODO: Extract logic
@@ -148,6 +173,11 @@ public class Trade {
         return null;
     }
 
+    /**
+     * Sends a message to all parties in this trade, if they are online.
+     *
+     * @param message Message to send
+     */
     private void sendMessageToAll(final String message) {
         final Player trader = this.getPlayer(Party.TRADER);
         final Player tradee = this.getPlayer(Party.TRADEE);
@@ -155,9 +185,18 @@ public class Trade {
         if (tradee != null) tradee.sendMessage(message);
     }
 
+    /**
+     * Processes the trade. This will run through the list of tradables provided by {@link #getTradablesFor(Party)}. It
+     * will first run through TRADER tradables, then TRADEE tradables. The
+     * {@link org.royaldev.royalcommands.rcommands.trade.tradables.Tradable#trade(Party, Party)} method will be called
+     * for each one. If all was successful, the trade will be destroyed. Otherwise, a message will be sent and the trade
+     * will be left open. The trade inventory will then close.
+     *
+     * @return If all was successful
+     */
     private boolean trade() {
-        final List<Tradable> tradeeTradables = this.getTradeablesFor(Party.TRADEE); // tradee has offered
-        final List<Tradable> traderTradables = this.getTradeablesFor(Party.TRADER); // trader has offered
+        final List<Tradable> tradeeTradables = this.getTradablesFor(Party.TRADEE); // tradee has offered
+        final List<Tradable> traderTradables = this.getTradablesFor(Party.TRADER); // trader has offered
         if (!this.areBothPartiesOnline()) return false;
         boolean allSuccessful = true;
         for (final Tradable trade : tradeeTradables) {
@@ -182,6 +221,13 @@ public class Trade {
         return allSuccessful;
     }
 
+    /**
+     * Adds an item to the InventoryGUI for this trade.
+     *
+     * @param clickHandler ClickHandler of the item
+     * @param party        Side of the inventory to add the item to
+     * @param guiItem      Item to add
+     */
     public void addItem(final ClickHandler clickHandler, final Party party, final GUIItem guiItem) {
         final int freeSlot = party.getNextFreeSlot(this.getInventoryGUI().getBase());
         if (freeSlot == -1) return; // TODO: Throw?
@@ -189,6 +235,11 @@ public class Trade {
         this.getInventoryGUI().addItem(clickHandler, xy.getX(), xy.getY(), guiItem);
     }
 
+    /**
+     * Returns if both parties are currently online.
+     *
+     * @return true if online, false if otherwise
+     */
     public boolean areBothPartiesOnline() {
         return this.getPlayer(Party.TRADEE) != null && this.getPlayer(Party.TRADER) != null;
     }
@@ -200,10 +251,22 @@ public class Trade {
         return this.getInventoryGUI().equals(t.getInventoryGUI()) && this.parties.equals(t.parties);
     }
 
+    /**
+     * Gets the UUID for the given party.
+     *
+     * @param party Party to get UUID of
+     * @return UUID or null
+     */
     public UUID get(final Party party) {
         return this.parties.get(party);
     }
 
+    /**
+     * Gets the Party of the given UUID.
+     *
+     * @param uuid UUID to get Party of.
+     * @return Party or null
+     */
     public Party get(final UUID uuid) {
         for (final Map.Entry<Party, UUID> entry : this.parties.entrySet()) {
             if (!entry.getValue().equals(uuid)) continue;
@@ -212,18 +275,62 @@ public class Trade {
         return null;
     }
 
+    /**
+     * Gets the InventoryGUI for this trade. This may be null if {@link #makeInventoryGUI()} was never called.
+     *
+     * @return InventoryGUI or null
+     */
     public InventoryGUI getInventoryGUI() {
         return this.inventoryGUI;
     }
 
+    /**
+     * Gets the name of the Player that corresponds to the given Party. This is a convenience method.
+     *
+     * @param party Party to get name of
+     * @return Name
+     */
     public String getName(final Party party) {
         return MemoryRPlayer.getRPlayer(this.get(party)).getName();
     }
 
+    /**
+     * Gets the Player that corresponds to the given Party. This is a convenience method. This may return null if the
+     * Player is not online.
+     *
+     * @param party Party to get Player of
+     * @return Player or null
+     */
     public Player getPlayer(final Party party) {
         return MemoryRPlayer.getRPlayer(this.get(party)).getPlayer();
     }
 
+    /**
+     * Gets all Tradables on the given Party's side of the trade.
+     *
+     * @param party Party to get Tradables for
+     * @return List of Tradables, never null
+     */
+    public List<Tradable> getTradablesFor(final Party party) {
+        final List<Tradable> items = new ArrayList<>();
+        final Inventory base = this.getInventoryGUI().getBase();
+        for (int i = 0; i < base.getSize(); i++) {
+            if (!party.canAccessSlot(i)) continue;
+            final ItemStack item = base.getItem(i);
+            if (item == null || item.getType() == Material.AIR) continue;
+            final List<Tradable> special = this.processSpecialItem(item);
+            if (special == null) items.add(new TradableItem(this, item));
+            else items.addAll(special);
+        }
+        return items;
+    }
+
+    /**
+     * Gets the lore for the trade status item for the given party.
+     *
+     * @param party Party to get lore for
+     * @return String
+     */
     public String getTradeStatusLore(final Party party) {
         final boolean accepted = this.hasAccepted(party);
         final StringBuilder sb = new StringBuilder().append(MessageColor.NEUTRAL).append(this.getName(party)).append(": ");
@@ -231,28 +338,32 @@ public class Trade {
         return sb.toString();
     }
 
-    public List<Tradable> getTradeablesFor(final Party party) {
-        final List<Tradable> items = new ArrayList<>();
-        final Inventory base = this.getInventoryGUI().getBase();
-        for (int i = 0; i < base.getSize(); i++) {
-            if (!party.canAccessSlot(i)) continue;
-            final ItemStack item = base.getItem(i);
-            if (item == null || item.getType() == Material.AIR) continue;
-            final List<Tradable> special = this.processSpecialItems(item);
-            if (special == null) items.add(new TradableItem(this, item));
-            else items.addAll(special);
-        }
-        return items;
-    }
-
+    /**
+     * Checks to see if the given party has accepted the trade.
+     *
+     * @param party Party to check
+     * @return true if the trade has been accepted, false if otherwise
+     */
     public boolean hasAccepted(final Party party) {
         return this.acceptances.get(party);
     }
 
+    /**
+     * Checks to see if both parties have accepted the trade.
+     *
+     * @return true if both have accepted, false if not
+     */
     public boolean haveBothAccepted() {
         return this.hasAccepted(Party.TRADER) && this.hasAccepted(Party.TRADEE);
     }
 
+    /**
+     * Sets the acceptance of the trade for the given party.
+     *
+     * @param party      Party to set acceptance of
+     * @param acceptance Acceptance to set
+     * @return acceptance
+     */
     public boolean setAcceptance(final Party party, final boolean acceptance) {
         this.acceptances.put(party, acceptance);
         this.updateAcceptButton();
@@ -260,6 +371,11 @@ public class Trade {
         return acceptance;
     }
 
+    /**
+     * Shows the InventoryGUI for this trade to the given UUID.
+     *
+     * @param uuid UUID to show to
+     */
     public void showInventoryGUI(final UUID uuid) {
         final Party party = this.get(uuid);
         if (party == null) throw new IllegalArgumentException("No such UUID");
@@ -268,16 +384,31 @@ public class Trade {
         p.openInventory(this.getInventoryGUI().getBase());
     }
 
+    /**
+     * Toggles the acceptance for the given party.
+     *
+     * @param party Party to toggle acceptance for
+     * @return New acceptance status
+     */
     public boolean toggleAcceptance(final Party party) {
         return this.setAcceptance(party, !this.acceptances.get(party));
     }
 
+    /**
+     * Toggles acceptance for the given UUID.
+     *
+     * @param uuid UUID to toggle acceptance for
+     * @return New acceptance status
+     */
     public boolean toggleAcceptance(final UUID uuid) {
         final Party party = this.get(uuid);
         if (party == null) throw new IllegalArgumentException("No such UUID");
         return this.toggleAcceptance(party);
     }
 
+    /**
+     * Updates the accept trade button with new lore to reflect the acceptance status of both parties.
+     */
     public void updateAcceptButton() {
         final ItemStack updateButton = this.getInventoryGUI().getItemStack(this.acceptButtonUUID);
         final List<String> lore = new ToggleAcceptanceItem(this).getLore();

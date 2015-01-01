@@ -1,5 +1,11 @@
 package org.royaldev.royalcommands.tools;
 
+/**
+ * A pair of items.
+ *
+ * @param <T> The type of the first item
+ * @param <U> The type of the second item
+ */
 public class Pair<T, U> {
 
     private final T first;
@@ -10,8 +16,15 @@ public class Pair<T, U> {
         this.second = second;
     }
 
+    /**
+     * Checks to see if this Pair is equal to another. Two Pairs are only equal when the first objects equal each other
+     * and the second objects equal each other using <code>equals()</code>.
+     *
+     * @param o Object to test equality of
+     * @return true if equal, false if otherwise
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == this) return true;
         if (!(o instanceof Pair)) return false;
         final Pair<?, ?> other = (Pair<?, ?>) o;
@@ -23,10 +36,20 @@ public class Pair<T, U> {
         return String.format("Pair<%s, %s>", this.getFirst().toString(), this.getSecond().toString());
     }
 
+    /**
+     * Gets the first object in the pair.
+     *
+     * @return First
+     */
     public T getFirst() {
         return this.first;
     }
 
+    /**
+     * Gets the second object in the pair.
+     *
+     * @return Second
+     */
     public U getSecond() {
         return this.second;
     }
