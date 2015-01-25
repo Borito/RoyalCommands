@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -49,7 +50,9 @@ public class CmdListHomes extends BaseCommand {
         final RPlayer rp = MemoryRPlayer.getRPlayer(t);
         final Map<World, List<Home>> sortedHomes = new HashMap<>();
         for (final Home h : rp.getHomes()) {
-            final World w = h.getLocation().getWorld();
+            final Location l = h.getLocation();
+            if (l == null) continue;
+            final World w = l.getWorld();
             final List<Home> homes = sortedHomes.containsKey(w) ? sortedHomes.get(w) : new ArrayList<Home>();
             homes.add(h);
             sortedHomes.put(h.getLocation().getWorld(), homes);
