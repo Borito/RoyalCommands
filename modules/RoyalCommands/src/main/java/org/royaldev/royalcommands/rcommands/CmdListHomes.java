@@ -50,6 +50,7 @@ public class CmdListHomes extends BaseCommand {
         final RPlayer rp = MemoryRPlayer.getRPlayer(t);
         final Map<World, List<Home>> sortedHomes = new HashMap<>();
         for (final Home h : rp.getHomes()) {
+            if (h == null) continue;
             final Location l = h.getLocation();
             if (l == null) continue;
             final World w = l.getWorld();
