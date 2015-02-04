@@ -160,18 +160,18 @@ public class PlayerListener implements Listener {
         e.getRecipients().removeAll(toRemove); // remove deaf players
     }
 
-    @EventHandler
+    /*@EventHandler
     public void displayNames(PlayerLoginEvent e) {
         if (e.getResult() != Result.ALLOWED) return;
-        Player p = e.getPlayer();
+        final Player p = e.getPlayer();
         if (p == null) return;
         String dispname = PlayerConfigurationManager.getConfiguration(p).getString("dispname");
-        if (dispname == null || dispname.equals("")) dispname = p.getName();
+        if (dispname == null || "".equals(dispname)) dispname = p.getName();
         dispname = dispname.trim();
         p.setDisplayName(dispname);
         if (dispname.length() <= 16) p.setPlayerListName(dispname);
         else p.setPlayerListName(dispname.substring(0, 16));
-    }
+    }*/
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void freezeWatch(PlayerMoveEvent e) {
