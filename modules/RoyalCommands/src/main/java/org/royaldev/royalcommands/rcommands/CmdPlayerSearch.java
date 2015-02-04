@@ -28,7 +28,8 @@ public class CmdPlayerSearch extends BaseCommand {
             @Override
             public void run() {
                 int found = 0;
-                for (OfflinePlayer op : ops) {
+                for (final OfflinePlayer op : ops) {
+                    if (op == null || op.getName() == null) continue;
                     if (!op.getName().toLowerCase().contains(search.toLowerCase())) continue;
                     PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(op);
                     if (!pcm.exists()) continue;
