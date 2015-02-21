@@ -54,7 +54,6 @@ import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.listeners.PlayerListener;
 import org.royaldev.royalcommands.listeners.ServerListener;
 import org.royaldev.royalcommands.listeners.SignListener;
-import org.royaldev.royalcommands.listeners.TagAPIListener;
 import org.royaldev.royalcommands.nms.api.NMSFace;
 import org.royaldev.royalcommands.protocol.ProtocolListener;
 import org.royaldev.royalcommands.rcommands.BaseCommand;
@@ -567,7 +566,6 @@ public class RoyalCommands extends JavaPlugin {
         // this.wg = (WorldGuardPlugin) this.getServer().getPluginManager().getPlugin("WorldGuard");
         this.lwc = (LWCPlugin) this.getServer().getPluginManager().getPlugin("LWC");
         RoyalCommands.mvc = (MultiverseCore) this.getServer().getPluginManager().getPlugin("Multiverse-Core");
-        final TagAPI ta = (TagAPI) this.getServer().getPluginManager().getPlugin("TagAPI");
 
         //-- Register events --//
 
@@ -584,7 +582,6 @@ public class RoyalCommands extends JavaPlugin {
         pm.registerEvents(new ClickListener(), this);
         pm.registerEvents(new TradeListener(), this);
         pm.registerEvents(new InventoryGUIEventListener(), this);
-        if (ta != null && Config.changeNameTag) pm.registerEvents(new TagAPIListener(), this);
 
         //-- ProtocolLib things --//
 

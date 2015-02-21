@@ -4,7 +4,7 @@ version: ${pluginversion}
 website: http://dev.royaldev.org/
 description: A general plugin containing all the commands a discerning server admin could want.
 author: jkcclemens
-softdepend: [VanishNoPacket, TagAPI, LWC, WorldGuard, Multiverse-Core, Vault, ProtocolLib]
+softdepend: [VanishNoPacket, LWC, WorldGuard, Multiverse-Core, Vault, ProtocolLib]
 
 reflectcommands:
   level:
