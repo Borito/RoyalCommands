@@ -10,69 +10,124 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
-import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
-public class CmdNick extends BaseCommand {
+public class CmdNick extends CACommand {
+
+    private static final Flag CLEAR_FLAG = new Flag("clear", "c", "remove", "r", "disable", "d", "off", "o");
+    private static final Flag<String> TARGET_FLAG = new Flag<>(String.class, "target", "t", "player", "p");
+    private static final Flag<String> NICK_FLAG = new Flag<>(String.class, "nickname", "nick", "n");
 
     public CmdNick(final RoyalCommands instance, final String name) {
         super(instance, name, true);
+        this.addExpectedFlag(CmdNick.TARGET_FLAG);
+        this.addExpectedFlag(CmdNick.CLEAR_FLAG);
+        this.addExpectedFlag(CmdNick.NICK_FLAG);
+    }
+
+    private void clearNick(final RPlayer rp, final CommandSender cs) {
+        rp.getNick().clear();
+        cs.sendMessage(MessageColor.POSITIVE + "You reset the nickname of " + MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + ".");
+        if (cs instanceof Player && !rp.isSameAs((Player) cs)) {
+            rp.sendMessage(MessageColor.POSITIVE + "Your nickname was reset by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
+        }
+    }
+
+    /**
+     * Check to see if enough time has passed to allow the nick to be updated again.
+     *
+     * @param rp Player to check for
+     * @return true if nick may be updated, false if not
+     */
+    private boolean hasTimePassed(final CommandSender cs, final RPlayer rp) {
+        if (this.ah.isAuthorized(cs, "rcmds.exempt.nick.changelimit")) return true;
+        final long nickChangeLimit = RUtils.timeFormatToSeconds(Config.nickChangeLimit);
+        if (nickChangeLimit == -1L) return true;
+        final long lastUpdate = rp.getNick().getLastUpdate();
+        return lastUpdate == -1L || lastUpdate + (nickChangeLimit * 1000L) < System.currentTimeMillis();
+    }
+
+    private boolean isAllowedColor(final CommandSender cs) {
+        return Config.nickColorsEnabled && (!Config.nickColorsOnlyWithPerm || this.ah.isAuthorized(cs, "rcmds.nick.colors") || this.ah.isAuthorized(cs, "rcmds.nick.color"));
+    }
+
+    private boolean isLengthLegal(final CommandSender cs, final String nick) {
+        return this.ah.isAuthorized(cs, "rcmds.exempt.nick.length") || !(Config.nickMinLength != 0 && nick.length() < Config.nickMinLength) && !(Config.nickMaxLength != 0 && nick.length() > Config.nickMaxLength);
+    }
+
+    private boolean matchesRegex(final CommandSender cs, final String nick) {
+        return !Config.nickRegexEnabled || this.ah.isAuthorized(cs, "rcmds.exempt.nick.regex") || nick.matches(Config.nickRegexPattern);
+    }
+
+    private void sendLengthMessage(final CommandSender cs, final String nick) {
+        if (Config.nickMinLength != 0 && nick.length() < Config.nickMinLength) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Nick must be at least " + MessageColor.NEUTRAL + Config.nickMinLength + MessageColor.NEGATIVE + " characters long.");
+        }
+        if (Config.nickMaxLength != 0 && nick.length() > Config.nickMaxLength) {
+            cs.sendMessage(MessageColor.NEGATIVE + "Nick cannot be longer than " + MessageColor.NEUTRAL + Config.nickMaxLength + MessageColor.NEGATIVE + " characters.");
+        }
+    }
+
+    private void sendTimeMessage(final CommandSender cs, final RPlayer rp) {
+        final long nickChangeLimit = RUtils.timeFormatToSeconds(Config.nickChangeLimit);
+        final long lastUpdate = rp.getNick().getLastUpdate();
+        cs.sendMessage(MessageColor.NEUTRAL + RUtils.formatDateDiff(lastUpdate + (nickChangeLimit * 1000L)) + MessageColor.NEGATIVE + " must elapse before the nick for " + MessageColor.NEUTRAL + rp.getName() + MessageColor.NEGATIVE + " may be changed again.");
+    }
+
+    private void setNick(final CommandSender cs, final RPlayer rp, final String nick) {
+        rp.getNick().set(nick);
+        cs.sendMessage(MessageColor.POSITIVE + "You have changed the nick of " + MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + nick + MessageColor.POSITIVE + ".");
+        if (cs instanceof Player && !rp.isSameAs((Player) cs)) {
+            rp.sendMessage(MessageColor.POSITIVE + "Your nickname was changed to " + MessageColor.NEUTRAL + nick + MessageColor.POSITIVE + " by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
+        }
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
-        if (args.length < 2) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
+        if (!ca.hasContentFlag(CmdNick.TARGET_FLAG)) {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        final OfflinePlayer t = this.plugin.getServer().getOfflinePlayer(args[0]);
-        if (!t.equals(cs) && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
+        final RPlayer rpt = MemoryRPlayer.getRPlayer(ca.getFlag(CmdNick.TARGET_FLAG).getValue());
+        final boolean same = rpt.isSameAs((OfflinePlayer) cs);
+        if ((cs instanceof Player && !same && !this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) || (rpt.isOnline() && this.ah.isAuthorized(rpt.getPlayer(), cmd, PermType.EXEMPT))) {
             RUtils.dispNoPerms(cs);
             return true;
         }
-        final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(t);
+        final PlayerConfiguration pcm = rpt.getPlayerConfiguration();
         if (!pcm.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player doesn't exist!");
             return true;
         }
-        if (args[1].equalsIgnoreCase("off")) {
-            pcm.set("dispname", t.getName());
-            if (t.isOnline()) {
-                final Player p = (Player) t;
-                p.setDisplayName(t.getName());
-                if (t.getName().length() <= 16) p.setPlayerListName(t.getName());
-                if (!(cs instanceof Player) || !cs.equals(p)) {
-                    p.sendMessage(MessageColor.POSITIVE + "Your nickname was reset by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
-                }
-            }
-            cs.sendMessage(MessageColor.POSITIVE + "You reset the nickname of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
+        if (ca.hasFlag(CmdNick.CLEAR_FLAG)) {
+            this.clearNick(rpt, cs);
             return true;
         }
-        if (t.getName().equalsIgnoreCase(cs.getName())) {
-            final long allowedAfter = pcm.getLong("nick.lastchange", 0L) + ((long) RUtils.timeFormatToSeconds(Config.nickChangeLimit) * 1000L);
-            if (allowedAfter > System.currentTimeMillis() && !this.ah.isAuthorized(cs, "rcmds.exempt.nickchangelimit")) {
-                cs.sendMessage(MessageColor.NEGATIVE + "You have to wait " + MessageColor.NEUTRAL + RUtils.formatDateDiff(allowedAfter) + MessageColor.NEGATIVE + "to change your nick again.");
-                return true;
-            }
+        if (!this.hasTimePassed(cs, rpt)) {
+            this.sendTimeMessage(cs, rpt);
+            return true;
         }
-        if (cs instanceof Player && !this.ah.isAuthorized(cs, "rcmds.exempt.nickspecialcharacters") && !args[1].matches(Config.nickRegex)) {
+        if (!ca.hasContentFlag(CmdNick.NICK_FLAG)) {
+            cs.sendMessage(cmd.getDescription());
+            return false;
+        }
+        String newNick = ca.getFlag(CmdNick.NICK_FLAG).getValue();
+        if (!this.matchesRegex(cs, newNick)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That nickname contains invalid characters!");
             return true;
         }
-        String newName = Config.nickPrefix + args[1];
-        if (this.ah.isAuthorized(cs, "rcmds.nick.color")) newName = RUtils.colorize(newName);
-        else newName = RUtils.decolorize(newName);
-        pcm.set("dispname", newName);
-        pcm.set("nick.lastchange", System.currentTimeMillis());
-        if (t.isOnline()) {
-            final Player p = (Player) t;
-            p.setDisplayName(newName);
-            if (newName.length() <= 16) p.setPlayerListName(newName);
-            if (!(cs instanceof Player) || !cs.equals(p)) {
-                p.sendMessage(MessageColor.POSITIVE + "Your nickname was changed to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + " by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + ".");
-            }
+        if (!this.isLengthLegal(cs, newNick)) {
+            this.sendLengthMessage(cs, newNick);
+            return true;
         }
-        cs.sendMessage(MessageColor.POSITIVE + "Changed the nick of " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
+        if (!this.isAllowedColor(cs)) {
+            newNick = RUtils.decolorize(newNick);
+        }
+        newNick = RUtils.colorize(Config.nickPrefix + newNick);
+        this.setNick(cs, rpt, newNick);
         return true;
     }
+
 }

@@ -13,6 +13,7 @@ import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.rcommands.home.Home;
+import org.royaldev.royalcommands.rcommands.nick.Nick;
 import org.royaldev.royalcommands.wrappers.teleport.PlayerTeleporter;
 
 import java.util.ArrayList;
@@ -29,17 +30,21 @@ public class MemoryRPlayer implements RPlayer {
 
     private static final Map<UUID, RPlayer> players = Collections.synchronizedMap(new HashMap<UUID, RPlayer>());
     private final UUID uuid;
+    private final Nick nick;
 
     private MemoryRPlayer(final OfflinePlayer op) {
         this.uuid = op.getUniqueId();
+        this.nick = new Nick(this);
     }
 
     private MemoryRPlayer(final String name) {
         this.uuid = this.getRoyalCommands().getServer().getOfflinePlayer(name).getUniqueId();
+        this.nick = new Nick(this);
     }
 
     private MemoryRPlayer(final UUID uuid) {
         this.uuid = uuid;
+        this.nick = new Nick(this);
     }
 
     public static RPlayer getRPlayer(final OfflinePlayer op) {
@@ -145,6 +150,11 @@ public class MemoryRPlayer implements RPlayer {
     }
 
     @Override
+    public Nick getNick() {
+        return this.nick;
+    }
+
+    @Override
     public OfflinePlayer getOfflinePlayer() {
         final Player online = this.getPlayer();
         return online != null ? online : RoyalCommands.getInstance().getServer().getOfflinePlayer(this.getUUID());
@@ -178,6 +188,11 @@ public class MemoryRPlayer implements RPlayer {
     }
 
     @Override
+    public boolean isOnline() {
+        return this.getPlayer() != null;
+    }
+
+    @Override
     public boolean isSameAs(final UUID uuid) {
         return this.getUUID() != null && this.getUUID().equals(uuid);
     }
@@ -185,5 +200,12 @@ public class MemoryRPlayer implements RPlayer {
     @Override
     public boolean isSameAs(final OfflinePlayer op) {
         return this.isSameAs(op.getUniqueId());
+    }
+
+    @Override
+    public void sendMessage(final String message) {
+        final Player p = this.getPlayer();
+        if (p == null) return;
+        p.sendMessage(message);
     }
 }

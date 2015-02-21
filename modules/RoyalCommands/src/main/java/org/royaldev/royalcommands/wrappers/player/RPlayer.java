@@ -7,6 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.rcommands.home.Home;
+import org.royaldev.royalcommands.rcommands.nick.Nick;
 import org.royaldev.royalcommands.wrappers.teleport.PlayerTeleporter;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public interface RPlayer {
 
     String getName();
 
+    Nick getNick();
+
     OfflinePlayer getOfflinePlayer();
 
     Player getPlayer();
@@ -36,7 +39,11 @@ public interface RPlayer {
 
     UUID getUUID();
 
+    boolean isOnline();
+
     boolean isSameAs(UUID uuid);
 
     boolean isSameAs(OfflinePlayer op);
+
+    void sendMessage(final String message);
 }

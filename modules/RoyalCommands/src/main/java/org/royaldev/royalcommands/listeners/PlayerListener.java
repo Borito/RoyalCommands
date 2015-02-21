@@ -42,6 +42,8 @@ import org.royaldev.royalcommands.rcommands.CmdMessageOfTheDay;
 import org.royaldev.royalcommands.rcommands.CmdNameEntity;
 import org.royaldev.royalcommands.rcommands.CmdSpawn;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
+import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -160,18 +162,11 @@ public class PlayerListener implements Listener {
         e.getRecipients().removeAll(toRemove); // remove deaf players
     }
 
-    /*@EventHandler
-    public void displayNames(PlayerLoginEvent e) {
-        if (e.getResult() != Result.ALLOWED) return;
-        final Player p = e.getPlayer();
-        if (p == null) return;
-        String dispname = PlayerConfigurationManager.getConfiguration(p).getString("dispname");
-        if (dispname == null || "".equals(dispname)) dispname = p.getName();
-        dispname = dispname.trim();
-        p.setDisplayName(dispname);
-        if (dispname.length() <= 16) p.setPlayerListName(dispname);
-        else p.setPlayerListName(dispname.substring(0, 16));
-    }*/
+    @EventHandler
+    public void nicknames(final PlayerJoinEvent e) {
+        final RPlayer rp = MemoryRPlayer.getRPlayer(e.getPlayer());
+        rp.getNick().update();
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void freezeWatch(PlayerMoveEvent e) {

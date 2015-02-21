@@ -411,7 +411,6 @@ warns:
   # The default warn message for /warn
   default_message: "You have been warned."
 
-
 ###
 # Teleports #
 ###
@@ -552,13 +551,27 @@ commands:
 nicknames:
   # Prefix to go before nicknames.
   prefix: "*"
-  # How often a player can change his nick.
-  change_limit: "24h"
-  # Regular expression string limiting characters allowed in nicknames. Default is the Minecraft default limitations.
-  # Default: [\\w]{2,16}
-  regex: "[\\w]{2,16}"
-  # Change name above head? REQUIRES TagAPI. This will not work without it.
-  change_nametag: false
+  # Also change the name in the player list (tab list)?
+  set_player_list: false
+  limits:
+    # Limit how often a player can change his nick. -1 to disable
+    time: 24h
+    content:
+      # Limit a player's nick with a regular expression. Don't enable this unless you really know what you're up to.
+      regex:
+        enabled: false
+        pattern: "[\\w]{2,16}"
+      colors:
+        # Allow colors?
+        enabled: true
+        # Only allow colors if enabled is true and the player has the rcmds.nick.colors perm?
+        only_with_perm: false
+    # Limit the length of the nickname
+    length:
+      # Set a minimum length, or 0 to disable (will still have to be at least one character long).
+      minimum: 2
+      # Set a maximum length, or 0 to disable.
+      maximum: 16
 
 ###
 # Worlds & WorldManager #

@@ -14,15 +14,13 @@ import java.util.List;
 @SuppressWarnings("StaticNonFinalField")
 public class Config {
 
+    //-- Booleans --//
     public static boolean assignPublicOnGeneric;
     public static boolean assignUseDisplayNames;
     public static boolean assignUseDurability;
-
-    //-- Booleans --//
     public static boolean backDeath;
     public static boolean backpackReset;
     public static boolean buildPerm;
-    public static boolean changeNameTag;
     public static boolean checkVersion;
     public static boolean cooldownAliases;
     public static boolean customHelp;
@@ -39,6 +37,10 @@ public class Config {
     public static boolean kitPerms;
     public static boolean motdLogin;
     public static boolean multiverseNames;
+    public static boolean nickColorsEnabled;
+    public static boolean nickColorsOnlyWithPerm;
+    public static boolean nickPlayerList;
+    public static boolean nickRegexEnabled;
     public static boolean overrideRespawn;
     public static boolean purgeUnusedUserdata;
     public static boolean removePotionEffects;
@@ -71,51 +73,53 @@ public class Config {
     public static boolean wmShowEmptyWorlds;
     public static boolean worldAccessPerm;
     public static boolean ymlConvert;
-    public static ConfigurationSection warnActions;
-    public static ConfigurationSection commandCooldowns;
-    public static double defaultNear;
 
     //-- ConfigurationSections --//
-    public static double findIpPercent;
-    public static double globalTeleportCooldown;
+    public static ConfigurationSection commandCooldowns;
+    public static ConfigurationSection warnActions;
 
     //-- Doubles --//
+    public static double defaultNear;
+    public static double findIpPercent;
+    public static double globalTeleportCooldown;
     public static double maxNear;
+
+    //-- Floats --//
     public static float explodePower;
     public static float maxExplodePower;
     public static float teleportSoundPitch;
-
-    //-- Floats --//
     public static float teleportSoundVolume;
+
+    //-- Integers --//
     public static int defaultStack;
     public static int helpAmount;
     public static int maxBackStack;
-
-    //-- Integers --//
+    public static int nickMaxLength;
+    public static int nickMinLength;
     public static int spawnmobLimit;
     public static int teleportWarmup;
-    public static List<String> blockedItems;
-    public static List<String> disabledBackWorlds;
-    public static List<String> disabledCommands;
 
     //-- String lists --//
+    public static List<String> blockedItems;
     public static List<String> commandSpyBlacklist;
+    public static List<String> disabledBackWorlds;
+    public static List<String> disabledCommands;
     public static List<String> itemSpawnTagLore;
     public static List<String> logBlacklist;
     public static List<String> motd;
     public static List<String> muteCmds;
     public static List<String> onBanActions;
     public static List<String> whitelist;
+
+    //-- Longs --//
     public static long afkAutoTime;
     public static long afkKickTime;
     public static long warnExpireTime;
 
-    //-- Longs --//
+    //-- Strings --//
     public static String afkFormat;
     public static String banFormat;
     public static String banMessage;
-
-    //-- Strings --//
     public static String bcastFormat;
     public static String defaultWarn;
     public static String igBanFormat;
@@ -128,7 +132,7 @@ public class Config {
     public static String mailCheckTime;
     public static String nickChangeLimit;
     public static String nickPrefix;
-    public static String nickRegex;
+    public static String nickRegexPattern;
     public static String noBuildMessage;
     public static String returnFormat;
     public static String saveInterval;
@@ -169,7 +173,6 @@ public class Config {
         backDeath = c.getBoolean("teleports.back.death", true);
         backpackReset = c.getBoolean("backpack.reset_on_death", false);
         buildPerm = c.getBoolean("general.use_build_perm", false);
-        changeNameTag = c.getBoolean("nicknames.change_nametag", false);
         checkVersion = c.getBoolean("updates.version_check", true);
         cooldownAliases = c.getBoolean("commands.cooldowns.options.match_aliases", true);
         customHelp = c.getBoolean("help.custom.enabled", false);
@@ -186,6 +189,10 @@ public class Config {
         kitPerms = c.getBoolean("use_exclusive_kit_perms", false);
         motdLogin = c.getBoolean("motd.options.display_on_login", true);
         multiverseNames = c.getBoolean("worldmanager.multiverse_world_names", true);
+        nickColorsEnabled = c.getBoolean("nicknames.limits.content.colors.enabled", true);
+        nickColorsOnlyWithPerm = c.getBoolean("nicknames.limits.content.colors.only_with_perm", false);
+        nickPlayerList = c.getBoolean("nicknames.set_player_list", false);
+        nickRegexEnabled = c.getBoolean("nicknames.limits.content.regex.enabled", false);
         overrideRespawn = c.getBoolean("general.override_respawn", true);
         purgeUnusedUserdata = c.getBoolean("userdata.saving.purge_unused_userdata_handlers", true);
         removePotionEffects = c.getBoolean("remove_potion_effects", true);
@@ -243,6 +250,8 @@ public class Config {
         defaultStack = c.getInt("items.spawn.default_stack_size", 64);
         helpAmount = c.getInt("help.lines", 5);
         maxBackStack = c.getInt("teleports.back.max_stack", 5);
+        nickMaxLength = c.getInt("nicknames.limits.length.maximum", 16);
+        nickMinLength = c.getInt("nicknames.limits.length.minimum", 2);
         spawnmobLimit = c.getInt("spawnmob.spawn_limit", 15);
         teleportWarmup = c.getInt("teleports.options.warmup", 0);
 
@@ -279,9 +288,9 @@ public class Config {
         kickFormat = c.getString("kicks.messages.format", "&4Kicked&r: {reason}&rnBy {dispname}");
         kickMessage = RUtils.colorize(c.getString("kicks.messages.default", "Kicked from server."));
         mailCheckTime = c.getString("mail.check_interval", "10m");
-        nickChangeLimit = c.getString("nicknames.change_limit", "24h");
+        nickChangeLimit = c.getString("nicknames.limits.time", "24h");
         nickPrefix = RUtils.colorize(c.getString("nicknames.prefix", "*"));
-        nickRegex = c.getString("nicknames.regex", "[\\w]{2,16}");
+        nickRegexPattern = c.getString("nicknames.limits.content.regex.pattern", "[\\w]{2,16}");
         noBuildMessage = RUtils.colorize(c.getString("messages.no_build", "&cYou don't have permission to build!"));
         returnFormat = c.getString("afk.messages.return_format", "{dispname} is no longer AFK.");
         saveInterval = c.getString("userdata.saving.save_on_interval", "10m");

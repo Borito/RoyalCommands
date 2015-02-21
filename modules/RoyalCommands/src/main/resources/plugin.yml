@@ -544,7 +544,7 @@ reflectcommands:
 
   nick:
     description: Sets the display name of a player.
-    usage: /<command> [player] [nick|off]
+    usage: /<command> -player [player] (-clear) -nick (nick)
     aliases: [dispname, name]
     version_added: Pre-0.2.7
     class: CmdNick
@@ -1982,7 +1982,7 @@ permissions:
     default: op
     description: Allows you to use PluginManager's updatecheckall feature.
 
-  rcmds.nick.color:
+  rcmds.nick.colors:
     command: nick
     description: Allows you to use color in nicknames.
     default: op
@@ -2149,13 +2149,17 @@ permissions:
     command: afk
     description: Makes the player immune to AFK kicks.
     default: false
-  rcmds.exempt.nickchangelimit:
+  rcmds.exempt.nick.changelimit:
     command: nick
     description: Makes the player immune to the nick change limit.
     default: false
-  rcmds.exempt.nickspecialcharacters:
+  rcmds.exempt.nick.regex:
     command: nick
     description: Makes the player immune to the nick character check.
+    default: false
+  rcmds.exempt.nick.length:
+    command: nick
+    description: Makes the player immune to the nick length check.
     default: false
 
   rcmds.exempt.cooldown.commands:
