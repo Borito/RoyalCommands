@@ -1,5 +1,6 @@
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -8,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
+
+import java.util.Set;
 
 @ReflectCommand
 public class CmdSignEdit extends BaseCommand {
@@ -27,7 +30,7 @@ public class CmdSignEdit extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
-        Block b = p.getTargetBlock(null, 100); // RUtils has signs as transparent;
+        Block b = p.getTargetBlock((Set<Material>) null, 100); // RUtils has signs as transparent;
         if (b == null || !(b.getState() instanceof Sign)) {
             cs.sendMessage(MessageColor.NEGATIVE + "The block in sight is not a sign!");
             return true;

@@ -862,7 +862,7 @@ public final class RUtils {
      */
     @SuppressWarnings("deprecation")
     public static Block getTarget(Player p) {
-        return p.getTargetBlock(null, 300); // waiting on method for Materials
+        return p.getTargetBlock((Set<Material>) null, 300); // waiting on method for Materials
     }
 
     /**
