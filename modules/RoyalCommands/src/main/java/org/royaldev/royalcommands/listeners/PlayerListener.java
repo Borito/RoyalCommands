@@ -579,8 +579,9 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void whitelist(PlayerLoginEvent e) {
         if (!Config.useWhitelist) return;
-        if (!Config.whitelist.contains(e.getPlayer().getName()))
+        if (!Config.whitelist.contains(e.getPlayer().getUniqueId().toString())) {
             e.disallow(Result.KICK_WHITELIST, Config.whitelistMessage);
+        }
     }
 
     @EventHandler

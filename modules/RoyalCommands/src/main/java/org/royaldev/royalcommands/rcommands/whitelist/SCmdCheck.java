@@ -7,6 +7,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWhitelist;
 import org.royaldev.royalcommands.rcommands.SubCommand;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 public class SCmdCheck extends SubCommand<CmdWhitelist> {
 
@@ -24,8 +25,14 @@ public class SCmdCheck extends SubCommand<CmdWhitelist> {
             this.getParent().showHelp(cs, label);
             return true;
         }
-        final String player = eargs[0];
-        cs.sendMessage((Config.whitelist.contains(player)) ? MessageColor.NEUTRAL + player + MessageColor.POSITIVE + " is in the whitelist." : MessageColor.NEUTRAL + player + MessageColor.NEGATIVE + " is not in the whitelist.");
+        final RPlayer rp = this.getParent().getRPlayer(ca, cs);
+        if (rp == null) return true; // should never happen
+        final String uuid = rp.getUUID().toString();
+        cs.sendMessage(
+            Config.whitelist.contains(uuid)
+                ? MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + "(" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") is in the whitelist."
+                : MessageColor.NEUTRAL + rp.getName() + MessageColor.NEGATIVE + "(" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") is not in the whitelist."
+        );
         return true;
     }
 }

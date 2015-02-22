@@ -7,6 +7,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.rcommands.CmdWhitelist;
 import org.royaldev.royalcommands.rcommands.SubCommand;
+import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 public class SCmdRemove extends SubCommand<CmdWhitelist> {
 
@@ -24,15 +25,17 @@ public class SCmdRemove extends SubCommand<CmdWhitelist> {
             this.getParent().showHelp(cs, label);
             return true;
         }
-        final String player = eargs[0];
-        if (!Config.whitelist.contains(player)) {
+        final RPlayer rp = this.getParent().getRPlayer(ca, cs);
+        if (rp == null) return true;
+        final String uuid = rp.getUUID().toString();
+        if (!Config.whitelist.contains(uuid)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is not whitelisted!");
             return true;
         }
-        Config.whitelist.remove(player);
+        Config.whitelist.remove(uuid);
         this.plugin.whl.set("whitelist", Config.whitelist);
         this.getParent().reloadWhitelist();
-        cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + player + MessageColor.POSITIVE + " from whitelist.");
+        cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + "(" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") from whitelist.");
         return true;
     }
 }
