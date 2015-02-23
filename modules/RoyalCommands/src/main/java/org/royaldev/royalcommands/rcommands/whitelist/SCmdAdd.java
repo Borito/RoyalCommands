@@ -12,17 +12,13 @@ import org.royaldev.royalcommands.wrappers.player.RPlayer;
 public class SCmdAdd extends SubCommand<CmdWhitelist> {
 
     public SCmdAdd(final RoyalCommands instance, final CmdWhitelist parent) {
-        super(instance, parent, "add", true, "Adds a player to the whitelist.", "<command> [player]", new String[0], new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
+        super(instance, parent, "add", true, "Adds a player to the whitelist.", "<command> -p (player) -u (uuid)", new String[0], new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override
     public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] eargs, final CommandArguments ca) {
         if (this.plugin.whl == null) {
             cs.sendMessage(MessageColor.NEGATIVE + "The whitelist.yml file was invalid! Cannot use whitelist.");
-            return true;
-        }
-        if (eargs.length < 1) {
-            this.getParent().showHelp(cs, label);
             return true;
         }
         final RPlayer rp = this.getParent().getRPlayer(ca, cs);
