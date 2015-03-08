@@ -17,9 +17,7 @@
         <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalcommands-api</artifactId>
-            <!-- Depend on the API! -->
             <version>API</version>
-            <type>jar</type>
         </dependency>
     </dependencies>
 </project>
