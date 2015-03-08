@@ -26,8 +26,8 @@ public class SCmdCheck extends SubCommand<CmdWhitelist> {
         final String uuid = rp.getUUID().toString();
         cs.sendMessage(
             Config.whitelist.contains(uuid)
-                ? MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + "(" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") is in the whitelist."
-                : MessageColor.NEUTRAL + rp.getName() + MessageColor.NEGATIVE + "(" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") is not in the whitelist."
+                ? MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") is in the whitelist."
+                : MessageColor.NEUTRAL + rp.getName() + MessageColor.NEGATIVE + " (" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") is not in the whitelist."
         );
         return true;
     }

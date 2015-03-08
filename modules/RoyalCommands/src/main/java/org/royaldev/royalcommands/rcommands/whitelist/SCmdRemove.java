@@ -31,7 +31,7 @@ public class SCmdRemove extends SubCommand<CmdWhitelist> {
         Config.whitelist.remove(uuid);
         this.plugin.whl.set("whitelist", Config.whitelist);
         this.getParent().reloadWhitelist();
-        cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + "(" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") from whitelist.");
+        cs.sendMessage(MessageColor.POSITIVE + "Removed " + MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") from whitelist.");
         return true;
     }
 }

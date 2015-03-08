@@ -31,7 +31,7 @@ public class SCmdAdd extends SubCommand<CmdWhitelist> {
         Config.whitelist.add(uuid);
         this.plugin.whl.set("whitelist", Config.whitelist);
         this.getParent().reloadWhitelist();
-        cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + "(" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") to whitelist.");
+        cs.sendMessage(MessageColor.POSITIVE + "Added " + MessageColor.NEUTRAL + rp.getName() + MessageColor.POSITIVE + " (" + MessageColor.NEUTRAL + uuid + MessageColor.POSITIVE + ") to whitelist.");
         return true;
     }
 }
