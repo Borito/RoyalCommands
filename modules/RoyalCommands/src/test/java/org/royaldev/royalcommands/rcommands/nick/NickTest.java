@@ -43,7 +43,7 @@ public class NickTest {
     public void testGetLastUpdate() throws Exception {
         final long last = System.currentTimeMillis();
         this.nick.set("Oh god");
-        assertEquals(last, this.nick.getLastUpdate());
+        assertEquals(last, this.nick.getLastUpdate(), 5);
     }
 
     @Test
