@@ -174,8 +174,12 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
 
     private Object createChatPacket(String json) throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
         if (nmsChatSerializerGsonInstance == null) {
+            // Look for the new location of ChatSerializer
+            Class<?> chatSerializer = Reflection.getNMSClass("IChatBaseComponent$ChatSerializer");
+            // If we can't find the new version, try looking for the old version
+            if (chatSerializer == null) chatSerializer = Reflection.getNMSClass("ChatSerializer");
             // Find the field and its value, completely bypassing obfuscation
-            for (Field declaredField : Reflection.getNMSClass("IChatBaseComponent$ChatSerializer").getDeclaredFields()) {
+            for (Field declaredField : chatSerializer.getDeclaredFields()) {
                 if (Modifier.isFinal(declaredField.getModifiers()) && Modifier.isStatic(declaredField.getModifiers()) && declaredField.getType().getName().endsWith("Gson")) {
                     // We've found our field
                     declaredField.setAccessible(true);
