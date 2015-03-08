@@ -18,14 +18,12 @@
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
             <version>1.6.2-R1.1-SNAPSHOT</version>
-            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalcommands-api</artifactId>
-            <!-- Depend on the API! -->
             <version>API</version>
-            <type>jar</type>
         </dependency>
     </dependencies>
 </project>

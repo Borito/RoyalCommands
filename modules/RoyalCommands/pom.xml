@@ -177,16 +177,12 @@
             <id>royal-repo</id>
             <url>http://minor.royaldev.org:8081/nexus/content/groups/public/</url>
         </repository>
-        <!--<repository>
-            <id>fanciful-mvn-repo</id>
-            <url>https://raw.github.com/mkremins/fanciful/mvn-repo/</url>
-        </repository>-->
     </repositories>
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.8-R0.1-SNAPSHOT</version>
+            <version>1.8.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -273,11 +269,6 @@
             <artifactId>gson</artifactId>
             <version>2.3.1</version>
         </dependency>
-        <!--<dependency>
-            <groupId>mkremins</groupId>
-            <artifactId>fanciful</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
-        </dependency>-->
         <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalchat</artifactId>
@@ -290,7 +281,21 @@
             <type>jar</type>
             <optional>true</optional>
         </dependency>
-        <!--<dependency>
+        <dependency>
+            <groupId>org.royaldev</groupId>
+            <artifactId>royalcommands-NMS1_8_R2</artifactId>
+            <version>v1_8_R2</version>
+            <type>jar</type>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.royaldev</groupId>
+            <artifactId>royalcommands-NMS1_8_R1</artifactId>
+            <version>v1_8_R1</version>
+            <type>jar</type>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalcommands-NMS1_7_R4</artifactId>
             <version>v1_7_R4</version>
@@ -339,27 +344,6 @@
             <type>jar</type>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.royaldev</groupId>
-            <artifactId>royalcommands-NMS1_5_R3</artifactId>
-            <version>v1_5_R3</version>
-            <type>jar</type>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.royaldev</groupId>
-            <artifactId>royalcommands-NMS1_5_R2</artifactId>
-            <version>v1_5_R2</version>
-            <type>jar</type>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.royaldev</groupId>
-            <artifactId>royalcommands-NMS1_5_R1</artifactId>
-            <version>v1_5_R1</version>
-            <type>jar</type>
-            <optional>true</optional>
-        </dependency>-->
         <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalcommands-NoSupport</artifactId>

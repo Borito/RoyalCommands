@@ -1,6 +1,6 @@
-package org.royaldev.royalcommands.nms.v1_5_R2;
+package org.royaldev.royalcommands.nms.v1_8_R2;
 
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.nms.api.NMSFace;
 
@@ -13,7 +13,7 @@ public class NMSHandler implements NMSFace {
 
     @Override
     public String getVersion() {
-        return "v1_5_R2";
+        return "v1_8_R2";
     }
 
     @Override

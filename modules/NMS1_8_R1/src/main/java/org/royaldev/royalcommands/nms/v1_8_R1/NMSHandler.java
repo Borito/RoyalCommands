@@ -1,10 +1,11 @@
-package org.royaldev.royalcommands.nms.v1_5_R1;
+package org.royaldev.royalcommands.nms.v1_8_R1;
 
-import org.bukkit.craftbukkit.v1_5_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.nms.api.NMSFace;
 
 public class NMSHandler implements NMSFace {
+
     @Override
     public int getPing(Player p) {
         if (p instanceof CraftPlayer) return ((CraftPlayer) p).getHandle().ping;
@@ -13,7 +14,7 @@ public class NMSHandler implements NMSFace {
 
     @Override
     public String getVersion() {
-        return "v1_5_R1";
+        return "v1_8_R1";
     }
 
     @Override
