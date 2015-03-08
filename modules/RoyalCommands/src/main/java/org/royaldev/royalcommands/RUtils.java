@@ -214,7 +214,7 @@ public final class RUtils {
      * @param text String with codes to be converted
      * @return Processed string
      */
-    public static String colorize(String text) {
+    public static String colorize(final String text) {
         if (text == null) return null;
         return ChatColor.translateAlternateColorCodes('&', text);
         // return text.replaceAll("(?i)&([a-f0-9k-or])", ChatColor.COLOR_CHAR + "$1");
@@ -259,7 +259,7 @@ public final class RUtils {
      * @return String without raw color codes
      */
     public static String decolorize(String message) {
-        Pattern p = Pattern.compile("(?i)&[a-f0-9k-or]");
+        final Pattern p = Pattern.compile("(?i)&[a-f0-9k-or]");
         boolean contains = p.matcher(message).find();
         while (contains) {
             message = message.replaceAll("(?i)&[a-f0-9k-or]", "");

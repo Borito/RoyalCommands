@@ -91,7 +91,7 @@ public class AuthorizationHandler {
      * @return true or false
      * @throws IllegalArgumentException If invalid type if passed for <code>o</code>.
      */
-    public boolean isAuthorized(Object o, String node) {
+    public boolean isAuthorized(final Object o, final String node) {
         if (o instanceof RemoteConsoleCommandSender)
             return this.iARemoteConsoleCommandSender((RemoteConsoleCommandSender) o, node);
         else if (o instanceof Player) return this.iAPlayer((Player) o, node);

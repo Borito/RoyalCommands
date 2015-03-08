@@ -33,7 +33,7 @@ public class FilePlayerConfiguration extends FileGeneralConfiguration implements
         this.file = new File(dataFolder + File.separator + "userdata" + File.separator + u + ".yml");
         try {
             this.load(this.file);
-        } catch (Exception ignored) {
+        } catch (final Exception ignored) {
         }
         this.playerUUID = u;
     }

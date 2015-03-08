@@ -178,15 +178,15 @@ public class PlayerListener implements Listener {
     public void heMan(AsyncPlayerChatEvent e) {
         if (e.isCancelled()) return;
         if (!e.getMessage().matches("(?i)by the power of gr[ae]yskull!?")) return;
-        Player p = e.getPlayer();
+        final Player p = e.getPlayer();
         if (!plugin.ah.isAuthorized(p, "rcmds.heman")) return;
-        ItemStack is = p.getItemInHand();
+        final ItemStack is = p.getItemInHand();
         if (is.getType() != Material.DIAMOND_SWORD) return;
         if (is.getEnchantments().isEmpty()) return;
         e.setCancelled(true);
         p.getWorld().strikeLightningEffect(p.getLocation());
-        Matcher m = Pattern.compile("(?i)by the power of gr[ae]yskull!?").matcher(e.getMessage());
-        StringBuilder sb = new StringBuilder();
+        final Matcher m = Pattern.compile("(?i)by the power of gr[ae]yskull!?").matcher(e.getMessage());
+        final StringBuilder sb = new StringBuilder();
         int last = 0;
         while (m.find()) {
             sb.append(e.getMessage().substring(last, m.start()));
@@ -194,9 +194,9 @@ public class PlayerListener implements Listener {
             last = m.end();
         }
         sb.append(e.getMessage().substring(last));
-        plugin.getServer().broadcastMessage(e.getFormat().replaceAll("(?i)by the power of gr[ae]yskull!?", sb.toString()));
+        this.plugin.getServer().broadcastMessage(e.getFormat().replaceAll("(?i)by the power of gr[ae]yskull!?", sb.toString()));
         e.setFormat("");
-        List<PotionEffect> effects = new ArrayList<>();
+        final List<PotionEffect> effects = new ArrayList<>();
         effects.add(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 1200, 2));
         effects.add(new PotionEffect(PotionEffectType.REGENERATION, 1200, 2));
         effects.add(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1200, 2));
@@ -206,10 +206,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH) // run after others
     public void ipBans(PlayerLoginEvent e) {
-        String ip = e.getAddress().toString().replace("/", "");
+        final String ip = e.getAddress().toString().replace("/", "");
         if (!RUtils.isIPBanned(ip)) return;
-        String message = Config.ipBanFormat;
-        message = message.replace("{ip}", ip);
+        final String message = Config.ipBanFormat.replace("{ip}", ip);
         e.disallow(Result.KICK_BANNED, RUtils.colorize(message));
     }
 

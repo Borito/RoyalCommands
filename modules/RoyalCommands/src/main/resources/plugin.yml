@@ -1,7 +1,7 @@
 name: RoyalCommands
 main: org.royaldev.royalcommands.RoyalCommands
 version: ${pluginversion}
-website: http://dev.royaldev.org/
+website: https://royalcommands.royaldev.org/
 description: A general plugin containing all the commands a discerning server admin could want.
 author: jkcclemens
 softdepend: [VanishNoPacket, LWC, WorldGuard, Multiverse-Core, Vault, ProtocolLib]
@@ -2149,6 +2149,7 @@ permissions:
     command: afk
     description: Makes the player immune to AFK kicks.
     default: false
+
   rcmds.exempt.nick.changelimit:
     command: nick
     description: Makes the player immune to the nick change limit.
@@ -2161,6 +2162,15 @@ permissions:
     command: nick
     description: Makes the player immune to the nick length check.
     default: false
+
+  rcmds.exempt.nick.*:
+    command: nick
+    description: Grants all rcmds.exempt.nick.* permissions
+    default: false
+    children:
+      rcmds.exempt.nick.changelimit: true
+      rcmds.exempt.nick.regex: true
+      rcmds.exempt.nick.length: true
 
   rcmds.exempt.cooldown.commands:
     description: Makes the player exempt to command cooldowns.
@@ -2704,11 +2714,10 @@ permissions:
       rcmds.exempt.head: true
       rcmds.exempt.deletehome: true
       rcmds.exempt.enderchest: true
-      rcmds.exempt.nickchangelimit: true
-      rcmds.exempt.nickspecialcharacters: true
       rcmds.exempt.messagespy: true
       rcmds.exempt.commandspy: true
       rcmds.exempt.kickhistory: true
+      rcmds.exempt.nick.*: true
 
   rcmds.setarmor.*:
     command: setarmor

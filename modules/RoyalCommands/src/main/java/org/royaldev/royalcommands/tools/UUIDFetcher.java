@@ -30,20 +30,20 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
     }
 
     @SuppressWarnings("unchecked")
-    private static String buildBody(List<String> names) {
-        List<JSONObject> lookups = new ArrayList<>();
-        for (String name : names) {
-            JSONObject obj = new JSONObject();
+    private static String buildBody(final List<String> names) {
+        final List<JSONObject> lookups = new ArrayList<>();
+        for (final String name : names) {
+            final JSONObject obj = new JSONObject();
             obj.put("name", name);
-            obj.put("agent", AGENT);
+            obj.put("agent", UUIDFetcher.AGENT);
             lookups.add(obj);
         }
         return JSONValue.toJSONString(lookups);
     }
 
-    private static HttpURLConnection createConnection(int page) throws Exception {
-        URL url = new URL(PROFILE_URL + page);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    private static HttpURLConnection createConnection(final int page) throws Exception {
+        final URL url = new URL(UUIDFetcher.PROFILE_URL + page);
+        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setUseCaches(false);
@@ -52,30 +52,30 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         return connection;
     }
 
-    private static void writeBody(HttpURLConnection connection, String body) throws Exception {
-        DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
+    private static void writeBody(final HttpURLConnection connection, final String body) throws Exception {
+        final DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
         writer.write(body.getBytes());
         writer.flush();
         writer.close();
     }
 
     public Map<String, UUID> call() throws Exception {
-        Map<String, UUID> uuidMap = new HashMap<>();
-        String body = buildBody(names);
-        for (int i = 1; i < MAX_SEARCH; i++) {
-            HttpURLConnection connection = createConnection(i);
-            writeBody(connection, body);
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
-            JSONArray array = (JSONArray) jsonObject.get("profiles");
-            Number count = (Number) jsonObject.get("size");
+        final Map<String, UUID> uuidMap = new HashMap<>();
+        final String body = UUIDFetcher.buildBody(this.names);
+        for (int i = 1; i < UUIDFetcher.MAX_SEARCH; i++) {
+            final HttpURLConnection connection = UUIDFetcher.createConnection(i);
+            UUIDFetcher.writeBody(connection, body);
+            final JSONObject jsonObject = (JSONObject) this.jsonParser.parse(new InputStreamReader(connection.getInputStream()));
+            final JSONArray array = (JSONArray) jsonObject.get("profiles");
+            final Number count = (Number) jsonObject.get("size");
             if (count.intValue() == 0) {
                 break;
             }
-            for (Object profile : array) {
-                JSONObject jsonProfile = (JSONObject) profile;
-                String id = (String) jsonProfile.get("id");
-                String name = (String) jsonProfile.get("name");
-                UUID uuid = UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
+            for (final Object profile : array) {
+                final JSONObject jsonProfile = (JSONObject) profile;
+                final String id = (String) jsonProfile.get("id");
+                final String name = (String) jsonProfile.get("name");
+                final UUID uuid = UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
                 uuidMap.put(name, uuid);
             }
         }
