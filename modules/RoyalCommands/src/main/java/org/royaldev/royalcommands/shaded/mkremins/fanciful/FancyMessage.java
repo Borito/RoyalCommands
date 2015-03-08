@@ -175,7 +175,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     private Object createChatPacket(String json) throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
         if (nmsChatSerializerGsonInstance == null) {
             // Find the field and its value, completely bypassing obfuscation
-            for (Field declaredField : Reflection.getNMSClass("ChatSerializer").getDeclaredFields()) {
+            for (Field declaredField : Reflection.getNMSClass("IChatBaseComponent$ChatSerializer").getDeclaredFields()) {
                 if (Modifier.isFinal(declaredField.getModifiers()) && Modifier.isStatic(declaredField.getModifiers()) && declaredField.getType().getName().endsWith("Gson")) {
                     // We've found our field
                     declaredField.setAccessible(true);
@@ -228,7 +228,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
         } catch (InstantiationException e) {
             Bukkit.getLogger().log(Level.WARNING, "Underlying class is abstract.", e);
         } catch (InvocationTargetException e) {
-            Bukkit.getLogger().log(Level.WARNING, "A error has occured durring invoking of method.", e);
+            Bukkit.getLogger().log(Level.WARNING, "A error has occurred during invoking of method.", e);
         } catch (NoSuchMethodException e) {
             Bukkit.getLogger().log(Level.WARNING, "Could not find method.", e);
         }
