@@ -4,32 +4,53 @@ import org.bukkit.ChatColor;
 
 public enum MessageColor {
 
-    NEGATIVE(Config.negativeChatColor, ChatColor.RED),
-    NEUTRAL(Config.neutralChatColor, ChatColor.GRAY),
-    POSITIVE(Config.positiveChatColor, ChatColor.BLUE),
-    RESET(Config.resetChatColor, ChatColor.RESET);
+    NEGATIVE(ChatColor.RED),
+    NEUTRAL(ChatColor.GRAY),
+    POSITIVE(ChatColor.BLUE),
+    RESET(ChatColor.RESET);
 
-    private ChatColor c;
+    private final ChatColor def;
 
-    MessageColor(String custom, ChatColor def) {
-        try {
-            this.c = ChatColor.valueOf(custom.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            this.c = def;
-        }
+    MessageColor(final ChatColor def) {
+        this.def = def;
     }
 
     public ChatColor _() {
         return this.getChatColor();
     }
 
+    protected ChatColor byStringOrDefault(final String s) {
+        try {
+            return ChatColor.valueOf(s.toUpperCase());
+        } catch (final IllegalArgumentException ex) {
+            return this.def;
+        }
+    }
+
     public ChatColor getChatColor() {
-        return this.c;
+        final String s;
+        switch (this) {
+            case NEGATIVE:
+                s = Config.negativeChatColor;
+                break;
+            case NEUTRAL:
+                s = Config.neutralChatColor;
+                break;
+            case POSITIVE:
+                s = Config.positiveChatColor;
+                break;
+            case RESET:
+                s = Config.resetChatColor;
+                break;
+            default:
+                s = null;
+        }
+        return this.byStringOrDefault(s);
     }
 
     @Override
     public String toString() {
-        return this.c.toString();
+        return this.getChatColor().toString();
     }
 
 }
