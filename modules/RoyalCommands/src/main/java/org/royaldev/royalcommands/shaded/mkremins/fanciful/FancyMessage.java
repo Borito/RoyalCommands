@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +44,7 @@ import static org.royaldev.royalcommands.shaded.mkremins.fanciful.TextualCompone
  * <p>
  * This class follows the builder pattern, allowing for method chaining.
  * It is set up such that invocations of property-setting methods will affect the current editing component,
- * and a call to {@link #then()} will append a new editing component to the end of the message,
+ * and a call to {@link #then()} or {@link #then} will append a new editing component to the end of the message,
  * optionally initializing it with text. Further property-setting method calls will affect that editing component.
  * </p>
  */
@@ -165,6 +166,18 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
                         // Therefore, recursion time!
                         component.hoverActionData = deserialize(object.get("value").toString() /* This should properly serialize the JSON object as a JSON string */);
                     }
+                } else if ("insertion".equals(entry.getKey())) {
+                    component.insertionData = entry.getValue().getAsString();
+                } else if ("with".equals(entry.getKey())) {
+                    for (JsonElement object : entry.getValue().getAsJsonArray()) {
+                        if (object.isJsonPrimitive()) {
+                            component.translationReplacements.add(new JsonString(object.getAsString()));
+                        } else {
+                            // Only composite type stored in this array is - again - FancyMessages
+                            // Recurse within this function to parse this as a translation replacement
+                            component.translationReplacements.add(deserialize(object.toString()));
+                        }
+                    }
                 }
             }
             returnVal.messageParts.add(component);
@@ -172,14 +185,26 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
         return returnVal;
     }
 
-    private Object createChatPacket(String json) throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+    private Object createChatPacket(String json) throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
         if (nmsChatSerializerGsonInstance == null) {
-            // Look for the new location of ChatSerializer
-            Class<?> chatSerializer = Reflection.getNMSClass("IChatBaseComponent$ChatSerializer");
-            // If we can't find the new version, try looking for the old version
-            if (chatSerializer == null) chatSerializer = Reflection.getNMSClass("ChatSerializer");
             // Find the field and its value, completely bypassing obfuscation
-            for (Field declaredField : chatSerializer.getDeclaredFields()) {
+            Class<?> chatSerializerClazz;
+
+            String version = Reflection.getVersion();
+            double majorVersion = Double.parseDouble(version.replace('_', '.').substring(1, 4));
+            int lesserVersion = Integer.parseInt(version.substring(6, 7));
+
+            if (majorVersion < 1.8 || (majorVersion == 1.8 && lesserVersion == 1)) {
+                chatSerializerClazz = Reflection.getNMSClass("ChatSerializer");
+            } else {
+                chatSerializerClazz = Reflection.getNMSClass("IChatBaseComponent$ChatSerializer");
+            }
+
+            if (chatSerializerClazz == null) {
+                throw new ClassNotFoundException("Can't find the ChatSerializer class");
+            }
+
+            for (Field declaredField : chatSerializerClazz.getDeclaredFields()) {
                 if (Modifier.isFinal(declaredField.getModifiers()) && Modifier.isStatic(declaredField.getModifiers()) && declaredField.getType().getName().endsWith("Gson")) {
                     // We've found our field
                     declaredField.setAccessible(true);
@@ -232,9 +257,11 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
         } catch (InstantiationException e) {
             Bukkit.getLogger().log(Level.WARNING, "Underlying class is abstract.", e);
         } catch (InvocationTargetException e) {
-            Bukkit.getLogger().log(Level.WARNING, "A error has occurred during invoking of method.", e);
+            Bukkit.getLogger().log(Level.WARNING, "An error has occurred while invoking the method.", e);
         } catch (NoSuchMethodException e) {
             Bukkit.getLogger().log(Level.WARNING, "Could not find method.", e);
+        } catch (ClassNotFoundException e) {
+            Bukkit.getLogger().log(Level.WARNING, "Could not find class.", e);
         }
     }
 
@@ -290,7 +317,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      *
      * @param color The new color of the current editing component.
      * @return This builder instance.
-     * @throws IllegalArgumentException If the specified enumeration value does not represent a color.
+     * @throws IllegalArgumentException If the specified {@code ChatColor} enumeration value is not a color (but a format value).
      */
     public FancyMessage color(final ChatColor color) {
         if (!color.isColor()) {
@@ -394,6 +421,19 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     }
 
     /**
+     * Set the behavior of the current editing component to instruct the client to append the chat input box content with the specified string when the currently edited part of the {@code FancyMessage} is SHIFT-CLICKED.
+     * The client will not immediately send the command to the server to be executed unless the client player submits the command/chat message, usually with the enter key.
+     *
+     * @param command The text to append to the chat bar of the client.
+     * @return This builder instance.
+     */
+    public FancyMessage insert(final String command) {
+        latest().insertionData = command;
+        dirty = true;
+        return this;
+    }
+
+    /**
      * Set the behavior of the current editing component to display information about an item when the client hovers over the text.
      * <p>Tooltips do not inherit display characteristics, such as color and styles, from the message component on which they are applied.</p>
      *
@@ -439,6 +479,22 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
         onClick("open_url", url);
         return this;
     }
+    /*
+
+	/**
+	 * If the text is a translatable key, and it has replaceable values, this function can be used to set the replacements that will be used in the message.
+	 * @param replacements The replacements, in order, that will be used in the language-specific message.
+	 * @return This builder instance.
+	 */   /* ------------
+	public FancyMessage translationReplacements(final Iterable<? extends CharSequence> replacements){
+		for(CharSequence str : replacements){
+			latest().translationReplacements.add(new JsonString(str));
+		}
+
+		return this;
+	}
+
+	*/
 
     /**
      * Sends this message to a player. The player will receive the fully-fledged formatted display of this message.
@@ -609,23 +665,22 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      *
      * @param text The new text of the current editing component.
      * @return This builder instance.
-     * @throws IllegalStateException If the text for the current editing component has already been set.
      */
     public FancyMessage text(String text) {
         MessagePart latest = latest();
-        if (latest.hasText()) {
-            throw new IllegalStateException("text for this message part is already set");
-        }
         latest.text = rawText(text);
         dirty = true;
         return this;
     }
 
+    /**
+     * Sets the text of the current editing component to a value.
+     *
+     * @param text The new text of the current editing component.
+     * @return This builder instance.
+     */
     public FancyMessage text(TextualComponent text) {
         MessagePart latest = latest();
-        if (latest.hasText()) {
-            throw new IllegalStateException("text for this message part is already set");
-        }
         latest.text = text;
         dirty = true;
         return this;
@@ -766,6 +821,45 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
         }
         tooltip(builder.toString());
         return this;
+    }
+
+    /**
+     * If the text is a translatable key, and it has replaceable values, this function can be used to set the replacements that will be used in the message.
+     *
+     * @param replacements The replacements, in order, that will be used in the language-specific message.
+     * @return This builder instance.
+     */
+    public FancyMessage translationReplacements(final String... replacements) {
+        for (String str : replacements) {
+            latest().translationReplacements.add(new JsonString(str));
+        }
+        dirty = true;
+
+        return this;
+    }
+
+    /**
+     * If the text is a translatable key, and it has replaceable values, this function can be used to set the replacements that will be used in the message.
+     *
+     * @param replacements The replacements, in order, that will be used in the language-specific message.
+     * @return This builder instance.
+     */
+    public FancyMessage translationReplacements(final FancyMessage... replacements) {
+        Collections.addAll(latest().translationReplacements, replacements);
+
+        dirty = true;
+
+        return this;
+    }
+
+    /**
+     * If the text is a translatable key, and it has replaceable values, this function can be used to set the replacements that will be used in the message.
+     *
+     * @param replacements The replacements, in order, that will be used in the language-specific message.
+     * @return This builder instance.
+     */
+    public FancyMessage translationReplacements(final Iterable<FancyMessage> replacements) {
+        return translationReplacements(ArrayWrapper.toArray(replacements, FancyMessage.class));
     }
 
     @Override

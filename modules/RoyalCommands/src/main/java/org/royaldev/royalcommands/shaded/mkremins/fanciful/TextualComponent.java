@@ -14,6 +14,7 @@ import java.util.Map;
  * Represents a textual component of a message part.
  * This can be used to not only represent string literals in a JSON message,
  * but also to represent localized strings and other text values.
+ * <p>Different instances of this class can be created with static constructor methods.</p>
  */
 public abstract class TextualComponent implements Cloneable {
 
@@ -36,6 +37,10 @@ public abstract class TextualComponent implements Cloneable {
 
     static boolean isTextKey(String key) {
         return "translate".equals(key) || "text".equals(key) || "score".equals(key) || "selector".equals(key);
+    }
+
+    static boolean isTranslatableText(TextualComponent component) {
+        return component instanceof ComplexTextTypeComponent && "translate".equals(component.getKey());
     }
 
     /**
@@ -177,14 +182,14 @@ public abstract class TextualComponent implements Cloneable {
             return _value;
         }
 
-        public void setValue(String value) {
-            Preconditions.checkArgument(value != null, "The value must be specified.");
-            _value = value;
-        }
-
         @Override
         public String getKey() {
             return _key;
+        }
+
+        public void setValue(String value) {
+            Preconditions.checkArgument(value != null, "The value must be specified.");
+            _value = value;
         }
 
         @SuppressWarnings("serial")
@@ -238,13 +243,13 @@ public abstract class TextualComponent implements Cloneable {
             return new ComplexTextTypeComponent(key, value);
         }
 
-        public Map<String, String> getValue() {
-            return _value;
-        }
-
         @Override
         public String getKey() {
             return _key;
+        }
+
+        public Map<String, String> getValue() {
+            return _value;
         }
 
         public void setValue(Map<String, String> value) {

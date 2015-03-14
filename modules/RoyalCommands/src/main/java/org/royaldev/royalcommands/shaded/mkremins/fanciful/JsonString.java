@@ -3,7 +3,6 @@ package org.royaldev.royalcommands.shaded.mkremins.fanciful;
 import com.google.gson.stream.JsonWriter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,13 +12,12 @@ import java.util.Map;
  * Writes by this object will not write name values nor begin/end objects in the JSON stream.
  * All writes merely write the represented string value.
  */
-@Immutable
 final class JsonString implements JsonRepresentedObject, ConfigurationSerializable {
 
     private String _value;
 
-    public JsonString(String value) {
-        _value = value;
+    public JsonString(CharSequence value) {
+        _value = value == null ? null : value.toString();
     }
 
     public static JsonString deserialize(Map<String, Object> map) {
