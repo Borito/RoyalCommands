@@ -3,7 +3,12 @@ package org.royaldev.royalcommands;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.royaldev.royalcommands.opencsv.CSVReader;
 
 import java.io.File;
@@ -15,7 +20,11 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.when;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({RoyalCommands.class})
 public class TestAliases {
 
     private YamlConfiguration pluginYml = null;
@@ -43,6 +52,22 @@ public class TestAliases {
             l.warning("Missing alias for Material " + m.name() + ".");
         }
         assertTrue("Missing aliases!", allAliasesExist);
+    }
+
+    private RoyalCommands makeRoyalCommands() {
+        final RoyalCommands rc = mock(RoyalCommands.class);
+        when(rc.getLogger()).thenReturn(Logger.getAnonymousLogger());
+        return rc;
+    }
+
+    @Before
+    public void setUp() throws Throwable {
+        TestHelpers.setInstance(this.makeRoyalCommands());
+    }
+
+    @After
+    public void tearDown() throws Throwable {
+        TestHelpers.clearInstance();
     }
 
     @Test
