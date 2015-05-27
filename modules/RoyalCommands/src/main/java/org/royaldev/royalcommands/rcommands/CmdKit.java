@@ -63,6 +63,10 @@ public class CmdKit extends TabCommand {
             return true;
         }
         final Kit kit = new Kit(kitName, kitNode);
+        if (Config.kitPerms && !this.ah.isAuthorized(cs, "rcmds.kit" + kit.getName())) {
+            RUtils.dispNoPerms(cs, new String[]{"rcmds.kit." + kit.getName()});
+            return true;
+        }
         if (!kit.hasCooldownPassedFor(rp)) {
             if (kit.getCooldown() == -1L) {
                 cs.sendMessage(MessageColor.NEGATIVE + "This kit can only be used once.");
