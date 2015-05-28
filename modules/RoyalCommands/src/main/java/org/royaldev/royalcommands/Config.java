@@ -191,7 +191,7 @@ public class Config {
         hastebinErrors = c.getBoolean("security.hastebin.errors", true);
         hastebinGeneral = c.getBoolean("security.hastebin.general", true);
         itemSpawnTag = c.getBoolean("items.spawn.tag.enabled", false);
-        kitPerms = c.getBoolean("use_exclusive_kit_perms", false);
+        kitPerms = c.getBoolean("kits.options.exclusive_perms", false);
         motdLogin = c.getBoolean("motd.options.display_on_login", true);
         multiverseNames = c.getBoolean("worldmanager.multiverse_world_names", true);
         nickColorsEnabled = c.getBoolean("nicknames.limits.content.colors.enabled", true);
