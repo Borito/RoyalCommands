@@ -63,7 +63,7 @@ public class CmdKit extends TabCommand {
             return true;
         }
         final Kit kit = new Kit(kitName, kitNode);
-        if (Config.kitPerms && !this.ah.isAuthorized(cs, "rcmds.kit" + kit.getName())) {
+        if (Config.kitPerms && !this.ah.isAuthorized(cs, "rcmds.kit." + kit.getName())) {
             RUtils.dispNoPerms(cs, new String[]{"rcmds.kit." + kit.getName()});
             return true;
         }
