@@ -22,51 +22,54 @@ import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.inventory.ItemStack;
 
 public class WrapperPlayClientSetCreativeSlot extends AbstractPacket {
-
-    public static final PacketType TYPE = PacketType.Play.Client.SET_CREATIVE_SLOT;
+    public static final PacketType TYPE =
+            PacketType.Play.Client.SET_CREATIVE_SLOT;
 
     public WrapperPlayClientSetCreativeSlot() {
-        super(new PacketContainer(WrapperPlayClientSetCreativeSlot.TYPE), WrapperPlayClientSetCreativeSlot.TYPE);
-        this.handle.getModifier().writeDefaults();
+        super(new PacketContainer(TYPE), TYPE);
+        handle.getModifier().writeDefaults();
     }
 
     public WrapperPlayClientSetCreativeSlot(PacketContainer packet) {
-        super(packet, WrapperPlayClientSetCreativeSlot.TYPE);
+        super(packet, TYPE);
     }
 
     /**
-     * Retrieve the clicked item stack.
-     *
+     * Retrieve Slot.
+     * <p>
+     * Notes: inventory slot
+     * 
+     * @return The current Slot
+     */
+    public int getSlot() {
+        return handle.getIntegers().read(0);
+    }
+
+    /**
+     * Set Slot.
+     * 
+     * @param value - new value.
+     */
+    public void setSlot(int value) {
+        handle.getIntegers().write(0, value);
+    }
+
+    /**
+     * Retrieve Clicked item.
+     * 
      * @return The current Clicked item
      */
     public ItemStack getClickedItem() {
-        return this.handle.getItemModifier().read(0);
+        return handle.getItemModifier().read(0);
     }
 
     /**
-     * Set the clicked item stack.
-     *
+     * Set Clicked item.
+     * 
      * @param value - new value.
      */
     public void setClickedItem(ItemStack value) {
-        this.handle.getItemModifier().write(0, value);
+        handle.getItemModifier().write(0, value);
     }
 
-    /**
-     * Retrieve the inventory slot index.
-     *
-     * @return The current Slot
-     */
-    public short getSlot() {
-        return this.handle.getIntegers().read(0).shortValue();
-    }
-
-    /**
-     * Set the inventory slot index.
-     *
-     * @param value - new value.
-     */
-    public void setSlot(short value) {
-        this.handle.getIntegers().write(0, (int) value);
-    }
 }

@@ -11,13 +11,12 @@ import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.utility.StreamSerializer;
 import com.comphenix.protocol.wrappers.nbt.NbtCompound;
 import com.comphenix.protocol.wrappers.nbt.NbtFactory;
+import java.io.DataInputStream;
+import java.io.IOException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.shininet.bukkit.itemrenamer.AbstractRenameProcessor;
 import org.shininet.bukkit.itemrenamer.api.RenamerSnapshot;
-
-import java.io.DataInputStream;
-import java.io.IOException;
 
 public class SpawnRenameProcessor extends AbstractRenameProcessor {
 
@@ -55,10 +54,10 @@ public class SpawnRenameProcessor extends AbstractRenameProcessor {
     }
 
     protected void unprocessFieldStack(PacketEvent event) {
-        DataInputStream input = event.getNetworkMarker().getInputStream();
-        // Skip simulated packets
-        if (input == null) return;
         try {
+			DataInputStream input = event.getNetworkMarker().getInputStream();
+			// Skip simulated packets
+			if (input == null) return;
             // Read slot
             if (event.getPacketType() == PacketType.Play.Client.SET_CREATIVE_SLOT) input.skipBytes(2);
             else if (event.getPacketType() == PacketType.Play.Client.BLOCK_PLACE) input.skipBytes(10);
@@ -67,7 +66,8 @@ public class SpawnRenameProcessor extends AbstractRenameProcessor {
             this.unprocess(stack);
             // And write it back
             event.getPacket().getItemModifier().write(0, stack);
-        } catch (IOException e) {
+        } catch (Exception e) {
+			System.out.println("NBT Scrubber failed.");
             throw new RuntimeException("Cannot undo NBT scrubber.", e);
         }
     }

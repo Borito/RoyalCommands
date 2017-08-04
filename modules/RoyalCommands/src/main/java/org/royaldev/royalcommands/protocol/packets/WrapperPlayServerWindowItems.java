@@ -19,58 +19,58 @@ package org.royaldev.royalcommands.protocol.packets;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
+import java.util.List;
 import org.bukkit.inventory.ItemStack;
 
 public class WrapperPlayServerWindowItems extends AbstractPacket {
+	public static final PacketType TYPE = PacketType.Play.Server.WINDOW_ITEMS;
 
-    public static final PacketType TYPE = PacketType.Play.Server.WINDOW_ITEMS;
+	public WrapperPlayServerWindowItems() {
+		super(new PacketContainer(TYPE), TYPE);
+		handle.getModifier().writeDefaults();
+	}
 
-    public WrapperPlayServerWindowItems() {
-        super(new PacketContainer(WrapperPlayServerWindowItems.TYPE), WrapperPlayServerWindowItems.TYPE);
-        this.handle.getModifier().writeDefaults();
-    }
+	public WrapperPlayServerWindowItems(PacketContainer packet) {
+		super(packet, TYPE);
+	}
 
-    public WrapperPlayServerWindowItems(PacketContainer packet) {
-        super(packet, WrapperPlayServerWindowItems.TYPE);
+	/**
+	 * Retrieve Window ID.
+	 * <p>
+	 * Notes: the id of window which items are being sent for. 0 for player
+	 * inventory.
+	 * 
+	 * @return The current Window ID
+	 */
+    public int getWindowId() {
+        return handle.getIntegers().read(0);
     }
 
     /**
-     * Retrieve the items in the inventory indexed by slot index.
-     *
-     * @return The items that will fill the inventory.
-     */
-    public ItemStack[] getItems() {
-        return this.handle.getItemArrayModifier().read(0);
-    }
-
-    /**
-     * Set the items in the inventory indexed by slot index.
-     *
+     * Set Window ID.
+     * 
      * @param value - new value.
      */
-    public void setItems(ItemStack[] value) {
-        this.handle.getItemArrayModifier().write(0, value);
+    public void setWindowId(int value) {
+        handle.getIntegers().write(0, value);
     }
 
     /**
-     * Retrieve the ID of the window which is being updated.
-     * <p/>
-     * Use 0 for the player inventory.
-     *
-     * @return The current Window id
+     * Retrieve Slot data.
+     * 
+     * @return The current Slot data
      */
-    public byte getWindowId() {
-        return this.handle.getIntegers().read(0).byteValue();
+    public List<ItemStack> getSlotData() {
+        return handle.getItemListModifier().read(0);
     }
 
     /**
-     * Set the ID of the window which is being updated.
-     * <p/>
-     * Use 0 for the player inventory.
-     *
+     * Set Slot data.
+     * 
      * @param value - new value.
      */
-    public void setWindowId(byte value) {
-        this.handle.getIntegers().write(0, (int) value);
+    public void setSlotData(List<ItemStack> value) {
+        handle.getItemListModifier().write(0, value);
     }
+
 }
