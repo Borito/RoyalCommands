@@ -35,7 +35,6 @@ public class CmdGameMode extends BaseCommand {
         } catch (IllegalArgumentException e) {
             try {
                 Integer i = Integer.valueOf(s);
-                if (i > 2 || i < 0) return null;
                 switch (i) {
                     case 0:
                         toRet = GameMode.SURVIVAL;
