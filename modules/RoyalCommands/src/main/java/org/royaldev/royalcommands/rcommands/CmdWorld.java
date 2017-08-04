@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.Iterator;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,8 +13,7 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.util.List;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 @ReflectCommand
 public class CmdWorld extends BaseCommand {
@@ -28,25 +28,20 @@ public class CmdWorld extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
         }
-        if (args.length < 1) {
-            List<World> ws = this.plugin.getServer().getWorlds();
-            String worlds = "";
-            for (World w : ws)
-                worlds = (worlds.equals("")) ? worlds.concat(MessageColor.NEUTRAL + RUtils.getMVWorldName(w)) : worlds.concat(MessageColor.RESET + ", " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w));
-            cs.sendMessage(MessageColor.POSITIVE + "Worlds: " + worlds);
-            return true;
-        }
-        World w = this.plugin.getServer().getWorld(args[0]);
-        if (w == null) {
-            cs.sendMessage(MessageColor.NEGATIVE + "That world does not exist!");
-            List<World> ws = this.plugin.getServer().getWorlds();
-            String worlds = "";
-            for (World w2 : ws) {
-                if (worlds.equals("")) worlds = worlds.concat(MessageColor.NEUTRAL + RUtils.getMVWorldName(w2));
-                else
-                    worlds = worlds.concat(MessageColor.RESET + ", " + MessageColor.NEUTRAL + RUtils.getMVWorldName(w2));
+        World w = args.length > 0 ? this.plugin.getServer().getWorld(args[0]) : null;
+        if (args.length < 1 || w == null) {
+            if (args.length > 0) {
+                cs.sendMessage(MessageColor.NEGATIVE + "That world does not exist!");
             }
-            cs.sendMessage(MessageColor.POSITIVE + "Worlds: " + worlds);
+            Iterator<World> worlds = this.plugin.getServer().getWorlds().iterator();
+            cs.sendMessage(MessageColor.POSITIVE + "Worlds:");
+            final FancyMessage fm = new FancyMessage("");
+            while (worlds.hasNext()) {
+                final World world = worlds.next();
+                fm.then(RUtils.getMVWorldName(world)).color(MessageColor.NEUTRAL._()).command("/tpw " + RUtils.getMVWorldName(world));
+                if (worlds.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
+            }
+            fm.send(cs);
             return true;
         }
         Player p = (Player) cs;
