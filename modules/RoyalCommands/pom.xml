@@ -174,16 +174,16 @@
             <id>spigot</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
-        <repository>
+        <!--<repository> RoyalDev.org is dead forevermore :(
             <id>royal-repo</id>
             <url>http://minor.royaldev.org:8081/nexus/content/groups/public/</url>
-        </repository>
+        </repository>-->
     </repositories>
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.8.3-R0.1-SNAPSHOT</version>
+            <version>1.12-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -195,12 +195,6 @@
         <dependency>
             <groupId>org.kitteh</groupId>
             <artifactId>VanishNoPacket</artifactId>
-            <version>RELEASE</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.kitteh</groupId>
-            <artifactId>tagapi</artifactId>
             <version>RELEASE</version>
             <scope>provided</scope>
         </dependency>
@@ -218,7 +212,7 @@
         <dependency>
             <groupId>com.griefcraft</groupId>
             <artifactId>lwc</artifactId>
-            <version>LATEST</version>
+            <version>4.5</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -253,7 +247,8 @@
         <dependency>
             <groupId>com.comphenix.attribute</groupId>
             <artifactId>AttributeStorage</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.4-SNAPSHOT</version>
+			<scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
@@ -272,8 +267,10 @@
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
-            <artifactId>royalchat</artifactId>
-            <version>LATEST</version>
+            <artifactId>RoyalChat</artifactId>
+            <type>jar</type>
+            <version>1.1.1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
@@ -321,13 +318,6 @@
             <groupId>org.royaldev</groupId>
             <artifactId>royalcommands-NMS1_7_R1</artifactId>
             <version>v1_7_R1</version>
-            <type>jar</type>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.royaldev</groupId>
-            <artifactId>royalcommands-NMS1_6_R3</artifactId>
-            <version>v1_6_R3</version>
             <type>jar</type>
             <optional>true</optional>
         </dependency>
