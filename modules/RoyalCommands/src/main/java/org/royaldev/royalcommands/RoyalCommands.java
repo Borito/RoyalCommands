@@ -5,8 +5,23 @@
  */
 package org.royaldev.royalcommands;
 
+import com.google.common.base.Charsets;
 import com.griefcraft.lwc.LWCPlugin;
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -27,7 +42,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Contract;
-import org.kitteh.tag.TagAPI;
 import org.kitteh.vanish.VanishPlugin;
 import org.royaldev.royalcommands.api.RApiMain;
 import org.royaldev.royalcommands.configuration.Configuration;
@@ -55,20 +69,6 @@ import org.royaldev.royalcommands.runners.WarnWatcher;
 import org.royaldev.royalcommands.shaded.com.sk89q.util.config.FancyConfiguration;
 import org.royaldev.royalcommands.spawninfo.ItemListener;
 import org.royaldev.royalcommands.tools.UUIDFetcher;
-
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 // import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -497,9 +497,7 @@ public class RoyalCommands extends JavaPlugin {
         //-- Set fields --//
 
         RoyalCommands.instance = this;
-        // Using deprecated method for backwards-compatibility. Will update eventually.
-        //noinspection deprecation
-        this.pluginYml = YamlConfiguration.loadConfiguration(this.getResource("plugin.yml"));
+        this.pluginYml = YamlConfiguration.loadConfiguration(new InputStreamReader(this.getResource("plugin.yml"), Charsets.UTF_8));
         RoyalCommands.dataFolder = getDataFolder();
         this.whl = Configuration.getConfiguration("whitelist.yml");
         RoyalCommands.commands = pluginYml.getConfigurationSection("reflectcommands");
