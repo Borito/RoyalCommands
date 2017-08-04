@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.Iterator;
+import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -17,8 +19,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
-
-import java.util.Map;
+import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 @ReflectCommand
 public class CmdWarp extends BaseCommand {
@@ -77,10 +78,15 @@ public class CmdWarp extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "There are no warps!");
                 return true;
             }
-            String warps = opts.keySet().toString();
-            warps = warps.substring(1, warps.length() - 1);
+            Iterator<String> warps = opts.keySet().iterator();
             cs.sendMessage(MessageColor.POSITIVE + "Warps:");
-            cs.sendMessage(warps);
+            final FancyMessage fm = new FancyMessage("");
+            while (warps.hasNext()) {
+                final String warp = warps.next();
+                fm.then(warp).color(MessageColor.NEUTRAL._()).command("/warp " + warp);
+                if (warps.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
+            }
+            fm.send(cs);
             return true;
         }
         if (args.length == 1 && cs instanceof Player) {
@@ -94,7 +100,7 @@ public class CmdWarp extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "You do not have permission for that warp!");
                 return true;
             }
-            cs.sendMessage(MessageColor.POSITIVE + "Going to warp \"" + MessageColor.NEUTRAL + args[0].toLowerCase() + MessageColor.POSITIVE + ".\"");
+            cs.sendMessage(MessageColor.POSITIVE + "Teleported to warp " + MessageColor.NEUTRAL + args[0].toLowerCase() + MessageColor.POSITIVE + ".");
             String error = RUtils.teleport(p, warpLoc);
             if (!error.isEmpty()) {
                 p.sendMessage(MessageColor.NEGATIVE + error);
