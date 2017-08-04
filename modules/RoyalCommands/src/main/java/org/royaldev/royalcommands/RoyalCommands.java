@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
@@ -218,7 +219,7 @@ public class RoyalCommands extends JavaPlugin {
             // Make sure it actually implements NMS and set our handler
             if (NMSFace.class.isAssignableFrom(clazz)) this.nmsFace = (NMSFace) clazz.getConstructor().newInstance();
         } catch (final Exception e) {
-            this.getLogger().warning("Could not find support for this CraftBukkit version.");
+            this.getLogger().log(Level.WARNING, "Could not find support for this CraftBukkit version ({0}).", versionNMS);
             this.getLogger().info("The BukkitDev page has links to the newest development builds to fix this.");
             this.getLogger().info("For now, NMS/CB internal support will be disabled.");
             this.nmsFace = new org.royaldev.royalcommands.nms.NoSupport.NMSHandler();
