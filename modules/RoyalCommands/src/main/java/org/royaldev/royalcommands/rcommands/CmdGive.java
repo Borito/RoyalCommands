@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.HashMap;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,8 +17,6 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
-
-import java.util.HashMap;
 
 @ReflectCommand
 public class CmdGive extends TabCommand {
@@ -59,7 +58,7 @@ public class CmdGive extends TabCommand {
                 .color(MessageColor.POSITIVE._())
             .then(RUtils.getItemName(m))
                 .color(MessageColor.NEUTRAL._())
-                .itemTooltip(stack)
+                //.itemTooltip(stack)
             .then(" to ")
                 .color(MessageColor.POSITIVE._())
             .then(target.getName())
@@ -155,7 +154,7 @@ public class CmdGive extends TabCommand {
                 .color(MessageColor.POSITIVE._())
             .then(RUtils.getItemName(m))
                 .color(MessageColor.NEUTRAL._())
-                .itemTooltip(toInv)
+                //.itemTooltip(toInv)
             .then(" to ")
                 .color(MessageColor.POSITIVE._())
             .then(t.getName())
@@ -172,7 +171,7 @@ public class CmdGive extends TabCommand {
                 .color(MessageColor.POSITIVE._())
             .then(RUtils.getItemName(m))
                 .color(MessageColor.NEUTRAL._())
-                .itemTooltip(toInv)
+                //.itemTooltip(toInv)
             .then(".")
                 .color(MessageColor.POSITIVE._())
             .send(t);

@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,10 +20,6 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 @ReflectCommand
 public class CmdItem extends TabCommand {
@@ -121,7 +120,7 @@ public class CmdItem extends TabCommand {
                 .color(MessageColor.POSITIVE._())
             .then(RUtils.getItemName(m))
                 .color(MessageColor.NEUTRAL._())
-                .itemTooltip(toInv)
+                //.itemTooltip(toInv)
             .then(" to ")
                 .color(MessageColor.POSITIVE._())
             .then(p.getName())
