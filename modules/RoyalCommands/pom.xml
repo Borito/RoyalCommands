@@ -281,6 +281,13 @@
         </dependency>
         <dependency>
             <groupId>org.royaldev</groupId>
+            <artifactId>royalcommands-NMS1_12_R1</artifactId>
+            <version>v1_12_R1</version>
+            <type>jar</type>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.royaldev</groupId>
             <artifactId>royalcommands-NMS1_8_R2</artifactId>
             <version>v1_8_R2</version>
             <type>jar</type>
