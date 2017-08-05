@@ -83,7 +83,7 @@ public class CmdWarp extends BaseCommand {
             final FancyMessage fm = new FancyMessage("");
             while (warps.hasNext()) {
                 final String warp = warps.next();
-                fm.then(warp).color(MessageColor.NEUTRAL._()).command("/warp " + warp);
+                fm.then(warp).color(MessageColor.NEUTRAL._()).tooltip(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + warp).command("/warp " + warp);
                 if (warps.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
             }
             fm.send(cs);

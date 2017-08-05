@@ -5,6 +5,11 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -19,12 +24,6 @@ import org.royaldev.royalcommands.rcommands.home.Home;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 @ReflectCommand
 public class CmdListHomes extends BaseCommand {
@@ -67,12 +66,13 @@ public class CmdListHomes extends BaseCommand {
         cs.sendMessage(MessageColor.POSITIVE + "Homes (" + MessageColor.NEUTRAL + rp.getHomes().size() + MessageColor.POSITIVE + "/" + MessageColor.NEUTRAL + ((homeLimit < 0) ? "Unlimited" : homeLimit) + MessageColor.POSITIVE + "):");
         for (final Map.Entry<World, List<Home>> entry : sortedHomes.entrySet()) {
             final World w = entry.getKey();
+			/* TODO Make the home name clickable to teleport to that world if it's valid and if the user has permission to teleport */
             cs.sendMessage(MessageColor.POSITIVE + "  Homes for " + MessageColor.NEUTRAL + (w == null ? "an invalid world" : w.getName()) + MessageColor.POSITIVE + ":");
             final FancyMessage fm = new FancyMessage("    ");
             final Iterator<Home> homes = entry.getValue().iterator();
             while (homes.hasNext()) {
                 final Home home = homes.next();
-                fm.then(home.getName()).color(MessageColor.NEUTRAL._()).command("/home " + home.getFullName());
+                fm.then(home.getName()).color(MessageColor.NEUTRAL._()).tooltip(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + home.getName()).command("/home " + home.getFullName());
                 if (homes.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
             }
             fm.send(cs);
