@@ -1,0 +1,22 @@
+# Jekyll local site builds
+_site
+
+# Sublime Text files
+*.sublime-*
+
+# Local Python scripts
+createCommands.py
+creoleToMarkdown.py
+
+# SASS
+.sass-cache
+
+# JetBrains
+.idea
+*.iml
+
+# OS X
+.DS_Store
+
+# Build script
+build.sh

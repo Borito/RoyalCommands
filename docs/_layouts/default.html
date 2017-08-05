@@ -1,0 +1,36 @@
+---
+navbar:
+  links:
+    commands: Commands
+    permissions: Permissions
+    formats: Formats
+    signs: Signs
+---
+{% strip %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300italic,700" rel="stylesheet" type="text/css"/>
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:300" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/g/pure@0.5.0(base-min.css+menus-min.css+grids-min.css+grids-responsive-min.css)"/>
+  <link rel="stylesheet" href="/css/custom.css"/>
+  {% if page.extra_css != "" %}{{ page.extra_css }}{% endif %}
+  <title>{% if page.title != "" %}{{ page.title }} | {% endif %}RoyalCommands Docs</title>
+</head>
+<body>
+<nav class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed" role="navigation">
+  <a href="/" class="pure-menu-heading">Docs</a>
+  <ul>
+    {% for link in page.navbar.links %}
+    {% assign href = "/" | append:link[0] %}
+    <li{% if page.url contains href %} class="pure-menu-selected"{% endif %}><a href="{{ href }}">{{ link[1]] }}</a></li>
+    {% endfor %}
+  </ul>
+</nav>
+{{ content }}
+<script src="/js/fastclick.min.js"></script>
+{% if page.extra_javascript != "" %}{{ page.extra_javascript }}{% endif %}
+</body>
+</html>
+{% endstrip %}

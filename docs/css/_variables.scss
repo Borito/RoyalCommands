@@ -1,0 +1,20 @@
+// Main vars
+$main: #222;
+$accent: #d42041;
+$background: #f6f6f6;
+$menu-bg: #4f2d33;
+
+// Bootstrap vars
+$screen-xs-max: 767px;
+$screen-sm-min: $screen-xs-max + 1;
+$table-bg: transparent;
+$line-height-base: 20px;
+$line-height-computed: $line-height-base;
+$table-cell-padding: 8px;
+$table-border-color: #ddd;
+$table-condensed-cell-padding: 5px;
+$table-bg-accent: #f9f9f9;
+$table-bg-hover: #f5f5f5;
+$body-bg: $background;
+$grid-float-breakpoint: 768px;
+$component-offset-horizontal: 180px;

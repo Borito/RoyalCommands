@@ -1,0 +1,111 @@
+---
+layout: titled
+title: Firework Format
+extra_css: |
+  <link rel="stylesheet" href="/css/bootstrap-dl.css"/>
+  <link rel="stylesheet" href="/css/bootstrap-table.css"/>
+---
+
+<p>
+  If a component of RoyalCommands states that it supports <em>firework format</em>, then it will use the format detailed
+  below as an argument.
+</p>
+
+<h3>Examples</h3>
+<p>
+  Firework format is a system of keys and values, set up like <code>key:value</code>.
+</p>
+<dl class="dl-horizontal">
+  <dt>Keys</dt>
+  <dd>
+    <table class="table table-condensed">
+      <tr>
+        <td>color*</td>
+        <td>Color of the initial firework explosion</td>
+      </tr>
+      <tr>
+        <td>fade</td>
+        <td>Color of the fading firework</td>
+      </tr>
+      <tr>
+        <td>shape*</td>
+        <td>Shape of the explosion</td>
+      </tr>
+      <tr>
+        <td>effect</td>
+        <td>Effects to be applied to the explosion</td>
+      </tr>
+      <tr>
+        <td>power</td>
+        <td>How high the firework goes (each level is one half-second)</td>
+      </tr>
+    </table>
+    <p class="text-muted">
+      <small>* - This tag is required.</small>
+    </p>
+  </dd>
+  <dt>Values</dt>
+  <dd>
+    <ul class="unstyled">
+      <li>color/fade</li>
+      <li>
+        <ul class="nostyle">
+          <li>red</li>
+          <li>green</li>
+          <li>white</li>
+          <li>yellow</li>
+          <li>aqua</li>
+          <li>black</li>
+          <li>teal</li>
+          <li>purple</li>
+          <li>fuchsia</li>
+          <li>orange</li>
+          <li>gray</li>
+          <li>olive</li>
+          <li>maroon</li>
+          <li>lime</li>
+          <li>navy</li>
+          <li>rgb</li>
+          <li>
+            <ul class="nostyle">
+              <li>#,#,#</li>
+            </ul>
+          </li>
+          <li>bgr</li>
+          <li>
+            <ul class="nostyle">
+              <li>#,#,#</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>shape</li>
+      <li>
+        <ul class="nostyle">
+          <li>ball</li>
+          <li>large_ball</li>
+          <li>star</li>
+          <li>creeper</li>
+          <li>burst</li>
+        </ul>
+      </li>
+      <li>effect</li>
+      <li>
+        <ul class="nostyle">
+          <li>flicker</li>
+          <li>trail</li>
+        </ul>
+      </li>
+      <li>power</li>
+      <li>
+        <ul class="nostyle">
+          <li># (0 - 128)</li>
+        </ul>
+      </li>
+    </ul>
+  </dd>
+</dl>
+<p>
+  An example firework format could be <code>shape:ball color:red fade:green power:2</code> or
+  <code>shape:star color:rgb:255,255,255 fade:black effect:trail effect:flicker power:1</code>.
+</p>

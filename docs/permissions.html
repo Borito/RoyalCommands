@@ -1,0 +1,1928 @@
+---
+layout: titled
+title: Permissions
+extra_css: |
+  <link rel="stylesheet" href="/css/bootstrap-table.css"/>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/g/pure@0.5.0(forms-min.css+buttons-min.css)"/>
+  <style>table { margin-top: 10px; } ul.pure-paginator { text-align: center; margin-top: 10px; }</style>
+extra_javascript: |
+  <script src="/js/list.min.js"></script>
+  <script src="/js/list.pagination.min.js"></script>
+  <script>
+    function query(a) {
+      var b = window.location.search.substring(1), c = b.split("&"), d;
+      for (var i = 0; i < c.length; i++) {
+        d = c[i].split("=");
+        if (d[0] == a) return d[1];
+      }
+    }
+    function listStuff() {
+      var perms_list = new List("permission_list", {
+        valueNames: ["permission", "description", "default", "command"],
+        page: 100,
+        plugins: [
+          ListPagination({
+            paginationClass: "pure-paginator",
+            outerWindow: 1
+          })
+        ]
+      });
+      var search = query("search");
+      if (search !== undefined) {
+        document.getElementById("permission_search").value = query("search");
+        perms_list.search(query("search"))
+      }
+    }
+    listStuff();
+  </script>
+---
+<div id="permission_list">
+  <div class="pure-form">
+    <input id="permission_search" type="text" class="search pure-input-1 pure-input-rounded" placeholder="Search"/>
+  </div>
+  <ul class="pure-paginator"></ul>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Permission</th>
+        <th>Description</th>
+        <th>Default</th>
+        <th>Command</th>
+      </tr>
+    </thead>
+    <tbody class="list">
+      <tr>
+        <td class="permission">rcmds.*</td>
+        <td class="description">Gives every permission.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.accountstatus</td>
+        <td class="description">Allows you to check if a player name is premium.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/accountstatus">/accountstatus</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.admin</td>
+        <td class="description">Gives every permission.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.afk</td>
+        <td class="description">Allows you to mark yourself as AFK.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/afk">/afk</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.allowed.item</td>
+        <td class="description">Allows the player to spawn prohibited items.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.assign</td>
+        <td class="description">Allows you to assign a command to a block.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/assign">/assign</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.attributes</td>
+        <td class="description">Allows you to modify item attributes.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/attributes">/attributes</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.back</td>
+        <td class="description">Allows you to return to where you were.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/back">/back</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.backpack</td>
+        <td class="description">Allows you to open a personal backpack.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/backpack">/backpack</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.ban</td>
+        <td class="description">Allows you to ban players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/ban">/ban</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.banhistory</td>
+        <td class="description">Allows you to view ban history of players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/banhistory">/banhistory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.baninfo</td>
+        <td class="description">Allows you to view info about bans.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/baninfo">/baninfo</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.banip</td>
+        <td class="description">Allows you to ban IPs.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/banip">/banip</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.banlist</td>
+        <td class="description">Allows you to see all banned players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/banlist">/banlist</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.biome</td>
+        <td class="description">Allows you to change biomes.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/biome">/biome</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.broadcast</td>
+        <td class="description">Allows you to broadcast messages to the server.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/broadcast">/broadcast</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.buddha</td>
+        <td class="description">Allows you to toggle buddha mode.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/buddha">/buddha</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.burn</td>
+        <td class="description">Allows you to set players on fire.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/burn">/burn</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.clearinventory</td>
+        <td class="description">Allows you to clear your inventory.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/clearinventory">/clearinventory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.clearwarns</td>
+        <td class="description">Allows you to clear warnings on players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/clearwarns">/clearwarns</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.commandspy</td>
+        <td class="description">Allows you to spy on commands used.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/commandspy">/commandspy</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.compareip</td>
+        <td class="description">Allows you to compare to players' IPs</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/compareip">/compareip</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.compass</td>
+        <td class="description">Allows you to change where your compass points.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/compass">/compass</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.coords</td>
+        <td class="description">Allows you to see your coordinates.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/coords">/coords</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.deafen</td>
+        <td class="description">Allows you to deafen a player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/deafen">/deafen</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.deletebanhistory</td>
+        <td class="description">Allows you to remove ban history records.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/deletebanhistory">/deletebanhistory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.deletehome</td>
+        <td class="description">Allows you to delete a home.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/deletehome">/deletehome</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.deletejail</td>
+        <td class="description">Allows you to delete a jail.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/deletejail">/deletejail</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.deletewarp</td>
+        <td class="description">Allows you to delete warps.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/deletewarp">/deletewarp</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.documentation</td>
+        <td class="description">Allows you to view documentation for commands or permission nodes.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/documentation">/documentation</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.dump</td>
+        <td class="description">Allows you to store your inventory in a chest.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/dump">/dump</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.effect</td>
+        <td class="description">Allows you to apply custom potion effects on players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/effect">/effect</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.enchant</td>
+        <td class="description">Allows you to enchant items.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/enchant">/enchant</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.enchant.*</td>
+        <td class="description">Allows all types of enchantments.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/enchant">/enchant</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.enchant.illegal</td>
+        <td class="description">Allows you to enchant with enchantments that are not allowed together in vanilla.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/enchant">/enchant</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.enchant.levels</td>
+        <td class="description">Allows you to enchant beyond vanilla levels.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/enchant">/enchant</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.enchantingtable</td>
+        <td class="description">Allows you to open an enchanting table anywhere.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/enchantingtable">/enchantingtable</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.enderchest</td>
+        <td class="description">Allows you to view a player's ender chest.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/enderchest">/enderchest</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.entities</td>
+        <td class="description">Allows you to see nearby entities.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/entities">/entities</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.erase</td>
+        <td class="description">Allows you to remove entities.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/erase">/erase</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.*</td>
+        <td class="description">Gives every exempt permission.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.afkkick</td>
+        <td class="description">Makes the player immune to AFK kicks.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/afk">/afk</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.autoafk</td>
+        <td class="description">Makes the player immune to auto AFK.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/afk">/afk</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.backpack</td>
+        <td class="description">Makes the player immune to /backpack.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/backpack">/backpack</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.ban</td>
+        <td class="description">Makes the player immune to /ban.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/ban">/ban</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.burn</td>
+        <td class="description">Makes the player immune to /burn.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/burn">/burn</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.commandspy</td>
+        <td class="description">Makes the player immune to /commandspy and command spying.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/commandspy">/commandspy</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.cooldown.*</td>
+        <td class="description">Gives every cooldown exemption.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.cooldown.commands</td>
+        <td class="description">Makes the player exempt to command cooldowns.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.cooldown.kits</td>
+        <td class="description">Makes the player exempt to kit cooldowns.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.cooldown.teleports</td>
+        <td class="description">Makes the player exempt to teleport cooldowns.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.deafen</td>
+        <td class="description">Makes the player immune to /deafen.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/deafen">/deafen</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.deletehome</td>
+        <td class="description">Makes the player immune to /delhome.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/deletehome">/deletehome</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.effect</td>
+        <td class="description">Makes the player immune to /effect.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/effect">/effect</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.enderchest</td>
+        <td class="description">Makes the player immune to /enderchest.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/enderchest">/enderchest</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.explode</td>
+        <td class="description">Makes the player immune to /explode.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/explode">/explode</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.feed</td>
+        <td class="description">Makes the player immune to /feed.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/feed">/feed</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.force</td>
+        <td class="description">Makes the player immune to /force.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/force">/force</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.freeze</td>
+        <td class="description">Makes the player immune to /freeze.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/freeze">/freeze</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.gamemode</td>
+        <td class="description">Makes the player immune to /gamemode.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/gamemode">/gamemode</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.harm</td>
+        <td class="description">Makes the player immune to /harm.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/harm">/harm</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.head</td>
+        <td class="description">Makes the player immune to /head.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/head">/head</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.home</td>
+        <td class="description">Makes it so no other players can access the player's houses.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/home">/home</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.ignore</td>
+        <td class="description">Makes the player immune to /ignore.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/ignore">/ignore</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.jail</td>
+        <td class="description">Makes the player immune to /jail.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/jail">/jail</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.kick</td>
+        <td class="description">Makes the player immune to /kick.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/kick">/kick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.kickhistory</td>
+        <td class="description">Makes the player immune to /kickhistory.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/kickhistory">/kickhistory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.kill</td>
+        <td class="description">Makes the player immune to /kill.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/kill">/kill</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.limit.spawnmob</td>
+        <td class="description">Allows the player to spawn more than the server limit of mobs.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/spawnmob">/spawnmob</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.listhomes</td>
+        <td class="description">Makes the player immune to /listhome.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/listhomes">/listhomes</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.messagespy</td>
+        <td class="description">Makes the player immune to /messagespy and message spying.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/messagespy">/messagespy</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.modifyinventory</td>
+        <td class="description">Makes the player immune to /invmod.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/modifyinventory">/modifyinventory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.monitor</td>
+        <td class="description">Makes the player immune to /monitor.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/monitor">/monitor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.mute</td>
+        <td class="description">Makes the player immune to /mute.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/mute">/mute</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.nick</td>
+        <td class="description">Makes the player immune to /nick.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/nick">/nick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.nick.*</td>
+        <td class="description">Grants all rcmds.exempt.nick.* permissions</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/nick">/nick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.nick.changelimit</td>
+        <td class="description">Makes the player immune to the nick change limit.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/nick">/nick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.nick.length</td>
+        <td class="description">Makes the player immune to the nick length check.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/nick">/nick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.nick.regex</td>
+        <td class="description">Makes the player immune to the nick character check.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/nick">/nick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.ride</td>
+        <td class="description">Makes the player immune to /ride.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/ride">/ride</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.rocket</td>
+        <td class="description">Makes the player immune to /rocket.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/rocket">/rocket</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.selectiveclearinventory</td>
+        <td class="description">Makes the player immune to /sci.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/selectiveclearinventory">/selectiveclearinventory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.setarmor</td>
+        <td class="description">Makes the player immune to /setarmor.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.slap</td>
+        <td class="description">Makes the player immune to /slap.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/slap">/slap</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.speak</td>
+        <td class="description">Makes the player immune to /speak.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/speak">/speak</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.starve</td>
+        <td class="description">Makes the player immune to /starve.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/starve">/starve</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.strike</td>
+        <td class="description">Makes the player immune to /strike.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/strike">/strike</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.teleportwarmup</td>
+        <td class="description">Makes the player exempt to teleport warmups.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.warn</td>
+        <td class="description">Makes the player immune to /warn.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/warn">/warn</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.exempt.warp</td>
+        <td class="description">Makes the player immune to /warp.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/warp">/warp</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.explode</td>
+        <td class="description">Allows you to explode other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/explode">/explode</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.fakeop</td>
+        <td class="description">Allows you to fake op.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/fakeop">/fakeop</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.feed</td>
+        <td class="description">Allows you to feed yourself.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/feed">/feed</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.findip</td>
+        <td class="description">Allows you to find players with matching IPs.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/findip">/findip</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.fireball</td>
+        <td class="description">Allows you to launch a fireball.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/fireball">/fireball</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.firework</td>
+        <td class="description">Allows you to set firework effects.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/firework">/firework</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.fixchunk</td>
+        <td class="description">Allows you to fix chunk errors.</td>
+        <td class="default">Everyone</td>
+        <td><a class="command" href="/commands/fixchunk">/fixchunk</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.fly</td>
+        <td class="description">Allows you to toggle flymode.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/fly">/fly</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.flyspeed</td>
+        <td class="description">Allows you to change your flying speed.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/flyspeed">/flyspeed</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.force</td>
+        <td class="description">Allows you to run a command as another player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/force">/force</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.freeze</td>
+        <td class="description">Allows you to freeze a player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/freeze">/freeze</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.freezetime</td>
+        <td class="description">Allows you to freeze the time.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/freezetime">/freezetime</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.furnace</td>
+        <td class="description">Allows you to remotely open a furnace.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/furnace">/furnace</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.gamemode</td>
+        <td class="description">Allows you to change your gamemode.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/gamemode">/gamemode</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.garbagecollector</td>
+        <td class="description">Allows you to run the Java garbage collector.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/garbagecollector">/garbagecollector</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.getid</td>
+        <td class="description">Allows you to get the ID of the item in hand.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/getid">/getid</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.getip</td>
+        <td class="description">Allows you to get the IP of another player</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/getip">/getip</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.give</td>
+        <td class="description">Allows you to give items to players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/give">/give</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.god</td>
+        <td class="description">Allows you to use god mode.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/god">/god</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.harm</td>
+        <td class="description">Allows you to damage another player</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/harm">/harm</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.head</td>
+        <td class="description">Allows you to set a head to a player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/head">/head</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.heal</td>
+        <td class="description">Allows you to heal yourself.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/heal">/heal</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.helmet</td>
+        <td class="description">Allows you to change your helmet.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/helmet">/helmet</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.help</td>
+        <td class="description">Allows you to see server help.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/help">/help</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.home</td>
+        <td class="description">Allows you to go home.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/home">/home</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.hug</td>
+        <td class="description">Allows you to hug other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/hug">/hug</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.ignore</td>
+        <td class="description">Allows you to ignore other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/ignore">/ignore</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.ingot2block</td>
+        <td class="description">Allows you to make raw materials into blocks.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/ingot2block">/ingot2block</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.item</td>
+        <td class="description">Allows you to spawn items.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/item">/item</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.jail</td>
+        <td class="description">Allows you to jail players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/jail">/jail</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.jump</td>
+        <td class="description">Allows you to jump to your cursor.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/jump">/jump</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.kick</td>
+        <td class="description">Allows you to kick a player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/kick">/kick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.kickall</td>
+        <td class="description">Allows you to kick every player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/kickall">/kickall</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.kickhistory</td>
+        <td class="description">Allows you to view your own kicks.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/kickhistory">/kickhistory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.kill</td>
+        <td class="description">Allows you to kill other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/kill">/kill</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.killall</td>
+        <td class="description">Allows you to kill all players on the server.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/killall">/killall</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.kit</td>
+        <td class="description">Allows you to spawn kits.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/kit">/kit</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.kits</td>
+        <td class="description">Allows you to list available kits.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/kits">/kits</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.lag</td>
+        <td class="description">Allows you to poll the ticks per second.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/lag">/lag</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.less</td>
+        <td class="description">Allows you to get one of the item in hand.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/less">/less</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.level</td>
+        <td class="description">Allows you to level your XP up by 1</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/level">/level</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.list</td>
+        <td class="description">Allows you to see who is online.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/list">/list</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.listhomes</td>
+        <td class="description">Allows you to list your homes.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/listhomes">/listhomes</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.listwarns</td>
+        <td class="description">Allows you to list your warnings.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/listwarns">/listwarns</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.loadplayer</td>
+        <td class="description">Allows you to load player data.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/loadplayer">/loadplayer</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.lore</td>
+        <td class="description">Allows you to set lore on an item.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/lore">/lore</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.mail</td>
+        <td class="description">Allows you to view and clear your mail.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/mail">/mail</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.mail.send</td>
+        <td class="description">Allows you to send mail to a player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/mail">/mail</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.map</td>
+        <td class="description">Allows you to adjust maps.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/map">/map</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.megastrike</td>
+        <td class="description">Allows you to call a mega-strike.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/megastrike">/megastrike</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.memory</td>
+        <td class="description">Allows you to see the memory usage.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/memory">/memory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.message</td>
+        <td class="description">Allows you to private message.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/message">/message</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.messageoftheday</td>
+        <td class="description">Allows you to see the message of the day.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/messageoftheday">/messageoftheday</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.messagespy</td>
+        <td class="description">Allows you to spy on private messages.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/messagespy">/messagespy</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.mobignore</td>
+        <td class="description">Allows you to toggle if mobs ignore you.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/mobignore">/mobignore</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.modifyinventory</td>
+        <td class="description">Allows you to modify other players' inventories.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/modifyinventory">/modifyinventory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.monitor</td>
+        <td class="description">Allows you to watch other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/monitor">/monitor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.more</td>
+        <td class="description">Allows you to give yourself more of the item in hand.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/more">/more</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.mute</td>
+        <td class="description">Allows you to mute players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/mute">/mute</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.muteall</td>
+        <td class="description">Allows you to mute all players on the server.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/muteall">/muteall</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.nameentity</td>
+        <td class="description">Allows you to set an entity's name.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/nameentity">/nameentity</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.near</td>
+        <td class="description">Allows you to see nearby players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/near">/near</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.nick</td>
+        <td class="description">Allows you to set a player's display name.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/nick">/nick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.nick.colors</td>
+        <td class="description">Allows you to use color in nicknames.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/nick">/nick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.notarget</td>
+        <td class="description">Disables the mobs' ability to target the player.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.onehitkill</td>
+        <td class="description">Allows you to kill anything instantly.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/onehitkill">/onehitkill</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.op</td>
+        <td class="description">Gives every default operator permission.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.*</td>
+        <td class="description">Gives every permission to use commands towards others.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.backpack</td>
+        <td class="description">Allows the player to /backpack other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/backpack">/backpack</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.buddha</td>
+        <td class="description">Allows the player to /buddha other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/buddha">/buddha</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.clearinventory</td>
+        <td class="description">Allows the player to clear other people's inventories.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/clearinventory">/clearinventory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.commandspy</td>
+        <td class="description">Allows the player to /commandspy other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/commandspy">/commandspy</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.coords</td>
+        <td class="description">Allows the player to see other players' coordinates.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/coords">/coords</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.deafen</td>
+        <td class="description">Allows the player to /deafen other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/deafen">/deafen</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.deletehome</td>
+        <td class="description">Allows the player to /delhome other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/deletehome">/deletehome</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.effect</td>
+        <td class="description">Allows the player to /effect other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/effect">/effect</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.feed</td>
+        <td class="description">Allows the player to /feed other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/feed">/feed</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.fly</td>
+        <td class="description">Allows the player to toggle other players' fly ability.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/fly">/fly</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.god</td>
+        <td class="description">Allows the player to /god other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/god">/god</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.head</td>
+        <td class="description">Allows the player to /head other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/head">/head</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.home</td>
+        <td class="description">Allows the player to go to other players' homes.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/home">/home</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.kickhistory</td>
+        <td class="description">Allows the player to /kickhistory other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/kickhistory">/kickhistory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.listhomes</td>
+        <td class="description">Allows the player to /listhome other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/listhomes">/listhomes</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.listwarns</td>
+        <td class="description">Allows the player to /listwarns other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/listwarns">/listwarns</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.loadplayer</td>
+        <td class="description">Allows the player to /loadplayer other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/loadplayer">/loadplayer</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.megastrike</td>
+        <td class="description">Allows the player to /megastrike other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/megastrike">/megastrike</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.messagespy</td>
+        <td class="description">Allows the player to /messagespy other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/messagespy">/messagespy</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.nick</td>
+        <td class="description">Allows the player to /nick other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/nick">/nick</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.ping</td>
+        <td class="description">Allows the player to /ping other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/ping">/ping</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.playerextinguish</td>
+        <td class="description">Allows the player to /playerextinguish other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/playerextinguish">/playerextinguish</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.saveplayer</td>
+        <td class="description">Allows the player to /saveplayer other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/saveplayer">/saveplayer</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.setarmor</td>
+        <td class="description">Allows the player to /setarmor other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.sethome</td>
+        <td class="description">Allows the player to /sethome other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/sethome">/sethome</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.strike</td>
+        <td class="description">Allows the player to /strike other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/strike">/strike</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.others.warp</td>
+        <td class="description">Allows the player to /warp other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/warp">/warp</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.ping</td>
+        <td class="description">Allows you to use /ping.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/ping">/ping</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.playerextinguish</td>
+        <td class="description">Allows you to extinguish players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/playerextinguish">/playerextinguish</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.playersearch</td>
+        <td class="description">Allows you to search for a player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/playersearch">/playersearch</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.playertime</td>
+        <td class="description">Allows you to change other players' times.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/playertime">/playertime</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.*</td>
+        <td class="description">Allows you to use all of PluginManager's features.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.delete</td>
+        <td class="description">Allows you to use PluginManager's delete feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.disable</td>
+        <td class="description">Allows you to use PluginManager's disable feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.download</td>
+        <td class="description">Allows you to use PluginManager's download feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.downloadlink</td>
+        <td class="description">Allows you to use PluginManager's downloadlink feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.enable</td>
+        <td class="description">Allows you to use PluginManager's enable feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.findtag</td>
+        <td class="description">Allows you to use PluginManager's findtag feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.help</td>
+        <td class="description">Allows you to use PluginManager's help feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.info</td>
+        <td class="description">Allows you to use PluginManager's info feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.list</td>
+        <td class="description">Allows you to use PluginManager's list feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.load</td>
+        <td class="description">Allows you to use PluginManager's load feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.reload</td>
+        <td class="description">Allows you to use PluginManager's reload feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.reloadall</td>
+        <td class="description">Allows you to use PluginManager's reloadall feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.unload</td>
+        <td class="description">Allows you to use PluginManager's unload feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.update</td>
+        <td class="description">Allows you to use PluginManager's update feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.updatecheck</td>
+        <td class="description">Allows you to use PluginManager's updatecheck feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.pluginmanager.updatecheckall</td>
+        <td class="description">Allows you to use PluginManager's updatecheckall feature.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.potion</td>
+        <td class="description">Allows you to add potion effects to a potion.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/potion">/potion</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.prune</td>
+        <td class="description">Allows you to prune old userdata.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/prune">/prune</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.publicassign</td>
+        <td class="description">Allows you to add public commands to items.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/publicassign">/publicassign</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.quit</td>
+        <td class="description">Allows you to quit.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/quit">/quit</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.rank</td>
+        <td class="description">Allows you to check the rank of a player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/rank">/rank</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.realname</td>
+        <td class="description">Allows you to see a player's real name.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/realname">/realname</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.recipe</td>
+        <td class="description">Allows you to view recipes of any item.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/recipe">/recipe</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.rename</td>
+        <td class="description">Allows you to rename an item.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/rename">/rename</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.repair</td>
+        <td class="description">Allows you to repair items.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/repair">/repair</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.reply</td>
+        <td class="description">Allows you to reply to private messages.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/reply">/reply</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.ride</td>
+        <td class="description">Allows you to ride on other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/ride">/ride</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.rocket</td>
+        <td class="description">Allows you to shoot a player into the sky.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/rocket">/rocket</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.royalcommands</td>
+        <td class="description">Allows you to reload RoyalCommands' config.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/royalcommands">/royalcommands</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.rules</td>
+        <td class="description">Allows you to see server rules.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/rules">/rules</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.saveplayer</td>
+        <td class="description">Allows you to save player data.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/saveplayer">/saveplayer</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.see.*</td>
+        <td class="description">Gives every see permission.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.see.ban</td>
+        <td class="description">See ban messages.</td>
+        <td class="default">Everyone</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.see.kick</td>
+        <td class="description">See kick messages.</td>
+        <td class="default">Everyone</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.see.unban</td>
+        <td class="description">See unban messages.</td>
+        <td class="default">Everyone</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.see.warn</td>
+        <td class="description">See warn messages.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.seehidden</td>
+        <td class="description">Allows the player to see hidden players in /list (VanishNoPacket).</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/list">/list</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.seeinventory</td>
+        <td class="description">Allows you see another player's inventory.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/seeinventory">/seeinventory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.seen</td>
+        <td class="description">Allows you to see when a player was last online.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/seen">/seen</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.selectiveclearinventory</td>
+        <td class="description">Allows you to selectively clear inventories</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/selectiveclearinventory">/selectiveclearinventory</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setarmor</td>
+        <td class="description">Allows you to set your armor</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setarmor.*</td>
+        <td class="description">Allows the player to set every armor.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setarmor.chain</td>
+        <td class="description">Allows the player to set chainmail armor.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setarmor.diamond</td>
+        <td class="description">Allows the player to set diamond armor.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setarmor.gold</td>
+        <td class="description">Allows the player to set gold armor.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setarmor.iron</td>
+        <td class="description">Allows the player to set iron armor.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setarmor.leather</td>
+        <td class="description">Allows the player to set leather armor.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setarmor.none</td>
+        <td class="description">Allows the player to set no armor.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setcharacteristic</td>
+        <td class="description">Allows you to set player characteristics.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setcharacteristic">/setcharacteristic</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sethome</td>
+        <td class="description">Allows you to set a home.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/sethome">/sethome</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sethome.multi</td>
+        <td class="description">Allows you to set multiple homes.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/sethome">/sethome</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setjail</td>
+        <td class="description">Allows you to set jails.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setjail">/setjail</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setlevel</td>
+        <td class="description">Allows you to set your XP level</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setlevel">/setlevel</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setspawn</td>
+        <td class="description">Allows you to set the spawn of the world.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setspawn">/setspawn</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setuserdata</td>
+        <td class="description">Allows you to set userdata.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setuserdata">/setuserdata</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.setwarp</td>
+        <td class="description">Allows you to set warp points.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/setwarp">/setwarp</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.*</td>
+        <td class="description">Gives every sign permission.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.command</td>
+        <td class="description">Allows the player to create command signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.disposal</td>
+        <td class="description">Allows the player to create disposal signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.free</td>
+        <td class="description">Allows the player to create free signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.give</td>
+        <td class="description">Allows the player to create give signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.time</td>
+        <td class="description">Allows the player to create time signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.use.*</td>
+        <td class="description">Gives every sign use permisison.</td>
+        <td class="default">No one</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.use.command</td>
+        <td class="description">Allows the player to use command signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.use.disposal</td>
+        <td class="description">Allows the player to use disposal signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.use.free</td>
+        <td class="description">Allows the player to use free signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.use.give</td>
+        <td class="description">Allows the player to use give signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.use.time</td>
+        <td class="description">Allows the player to use time signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.use.warp</td>
+        <td class="description">Allows the player to use warp signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.use.weather</td>
+        <td class="description">Allows the player to use weather signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.warp</td>
+        <td class="description">Allows the player to create warp signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.sign.weather</td>
+        <td class="description">Allows the player to create weather signs.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.signedit</td>
+        <td class="description">Allows you to edit signs.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/signedit">/signedit</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.signedit.color</td>
+        <td class="description">Allows you to use colors on signs.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/signedit">/signedit</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.slap</td>
+        <td class="description">Allows you to slap another player</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/slap">/slap</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.spawn</td>
+        <td class="description">Allows you to go to your world's spawn.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/spawn">/spawn</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.spawn.other</td>
+        <td class="description">Allows the player to /spawn to different worlds.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/spawn">/spawn</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.spawner</td>
+        <td class="description">Allows you to change the type of a mob spawner.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/spawner">/spawner</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.spawninfo</td>
+        <td class="description">Allows you to get information about spawned items.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/spawninfo">/spawninfo</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.spawnmob</td>
+        <td class="description">Allows you to spawn mobs.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/spawnmob">/spawnmob</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.spawnmob.*</td>
+        <td class="description">Allows you to spawn all mobs.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/spawnmob">/spawnmob</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.speak</td>
+        <td class="description">Allows you to spoof a message</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/speak">/speak</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.starve</td>
+        <td class="description">Allows you to starve another player</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/starve">/starve</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.strike</td>
+        <td class="description">Allows you to strike lightning.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/strike">/strike</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.suicide</td>
+        <td class="description">Allows you to kill yourself.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/suicide">/suicide</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleport</td>
+        <td class="description">Allows you to teleport to other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleport">/teleport</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleportaccept</td>
+        <td class="description">Allows you to accept a teleport request.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleportaccept">/teleportaccept</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleportall</td>
+        <td class="description">Allows you to teleport everyone to you.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleportall">/teleportall</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleportdeny</td>
+        <td class="description">Allows you to deny a teleport request.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleportdeny">/teleportdeny</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleporthere</td>
+        <td class="description">Allows you to teleport other players to you.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleporthere">/teleporthere</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleportplayertoplayer</td>
+        <td class="description">Allows you to teleport players to each other.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleportplayertoplayer">/teleportplayertoplayer</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleportposition</td>
+        <td class="description">Allows you to teleport to a coordinate point.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleportposition">/teleportposition</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleportrequest</td>
+        <td class="description">Allows you to ask other players to teleport.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleportrequest">/teleportrequest</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleportrequestall</td>
+        <td class="description">Allows you to request everyone to teleport to you.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleportrequestall">/teleportrequestall</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleportrequestcancel</td>
+        <td class="description">Allows you to cancel a teleport reuqest.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleportrequestcancel">/teleportrequestcancel</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleportrequesthere</td>
+        <td class="description">Allows you to ask other players to teleport to you.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleportrequesthere">/teleportrequesthere</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.teleporttoggle</td>
+        <td class="description">Allows you to toggle teleportation.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleporttoggle">/teleporttoggle</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.temporaryban</td>
+        <td class="description">Allows you to temporarily ban a player.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/temporaryban">/temporaryban</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.time</td>
+        <td class="description">Allows you to change the time.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/time">/time</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.tpoverride</td>
+        <td class="description">Allows the player to override /teleporttoggle settings.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/teleporttoggle">/teleporttoggle</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.trade</td>
+        <td class="description">Allows you to trade with other players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/trade">/trade</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.unban</td>
+        <td class="description">Allows you to unban players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/unban">/unban</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.unbanip</td>
+        <td class="description">Allows you to unban IPs.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/unbanip">/unbanip</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.updates</td>
+        <td class="description">Allows you to see new update messages.</td>
+        <td class="default">Ops</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.uptime</td>
+        <td class="description">Allows you to see how long the server has been running for.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/uptime">/uptime</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.usage</td>
+        <td class="description">Allows you to view the usage of other commands.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/usage">/usage</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.uses</td>
+        <td class="description">Allows you to display uses for any item.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/uses">/uses</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.vip</td>
+        <td class="description">Allows you to modify the VIP list.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/vip">/vip</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.vtp</td>
+        <td class="description">Allows you to override teleport.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/vtp">/vtp</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.vtphere</td>
+        <td class="description">Allows you to override teleporthere.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/vtphere">/vtphere</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.walkspeed</td>
+        <td class="description">Allows you to change your walking speed.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/walkspeed">/walkspeed</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.warn</td>
+        <td class="description">Allows you to warn players.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/warn">/warn</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.warp</td>
+        <td class="description">Allows you to warp.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/warp">/warp</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.weather</td>
+        <td class="description">Allows you to change weather.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/weather">/weather</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.whitelist.*</td>
+        <td class="description">Allows use of all whitelist subcommands.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/whitelist">/whitelist</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.whitelist.add</td>
+        <td class="description">Allows addition of a player into the whitelist.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/whitelist">/whitelist</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.whitelist.check</td>
+        <td class="description">Allows a player to check if a player is in the whitelist.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/whitelist">/whitelist</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.whitelist.remove</td>
+        <td class="description">Allows removal of a player from the whitelist.</td>
+        <td class="default">No one</td>
+        <td><a class="command" href="/commands/whitelist">/whitelist</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.whois</td>
+        <td class="description">Allows you to look players up.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/whois">/whois</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.workbench</td>
+        <td class="description">Allows you to open a workbench anywhere.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/workbench">/workbench</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.world</td>
+        <td class="description">Allows you to teleport between worlds.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/world">/world</a></td>
+      </tr>
+      <tr>
+        <td class="permission">rcmds.worldmanager</td>
+        <td class="description">Allows you to manage worlds.</td>
+        <td class="default">Ops</td>
+        <td><a class="command" href="/commands/worldmanager">/worldmanager</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

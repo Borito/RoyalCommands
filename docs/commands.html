@@ -1,0 +1,859 @@
+---
+layout: titled
+title: Commands
+extra_css: |
+  <link rel="stylesheet" href="/css/bootstrap-table.css"/>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/g/pure@0.5.0(forms-min.css)"/>
+  <style>table { margin-top: 10px; }</style>
+extra_javascript: |
+  <script src="/js/list.min.js"></script>
+  <script>
+    function query(a) {
+      var b = window.location.search.substring(1), c = b.split("&"), d;
+      for (var i = 0; i < c.length; i++) {
+        d = c[i].split("=");
+        if (d[0] == a) return d[1];
+      }
+    }
+    function listStuff() {
+      var command_list = new List("command_list", { valueNames: ["command", "alias"] });
+      var search = query("search");
+      if (search !== undefined) {
+        document.getElementById("command_search").value = query("search");
+        command_list.search(query("search"))
+      }
+    }
+    listStuff();
+  </script>
+---
+<div id="command_list">
+  <div class="pure-form">
+    <input id="command_search" type="text" class="search pure-input-1 pure-input-rounded" placeholder="Search"/>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Command</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody class="list">
+      <tr>
+        <td><a class="command" href="/commands/accountstatus">/accountstatus</a></td>
+        <td>Checks to see if a name is premium.</td>
+        <td class="hidden alias">/accs /ispremium /iscracked</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/afk">/afk</a></td>
+        <td>Marks the player as away from keyboard.</td>
+        <td class="hidden alias">/away</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/assign">/assign</a></td>
+        <td>Assigns a command to a certain block.</td>
+        <td class="hidden alias">/as /pt /powertool</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/attributes">/attributes</a></td>
+        <td>Modifies attributes placed on items.</td>
+        <td class="hidden alias">/attribute /attrs /attr</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/back">/back</a></td>
+        <td>Takes you to your previous location.</td>
+        <td class="hidden alias">/backs</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/backpack">/backpack</a></td>
+        <td>Opens a personal backpack.</td>
+        <td class="hidden alias">/pack /bp</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/ban">/ban</a></td>
+        <td>Bans a user.</td>
+        <td class="hidden alias">/rban /banish</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/banhistory">/banhistory</a></td>
+        <td>Views the ban history of the player.</td>
+        <td class="hidden alias">/bh</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/baninfo">/baninfo</a></td>
+        <td>Get information about a ban.</td>
+        <td class="hidden alias">/bi /whobanned /whoban /wbanned /banwho /bannedwho /wban /banreason /br /banr /breason /banned</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/banip">/banip</a></td>
+        <td>Bans an IP address or a player's IP.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/banlist">/banlist</a></td>
+        <td>Lists all banned players.</td>
+        <td class="hidden alias">/bl</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/biome">/biome</a></td>
+        <td>Changes the biome of the chunk you're in.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/broadcast">/broadcast</a></td>
+        <td>Broadcasts a message to the server.</td>
+        <td class="hidden alias">/bc /broadc /bcast</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/buddha">/buddha</a></td>
+        <td>Toggles buddha mode.</td>
+        <td class="hidden alias">/tbm /buddhamode</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/burn">/burn</a></td>
+        <td>Sets a player on fire for a set amount of time.</td>
+        <td class="hidden alias">/ignite /enflame</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/clearinventory">/clearinventory</a></td>
+        <td>Clears your inventory.</td>
+        <td class="hidden alias">/ci /clearinv</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/clearwarns">/clearwarns</a></td>
+        <td>Clears the warnings on a player.</td>
+        <td class="hidden alias">/removewarns /clearwarnings /removewarnings /rmwarns /rmwarnings</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/commandspy">/commandspy</a></td>
+        <td>Allows the player to spy on commands used.</td>
+        <td class="hidden alias">/cmdspy</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/compareip">/compareip</a></td>
+        <td>Compares two users' IP addresses.</td>
+        <td class="hidden alias">/compip /cip</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/compass">/compass</a></td>
+        <td>Changes where your compass points.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/coords">/coords</a></td>
+        <td>Displays coordinates for yourself or a player.</td>
+        <td class="hidden alias">/pos /position /loc /location /coordinates</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/deafen">/deafen</a></td>
+        <td>Toggles whether a player can see messages.</td>
+        <td class="hidden alias">/deaf /ignoreall</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/deletebanhistory">/deletebanhistory</a></td>
+        <td>Deletes ban history records.</td>
+        <td class="hidden alias">/dbh /rbh /removebanhistory</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/deletehome">/deletehome</a></td>
+        <td>Deletes a home.</td>
+        <td class="hidden alias">/dhome /rmhome /delhome /removehome /rdeletehome</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/deletejail">/deletejail</a></td>
+        <td>Removes a jail.</td>
+        <td class="hidden alias">/deljail /rmjail /removejail /destroyjail</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/deletewarp">/deletewarp</a></td>
+        <td>Deletes a warp point.</td>
+        <td class="hidden alias">/dwarp /delwarp /rmwarp /removewarp</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/documentation">/documentation</a></td>
+        <td>Gets a link to the documentation of a command or permission node.</td>
+        <td class="hidden alias">/docs /doc</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/dump">/dump</a></td>
+        <td>Dumps contents of inventory into chest.</td>
+        <td class="hidden alias">/empty /store</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/effect">/effect</a></td>
+        <td>Apply custom potion effects on players.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/enchant">/enchant</a></td>
+        <td>Enchants the item in hand.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/enchantingtable">/enchantingtable</a></td>
+        <td>Opens an enchanting table anywhere.</td>
+        <td class="hidden alias">/et</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/enderchest">/enderchest</a></td>
+        <td>Shows the ender chest of a player.</td>
+        <td class="hidden alias">/endchest /echest /ec</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/entities">/entities</a></td>
+        <td>Displays the entities close to you.</td>
+        <td class="hidden alias">/neare /enear /ents /entity /closeents /entsclose /ent</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/erase">/erase</a></td>
+        <td>Removes entities.</td>
+        <td class="hidden alias">/rm</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/explode">/explode</a></td>
+        <td>Explodes where the player is looking or the specified player.</td>
+        <td class="hidden alias">/destroy /end</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/fakeop">/fakeop</a></td>
+        <td>Fakes a "You are now op!" message.</td>
+        <td class="hidden alias">/fop</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/feed">/feed</a></td>
+        <td>Feeds a player or the player himself.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/findip">/findip</a></td>
+        <td>Finds players with a matching IP address.</td>
+        <td class="hidden alias">/fip</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/fireball">/fireball</a></td>
+        <td>Launches a fireball towards where you are looking.</td>
+        <td class="hidden alias">/fb</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/firework">/firework</a></td>
+        <td>Sets effects on fireworks.</td>
+        <td class="hidden alias">/fw</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/fixchunk">/fixchunk</a></td>
+        <td>Fixes a voided chunk (world holes) by reloading it.</td>
+        <td class="hidden alias">/fc /fixc /cfix</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/fly">/fly</a></td>
+        <td>Toggles creative flymode for yourself or a player</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/flyspeed">/flyspeed</a></td>
+        <td>Changes the speed you fly at.</td>
+        <td class="hidden alias">/fs</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/force">/force</a></td>
+        <td>Forces a player to run a command.</td>
+        <td class="hidden alias">/sudo /run</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/freeze">/freeze</a></td>
+        <td>Freezes the player.</td>
+        <td class="hidden alias">/fz /frz</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/freezetime">/freezetime</a></td>
+        <td>Freezes time on a world.</td>
+        <td class="hidden alias">/ft</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/furnace">/furnace</a></td>
+        <td>Remotely manages a furnace you set.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/gamemode">/gamemode</a></td>
+        <td>Toggles your gamemode.</td>
+        <td class="hidden alias">/gm /gamem /gmode</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/garbagecollector">/garbagecollector</a></td>
+        <td>Runs the Java garbage collector.</td>
+        <td class="hidden alias">/gc</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/getid">/getid</a></td>
+        <td>Gets the ID of the item in your hand.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/getip">/getip</a></td>
+        <td>Gets the IP of a user.</td>
+        <td class="hidden alias">/getaddr /gip</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/give">/give</a></td>
+        <td>Gives a player items.</td>
+        <td class="hidden alias">/g</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/god">/god</a></td>
+        <td>Toggles godmode on a player or the player himself.</td>
+        <td class="hidden alias">/tgm /godmode</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/harm">/harm</a></td>
+        <td>Harms a player.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/head">/head</a></td>
+        <td>Sets a head to a player's skin.</td>
+        <td class="hidden alias">/skull</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/heal">/heal</a></td>
+        <td>Heals a player or the player himself.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/helmet">/helmet</a></td>
+        <td>Changes your helmet.</td>
+        <td class="hidden alias">/helm</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/help">/help</a></td>
+        <td>Displays help for commands.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/home">/home</a></td>
+        <td>Teleports the player home.</td>
+        <td class="hidden alias">/rhome</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/hug">/hug</a></td>
+        <td>Broadcasts a hug to the server.</td>
+        <td class="hidden alias">/embrace</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/ignore">/ignore</a></td>
+        <td>Ignores when a player chats.</td>
+        <td class="hidden alias">/forget</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/ingot2block">/ingot2block</a></td>
+        <td>Makes raw materials into blocks.</td>
+        <td class="hidden alias">/i2b /itb</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/item">/item</a></td>
+        <td>Adds an item to your inventory.</td>
+        <td class="hidden alias">/i</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/jail">/jail</a></td>
+        <td>Puts a player in jail.</td>
+        <td class="hidden alias">/tjail /togglejail</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/jump">/jump</a></td>
+        <td>Moves the player to the block they are looking at.</td>
+        <td class="hidden alias">/j /go</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/kick">/kick</a></td>
+        <td>Kicks a player from the server.</td>
+        <td class="hidden alias">/boot</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/kickall">/kickall</a></td>
+        <td>Kicks everyone from the server except the command issuer.</td>
+        <td class="hidden alias">/ka /kickeveryone</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/kickhistory">/kickhistory</a></td>
+        <td>Views the kick history of the player.</td>
+        <td class="hidden alias">/khistory /kh</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/kill">/kill</a></td>
+        <td>Kills another player.</td>
+        <td class="hidden alias">/murder</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/killall">/killall</a></td>
+        <td>Kills everyone on the server but yourself.</td>
+        <td class="hidden alias">/kall</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/kit">/kit</a></td>
+        <td>Gives you a kit defined in the config.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/kits">/kits</a></td>
+        <td>Lists the kits available to you.</td>
+        <td class="hidden alias">/listkit /listkits</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/lag">/lag</a></td>
+        <td>Displays the ticks per seconds over a period of time.</td>
+        <td class="hidden alias">/tps /getlag</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/less">/less</a></td>
+        <td>Sets the amount of the item in hand to one.</td>
+        <td class="hidden alias">/fewer</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/level">/level</a></td>
+        <td>Increases your experience level by one.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/list">/list</a></td>
+        <td>Lists the players online and the maximum amount.</td>
+        <td class="hidden alias">/ls /dir /who /players /online /listplayers /playing</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/listhomes">/listhomes</a></td>
+        <td>Lists your set homes.</td>
+        <td class="hidden alias">/lshome /listhome /lshomes /homes /rlisthomes</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/listwarns">/listwarns</a></td>
+        <td>Lists the warnings a player has.</td>
+        <td class="hidden alias">/warns /lswarns /lwarns /lwarn /lswarn /listwarn</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/loadplayer">/loadplayer</a></td>
+        <td>Loads an individual player's data.</td>
+        <td class="hidden alias">/lp</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/lore">/lore</a></td>
+        <td>Sets lore on an item.</td>
+        <td class="hidden alias">/setlore</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/mail">/mail</a></td>
+        <td>Manages player mail.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/map">/map</a></td>
+        <td>Adjusts maps.</td>
+        <td class="hidden alias">/mapadjust</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/megastrike">/megastrike</a></td>
+        <td>Strikes lightning 15 times at the player's cursor or at specified player.</td>
+        <td class="hidden alias">/mstrike /megasmite /msmite /ms</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/memory">/memory</a></td>
+        <td>Displays the current memory usage.</td>
+        <td class="hidden alias">/mem /getmem /lagmem /ram /getram</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/message">/message</a></td>
+        <td>Sends a message to a player.</td>
+        <td class="hidden alias">/msg /send /tell /whisper /w</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/messageoftheday">/messageoftheday</a></td>
+        <td>Shows the message of the day.</td>
+        <td class="hidden alias">/motd</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/messagespy">/messagespy</a></td>
+        <td>Allows the player to spy on private messages.</td>
+        <td class="hidden alias">/chatspy /msgspy /socialspy</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/mobignore">/mobignore</a></td>
+        <td>Toggles if mobs ignore the player.</td>
+        <td class="hidden alias">/mi</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/modifyinventory">/modifyinventory</a></td>
+        <td>Modifies other players' inventories.</td>
+        <td class="hidden alias">/modinv /invmod</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/monitor">/monitor</a></td>
+        <td>Watch another player.</td>
+        <td class="hidden alias">/watch</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/more">/more</a></td>
+        <td>Gives more of the item in hand.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/mute">/mute</a></td>
+        <td>Stops a user from speaking.</td>
+        <td class="hidden alias">/silence</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/muteall">/muteall</a></td>
+        <td>Mutes everyone on the server.</td>
+        <td class="hidden alias">/silenceall</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/nameentity">/nameentity</a></td>
+        <td>Sets an entity's name.</td>
+        <td class="hidden alias">/setmobname /renamemob /mobname /mn /ne</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/near">/near</a></td>
+        <td>Gets nearby players.</td>
+        <td class="hidden alias">/nearby /nearme /close</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/nick">/nick</a></td>
+        <td>Sets the display name of a player.</td>
+        <td class="hidden alias">/dispname /name</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/onehitkill">/onehitkill</a></td>
+        <td>Makes all attacks kill anything (not dragons).</td>
+        <td class="hidden alias">/ohk /instakill /ik</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/ping">/ping</a></td>
+        <td>Pings the server.</td>
+        <td class="hidden alias">/pong</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/playerextinguish">/playerextinguish</a></td>
+        <td>Extinguishes yourself or a player.</td>
+        <td class="hidden alias">/playerext /pex /splash /pext</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/playersearch">/playersearch</a></td>
+        <td>Searches for a player.</td>
+        <td class="hidden alias">/ps /psearch</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/playertime">/playertime</a></td>
+        <td>Changes player time. If not time specified, resets it.</td>
+        <td class="hidden alias">/ptime</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/pluginmanager">/pluginmanager</a></td>
+        <td>Manages plugins on the server.</td>
+        <td class="hidden alias">/pm</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/potion">/potion</a></td>
+        <td>Adds effect to a potion.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/prune">/prune</a></td>
+        <td>Prunes old userdata.</td>
+        <td class="hidden alias">/pruneuserdata</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/publicassign">/publicassign</a></td>
+        <td>Assigns commands to items that anyone with the item can use.</td>
+        <td class="hidden alias">/pas /ppt /publicpowertool</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/quit">/quit</a></td>
+        <td>Makes yourself quit.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/rank">/rank</a></td>
+        <td>Checks the rank of the specified player (permissions).</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/realname">/realname</a></td>
+        <td>Displays the real name of a player.</td>
+        <td class="hidden alias">/rn</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/recipe">/recipe</a></td>
+        <td>Displays recipes for any item.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/rename">/rename</a></td>
+        <td>Renames an item.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/repair">/repair</a></td>
+        <td>Repairs the item in your hand.</td>
+        <td class="hidden alias">/fix</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/reply">/reply</a></td>
+        <td>Replies to a message.</td>
+        <td class="hidden alias">/r</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/ride">/ride</a></td>
+        <td>Mounts the player on another player.</td>
+        <td class="hidden alias">/mount /eject</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/rocket">/rocket</a></td>
+        <td>Launches the player vertically.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/royalcommands">/royalcommands</a></td>
+        <td>Displays version of RoyalCommands and reloads config file.</td>
+        <td class="hidden alias">/rcmds</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/rules">/rules</a></td>
+        <td>Displays server rules.</td>
+        <td class="hidden alias">/rule</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/saveplayer">/saveplayer</a></td>
+        <td>Saves an individual player's data.</td>
+        <td class="hidden alias">/sp</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/seeinventory">/seeinventory</a></td>
+        <td>Allows you to see the inventory of a player.</td>
+        <td class="hidden alias">/invs /invsee /seeinv</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/seen">/seen</a></td>
+        <td>Shows when a player was last online.</td>
+        <td class="hidden alias">/lastseen</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/selectiveclearinventory">/selectiveclearinventory</a></td>
+        <td>Selectively removes items from a player's inventory.</td>
+        <td class="hidden alias">/sci</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/setarmor">/setarmor</a></td>
+        <td>Sets your armor to a certain type.</td>
+        <td class="hidden alias">/armor /sarmor</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/setcharacteristic">/setcharacteristic</a></td>
+        <td>Sets player characteristics.</td>
+        <td class="hidden alias">/sc /setchar</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/sethome">/sethome</a></td>
+        <td>Sets the player's home.</td>
+        <td class="hidden alias">/shome /rsethome</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/setjail">/setjail</a></td>
+        <td>Sets the location of a jail.</td>
+        <td class="hidden alias">/sjail</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/setlevel">/setlevel</a></td>
+        <td>Sets your or another player's XP level to specified level.</td>
+        <td class="hidden alias">/slvl /slevel /setlvl</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/setspawn">/setspawn</a></td>
+        <td>Sets the spawn of the world the player is standing in.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/setuserdata">/setuserdata</a></td>
+        <td>Sets a userdata value for a player.</td>
+        <td class="hidden alias">/sud /ud /userdata</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/setwarp">/setwarp</a></td>
+        <td>Sets a warp point.</td>
+        <td class="hidden alias">/mkwarp /createwarp</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/signedit">/signedit</a></td>
+        <td>Edits the sign a player is currently looking at.</td>
+        <td class="hidden alias">/se /editsign /es</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/slap">/slap</a></td>
+        <td>Broadcasts you slapping another player.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/spawn">/spawn</a></td>
+        <td>Takes the player to the spawn of the world they are standing in.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/spawner">/spawner</a></td>
+        <td>Sets the type of a mob spawner.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/spawninfo">/spawninfo</a></td>
+        <td>Displays information about spawned items.</td>
+        <td class="hidden alias">/si</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/spawnmob">/spawnmob</a></td>
+        <td>Spawns mobs where the player is looking.</td>
+        <td class="hidden alias">/sm /mobspawn</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/speak">/speak</a></td>
+        <td>Makes another player talk.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/starve">/starve</a></td>
+        <td>Lowers a player's hunger.</td>
+        <td class="hidden alias">/strv</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/strike">/strike</a></td>
+        <td>Strikes lightning at the player's cursor or at specified player.</td>
+        <td class="hidden alias">/smite /lightning</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/suicide">/suicide</a></td>
+        <td>Kills yourself.</td>
+        <td class="hidden alias">/enditall /anhero</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleport">/teleport</a></td>
+        <td>Teleports you to a player.</td>
+        <td class="hidden alias">/tp</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleportaccept">/teleportaccept</a></td>
+        <td>Accepts a teleport request.</td>
+        <td class="hidden alias">/tpaa /tpyes /tpay /tpaccept</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleportall">/teleportall</a></td>
+        <td>Teleports everyone to you.</td>
+        <td class="hidden alias">/tpall</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleportdeny">/teleportdeny</a></td>
+        <td>Denies a teleport request.</td>
+        <td class="hidden alias">/tpad /tpno /tpan /tpdeny</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleporthere">/teleporthere</a></td>
+        <td>Teleports a player to you.</td>
+        <td class="hidden alias">/tphere /tph</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleportplayertoplayer">/teleportplayertoplayer</a></td>
+        <td>Teleports one player to another.</td>
+        <td class="hidden alias">/tp2p /teleportplayer2player /tpptp /tpp2p /teleportp2p /teleportptop</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleportposition">/teleportposition</a></td>
+        <td>Teleports you to a specific coordinate point.</td>
+        <td class="hidden alias">/tppos /tpos /tpcoords /tpp /tpc /teleportcoordinates /teleportpos /tpposition /tposition</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleportrequest">/teleportrequest</a></td>
+        <td>Sends a teleport request to a player.</td>
+        <td class="hidden alias">/tpr /tpa /tprequest /teleportr</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleportrequestall">/teleportrequestall</a></td>
+        <td>Sends a teleport request to everyone.</td>
+        <td class="hidden alias">/tprall /teleportaskall /tpaall</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleportrequestcancel">/teleportrequestcancel</a></td>
+        <td>Cancels a teleport request.</td>
+        <td class="hidden alias">/trc /tprcancel /tpacancel /tpac /tprc</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleportrequesthere">/teleportrequesthere</a></td>
+        <td>Sends a teleport here request to a player.</td>
+        <td class="hidden alias">/tprh /tpahere /tpah /teleportrhere /tphrequest /tphererequest /tprhere</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/teleporttoggle">/teleporttoggle</a></td>
+        <td>Toggles teleportation.</td>
+        <td class="hidden alias">/tptoggle /toggletp</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/temporaryban">/temporaryban</a></td>
+        <td>Temporarily bans a player.</td>
+        <td class="hidden alias">/tban /temporarilyban /tempban</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/time">/time</a></td>
+        <td>Sets the time of your current world.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/trade">/trade</a></td>
+        <td>Opens a mutual chest between two players.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/unban">/unban</a></td>
+        <td>Removes a ban from a player.</td>
+        <td class="hidden alias">/unbanish /pardon</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/unbanip">/unbanip</a></td>
+        <td>Unbans an IP address or a player's IP.</td>
+        <td class="hidden alias">/pardonip</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/uptime">/uptime</a></td>
+        <td>Displays the amount of time the server has been up for.</td>
+        <td class="hidden alias">/ut</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/usage">/usage</a></td>
+        <td>Displays the usage of another command.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/uses">/uses</a></td>
+        <td>Displays uses for any item.</td>
+        <td class="hidden alias">/use</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/vip">/vip</a></td>
+        <td>Modifies the VIP list. VIPs can join the server when it is full.</td>
+        <td class="hidden alias">/reserve /slot</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/vtp">/vtp</a></td>
+        <td>Teleports to anyone, regardless of being vanished or having teleport off.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/vtphere">/vtphere</a></td>
+        <td>Teleports anyone you, regardless of being vanished or having teleport off.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/walkspeed">/walkspeed</a></td>
+        <td>Changes the speed you walk at.</td>
+        <td class="hidden alias">/ws</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/warn">/warn</a></td>
+        <td>Warns the specified player.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/warp">/warp</a></td>
+        <td>Moves you to a warp point.</td>
+        <td class="hidden alias">/warps</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/weather">/weather</a></td>
+        <td>Changes the weather.</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/whois">/whois</a></td>
+        <td>Looks up data on the specified player.</td>
+        <td class="hidden alias">/whowas</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/wl">/wl</a></td>
+        <td>Manages the dynamic whitelist.</td>
+        <td class="hidden alias">/whitelist</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/workbench">/workbench</a></td>
+        <td>Opens a workbench anywhere.</td>
+        <td class="hidden alias">/wb /ct /craftingtable</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/world">/world</a></td>
+        <td>Teleports the player to the specified world.</td>
+        <td class="hidden alias">/goto /gotoworld /tpworld /worldtp /teleportworld /worldteleport /tpw</td>
+      </tr>
+      <tr>
+        <td><a class="command" href="/commands/worldmanager">/worldmanager</a></td>
+        <td>Allows you to manage the worlds on your server.</td>
+        <td class="hidden alias">/wm</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
