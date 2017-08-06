@@ -322,12 +322,12 @@ public final class RUtils {
 
     public static void dispNoPerms(CommandSender cs, String... permissionsNeeded) {
         final List<FancyMessage> tooltip = new ArrayList<>();
-        tooltip.add(new FancyMessage("Missing permissions").color(MessageColor.NEGATIVE._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+        tooltip.add(new FancyMessage("Missing permissions").color(MessageColor.NEGATIVE.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
         for (final String missingPermission : permissionsNeeded)
-            tooltip.add(new FancyMessage(missingPermission).color(MessageColor.NEUTRAL._()));
+            tooltip.add(new FancyMessage(missingPermission).color(MessageColor.NEUTRAL.cc()));
         // @formatter:off
         new FancyMessage("You don't have permission for that!")
-                .color(MessageColor.NEGATIVE._())
+                .color(MessageColor.NEGATIVE.cc())
                 .formattedTooltip(tooltip)
             .send(cs);
         // @formatter:on
@@ -733,9 +733,9 @@ public final class RUtils {
         if (o instanceof OfflinePlayer) {
             final OfflinePlayer op = (OfflinePlayer) o;
             if (tooltip.size() < 1)
-                tooltip.add(new FancyMessage("Offline Player").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
-            tooltip.add(new FancyMessage("Name: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.getName()).color(MessageColor.NEUTRAL._()));
-            tooltip.add(new FancyMessage("Operator: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(op.isOp() ? "Yes" : "No").color(MessageColor.NEUTRAL._()));
+                tooltip.add(new FancyMessage("Offline Player").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+            tooltip.add(new FancyMessage("Name: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(op.getName()).color(MessageColor.NEUTRAL.cc()));
+            tooltip.add(new FancyMessage("Operator: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(op.isOp() ? "Yes" : "No").color(MessageColor.NEUTRAL.cc()));
             if (vh.usingVault() && vh.getPermission().hasGroupSupport()) {
                 final String group = vh.getPermission().getPrimaryGroup(null, op);
                 final Chat c = vh.getChat();
@@ -747,7 +747,7 @@ public final class RUtils {
                 if (suffix == null) suffix = "";
                 // TODO: Config format
                 if (!group.isEmpty()) {
-                    tooltip.add(new FancyMessage("Group: ").color(MessageColor.POSITIVE._()).style(ChatColor.BOLD).then(ChatColor.translateAlternateColorCodes('&', prefix)).color(MessageColor.NEUTRAL._()).then(group).then(ChatColor.translateAlternateColorCodes('&', suffix)));
+                    tooltip.add(new FancyMessage("Group: ").color(MessageColor.POSITIVE.cc()).style(ChatColor.BOLD).then(ChatColor.translateAlternateColorCodes('&', prefix)).color(MessageColor.NEUTRAL.cc()).then(group).then(ChatColor.translateAlternateColorCodes('&', suffix)));
                 }
             }
         }
@@ -755,12 +755,12 @@ public final class RUtils {
             final Player p = (Player) o;
             if (tooltip.size() > 0) { // Replace Offline Player with Player
                 tooltip.remove(0);
-                tooltip.add(0, new FancyMessage("Player").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+                tooltip.add(0, new FancyMessage("Player").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
             }
         }
         if (o instanceof ConsoleCommandSender) {
             if (tooltip.size() < 1) {
-                tooltip.add(new FancyMessage("Console").color(MessageColor.NEUTRAL._()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
+                tooltip.add(new FancyMessage("Console").color(MessageColor.NEUTRAL.cc()).style(ChatColor.BOLD, ChatColor.UNDERLINE));
             }
         }
         return tooltip.isEmpty() ? null : tooltip;

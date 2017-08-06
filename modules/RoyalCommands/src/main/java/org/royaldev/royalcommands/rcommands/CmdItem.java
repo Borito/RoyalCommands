@@ -113,20 +113,20 @@ public class CmdItem extends TabCommand {
         if (toInv == null) return true; // display error message in applyMeta
         // @formatter:off
         new FancyMessage("Giving ")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .then(String.valueOf(amount))
-                .color(MessageColor.NEUTRAL._())
+                .color(MessageColor.NEUTRAL.cc())
             .then(" of ")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .then(RUtils.getItemName(m))
-                .color(MessageColor.NEUTRAL._())
+                .color(MessageColor.NEUTRAL.cc())
                 //.itemTooltip(toInv)
             .then(" to ")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .then(p.getName())
-                .color(MessageColor.NEUTRAL._())
+                .color(MessageColor.NEUTRAL.cc())
             .then(".")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .send(cs);
         // @formatter:on
         if (Config.itemSpawnTag) toInv = RUtils.applySpawnLore(RUtils.setItemStackSpawned(toInv, cs.getName(), true));

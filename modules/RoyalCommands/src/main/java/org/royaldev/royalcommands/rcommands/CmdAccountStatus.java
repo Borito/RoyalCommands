@@ -68,14 +68,14 @@ public class CmdAccountStatus extends BaseCommand {
         }
         // @formatter:off
         new FancyMessage(name)
-                .color(MessageColor.NEUTRAL._())
+                .color(MessageColor.NEUTRAL.cc())
                 .formattedTooltip(RUtils.getPlayerTooltip(p))
             .then(" has ")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .then(isPremium ? "paid" : "not paid")
-                .color(MessageColor.NEUTRAL._())
+                .color(MessageColor.NEUTRAL.cc())
             .then(" for Minecraft.")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .send(cs);
         // @formatter:on
         return true;

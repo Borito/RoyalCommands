@@ -137,19 +137,19 @@ public class TeleportRequest {
         target.sendMessage(teleportType.getMessage(requester));
         // @formatter:off
         new FancyMessage("To accept, use ")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .then("/tpaccept")
-                .color(MessageColor.NEUTRAL._())
+                .color(MessageColor.NEUTRAL.cc())
                 .tooltip("Click here to execute this command.")
                 .command("/tpaccept")
             .then(". To decline, use ")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .then("/tpdeny")
-                .color(MessageColor.NEUTRAL._())
+                .color(MessageColor.NEUTRAL.cc())
                 .tooltip("Click here to execute this command.")
                 .command("/tpdeny")
             .then(".")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .send(target);
         // @formatter:on
         if (confirmation)

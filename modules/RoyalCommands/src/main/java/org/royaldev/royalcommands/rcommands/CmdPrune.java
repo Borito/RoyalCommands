@@ -60,7 +60,7 @@ public class CmdPrune extends CACommand {
                 } else deletedFiles.add(f.getName());
             }
         }
-        new FancyMessage("Deleted ").color(MessageColor.POSITIVE._()).then(String.valueOf(deletedFiles.size())).color(MessageColor.NEUTRAL._()).then(" file" + (deletedFiles.size() == 1 ? "" : "s") + ".").color(MessageColor.POSITIVE._()).send(cs);
+        new FancyMessage("Deleted ").color(MessageColor.POSITIVE.cc()).then(String.valueOf(deletedFiles.size())).color(MessageColor.NEUTRAL.cc()).then(" file" + (deletedFiles.size() == 1 ? "" : "s") + ".").color(MessageColor.POSITIVE.cc()).send(cs);
         if (deletedFiles.size() < 1) return true;
         final StringBuilder sb = new StringBuilder();
         sb.append("The following userdata files (").append(deletedFiles.size()).append(")").append(" were purged by ").append(cs.getName()).append(" at ").append(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss Z").format(dateStarted)).append(".\n\n");

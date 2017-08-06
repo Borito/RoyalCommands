@@ -33,12 +33,12 @@ public class RemindOtherParty implements ClickHandler {
         if (remindPlayer == null) return false;
         remindPlayer.sendMessage(MessageColor.NEUTRAL + clickEvent.getClicker().getName() + MessageColor.POSITIVE + " would like you to check your mutual trade.");
         new FancyMessage("To do so, click ")
-            .color(MessageColor.POSITIVE._())
+            .color(MessageColor.POSITIVE.cc())
             .then("here")
-            .color(MessageColor.NEUTRAL._())
+            .color(MessageColor.NEUTRAL.cc())
             .command("/trade " + clickEvent.getClicker().getName())
             .then(".")
-            .color(MessageColor.POSITIVE._())
+            .color(MessageColor.POSITIVE.cc())
             .send(remindPlayer);
         return false;
     }

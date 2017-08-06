@@ -55,19 +55,19 @@ public class CmdTrade extends BaseCommand {
         CmdTrade.tradedb.put(sender.getUniqueId(), target.getUniqueId());
         // @formatter:off
         new FancyMessage(sender.getName())
-                .color(MessageColor.NEUTRAL._())
+                .color(MessageColor.NEUTRAL.cc())
                 .formattedTooltip(RUtils.getPlayerTooltip(sender))
             .then(" has requested to trade with you.")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .send(target);
         new FancyMessage("Type ")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .then("/trade " + sender.getName())
-                .color(MessageColor.NEUTRAL._())
+                .color(MessageColor.NEUTRAL.cc())
                 .tooltip("Click to execute this command.")
                 .command("/trade " + sender.getName())
             .then(" to accept.")
-                .color(MessageColor.POSITIVE._())
+                .color(MessageColor.POSITIVE.cc())
             .send(target);
         // @formatter:on
     }
@@ -102,12 +102,12 @@ public class CmdTrade extends BaseCommand {
             return true;
         }
         if (!Config.differentGamemodeTrade && t.getGameMode() != p.getGameMode()) {
-            new FancyMessage("You cannot trade with ").color(MessageColor.NEGATIVE._()).then(t.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(" because they have a different gamemode than you!").color(MessageColor.NEGATIVE._()).send(cs);
+            new FancyMessage("You cannot trade with ").color(MessageColor.NEGATIVE.cc()).then(t.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(" because they have a different gamemode than you!").color(MessageColor.NEGATIVE.cc()).send(cs);
             return true;
         }
         Inventory inv = CmdTrade.getTradeInv(p, t);
         if (inv != null) {
-            new FancyMessage("Resumed trading with ").color(MessageColor.POSITIVE._()).then(t.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(".").color(MessageColor.POSITIVE._()).send(p);
+            new FancyMessage("Resumed trading with ").color(MessageColor.POSITIVE.cc()).then(t.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(".").color(MessageColor.POSITIVE.cc()).send(p);
             p.openInventory(inv);
             return true;
         }
@@ -123,7 +123,7 @@ public class CmdTrade extends BaseCommand {
             return true;
         } else {
             CmdTrade.sendTradeRequest(t, p);
-            new FancyMessage("Sent a trade request to ").color(MessageColor.POSITIVE._()).then(t.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(".").color(MessageColor.POSITIVE._()).send(p);
+            new FancyMessage("Sent a trade request to ").color(MessageColor.POSITIVE.cc()).then(t.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(t)).then(".").color(MessageColor.POSITIVE.cc()).send(p);
             return true;
         }*/
     }

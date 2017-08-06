@@ -125,17 +125,17 @@ public abstract class BaseCommand implements CommandExecutor {
                             BaseCommand.this.plugin.getLogger().warning("Error paste: " + url);
                             // @formatter:off
                             new FancyMessage("Click ")
-                                    .color(MessageColor.NEGATIVE._())
+                                    .color(MessageColor.NEGATIVE.cc())
                                 .then("here")
-                                    .color(MessageColor.NEUTRAL._())
+                                    .color(MessageColor.NEUTRAL.cc())
                                     .tooltip("Click here to find out more.")
                                     .link(url)
                                 .then(" to find out more.")
-                                    .color(MessageColor.NEGATIVE._())
+                                    .color(MessageColor.NEGATIVE.cc())
                                 .send(cs);
                             // @formatter:on
                         } else {
-                            new FancyMessage(Config.hastebinErrors ? "An error occurred while trying to paste the stack trace." : "Error pasting is disabled.").color(MessageColor.NEGATIVE._()).send(cs);
+                            new FancyMessage(Config.hastebinErrors ? "An error occurred while trying to paste the stack trace." : "Error pasting is disabled.").color(MessageColor.NEGATIVE.cc()).send(cs);
                         }
                     }
                 });
@@ -196,7 +196,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * @param t       The exception thrown
      */
     protected void handleException(final CommandSender cs, final Command cmd, final String label, final String[] args, final Throwable t, final String message) {
-        new FancyMessage(message).color(MessageColor.NEGATIVE._()).send(cs);
+        new FancyMessage(message).color(MessageColor.NEGATIVE.cc()).send(cs);
         t.printStackTrace();
         if (Config.hastebinErrors) {
             final StringBuilder sb = new StringBuilder();
@@ -319,7 +319,7 @@ public abstract class BaseCommand implements CommandExecutor {
                             if (urlTooltip != null) fm.tooltip(urlTooltip);
                             fm.link(url).then(messageAfter).send(cs);
                         } else {
-                            new FancyMessage(Config.hastebinGeneral ? "An error occurred while trying to paste." : "Pasting is disabled.").color(MessageColor.NEGATIVE._()).send(cs);
+                            new FancyMessage(Config.hastebinGeneral ? "An error occurred while trying to paste." : "Pasting is disabled.").color(MessageColor.NEGATIVE.cc()).send(cs);
                         }
                     }
                 });

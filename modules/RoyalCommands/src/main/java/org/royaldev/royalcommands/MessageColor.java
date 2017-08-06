@@ -20,7 +20,7 @@ public enum MessageColor {
         this.def = def;
     }
 
-    public ChatColor _() {
+    public ChatColor cc() {
         return this.getChatColor();
     }
 

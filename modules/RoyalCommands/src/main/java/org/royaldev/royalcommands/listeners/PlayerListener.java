@@ -149,7 +149,7 @@ public class PlayerListener implements Listener {
         for (Player p : e.getPlayer().getServer().getOnlinePlayers()) {
             if (!PlayerConfigurationManager.getConfiguration(p).getBoolean("commandspy", false)) continue;
             if (p.getName().equalsIgnoreCase(e.getPlayer().getName())) continue; // don't send to self
-            new FancyMessage(e.getPlayer().getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(e.getPlayer())).then(": ").color(MessageColor.POSITIVE._()).then(e.getMessage()).color(MessageColor.NEUTRAL._()).command(e.getMessage()).tooltip("Click here to execute this command.").send(p);
+            new FancyMessage(e.getPlayer().getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(e.getPlayer())).then(": ").color(MessageColor.POSITIVE.cc()).then(e.getMessage()).color(MessageColor.NEUTRAL.cc()).command(e.getMessage()).tooltip("Click here to execute this command.").send(p);
         }
     }
 

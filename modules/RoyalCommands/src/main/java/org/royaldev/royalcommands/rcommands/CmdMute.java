@@ -61,24 +61,24 @@ public class CmdMute extends CACommand {
         if (muteTime > 0L && !wasMuted) pcm.set("mutetime", muteTime);
         else if (wasMuted) pcm.set("mutetime", null);
         pcm.set("mutedat", System.currentTimeMillis());
-        FancyMessage fm = new FancyMessage("You have toggled mute ").color(MessageColor.POSITIVE._()).then(wasMuted ? "off" : "on").color(MessageColor.NEUTRAL._()).then(" for ").color(MessageColor.POSITIVE._()).then(t.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(t));
+        FancyMessage fm = new FancyMessage("You have toggled mute ").color(MessageColor.POSITIVE.cc()).then(wasMuted ? "off" : "on").color(MessageColor.NEUTRAL.cc()).then(" for ").color(MessageColor.POSITIVE.cc()).then(t.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(t));
         if (muteTime > 0L && !wasMuted) {
-            fm.then(" for ").color(MessageColor.POSITIVE._()).then(RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1)).color(MessageColor.NEUTRAL._());
+            fm.then(" for ").color(MessageColor.POSITIVE.cc()).then(RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1)).color(MessageColor.NEUTRAL.cc());
         }
         if (!reason.isEmpty()) {
-            fm.then(" for ").color(MessageColor.POSITIVE._()).then(reason).color(MessageColor.NEUTRAL._());
+            fm.then(" for ").color(MessageColor.POSITIVE.cc()).then(reason).color(MessageColor.NEUTRAL.cc());
         }
-        fm.then(".").color(MessageColor.POSITIVE._());
+        fm.then(".").color(MessageColor.POSITIVE.cc());
         fm.send(cs);
         if (t.isOnline()) {
-            fm = new FancyMessage("You have been ").color(MessageColor.POSITIVE._()).then(wasMuted ? "unmuted" : "muted").color(MessageColor.NEUTRAL._()).then(" by ").color(MessageColor.POSITIVE._()).then(cs.getName()).color(MessageColor.NEUTRAL._()).formattedTooltip(RUtils.getPlayerTooltip(cs));
+            fm = new FancyMessage("You have been ").color(MessageColor.POSITIVE.cc()).then(wasMuted ? "unmuted" : "muted").color(MessageColor.NEUTRAL.cc()).then(" by ").color(MessageColor.POSITIVE.cc()).then(cs.getName()).color(MessageColor.NEUTRAL.cc()).formattedTooltip(RUtils.getPlayerTooltip(cs));
             if (muteTime > 0L && !wasMuted) {
-                fm.then(" for ").color(MessageColor.POSITIVE._()).then(RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1)).color(MessageColor.NEUTRAL._());
+                fm.then(" for ").color(MessageColor.POSITIVE.cc()).then(RUtils.formatDateDiff((muteTime * 1000L) + System.currentTimeMillis()).substring(1)).color(MessageColor.NEUTRAL.cc());
             }
             if (!reason.isEmpty()) {
-                fm.then(" for ").color(MessageColor.POSITIVE._()).then(reason).color(MessageColor.NEUTRAL._());
+                fm.then(" for ").color(MessageColor.POSITIVE.cc()).then(reason).color(MessageColor.NEUTRAL.cc());
             }
-            fm.then(".").color(MessageColor.POSITIVE._());
+            fm.then(".").color(MessageColor.POSITIVE.cc());
             fm.send(t.getPlayer());
         }
         return true;

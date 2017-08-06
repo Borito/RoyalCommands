@@ -23,12 +23,12 @@ public class CmdUptime extends BaseCommand {
     protected boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
         final long startTime = this.plugin.getStartTime();
         new FancyMessage("The server started")
-            .color(MessageColor.POSITIVE._())
+            .color(MessageColor.POSITIVE.cc())
             .then(RUtils.formatDateDiff(startTime))
-            .color(MessageColor.NEUTRAL._())
+            .color(MessageColor.NEUTRAL.cc())
             .tooltip("Timestamp: " + startTime)
             .then(".")
-            .color(MessageColor.POSITIVE._())
+            .color(MessageColor.POSITIVE.cc())
             .send(cs);
         return true;
     }
