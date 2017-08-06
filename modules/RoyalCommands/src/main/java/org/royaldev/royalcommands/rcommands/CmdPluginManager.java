@@ -78,7 +78,7 @@ public class CmdPluginManager extends ParentCommand {
 
     /**
      * Gets the names of all plugins that depend on the specified plugin.
-     * <p/>
+     * <br>
      * This will not return plugins that are disabled.
      *
      * @param name Plugin name to find dependencies of
@@ -177,7 +177,7 @@ public class CmdPluginManager extends ParentCommand {
 
     /**
      * Gets the names of all plugins that depend on the specified plugin.
-     * <p/>
+     * <br>
      * This will not return plugins that are disabled.
      *
      * @param dep Plugin to find dependencies of

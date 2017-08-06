@@ -132,7 +132,7 @@ public final class RUtils {
      * Bans a player. Message is not sent to banned player or person who banned.
      * Message is broadcasted to those with rcmds.see.ban
      * Kicks banned player if they're online.
-     * <p/>
+     * <br>
      * This is only used for permabans.
      *
      * @param t      Player to ban
@@ -254,10 +254,10 @@ public final class RUtils {
     }
 
     /**
-     * Removes color codes that have not been processed yet (&char)
-     * <p/>
+     * Removes color codes that have not been processed yet (&amp;char)
+     * <br>
      * This fixes a common exploit where color codes can be embedded into other codes:
-     * &&aa (replaces &a, and the other letters combine to make &a again)
+     * &amp;&amp;aa (replaces &amp;a, and the other letters combine to make &amp;a again)
      *
      * @param message String with raw color codes
      * @return String without raw color codes
@@ -599,7 +599,7 @@ public final class RUtils {
     /**
      * Returns the ItemStack for any material name and amount.
      * If amount is null, will be default stack size.
-     * <p/>
+     * <br>
      * name can contain a ":" to specify data
      *
      * @param name   Name of the material

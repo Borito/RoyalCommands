@@ -24,7 +24,7 @@ public class CmdEnchant extends BaseCommand {
 
     /**
      * Gets the real level of an enchantment to be applied to an item.
-     * <p/>
+     * <br>
      * Keep in mind that...
      * <ul>
      * <li>-1 is the maximum level of the enchantment</li>

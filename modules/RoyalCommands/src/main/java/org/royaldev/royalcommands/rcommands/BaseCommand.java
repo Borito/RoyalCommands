@@ -248,7 +248,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * specified, and runs the
      * {@link #runCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[])} method. If
      * any exception is unhandled in that method, it will be handled and displayed to the user in a friendly format.
-     * <p/>
+     * <br>
      * Due to the nature of this class, this method cannot be overridden.
      *
      * @param cs    The CommandSender using the command

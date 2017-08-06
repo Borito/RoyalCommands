@@ -25,7 +25,7 @@ public class Configuration extends FileGeneralConfiguration {
 
     /**
      * Configuration file manager
-     * <p/>
+     * <br>
      * If file does not exist, it will be created.
      *
      * @param filename Filename (local) for the config
@@ -44,7 +44,7 @@ public class Configuration extends FileGeneralConfiguration {
 
     /**
      * Configuration file manager
-     * <p/>
+     * <br>
      * If file does not exist, it will be created.
      *
      * @param file File object for the config

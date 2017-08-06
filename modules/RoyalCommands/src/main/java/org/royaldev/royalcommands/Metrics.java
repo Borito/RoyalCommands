@@ -27,13 +27,6 @@
  */
 package org.royaldev.royalcommands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.scheduler.BukkitTask;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -50,14 +43,20 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * <p> The metrics class obtains data about a plugin and submits statistics about it to the metrics backend. </p> <p>
  * Public methods provided by this class: </p>
  * <code>
- * Graph createGraph(String name); <br/>
- * void addCustomData(BukkitMetrics.Plotter plotter); <br/>
- * void start(); <br/>
+ * Graph createGraph(String name); <br>
+ * void addCustomData(BukkitMetrics.Plotter plotter); <br>
+ * void start(); <br>
  * </code>
  */
 public class Metrics {

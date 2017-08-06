@@ -33,7 +33,7 @@ public class CmdTrade extends BaseCommand {
 
     /**
      * Gets the trade inventory between two players. If no trade inventory has been made, this will return null.
-     * <p/>
+     * <br>
      * Note that the order of the player arguments does not matter. It may be called as
      * <code>getTradeInv(playerA, playerB)</code> or <code>getTradeInv(playerB, playerA)</code>.
      *

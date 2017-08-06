@@ -169,7 +169,7 @@ public final class VUUpdater {
          * Converts the following:
          * </p>
          * <p>
-         * <code>3.2.0</code> to <code>320</code><br/>
+         * <code>3.2.0</code> to <code>320</code><br>
          * <code>10.2.0</code> to <code>1020</code>
          * </p>
          *
@@ -191,7 +191,7 @@ public final class VUUpdater {
          * Converts the following:
          * </p>
          * <p>
-         * <code>320</code> to <code>3.2.0</code><br/>
+         * <code>320</code> to <code>3.2.0</code><br>
          * <code>1020</code> to <code>10.2.0</code>
          * </p>
          *
@@ -238,33 +238,33 @@ public final class VUUpdater {
         private enum VUFlag {
             /**
              * Bit 7 of head VU byte.
-             * <p/>
+             * <br>
              * The stable version is the same as the source version if this is set.
              */
             STABLE_IS_SAME((byte) 7),
             /**
              * Bit 6 of head VU byte.
-             * <p/>
+             * <br>
              * The development version is the same as the stable version if this is set.
              */
             DEV_IS_STABLE((byte) 6),
             /**
              * Bit 5 of head VU byte.
-             * <p/>
+             * <br>
              * The VU for the development version will follow this byte if this is set.
              */
             VU_FOR_DEV_FOLLOW((byte) 5),
             /**
              * Bit 4 of head VU byte.
-             * <p/>
+             * <br>
              * The VU for the stable version will follow this byte if this is set.
              */
             VU_FOR_STABLE_FOLLOW((byte) 4),
             /**
              * Bit 3 of head VU byte.
-             * <p/>
+             * <br>
              * The VU for the development version will appear first after this byte if this is set.
-             * <p/>
+             * <br>
              * This should only be set if bit 3 or 4 are set.
              */
             VU_FOR_DEV_FIRST((byte) 3);

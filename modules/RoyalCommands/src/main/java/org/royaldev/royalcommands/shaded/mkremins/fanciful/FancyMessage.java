@@ -10,14 +10,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.entity.Player;
-import org.royaldev.royalcommands.shaded.net.amoebaman.util.ArrayWrapper;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -27,8 +19,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.Player;
 import static org.royaldev.royalcommands.shaded.mkremins.fanciful.TextualComponent.rawText;
+import org.royaldev.royalcommands.shaded.net.amoebaman.util.ArrayWrapper;
 
 /**
  * Represents a formattable message. Such messages can use elements such as colors, formatting codes, hover and click data, and other features provided by the vanilla Minecraft <a href="http://minecraft.gamepedia.com/Tellraw#Raw_JSON_Text">JSON message formatter</a>.
@@ -509,7 +507,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     /**
      * Convert this message to a human-readable string with limited formatting.
      * This method is used to send this message to clients without JSON formatting support.
-     * <p>
+     * <br>
      * Serialization of this message by using this message will include (in this order for each message part):
      * <ol>
      * <li>The color of each message part.</li>
@@ -517,7 +515,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      * <li>The core text of the message part.</li>
      * </ol>
      * The primary omissions are tooltips and clickable actions. Consequently, this method should be used only as a last resort.
-     * </p>
+     * 
      * <p>
      * Color and formatting can be removed from the returned string by using {@link ChatColor#stripColor(String)}.</p>
      *

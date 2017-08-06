@@ -32,10 +32,10 @@ import java.util.Map;
  * a file and call its load() method. For specifying node paths in the
  * various get*() methods, they support SK's path notation, allowing you to
  * select child nodes by delimiting node names with periods.
- * <p/>
+ * <br>
  * <p>
  * For example, given the following configuration file:</p>
- * <p/>
+ * <br>
  * <pre>members:
  *     - Hollie
  *     - Jason
@@ -50,11 +50,11 @@ import java.util.Map;
  *     cool: false
  *     eats:
  *         babies: true</pre>
- * <p/>
+ * <br>
  * <p>Calling code could access sturmeh's baby eating state by using
  * <code>getBoolean("sturmeh.eats.babies", false)</code>. For lists, there are
  * methods such as <code>getStringList</code> that will return a type safe list.
- * <p/>
+ * <br>
  * <p>This class is currently incomplete. It is not yet possible to get a node.
  * </p>
  */

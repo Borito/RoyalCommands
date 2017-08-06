@@ -24,7 +24,7 @@ public abstract class FileGeneralConfiguration extends YamlConfiguration impleme
 
     /**
      * Gets a Location from config
-     * <p/>
+     * <br>
      * This <strong>will</strong> throw an exception if the saved Location is invalid or missing parts.
      *
      * @param path      Path in the yml to fetch from
@@ -44,7 +44,7 @@ public abstract class FileGeneralConfiguration extends YamlConfiguration impleme
 
     /**
      * Gets a Location from config
-     * <p/>
+     * <br>
      * This <strong>will</strong> throw an exception if the saved Location is invalid or missing parts.
      *
      * @param path Path in the yml to fetch from

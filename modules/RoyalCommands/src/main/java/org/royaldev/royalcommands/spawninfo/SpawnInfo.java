@@ -24,7 +24,7 @@ import java.util.UUID;
 
 /**
  * A class used in item-spawning to determine and store information about the spawn status of an item.
- * <br/>
+ * <br>
  * This class is {@link Serializable}, but it can also be stored as a String, as seen here:
  * {@link org.royaldev.royalcommands.spawninfo.SpawnInfo#toString()}.
  *
@@ -231,7 +231,7 @@ public class SpawnInfo implements Serializable {
 
         /**
          * Applies spawn information to an ItemStack.
-         * <br/>
+         * <br>
          * <strong>Note:</strong> ItemStacks containing AIR (ID: 0) will not have information applied, but will still
          * return the ItemStack.
          *
@@ -245,7 +245,7 @@ public class SpawnInfo implements Serializable {
 
         /**
          * Applies spawn information to an ItemStack.
-         * <br/>
+         * <br>
          * <strong>Note:</strong> ItemStacks containing AIR (ID: 0) will not have information applied, but will still
          * return the ItemStack.
          *
@@ -289,7 +289,7 @@ public class SpawnInfo implements Serializable {
         /**
          * Gets SpawnInfo from an ItemStack. If the ItemStack has no SpawnInfo attached, a default SpawnInfo will be
          * returned.
-         * <br/>
+         * <br>
          * <strong>Note:</strong> ItemStacks containing AIR (ID: 0) will always return a blank SpawnInfo, since they
          * cannot store NBT data.
          *

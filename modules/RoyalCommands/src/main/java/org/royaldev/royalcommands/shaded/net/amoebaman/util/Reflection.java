@@ -113,7 +113,7 @@ public final class Reflection {
      * If a method is deemed suitable for return, {@link Method#setAccessible(boolean) setAccessible} will be invoked with an argument of {@code true} before it is returned.
      * This ensures that callers do not have to check or worry about Java access modifiers when dealing with the returned instance.
      * </p>
-     * <p/>
+     * <br>
      * This method does <em>not</em> search superclasses of the specified type for methods with the specified signature.
      * Callers wishing this behavior should use {@link Class#getDeclaredMethod(String, Class...)}.
      *
