@@ -72,7 +72,8 @@ public class CmdBiome extends BaseCommand {
                 p.sendMessage(MessageColor.POSITIVE + "Set biome" + ((radius > 1) ? "s" : "") + " to " + MessageColor.NEUTRAL + b.name().toLowerCase().replace(" _ ", " ") + MessageColor.POSITIVE + ".");
             }
         };
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, r);
+        p.sendMessage(MessageColor.POSITIVE + "Changing biomes. This may take a moment..");
+        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, r, 0);
         return true;
     }
 
