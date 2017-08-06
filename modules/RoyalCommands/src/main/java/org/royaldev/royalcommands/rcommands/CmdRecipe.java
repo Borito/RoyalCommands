@@ -143,7 +143,7 @@ public class CmdRecipe extends TabCommand {
         final Player p = (Player) cs;
         ItemStack is;
         if (eargs[0].equalsIgnoreCase("hand")) {
-            is = p.getItemInHand();
+            is = p.getInventory().getItemInMainHand();
         } else {
             try {
                 is = RUtils.getItemFromAlias(eargs[0], 1);

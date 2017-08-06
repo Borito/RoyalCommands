@@ -5,6 +5,12 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,13 +32,6 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 // TODO: Use inventory gui (3 rows, with forward/back buttons)
 
@@ -162,7 +161,7 @@ public class CmdUses extends TabCommand {
         final Player p = (Player) cs;
         ItemStack is;
         if (eargs[0].equalsIgnoreCase("hand")) {
-            is = p.getItemInHand();
+            is = p.getInventory().getItemInMainHand();
         } else {
             try {
                 is = RUtils.getItemFromAlias(eargs[0], 1);

@@ -5,6 +5,13 @@
  */
 package org.royaldev.royalcommands.listeners;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,6 +46,7 @@ import org.royaldev.royalcommands.AFKUtils;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
+import static org.royaldev.royalcommands.RUtils.nearEqual;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
@@ -49,16 +57,6 @@ import org.royaldev.royalcommands.rcommands.CmdSpawn;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.royaldev.royalcommands.RUtils.nearEqual;
 
 public class PlayerListener implements Listener {
 
@@ -185,7 +183,7 @@ public class PlayerListener implements Listener {
         if (!e.getMessage().matches("(?i)by the power of gr[ae]yskull!?")) return;
         final Player p = e.getPlayer();
         if (!plugin.ah.isAuthorized(p, "rcmds.heman")) return;
-        final ItemStack is = p.getItemInHand();
+        final ItemStack is = p.getInventory().getItemInMainHand();
         if (is.getType() != Material.DIAMOND_SWORD) return;
         if (is.getEnchantments().isEmpty()) return;
         e.setCancelled(true);
@@ -260,7 +258,7 @@ public class PlayerListener implements Listener {
     public void onAssignInteractPlayer(PlayerInteractEntityEvent e) {
         //if (e.isCancelled()) return;
         if (PlayerConfigurationManager.getConfiguration(e.getPlayer()).getBoolean("jailed")) e.setCancelled(true);
-        ItemStack id = e.getPlayer().getItemInHand();
+        ItemStack id = e.getPlayer().getInventory().getItemInMainHand();
         if (id == null) return;
         final List<String> cmds = new ArrayList<>();
         final List<String> personalAssigns = RUtils.getAssignment(id, PlayerConfigurationManager.getConfiguration(e.getPlayer()));

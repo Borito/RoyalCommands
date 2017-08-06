@@ -15,10 +15,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import static org.royaldev.royalcommands.Converters.toInt;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import static org.royaldev.royalcommands.Converters.toInt;
 
 @ReflectCommand
 public class CmdFirework extends BaseCommand {
@@ -184,7 +183,7 @@ public class CmdFirework extends BaseCommand {
             return true;
         }
         Player p = (Player) cs;
-        ItemStack is = p.getItemInHand();
+        ItemStack is = p.getInventory().getItemInMainHand();
         if (is.getType() != Material.FIREWORK) {
             cs.sendMessage(MessageColor.NEGATIVE + "The item in hand is not a firework!");
             return true;

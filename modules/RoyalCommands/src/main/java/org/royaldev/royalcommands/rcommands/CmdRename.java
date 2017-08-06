@@ -33,7 +33,7 @@ public class CmdRename extends BaseCommand {
         }
         Player p = (Player) cs;
         String newName = RUtils.colorize(RoyalCommands.getFinalArg(args, 0));
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand == null || hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't rename air!");
             return true;

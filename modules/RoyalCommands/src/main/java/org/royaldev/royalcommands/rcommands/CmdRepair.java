@@ -29,7 +29,7 @@ public class CmdRepair extends BaseCommand {
         }
         if (args.length < 1) {
             Player p = (Player) cs;
-            ItemStack hand = p.getItemInHand();
+            ItemStack hand = p.getInventory().getItemInMainHand();
             if (hand.getType() == Material.AIR) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't repair air!");
                 return true;

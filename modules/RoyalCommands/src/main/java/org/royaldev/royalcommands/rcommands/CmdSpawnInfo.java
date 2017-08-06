@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.Arrays;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,9 +19,6 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo.SpawnInfoManager;
-
-import java.util.Arrays;
-import java.util.List;
 
 @ReflectCommand
 public class CmdSpawnInfo extends TabCommand {
@@ -44,7 +43,7 @@ public class CmdSpawnInfo extends TabCommand {
             return false;
         }
         final Player p = (Player) cs;
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You must be holding something to use this command.");
             return true;

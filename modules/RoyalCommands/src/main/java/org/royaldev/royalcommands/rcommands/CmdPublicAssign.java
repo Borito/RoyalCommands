@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,9 +18,6 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @ReflectCommand
 public class CmdPublicAssign extends BaseCommand {
@@ -40,7 +39,7 @@ public class CmdPublicAssign extends BaseCommand {
         }
         if (args.length < 1) {
             Player p = (Player) cs;
-            ItemStack hand = p.getItemInHand();
+            ItemStack hand = p.getInventory().getItemInMainHand();
             if (hand == null || hand.getType() == Material.AIR) {
                 cs.sendMessage(MessageColor.NEGATIVE + "You can't remove commands from air!");
                 return true;
@@ -52,7 +51,7 @@ public class CmdPublicAssign extends BaseCommand {
         String command = args[0];
         Player p = (Player) cs;
         final Configuration cm = Configuration.getConfiguration("publicassignments.yml");
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand == null || hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't assign commands to air!");
             return true;

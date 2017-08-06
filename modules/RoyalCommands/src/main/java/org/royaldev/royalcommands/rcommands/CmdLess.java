@@ -35,7 +35,7 @@ public class CmdLess extends BaseCommand {
             cs.sendMessage(MessageColor.POSITIVE + "All items in your inventory have been reduced to one.");
             return true;
         }
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
             return true;

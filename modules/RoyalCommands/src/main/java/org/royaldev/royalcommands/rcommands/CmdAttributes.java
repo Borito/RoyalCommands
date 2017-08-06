@@ -10,6 +10,7 @@ import com.comphenix.attribute.Attributes.Attribute;
 import com.comphenix.attribute.Attributes.Attribute.Builder;
 import com.comphenix.attribute.Attributes.AttributeType;
 import com.comphenix.attribute.Attributes.Operation;
+import java.util.UUID;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,8 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.util.UUID;
 
 @ReflectCommand
 public class CmdAttributes extends BaseCommand {
@@ -46,7 +45,7 @@ public class CmdAttributes extends BaseCommand {
             return false;
         }
         final Player p = (Player) cs;
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot apply attributes to air!");
             return true;
@@ -120,6 +119,7 @@ public class CmdAttributes extends BaseCommand {
         return true;
     }
 
+    /* TODO: See if there are newer AttributeTypes available */
     private static enum AttributeTypes {
         ATTACK_DAMAGE(AttributeType.GENERIC_ATTACK_DAMAGE),
         FOLLOW_RANGE(AttributeType.GENERIC_FOLLOW_RANGE),

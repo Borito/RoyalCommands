@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.spawninfo;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,10 +26,6 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.data.block.BlockData;
 import org.royaldev.royalcommands.data.block.BlockData.BlockLocation;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ItemListener implements Listener {
 
@@ -48,7 +47,7 @@ public class ItemListener implements Listener {
         final SpawnInfo si = new SpawnInfo(o.toString());
         if (!si.isSpawned() && !si.hasComponents()) return;
         e.setCancelled(true);
-        final List<ItemStack> drops = Collections.list(Collections.enumeration(b.getDrops(e.getPlayer().getItemInHand())));
+        final List<ItemStack> drops = Collections.list(Collections.enumeration(b.getDrops(e.getPlayer().getInventory().getItemInMainHand())));
         for (int i = 0; i < drops.size(); i++) {
             ItemStack drop = drops.get(i);
             if (drop.getType() != b.getType()) continue;

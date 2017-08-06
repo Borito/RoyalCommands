@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,9 +17,6 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @ReflectCommand
 public class CmdAssign extends TabCommand {
@@ -39,7 +38,7 @@ public class CmdAssign extends TabCommand {
         }
         final Player p = (Player) cs;
         final PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
-        final ItemStack hand = p.getItemInHand();
+        final ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand == null || hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't modify commands on air!");
             return true;

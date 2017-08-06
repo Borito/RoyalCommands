@@ -71,7 +71,7 @@ public class CmdEnchant extends BaseCommand {
             return false;
         }
         Player p = (Player) cs;
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand == null || hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "Air cannot be enchanted!");
             return true;

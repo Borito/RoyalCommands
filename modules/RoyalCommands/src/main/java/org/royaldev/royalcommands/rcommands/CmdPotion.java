@@ -66,7 +66,7 @@ public class CmdPotion extends BaseCommand {
             return false;
         }
         Player p = (Player) cs;
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (!(hand.getItemMeta() instanceof PotionMeta)) {
             cs.sendMessage(MessageColor.NEGATIVE + "That item's meta is not potion meta.");
             return true;

@@ -33,7 +33,7 @@ public class CmdLore extends BaseCommand {
         }
         Player p = (Player) cs;
         String loreText = RoyalCommands.getFinalArg(args, 0);
-        ItemStack is = p.getItemInHand();
+        ItemStack is = p.getInventory().getItemInMainHand();
         if (is == null || is.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't set lore on air!");
             return true;

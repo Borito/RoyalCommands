@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.Map;
+import java.util.Map.Entry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -13,9 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.util.Map;
-import java.util.Map.Entry;
 
 @ReflectCommand
 public class CmdGetID extends BaseCommand {
@@ -31,7 +30,7 @@ public class CmdGetID extends BaseCommand {
             return true;
         }
         Player p = (Player) cs;
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         int id = hand.getTypeId();
         short damage = hand.getDurability();
         byte data = hand.getData().getData();

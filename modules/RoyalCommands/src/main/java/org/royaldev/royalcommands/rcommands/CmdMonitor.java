@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,9 +19,6 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.listeners.MonitorListener;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @ReflectCommand
 public class CmdMonitor extends BaseCommand {
@@ -84,7 +83,7 @@ public class CmdMonitor extends BaseCommand {
             locs.put(p.getName(), p.getLocation());
             p.getInventory().clear();
             p.getInventory().setContents(t.getInventory().getContents());
-            p.setItemInHand(t.getItemInHand());
+            p.getInventory().setItemInMainHand(t.getInventory().getItemInMainHand());
             p.setHealth(t.getHealth());
             p.setFoodLevel(t.getFoodLevel());
             p.setSaturation(t.getSaturation());

@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.HashMap;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,8 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.util.HashMap;
 
 @ReflectCommand
 public class CmdIngot2Block extends BaseCommand {
@@ -47,7 +46,7 @@ public class CmdIngot2Block extends BaseCommand {
             return true;
         }
         Player p = (Player) cs;
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand == null || hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "Your hand is empty!");
             return true;

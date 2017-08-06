@@ -36,7 +36,7 @@ public class CmdMore extends BaseCommand {
                 cs.sendMessage(MessageColor.POSITIVE + "You have been given more of every item in your inventory.");
                 return true;
             } else if (args[0].equalsIgnoreCase("inventory")) {
-                ItemStack hand = p.getItemInHand();
+                ItemStack hand = p.getInventory().getItemInMainHand();
                 if (hand.getType() == Material.AIR) {
                     cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
                     return true;
@@ -54,7 +54,7 @@ public class CmdMore extends BaseCommand {
                 return true;
             }
         }
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand.getType() == Material.AIR) {
             cs.sendMessage(MessageColor.NEGATIVE + "You can't spawn air!");
             return true;

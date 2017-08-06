@@ -66,7 +66,7 @@ public class CmdMap extends BaseCommand {
             //cs.sendMessage("  " + MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " subcommand" + MessageColor.POSITIVE + " - " + MessageColor.NEUTRAL + "Description");
             return true;
         }
-        ItemStack hand = p.getItemInHand();
+        ItemStack hand = p.getInventory().getItemInMainHand();
         if (hand == null || hand.getType() != Material.MAP) {
             cs.sendMessage(MessageColor.NEGATIVE + "You must be holding a map to use this subcommand!");
             return true;
