@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -36,8 +37,8 @@ public class CmdHarm extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "The damage must be a number!");
             return false;
         }
-        if (toDamage > t.getMaxHealth() || toDamage <= 0) {
-            cs.sendMessage(MessageColor.NEGATIVE + "The damage you entered is not within 1 and " + t.getMaxHealth() + "!");
+        if (toDamage > t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() || toDamage <= 0) {
+            cs.sendMessage(MessageColor.NEGATIVE + "The damage you entered is not within 1 and " + t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() + "!");
             return true;
         }
 

@@ -7,6 +7,7 @@ package org.royaldev.royalcommands.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -192,7 +193,7 @@ public class SignListener implements Listener {
                 if (!did) return;
             }
 
-            p.setHealth(p.getMaxHealth());
+            p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         }
 
         //Weather signs

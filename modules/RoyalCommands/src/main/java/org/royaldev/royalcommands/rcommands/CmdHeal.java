@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class CmdHeal extends BaseCommand {
             }
             Player t = (Player) cs;
             t.sendMessage(MessageColor.POSITIVE + "You have healed yourself!");
-            t.setHealth(t.getMaxHealth());
+            t.setHealth(t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             return true;
         }
         Player t = this.plugin.getServer().getPlayer(args[0]);
@@ -37,7 +38,7 @@ public class CmdHeal extends BaseCommand {
         }
         cs.sendMessage(MessageColor.POSITIVE + "You have healed " + MessageColor.NEUTRAL + t.getName() + MessageColor.POSITIVE + ".");
         t.sendMessage(MessageColor.POSITIVE + "You have been healed by " + MessageColor.NEUTRAL + cs.getName() + MessageColor.POSITIVE + "!");
-        t.setHealth(t.getMaxHealth());
+        t.setHealth(t.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         return true;
     }
 }
