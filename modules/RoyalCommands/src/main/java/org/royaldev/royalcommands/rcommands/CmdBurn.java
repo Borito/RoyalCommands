@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -33,6 +34,10 @@ public class CmdBurn extends BaseCommand {
         }
         if (this.ah.isAuthorized(t, cmd, PermType.EXEMPT)) {
             cs.sendMessage(MessageColor.NEGATIVE + "You cannot burn that player!");
+            return true;
+        }
+        if (t.getGameMode() == GameMode.CREATIVE) {
+            cs.sendMessage(MessageColor.NEGATIVE + "That player is currently in creative mode!");
             return true;
         }
         int len = 5;
