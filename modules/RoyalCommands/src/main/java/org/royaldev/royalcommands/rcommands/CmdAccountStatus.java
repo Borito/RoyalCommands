@@ -5,6 +5,12 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,14 +18,6 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 
 @ReflectCommand
 public class CmdAccountStatus extends BaseCommand {
@@ -39,7 +37,7 @@ public class CmdAccountStatus extends BaseCommand {
         name = p.getName();
         URL u;
         try {
-            u = new URL("https://minecraft.net/haspaid.jsp?user=" + URLEncoder.encode(name, "UTF-8"));
+            u = new URL("https://api.mojang.com/users/profiles/minecraft/" + URLEncoder.encode(name, "UTF-8"));
         } catch (final MalformedURLException ex) {
             cs.sendMessage(MessageColor.NEGATIVE + "An unthinkable error happened. Please let the developer know.");
             return true;
@@ -48,23 +46,26 @@ public class CmdAccountStatus extends BaseCommand {
             return true;
         }
         boolean isPremium;
-        BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(u.openStream()));
-            final String line = br.readLine();
-            if (line == null) {
-                cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
-                return true;
-            } else isPremium = "true".equalsIgnoreCase(line);
-        } catch (final IOException ex) {
+            HttpURLConnection connection = (HttpURLConnection)u.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            
+            switch(connection.getResponseCode()) {
+                case 200:
+                    isPremium = true;
+                    break;
+                case 204:
+                    isPremium = false;
+                    break;
+                default:
+                    cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
+                    return true;
+            }
+        } catch(final IOException ex) {
             cs.sendMessage(MessageColor.NEGATIVE + "Could not read from Minecraft's servers!");
             cs.sendMessage(MessageColor.NEGATIVE + ex.getMessage());
             return true;
-        } finally {
-            try {
-                if (br != null) br.close();
-            } catch (final IOException ignored) {
-            }
         }
         // @formatter:off
         new FancyMessage(name)
