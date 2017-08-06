@@ -38,7 +38,7 @@ public class CmdWorld extends BaseCommand {
             final FancyMessage fm = new FancyMessage("");
             while (worlds.hasNext()) {
                 final World world = worlds.next();
-                fm.then(RUtils.getMVWorldName(world)).color(MessageColor.NEUTRAL._()).tooltip(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + RUtils.getMVWorldName(world)).command("/tpw " + RUtils.getMVWorldName(world));
+                fm.then(RUtils.getMVWorldName(world)).color(MessageColor.NEUTRAL._()).tooltip(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + RUtils.getMVWorldName(world)).command("/tpw " + world.getName());
                 if (worlds.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
             }
             fm.send(cs);
