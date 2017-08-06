@@ -37,10 +37,10 @@ public class CmdFlySpeed extends BaseCommand {
             return true;
         }
         if (flySpeed < -1F || flySpeed > 1F) {
-            cs.sendMessage(MessageColor.NEGATIVE + "Speed must be between -1 and 1!");
+            cs.sendMessage(MessageColor.NEGATIVE + "Speed must be between -1 and 1! Default is 0.102.");
             return true;
         }
-        cs.sendMessage(MessageColor.POSITIVE + "Set your fly speed to " + MessageColor.NEUTRAL + flySpeed + MessageColor.POSITIVE + ".");
+        cs.sendMessage(MessageColor.POSITIVE + "Set your fly speed to " + MessageColor.NEUTRAL + flySpeed + MessageColor.POSITIVE + ". Default is 0.102.");
         p.setFlySpeed(flySpeed);
         return true;
     }
