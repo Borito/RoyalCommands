@@ -5,6 +5,11 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,11 +31,6 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @ReflectCommand
 public class CmdRecipe extends TabCommand {
@@ -88,6 +88,13 @@ public class CmdRecipe extends TabCommand {
                 i.setItem(0, fr.getInput());
                 i.setItem(2, fr.getResult());
             } else continue;
+            for (ItemStack ist : i.getContents()) {
+                if (ist == null) continue;
+                if (ist.getDurability() == (short)32767) {
+                    this.plugin.getLogger().log(Level.WARNING, "RECIPE: Durability of item {0} is invalid.", ist.getType());
+                    ist.setDurability((short)0);
+                }
+            }
             workbenches.add(i);
         }
         final Runnable r = new Runnable() {
