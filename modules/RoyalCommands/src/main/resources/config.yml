@@ -452,7 +452,7 @@ teleports:
     worldaccess_perm: false
   sound:
     enabled: false
-    sound: ENDERMAN_TELEPORT
+    sound: ENTITY_ENDERMAN_TELEPORT
     volume: 1
     pitch: 1
   # Options for teleporting players on vehicles

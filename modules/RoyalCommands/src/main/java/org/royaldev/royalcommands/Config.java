@@ -5,16 +5,15 @@
  */
 package org.royaldev.royalcommands;
 
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.royaldev.royalcommands.opencsv.CSVReader;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.royaldev.royalcommands.opencsv.CSVReader;
 
 @SuppressWarnings("StaticNonFinalField")
 public class Config {
@@ -299,7 +298,7 @@ public class Config {
         noBuildMessage = RUtils.colorize(c.getString("messages.no_build", "&cYou don't have permission to build!"));
         returnFormat = c.getString("afk.messages.return_format", "{dispname} is no longer AFK.");
         saveInterval = c.getString("userdata.saving.save_on_interval", "10m");
-        teleportSoundName = c.getString("teleports.sound.sound", "ENDERMAN_TELEPORT");
+        teleportSoundName = c.getString("teleports.sound.sound", "ENTITY_ENDERMAN_TELEPORT");
         tempbanFormat = c.getString("bans.temp.messages.format", "&4Tempbanned&r: {length}&rnFor {reason}&r by {dispname}");
         tradeHelp = c.getString("trade.help", "<book><title>Oops!</title><author>RoyalCommands</author><page>Looks like the administrators didn't set this up! Please tell them to.</page></book>");
         welcomeMessage = RUtils.colorize(c.getString("messages.welcome", "&5Welcome {name} to the server!"));

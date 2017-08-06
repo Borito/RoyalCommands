@@ -6,6 +6,22 @@
 package org.royaldev.royalcommands;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import java.io.File;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.regex.Pattern;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -46,23 +62,6 @@ import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.spawninfo.SpawnInfo;
 import org.royaldev.royalcommands.tools.NameFetcher;
 import org.royaldev.royalcommands.tools.UUIDFetcher;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
 public final class RUtils {
@@ -1122,7 +1121,7 @@ public final class RUtils {
         try {
             toPlay = Sound.valueOf(Config.teleportSoundName);
         } catch (IllegalArgumentException e) {
-            RoyalCommands.getInstance().getLogger().warning("A teleport sound was attempted, but teleport_sound.name was not a valid sound name!");
+            RoyalCommands.getInstance().getLogger().warning("A teleport sound was attempted, but " + Config.teleportSoundName + " was not a valid sound name!");
             return;
         }
         at.getWorld().playSound(at, toPlay, Config.teleportSoundVolume, Config.teleportSoundPitch);
