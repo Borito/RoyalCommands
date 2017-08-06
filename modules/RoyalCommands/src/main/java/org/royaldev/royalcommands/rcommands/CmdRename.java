@@ -54,7 +54,7 @@ public class CmdRename extends BaseCommand {
                 cs.sendMessage(MessageColor.POSITIVE + "The new name has been shortened to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + " to prevent crashes.");
         }
         ItemStack is = RUtils.renameItem(hand, newName);
-        p.setItemInHand(is);
+        p.getInventory().setItemInMainHand(is);
         cs.sendMessage(MessageColor.POSITIVE + "Renamed your " + MessageColor.NEUTRAL + RUtils.getItemName(is) + MessageColor.POSITIVE + " to " + MessageColor.NEUTRAL + newName + MessageColor.POSITIVE + ".");
         return true;
     }

@@ -77,7 +77,7 @@ public class CmdSpawnInfo extends TabCommand {
                 im.setLore(lore);
             }
             hand.setItemMeta(im);
-            p.setItemInHand(SpawnInfoManager.removeSpawnInfo(hand));
+            p.getInventory().setItemInMainHand(SpawnInfoManager.removeSpawnInfo(hand));
             cs.sendMessage(MessageColor.POSITIVE + "Spawn information removed from the item in hand.");
             return true;
         } else if (subcommand.equalsIgnoreCase("help") || subcommand.equals("?")) {

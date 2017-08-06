@@ -114,7 +114,7 @@ public class CmdAttributes extends BaseCommand {
             attr.add(b.build());
             hand = attr.getStack();
         }
-        p.setItemInHand(hand);
+        p.getInventory().setItemInMainHand(hand);
         cs.sendMessage(MessageColor.POSITIVE + "All attributes applied.");
         return true;
     }

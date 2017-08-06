@@ -44,7 +44,7 @@ public class CmdLore extends BaseCommand {
             return true;
         }
         is = RUtils.addLore(is, RUtils.colorize(loreText));
-        p.setItemInHand(is);
+        p.getInventory().setItemInMainHand(is);
         cs.sendMessage(MessageColor.POSITIVE + "Set the lore on your " + MessageColor.NEUTRAL + RUtils.getItemName(is) + MessageColor.POSITIVE + ".");
         return true;
     }
