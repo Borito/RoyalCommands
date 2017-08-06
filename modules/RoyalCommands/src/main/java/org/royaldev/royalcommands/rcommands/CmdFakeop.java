@@ -30,7 +30,7 @@ public class CmdFakeop extends BaseCommand {
             cs.sendMessage(MessageColor.NEGATIVE + "That player is not online!");
             return true;
         }
-        t.sendMessage(ChatColor.YELLOW + "You are now op!");
+        t.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "[Server: Opped " + t.getName() + "]");
         cs.sendMessage(MessageColor.POSITIVE + t.getName() + " has been sent a fake op notice.");
         return true;
     }
