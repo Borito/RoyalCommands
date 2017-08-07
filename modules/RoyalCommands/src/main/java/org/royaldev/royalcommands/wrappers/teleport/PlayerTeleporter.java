@@ -54,7 +54,7 @@ public class PlayerTeleporter implements ITeleporter<Player>, ISilentTeleporter<
         try {
             return Sound.valueOf(Config.teleportSoundName);
         } catch (final IllegalArgumentException e) {
-            RoyalCommands.getInstance().getLogger().warning("A teleport sound was attempted, but teleport_sound.name was not a valid sound name!");
+            RoyalCommands.getInstance().getLogger().warning("A teleport sound was attempted, but " + Config.teleportSoundName + " was not a valid sound name!");
             return null;
         }
     }
