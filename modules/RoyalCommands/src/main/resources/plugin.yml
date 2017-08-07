@@ -1,9 +1,9 @@
 name: RoyalCommands
 main: org.royaldev.royalcommands.RoyalCommands
 version: ${pluginversion}
-website: https://royalcommands.royaldev.org/
+website: http://rcmds.wma.im/
 description: A general plugin containing all the commands a discerning server admin could want.
-author: jkcclemens
+authors: [jkcclemens, The Worldwide Minecraft Alliance]
 softdepend: [VanishNoPacket, LWC, WorldGuard, Multiverse-Core, Vault, ProtocolLib]
 
 reflectcommands:
