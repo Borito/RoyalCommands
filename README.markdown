@@ -3,8 +3,6 @@ RoyalCommands
 
 ![RoyalCommands](http://dev.bukkit.org/media/images/56/527/RoyalCommandsLogo.png)
 
-[![tip for next commit](https://tip4commit.com/projects/894.svg)](https://tip4commit.com/github/RoyalDev/RoyalCommands)
-
 RoyalCommands is a general plugin with lots of commands. Yeah, that's my description. Go look at the [BukkitDev](http://dev.bukkit.org/server-mods/royalcommands) if you want a better one.
 
 RoyalCommands is coded in IntelliJ with the following libraries:
@@ -20,12 +18,11 @@ RoyalCommands is coded in IntelliJ with the following libraries:
 
 ### Contact
 
+ * Email: wizardcm@wma.im
+ * Minecraft username: WizardCM
+
  * Email: jkc.clemens@gmail.com / jkc.clemens@royaldev.org
  * Minecraft username: jkcclemens
-
-### Bleeding Edge Builds
-
-Changes pushed to GitHub will be auto-compiled on [Bamboo](http://ci.royaldev.org).
 
 ### Compiling
 
@@ -52,6 +49,6 @@ Make sure it follows these regulations:
  4. Extra whitespace, especially at the end of lines, is frowned upon.
  5. Please compile and test your changes before requesting them to be merged.
 
-### About the developer
+### About the original developer
 
 My name is Kyle Clemens (jkcclemens). I write plugins in my free time.
