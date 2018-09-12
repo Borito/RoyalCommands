@@ -15,6 +15,7 @@
 
     <modules>
         <module>modules/API</module>
+        <module>modules/NMS1_13_R2</module>
         <module>modules/NMS1_12_R1</module>
         <module>modules/NMS1_8_R2</module>
         <module>modules/NMS1_8_R1</module>
@@ -40,7 +41,8 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>LATEST</version>
+            <version>1.13.1-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
         </dependency>
     </dependencies>
 
