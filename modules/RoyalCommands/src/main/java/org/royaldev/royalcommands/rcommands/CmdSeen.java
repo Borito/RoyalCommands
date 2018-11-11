@@ -16,14 +16,14 @@ import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
-public class CmdSeen extends BaseCommand {
+public class CmdSeen extends TabCommand {
 
     public CmdSeen(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

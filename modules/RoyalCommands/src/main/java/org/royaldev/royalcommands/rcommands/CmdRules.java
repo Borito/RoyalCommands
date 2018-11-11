@@ -5,6 +5,12 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,22 +18,15 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 @ReflectCommand
-public class CmdRules extends BaseCommand {
+public class CmdRules extends TabCommand {
 
     public CmdRules(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         File rulesf = new File(this.plugin.getDataFolder() + File.separator + "rules.txt");
         if (!rulesf.exists()) {
             cs.sendMessage(MessageColor.NEGATIVE + "The rules.txt file was not found! Tell an admin.");

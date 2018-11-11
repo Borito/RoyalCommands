@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.HashMap;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,13 +20,11 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.util.HashMap;
-
 @ReflectCommand
-public class CmdDump extends BaseCommand {
+public class CmdDump extends TabCommand {
 
     public CmdDump(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     public void dumpItems(Chest c, Inventory i) {
@@ -44,7 +43,7 @@ public class CmdDump extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length > 0 && args[0].equals("?")) {
             cs.sendMessage(cmd.getDescription());
             return false;

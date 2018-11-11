@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,16 +14,13 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @ReflectCommand
-public class CmdNameEntity extends BaseCommand {
+public class CmdNameEntity extends TabCommand {
 
     private static final Map<String, String> names = new HashMap<>();
 
     public CmdNameEntity(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     public static void cancelNaming(CommandSender cs) {
@@ -89,7 +88,7 @@ public class CmdNameEntity extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;

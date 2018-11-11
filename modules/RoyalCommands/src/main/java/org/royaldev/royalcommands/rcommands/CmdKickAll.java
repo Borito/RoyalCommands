@@ -13,14 +13,14 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdKickAll extends BaseCommand {
+public class CmdKickAll extends TabCommand {
 
     public CmdKickAll(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         String kickreason = Config.kickMessage;
         if (args.length > 0) kickreason = RoyalCommands.getFinalArg(args, 0);
         kickreason = RUtils.colorize(kickreason);

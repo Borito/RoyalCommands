@@ -5,23 +5,22 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.Set;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.util.Set;
-
 @ReflectCommand
-public class CmdBanList extends BaseCommand {
+public class CmdBanList extends TabCommand {
 
     public CmdBanList(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         final Set<OfflinePlayer> banList = this.plugin.getServer().getBannedPlayers();
         if (banList.isEmpty()) {
             cs.sendMessage(MessageColor.NEGATIVE + "There are no banned players!");

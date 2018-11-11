@@ -15,14 +15,14 @@ import org.royaldev.royalcommands.rcommands.teleport.TeleportRequest;
 import org.royaldev.royalcommands.rcommands.teleport.TeleportRequest.TeleportType;
 
 @ReflectCommand
-public class CmdTeleportRequestAll extends BaseCommand {
+public class CmdTeleportRequestAll extends TabCommand {
 
     public CmdTeleportRequestAll(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;

@@ -32,6 +32,7 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
             if (s == null) s = 0;
             this.completionTypes.add(s);
         }
+		this.completionTypes.add(TabCommand.CompletionType.NONE.getShort());
     }
 
     /**
@@ -164,6 +165,8 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                     }
                 }
                 break;
+			case NONE:
+				break;
         }
         return this.filterCompletions(possibilities, cs, cmd, label, args, arg);
     }
@@ -264,7 +267,11 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
         /**
          * Completes for any command.
          */
-        ANY_COMMAND((short) 512);
+        ANY_COMMAND((short) 512),
+		/**
+		 * Completes for empty list.
+		 */
+		NONE((short) 0);
 
         private final short s;
 

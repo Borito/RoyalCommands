@@ -20,7 +20,7 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdFirework extends BaseCommand {
+public class CmdFirework extends TabCommand {
 
     private final Flag<String> fadeFlag = new Flag<>(String.class, "fade");
     private final Flag<Integer> powerFlag = new Flag<>(Integer.class, "power", "p");
@@ -30,7 +30,7 @@ public class CmdFirework extends BaseCommand {
     private final Flag trailFlag = new Flag("trail");
 
     public CmdFirework(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
         this.addExpectedFlag(this.fadeFlag);
         this.addExpectedFlag(this.powerFlag);
         this.addExpectedFlag(this.colorFlag);
@@ -173,7 +173,7 @@ public class CmdFirework extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

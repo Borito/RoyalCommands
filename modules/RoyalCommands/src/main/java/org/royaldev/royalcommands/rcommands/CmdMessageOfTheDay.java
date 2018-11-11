@@ -13,12 +13,12 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdMessageOfTheDay extends BaseCommand {
+public class CmdMessageOfTheDay extends TabCommand {
 
     private static RoyalCommands pluginInstance;
 
     public CmdMessageOfTheDay(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
         CmdMessageOfTheDay.pluginInstance = instance;
     }
 
@@ -54,7 +54,7 @@ public class CmdMessageOfTheDay extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         CmdMessageOfTheDay.showMotd(cs);
         return true;
     }

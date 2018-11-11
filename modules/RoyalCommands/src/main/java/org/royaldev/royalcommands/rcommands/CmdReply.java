@@ -16,14 +16,14 @@ import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 // TODO: Rewrite, for the love of god.
 
 @ReflectCommand
-public class CmdReply extends BaseCommand {
+public class CmdReply extends TabCommand {
 
     public CmdReply(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

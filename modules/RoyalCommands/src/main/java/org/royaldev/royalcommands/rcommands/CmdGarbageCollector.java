@@ -11,14 +11,14 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdGarbageCollector extends BaseCommand {
+public class CmdGarbageCollector extends TabCommand {
 
     public CmdGarbageCollector(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         Runtime r = Runtime.getRuntime();
         long oldMem = r.freeMemory() / 1048576L;
         cs.sendMessage(MessageColor.POSITIVE + "Running Java garbage collector...");

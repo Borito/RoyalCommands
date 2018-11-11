@@ -5,6 +5,11 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.commons.lang.text.StrBuilder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,19 +20,13 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 @ReflectCommand
-public class CmdList extends BaseCommand {
+public class CmdList extends TabCommand {
 
     private static RoyalCommands pluginInstance;
 
     public CmdList(final RoyalCommands pluginInstance, final String name) {
-        super(pluginInstance, name, true);
+        super(pluginInstance, name, true, new Short[]{});
         CmdList.pluginInstance = pluginInstance;
     }
 
@@ -160,7 +159,7 @@ public class CmdList extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         cs.sendMessage(getNumOnline(cs));
         if (Config.simpleList) {
             String pList = getSimpleList(cs);

@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,23 +19,19 @@ import org.royaldev.royalcommands.rcommands.home.Home;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 // TODO: Allow setting homes for other people
 
 @ReflectCommand
-public class CmdSetHome extends BaseCommand {
+public class CmdSetHome extends TabCommand {
 
     private final Map<UUID, Map<String, Long>> overwrites = new HashMap<>();
 
     public CmdSetHome(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length > 0 && !this.ah.isAuthorized(cs, "rcmds.sethome.multi")) {
             RUtils.dispNoPerms(cs, MessageColor.NEGATIVE + "You don't have permission for multiple homes!");
             return true;

@@ -15,16 +15,16 @@ import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
-public class CmdMuteAll extends BaseCommand {
+public class CmdMuteAll extends TabCommand {
 
     private boolean allMuted = false;
 
     public CmdMuteAll(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         for (final Player p : this.plugin.getServer().getOnlinePlayers()) {
             if (this.plugin.isVanished(p, cs) || this.ah.isAuthorized(p, cmd, PermType.EXEMPT)) continue;
             if (cs instanceof Player) {

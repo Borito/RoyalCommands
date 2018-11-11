@@ -15,10 +15,10 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdIngot2Block extends BaseCommand {
+public class CmdIngot2Block extends TabCommand {
 
     public CmdIngot2Block(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     public void i2b(Player p, ItemStack hand, Material ingot, Material block) {
@@ -40,7 +40,7 @@ public class CmdIngot2Block extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;

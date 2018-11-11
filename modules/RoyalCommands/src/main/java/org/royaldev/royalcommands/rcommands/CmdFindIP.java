@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,15 +17,11 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 @ReflectCommand
-public class CmdFindIP extends BaseCommand {
+public class CmdFindIP extends TabCommand {
 
     public CmdFindIP(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     private boolean isValid(String address) {
@@ -42,7 +41,7 @@ public class CmdFindIP extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

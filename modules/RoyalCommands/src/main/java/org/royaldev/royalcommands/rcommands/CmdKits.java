@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.Map;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
@@ -14,17 +15,15 @@ import org.royaldev.royalcommands.rcommands.kits.Kit;
 import org.royaldev.royalcommands.shaded.com.sk89q.util.config.ConfigurationNode;
 import org.royaldev.royalcommands.shaded.com.sk89q.util.config.FancyConfiguration;
 
-import java.util.Map;
-
 @ReflectCommand
-public class CmdKits extends BaseCommand {
+public class CmdKits extends TabCommand {
 
     public CmdKits(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         final FancyConfiguration fc = this.plugin.getFancyConfig();
         final Map<String, ConfigurationNode> kits = fc.getNodes("kits.list");
         if (kits.isEmpty()) {
