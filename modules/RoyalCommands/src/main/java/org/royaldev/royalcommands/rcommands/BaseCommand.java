@@ -81,7 +81,7 @@ public abstract class BaseCommand implements CommandExecutor {
      * @throws IOException Upon any issue
      */
     private String hastebin(final String paste) throws IOException {
-        final URL url = new URL("http://hastebin.com/documents");
+        final URL url = new URL("https://hastebin.com/documents");
         final HttpURLConnection huc = (HttpURLConnection) url.openConnection();
         huc.setRequestMethod("POST");
         huc.setDoOutput(true);
@@ -201,9 +201,7 @@ public abstract class BaseCommand implements CommandExecutor {
         if (Config.hastebinErrors) {
             final StringBuilder sb = new StringBuilder();
             sb
-                .append("An error occurred while handling a command. Please report this to jkcclemens or WizardCM.\n")
-                .append("They are available at #bukkit @ irc.royaldev.org. If you don't know what that means, then\n")
-                .append("go to the following URL: https://irc.royaldev.org/#bukkit\n\n")
+                .append("An error occurred while handling a command. Please report this to WizardCM.\n")
                 .append("---DEBUG INFO---\n\n");
             try {
                 sb
