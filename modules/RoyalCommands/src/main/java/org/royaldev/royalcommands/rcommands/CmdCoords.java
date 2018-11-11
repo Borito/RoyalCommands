@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.text.DecimalFormat;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -31,12 +32,12 @@ public class CmdCoords extends TabCommand {
         if (args.length < 1 && cs instanceof Player) {
             Player p = (Player) cs;
             Location l = p.getLocation();
-            cs.sendMessage(MessageColor.POSITIVE + "x: " + MessageColor.NEUTRAL + l.getX());
-            cs.sendMessage(MessageColor.POSITIVE + "y: " + MessageColor.NEUTRAL + l.getY());
-            cs.sendMessage(MessageColor.POSITIVE + "z: " + MessageColor.NEUTRAL + l.getZ());
-            cs.sendMessage(MessageColor.POSITIVE + "pitch: " + MessageColor.NEUTRAL + l.getPitch());
-            cs.sendMessage(MessageColor.POSITIVE + "yaw: " + MessageColor.NEUTRAL + l.getYaw());
-            cs.sendMessage(MessageColor.POSITIVE + "world: " + MessageColor.NEUTRAL + l.getWorld().getName());
+            cs.sendMessage(MessageColor.POSITIVE + "x: " + MessageColor.NEUTRAL + df.format(l.getX()));
+            cs.sendMessage(MessageColor.POSITIVE + "y: " + MessageColor.NEUTRAL + df.format(l.getY()));
+            cs.sendMessage(MessageColor.POSITIVE + "z: " + MessageColor.NEUTRAL + df.format(l.getZ()));
+            cs.sendMessage(MessageColor.POSITIVE + "pitch: " + MessageColor.NEUTRAL + df.format(l.getPitch()));
+            cs.sendMessage(MessageColor.POSITIVE + "yaw: " + MessageColor.NEUTRAL + df.format(l.getYaw()));
+            cs.sendMessage(MessageColor.POSITIVE + "world: " + MessageColor.NEUTRAL + RUtils.getMVWorldName(l.getWorld()));
             return true;
         }
         if (!this.ah.isAuthorized(cs, cmd, PermType.OTHERS)) {
@@ -49,12 +50,12 @@ public class CmdCoords extends TabCommand {
             return true;
         }
         Location l = t.getLocation();
-        cs.sendMessage(MessageColor.POSITIVE + "x: " + MessageColor.NEUTRAL + l.getX());
-        cs.sendMessage(MessageColor.POSITIVE + "y: " + MessageColor.NEUTRAL + l.getY());
-        cs.sendMessage(MessageColor.POSITIVE + "z: " + MessageColor.NEUTRAL + l.getZ());
-        cs.sendMessage(MessageColor.POSITIVE + "pitch: " + MessageColor.NEUTRAL + l.getPitch());
-        cs.sendMessage(MessageColor.POSITIVE + "yaw: " + MessageColor.NEUTRAL + l.getYaw());
-        cs.sendMessage(MessageColor.POSITIVE + "world: " + MessageColor.NEUTRAL + l.getWorld().getName());
+        cs.sendMessage(MessageColor.POSITIVE + "x: " + MessageColor.NEUTRAL + df.format(l.getX()));
+        cs.sendMessage(MessageColor.POSITIVE + "y: " + MessageColor.NEUTRAL + df.format(l.getY()));
+        cs.sendMessage(MessageColor.POSITIVE + "z: " + MessageColor.NEUTRAL + df.format(l.getZ()));
+        cs.sendMessage(MessageColor.POSITIVE + "pitch: " + MessageColor.NEUTRAL + df.format(l.getPitch()));
+        cs.sendMessage(MessageColor.POSITIVE + "yaw: " + MessageColor.NEUTRAL + df.format(l.getYaw()));
+        cs.sendMessage(MessageColor.POSITIVE + "world: " + MessageColor.NEUTRAL + RUtils.getMVWorldName(l.getWorld()));
         return true;
     }
 }
