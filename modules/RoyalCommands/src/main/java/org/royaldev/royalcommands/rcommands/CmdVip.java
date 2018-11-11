@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,14 +17,19 @@ import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
-public class CmdVip extends BaseCommand {
+public class CmdVip extends TabCommand {
 
     public CmdVip(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort(), CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return new ArrayList<>(Arrays.asList("add", "remove", "check", "help"));
+    }
+	
+    @Override
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
@@ -81,12 +89,12 @@ public class CmdVip extends BaseCommand {
             }
             cs.sendMessage(MessageColor.NEGATIVE + "The player " + MessageColor.NEUTRAL + t.getName() + MessageColor.NEGATIVE + " is not in the VIP list.");
             return true;
-        } else if (command.equalsIgnoreCase("?")) {
+        } else if (command.equalsIgnoreCase("help") || command.equalsIgnoreCase("?")) {
             String cmdName = cmd.getName();
             cs.sendMessage(MessageColor.NEUTRAL + "/" + cmdName + " add [player] " + MessageColor.POSITIVE + " - Adds a player to the VIP list.");
             cs.sendMessage(MessageColor.NEUTRAL + "/" + cmdName + " remove [player] " + MessageColor.POSITIVE + " - Removes a player from the VIP list.");
             cs.sendMessage(MessageColor.NEUTRAL + "/" + cmdName + " check [player] " + MessageColor.POSITIVE + " - Checks if a player is in the VIP list.");
-            cs.sendMessage(MessageColor.NEUTRAL + "/" + cmdName + " ? " + MessageColor.POSITIVE + " - Displays this help.");
+            cs.sendMessage(MessageColor.NEUTRAL + "/" + cmdName + " help " + MessageColor.POSITIVE + " - Displays this help.");
             return true;
         } else {
             cs.sendMessage(MessageColor.NEGATIVE + "Invalid subcommand!");

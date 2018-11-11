@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,8 +19,6 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
-
-import java.text.SimpleDateFormat;
 
 /*
 FROM PLAYER
@@ -33,14 +34,22 @@ FROM CONSOLE
 */
 
 @ReflectCommand
-public class CmdKickHistory extends BaseCommand {
+public class CmdKickHistory extends TabCommand {
 
     public CmdKickHistory(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.LIST.getShort()});
     }
-
+	
+	@Override
+	protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		/**
+		 * TODO: For the second item, return indexes based on the number of known kicks for the player. Use runCommand's code as a base.
+		 */
+		return new ArrayList<>();
+	}
+	
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         int index;
         OfflinePlayer t;
         final boolean isPlayer = cs instanceof Player;

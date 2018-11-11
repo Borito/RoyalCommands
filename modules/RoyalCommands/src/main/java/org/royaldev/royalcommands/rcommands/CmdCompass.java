@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,14 +16,19 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdCompass extends BaseCommand {
+public class CmdCompass extends TabCommand {
 
     public CmdCompass(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.CUSTOM.getShort(), CompletionType.ONLINE_PLAYER.getShort()});
+    }
+	
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return new ArrayList<>(Arrays.asList("reset", "here", "player", "location"));
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (cmd.getName().equals("compass")) {
             if (!(cs instanceof Player)) {
                 cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");

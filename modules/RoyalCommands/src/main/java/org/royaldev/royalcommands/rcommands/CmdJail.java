@@ -5,6 +5,11 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -18,21 +23,27 @@ import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 @ReflectCommand
-public class CmdJail extends BaseCommand {
+public class CmdJail extends TabCommand {
 
     public final Map<UUID, Location> jaildb = new HashMap<>();
 
     public CmdJail(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.LIST.getShort()});
+    }
+	
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        final Configuration cm = Configuration.getConfiguration("jails.yml");
+		if (!cm.exists() || cm.get("jails") == null) return new ArrayList<>();
+        final Map<String, Object> opts = cm.getConfigurationSection("jails").getValues(false);
+		ArrayList<String> jails = new ArrayList<>();
+		jails.addAll(opts.keySet());
+		return jails;
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         Configuration cm = Configuration.getConfiguration("jails.yml");
 
         if (args.length < 1) {

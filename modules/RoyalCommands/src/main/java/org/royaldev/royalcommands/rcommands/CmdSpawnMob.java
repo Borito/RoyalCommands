@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -18,14 +20,28 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdSpawnMob extends BaseCommand {
+public class CmdSpawnMob extends TabCommand {
 
     public CmdSpawnMob(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.CUSTOM.getShort()});
     }
+	
+	@Override
+	protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		ArrayList<String> spawnable = new ArrayList<>();
+            for (EntityType et : EntityType.values()) {
+                if (!et.isAlive()) continue;
+                if (!et.isSpawnable()) continue;
+				String lowerCaseName = et.toString().toLowerCase();
+				if (!this.ah.isAuthorized(cs, "rcmds.spawnmob." + lowerCaseName) && !this.ah.isAuthorized(cs, "rcmds.spawnmob.*")) continue;
+                if (!lowerCaseName.startsWith(arg.toLowerCase())) continue;
+				spawnable.add(lowerCaseName);
+			}
+		return spawnable;
+	}
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
@@ -66,7 +82,7 @@ public class CmdSpawnMob extends BaseCommand {
             return true;
         }
         if (!this.ah.isAuthorized(cs, "rcmds.spawnmob." + c.name().toLowerCase()) && !this.ah.isAuthorized(cs, "rcmds.spawnmob.*")) {
-            cs.sendMessage(MessageColor.NEGATIVE + "You cannot use mob type " + MessageColor.NEUTRAL + c.name().toLowerCase() + MessageColor.NEGATIVE + ".");
+            cs.sendMessage(MessageColor.NEGATIVE + "You don't have permission to spawn " + MessageColor.NEUTRAL + c.name().toLowerCase() + MessageColor.NEGATIVE + ".");
             return true;
         }
         if (args.length > 1) {

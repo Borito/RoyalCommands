@@ -5,6 +5,10 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -12,18 +16,28 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 @ReflectCommand
-public class CmdDocumentation extends BaseCommand {
+public class CmdDocumentation extends TabCommand {
 
     public CmdDocumentation(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.CUSTOM.getShort(), CompletionType.ROYALCOMMANDS_COMMAND.getShort()});
     }
+	
+	@Override
+	protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		String[] allEndpoints = {"command", "permission"};
+		ArrayList<String> endpoints = new ArrayList<>();
+				
+        for (final String param : allEndpoints) {
+			if (!param.startsWith(arg.toLowerCase())) continue;
+			endpoints.add(param);
+		}
+		return endpoints;
+	}
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
+		String baseUrl = "https://rcmds.wma.im";
         if (args.length < 2) {
             cs.sendMessage(cmd.getDescription());
             return false;
@@ -39,7 +53,7 @@ public class CmdDocumentation extends BaseCommand {
                     cs.sendMessage(MessageColor.NEGATIVE + "Not a " + this.plugin.getName() + " plugin. Try " + MessageColor.NEUTRAL + "/usage" + MessageColor.NEGATIVE + ".");
                     return true;
                 }
-                cs.sendMessage(MessageColor.POSITIVE + "Link: " + MessageColor.NEUTRAL + "https://docs.royaldev.org/commands/" + pc.getName().toLowerCase());
+                cs.sendMessage(MessageColor.POSITIVE + "Link: " + MessageColor.NEUTRAL + baseUrl + "/commands/" + pc.getName().toLowerCase());
                 break;
             case "permission":
             case "perm":
@@ -51,7 +65,7 @@ public class CmdDocumentation extends BaseCommand {
                     return true;
                 }
                 try {
-                    cs.sendMessage(MessageColor.POSITIVE + "Link: " + MessageColor.NEUTRAL + "https://docs.royaldev.org/permissions?search=" + URLEncoder.encode(perm, "UTf-8"));
+                    cs.sendMessage(MessageColor.POSITIVE + "Link: " + MessageColor.NEUTRAL + baseUrl + "/permissions?search=" + URLEncoder.encode(perm, "UTf-8"));
                 } catch (UnsupportedEncodingException e) {
                     cs.sendMessage(MessageColor.NEGATIVE + "Error (" + MessageColor.NEUTRAL + e.getClass().getSimpleName() + MessageColor.NEGATIVE + "): " + MessageColor.NEUTRAL + e.getMessage());
                 }

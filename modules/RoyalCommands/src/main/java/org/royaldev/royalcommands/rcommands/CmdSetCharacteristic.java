@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,12 +15,26 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdSetCharacteristic extends BaseCommand {
+public class CmdSetCharacteristic extends TabCommand {
 
     public CmdSetCharacteristic(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.CUSTOM.getShort(), CompletionType.LIST.getShort(), CompletionType.CUSTOM.getShort()});
     }
-
+	
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return new ArrayList<>(Arrays.asList("maxhealth", "maxair", "exp", "canpickupitems", "help"));
+    }
+	
+	@Override
+	protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		switch(args[0].toLowerCase()) {
+			case "canpickupitems":
+				return new ArrayList<>(Arrays.asList("true", "false"));
+		}
+		return new ArrayList<>();
+	}
+	
     private Float toFloat(Object o) {
         try {
             return Float.parseFloat(o.toString());
@@ -35,7 +52,7 @@ public class CmdSetCharacteristic extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
             cs.sendMessage(MessageColor.POSITIVE + "/" + label + " help:");
             cs.sendMessage(MessageColor.POSITIVE + "/" + label + MessageColor.NEUTRAL + " [player] maxhealth [half-hearts]");

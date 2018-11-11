@@ -5,6 +5,8 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,14 +15,25 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdRealName extends BaseCommand {
+public class CmdRealName extends TabCommand {
 
     public CmdRealName(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.CUSTOM.getShort()});
     }
+	
+	
+	@Override
+	protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		ArrayList<String> endpoints = new ArrayList<>();
+        for (final Player param : cs.getServer().getOnlinePlayers()) {
+			if (!param.getDisplayName().toLowerCase().startsWith(arg.toLowerCase())) continue;
+			endpoints.add(param.getDisplayName());
+		}
+		return endpoints;
+	}
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

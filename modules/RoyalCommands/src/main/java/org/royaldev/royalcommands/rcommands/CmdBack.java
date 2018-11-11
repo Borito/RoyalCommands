@@ -5,6 +5,13 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -19,21 +26,14 @@ import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 @ReflectCommand
-public class CmdBack extends BaseCommand {
+public class CmdBack extends TabCommand {
 
     private static final Map<UUID, List<Location>> backdb = new HashMap<>();
     private final DecimalFormat df = new DecimalFormat("0.00");
 
     public CmdBack(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{TabCommand.CompletionType.LIST.getShort()});
     }
 
     /**
@@ -54,9 +54,24 @@ public class CmdBack extends BaseCommand {
             backdb.put(p.getUniqueId(), backs);
         }
     }
+	
+	@Override
+	protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		if (!(cs instanceof Player)) return new ArrayList<>();
+		Player player = (Player) cs;
+        synchronized (backdb) {
+            List<Location> backs = backdb.get(player.getUniqueId());
+            if (backs == null) return new ArrayList<>();
+			String [] array = new String[backs.size()];
+			for (int a = 0; a < array.length; a++) {
+				array[a] = Integer.toString(a + 1);
+			}
+			return new ArrayList<>(Arrays.asList(array));
+		}
+    }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;

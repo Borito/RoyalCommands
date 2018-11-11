@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -18,11 +21,68 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdMap extends BaseCommand {
+public class CmdMap extends TabCommand {
 
     public CmdMap(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort(), CompletionType.CUSTOM.getShort()});
     }
+	
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return new ArrayList<>(Arrays.asList(
+				"scale", "scaling", "setscale", "setscaling", 
+				"reposition", "position", "pos", "repos", "setposition", "setpos", "coords", "coordinates", "setcoords", "setcoordinates", 
+				"world", "setworld", 
+				"info", 
+				"help", "?"
+		));
+    }
+	
+    @Override
+    protected Enum[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return Scale.values();
+    }
+	
+	@Override
+	protected List<String> getCustomCompletions(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		if (cs instanceof Player) {
+			Player p = (Player)cs;
+			/**
+			 * TODO: Depending on the first parameter, either show numbers, the user's current coordinates, or a list of worlds
+			 */
+			switch (args[0]) {
+				case "scale":
+				case "scaling":
+				case "setscale":
+				case "setscaling":
+					return getCompletionsFor(cs, cmd, label, args, CompletionType.ENUM);
+				case "reposition":
+				case "position":
+				case "pos":
+				case "repos":
+				case "setposition":
+				case "setpos":
+				case "coords":
+				case "coordinates":
+				case "setcoords":
+				case "setcoordinates":
+					return new ArrayList<>();
+					/* TODO: Filter this list as they type */
+					/* Currently there's an issue where using these autocompleted values returns an error by the command itself */
+					/*return new ArrayList<>(Arrays.asList(
+						p.getLocation().getBlockX() + " " + p.getLocation().getBlockZ(),
+						p.getWorld().getSpawnLocation().getBlockX() + " " + p.getWorld().getSpawnLocation().getBlockZ()
+					));*/
+				case "world":
+				case "setworld":
+//					return new ArrayList<>();
+					/* Using this causes the command to return "no such world". */
+					return getCompletionsFor(cs, cmd, label, args, CompletionType.WORLD);
+			}
+			return new ArrayList<>();
+		}
+		return new ArrayList<>();
+	}
 
     private String combineEnums(Enum[] es) {
         StringBuilder sb = new StringBuilder();
@@ -45,7 +105,7 @@ public class CmdMap extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
@@ -114,7 +174,7 @@ public class CmdMap extends BaseCommand {
                 cs.sendMessage(MessageColor.NEGATIVE + "Specify the world to set this map to.");
                 return true;
             }
-            String sworld = args[0];
+            String sworld = args[1];
             World w = this.plugin.getServer().getWorld(sworld);
             if (w == null) {
                 cs.sendMessage(MessageColor.NEGATIVE + "No such world!");

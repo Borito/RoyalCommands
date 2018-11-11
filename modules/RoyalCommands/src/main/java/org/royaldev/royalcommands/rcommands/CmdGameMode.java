@@ -15,10 +15,15 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdGameMode extends BaseCommand {
+public class CmdGameMode extends TabCommand {
 
     public CmdGameMode(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.ENUM.getShort()});
+    }
+	
+    @Override
+    protected Enum[] customEnum(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        return GameMode.values();
     }
 
     /**
@@ -59,7 +64,7 @@ public class CmdGameMode extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player) && args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

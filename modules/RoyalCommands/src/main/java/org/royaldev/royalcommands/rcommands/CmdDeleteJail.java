@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
@@ -12,14 +15,24 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
 
 @ReflectCommand
-public class CmdDeleteJail extends BaseCommand {
+public class CmdDeleteJail extends TabCommand {
 
     public CmdDeleteJail(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.LIST.getShort()});
+    }
+	
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+        final Configuration cm = Configuration.getConfiguration("jails.yml");
+		if (!cm.exists() || cm.get("jails") == null) return new ArrayList<>();
+        final Map<String, Object> opts = cm.getConfigurationSection("jails").getValues(false);
+		ArrayList<String> jails = new ArrayList<>();
+		jails.addAll(opts.keySet());
+		return jails;
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

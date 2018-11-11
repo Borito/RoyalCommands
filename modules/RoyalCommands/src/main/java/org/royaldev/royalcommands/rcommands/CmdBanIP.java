@@ -5,9 +5,12 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
@@ -15,10 +18,24 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
-public class CmdBanIP extends BaseCommand {
+public class CmdBanIP extends TabCommand {
 
     public CmdBanIP(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{TabCommand.CompletionType.LIST.getShort()});
+    }
+	
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		List<String> playerList = new ArrayList<>();
+		// List<String> ipAddresses = new ArrayList<>();
+		
+		for (Player player : cs.getServer().getOnlinePlayers()) {
+            // if (!player.getAddress().getHostName().startsWith(arg)) continue;
+			playerList.add(player.getName());
+			// ipAddresses.add(player.getAddress().getHostName());
+		}
+		// playerList.addAll(ipAddresses);
+		return playerList;
     }
 
     private boolean isValid(String address) {
@@ -38,7 +55,7 @@ public class CmdBanIP extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
