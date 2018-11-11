@@ -72,7 +72,7 @@ public class CmdListHomes extends TabCommand {
             final Iterator<Home> homes = entry.getValue().iterator();
             while (homes.hasNext()) {
                 final Home home = homes.next();
-                fm.then(home.getName()).color(MessageColor.NEUTRAL.cc()).tooltip(MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + home.getName()).command("/home " + home.getFullName());
+                fm.then(home.getName()).color(w == null ? MessageColor.NEGATIVE.cc() : MessageColor.NEUTRAL.cc()).tooltip(w == null ? MessageColor.NEGATIVE + "Cannot teleport here" : MessageColor.POSITIVE + "Click to teleport" + "\nto " + MessageColor.NEUTRAL + home.getName()).command("/home " + home.getFullName());
                 if (homes.hasNext()) fm.then(MessageColor.RESET + ", "); // it's not a color OR a style
             }
             fm.send(cs);
