@@ -17,14 +17,14 @@ import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
 @ReflectCommand
-public class CmdTeleportPosition extends BaseCommand {
+public class CmdTeleportPosition extends TabCommand {
 
     public CmdTeleportPosition(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.NONE.getShort(), CompletionType.NONE.getShort(), CompletionType.NONE.getShort(), CompletionType.WORLD.getShort()});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player) && args.length < 5) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;

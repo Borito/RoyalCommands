@@ -14,14 +14,14 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdPing extends BaseCommand {
+public class CmdPing extends TabCommand {
 
     public CmdPing(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!this.plugin.getNMSFace().hasSupport() || (!(cs instanceof Player) && args.length < 1)) {
             cs.sendMessage(MessageColor.POSITIVE + "Pong!");
             return true;

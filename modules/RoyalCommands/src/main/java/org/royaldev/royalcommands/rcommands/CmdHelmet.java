@@ -19,14 +19,14 @@ import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.exceptions.InvalidItemNameException;
 
 @ReflectCommand
-public class CmdHelmet extends BaseCommand {
+public class CmdHelmet extends TabCommand {
 
     public CmdHelmet(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ITEM_ALIAS.getShort()});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;
@@ -35,6 +35,10 @@ public class CmdHelmet extends BaseCommand {
             cs.sendMessage(cmd.getDescription());
             return false;
         }
+		/**
+		 * TODO: Add support to use /helmet without arguments to use the item in hand
+		 * TODO: Add support to add a helmet to another player
+		 */
         Player p = (Player) cs;
         PlayerConfiguration pcm = PlayerConfigurationManager.getConfiguration(p);
         String name = args[0];

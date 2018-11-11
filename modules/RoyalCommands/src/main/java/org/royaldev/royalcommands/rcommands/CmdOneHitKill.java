@@ -15,14 +15,14 @@ import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
 @ReflectCommand
-public class CmdOneHitKill extends BaseCommand {
+public class CmdOneHitKill extends TabCommand {
 
     public CmdOneHitKill(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length > 0) {
             Player t = this.plugin.getServer().getPlayer(args[0]);
             if (t == null || this.plugin.isVanished(t, cs)) {

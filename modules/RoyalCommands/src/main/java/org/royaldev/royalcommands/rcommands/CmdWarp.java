@@ -22,10 +22,10 @@ import org.royaldev.royalcommands.configuration.Configuration;
 import org.royaldev.royalcommands.shaded.mkremins.fanciful.FancyMessage;
 
 @ReflectCommand
-public class CmdWarp extends BaseCommand {
+public class CmdWarp extends TabCommand {
 
     public CmdWarp(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.WARP.getShort(), CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     public static Location pWarp(Player p, String name) {
@@ -60,7 +60,7 @@ public class CmdWarp extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
 
         if (!(cs instanceof Player) && args.length < 2) {
             cs.sendMessage(cmd.getDescription());

@@ -17,14 +17,14 @@ import org.royaldev.royalcommands.RoyalCommands;
 // TODO: Not set reason, but set leave message (cleaner)
 
 @ReflectCommand
-public class CmdKick extends BaseCommand {
+public class CmdKick extends TabCommand {
 
     public CmdKick(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.NONE.getShort()});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

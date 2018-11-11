@@ -16,10 +16,10 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdEffect extends BaseCommand {
+public class CmdEffect extends TabCommand {
 
     public CmdEffect(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort(), CompletionType.EFFECT.getShort()});
     }
 
     private void sendPotionTypes(CommandSender cs) {
@@ -35,7 +35,7 @@ public class CmdEffect extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, String[] args, CommandArguments ca) {
         if (args.length < 2) {
             sendPotionTypes(cs);
             cs.sendMessage(cmd.getDescription());

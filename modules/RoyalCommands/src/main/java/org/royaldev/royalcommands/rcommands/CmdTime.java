@@ -5,6 +5,10 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -15,18 +19,13 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
-
 @ReflectCommand
-public class CmdTime extends BaseCommand {
+public class CmdTime extends TabCommand {
 
     private static RoyalCommands pluginInstance;
 
     public CmdTime(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.NONE.getShort(), CompletionType.WORLD.getShort()});
         CmdTime.pluginInstance = instance;
     }
 
@@ -89,7 +88,7 @@ public class CmdTime extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, String[] args, CommandArguments ca) {
         if (args.length < 1) {
             if (!(cs instanceof Player)) for (World w : this.plugin.getServer().getWorlds()) {
                 String name = RUtils.getMVWorldName(w);

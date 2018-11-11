@@ -5,6 +5,7 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.Date;
 import org.bukkit.BanList.Type;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -17,17 +18,15 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
-import java.util.Date;
-
 @ReflectCommand
-public class CmdTemporaryBan extends BaseCommand {
+public class CmdTemporaryBan extends TabCommand {
 
     public CmdTemporaryBan(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 3) {
             cs.sendMessage(cmd.getDescription());
             return false;

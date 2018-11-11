@@ -5,6 +5,10 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,22 +19,26 @@ import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 import org.royaldev.royalcommands.wrappers.player.MemoryRPlayer;
 import org.royaldev.royalcommands.wrappers.player.RPlayer;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 // TODO: Just fuck. Make like kickhistory.
 
 @ReflectCommand
-public class CmdBanHistory extends BaseCommand {
+public class CmdBanHistory extends TabCommand {
 
     public CmdBanHistory(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
+    }
+	
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		/*
+			TODO: We could possibly try returning numbers based on the number of bans a user has, but that'd require fetching the player data for autocomplete
+			The alternative is to just leave it as-is, empty
+		*/
+		return new ArrayList<>();
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

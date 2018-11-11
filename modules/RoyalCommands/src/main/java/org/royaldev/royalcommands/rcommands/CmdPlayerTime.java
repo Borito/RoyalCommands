@@ -13,12 +13,12 @@ import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdPlayerTime extends BaseCommand {
+public class CmdPlayerTime extends TabCommand {
 
     private static RoyalCommands pluginInstance;
 
     public CmdPlayerTime(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
         CmdPlayerTime.pluginInstance = instance;
     }
 
@@ -43,7 +43,7 @@ public class CmdPlayerTime extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (cmd.getName().equals("playertime")) {
             if (args.length < 1) {
                 cs.sendMessage(cmd.getDescription());

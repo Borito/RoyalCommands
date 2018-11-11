@@ -16,10 +16,10 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdEnchant extends BaseCommand {
+public class CmdEnchant extends TabCommand {
 
     public CmdEnchant(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ENCHANT.getShort()});
     }
 
     /**
@@ -60,7 +60,7 @@ public class CmdEnchant extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String args[]) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String args[], CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;

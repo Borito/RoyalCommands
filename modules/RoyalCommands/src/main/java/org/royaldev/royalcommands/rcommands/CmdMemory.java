@@ -5,13 +5,12 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.text.DecimalFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.royaldev.royalcommands.MessageColor;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.text.DecimalFormat;
 
 @ReflectCommand
 public class CmdMemory extends BaseCommand {

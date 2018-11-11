@@ -20,10 +20,10 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.Configuration;
 
 @ReflectCommand
-public class CmdPublicAssign extends BaseCommand {
+public class CmdPublicAssign extends TabCommand {
 
     public CmdPublicAssign(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ANY_COMMAND.getShort()});
     }
 
     private boolean isGeneric(ItemStack is) {
@@ -32,7 +32,7 @@ public class CmdPublicAssign extends BaseCommand {
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (!(cs instanceof Player)) {
             cs.sendMessage(MessageColor.NEGATIVE + "This command is only available to players!");
             return true;

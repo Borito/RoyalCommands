@@ -5,6 +5,9 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,17 +19,27 @@ import org.royaldev.royalcommands.RoyalCommands;
 import org.royaldev.royalcommands.configuration.PlayerConfiguration;
 import org.royaldev.royalcommands.configuration.PlayerConfigurationManager;
 
-import java.util.Date;
-
 @ReflectCommand
-public class CmdBan extends BaseCommand {
+public class CmdBan extends TabCommand {
 
     public CmdBan(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{TabCommand.CompletionType.ONLINE_PLAYER.getShort()});
+    }
+	
+	
+    @Override
+    protected List<String> customList(final CommandSender cs, final Command cmd, final String label, final String[] args, final String arg) {
+		/*
+			TODO: Show the default ban message, but allow the user to type anything they like
+			Currently, just showing the default message causes the user to get kicked for invalid chat - my guess is due to colour codes
+			For now, we just won't show autocomplete
+		*/
+		// return new ArrayList<>(Arrays.asList(Config.banMessage));
+		return new ArrayList<>();
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
         if (args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;

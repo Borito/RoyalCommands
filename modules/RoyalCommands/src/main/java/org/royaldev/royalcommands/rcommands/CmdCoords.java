@@ -15,14 +15,15 @@ import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
 
 @ReflectCommand
-public class CmdCoords extends BaseCommand {
+public class CmdCoords extends TabCommand {
 
     public CmdCoords(final RoyalCommands instance, final String name) {
-        super(instance, name, true);
+        super(instance, name, true, new Short[]{CompletionType.ONLINE_PLAYER.getShort()});
     }
 
     @Override
-    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args) {
+    public boolean runCommand(final CommandSender cs, final Command cmd, final String label, final String[] args, CommandArguments ca) {
+		DecimalFormat df = new DecimalFormat("#.###");
         if (!(cs instanceof Player) && args.length < 1) {
             cs.sendMessage(cmd.getDescription());
             return false;
