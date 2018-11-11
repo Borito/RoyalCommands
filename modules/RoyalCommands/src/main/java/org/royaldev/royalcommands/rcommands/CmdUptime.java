@@ -27,7 +27,7 @@ public class CmdUptime extends BaseCommand {
             .then(RUtils.formatDateDiff(startTime))
             .color(MessageColor.NEUTRAL.cc())
             .tooltip("Timestamp: " + startTime)
-            .then(".")
+            .then(" ago.")
             .color(MessageColor.POSITIVE.cc())
             .send(cs);
         return true;
