@@ -5,6 +5,12 @@
  */
 package org.royaldev.royalcommands.wrappers.player;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -20,13 +26,6 @@ import org.royaldev.royalcommands.listeners.BackpackListener;
 import org.royaldev.royalcommands.rcommands.home.Home;
 import org.royaldev.royalcommands.rcommands.nick.Nick;
 import org.royaldev.royalcommands.wrappers.teleport.PlayerTeleporter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Wrapper class for {@link org.bukkit.entity.Player}. Stores instances in memory by the player's UUID key.
@@ -128,6 +127,7 @@ public class MemoryRPlayer implements RPlayer {
     public List<String> getHomeNames() {
         final List<String> names = new ArrayList<>();
         for (final Home h : this.getHomes()) {
+			if(h.getName() == null) continue;
             names.add(h.getName());
         }
         return names;
