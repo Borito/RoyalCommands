@@ -1370,6 +1370,7 @@ public final class RUtils {
         }
         final Location toTele = (Config.safeTeleport) ? getSafeLocation(l) : l;
         if (toTele == null) return "There is no ground below.";
+		if (toTele.getWorld() == null) return "That world doesn't exist.";
         final Chunk c = toTele.getChunk();
         if (!c.isLoaded()) c.load(true);
         final Entity vehicle = getVehicleToTeleport(p);
