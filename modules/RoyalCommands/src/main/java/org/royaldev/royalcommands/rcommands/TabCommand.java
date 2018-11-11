@@ -5,21 +5,27 @@
  */
 package org.royaldev.royalcommands.rcommands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
+import org.royaldev.royalcommands.Config;
 import org.royaldev.royalcommands.RUtils;
 import org.royaldev.royalcommands.RoyalCommands;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.royaldev.royalcommands.configuration.Configuration;
 
 public abstract class TabCommand extends CACommand implements TabCompleter {
 
@@ -106,12 +112,39 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                     possibilities.add(lowerCaseName.equals(arg) ? 0 : possibilities.size(), name);
                 }
                 break;
+			case EFFECT:
+				for (PotionEffectType pet : PotionEffectType.values()) {
+					if (pet == null) continue;
+					if (!pet.getName().toLowerCase().startsWith(arg.toLowerCase())) continue;
+					possibilities.add(pet.getName().toLowerCase());
+				}
+				possibilities.add("clear");
+				break;
+			case ENCHANT:
+				for (Enchantment e : Enchantment.values()) {
+					if (!e.getName().toLowerCase().startsWith(arg.toLowerCase())) continue;
+					possibilities.add(e.getName().toLowerCase());
+				}
+				possibilities.add("all");
+				break;
             case CUSTOM:
                 possibilities.addAll(this.getCustomCompletions(cs, cmd, label, args, arg));
                 break;
             case PLUGIN:
                 possibilities.addAll(this.getPluginCompletions(arg));
                 break;
+			case WARP:
+				Configuration cm = Configuration.getConfiguration("warps.yml");
+				if (!cm.exists()) return new ArrayList<>();
+				final Map<String, Object> opts = cm.getConfigurationSection("warps").getValues(false);
+				Iterator<String> warps = opts.keySet().iterator();
+			    while (warps.hasNext()) {
+		            final String warp = warps.next();
+                    if (!warp.toLowerCase().startsWith(arg)) continue;
+					if (Config.warpPermissions && !this.ah.isAuthorized(cs, "rcmds.warp." + warp.toLowerCase())) continue;
+					possibilities.add(warp);
+				}
+				break;
             case WORLD:
                 for (final World w : this.plugin.getServer().getWorlds()) {
                     final String name = w.getName();
@@ -120,6 +153,14 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
                     possibilities.add(lowerCaseName.equals(arg) ? 0 : possibilities.size(), name);
                 }
                 break;
+			case BIOME:
+				for (Biome b : Biome.values()) {
+                    final String name = b.name();
+                    final String lowerCaseName = name.toLowerCase();
+                    if (!lowerCaseName.startsWith(arg)) continue;
+					possibilities.add(lowerCaseName);
+				}
+				break;
             case LIST:
                 final List<String> custom = this.customList(cs, cmd, label, args, arg);
                 if (custom == null) break;
@@ -236,38 +277,54 @@ public abstract class TabCommand extends CACommand implements TabCompleter {
          * Completes for any material name (see {@link Material}).
          */
         ITEM((short) 4),
+		/**
+		 * Completes based on status effects.
+		 */
+		EFFECT((short) 8),
+		/**
+		 * Completes based on enchantments.
+		 */
+		ENCHANT((short) 16),
         /**
          * Completes based on
          * {@link #getCustomCompletions(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[], String)},
          * which can be overridden.
          */
-        CUSTOM((short) 8),
+        CUSTOM((short) 32),
         /**
          * Completes for any plugin loaded.
          */
-        PLUGIN((short) 16),
+        PLUGIN((short) 64),
+		/**
+		 * Completes for any warps.
+		 */
+		WARP((short) 128),
         /**
          * Completes for any world loaded.
          */
-        WORLD((short) 32),
+        WORLD((short) 256),
+		/**
+		 * Completes for any biome.
+		 */
+		BIOME((short) 512),
         /**
          * Completes for a list specified by
          * {@link #customList(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[], String)}.
          */
-        LIST((short) 64),
+        LIST((short) 1024),
         /**
          * Completes for an enum specified by
          * {@link #customEnum(org.bukkit.command.CommandSender, org.bukkit.command.Command, String, String[], String)}.
          */
-        ENUM((short) 128),
+        ENUM((short) 2048),
         /**
          * Completes for any RoyalCommands command.
          */
-        ROYALCOMMANDS_COMMAND((short) 256),
+        ROYALCOMMANDS_COMMAND((short) 4096),
         /**
          * Completes for any command.
          */
-        ANY_COMMAND((short) 512),
+        ANY_COMMAND((short) 8192),
 		/**
 		 * Completes for empty list.
 		 */
