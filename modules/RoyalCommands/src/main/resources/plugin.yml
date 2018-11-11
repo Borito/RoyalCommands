@@ -7,1171 +7,1513 @@ authors: [jkcclemens, The Worldwide Minecraft Alliance]
 softdepend: [VanishNoPacket, LWC, WorldGuard, Multiverse-Core, Vault, ProtocolLib]
 
 reflectcommands:
-  level:
-    description: Increases your experience level by one.
+  accountstatus:
+    aliases:
+      - accs
+      - ispremium
+      - iscracked
+    class: CmdAccountStatus
+    description: Checks to see if a name is premium.
+    usage: '/<command> [name]'
+    version_added: Pre-0.2.7
+  afk:
+    aliases:
+      - away
+    class: CmdAfk
+    description: Marks the player as away from keyboard.
     usage: /<command>
     version_added: Pre-0.2.7
-    class: CmdLevel
-
-  setlevel:
-    description: Sets your or another player's XP level to specified level.
-    usage: /<command> [level] (player)
-    aliases: [slvl, slevel, setlvl]
+  assign:
+    aliases:
+      - as
+      - pt
+      - powertool
+    class: CmdAssign
+    description: Assigns a command to a certain block.
+    usage: '/<command> [command|-#|~]'
     version_added: Pre-0.2.7
-    class: CmdSetLevel
-
-  selectiveclearinventory:
-    description: Selectively removes items from a player's inventory.
-    usage: /<command> [player] [item] (amount)
-    aliases: [sci]
+  attributes:
+    aliases:
+      - attribute
+      - attrs
+      - attr
+    class: CmdAttributes
+    description: Modifies attributes placed on items.
+    usage: '/<command> [subcommand]'
+    version_added: 3.3.0
+  back:
+    aliases:
+      - backs
+    class: CmdBack
+    description: Takes you to your previous location.
+    usage: '/<command> (#)'
     version_added: Pre-0.2.7
-    class: CmdSelectiveClearInventory
-
-  speak:
-    description: Makes another player talk.
-    usage: /<command> [player] [message]
-    version_added: Pre-0.2.7
-    class: CmdSpeak
-
-  slap:
-    description: Broadcasts you slapping another player.
-    usage: /<command> [player]
-    version_added: Pre-0.2.7
-    class: CmdSlap
-
-  harm:
-    description: Harms a player.
-    usage: /<command> [player] [damage]
-    version_added: Pre-0.2.7
-    class: CmdHarm
-
-  starve:
-    description: Lowers a player's hunger.
-    usage: /<command> [player] [damage]
-    aliases: [strv]
-    version_added: Pre-0.2.7
-    class: CmdStarve
-
-  setarmor:
-    description: Sets your armor to a certain type.
-    usage: /<command> [material]
-    aliases: [armor, sarmor]
-    version_added: Pre-0.2.7
-    class: CmdSetArmor
-
-  getip:
-    description: Gets the IP of a user.
-    usage: /<command> [player]
-    aliases: [getaddr, gip]
-    version_added: Pre-0.2.7
-    class: CmdGetIP
-
-  compareip:
-    description: Compares two users' IP addresses.
-    usage: /<command> [player1] [player2]
-    aliases: [compip, cip]
-    version_added: Pre-0.2.7
-    class: CmdCompareIP
-
-  quit:
-    description: Makes yourself quit.
-    usage: /<command>
-    version_added: Pre-0.2.7
-    class: CmdQuit
-
-  rank:
-    description: Checks the rank of the specified player (permissions).
-    usage: /<command> [player]
-    version_added: Pre-0.2.7
-    class: CmdRank
-
-  freeze:
-    description: Freezes the player.
-    usage: /<command> [player]
-    aliases: [fz, frz]
-    version_added: Pre-0.2.7
-    class: CmdFreeze
-
-  fakeop:
-    description: Fakes a "You are now op!" message.
-    usage: /<command> [player]
-    aliases: [fop]
-    version_added: Pre-0.2.7
-    class: CmdFakeop
-
-  vtp:
-    description: Teleports to anyone, regardless of being vanished or having teleport off.
-    usage: /<command> [player]
-    version_added: Pre-0.2.7
-    class: CmdVtp
-
-  vtphere:
-    description: Teleports anyone you, regardless of being vanished or having teleport off.
-    usage: /<command> [player]
-    version_added: Pre-0.2.7
-    class: CmdVtphere
-
-  megastrike:
-    description: Strikes lightning 15 times at the player's cursor or at specified player.
+  backpack:
+    aliases:
+      - pack
+      - bp
+    class: CmdBackpack
+    description: Opens a personal backpack.
     usage: /<command> (player)
-    aliases: [mstrike, megasmite, msmite, ms]
     version_added: Pre-0.2.7
-    class: CmdMegaStrike
-
-  playerextinguish:
-    description: Extinguishes yourself or a player.
-    usage: /<command> (player)
-    aliases: [playerext, pex, splash, pext]
-    version_added: Pre-0.2.7
-    class: CmdPlayerExtinguish
-
-  item:
-    description: Adds an item to your inventory.
-    usage: /<command> [item](:metadata) (amount)
-    aliases: [i]
-    version_added: Pre-0.2.7
-    class: CmdItem
-
-  clearinventory:
-    description: Clears your inventory.
-    usage: /<command> (user)
-    aliases: [ci, clearinv]
-    version_added: Pre-0.2.7
-    class: CmdClearInventory
-
-  weather:
-    description: Changes the weather.
-    usage: /<command> [conditions] (time)
-    version_added: Pre-0.2.7
-    class: CmdWeather
-
-  fixchunk:
-    description: Fixes a voided chunk (world holes) by reloading it.
-    usage: /<command>
-    aliases: [fc, fixc, cfix]
-    version_added: Pre-0.2.7
-    class: CmdFixChunk
-
-  give:
-    description: Gives a player items.
-    usage: /<command> [player] [item](:metadata) (amount)
-    aliases: [g]
-    version_added: Pre-0.2.7
-    class: CmdGive
-
-  message:
-    description: Sends a message to a player.
-    usage: /<command> [player] [message]
-    aliases: [msg, send, tell, whisper, w]
-    version_added: Pre-0.2.7
-    class: CmdMessage
-
-  reply:
-    description: Replies to a message.
-    usage: /<command> [message]
-    aliases: [r]
-    version_added: Pre-0.2.7
-    class: CmdReply
-
-  gamemode:
-    description: Toggles your gamemode.
-    usage: /<command> (player) [gamemode]
-    aliases: [gm, gamem, gmode]
-    version_added: Pre-0.2.7
-    class: CmdGameMode
-
   ban:
-    description: Bans a user.
-    usage: /<command> [player] (message)
-    aliases: [rban, banish]
-    version_added: Pre-0.2.7
+    aliases:
+      - rban
+      - banish
     class: CmdBan
-
-  mute:
-    description: Stops a user from speaking.
-    usage: /<command> [player] (time)
-    aliases: [silence]
+    description: Bans a user.
+    usage: '/<command> [player] (message)'
     version_added: Pre-0.2.7
-    class: CmdMute
-
-  kick:
-    description: Kicks a player from the server.
-    usage: /<command> [player] (message)
-    aliases: [boot]
+  banhistory:
+    aliases:
+      - bh
+    class: CmdBanHistory
+    description: Views the ban history of the player.
+    usage: '/<command> [name] [ban#]'
+    version_added: 0.2.7
+  baninfo:
+    aliases:
+      - bi
+      - whobanned
+      - whoban
+      - wbanned
+      - banwho
+      - bannedwho
+      - wban
+      - banreason
+      - br
+      - banr
+      - breason
+      - banned
+    class: CmdBanInfo
+    description: Get information about a ban.
+    usage: '/<command> [player]'
     version_added: Pre-0.2.7
-    class: CmdKick
-
-  time:
-    description: Sets the time of your current world.
-    usage: /<command> [ticks] (world)
-    version_added: Pre-0.2.7
-    class: CmdTime
-
-  home:
-    description: Teleports the player home.
-    usage: /<command> (home)
-    aliases: [rhome]
-    version_added: Pre-0.2.7
-    class: CmdHome
-
-  sethome:
-    description: Sets the player's home.
-    usage: /<command> (home)
-    aliases: [shome, rsethome]
-    version_added: Pre-0.2.7
-    class: CmdSetHome
-
-  deletehome:
-    description: Deletes a home.
-    usage: /<command> [home]
-    aliases: [dhome, rmhome, delhome, removehome, rdeletehome]
-    version_added: Pre-0.2.7
-    class: CmdDeleteHome
-
-  listhomes:
-    description: Lists your set homes.
-    usage: /<command> (player)
-    aliases: [lshome, listhome, lshomes, homes, rlisthomes]
-    version_added: Pre-0.2.7
-    class: CmdListHomes
-
-  strike:
-    description: Strikes lightning at the player's cursor or at specified player.
-    usage: /<command> (player)
-    aliases: [smite, lightning]
-    version_added: Pre-0.2.7
-    class: CmdStrike
-
-  jump:
-    description: Moves the player to the block they are looking at.
-    usage: /<command>
-    aliases: [j, go]
-    version_added: Pre-0.2.7
-    class: CmdJump
-
-  warn:
-    description: Warns the specified player.
-    usage: /<command> [player] (message)
-    version_added: Pre-0.2.7
-    class: CmdWarn
-
-  clearwarns:
-    description: Clears the warnings on a player.
-    usage: /<command> [player]
-    aliases: [removewarns, clearwarnings, removewarnings, rmwarns, rmwarnings]
-    version_added: Pre-0.2.7
-    class: CmdClearWarns
-
-  warp:
-    description: Moves you to a warp point.
-    usage: /<command> [warp] (player)
-    aliases: [warps]
-    version_added: Pre-0.2.7
-    class: CmdWarp
-
-  setwarp:
-    description: Sets a warp point.
-    usage: /<command> [warp]
-    aliases: [mkwarp, createwarp]
-    version_added: Pre-0.2.7
-    class: CmdSetWarp
-
-  deletewarp:
-    description: Deletes a warp point.
-    usage: /<command> [warp]
-    aliases: [dwarp, delwarp, rmwarp, removewarp]
-    version_added: Pre-0.2.7
-    class: CmdDeleteWarp
-
-  repair:
-    description: Repairs the item in your hand.
-    usage: /<command> (all)
-    aliases: [fix]
-    version_added: Pre-0.2.7
-    class: CmdRepair
-
-  unban:
-    description: Removes a ban from a player.
-    usage: /<command> [player]
-    aliases: [unbanish, pardon]
-    version_added: Pre-0.2.7
-    class: CmdUnban
-
-  heal:
-    description: Heals a player or the player himself.
-    usage: /<command> (player)
-    version_added: Pre-0.2.7
-    class: CmdHeal
-
-  feed:
-    description: Feeds a player or the player himself.
-    usage: /<command> (player)
-    version_added: Pre-0.2.7
-    class: CmdFeed
-
-  god:
-    description: Toggles godmode on a player or the player himself.
-    usage: /<command> (player)
-    aliases: [tgm, godmode]
-    version_added: Pre-0.2.7
-    class: CmdGod
-
-  setspawn:
-    description: Sets the spawn of the world the player is standing in.
-    usage: /<command>
-    version_added: Pre-0.2.7
-    class: CmdSetSpawn
-
-  spawn:
-    description: Takes the player to the spawn of the world they are standing in.
-    usage: /<command>
-    version_added: Pre-0.2.7
-    class: CmdSpawn
-
   banip:
+    class: CmdBanIP
     description: Bans an IP address or a player's IP.
     usage: /<command> (player/IP)
     version_added: Pre-0.2.7
-    class: CmdBanIP
-
-  unbanip:
-    description: Unbans an IP address or a player's IP.
-    usage: /<command> (player/IP)
-    aliases: [pardonip]
-    version_added: Pre-0.2.7
-    class: CmdUnbanIP
-
-  list:
-    description: Lists the players online and the maximum amount.
+  banlist:
+    aliases:
+      - bl
+    class: CmdBanList
+    description: Lists all banned players.
     usage: /<command>
-    aliases: [ls, dir, who, players, online, listplayers, playing]
     version_added: Pre-0.2.7
-    class: CmdList
-
-  back:
-    description: Takes you to your previous location.
-    usage: /<command> (#)
-    aliases: [backs]
+  biome:
+    class: CmdBiome
+    description: Changes the biome of the chunk you're in.
+    usage: '/<command> [biome] (radius)'
     version_added: Pre-0.2.7
-    class: CmdBack
-
-  teleport:
-    description: Teleports you to a player.
-    usage: /<command> [player]
-    aliases: [tp]
-    version_added: Pre-0.2.7
-    class: CmdTeleport
-
-  teleporthere:
-    description: Teleports a player to you.
-    usage: /<command> [player]
-    aliases: [tphere, tph]
-    version_added: Pre-0.2.7
-    class: CmdTeleportHere
-
-  teleportrequest:
-    description: Sends a teleport request to a player.
-    usage: /<command> [player]
-    aliases: [tpr, tpa, tprequest, teleportr]
-    version_added: Pre-0.2.7
-    class: CmdTeleportRequest
-
-  teleportaccept:
-    description: Accepts a teleport request.
-    usage: /<command> (name)
-    aliases: [tpaa, tpyes, tpay, tpaccept]
-    version_added: Pre-0.2.7
-    class: CmdTeleportAccept
-
-  teleportdeny:
-    description: Denies a teleport request.
-    usage: /<command> (name)
-    aliases: [tpad, tpno, tpan, tpdeny]
-    version_added: Pre-0.2.7
-    class: CmdTeleportDeny
-
-  listwarns:
-    description: Lists the warnings a player has.
-    usage: /<command> (player)
-    aliases: [warns, lswarns, lwarns, lwarn, lswarn, listwarn]
-    version_added: Pre-0.2.7
-    class: CmdListWarns
-
-  more:
-    description: Gives more of the item in hand.
-    usage: /<command> (all)
-    version_added: Pre-0.2.7
-    class: CmdMore
-
-  teleportrequesthere:
-    description: Sends a teleport here request to a player.
-    usage: /<command> [player]
-    aliases: [tprh, tpahere, tpah, teleportrhere, tphrequest, tphererequest, tprhere]
-    version_added: Pre-0.2.7
-    class: CmdTeleportRequestHere
-
-  messagespy:
-    description: Allows the player to spy on private messages.
-    usage: /<command> (player)
-    aliases: [chatspy, msgspy, socialspy]
-    version_added: Pre-0.2.7
-    class: CmdMessageSpy
-
-  spawnmob:
-    description: Spawns mobs where the player is looking.
-    usage: /<command> [mob] (amount)
-    aliases: [sm, mobspawn]
-    version_added: Pre-0.2.7
-    class: CmdSpawnMob
-
-  afk:
-    description: Marks the player as away from keyboard.
-    usage: /<command>
-    aliases: [away]
-    version_added: Pre-0.2.7
-    class: CmdAfk
-
-  assign:
-    description: Assigns a command to a certain block.
-    usage: /<command> [command|-#|~]
-    aliases: [as, pt, powertool]
-    version_added: Pre-0.2.7
-    class: CmdAssign
-
-  onehitkill:
-    description: Makes all attacks kill anything (not dragons).
-    usage: /<command> (player)
-    aliases: [ohk, instakill, ik]
-    version_added: Pre-0.2.7
-    class: CmdOneHitKill
-
-  burn:
-    description: Sets a player on fire for a set amount of time.
-    usage: /<command> [player] (time)
-    aliases: [ignite, enflame]
-    version_added: Pre-0.2.7
-    class: CmdBurn
-
-  kickall:
-    description: Kicks everyone from the server except the command issuer.
-    usage: /<command> (reason)
-    aliases: [ka, kickeveryone]
-    version_added: Pre-0.2.7
-    class: CmdKickAll
-
-  world:
-    description: Teleports the player to the specified world.
-    usage: /<command> [world]
-    aliases: [goto, gotoworld, tpworld, worldtp, teleportworld, worldteleport, tpw]
-    version_added: Pre-0.2.7
-    class: CmdWorld
-
-  jail:
-    description: Puts a player in jail.
-    usage: /<command> [player] [jail]
-    aliases: [tjail, togglejail]
-    version_added: Pre-0.2.7
-    class: CmdJail
-
-  setjail:
-    description: Sets the location of a jail.
-    usage: /<command> [name]
-    aliases: [sjail]
-    version_added: Pre-0.2.7
-    class: CmdSetJail
-
-  less:
-    description: Sets the amount of the item in hand to one.
-    usage: /<command> (all)
-    aliases: [fewer]
-    version_added: Pre-0.2.7
-    class: CmdLess
-
-  spawner:
-    description: Sets the type of a mob spawner.
-    usage: /<command> [mob]
-    version_added: Pre-0.2.7
-    class: CmdSpawner
-
-  teleportplayertoplayer:
-    description: Teleports one player to another.
-    usage: /<command> [player] [player]
-    aliases: [tp2p, teleportplayer2player, tpptp, tpp2p, teleportp2p, teleportptop]
-    version_added: Pre-0.2.7
-    class: CmdTeleportPlayerToPlayer
-
-  messageoftheday:
-    description: Shows the message of the day.
-    usage: /<command>
-    aliases: [motd]
-    version_added: Pre-0.2.7
-    class: CmdMessageOfTheDay
-
-  deletejail:
-    description: Removes a jail.
-    usage: /<command> [jail]
-    aliases: [deljail, rmjail, removejail, destroyjail]
-    version_added: Pre-0.2.7
-    class: CmdDeleteJail
-
-  force:
-    description: Forces a player to run a command.
-    usage: /<command> [player] [command]
-    aliases: [sudo, run]
-    version_added: Pre-0.2.7
-    class: CmdForce
-
-  ping:
-    description: Pings the server.
-    usage: /<command>
-    aliases: [pong]
-    version_added: Pre-0.2.7
-    class: CmdPing
-
-  realname:
-    description: Displays the real name of a player.
-    usage: /<command> [player]
-    aliases: [rn]
-    version_added: Pre-0.2.7
-    class: CmdRealName
-
-  seeinventory:
-    description: Allows you to see the inventory of a player.
-    usage: /<command> [player]
-    aliases: [invs, invsee, seeinv]
-    version_added: Pre-0.2.7
-    class: CmdSeeInventory
-
-  nick:
-    description: Sets the display name of a player.
-    usage: /<command> -player [player] (-clear) -nick (nick)
-    aliases: [dispname, name]
-    version_added: Pre-0.2.7
-    class: CmdNick
-
-  ingot2block:
-    description: Makes raw materials into blocks.
-    usage: /<command> (hand|all)
-    aliases: [i2b, itb]
-    version_added: Pre-0.2.7
-    class: CmdIngot2Block
-
-  near:
-    description: Gets nearby players.
-    usage: /<command> (radius)
-    aliases: [nearby, nearme, close]
-    version_added: Pre-0.2.7
-    class: CmdNear
-
-  kill:
-    description: Kills another player.
-    usage: /<command> [player]
-    aliases: [murder]
-    version_added: Pre-0.2.7
-    class: CmdKill
-
-  suicide:
-    description: Kills yourself.
-    usage: /<command>
-    aliases: [enditall, anhero]
-    version_added: Pre-0.2.7
-    class: CmdSuicide
-
-  killall:
-    description: Kills everyone on the server but yourself.
-    usage: /<command>
-    aliases: [kall]
-    version_added: Pre-0.2.7
-    class: CmdKillAll
-
-  muteall:
-    description: Mutes everyone on the server.
-    usage: /<command>
-    aliases: [silenceall]
-    version_added: Pre-0.2.7
-    class: CmdMuteAll
-
-  kit:
-    description: Gives you a kit defined in the config.
-    usage: /<command> [kit-name]
-    version_added: Pre-0.2.7
-    class: CmdKit
-
-  rules:
-    description: Displays server rules.
-    usage: /<command>
-    aliases: [rule]
-    version_added: Pre-0.2.7
-    class: CmdRules
-
   broadcast:
-    description: Broadcasts a message to the server.
-    usage: /<command> [message]
-    aliases: [bc, broadc, bcast]
-    version_added: Pre-0.2.7
+    aliases:
+      - bc
+      - broadc
+      - bcast
     class: CmdBroadcast
-
-  hug:
-    description: Broadcasts a hug to the server.
-    usage: /<command>
-    aliases: [embrace]
+    description: Broadcasts a message to the server.
+    usage: '/<command> [message]'
     version_added: Pre-0.2.7
-    class: CmdHug
-
-  explode:
-    description: Explodes where the player is looking or the specified player.
-    usage: /<command> [player] (power)
-    aliases: [destroy, end]
-    version_added: Pre-0.2.7
-    class: CmdExplode
-
-  ride:
-    description: Mounts the player on another player.
-    usage: /<command> [player]
-    aliases: [mount, eject]
-    version_added: Pre-0.2.7
-    class: CmdRide
-
-  teleportposition:
-    description: Teleports you to a specific coordinate point.
-    usage: /<command> [x] [y] [z] (world)
-    aliases: [tppos, tpos, tpcoords, tpp, tpc, teleportcoordinates, teleportpos, tpposition, tposition]
-    version_added: Pre-0.2.7
-    class: CmdTeleportPosition
-
-  ignore:
-    description: Ignores when a player chats.
+  buddha:
+    aliases:
+      - tbm
+      - buddhamode
+    class: CmdBuddha
+    description: Toggles buddha mode.
     usage: /<command> (player)
-    aliases: [forget]
     version_added: Pre-0.2.7
-    class: CmdIgnore
-
-  help:
-    description: Displays help for commands.
-    usage: /<command> (page)
+  burn:
+    aliases:
+      - ignite
+      - enflame
+    class: CmdBurn
+    description: Sets a player on fire for a set amount of time.
+    usage: '/<command> [player] (time)'
     version_added: Pre-0.2.7
-    class: CmdHelp
-
+  clearinventory:
+    aliases:
+      - ci
+      - clearinv
+    class: CmdClearInventory
+    description: Clears your inventory.
+    usage: /<command> (user)
+    version_added: Pre-0.2.7
+  clearwarns:
+    aliases:
+      - removewarns
+      - clearwarnings
+      - removewarnings
+      - rmwarns
+      - rmwarnings
+    class: CmdClearWarns
+    description: Clears the warnings on a player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  commandspy:
+    aliases:
+      - cmdspy
+    class: CmdCommandSpy
+    description: Allows the player to spy on commands used.
+    usage: /<command> (player)
+    version_added: 3.3.0
+  compareip:
+    aliases:
+      - compip
+      - cip
+    class: CmdCompareIP
+    description: Compares two users' IP addresses.
+    usage: '/<command> [player1] [player2]'
+    version_added: Pre-0.2.7
+  compass:
+    class: CmdCompass
+    description: Changes where your compass points.
+    usage: '/<command> [reset/here/location/player] (x y z/player)'
+    version_added: Pre-0.2.7
   coords:
+    aliases:
+      - pos
+      - position
+      - loc
+      - location
+      - coordinates
+    class: CmdCoords
     description: Displays coordinates for yourself or a player.
     usage: /<command> (player)
-    aliases: [pos, position, loc, location, coordinates]
     version_added: Pre-0.2.7
-    class: CmdCoords
-
-  teleportall:
-    description: Teleports everyone to you.
-    usage: /<command>
-    aliases: [tpall]
+  deafen:
+    aliases:
+      - deaf
+      - ignoreall
+    class: CmdDeafen
+    description: Toggles whether a player can see messages.
+    usage: /<command> (player)
     version_added: Pre-0.2.7
-    class: CmdTeleportAll
-
-  teleportrequestall:
-    description: Sends a teleport request to everyone.
-    usage: /<command>
-    aliases: [tprall, teleportaskall, tpaall]
+  deletebanhistory:
+    aliases:
+      - dbh
+      - rbh
+      - removebanhistory
+    class: CmdDeleteBanHistory
+    description: Deletes ban history records.
+    usage: '/<command> [player] [ban#]'
+    version_added: 3.2.0
+  deletehome:
+    aliases:
+      - dhome
+      - rmhome
+      - delhome
+      - removehome
+      - rdeletehome
+    class: CmdDeleteHome
+    description: Deletes a home.
+    usage: '/<command> [home]'
     version_added: Pre-0.2.7
-    class: CmdTeleportRequestAll
-
-  vip:
-    description: Modifies the VIP list. VIPs can join the server when it is full.
-    usage: /<command> [add|remove|check|?] (player)
-    aliases: [reserve, slot]
+  deletejail:
+    aliases:
+      - deljail
+      - rmjail
+      - removejail
+      - destroyjail
+    class: CmdDeleteJail
+    description: Removes a jail.
+    usage: '/<command> [jail]'
     version_added: Pre-0.2.7
-    class: CmdVip
-
+  deletewarp:
+    aliases:
+      - dwarp
+      - delwarp
+      - rmwarp
+      - removewarp
+    class: CmdDeleteWarp
+    description: Deletes a warp point.
+    usage: '/<command> [warp]'
+    version_added: Pre-0.2.7
+  documentation:
+    aliases:
+      - docs
+      - doc
+    class: CmdDocumentation
+    description: Gets a link to the documentation of a command or permission node.
+    usage: '/<command> [command|permission] [name]'
+    version_added: 3.3.0
   dump:
+    aliases:
+      - empty
+      - store
+    class: CmdDump
     description: Dumps contents of inventory into chest.
     usage: /<command>
-    aliases: [empty, store]
     version_added: Pre-0.2.7
-    class: CmdDump
-
-  seen:
-    description: Shows when a player was last online.
-    usage: /<command> [player]
-    aliases: [lastseen]
+  effect:
+    class: CmdEffect
+    description: Apply custom potion effects on players.
+    usage: '/<command> [name] [effecttags]'
+    version_added: 0.2.7
+  enchant:
+    class: CmdEnchant
+    description: Enchants the item in hand.
+    usage: '/<command> [enchantment/all] (level)'
     version_added: Pre-0.2.7
-    class: CmdSeen
-
-  temporaryban:
-    description: Temporarily bans a player.
-    usage: /<command> [player] [time] [reason]
-    aliases: [tban, temporarilyban, tempban]
-    version_added: Pre-0.2.7
-    class: CmdTemporaryBan
-
-  teleporttoggle:
-    description: Toggles teleportation.
-    usage: /<command>
-    aliases: [tptoggle, toggletp]
-    version_added: Pre-0.2.7
-    class: CmdTeleportToggle
-
-  kits:
-    description: Lists the kits available to you.
-    usage: /<command>
-    aliases: [listkit, listkits]
-    version_added: Pre-0.2.7
-    class: CmdKits
-
-  lag:
-    description: Displays the ticks per seconds over a period of time.
-    usage: /<command> (seconds to run)
-    aliases: [tps, getlag]
-    version_added: Pre-0.2.7
-    class: CmdLag
-
-  memory:
-    description: Displays the current memory usage.
-    usage: /<command>
-    aliases: [mem, getmem, lagmem, ram, getram]
-    version_added: Pre-0.2.7
-    class: CmdMemory
-
-  entities:
-    description: Displays the entities close to you.
-    usage: /<command> (radius)
-    aliases: [neare, enear, ents, entity, closeents, entsclose, ent]
-    version_added: Pre-0.2.7
-    class: CmdEntities
-
-  modifyinventory:
-    description: Modifies other players' inventories.
-    usage: /<command> [player]
-    aliases: [modinv, invmod]
-    version_added: Pre-0.2.7
-    class: CmdModifyInventory
-
-  workbench:
-    description: Opens a workbench anywhere.
-    usage: /<command>
-    aliases: [wb, ct, craftingtable]
-    version_added: Pre-0.2.7
-    class: CmdWorkbench
-
   enchantingtable:
+    aliases:
+      - et
+    class: CmdEnchantingTable
     description: Opens an enchanting table anywhere.
     usage: /<command>
-    aliases: [et]
     version_added: Pre-0.2.7
-    class: CmdEnchantingTable
-
-  trade:
-    description: Opens a mutual chest between two players.
-    usage: /<command> [player]
+  enderchest:
+    aliases:
+      - endchest
+      - echest
+      - ec
+    class: CmdEnderChest
+    description: Shows the ender chest of a player.
+    usage: '/<command> [player] [world]'
+    version_added: 3.2.0
+  entities:
+    aliases:
+      - neare
+      - enear
+      - ents
+      - entity
+      - closeents
+      - entsclose
+      - ent
+    class: CmdEntities
+    description: Displays the entities close to you.
+    usage: /<command> (radius)
     version_added: Pre-0.2.7
-    class: CmdTrade
-
-  furnace:
-    description: Remotely manages a furnace you set.
-    usage: /<command> [set/show]
+  erase:
+    aliases:
+      - rm
+    class: CmdErase
+    description: Removes entities.
+    usage: '/<command> [mobs|arrows|boats|littnt|xp|minecarts|paintings|all] (radius)'
     version_added: Pre-0.2.7
-    class: CmdFurnace
-
-  enchant:
-    description: Enchants the item in hand.
-    usage: /<command> [enchantment/all] (level)
+  explode:
+    aliases:
+      - destroy
+      - end
+    class: CmdExplode
+    description: Explodes where the player is looking or the specified player.
+    usage: '/<command> [player] (power)'
     version_added: Pre-0.2.7
-    class: CmdEnchant
-
+  fakeop:
+    aliases:
+      - fop
+    class: CmdFakeop
+    description: Fakes a "You are now op!" message.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  feed:
+    class: CmdFeed
+    description: Feeds a player or the player himself.
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  findip:
+    aliases:
+      - fip
+    class: CmdFindIP
+    description: Finds players with a matching IP address.
+    usage: '/<command> [ip]'
+    version_added: 3.2.0
   fireball:
+    aliases:
+      - fb
+    class: CmdFireball
     description: Launches a fireball towards where you are looking.
     usage: /<command>
-    aliases: [fb]
     version_added: Pre-0.2.7
-    class: CmdFireball
-
+  firework:
+    aliases:
+      - fw
+    class: CmdFirework
+    description: Sets effects on fireworks.
+    usage: '/<command> [tags]'
+    version_added: Pre-0.2.7
+  fixchunk:
+    aliases:
+      - fc
+      - fixc
+      - cfix
+    class: CmdFixChunk
+    description: Fixes a voided chunk (world holes) by reloading it.
+    usage: /<command>
+    version_added: Pre-0.2.7
   fly:
+    class: CmdFly
     description: Toggles creative flymode for yourself or a player
     usage: /<command> (player)
     version_added: Pre-0.2.7
-    class: CmdFly
-
-  wl: # This should remain wl and not the expanded form (don't override vanilla command, hopefully)
-    description: Manages the dynamic whitelist.
-    usage: /<command> [check/add/remove] [player]
-    aliases: [whitelist]
+  flyspeed:
+    aliases:
+      - fs
+    class: CmdFlySpeed
+    description: Changes the speed you fly at.
+    usage: '/<command> [speed]'
     version_added: Pre-0.2.7
-    class: CmdWhitelist
-
-  playertime:
-    description: Changes player time. If not time specified, resets it.
-    usage: /<command> [player] (time)
-    aliases: [ptime]
+  force:
+    aliases:
+      - sudo
+      - run
+    class: CmdForce
+    description: Forces a player to run a command.
+    usage: '/<command> [player] [command]'
     version_added: Pre-0.2.7
-    class: CmdPlayerTime
-
-  compass:
-    description: Changes where your compass points.
-    usage: /<command> [reset/here/location/player] (x y z/player)
+  freeze:
+    aliases:
+      - fz
+      - frz
+    class: CmdFreeze
+    description: Freezes the player.
+    usage: '/<command> [player]'
     version_added: Pre-0.2.7
-    class: CmdCompass
-
-  helmet:
-    description: Changes your helmet.
-    usage: /<command> [item/none]
-    aliases: [helm]
+  freezetime:
+    aliases:
+      - ft
+    class: CmdFreezeTime
+    description: Freezes time on a world.
+    usage: '/<command> [world]'
     version_added: Pre-0.2.7
-    class: CmdHelmet
-
-  worldmanager:
-    description: Allows you to manage the worlds on your server.
-    usage: /<command> [help/create/load/unload/delete/list/info] (additional args)
-    aliases: [wm]
+  furnace:
+    class: CmdFurnace
+    description: Remotely manages a furnace you set.
+    usage: '/<command> [set/show]'
     version_added: Pre-0.2.7
-    class: CmdWorldManager
-
-  biome:
-    description: Changes the biome of the chunk you're in.
-    usage: /<command> [biome] (radius)
+  gamemode:
+    aliases:
+      - gm
+      - gamem
+      - gmode
+    class: CmdGameMode
+    description: Toggles your gamemode.
+    usage: '/<command> (player) [gamemode]'
     version_added: Pre-0.2.7
-    class: CmdBiome
-
+  garbagecollector:
+    aliases:
+      - gc
+    class: CmdGarbageCollector
+    description: Runs the Java garbage collector.
+    usage: /<command>
+    version_added: Pre-0.2.7
   getid:
+    class: CmdGetID
     description: Gets the ID of the item in your hand.
     usage: /<command>
     version_added: Pre-0.2.7
-    class: CmdGetID
-
-  buddha:
-    description: Toggles buddha mode.
+  getip:
+    aliases:
+      - getaddr
+      - gip
+    class: CmdGetIP
+    description: Gets the IP of a user.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  give:
+    aliases:
+      - g
+    class: CmdGive
+    description: Gives a player items.
+    usage: '/<command> [player] [item](:metadata) (amount)'
+    version_added: Pre-0.2.7
+  god:
+    aliases:
+      - tgm
+      - godmode
+    class: CmdGod
+    description: Toggles godmode on a player or the player himself.
     usage: /<command> (player)
-    aliases: [tbm, buddhamode]
     version_added: Pre-0.2.7
-    class: CmdBuddha
-
-  erase:
-    description: Removes entities.
-    usage: /<command> [mobs|arrows|boats|littnt|xp|minecarts|paintings|all] (radius)
-    aliases: [rm]
+  harm:
+    class: CmdHarm
+    description: Harms a player.
+    usage: '/<command> [player] [damage]'
     version_added: Pre-0.2.7
-    class: CmdErase
-
-  whois:
-    description: Looks up data on the specified player.
-    usage: /<command> [player]
-    aliases: [whowas]
-    version_added: Pre-0.2.7
-    class: CmdWhois
-
-  mobignore:
-    description: Toggles if mobs ignore the player.
-    usage: /<command> (player)
-    aliases: [mi]
-    version_added: Pre-0.2.7
-    class: CmdMobIgnore
-
-  monitor:
-    description: Watch another player.
-    usage: /<command> (player)
-    aliases: [watch]
-    version_added: Pre-0.2.7
-    class: CmdMonitor
-
-  garbagecollector:
-    description: Runs the Java garbage collector.
-    usage: /<command>
-    aliases: [gc]
-    version_added: Pre-0.2.7
-    class: CmdGarbageCollector
-
-  backpack:
-    description: Opens a personal backpack.
-    usage: /<command> (player)
-    aliases: [pack, bp]
-    version_added: Pre-0.2.7
-    class: CmdBackpack
-
-  usage:
-    description: Displays the usage of another command.
-    usage: /<command> [command]
-    version_added: Pre-0.2.7
-    class: CmdUsage
-
-  pluginmanager:
-    description: Manages plugins on the server.
-    usage: /<command> [subcommand] (argument)
-    aliases: [pm]
-    version_added: Pre-0.2.7
-    class: CmdPluginManager
-
-  freezetime:
-    description: Freezes time on a world.
-    usage: /<command> [world]
-    aliases: [ft]
-    version_added: Pre-0.2.7
-    class: CmdFreezeTime
-
-  baninfo:
-    description: Get information about a ban.
-    usage: /<command> [player]
-    aliases: [bi, whobanned, whoban, wbanned, banwho, bannedwho, wban, banreason, br, banr, breason, banned]
-    version_added: Pre-0.2.7
-    class: CmdBanInfo
-
-  banlist:
-    description: Lists all banned players.
-    usage: /<command>
-    aliases: [bl]
-    version_added: Pre-0.2.7
-    class: CmdBanList
-
-  flyspeed:
-    description: Changes the speed you fly at.
-    usage: /<command> [speed]
-    aliases: [fs]
-    version_added: Pre-0.2.7
-    class: CmdFlySpeed
-
-  walkspeed:
-    description: Changes the speed you walk at.
-    usage: /<command> [speed]
-    aliases: [ws]
-    version_added: Pre-0.2.7
-    class: CmdWalkSpeed
-
-  accountstatus:
-    description: Checks to see if a name is premium.
-    usage: /<command> [name]
-    aliases: [accs, ispremium, iscracked]
-    version_added: Pre-0.2.7
-    class: CmdAccountStatus
-
-  playersearch:
-    description: Searches for a player.
-    usage: /<command> [search query]
-    aliases: [ps, psearch]
-    version_added: Pre-0.2.7
-    class: CmdPlayerSearch
-
-  deafen:
-    description: Toggles whether a player can see messages.
-    usage: /<command> (player)
-    aliases: [deaf, ignoreall]
-    version_added: Pre-0.2.7
-    class: CmdDeafen
-
-  rename:
-    description: Renames an item.
-    usage: /<command> [name]
-    version_added: Pre-0.2.7
-    class: CmdRename
-
-  lore:
-    description: Sets lore on an item.
-    usage: /<command> [name]
-    aliases: [setlore]
-    version_added: Pre-0.2.7
-    class: CmdLore
-
-  setuserdata:
-    description: Sets a userdata value for a player.
-    usage: /<command> [name] [node] [value]
-    aliases: [sud, ud, userdata]
-    version_added: Pre-0.2.7
-    class: CmdSetUserdata
-
-  firework:
-    description: Sets effects on fireworks.
-    usage: /<command> [tags]
-    aliases: [fw]
-    version_added: Pre-0.2.7
-    class: CmdFirework
-
-  rocket:
-    description: Launches the player vertically.
-    usage: /<command> [name]
-    version_added: 0.2.7
-    class: CmdRocket
-
-  effect:
-    description: Apply custom potion effects on players.
-    usage: /<command> [name] [effecttags]
-    version_added: 0.2.7
-    class: CmdEffect
-
-  banhistory:
-    description: Views the ban history of the player.
-    usage: /<command> [name] [ban#]
-    aliases: [bh]
-    version_added: 0.2.7
-    class: CmdBanHistory
-
-  mail:
-    description: Manages player mail.
-    usage: /<command> [read|clear|send [to] [message]]
-    version_added: 0.2.7
-    class: CmdMail
-
-  signedit:
-    description: Edits the sign a player is currently looking at.
-    usage: /<command> [line#] (new text)
-    aliases: [se, editsign, es]
-    version_added: 0.2.7
-    class: CmdSignEdit
-
-  potion:
-    description: Adds effect to a potion.
-    usage: /<command> [effects]
-    version_added: 0.2.7
-    class: CmdPotion
-
-  setcharacteristic:
-    description: Sets player characteristics.
-    usage: /<command> [subcommands]
-    aliases: [sc, setchar]
-    version_added: 0.2.7
-    class: CmdSetCharacteristic
-
-  nameentity:
-    description: Sets an entity's name.
-    usage: /<command> [newname]
-    aliases: [setmobname, renamemob, mobname, mn, ne]
-    version_added: 0.2.7
-    class: CmdNameEntity
-
   head:
-    description: Sets a head to a player's skin.
-    usage: /<command> [name]
-    aliases: [skull]
-    version_added: 0.2.7
+    aliases:
+      - skull
     class: CmdHead
-
-  findip:
-    description: Finds players with a matching IP address.
-    usage: /<command> [ip]
-    aliases: [fip]
-    version_added: 3.2.0
-    class: CmdFindIP
-
-  map:
-    description: Adjusts maps.
-    usage: /<command> [subcommands]
-    aliases: [mapadjust]
-    version_added: 3.2.0
-    class: CmdMap
-
-  deletebanhistory:
-    description: Deletes ban history records.
-    usage: /<command> [player] [ban#]
-    aliases: [dbh, rbh, removebanhistory]
-    version_added: 3.2.0
-    class: CmdDeleteBanHistory
-
-  publicassign:
-    description: Assigns commands to items that anyone with the item can use.
-    usage: /<command> [command|-#|~]
-    aliases: [pas, ppt, publicpowertool]
-    version_added: 3.2.0
-    class: CmdPublicAssign
-
-  enderchest:
-    description: Shows the ender chest of a player.
-    usage: /<command> [player] [world]
-    aliases: [endchest, echest, ec]
-    version_added: 3.2.0
-    class: CmdEnderChest
-
-  recipe:
-    description: Displays recipes for any item.
-    usage: /<command> [item]
-    version_added: 3.3.0
-    class: CmdRecipe
-
-  spawninfo:
-    description: Displays information about spawned items.
-    usage: /<command> [subcommand]
-    aliases: [si]
-    version_added: 3.3.0
-    class: CmdSpawnInfo
-
-  attributes:
-    description: Modifies attributes placed on items.
-    usage: /<command> [subcommand]
-    aliases: [attribute, attrs, attr]
-    version_added: 3.3.0
-    class: CmdAttributes
-
-  saveplayer:
-    description: Saves an individual player's data.
-    usage: /<command> [player]
-    aliases: [sp]
-    version_added: 3.3.0
-    class: CmdSavePlayer
-
-  loadplayer:
-    description: Loads an individual player's data.
-    usage: /<command> [player]
-    aliases: [lp]
-    version_added: 3.3.0
-    class: CmdLoadPlayer
-
-  teleportrequestcancel:
-    description: Cancels a teleport request.
-    usage: /<command> [player]
-    aliases: [trc, tprcancel, tpacancel, tpac, tprc]
-    version_added: 3.3.0
-    class: CmdTeleportRequestCancel
-
-  commandspy:
-    description: Allows the player to spy on commands used.
+    description: Sets a head to a player's skin.
+    usage: '/<command> [name]'
+    version_added: 0.2.7
+  heal:
+    class: CmdHeal
+    description: Heals a player or the player himself.
     usage: /<command> (player)
-    aliases: [cmdspy]
-    version_added: 3.3.0
-    class: CmdCommandSpy
-
+    version_added: Pre-0.2.7
+  helmet:
+    aliases:
+      - helm
+    class: CmdHelmet
+    description: Changes your helmet.
+    usage: '/<command> [item/none]'
+    version_added: Pre-0.2.7
+  help:
+    class: CmdHelp
+    description: Displays help for commands.
+    usage: /<command> (page)
+    version_added: Pre-0.2.7
+  home:
+    aliases:
+      - rhome
+    class: CmdHome
+    description: Teleports the player home.
+    usage: /<command> (home)
+    version_added: Pre-0.2.7
+  hug:
+    aliases:
+      - embrace
+    class: CmdHug
+    description: Broadcasts a hug to the server.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  ignore:
+    aliases:
+      - forget
+    class: CmdIgnore
+    description: Ignores when a player chats.
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  ingot2block:
+    aliases:
+      - i2b
+      - itb
+    class: CmdIngot2Block
+    description: Makes raw materials into blocks.
+    usage: /<command> (hand|all)
+    version_added: Pre-0.2.7
+  item:
+    aliases:
+      - i
+    class: CmdItem
+    description: Adds an item to your inventory.
+    usage: '/<command> [item](:metadata) (amount)'
+    version_added: Pre-0.2.7
+  jail:
+    aliases:
+      - tjail
+      - togglejail
+    class: CmdJail
+    description: Puts a player in jail.
+    usage: '/<command> [player] [jail]'
+    version_added: Pre-0.2.7
+  jump:
+    aliases:
+      - j
+      - go
+    class: CmdJump
+    description: Moves the player to the block they are looking at.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  kick:
+    aliases:
+      - boot
+    class: CmdKick
+    description: Kicks a player from the server.
+    usage: '/<command> [player] (message)'
+    version_added: Pre-0.2.7
+  kickall:
+    aliases:
+      - ka
+      - kickeveryone
+    class: CmdKickAll
+    description: Kicks everyone from the server except the command issuer.
+    usage: /<command> (reason)
+    version_added: Pre-0.2.7
   kickhistory:
+    aliases:
+      - khistory
+      - kh
+    class: CmdKickHistory
     description: Views the kick history of the player.
     usage: /<command> (player)
-    aliases: [khistory, kh]
     version_added: 3.3.0
-    class: CmdKickHistory
-
-  documentation:
-    description: Gets a link to the documentation of a command or permission node.
-    usage: /<command> [command|permission] [name]
-    aliases: [docs, doc]
-    version_added: 3.3.0
-    class: CmdDocumentation
-
-  prune:
-    description: Prunes old userdata.
-    usage: /<command> -[time,t] [time]
-    aliases: [pruneuserdata]
-    version_added: 4.1.0
-    class: CmdPrune
-
-  uses:
-    description: Displays uses for any item.
-    usage: /<command> [item]
-    aliases: [use]
-    version_added: 4.1.0
-    class: CmdUses
-
-  uptime:
-    description: Displays the amount of time the server has been up for.
+  kill:
+    aliases:
+      - murder
+    class: CmdKill
+    description: Kills another player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  killall:
+    aliases:
+      - kall
+    class: CmdKillAll
+    description: Kills everyone on the server but yourself.
     usage: /<command>
-    aliases: [ut]
+    version_added: Pre-0.2.7
+  kit:
+    class: CmdKit
+    description: Gives you a kit defined in the config.
+    usage: '/<command> [kit-name]'
+    version_added: Pre-0.2.7
+  kits:
+    aliases:
+      - listkit
+      - listkits
+    class: CmdKits
+    description: Lists the kits available to you.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  lag:
+    aliases:
+      - tps
+      - getlag
+    class: CmdLag
+    description: Displays the ticks per seconds over a period of time.
+    usage: /<command> (seconds to run)
+    version_added: Pre-0.2.7
+  less:
+    aliases:
+      - fewer
+    class: CmdLess
+    description: Sets the amount of the item in hand to one.
+    usage: /<command> (all)
+    version_added: Pre-0.2.7
+  level:
+    class: CmdLevel
+    description: Increases your experience level by one.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  list:
+    aliases:
+      - ls
+      - dir
+      - who
+      - players
+      - online
+      - listplayers
+      - playing
+    class: CmdList
+    description: Lists the players online and the maximum amount.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  listhomes:
+    aliases:
+      - lshome
+      - listhome
+      - lshomes
+      - homes
+      - rlisthomes
+    class: CmdListHomes
+    description: Lists your set homes.
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  listwarns:
+    aliases:
+      - warns
+      - lswarns
+      - lwarns
+      - lwarn
+      - lswarn
+      - listwarn
+    class: CmdListWarns
+    description: Lists the warnings a player has.
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  loadplayer:
+    aliases:
+      - lp
+    class: CmdLoadPlayer
+    description: Loads an individual player's data.
+    usage: '/<command> [player]'
+    version_added: 3.3.0
+  lore:
+    aliases:
+      - setlore
+    class: CmdLore
+    description: Sets lore on an item.
+    usage: '/<command> [name]'
+    version_added: Pre-0.2.7
+  mail:
+    class: CmdMail
+    description: Manages player mail.
+    usage: '/<command> [read|clear|send [to] [message]]'
+    version_added: 0.2.7
+  map:
+    aliases:
+      - mapadjust
+    class: CmdMap
+    description: Adjusts maps.
+    usage: '/<command> [subcommands]'
+    version_added: 3.2.0
+  megastrike:
+    aliases:
+      - mstrike
+      - megasmite
+      - msmite
+      - ms
+    class: CmdMegaStrike
+    description: Strikes lightning 15 times at the player's cursor or at specified player.
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  memory:
+    aliases:
+      - mem
+      - getmem
+      - lagmem
+      - ram
+      - getram
+    class: CmdMemory
+    description: Displays the current memory usage.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  message:
+    aliases:
+      - msg
+      - send
+      - tell
+      - whisper
+      - w
+    class: CmdMessage
+    description: Sends a message to a player.
+    usage: '/<command> [player] [message]'
+    version_added: Pre-0.2.7
+  messageoftheday:
+    aliases:
+      - motd
+    class: CmdMessageOfTheDay
+    description: Shows the message of the day.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  messagespy:
+    aliases:
+      - chatspy
+      - msgspy
+      - socialspy
+    class: CmdMessageSpy
+    description: Allows the player to spy on private messages.
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  mobignore:
+    aliases:
+      - mi
+    class: CmdMobIgnore
+    description: Toggles if mobs ignore the player.
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  modifyinventory:
+    aliases:
+      - modinv
+      - invmod
+    class: CmdModifyInventory
+    description: Modifies other players' inventories.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  monitor:
+    aliases:
+      - watch
+    class: CmdMonitor
+    description: 'Watch another player. As of 1.8, Spectator mode should be used instead.'
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  more:
+    class: CmdMore
+    description: Gives more of the item in hand.
+    usage: /<command> (all)
+    version_added: Pre-0.2.7
+  mute:
+    aliases:
+      - silence
+    class: CmdMute
+    description: Stops a user from speaking.
+    usage: '/<command> [player] (time)'
+    version_added: Pre-0.2.7
+  muteall:
+    aliases:
+      - silenceall
+    class: CmdMuteAll
+    description: Mutes everyone on the server.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  nameentity:
+    aliases:
+      - setmobname
+      - renamemob
+      - mobname
+      - mn
+      - ne
+    class: CmdNameEntity
+    description: Sets an entity's name.
+    usage: '/<command> [newname]'
+    version_added: 0.2.7
+  near:
+    aliases:
+      - nearby
+      - nearme
+      - close
+    class: CmdNear
+    description: Gets nearby players.
+    usage: /<command> (radius)
+    version_added: Pre-0.2.7
+  nick:
+    aliases:
+      - dispname
+      - name
+    class: CmdNick
+    description: Sets the display name of a player.
+    usage: '/<command> -player [player] (-clear) -nick (nick)'
+    version_added: Pre-0.2.7
+  onehitkill:
+    aliases:
+      - ohk
+      - instakill
+      - ik
+    class: CmdOneHitKill
+    description: Makes all attacks kill anything (not dragons).
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  ping:
+    aliases:
+      - pong
+    class: CmdPing
+    description: Pings the server.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  playerextinguish:
+    aliases:
+      - playerext
+      - pex
+      - splash
+      - pext
+    class: CmdPlayerExtinguish
+    description: Extinguishes yourself or a player.
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  playersearch:
+    aliases:
+      - ps
+      - psearch
+    class: CmdPlayerSearch
+    description: Searches for a player.
+    usage: '/<command> [search query]'
+    version_added: Pre-0.2.7
+  playertime:
+    aliases:
+      - ptime
+    class: CmdPlayerTime
+    description: 'Changes player time. If not time specified, resets it.'
+    usage: '/<command> [player] (time)'
+    version_added: Pre-0.2.7
+  pluginmanager:
+    aliases:
+      - pm
+    class: CmdPluginManager
+    description: Manages plugins on the server.
+    usage: '/<command> [subcommand] (argument)'
+    version_added: Pre-0.2.7
+  potion:
+    class: CmdPotion
+    description: Adds effect to a potion.
+    usage: '/<command> [effects]'
+    version_added: 0.2.7
+  prune:
+    aliases:
+      - pruneuserdata
+    class: CmdPrune
+    description: Prunes old userdata.
+    usage: '/<command> -[time,t] [time]'
     version_added: 4.1.0
-    class: CmdUptime
-
+  publicassign:
+    aliases:
+      - pas
+      - ppt
+      - publicpowertool
+    class: CmdPublicAssign
+    description: Assigns commands to items that anyone with the item can use.
+    usage: '/<command> [command|-#|~]'
+    version_added: 3.2.0
+  quit:
+    class: CmdQuit
+    description: Makes yourself quit.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  rank:
+    class: CmdRank
+    description: Checks the rank of the specified player (permissions).
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  realname:
+    aliases:
+      - rn
+    class: CmdRealName
+    description: Displays the real name of a player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  recipe:
+    class: CmdRecipe
+    description: Displays recipes for any item.
+    usage: '/<command> [item]'
+    version_added: 3.3.0
+  rename:
+    class: CmdRename
+    description: Renames an item.
+    usage: '/<command> [name]'
+    version_added: Pre-0.2.7
+  repair:
+    aliases:
+      - fix
+    class: CmdRepair
+    description: Repairs the item in your hand.
+    usage: /<command> (all)
+    version_added: Pre-0.2.7
+  reply:
+    aliases:
+      - r
+    class: CmdReply
+    description: Replies to a message.
+    usage: '/<command> [message]'
+    version_added: Pre-0.2.7
+  ride:
+    aliases:
+      - mount
+      - eject
+    class: CmdRide
+    description: Mounts the player on another player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  rocket:
+    class: CmdRocket
+    description: Launches the player vertically.
+    usage: '/<command> [name]'
+    version_added: 0.2.7
   royalcommands:
+    aliases:
+      - rcmds
+    class: CmdRoyalCommands
     description: Displays version of RoyalCommands and reloads config file.
     usage: /<command>
-    aliases: [rcmds]
     version_added: Pre-0.2.7
-    class: CmdRoyalCommands
+  rules:
+    aliases:
+      - rule
+    class: CmdRules
+    description: Displays server rules.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  saveplayer:
+    aliases:
+      - sp
+    class: CmdSavePlayer
+    description: Saves an individual player's data.
+    usage: '/<command> [player]'
+    version_added: 3.3.0
+  seeinventory:
+    aliases:
+      - invs
+      - invsee
+      - seeinv
+    class: CmdSeeInventory
+    description: Allows you to see the inventory of a player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  seen:
+    aliases:
+      - lastseen
+    class: CmdSeen
+    description: Shows when a player was last online.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  selectiveclearinventory:
+    aliases:
+      - sci
+    class: CmdSelectiveClearInventory
+    description: Selectively removes items from a player's inventory.
+    usage: '/<command> [player] [item] (amount)'
+    version_added: Pre-0.2.7
+  setarmor:
+    aliases:
+      - armor
+      - sarmor
+    class: CmdSetArmor
+    description: Sets your armor to a certain type.
+    usage: '/<command> [material]'
+    version_added: Pre-0.2.7
+  setcharacteristic:
+    aliases:
+      - sc
+      - setchar
+    class: CmdSetCharacteristic
+    description: Sets player characteristics.
+    usage: '/<command> [subcommands]'
+    version_added: 0.2.7
+  sethome:
+    aliases:
+      - shome
+      - rsethome
+    class: CmdSetHome
+    description: Sets the player's home.
+    usage: /<command> (home)
+    version_added: Pre-0.2.7
+  setjail:
+    aliases:
+      - sjail
+    class: CmdSetJail
+    description: Sets the location of a jail.
+    usage: '/<command> [name]'
+    version_added: Pre-0.2.7
+  setlevel:
+    aliases:
+      - slvl
+      - slevel
+      - setlvl
+    class: CmdSetLevel
+    description: Sets your or another player's XP level to specified level.
+    usage: '/<command> [level] (player)'
+    version_added: Pre-0.2.7
+  setspawn:
+    class: CmdSetSpawn
+    description: Sets the spawn of the world the player is standing in.
+    usage: /<command> (group)
+    version_added: Pre-0.2.7
+  setuserdata:
+    aliases:
+      - sud
+      - ud
+      - userdata
+    class: CmdSetUserdata
+    description: Sets a userdata value for a player.
+    usage: '/<command> [name] [node] [value]'
+    version_added: Pre-0.2.7
+  setwarp:
+    aliases:
+      - mkwarp
+      - createwarp
+    class: CmdSetWarp
+    description: Sets a warp point.
+    usage: '/<command> [warp]'
+    version_added: Pre-0.2.7
+  signedit:
+    aliases:
+      - se
+      - editsign
+      - es
+    class: CmdSignEdit
+    description: Edits the sign a player is currently looking at.
+    usage: '/<command> [line#] (new text)'
+    version_added: 0.2.7
+  slap:
+    class: CmdSlap
+    description: Broadcasts you slapping another player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  spawn:
+    class: CmdSpawn
+    description: Takes the player to the spawn of the world they are standing in.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  spawner:
+    class: CmdSpawner
+    description: Sets the type of a mob spawner.
+    usage: '/<command> [mob]'
+    version_added: Pre-0.2.7
+  spawninfo:
+    aliases:
+      - si
+    class: CmdSpawnInfo
+    description: Displays information about spawned items.
+    usage: '/<command> [subcommand]'
+    version_added: 3.3.0
+  spawnmob:
+    aliases:
+      - sm
+      - mobspawn
+    class: CmdSpawnMob
+    description: Spawns mobs where the player is looking.
+    usage: '/<command> [mob] (amount)'
+    version_added: Pre-0.2.7
+  speak:
+    class: CmdSpeak
+    description: Makes another player talk.
+    usage: '/<command> [player] [message]'
+    version_added: Pre-0.2.7
+  starve:
+    aliases:
+      - strv
+    class: CmdStarve
+    description: Lowers a player's hunger.
+    usage: '/<command> [player] [damage]'
+    version_added: Pre-0.2.7
+  strike:
+    aliases:
+      - smite
+      - lightning
+    class: CmdStrike
+    description: Strikes lightning at the player's cursor or at specified player.
+    usage: /<command> (player)
+    version_added: Pre-0.2.7
+  suicide:
+    aliases:
+      - enditall
+      - anhero
+    class: CmdSuicide
+    description: Kills yourself.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  teleport:
+    aliases:
+      - tp
+    class: CmdTeleport
+    description: Teleports you to a player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  teleportaccept:
+    aliases:
+      - tpaa
+      - tpyes
+      - tpay
+      - tpaccept
+    class: CmdTeleportAccept
+    description: Accepts a teleport request.
+    usage: /<command> (name)
+    version_added: Pre-0.2.7
+  teleportall:
+    aliases:
+      - tpall
+    class: CmdTeleportAll
+    description: Teleports everyone to you.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  teleportdeny:
+    aliases:
+      - tpad
+      - tpno
+      - tpan
+      - tpdeny
+    class: CmdTeleportDeny
+    description: Denies a teleport request.
+    usage: /<command> (name)
+    version_added: Pre-0.2.7
+  teleporthere:
+    aliases:
+      - tphere
+      - tph
+    class: CmdTeleportHere
+    description: Teleports a player to you.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  teleportplayertoplayer:
+    aliases:
+      - tp2p
+      - teleportplayer2player
+      - tpptp
+      - tpp2p
+      - teleportp2p
+      - teleportptop
+    class: CmdTeleportPlayerToPlayer
+    description: Teleports one player to another.
+    usage: '/<command> [player] [player]'
+    version_added: Pre-0.2.7
+  teleportposition:
+    aliases:
+      - tppos
+      - tpos
+      - tpcoords
+      - tpp
+      - tpc
+      - teleportcoordinates
+      - teleportpos
+      - tpposition
+      - tposition
+    class: CmdTeleportPosition
+    description: Teleports you to a specific coordinate point.
+    usage: '/<command> [x] [y] [z] (world)'
+    version_added: Pre-0.2.7
+  teleportrequest:
+    aliases:
+      - tpr
+      - tpa
+      - tprequest
+      - teleportr
+    class: CmdTeleportRequest
+    description: Sends a teleport request to a player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  teleportrequestall:
+    aliases:
+      - tprall
+      - teleportaskall
+      - tpaall
+    class: CmdTeleportRequestAll
+    description: Sends a teleport request to everyone.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  teleportrequestcancel:
+    aliases:
+      - trc
+      - tprcancel
+      - tpacancel
+      - tpac
+      - tprc
+    class: CmdTeleportRequestCancel
+    description: Cancels a teleport request.
+    usage: '/<command> [player]'
+    version_added: 3.3.0
+  teleportrequesthere:
+    aliases:
+      - tprh
+      - tpahere
+      - tpah
+      - teleportrhere
+      - tphrequest
+      - tphererequest
+      - tprhere
+    class: CmdTeleportRequestHere
+    description: Sends a teleport here request to a player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  teleporttoggle:
+    aliases:
+      - tptoggle
+      - toggletp
+    class: CmdTeleportToggle
+    description: Toggles teleportation.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  temporaryban:
+    aliases:
+      - tban
+      - temporarilyban
+      - tempban
+    class: CmdTemporaryBan
+    description: Temporarily bans a player.
+    usage: '/<command> [player] [time] [reason]'
+    version_added: Pre-0.2.7
+  time:
+    class: CmdTime
+    description: Sets the time of your current world.
+    usage: '/<command> [ticks] (world)'
+    version_added: Pre-0.2.7
+  trade:
+    class: CmdTrade
+    description: Opens a mutual chest between two players.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  unban:
+    aliases:
+      - unbanish
+      - pardon
+    class: CmdUnban
+    description: Removes a ban from a player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  unbanip:
+    aliases:
+      - pardonip
+    class: CmdUnbanIP
+    description: Unbans an IP address or a player's IP.
+    usage: /<command> (player/IP)
+    version_added: Pre-0.2.7
+  uptime:
+    aliases:
+      - ut
+    class: CmdUptime
+    description: Displays the amount of time the server has been up for.
+    usage: /<command>
+    version_added: 4.1.0
+  usage:
+    class: CmdUsage
+    description: Displays the usage of another command.
+    usage: '/<command> [command]'
+    version_added: Pre-0.2.7
+  uses:
+    aliases:
+      - use
+    class: CmdUses
+    description: Displays uses for any item.
+    usage: '/<command> [item]'
+    version_added: 4.1.0
+  vip:
+    aliases:
+      - reserve
+      - slot
+    class: CmdVip
+    description: Modifies the VIP list. VIPs can join the server when it is full.
+    usage: '/<command> [add|remove|check|?] (player)'
+    version_added: Pre-0.2.7
+  vtp:
+    class: CmdVtp
+    description: 'Teleports to anyone, regardless of being vanished or having teleport off.'
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  vtphere:
+    class: CmdVtphere
+    description: 'Teleports anyone you, regardless of being vanished or having teleport off.'
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  walkspeed:
+    aliases:
+      - ws
+    class: CmdWalkSpeed
+    description: Changes the speed you walk at.
+    usage: '/<command> [speed]'
+    version_added: Pre-0.2.7
+  warn:
+    class: CmdWarn
+    description: Warns the specified player.
+    usage: '/<command> [player] (message)'
+    version_added: Pre-0.2.7
+  warp:
+    aliases:
+      - warps
+    class: CmdWarp
+    description: Moves you to a warp point.
+    usage: '/<command> [warp] (player)'
+    version_added: Pre-0.2.7
+  weather:
+    class: CmdWeather
+    description: Changes the weather.
+    usage: '/<command> [conditions] (time)'
+    version_added: Pre-0.2.7
+  whois:
+    aliases:
+      - whowas
+    class: CmdWhois
+    description: Looks up data on the specified player.
+    usage: '/<command> [player]'
+    version_added: Pre-0.2.7
+  wl:
+    aliases:
+      - whitelist
+    class: CmdWhitelist
+    description: Manages the dynamic whitelist.
+    usage: '/<command> [check/add/remove] [player]'
+    version_added: Pre-0.2.7
+  workbench:
+    aliases:
+      - wb
+      - ct
+      - craftingtable
+    class: CmdWorkbench
+    description: Opens a workbench anywhere.
+    usage: /<command>
+    version_added: Pre-0.2.7
+  world:
+    aliases:
+      - goto
+      - gotoworld
+      - tpworld
+      - worldtp
+      - teleportworld
+      - worldteleport
+      - tpw
+    class: CmdWorld
+    description: Teleports the player to the specified world.
+    usage: '/<command> [world]'
+    version_added: Pre-0.2.7
+  worldmanager:
+    aliases:
+      - wm
+    class: CmdWorldManager
+    description: Allows you to manage the worlds on your server.
+    usage: '/<command> [help/create/load/unload/delete/list/info] (additional args)'
+    version_added: Pre-0.2.7
 
 permissions:
+  rcmds.*:
+    children:
+      rcmds.accountstatus: true
+      rcmds.afk: true
+      rcmds.allowed.item: true
+      rcmds.assign: true
+      rcmds.attributes: true
+      rcmds.back: true
+      rcmds.backpack: true
+      rcmds.ban: true
+      rcmds.banhistory: true
+      rcmds.baninfo: true
+      rcmds.banip: true
+      rcmds.banlist: true
+      rcmds.biome: true
+      rcmds.broadcast: true
+      rcmds.buddha: true
+      rcmds.burn: true
+      rcmds.clearinventory: true
+      rcmds.clearwarns: true
+      rcmds.commandspy: true
+      rcmds.compareip: true
+      rcmds.compass: true
+      rcmds.coords: true
+      rcmds.deafen: true
+      rcmds.deletebanhistory: true
+      rcmds.deletehome: true
+      rcmds.deletejail: true
+      rcmds.deletewarp: true
+      rcmds.documentation: true
+      rcmds.dump: true
+      rcmds.effect: true
+      rcmds.enchant: true
+      rcmds.enchantingtable: true
+      rcmds.enderchest: true
+      rcmds.entities: true
+      rcmds.erase: true
+      rcmds.exempt.*: true
+      rcmds.explode: true
+      rcmds.fakeop: true
+      rcmds.feed: true
+      rcmds.findip: true
+      rcmds.fireball: true
+      rcmds.firework: true
+      rcmds.fixchunk: true
+      rcmds.fly: true
+      rcmds.flyspeed: true
+      rcmds.force: true
+      rcmds.freeze: true
+      rcmds.freezetime: true
+      rcmds.furnace: true
+      rcmds.gamemode: true
+      rcmds.garbagecollector: true
+      rcmds.getid: true
+      rcmds.getip: true
+      rcmds.give: true
+      rcmds.god: true
+      rcmds.harm: true
+      rcmds.head: true
+      rcmds.heal: true
+      rcmds.helmet: true
+      rcmds.help: true
+      rcmds.home: true
+      rcmds.hug: true
+      rcmds.ignore: true
+      rcmds.ingot2block: true
+      rcmds.item: true
+      rcmds.jail: true
+      rcmds.jump: true
+      rcmds.kick: true
+      rcmds.kickall: true
+      rcmds.kickhistory: true
+      rcmds.kill: true
+      rcmds.killall: true
+      rcmds.kit: true
+      rcmds.kits: true
+      rcmds.lag: true
+      rcmds.less: true
+      rcmds.level: true
+      rcmds.list: true
+      rcmds.listhomes: true
+      rcmds.listwarns: true
+      rcmds.loadplayer: true
+      rcmds.lore: true
+      rcmds.mail: true
+      rcmds.mail.send: true
+      rcmds.map: true
+      rcmds.megastrike: true
+      rcmds.memory: true
+      rcmds.message: true
+      rcmds.messageoftheday: true
+      rcmds.messagespy: true
+      rcmds.mobignore: true
+      rcmds.modifyinventory: true
+      rcmds.monitor: true
+      rcmds.more: true
+      rcmds.mute: true
+      rcmds.muteall: true
+      rcmds.nameentity: true
+      rcmds.near: true
+      rcmds.nick: true
+      rcmds.onehitkill: true
+      rcmds.others.*: true
+      rcmds.ping: true
+      rcmds.playerextinguish: true
+      rcmds.playersearch: true
+      rcmds.playertime: true
+      rcmds.pluginmanager.*: true
+      rcmds.potion: true
+      rcmds.prune: true
+      rcmds.publicassign: true
+      rcmds.quit: true
+      rcmds.rank: true
+      rcmds.realname: true
+      rcmds.recipe: true
+      rcmds.rename: true
+      rcmds.repair: true
+      rcmds.reply: true
+      rcmds.ride: true
+      rcmds.rocket: true
+      rcmds.royalcommands: true
+      rcmds.rules: true
+      rcmds.saveplayer: true
+      rcmds.see.*: true
+      rcmds.seehidden: true
+      rcmds.seeinventory: true
+      rcmds.seen: true
+      rcmds.selectiveclearinventory: true
+      rcmds.setarmor: true
+      rcmds.setarmor.*: true
+      rcmds.setcharacteristic: true
+      rcmds.sethome: true
+      rcmds.sethome.multi: true
+      rcmds.setjail: true
+      rcmds.setlevel: true
+      rcmds.setspawn: true
+      rcmds.setuserdata: true
+      rcmds.setwarp: true
+      rcmds.sign.*: true
+      rcmds.signedit: true
+      rcmds.signedit.color: true
+      rcmds.slap: true
+      rcmds.spawn: true
+      rcmds.spawn.other: true
+      rcmds.spawner: true
+      rcmds.spawninfo: true
+      rcmds.spawnmob: true
+      rcmds.speak: true
+      rcmds.starve: true
+      rcmds.strike: true
+      rcmds.suicide: true
+      rcmds.teleport: true
+      rcmds.teleportaccept: true
+      rcmds.teleportall: true
+      rcmds.teleportdeny: true
+      rcmds.teleporthere: true
+      rcmds.teleportplayertoplayer: true
+      rcmds.teleportposition: true
+      rcmds.teleportrequest: true
+      rcmds.teleportrequestall: true
+      rcmds.teleportrequestcancel: true
+      rcmds.teleportrequesthere: true
+      rcmds.teleporttoggle: true
+      rcmds.temporaryban: true
+      rcmds.time: true
+      rcmds.tpoverride: true
+      rcmds.trade: true
+      rcmds.unban: true
+      rcmds.unbanip: true
+      rcmds.updates: true
+      rcmds.uptime: true
+      rcmds.usage: true
+      rcmds.uses: true
+      rcmds.vip: true
+      rcmds.vtp: true
+      rcmds.vtphere: true
+      rcmds.walkspeed: true
+      rcmds.warn: true
+      rcmds.warp: true
+      rcmds.weather: true
+      rcmds.whitelist.*: true
+      rcmds.whois: true
+      rcmds.workbench: true
+      rcmds.world: true
+      rcmds.worldmanager: true
+    default: false
+    description: Gives every permission.
   rcmds.accountstatus:
     command: accountstatus
     default: op
     description: Allows you to check if a player name is premium.
+  rcmds.admin:
+    children:
+      rcmds.*: true
+    default: false
+    description: Gives every permission.
   rcmds.afk:
     command: afk
     default: op
     description: Allows you to mark yourself as AFK.
+  rcmds.allowed.item:
+    default: false
+    description: Allows the player to spawn prohibited items.
   rcmds.assign:
     command: assign
     default: op
@@ -1268,6 +1610,10 @@ permissions:
     command: deletewarp
     default: op
     description: Allows you to delete warps.
+  rcmds.documentation:
+    command: documentation
+    default: op
+    description: Allows you to view documentation for commands or permission nodes.
   rcmds.dump:
     command: dump
     default: op
@@ -1280,6 +1626,23 @@ permissions:
     command: enchant
     default: op
     description: Allows you to enchant items.
+  rcmds.enchant.*:
+    children:
+      rcmds.enchant.illegal: true
+      rcmds.enchant.levels: true
+    command: enchant
+    default: false
+    description: Allows all types of enchantments.
+  rcmds.enchant.illegal:
+    command: enchant
+    default: false
+    description: >-
+      Allows you to enchant with enchantments that are not allowed together in
+      vanilla.
+  rcmds.enchant.levels:
+    command: enchant
+    default: false
+    description: Allows you to enchant beyond vanilla levels.
   rcmds.enchantingtable:
     command: enchantingtable
     default: op
@@ -1296,6 +1659,252 @@ permissions:
     command: erase
     default: op
     description: Allows you to remove entities.
+  rcmds.exempt.*:
+    children:
+      rcmds.exempt.afkkick: true
+      rcmds.exempt.backpack: true
+      rcmds.exempt.ban: true
+      rcmds.exempt.burn: true
+      rcmds.exempt.commandspy: true
+      rcmds.exempt.cooldown.*: true
+      rcmds.exempt.deafen: true
+      rcmds.exempt.deletehome: true
+      rcmds.exempt.effect: true
+      rcmds.exempt.enderchest: true
+      rcmds.exempt.explode: true
+      rcmds.exempt.feed: true
+      rcmds.exempt.force: true
+      rcmds.exempt.freeze: true
+      rcmds.exempt.gamemode: true
+      rcmds.exempt.harm: true
+      rcmds.exempt.head: true
+      rcmds.exempt.home: true
+      rcmds.exempt.ignore: true
+      rcmds.exempt.jail: true
+      rcmds.exempt.kick: true
+      rcmds.exempt.kickhistory: true
+      rcmds.exempt.kill: true
+      rcmds.exempt.limit.spawnmob: true
+      rcmds.exempt.listhomes: true
+      rcmds.exempt.messagespy: true
+      rcmds.exempt.modifyinventory: true
+      rcmds.exempt.monitor: true
+      rcmds.exempt.mute: true
+      rcmds.exempt.nick: true
+      rcmds.exempt.nick.*: true
+      rcmds.exempt.rocket: true
+      rcmds.exempt.selectiveclearinventory: true
+      rcmds.exempt.setarmor: true
+      rcmds.exempt.slap: true
+      rcmds.exempt.speak: true
+      rcmds.exempt.starve: true
+      rcmds.exempt.strike: true
+      rcmds.exempt.teleport: true
+      rcmds.exempt.teleportplayertoplayer: true
+      rcmds.exempt.teleportwarmup: true
+      rcmds.exempt.warn: true
+      rcmds.exempt.warp: true
+    default: false
+    description: Gives every exempt permission.
+  rcmds.exempt.afkkick:
+    command: afk
+    default: false
+    description: Makes the player immune to AFK kicks.
+  rcmds.exempt.autoafk:
+    command: afk
+    default: false
+    description: Makes the player immune to auto AFK.
+  rcmds.exempt.backpack:
+    command: backpack
+    default: false
+    description: Makes the player immune to /backpack.
+  rcmds.exempt.ban:
+    command: ban
+    default: false
+    description: Makes the player immune to /ban.
+  rcmds.exempt.burn:
+    command: burn
+    default: false
+    description: Makes the player immune to /burn.
+  rcmds.exempt.commandspy:
+    command: commandspy
+    default: false
+    description: Makes the player immune to /commandspy and command spying.
+  rcmds.exempt.cooldown.*:
+    children:
+      rcmds.exempt.cooldown.commands: true
+      rcmds.exempt.cooldown.kits: true
+      rcmds.exempt.cooldown.teleports: true
+    default: false
+    description: Gives every cooldown exemption.
+  rcmds.exempt.cooldown.commands:
+    default: false
+    description: Makes the player exempt to command cooldowns.
+  rcmds.exempt.cooldown.kits:
+    default: false
+    description: Makes the player exempt to kit cooldowns.
+  rcmds.exempt.cooldown.teleports:
+    default: false
+    description: Makes the player exempt to teleport cooldowns.
+  rcmds.exempt.deafen:
+    command: deafen
+    default: false
+    description: Makes the player immune to /deafen.
+  rcmds.exempt.deletehome:
+    command: deletehome
+    default: false
+    description: Makes the player immune to /delhome.
+  rcmds.exempt.effect:
+    command: effect
+    default: false
+    description: Makes the player immune to /effect.
+  rcmds.exempt.enderchest:
+    command: enderchest
+    default: false
+    description: Makes the player immune to /enderchest.
+  rcmds.exempt.explode:
+    command: explode
+    default: false
+    description: Makes the player immune to /explode.
+  rcmds.exempt.feed:
+    command: feed
+    default: false
+    description: Makes the player immune to /feed.
+  rcmds.exempt.force:
+    command: force
+    default: false
+    description: Makes the player immune to /force.
+  rcmds.exempt.freeze:
+    command: freeze
+    default: false
+    description: Makes the player immune to /freeze.
+  rcmds.exempt.gamemode:
+    command: gamemode
+    default: false
+    description: Makes the player immune to /gamemode.
+  rcmds.exempt.harm:
+    command: harm
+    default: false
+    description: Makes the player immune to /harm.
+  rcmds.exempt.head:
+    command: head
+    default: false
+    description: Makes the player immune to /head.
+  rcmds.exempt.home:
+    command: home
+    default: false
+    description: Makes it so no other players can access the player's houses.
+  rcmds.exempt.ignore:
+    command: ignore
+    default: false
+    description: Makes the player immune to /ignore.
+  rcmds.exempt.jail:
+    command: jail
+    default: false
+    description: Makes the player immune to /jail.
+  rcmds.exempt.kick:
+    command: kick
+    default: false
+    description: Makes the player immune to /kick.
+  rcmds.exempt.kickhistory:
+    command: kickhistory
+    default: false
+    description: Makes the player immune to /kickhistory.
+  rcmds.exempt.kill:
+    command: kill
+    default: false
+    description: Makes the player immune to /kill.
+  rcmds.exempt.limit.spawnmob:
+    command: spawnmob
+    default: false
+    description: Allows the player to spawn more than the server limit of mobs.
+  rcmds.exempt.listhomes:
+    command: listhomes
+    default: false
+    description: Makes the player immune to /listhome.
+  rcmds.exempt.messagespy:
+    command: messagespy
+    default: false
+    description: Makes the player immune to /messagespy and message spying.
+  rcmds.exempt.modifyinventory:
+    command: modifyinventory
+    default: false
+    description: Makes the player immune to /invmod.
+  rcmds.exempt.monitor:
+    command: monitor
+    default: false
+    description: Makes the player immune to /monitor.
+  rcmds.exempt.mute:
+    command: mute
+    default: false
+    description: Makes the player immune to /mute.
+  rcmds.exempt.nick:
+    command: nick
+    default: false
+    description: Makes the player immune to /nick.
+  rcmds.exempt.nick.*:
+    children:
+      rcmds.exempt.nick.changelimit: true
+      rcmds.exempt.nick.length: true
+      rcmds.exempt.nick.regex: true
+    command: nick
+    default: false
+    description: Grants all rcmds.exempt.nick.* permissions
+  rcmds.exempt.nick.changelimit:
+    command: nick
+    default: false
+    description: Makes the player immune to the nick change limit.
+  rcmds.exempt.nick.length:
+    command: nick
+    default: false
+    description: Makes the player immune to the nick length check.
+  rcmds.exempt.nick.regex:
+    command: nick
+    default: false
+    description: Makes the player immune to the nick character check.
+  rcmds.exempt.ride:
+    command: ride
+    default: false
+    description: Makes the player immune to /ride.
+  rcmds.exempt.rocket:
+    command: rocket
+    default: false
+    description: Makes the player immune to /rocket.
+  rcmds.exempt.selectiveclearinventory:
+    command: selectiveclearinventory
+    default: false
+    description: Makes the player immune to /sci.
+  rcmds.exempt.setarmor:
+    command: setarmor
+    default: false
+    description: Makes the player immune to /setarmor.
+  rcmds.exempt.slap:
+    command: slap
+    default: false
+    description: Makes the player immune to /slap.
+  rcmds.exempt.speak:
+    command: speak
+    default: false
+    description: Makes the player immune to /speak.
+  rcmds.exempt.starve:
+    command: starve
+    default: false
+    description: Makes the player immune to /starve.
+  rcmds.exempt.strike:
+    command: strike
+    default: false
+    description: Makes the player immune to /strike.
+  rcmds.exempt.teleportwarmup:
+    default: false
+    description: Makes the player exempt to teleport warmups.
+  rcmds.exempt.warn:
+    command: warn
+    default: false
+    description: Makes the player immune to /warn.
+  rcmds.exempt.warp:
+    command: warp
+    default: false
+    description: Makes the player immune to /warp.
   rcmds.explode:
     command: explode
     default: op
@@ -1408,14 +2017,6 @@ permissions:
     command: ingot2block
     default: op
     description: Allows you to make raw materials into blocks.
-  rcmds.modifyinventory:
-    command: modifyinventory
-    default: op
-    description: Allows you to modify other players' inventories.
-  rcmds.seeinventory:
-    command: seeinventory
-    default: op
-    description: Allows you see another player's inventory.
   rcmds.item:
     command: item
     default: op
@@ -1512,6 +2113,10 @@ permissions:
     command: message
     default: op
     description: Allows you to private message.
+  rcmds.messageoftheday:
+    command: messageoftheday
+    default: op
+    description: Allows you to see the message of the day.
   rcmds.messagespy:
     command: messagespy
     default: op
@@ -1520,6 +2125,10 @@ permissions:
     command: mobignore
     default: op
     description: Allows you to toggle if mobs ignore you.
+  rcmds.modifyinventory:
+    command: modifyinventory
+    default: op
+    description: Allows you to modify other players' inventories.
   rcmds.monitor:
     command: monitor
     default: op
@@ -1528,10 +2137,6 @@ permissions:
     command: more
     default: op
     description: Allows you to give yourself more of the item in hand.
-  rcmds.messageoftheday:
-    command: messageoftheday
-    default: op
-    description: Allows you to see the message of the day.
   rcmds.mute:
     command: mute
     default: op
@@ -1552,649 +2157,234 @@ permissions:
     command: nick
     default: op
     description: Allows you to set a player's display name.
+  rcmds.nick.colors:
+    command: nick
+    default: op
+    description: Allows you to use color in nicknames.
+  rcmds.notarget:
+    default: false
+    description: Disables the mobs' ability to target the player.
   rcmds.onehitkill:
     command: onehitkill
     default: op
     description: Allows you to kill anything instantly.
-  rcmds.playerextinguish:
-    command: playerextinguish
-    default: op
-    description: Allows you to extinguish players.
-  rcmds.ping:
-    command: ping
-    default: op
-    description: Allows you to use /ping.
-  rcmds.playersearch:
-    command: playersearch
-    default: op
-    description: Allows you to search for a player.
-  rcmds.playertime:
-    command: playertime
-    default: op
-    description: Allows you to change other players' times.
-  rcmds.potion:
-    command: potion
-    default: op
-    description: Allows you to add potion effects to a potion.
-  rcmds.publicassign:
-    command: publicassign
-    default: op
-    description: Allows you to add public commands to items.
-  rcmds.quit:
-    command: quit
-    default: op
-    description: Allows you to quit.
-  rcmds.rank:
-    command: rank
-    default: op
-    description: Allows you to check the rank of a player.
-  rcmds.royalcommands:
-    command: royalcommands
-    default: op
-    description: Allows you to reload RoyalCommands' config.
-  rcmds.realname:
-    command: realname
-    default: op
-    description: Allows you to see a player's real name.
-  rcmds.recipe:
-    command: recipe
-    default: op
-    description: Allows you to view recipes of any item.
-  rcmds.rename:
-    command: rename
-    default: op
-    description: Allows you to rename an item.
-  rcmds.repair:
-    command: repair
-    default: op
-    description: Allows you to repair items.
-  rcmds.reply:
-    command: reply
-    default: op
-    description: Allows you to reply to private messages.
-  rcmds.ride:
-    command: ride
-    default: op
-    description: Allows you to ride on other players.
-  rcmds.rocket:
-    command: rocket
-    default: op
-    description: Allows you to shoot a player into the sky.
-  rcmds.rules:
-    command: rules
-    default: op
-    description: Allows you to see server rules.
-  rcmds.saveplayer:
-    command: saveplayer
-    default: op
-    description: Allows you to save player data.
-  rcmds.selectiveclearinventory:
-    command: selectiveclearinventory
-    default: op
-    description: Allows you to selectively clear inventories
-  rcmds.seen:
-    command: seen
-    default: op
-    description: Allows you to see when a player was last online.
-  rcmds.setarmor:
-    command: setarmor
-    default: op
-    description: Allows you to set your armor
-  rcmds.setcharacteristic:
-    command: setcharacteristic
-    default: op
-    description: Allows you to set player characteristics.
-  rcmds.sethome:
-    command: sethome
-    default: op
-    description: Allows you to set a home.
-  rcmds.sethome.multi:
-    command: sethome
-    default: op
-    description: Allows you to set multiple homes.
-  rcmds.setjail:
-    command: setjail
-    default: op
-    description: Allows you to set jails.
-  rcmds.setlevel:
-    command: setlevel
-    default: op
-    description: Allows you to set your XP level
-  rcmds.setspawn:
-    command: setspawn
-    default: op
-    description: Allows you to set the spawn of the world.
-  rcmds.setuserdata:
-    command: setuserdata
-    default: op
-    description: Allows you to set userdata.
-  rcmds.setwarp:
-    command: setwarp
-    default: op
-    description: Allows you to set warp points.
-  rcmds.signedit:
-    command: signedit
-    default: op
-    description: Allows you to edit signs.
-  rcmds.signedit.color:
-    command: signedit
-    default: op
-    description: Allows you to use colors on signs.
-  rcmds.slap:
-    command: slap
-    default: op
-    description: Allows you to slap another player
-  rcmds.spawn:
-    command: spawn
-    default: op
-    description: Allows you to go to your world's spawn.
-  rcmds.spawner:
-    command: spawner
-    default: op
-    description: Allows you to change the type of a mob spawner.
-  rcmds.spawninfo:
-    command: spawninfo
-    default: op
-    description: Allows you to get information about spawned items.
-  rcmds.spawnmob:
-    command: spawnmob
-    default: op
-    description: Allows you to spawn mobs.
-  rcmds.speak:
-    command: speak
-    default: op
-    description: Allows you to spoof a message
-  rcmds.starve:
-    command: starve
-    default: op
-    description: Allows you to starve another player
-  rcmds.strike:
-    command: strike
-    default: op
-    description: Allows you to strike lightning.
-  rcmds.suicide:
-    command: suicide
-    default: op
-    description: Allows you to kill yourself.
-  rcmds.teleport:
-    command: teleport
-    default: op
-    description: Allows you to teleport to other players.
-  rcmds.teleportaccept:
-    command: teleportaccept
-    default: op
-    description: Allows you to accept a teleport request.
-  rcmds.teleportall:
-    command: teleportall
-    default: op
-    description: Allows you to teleport everyone to you.
-  rcmds.teleportdeny:
-    command: teleportdeny
-    default: op
-    description: Allows you to deny a teleport request.
-  rcmds.teleporthere:
-    command: teleporthere
-    default: op
-    description: Allows you to teleport other players to you.
-  rcmds.teleportplayertoplayer:
-    command: teleportplayertoplayer
-    default: op
-    description: Allows you to teleport players to each other.
-  rcmds.teleportposition:
-    command: teleportposition
-    default: op
-    description: Allows you to teleport to a coordinate point.
-  rcmds.teleportrequest:
-    command: teleportrequest
-    default: op
-    description: Allows you to ask other players to teleport.
-  rcmds.teleportrequestall:
-    command: teleportrequestall
-    default: op
-    description: Allows you to request everyone to teleport to you.
-  rcmds.teleportrequestcancel:
-    command: teleportrequestcancel
-    default: op
-    description: Allows you to cancel a teleport reuqest.
-  rcmds.teleportrequesthere:
-    command: teleportrequesthere
-    default: op
-    description: Allows you to ask other players to teleport to you.
-  rcmds.teleporttoggle:
-    command: teleporttoggle
-    default: op
-    description: Allows you to toggle teleportation.
-  rcmds.temporaryban:
-    command: temporaryban
-    default: op
-    description: Allows you to temporarily ban a player.
-  rcmds.time:
-    command: time
-    default: op
-    description: Allows you to change the time.
-  rcmds.trade:
-    command: trade
-    default: op
-    description: Allows you to trade with other players.
-  rcmds.unban:
-    command: unban
-    default: op
-    description: Allows you to unban players.
-  rcmds.unbanip:
-    command: unbanip
-    default: op
-    description: Allows you to unban IPs.
-  rcmds.usage:
-    command: usage
-    default: op
-    description: Allows you to view the usage of other commands.
-  rcmds.vip:
-    command: vip
-    default: op
-    description: Allows you to modify the VIP list.
-  rcmds.vtp:
-    command: vtp
-    default: op
-    description: Allows you to override teleport.
-  rcmds.vtphere:
-    command: vtphere
-    default: op
-    description: Allows you to override teleporthere.
-  rcmds.walkspeed:
-    command: walkspeed
-    default: op
-    description: Allows you to change your walking speed.
-  rcmds.warn:
-    command: warn
-    default: op
-    description: Allows you to warn players.
-  rcmds.warp:
-    command: warp
-    default: op
-    description: Allows you to warp.
-  rcmds.weather:
-    command: weather
-    default: op
-    description: Allows you to change weather.
-  rcmds.whois:
-    command: whois
-    default: op
-    description: Allows you to look players up.
-  rcmds.workbench:
-    command: workbench
-    default: op
-    description: Allows you to open a workbench anywhere.
-  rcmds.world:
-    command: world
-    default: op
-    description: Allows you to teleport between worlds.
-  rcmds.worldmanager:
-    command: worldmanager
-    default: op
-    description: Allows you to manage worlds.
-  rcmds.documentation:
-    command: documentation
-    default: op
-    description: Allows you to view documentation for commands or permission nodes.
-  rcmds.prune:
-    command: prune
-    default: op
-    description: Allows you to prune old userdata.
-  rcmds.uses:
-    command: uses
-    default: op
-    description: Allows you to display uses for any item.
-  rcmds.uptime:
-    command: uptime
-    default: op
-    description: Allows you to see how long the server has been running for.
-
-  rcmds.spawnmob.*:
-    command: spawnmob
-    description: Allows you to spawn all mobs.
-    default: op
-
-  rcmds.enchant.levels:
-    command: enchant
-    description: Allows you to enchant beyond vanilla levels.
-    default: false
-  rcmds.enchant.illegal:
-    command: enchant
-    description: Allows you to enchant with enchantments that are not allowed together in vanilla.
-    default: false
-
-  rcmds.enchant.*:
-    command: enchant
-    description: Allows all types of enchantments.
-    default: false
+  rcmds.op:
     children:
-      rcmds.enchant.levels: true
-      rcmds.enchant.illegal: true
-
-  rcmds.whitelist.*:
-    command: whitelist
-    description: Allows use of all whitelist subcommands.
-    default: op
+      rcmds.accountstatus: true
+      rcmds.afk: true
+      rcmds.assign: true
+      rcmds.attributes: true
+      rcmds.back: true
+      rcmds.backpack: true
+      rcmds.ban: true
+      rcmds.banhistory: true
+      rcmds.baninfo: true
+      rcmds.banip: true
+      rcmds.banlist: true
+      rcmds.biome: true
+      rcmds.broadcast: true
+      rcmds.buddha: true
+      rcmds.burn: true
+      rcmds.clearinventory: true
+      rcmds.clearwarns: true
+      rcmds.commandspy: true
+      rcmds.compareip: true
+      rcmds.compass: true
+      rcmds.coords: true
+      rcmds.deafen: true
+      rcmds.deletebanhistory: true
+      rcmds.deletehome: true
+      rcmds.deletejail: true
+      rcmds.deletewarp: true
+      rcmds.documentation: true
+      rcmds.dump: true
+      rcmds.effect: true
+      rcmds.enchant: true
+      rcmds.enchantingtable: true
+      rcmds.enderchest: true
+      rcmds.entities: true
+      rcmds.erase: true
+      rcmds.explode: true
+      rcmds.fakeop: true
+      rcmds.feed: true
+      rcmds.findip: true
+      rcmds.fireball: true
+      rcmds.firework: true
+      rcmds.fixchunk: true
+      rcmds.fly: true
+      rcmds.flyspeed: true
+      rcmds.force: true
+      rcmds.freeze: true
+      rcmds.freezetime: true
+      rcmds.furnace: true
+      rcmds.gamemode: true
+      rcmds.garbagecollector: true
+      rcmds.getid: true
+      rcmds.getip: true
+      rcmds.give: true
+      rcmds.god: true
+      rcmds.harm: true
+      rcmds.head: true
+      rcmds.heal: true
+      rcmds.helmet: true
+      rcmds.help: true
+      rcmds.home: true
+      rcmds.hug: true
+      rcmds.ignore: true
+      rcmds.ingot2block: true
+      rcmds.item: true
+      rcmds.jail: true
+      rcmds.jump: true
+      rcmds.kick: true
+      rcmds.kickall: true
+      rcmds.kickhistory: true
+      rcmds.kill: true
+      rcmds.killall: true
+      rcmds.kit: true
+      rcmds.kits: true
+      rcmds.lag: true
+      rcmds.less: true
+      rcmds.level: true
+      rcmds.list: true
+      rcmds.listhomes: true
+      rcmds.listwarns: true
+      rcmds.loadplayer: true
+      rcmds.lore: true
+      rcmds.mail: true
+      rcmds.mail.send: true
+      rcmds.map: true
+      rcmds.megastrike: true
+      rcmds.memory: true
+      rcmds.message: true
+      rcmds.messageoftheday: true
+      rcmds.messagespy: true
+      rcmds.mobignore: true
+      rcmds.modifyinventory: true
+      rcmds.monitor: true
+      rcmds.more: true
+      rcmds.mute: true
+      rcmds.muteall: true
+      rcmds.nameentity: true
+      rcmds.near: true
+      rcmds.nick: true
+      rcmds.nick.color: true
+      rcmds.onehitkill: true
+      rcmds.others.*: true
+      rcmds.ping: true
+      rcmds.playerextinguish: true
+      rcmds.playersearch: true
+      rcmds.playertime: true
+      rcmds.pluginmanager.*: true
+      rcmds.potion: true
+      rcmds.prune: true
+      rcmds.publicassign: true
+      rcmds.quit: true
+      rcmds.rank: true
+      rcmds.realname: true
+      rcmds.recipe: true
+      rcmds.rename: true
+      rcmds.repair: true
+      rcmds.reply: true
+      rcmds.ride: true
+      rcmds.rocket: true
+      rcmds.royalcommands: true
+      rcmds.rules: true
+      rcmds.saveplayer: true
+      rcmds.see.*: true
+      rcmds.seehidden: true
+      rcmds.seeinventory: true
+      rcmds.seen: true
+      rcmds.selectiveclearinventory: true
+      rcmds.setarmor: true
+      rcmds.setarmor.*: true
+      rcmds.setcharacteristic: true
+      rcmds.sethome: true
+      rcmds.sethome.multi: true
+      rcmds.setjail: true
+      rcmds.setlevel: true
+      rcmds.setspawn: true
+      rcmds.setuserdata: true
+      rcmds.setwarp: true
+      rcmds.sign.*: true
+      rcmds.signedit: true
+      rcmds.signedit.color: true
+      rcmds.slap: true
+      rcmds.spawn: true
+      rcmds.spawn.other: true
+      rcmds.spawner: true
+      rcmds.spawninfo: true
+      rcmds.spawnmob: true
+      rcmds.speak: true
+      rcmds.starve: true
+      rcmds.strike: true
+      rcmds.suicide: true
+      rcmds.teleport: true
+      rcmds.teleportaccept: true
+      rcmds.teleportall: true
+      rcmds.teleportdeny: true
+      rcmds.teleporthere: true
+      rcmds.teleportplayertoplayer: true
+      rcmds.teleportposition: true
+      rcmds.teleportrequest: true
+      rcmds.teleportrequestall: true
+      rcmds.teleportrequestcancel: true
+      rcmds.teleportrequesthere: true
+      rcmds.teleporttoggle: true
+      rcmds.temporaryban: true
+      rcmds.time: true
+      rcmds.tpoverride: true
+      rcmds.trade: true
+      rcmds.unban: true
+      rcmds.unbanip: true
+      rcmds.updates: true
+      rcmds.uptime: true
+      rcmds.usage: true
+      rcmds.uses: true
+      rcmds.vip: true
+      rcmds.vtp: true
+      rcmds.vtphere: true
+      rcmds.walkspeed: true
+      rcmds.warn: true
+      rcmds.warp: true
+      rcmds.weather: true
+      rcmds.whitelist.*: true
+      rcmds.whois: true
+      rcmds.workbench: true
+      rcmds.world: true
+      rcmds.worldmanager: true
+    default: false
+    description: Gives every default operator permission.
+  rcmds.others.*:
     children:
-      rcmds.whitelist.add: true
-      rcmds.whitelist.check: true
-      rcmds.whitelist.remove: true
-
-  rcmds.whitelist.add:
-    command: whitelist
-    description: Allows addition of a player into the whitelist.
+      rcmds.others.backpack: true
+      rcmds.others.buddha: true
+      rcmds.others.clearinventory: true
+      rcmds.others.commandspy: true
+      rcmds.others.coords: true
+      rcmds.others.deafen: true
+      rcmds.others.deletehome: true
+      rcmds.others.effect: true
+      rcmds.others.feed: true
+      rcmds.others.fly: true
+      rcmds.others.god: true
+      rcmds.others.head: true
+      rcmds.others.home: true
+      rcmds.others.kickhistory: true
+      rcmds.others.listhomes: true
+      rcmds.others.listwarns: true
+      rcmds.others.loadplayer: true
+      rcmds.others.megastrike: true
+      rcmds.others.messagespy: true
+      rcmds.others.nick: true
+      rcmds.others.ping: true
+      rcmds.others.playerextinguish: true
+      rcmds.others.saveplayer: true
+      rcmds.others.setarmor: true
+      rcmds.others.sethome: true
+      rcmds.others.strike: true
+      rcmds.others.warp: true
     default: false
-
-  rcmds.whitelist.check:
-    command: whitelist
-    description: Allows a player to check if a player is in the whitelist.
-    default: false
-
-  rcmds.whitelist.remove:
-    command: whitelist
-    description: Allows removal of a player from the whitelist.
-    default: false
-
-  rcmds.pluginmanager.*:
-    command: pluginmanager
-    description: Allows you to use all of PluginManager's features.
-    default: false
-    children:
-      rcmds.pluginmanager.load: true
-      rcmds.pluginmanager.disable: true
-      rcmds.pluginmanager.enable: true
-      rcmds.pluginmanager.reload: true
-      rcmds.pluginmanager.update: true
-      rcmds.pluginmanager.reloadall: true
-      rcmds.pluginmanager.list: true
-      rcmds.pluginmanager.info: true
-      rcmds.pluginmanager.help: true
-      rcmds.pluginmanager.updatecheck: true
-      rcmds.pluginmanager.updatecheckall: true
-      rcmds.pluginmanager.download: true
-      rcmds.pluginmanager.downloadlink: true
-      rcmds.pluginmanager.findtag: true
-      rcmds.pluginmanager.delete: true
-      rcmds.pluginmanager.unload: true
-
-  rcmds.pluginmanager.delete:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's delete feature.
-  rcmds.pluginmanager.disable:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's disable feature.
-  rcmds.pluginmanager.download:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's download feature.
-  rcmds.pluginmanager.downloadlink:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's downloadlink feature.
-  rcmds.pluginmanager.enable:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's enable feature.
-  rcmds.pluginmanager.findtag:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's findtag feature.
-  rcmds.pluginmanager.help:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's help feature.
-  rcmds.pluginmanager.info:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's info feature.
-  rcmds.pluginmanager.list:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's list feature.
-  rcmds.pluginmanager.load:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's load feature.
-  rcmds.pluginmanager.reload:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's reload feature.
-  rcmds.pluginmanager.reloadall:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's reloadall feature.
-  rcmds.pluginmanager.unload:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's unload feature.
-  rcmds.pluginmanager.update:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's update feature.
-  rcmds.pluginmanager.updatecheck:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's updatecheck feature.
-  rcmds.pluginmanager.updatecheckall:
-    command: pluginmanager
-    default: op
-    description: Allows you to use PluginManager's updatecheckall feature.
-
-  rcmds.nick.colors:
-    command: nick
-    description: Allows you to use color in nicknames.
-    default: op
-
-  rcmds.updates:
-    description: Allows you to see new update messages.
-    default: op
-
-  rcmds.exempt.backpack:
-    command: backpack
-    default: false
-    description: Makes the player immune to /backpack.
-  rcmds.exempt.ban:
-    command: ban
-    default: false
-    description: Makes the player immune to /ban.
-  rcmds.exempt.burn:
-    command: burn
-    default: false
-    description: Makes the player immune to /burn.
-  rcmds.exempt.commandspy:
-    command: commandspy
-    default: false
-    description: Makes the player immune to /commandspy and command spying.
-  rcmds.exempt.deafen:
-    command: deafen
-    default: false
-    description: Makes the player immune to /deafen.
-  rcmds.exempt.deletehome:
-    command: deletehome
-    default: false
-    description: Makes the player immune to /delhome.
-  rcmds.exempt.effect:
-    command: effect
-    default: false
-    description: Makes the player immune to /effect.
-  rcmds.exempt.enderchest:
-    command: enderchest
-    default: false
-    description: Makes the player immune to /enderchest.
-  rcmds.exempt.explode:
-    command: explode
-    default: false
-    description: Makes the player immune to /explode.
-  rcmds.exempt.feed:
-    command: feed
-    default: false
-    description: Makes the player immune to /feed.
-  rcmds.exempt.force:
-    command: force
-    default: false
-    description: Makes the player immune to /force.
-  rcmds.exempt.freeze:
-    command: freeze
-    default: false
-    description: Makes the player immune to /freeze.
-  rcmds.exempt.gamemode:
-    command: gamemode
-    default: false
-    description: Makes the player immune to /gamemode.
-  rcmds.exempt.harm:
-    command: harm
-    default: false
-    description: Makes the player immune to /harm.
-  rcmds.exempt.head:
-    command: head
-    default: false
-    description: Makes the player immune to /head.
-  rcmds.exempt.home:
-    command: home
-    default: false
-    description: Makes it so no other players can access the player's houses.
-  rcmds.exempt.ignore:
-    command: ignore
-    default: false
-    description: Makes the player immune to /ignore.
-  rcmds.exempt.modifyinventory:
-    command: modifyinventory
-    default: false
-    description: Makes the player immune to /invmod.
-  rcmds.exempt.jail:
-    command: jail
-    default: false
-    description: Makes the player immune to /jail.
-  rcmds.exempt.kick:
-    command: kick
-    default: false
-    description: Makes the player immune to /kick.
-  rcmds.exempt.kickhistory:
-    command: kickhistory
-    default: false
-    description: Makes the player immune to /kickhistory.
-  rcmds.exempt.kill:
-    command: kill
-    default: false
-    description: Makes the player immune to /kill.
-  rcmds.exempt.listhomes:
-    command: listhomes
-    default: false
-    description: Makes the player immune to /listhome.
-  rcmds.exempt.messagespy:
-    command: messagespy
-    default: false
-    description: Makes the player immune to /messagespy and message spying.
-  rcmds.exempt.monitor:
-    command: monitor
-    default: false
-    description: Makes the player immune to /monitor.
-  rcmds.exempt.mute:
-    command: mute
-    default: false
-    description: Makes the player immune to /mute.
-  rcmds.exempt.nick:
-    command: nick
-    default: false
-    description: Makes the player immune to /nick.
-  rcmds.exempt.ride:
-    command: ride
-    default: false
-    description: Makes the player immune to /ride.
-  rcmds.exempt.rocket:
-    command: rocket
-    default: false
-    description: Makes the player immune to /rocket.
-  rcmds.exempt.selectiveclearinventory:
-    command: selectiveclearinventory
-    default: false
-    description: Makes the player immune to /sci.
-  rcmds.exempt.setarmor:
-    command: setarmor
-    default: false
-    description: Makes the player immune to /setarmor.
-  rcmds.exempt.slap:
-    command: slap
-    default: false
-    description: Makes the player immune to /slap.
-  rcmds.exempt.speak:
-    command: speak
-    default: false
-    description: Makes the player immune to /speak.
-  rcmds.exempt.starve:
-    command: starve
-    default: false
-    description: Makes the player immune to /starve.
-  rcmds.exempt.strike:
-    command: strike
-    default: false
-    description: Makes the player immune to /strike.
-  rcmds.exempt.warn:
-    command: warn
-    default: false
-    description: Makes the player immune to /warn.
-  rcmds.exempt.warp:
-    command: warp
-    default: false
-    description: Makes the player immune to /warp.
-
-
-  rcmds.exempt.autoafk:
-    command: afk
-    description: Makes the player immune to auto AFK.
-    default: false
-  rcmds.exempt.afkkick:
-    command: afk
-    description: Makes the player immune to AFK kicks.
-    default: false
-
-  rcmds.exempt.nick.changelimit:
-    command: nick
-    description: Makes the player immune to the nick change limit.
-    default: false
-  rcmds.exempt.nick.regex:
-    command: nick
-    description: Makes the player immune to the nick character check.
-    default: false
-  rcmds.exempt.nick.length:
-    command: nick
-    description: Makes the player immune to the nick length check.
-    default: false
-
-  rcmds.exempt.nick.*:
-    command: nick
-    description: Grants all rcmds.exempt.nick.* permissions
-    default: false
-    children:
-      rcmds.exempt.nick.changelimit: true
-      rcmds.exempt.nick.regex: true
-      rcmds.exempt.nick.length: true
-
-  rcmds.exempt.cooldown.commands:
-    description: Makes the player exempt to command cooldowns.
-    default: false
-  rcmds.exempt.cooldown.kits:
-    description: Makes the player exempt to kit cooldowns.
-    default: false
-  rcmds.exempt.cooldown.teleports:
-    description: Makes the player exempt to teleport cooldowns.
-    default: false
-
-  rcmds.exempt.teleportwarmup:
-    description: Makes the player exempt to teleport warmups.
-    default: false
-
-  rcmds.exempt.limit.spawnmob:
-    command: spawnmob
-    description: Allows the player to spawn more than the server limit of mobs.
-    default: false
-
-  rcmds.allowed.item:
-    description: Allows the player to spawn prohibited items.
-    default: false
-
+    description: Gives every permission to use commands towards others.
   rcmds.others.backpack:
     command: backpack
     default: op
@@ -2275,14 +2465,14 @@ permissions:
     command: nick
     default: op
     description: Allows the player to /nick other players.
-  rcmds.others.playerextinguish:
-    command: playerextinguish
-    default: op
-    description: Allows the player to /playerextinguish other players.
   rcmds.others.ping:
     command: ping
     default: op
     description: Allows the player to /ping other players.
+  rcmds.others.playerextinguish:
+    command: playerextinguish
+    default: op
+    description: Allows the player to /playerextinguish other players.
   rcmds.others.saveplayer:
     command: saveplayer
     default: op
@@ -2303,79 +2493,218 @@ permissions:
     command: warp
     default: op
     description: Allows the player to /warp other players.
-
-  rcmds.spawn.other:
-    command: spawn
-    description: Allows the player to /spawn to different worlds.
+  rcmds.ping:
+    command: ping
     default: op
-
+    description: Allows you to use /ping.
+  rcmds.playerextinguish:
+    command: playerextinguish
+    default: op
+    description: Allows you to extinguish players.
+  rcmds.playersearch:
+    command: playersearch
+    default: op
+    description: Allows you to search for a player.
+  rcmds.playertime:
+    command: playertime
+    default: op
+    description: Allows you to change other players' times.
+  rcmds.pluginmanager.*:
+    children:
+      rcmds.pluginmanager.delete: true
+      rcmds.pluginmanager.disable: true
+      rcmds.pluginmanager.download: true
+      rcmds.pluginmanager.downloadlink: true
+      rcmds.pluginmanager.enable: true
+      rcmds.pluginmanager.findtag: true
+      rcmds.pluginmanager.help: true
+      rcmds.pluginmanager.info: true
+      rcmds.pluginmanager.list: true
+      rcmds.pluginmanager.load: true
+      rcmds.pluginmanager.reload: true
+      rcmds.pluginmanager.reloadall: true
+      rcmds.pluginmanager.unload: true
+      rcmds.pluginmanager.update: true
+      rcmds.pluginmanager.updatecheck: true
+      rcmds.pluginmanager.updatecheckall: true
+    command: pluginmanager
+    default: false
+    description: Allows you to use all of PluginManager's features.
+  rcmds.pluginmanager.delete:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's delete feature.
+  rcmds.pluginmanager.disable:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's disable feature.
+  rcmds.pluginmanager.download:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's download feature.
+  rcmds.pluginmanager.downloadlink:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's downloadlink feature.
+  rcmds.pluginmanager.enable:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's enable feature.
+  rcmds.pluginmanager.findtag:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's findtag feature.
+  rcmds.pluginmanager.help:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's help feature.
+  rcmds.pluginmanager.info:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's info feature.
+  rcmds.pluginmanager.list:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's list feature.
+  rcmds.pluginmanager.load:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's load feature.
+  rcmds.pluginmanager.reload:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's reload feature.
+  rcmds.pluginmanager.reloadall:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's reloadall feature.
+  rcmds.pluginmanager.unload:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's unload feature.
+  rcmds.pluginmanager.update:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's update feature.
+  rcmds.pluginmanager.updatecheck:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's updatecheck feature.
+  rcmds.pluginmanager.updatecheckall:
+    command: pluginmanager
+    default: op
+    description: Allows you to use PluginManager's updatecheckall feature.
+  rcmds.potion:
+    command: potion
+    default: op
+    description: Allows you to add potion effects to a potion.
+  rcmds.prune:
+    command: prune
+    default: op
+    description: Allows you to prune old userdata.
+  rcmds.publicassign:
+    command: publicassign
+    default: op
+    description: Allows you to add public commands to items.
+  rcmds.quit:
+    command: quit
+    default: op
+    description: Allows you to quit.
+  rcmds.rank:
+    command: rank
+    default: op
+    description: Allows you to check the rank of a player.
+  rcmds.realname:
+    command: realname
+    default: op
+    description: Allows you to see a player's real name.
+  rcmds.recipe:
+    command: recipe
+    default: op
+    description: Allows you to view recipes of any item.
+  rcmds.rename:
+    command: rename
+    default: op
+    description: Allows you to rename an item.
+  rcmds.repair:
+    command: repair
+    default: op
+    description: Allows you to repair items.
+  rcmds.reply:
+    command: reply
+    default: op
+    description: Allows you to reply to private messages.
+  rcmds.ride:
+    command: ride
+    default: op
+    description: Allows you to ride on other players.
+  rcmds.rocket:
+    command: rocket
+    default: op
+    description: Allows you to shoot a player into the sky.
+  rcmds.royalcommands:
+    command: royalcommands
+    default: op
+    description: Allows you to reload RoyalCommands' config.
+  rcmds.rules:
+    command: rules
+    default: op
+    description: Allows you to see server rules.
+  rcmds.saveplayer:
+    command: saveplayer
+    default: op
+    description: Allows you to save player data.
+  rcmds.see.*:
+    children:
+      rcmds.see.ban: true
+      rcmds.see.kick: true
+      rcmds.see.unban: true
+      rcmds.see.warn: true
+    default: false
+    description: Gives every see permission.
+  rcmds.see.ban:
+    default: true
+    description: See ban messages.
+  rcmds.see.kick:
+    default: true
+    description: See kick messages.
+  rcmds.see.unban:
+    default: true
+    description: See unban messages.
+  rcmds.see.warn:
+    default: op
+    description: See warn messages.
   rcmds.seehidden:
     command: list
+    default: op
     description: Allows the player to see hidden players in /list (VanishNoPacket).
+  rcmds.seeinventory:
+    command: seeinventory
     default: op
-
-  rcmds.tpoverride:
-    command: teleporttoggle
-    description: Allows the player to override /teleporttoggle settings.
+    description: Allows you see another player's inventory.
+  rcmds.seen:
+    command: seen
     default: op
-
-  rcmds.see.ban:
-    description: See ban messages.
-    default: true
-  rcmds.see.kick:
-    description: See kick messages.
-    default: true
-  rcmds.see.unban:
-    description: See unban messages.
-    default: true
-  rcmds.see.warn:
-    description: See warn messages.
+    description: Allows you to see when a player was last online.
+  rcmds.selectiveclearinventory:
+    command: selectiveclearinventory
     default: op
-
-  rcmds.sign.warp:
-    description: Allows the player to create warp signs.
+    description: Allows you to selectively clear inventories
+  rcmds.setarmor:
+    command: setarmor
     default: op
-  rcmds.sign.time:
-    description: Allows the player to create time signs.
-    default: op
-  rcmds.sign.disposal:
-    description: Allows the player to create disposal signs.
-    default: op
-  rcmds.sign.weather:
-    description: Allows the player to create weather signs.
-    default: op
-  rcmds.sign.give:
-    description: Allows the player to create give signs.
-    default: op
-  rcmds.sign.command:
-    description: Allows the player to create command signs.
-    default: op
-  rcmds.sign.free:
-    description: Allows the player to create free signs.
-    default: op
-
-  rcmds.sign.use.warp:
-    description: Allows the player to use warp signs.
-    default: op
-  rcmds.sign.use.time:
-    description: Allows the player to use time signs.
-    default: op
-  rcmds.sign.use.disposal:
-    description: Allows the player to use disposal signs.
-    default: op
-  rcmds.sign.use.weather:
-    description: Allows the player to use weather signs.
-    default: op
-  rcmds.sign.use.give:
-    description: Allows the player to use give signs.
-    default: op
-  rcmds.sign.use.command:
-    description: Allows the player to use command signs.
-    default: op
-  rcmds.sign.use.free:
-    description: Allows the player to use free signs.
-    default: op
-
+    description: Allows you to set your armor
+  rcmds.setarmor.*:
+    children:
+      rcmds.setarmor.chain: true
+      rcmds.setarmor.diamond: true
+      rcmds.setarmor.gold: true
+      rcmds.setarmor.iron: true
+      rcmds.setarmor.leather: true
+      rcmds.setarmor.none: true
+    command: setarmor
+    default: false
+    description: Allows the player to set every armor.
   rcmds.setarmor.chain:
     command: setarmor
     default: op
@@ -2400,533 +2729,300 @@ permissions:
     command: setarmor
     default: op
     description: Allows the player to set no armor.
-
-  rcmds.notarget:
-    description: Disables the mobs' ability to target the player.
-    default: false
-
-  rcmds.op:
-    description: Gives every default operator permission.
-    default: false
+  rcmds.setcharacteristic:
+    command: setcharacteristic
+    default: op
+    description: Allows you to set player characteristics.
+  rcmds.sethome:
+    command: sethome
+    default: op
+    description: Allows you to set a home.
+  rcmds.sethome.multi:
+    command: sethome
+    default: op
+    description: Allows you to set multiple homes.
+  rcmds.setjail:
+    command: setjail
+    default: op
+    description: Allows you to set jails.
+  rcmds.setlevel:
+    command: setlevel
+    default: op
+    description: Allows you to set your XP level
+  rcmds.setspawn:
+    command: setspawn
+    default: op
+    description: Allows you to set the spawn of the world.
+  rcmds.setuserdata:
+    command: setuserdata
+    default: op
+    description: Allows you to set userdata.
+  rcmds.setwarp:
+    command: setwarp
+    default: op
+    description: Allows you to set warp points.
+  rcmds.sign.*:
     children:
-      rcmds.setarmor.*: true
-      rcmds.sign.*: true
-      rcmds.others.*: true
-      rcmds.seehidden: true
-      rcmds.see.*: true
-      rcmds.whitelist.*: true
-      rcmds.nick.color: true
-      rcmds.updates: true
-      rcmds.tpoverride: true
-      rcmds.spawn.other: true
-
-      rcmds.level: true
-      rcmds.setlevel: true
-      rcmds.selectiveclearinventory: true
-      rcmds.speak: true
-      rcmds.slap: true
-      rcmds.harm: true
-      rcmds.starve: true
-      rcmds.setarmor: true
-      rcmds.getip: true
-      rcmds.compareip: true
-      rcmds.quit: true
-      rcmds.rank: true
-      rcmds.freeze: true
-      rcmds.fakeop: true
-      rcmds.vtp: true
-      rcmds.vtphere: true
-      rcmds.megastrike: true
-      rcmds.playerextinguish: true
-      rcmds.item: true
-      rcmds.fixchunk: true
-      rcmds.weather: true
-      rcmds.clearinventory: true
-      rcmds.give: true
-      rcmds.message: true
-      rcmds.reply: true
-      rcmds.gamemode: true
-      rcmds.mute: true
-      rcmds.ban: true
-      rcmds.time: true
-      rcmds.home: true
-      rcmds.sethome: true
-      rcmds.sethome.multi: true
-      rcmds.deletehome: true
-      rcmds.listhomes: true
-      rcmds.strike: true
-      rcmds.jump: true
-      rcmds.warn: true
-      rcmds.clearwarns: true
-      rcmds.warp: true
-      rcmds.setwarp: true
-      rcmds.deletewarp: true
-      rcmds.repair: true
-      rcmds.heal: true
-      rcmds.unban: true
-      rcmds.feed: true
-      rcmds.setspawn: true
-      rcmds.god: true
-      rcmds.spawn: true
-      rcmds.banip: true
-      rcmds.unbanip: true
-      rcmds.list: true
-      rcmds.back: true
-      rcmds.teleport: true
-      rcmds.teleporthere: true
-      rcmds.teleportrequest: true
-      rcmds.teleportrequesthere: true
-      rcmds.teleportaccept: true
-      rcmds.teleportdeny: true
-      rcmds.listwarns: true
-      rcmds.more: true
-      rcmds.messagespy: true
-      rcmds.spawnmob: true
-      rcmds.afk: true
-      rcmds.assign: true
-      rcmds.onehitkill: true
-      rcmds.burn: true
-      rcmds.kick: true
-      rcmds.kickall: true
-      rcmds.world: true
-      rcmds.jail: true
-      rcmds.setjail: true
-      rcmds.less: true
-      rcmds.spawner: true
-      rcmds.teleportplayertoplayer: true
-      rcmds.messageoftheday: true
-      rcmds.deletejail: true
-      rcmds.force: true
-      rcmds.ping: true
-      rcmds.seeinventory: true
-      rcmds.realname: true
-      rcmds.nick: true
-      rcmds.ingot2block: true
-      rcmds.near: true
-      rcmds.kill: true
-      rcmds.suicide: true
-      rcmds.killall: true
-      rcmds.muteall: true
-      rcmds.kit: true
-      rcmds.rules: true
-      rcmds.help: true
-      rcmds.broadcast: true
-      rcmds.hug: true
-      rcmds.explode: true
-      rcmds.ride: true
-      rcmds.teleportposition: true
-      rcmds.ignore: true
-      rcmds.coords: true
-      rcmds.teleportall: true
-      rcmds.teleportrequestall: true
-      rcmds.vip: true
-      rcmds.dump: true
-      rcmds.seen: true
-      rcmds.temporaryban: true
-      rcmds.teleporttoggle: true
-      rcmds.kits: true
-      rcmds.lag: true
-      rcmds.memory: true
-      rcmds.entities: true
-      rcmds.modifyinventory: true
-      rcmds.workbench: true
-      rcmds.enchantingtable: true
-      rcmds.trade: true
-      rcmds.furnace: true
-      rcmds.enchant: true
-      rcmds.fireball: true
-      rcmds.fly: true
-      rcmds.playertime: true
-      rcmds.compass: true
-      rcmds.helmet: true
-      rcmds.worldmanager: true
-      rcmds.biome: true
-      rcmds.getid: true
-      rcmds.buddha: true
-      rcmds.erase: true
-      rcmds.whois: true
-      rcmds.mobignore: true
-      rcmds.monitor: true
-      rcmds.garbagecollector: true
-      rcmds.backpack: true
-      rcmds.usage: true
-      rcmds.pluginmanager.*: true
-      rcmds.baninfo: true
-      rcmds.banlist: true
-      rcmds.flyspeed: true
-      rcmds.walkspeed: true
-      rcmds.accountstatus: true
-      rcmds.playersearch: true
-      rcmds.deafen: true
-      rcmds.rename: true
-      rcmds.lore: true
-      rcmds.setuserdata: true
-      rcmds.firework: true
-      rcmds.rocket: true
-      rcmds.effect: true
-      rcmds.banhistory: true
-      rcmds.mail: true
-      rcmds.mail.send: true
-      rcmds.freezetime: true
-      rcmds.signedit: true
-      rcmds.signedit.color: true
-      rcmds.potion: true
-      rcmds.setcharacteristic: true
-      rcmds.nameentity: true
-      rcmds.head: true
-      rcmds.findip: true
-      rcmds.map: true
-      rcmds.deletebanhistory: true
-      rcmds.publicassign: true
-      rcmds.enderchest: true
-      rcmds.recipe: true
-      rcmds.spawninfo: true
-      rcmds.attributes: true
-      rcmds.saveplayer: true
-      rcmds.loadplayer: true
-      rcmds.teleportrequestcancel: true
-      rcmds.commandspy: true
-      rcmds.kickhistory: true
-      rcmds.documentation: true
-      rcmds.prune: true
-      rcmds.uses: true
-      rcmds.uptime: true
-      rcmds.royalcommands: true
-
-  rcmds.admin:
-    description: Gives every permission.
+      rcmds.sign.command: true
+      rcmds.sign.disposal: true
+      rcmds.sign.free: true
+      rcmds.sign.give: true
+      rcmds.sign.time: true
+      rcmds.sign.use.*: true
+      rcmds.sign.warp: true
     default: false
-    children:
-      rcmds.*: true
-
-  rcmds.others.*:
-    description: Gives every permission to use commands towards others.
-    default: false
-    children:
-      rcmds.others.clearinventory: true
-      rcmds.others.megastrike: true
-      rcmds.others.playerextinguish: true
-      rcmds.others.strike: true
-      rcmds.others.god: true
-      rcmds.others.warp: true
-      rcmds.others.nick: true
-      rcmds.others.listwarns: true
-      rcmds.others.home: true
-      rcmds.others.coords: true
-      rcmds.others.fly: true
-      rcmds.others.buddha: true
-      rcmds.others.setarmor: true
-      rcmds.others.backpack: true
-      rcmds.others.ping: true
-      rcmds.others.feed: true
-      rcmds.others.effect: true
-      rcmds.others.head: true
-      rcmds.others.deletehome: true
-      rcmds.others.deafen: true
-      rcmds.others.listhomes: true
-      rcmds.others.saveplayer: true
-      rcmds.others.loadplayer: true
-      rcmds.others.messagespy: true
-      rcmds.others.commandspy: true
-      rcmds.others.kickhistory: true
-      rcmds.others.sethome: true
-
-  rcmds.see.*:
-    description: Gives every see permission.
-    default: false
-    children:
-      rcmds.see.ban: true
-      rcmds.see.kick: true
-      rcmds.see.warn: true
-      rcmds.see.unban: true
-
+    description: Gives every sign permission.
+  rcmds.sign.command:
+    default: op
+    description: Allows the player to create command signs.
+  rcmds.sign.disposal:
+    default: op
+    description: Allows the player to create disposal signs.
+  rcmds.sign.free:
+    default: op
+    description: Allows the player to create free signs.
+  rcmds.sign.give:
+    default: op
+    description: Allows the player to create give signs.
+  rcmds.sign.time:
+    default: op
+    description: Allows the player to create time signs.
   rcmds.sign.use.*:
-    description: Gives every sign use permisison.
-    default: false
     children:
-      rcmds.sign.use.warp: true
-      rcmds.sign.use.time: true
+      rcmds.sign.use.command: true
       rcmds.sign.use.disposal: true
       rcmds.sign.use.give: true
-      rcmds.sign.use.command: true
-
-  rcmds.sign.*:
-    description: Gives every sign permission.
+      rcmds.sign.use.time: true
+      rcmds.sign.use.warp: true
     default: false
+    description: Gives every sign use permisison.
+  rcmds.sign.use.command:
+    default: op
+    description: Allows the player to use command signs.
+  rcmds.sign.use.disposal:
+    default: op
+    description: Allows the player to use disposal signs.
+  rcmds.sign.use.free:
+    default: op
+    description: Allows the player to use free signs.
+  rcmds.sign.use.give:
+    default: op
+    description: Allows the player to use give signs.
+  rcmds.sign.use.time:
+    default: op
+    description: Allows the player to use time signs.
+  rcmds.sign.use.warp:
+    default: op
+    description: Allows the player to use warp signs.
+  rcmds.sign.use.weather:
+    default: op
+    description: Allows the player to use weather signs.
+  rcmds.sign.warp:
+    default: op
+    description: Allows the player to create warp signs.
+  rcmds.sign.weather:
+    default: op
+    description: Allows the player to create weather signs.
+  rcmds.signedit:
+    command: signedit
+    default: op
+    description: Allows you to edit signs.
+  rcmds.signedit.color:
+    command: signedit
+    default: op
+    description: Allows you to use colors on signs.
+  rcmds.slap:
+    command: slap
+    default: op
+    description: Allows you to slap another player
+  rcmds.spawn:
+    command: spawn
+    default: op
+    description: Allows you to go to your world's spawn.
+  rcmds.spawn.other:
+    command: spawn
+    default: op
+    description: Allows the player to /spawn to different worlds.
+  rcmds.spawner:
+    command: spawner
+    default: op
+    description: Allows you to change the type of a mob spawner.
+  rcmds.spawninfo:
+    command: spawninfo
+    default: op
+    description: Allows you to get information about spawned items.
+  rcmds.spawnmob:
+    command: spawnmob
+    default: op
+    description: Allows you to spawn mobs.
+  rcmds.spawnmob.*:
+    command: spawnmob
+    default: op
+    description: Allows you to spawn all mobs.
+  rcmds.speak:
+    command: speak
+    default: op
+    description: Allows you to spoof a message
+  rcmds.starve:
+    command: starve
+    default: op
+    description: Allows you to starve another player
+  rcmds.strike:
+    command: strike
+    default: op
+    description: Allows you to strike lightning.
+  rcmds.suicide:
+    command: suicide
+    default: op
+    description: Allows you to kill yourself.
+  rcmds.teleport:
+    command: teleport
+    default: op
+    description: Allows you to teleport to other players.
+  rcmds.teleportaccept:
+    command: teleportaccept
+    default: op
+    description: Allows you to accept a teleport request.
+  rcmds.teleportall:
+    command: teleportall
+    default: op
+    description: Allows you to teleport everyone to you.
+  rcmds.teleportdeny:
+    command: teleportdeny
+    default: op
+    description: Allows you to deny a teleport request.
+  rcmds.teleporthere:
+    command: teleporthere
+    default: op
+    description: Allows you to teleport other players to you.
+  rcmds.teleportplayertoplayer:
+    command: teleportplayertoplayer
+    default: op
+    description: Allows you to teleport players to each other.
+  rcmds.teleportposition:
+    command: teleportposition
+    default: op
+    description: Allows you to teleport to a coordinate point.
+  rcmds.teleportrequest:
+    command: teleportrequest
+    default: op
+    description: Allows you to ask other players to teleport.
+  rcmds.teleportrequestall:
+    command: teleportrequestall
+    default: op
+    description: Allows you to request everyone to teleport to you.
+  rcmds.teleportrequestcancel:
+    command: teleportrequestcancel
+    default: op
+    description: Allows you to cancel a teleport reuqest.
+  rcmds.teleportrequesthere:
+    command: teleportrequesthere
+    default: op
+    description: Allows you to ask other players to teleport to you.
+  rcmds.teleporttoggle:
+    command: teleporttoggle
+    default: op
+    description: Allows you to toggle teleportation.
+  rcmds.temporaryban:
+    command: temporaryban
+    default: op
+    description: Allows you to temporarily ban a player.
+  rcmds.time:
+    command: time
+    default: op
+    description: Allows you to change the time.
+  rcmds.tpoverride:
+    command: teleporttoggle
+    default: op
+    description: Allows the player to override /teleporttoggle settings.
+  rcmds.trade:
+    command: trade
+    default: op
+    description: Allows you to trade with other players.
+  rcmds.unban:
+    command: unban
+    default: op
+    description: Allows you to unban players.
+  rcmds.unbanip:
+    command: unbanip
+    default: op
+    description: Allows you to unban IPs.
+  rcmds.updates:
+    default: op
+    description: Allows you to see new update messages.
+  rcmds.uptime:
+    command: uptime
+    default: op
+    description: Allows you to see how long the server has been running for.
+  rcmds.usage:
+    command: usage
+    default: op
+    description: Allows you to view the usage of other commands.
+  rcmds.uses:
+    command: uses
+    default: op
+    description: Allows you to display uses for any item.
+  rcmds.vip:
+    command: vip
+    default: op
+    description: Allows you to modify the VIP list.
+  rcmds.vtp:
+    command: vtp
+    default: op
+    description: Allows you to override teleport.
+  rcmds.vtphere:
+    command: vtphere
+    default: op
+    description: Allows you to override teleporthere.
+  rcmds.walkspeed:
+    command: walkspeed
+    default: op
+    description: Allows you to change your walking speed.
+  rcmds.warn:
+    command: warn
+    default: op
+    description: Allows you to warn players.
+  rcmds.warp:
+    command: warp
+    default: op
+    description: Allows you to warp.
+  rcmds.weather:
+    command: weather
+    default: op
+    description: Allows you to change weather.
+  rcmds.whitelist.*:
     children:
-      rcmds.sign.warp: true
-      rcmds.sign.time: true
-      rcmds.sign.disposal: true
-      rcmds.sign.give: true
-      rcmds.sign.command: true
-      rcmds.sign.free: true
-
-      rcmds.sign.use.*: true
-
-  rcmds.exempt.cooldown.*:
-    description: Gives every cooldown exemption.
+      rcmds.whitelist.add: true
+      rcmds.whitelist.check: true
+      rcmds.whitelist.remove: true
+    command: whitelist
+    default: op
+    description: Allows use of all whitelist subcommands.
+  rcmds.whitelist.add:
+    command: whitelist
     default: false
-    children:
-      rcmds.exempt.cooldown.commands: true
-      rcmds.exempt.cooldown.kits: true
-      rcmds.exempt.cooldown.teleports: true
-
-  rcmds.exempt.*:
-    description: Gives every exempt permission.
+    description: Allows addition of a player into the whitelist.
+  rcmds.whitelist.check:
+    command: whitelist
     default: false
-    children:
-      rcmds.exempt.limit.spawnmob: true
-      rcmds.exempt.feed: true
-      rcmds.exempt.speak: true
-      rcmds.exempt.selectiveclearinventory: true
-      rcmds.exempt.harm: true
-      rcmds.exempt.starve: true
-      rcmds.exempt.slap: true
-      rcmds.exempt.freeze: true
-      rcmds.exempt.kick: true
-      rcmds.exempt.ban: true
-      rcmds.exempt.mute: true
-      rcmds.exempt.warn: true
-      rcmds.exempt.strike: true
-      rcmds.exempt.teleport: true
-      rcmds.exempt.burn: true
-      rcmds.exempt.jail: true
-      rcmds.exempt.teleportplayertoplayer: true
-      rcmds.exempt.warp: true
-      rcmds.exempt.force: true
-      rcmds.exempt.gamemode: true
-      rcmds.exempt.nick: true
-      rcmds.exempt.kill: true
-      rcmds.exempt.explode: true
-      rcmds.exempt.home: true
-      rcmds.exempt.listhomes: true
-      rcmds.exempt.ignore: true
-      rcmds.exempt.cooldown.*: true
-      rcmds.exempt.modifyinventory: true
-      rcmds.exempt.afkkick: true
-      rcmds.exempt.setarmor: true
-      rcmds.exempt.monitor: true
-      rcmds.exempt.backpack: true
-      rcmds.exempt.teleportwarmup: true
-      rcmds.exempt.deafen: true
-      rcmds.exempt.rocket: true
-      rcmds.exempt.effect: true
-      rcmds.exempt.head: true
-      rcmds.exempt.deletehome: true
-      rcmds.exempt.enderchest: true
-      rcmds.exempt.messagespy: true
-      rcmds.exempt.commandspy: true
-      rcmds.exempt.kickhistory: true
-      rcmds.exempt.nick.*: true
-
-  rcmds.setarmor.*:
-    command: setarmor
-    description: Allows the player to set every armor.
+    description: Allows a player to check if a player is in the whitelist.
+  rcmds.whitelist.remove:
+    command: whitelist
     default: false
-    children:
-      rcmds.setarmor.none: true
-      rcmds.setarmor.chain: true
-      rcmds.setarmor.diamond: true
-      rcmds.setarmor.gold: true
-      rcmds.setarmor.iron: true
-      rcmds.setarmor.leather: true
-
-  rcmds.*:
-    description: Gives every permission.
-    default: false
-    children:
-      rcmds.level: true
-      rcmds.setlevel: true
-      rcmds.selectiveclearinventory: true
-      rcmds.speak: true
-      rcmds.slap: true
-      rcmds.harm: true
-      rcmds.starve: true
-      rcmds.setarmor: true
-      rcmds.getip: true
-      rcmds.compareip: true
-      rcmds.quit: true
-      rcmds.rank: true
-      rcmds.freeze: true
-      rcmds.fakeop: true
-      rcmds.vtp: true
-      rcmds.vtphere: true
-      rcmds.megastrike: true
-      rcmds.playerextinguish: true
-      rcmds.item: true
-      rcmds.fixchunk: true
-      rcmds.weather: true
-      rcmds.clearinventory: true
-      rcmds.give: true
-      rcmds.message: true
-      rcmds.reply: true
-      rcmds.gamemode: true
-      rcmds.mute: true
-      rcmds.ban: true
-      rcmds.time: true
-      rcmds.home: true
-      rcmds.sethome: true
-      rcmds.sethome.multi: true
-      rcmds.deletehome: true
-      rcmds.listhomes: true
-      rcmds.strike: true
-      rcmds.jump: true
-      rcmds.warn: true
-      rcmds.clearwarns: true
-      rcmds.warp: true
-      rcmds.setwarp: true
-      rcmds.deletewarp: true
-      rcmds.repair: true
-      rcmds.heal: true
-      rcmds.unban: true
-      rcmds.feed: true
-      rcmds.setspawn: true
-      rcmds.god: true
-      rcmds.spawn: true
-      rcmds.banip: true
-      rcmds.unbanip: true
-      rcmds.list: true
-      rcmds.back: true
-      rcmds.teleport: true
-      rcmds.teleporthere: true
-      rcmds.teleportrequest: true
-      rcmds.teleportrequesthere: true
-      rcmds.teleportaccept: true
-      rcmds.teleportdeny: true
-      rcmds.listwarns: true
-      rcmds.more: true
-      rcmds.messagespy: true
-      rcmds.spawnmob: true
-      rcmds.afk: true
-      rcmds.assign: true
-      rcmds.onehitkill: true
-      rcmds.burn: true
-      rcmds.kick: true
-      rcmds.kickall: true
-      rcmds.world: true
-      rcmds.jail: true
-      rcmds.setjail: true
-      rcmds.less: true
-      rcmds.spawner: true
-      rcmds.teleportplayertoplayer: true
-      rcmds.messageoftheday: true
-      rcmds.deletejail: true
-      rcmds.force: true
-      rcmds.ping: true
-      rcmds.seeinventory: true
-      rcmds.realname: true
-      rcmds.nick: true
-      rcmds.ingot2block: true
-      rcmds.near: true
-      rcmds.kill: true
-      rcmds.suicide: true
-      rcmds.killall: true
-      rcmds.muteall: true
-      rcmds.kit: true
-      rcmds.rules: true
-      rcmds.help: true
-      rcmds.broadcast: true
-      rcmds.hug: true
-      rcmds.explode: true
-      rcmds.ride: true
-      rcmds.teleportposition: true
-      rcmds.ignore: true
-      rcmds.coords: true
-      rcmds.teleportall: true
-      rcmds.teleportrequestall: true
-      rcmds.vip: true
-      rcmds.dump: true
-      rcmds.seen: true
-      rcmds.temporaryban: true
-      rcmds.teleporttoggle: true
-      rcmds.kits: true
-      rcmds.lag: true
-      rcmds.memory: true
-      rcmds.entities: true
-      rcmds.modifyinventory: true
-      rcmds.workbench: true
-      rcmds.enchantingtable: true
-      rcmds.trade: true
-      rcmds.furnace: true
-      rcmds.enchant: true
-      rcmds.fireball: true
-      rcmds.fly: true
-      rcmds.playertime: true
-      rcmds.compass: true
-      rcmds.helmet: true
-      rcmds.worldmanager: true
-      rcmds.biome: true
-      rcmds.getid: true
-      rcmds.buddha: true
-      rcmds.erase: true
-      rcmds.whois: true
-      rcmds.mobignore: true
-      rcmds.monitor: true
-      rcmds.garbagecollector: true
-      rcmds.backpack: true
-      rcmds.usage: true
-      rcmds.baninfo: true
-      rcmds.banlist: true
-      rcmds.flyspeed: true
-      rcmds.walkspeed: true
-      rcmds.accountstatus: true
-      rcmds.playersearch: true
-      rcmds.deafen: true
-      rcmds.rename: true
-      rcmds.lore: true
-      rcmds.setuserdata: true
-      rcmds.firework: true
-      rcmds.rocket: true
-      rcmds.effect: true
-      rcmds.banhistory: true
-      rcmds.mail: true
-      rcmds.mail.send: true
-      rcmds.freezetime: true
-      rcmds.signedit: true
-      rcmds.signedit.color: true
-      rcmds.potion: true
-      rcmds.setcharacteristic: true
-      rcmds.nameentity: true
-      rcmds.head: true
-      rcmds.findip: true
-      rcmds.map: true
-      rcmds.deletebanhistory: true
-      rcmds.publicassign: true
-      rcmds.enderchest: true
-      rcmds.recipe: true
-      rcmds.spawninfo: true
-      rcmds.attributes: true
-      rcmds.saveplayer: true
-      rcmds.loadplayer: true
-      rcmds.teleportrequestcancel: true
-      rcmds.commandspy: true
-      rcmds.kickhistory: true
-      rcmds.documentation: true
-      rcmds.prune: true
-      rcmds.uses: true
-      rcmds.uptime: true
-      rcmds.royalcommands: true
-
-      rcmds.pluginmanager.*: true
-
-      rcmds.tpoverride: true
-
-      rcmds.spawn.other: true
-
-      rcmds.seehidden: true
-
-      rcmds.updates: true
-
-      rcmds.exempt.*: true
-
-      rcmds.allowed.item: true
-
-      rcmds.others.*: true
-
-      rcmds.see.*: true
-
-      rcmds.sign.*: true
-
-      rcmds.setarmor.*: true
-
-      rcmds.whitelist.*: true
+    description: Allows removal of a player from the whitelist.
+  rcmds.whois:
+    command: whois
+    default: op
+    description: Allows you to look players up.
+  rcmds.workbench:
+    command: workbench
+    default: op
+    description: Allows you to open a workbench anywhere.
+  rcmds.world:
+    command: world
+    default: op
+    description: Allows you to teleport between worlds.
+  rcmds.worldmanager:
+    command: worldmanager
+    default: op
+    description: Allows you to manage worlds.
