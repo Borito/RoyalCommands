@@ -56,6 +56,7 @@ public class Config {
     public static boolean separateXP;
     public static boolean showcommands;
     public static boolean simpleList;
+	public static boolean sleepNotifications;
     public static boolean smoothTime;
     public static boolean stsBack;
     public static boolean stsNew;
@@ -208,6 +209,7 @@ public class Config {
         separateXP = c.getBoolean("worldmanager.inventory_separation.separate_xp", true);
         showcommands = c.getBoolean("commands.logging.view_commands", true);
         simpleList = c.getBoolean("playerlist.simple", true);
+		sleepNotifications = c.getBoolean("general.sleep_notifications", true);
         smoothTime = c.getBoolean("general.use_smooth_time", true);
         stsBack = c.getBoolean("teleports.spawn.login.send_all.register_back", false);
         stsNew = c.getBoolean("teleports.spawn.login.send_new", true);

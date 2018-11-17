@@ -13,6 +13,8 @@ general:
   # /findip will attempt to be as close to this percent when it sends updates (if this is 25, it will send updates at
   # 25%, 50%, 75%, and 100%)
   findip_alert_percentage: 25.0
+  # Alert sleeping players about others who are sleeping in the same world
+  sleep_notifications: true
 
 ###
 # Security #

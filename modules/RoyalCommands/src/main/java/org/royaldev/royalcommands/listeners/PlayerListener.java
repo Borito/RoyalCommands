@@ -28,6 +28,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -442,6 +443,27 @@ public class PlayerListener implements Listener {
         // Disallow the event
         event.disallow(Result.KICK_BANNED, kickMessage);
     }
+	
+	@EventHandler
+	public void onPlayerBedEnterEvent(PlayerBedEnterEvent event) {
+		if (event.isCancelled() || !Config.sleepNotifications) {
+			return;
+		}
+		
+		int asleep = 1;
+		String prefix = MessageColor.POSITIVE + "Players asleep: " + MessageColor.NEUTRAL;
+		String suffix = MessageColor.POSITIVE + " of " + MessageColor.NEUTRAL + event.getPlayer().getWorld().getPlayers().size() + MessageColor.POSITIVE + ".";
+		for (Player p: event.getPlayer().getWorld().getPlayers()) {
+			if (p.isSleeping()) {
+				asleep++;
+				if(event.getPlayer() != p) {
+					p.sendMessage(ChatColor.GRAY + event.getPlayer().getDisplayName() + MessageColor.POSITIVE + " is now asleep.");
+				}
+			}
+			p.sendMessage(prefix + asleep + suffix);
+		}
+		event.getPlayer().sendMessage(prefix + asleep + suffix);
+	}
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
