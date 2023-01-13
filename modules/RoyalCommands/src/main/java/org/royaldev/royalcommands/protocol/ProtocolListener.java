@@ -5,7 +5,7 @@
  */
 package org.royaldev.royalcommands.protocol;
 
-import com.comphenix.attribute.NbtFactory;
+import org.royaldev.royalcommands.attribute.NbtFactory;
 import com.comphenix.protocol.PacketType.Play.Server;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -24,12 +24,12 @@ public class ProtocolListener {
 
     protected static final String NBT_INFO_KEY = "rcmds-spawninfo";
     private final RoyalCommands plugin;
-    final SpawnRenameProcessor srp;
+    //final SpawnRenameProcessor srp;
     private final ProtocolManager pm = ProtocolLibrary.getProtocolManager();
 
     public ProtocolListener(RoyalCommands instance) {
         this.plugin = instance;
-		this.srp = new SpawnRenameProcessor(plugin);
+		//this.srp = new SpawnRenameProcessor(plugin);
     }
 
     public void createSetSlotListener() {
